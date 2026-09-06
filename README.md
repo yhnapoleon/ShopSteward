@@ -1,28 +1,25 @@
 # ShopSteward
 
-项目目录骨架：Nuxt 前端、Python 后端、独立 Worker，以及可选预测服务。
+按团队职责划分的简化目录骨架。当前只保留空目录、基础配置和说明，不包含具体功能。
 
-**当前仅包含文件夹和基础配置，不包含页面内容、业务逻辑、模型实现、示例数据或测试用例。** 空目录使用 `.gitkeep` 保留，后续开发时可移除。
+```text
+ShopSteward/
+├─ frontend/             # Nuxt 前端
+├─ backend/              # API、业务规则、数据库
+├─ agent/                # LangGraph、Worker、记忆与技能
+├─ ml/                   # 预测模型的训练、评估与服务
+├─ simulation/           # 模拟经营环境与场景
+├─ infra/                # 部署、环境配置、启动与联调脚本
+├─ docs/                 # 架构、接口约定、分工与项目文档
+├─ tests/                # 跨模块集成与验收测试
+├─ package.json
+├─ pnpm-workspace.yaml
+├─ pyproject.toml
+└─ .gitignore
+```
 
-| 目录 | 用途 |
-|---|---|
-| `apps/web` | Nuxt 前端 |
-| `apps/backend` | FastAPI、LangGraph、Worker 及内部业务模块 |
-| `services/forecast` | 可独立部署的预测服务 |
-| `packages/api-client` | 前端 API 客户端与生成类型 |
-| `packages/forecast-contracts` | 预测请求与响应契约 |
-| `packages/forecasting` | 可复用预测实现 |
-| `ml` | 数据处理、训练、评估与实验配置 |
-| `skills_seed` | 项目预置技能 |
-| `scenarios` | 场景及验收输入 |
-| `evaluation` | Agent、学习与经营评价 |
-| `contracts/generated` | 生成的接口规范 |
-| `infra` | 容器、代理与部署配置 |
-| `scripts` | 开发、启动和维护脚本 |
-| `data` | 本地数据集 |
-| `var` | 数据库、上传、产物、技能版本、模型与日志 |
-| `docs` | 项目文档 |
+[职责与架构图](docs/architecture.md)
 
-[架构分层图](docs/architecture.md)
+前端使用 pnpm，Python 模块使用 uv workspace。各模块内部等实际开发需要时再增加子目录。目录划分用于分工，不要求每个目录都部署为独立服务。
 
-JavaScript 使用 pnpm workspace，Python 使用 uv workspace。运行入口和部署文件尚未编写，目前不提供完整系统启动命令。
+空目录以 `.gitkeep` 保留。运行入口尚未编写，当前不提供系统启动命令。

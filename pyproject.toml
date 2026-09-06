@@ -9,8 +9,8 @@ package = false
 
 [tool.uv.workspace]
 members = [
-    "apps/backend",
-    "services/forecast",
-    "packages/forecast-contracts",
-    "packages/forecasting",
+    "backend",
+    "agent",
+    "ml",
+    "simulation",
 ]
