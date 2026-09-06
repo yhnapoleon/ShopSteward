@@ -1,0 +1,7154 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ShopSteward Backend API — 设计契约（尚未实现）",
+    "version": "0.2.0-draft",
+    "description": "B0独立业务后端；B2为未来接口。Swagger展示不代表服务已实现。业务语义见../backend-development.md。"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "规划的本地backend地址，当前未启动"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Dashboard"
+    },
+    {
+      "name": "Missions"
+    },
+    {
+      "name": "Scheduling"
+    },
+    {
+      "name": "Planning"
+    },
+    {
+      "name": "Execution"
+    },
+    {
+      "name": "Alerts"
+    },
+    {
+      "name": "Monitoring"
+    },
+    {
+      "name": "AgentFuture"
+    },
+    {
+      "name": "Internal"
+    },
+    {
+      "name": "Development"
+    },
+    {
+      "name": "Health"
+    }
+  ],
+  "paths": {
+    "/api/v1/catalog": {
+      "get": {
+        "operationId": "get_catalog",
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "查询商品和供应商报价",
+        "description": "查询商品和供应商报价",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Catalog"
+                },
+                "example": {
+                  "store_id": "store_001",
+                  "currency": "CNY",
+                  "products": [
+                    {
+                      "sku_id": "sku_001",
+                      "name": "示例商品",
+                      "unit": "piece"
+                    }
+                  ],
+                  "offers": [
+                    {
+                      "supplier_id": "supplier_001",
+                      "sku_id": "sku_001",
+                      "unit_price_minor": 1000,
+                      "minimum_order_quantity": 20,
+                      "pack_size": 20,
+                      "offer_version": "offer-1",
+                      "currency": "CNY",
+                      "lead_time_seconds": 86400,
+                      "valid_from": "2026-09-06T00:00:00Z",
+                      "valid_until": "2026-09-07T00:00:00Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/dashboard": {
+      "get": {
+        "operationId": "get_dashboard",
+        "tags": [
+          "Dashboard"
+        ],
+        "summary": "查询经营看板，不触发检查",
+        "description": "查询经营看板，不触发检查",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dashboard"
+                },
+                "example": {
+                  "state": {
+                    "store_id": "store_001",
+                    "state_version": 7,
+                    "currency": "CNY",
+                    "cash_minor": 100000,
+                    "reserved_cash_minor": 0,
+                    "available_cash_minor": 100000,
+                    "receivables_minor": 0,
+                    "stocks": [
+                      {
+                        "sku_id": "sku_001",
+                        "on_hand": 20,
+                        "in_transit": 0,
+                        "remaining_demand": 60,
+                        "forecast_version": "fixed-1"
+                      }
+                    ],
+                    "data_as_of": "2026-09-06T00:00:00Z",
+                    "simulation_time": "2026-09-06T00:00:00Z"
+                  },
+                  "freshness": {
+                    "status": "FRESH",
+                    "data_as_of": "2026-09-06T00:00:00Z",
+                    "last_sync_at": "2026-09-06T00:00:00Z"
+                  },
+                  "active_mission_count": 1,
+                  "active_alert_count": 1,
+                  "last_check_at": "2026-09-06T00:00:00Z",
+                  "next_check_at": "2026-09-06T00:00:30Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions": {
+      "post": {
+        "operationId": "create_mission",
+        "tags": [
+          "Missions"
+        ],
+        "summary": "创建任务并登记首次检查",
+        "description": "创建任务并登记首次检查",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "operator"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mission"
+                },
+                "example": {
+                  "id": "mission_001",
+                  "store_id": "store_001",
+                  "sku_id": "sku_001",
+                  "objective": "在现金底线约束下覆盖活动需求",
+                  "status": "ACTIVE",
+                  "mission_version": 1,
+                  "policy": {
+                    "cash_floor_minor": 30000,
+                    "candidate_quantities": [
+                      0,
+                      20,
+                      40,
+                      80
+                    ],
+                    "supplier_id": "supplier_001"
+                  },
+                  "policy_version": "policy-1",
+                  "schedule": {
+                    "id": "schedule_001",
+                    "job_type": "check_mission",
+                    "mission_id": "mission_001",
+                    "trigger": "INTERVAL",
+                    "interval_seconds": 30,
+                    "enabled": true,
+                    "version": 1,
+                    "next_run_at": "2026-09-06T00:00:30Z"
+                  },
+                  "current_plan_id": "plan_001",
+                  "current_action_id": null,
+                  "completion_criteria": "用户请求结束且无未决采购动作",
+                  "created_at": "2026-09-06T00:00:00Z",
+                  "updated_at": "2026-09-06T00:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissionCreate"
+              },
+              "example": {
+                "store_id": "store_001",
+                "sku_id": "sku_001",
+                "objective": "现金不少于300元并覆盖活动需求",
+                "policy": {
+                  "cash_floor_minor": 30000,
+                  "candidate_quantities": [
+                    0,
+                    20,
+                    40,
+                    80
+                  ],
+                  "supplier_id": "supplier_001"
+                },
+                "check_interval_seconds": 30
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "list_missions",
+        "tags": [
+          "Missions"
+        ],
+        "summary": "分页查询任务",
+        "description": "分页查询任务",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ACTIVE",
+                "PAUSED",
+                "COMPLETED",
+                "CANCELLED"
+              ]
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MissionList"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": "mission_001",
+                      "store_id": "store_001",
+                      "sku_id": "sku_001",
+                      "objective": "在现金底线约束下覆盖活动需求",
+                      "status": "ACTIVE",
+                      "mission_version": 1,
+                      "policy": {
+                        "cash_floor_minor": 30000,
+                        "candidate_quantities": [
+                          0,
+                          20,
+                          40,
+                          80
+                        ],
+                        "supplier_id": "supplier_001"
+                      },
+                      "policy_version": "policy-1",
+                      "schedule": {
+                        "id": "schedule_001",
+                        "job_type": "check_mission",
+                        "mission_id": "mission_001",
+                        "trigger": "INTERVAL",
+                        "interval_seconds": 30,
+                        "enabled": true,
+                        "version": 1,
+                        "next_run_at": "2026-09-06T00:00:30Z"
+                      },
+                      "current_plan_id": "plan_001",
+                      "current_action_id": null,
+                      "completion_criteria": "用户请求结束且无未决采购动作",
+                      "created_at": "2026-09-06T00:00:00Z",
+                      "updated_at": "2026-09-06T00:00:00Z"
+                    }
+                  ],
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{mission_id}": {
+      "get": {
+        "operationId": "get_mission",
+        "tags": [
+          "Missions"
+        ],
+        "summary": "查询任务详情",
+        "description": "查询任务详情",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer",
+          "agent:read"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          },
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mission"
+                },
+                "example": {
+                  "id": "mission_001",
+                  "store_id": "store_001",
+                  "sku_id": "sku_001",
+                  "objective": "在现金底线约束下覆盖活动需求",
+                  "status": "ACTIVE",
+                  "mission_version": 1,
+                  "policy": {
+                    "cash_floor_minor": 30000,
+                    "candidate_quantities": [
+                      0,
+                      20,
+                      40,
+                      80
+                    ],
+                    "supplier_id": "supplier_001"
+                  },
+                  "policy_version": "policy-1",
+                  "schedule": {
+                    "id": "schedule_001",
+                    "job_type": "check_mission",
+                    "mission_id": "mission_001",
+                    "trigger": "INTERVAL",
+                    "interval_seconds": 30,
+                    "enabled": true,
+                    "version": 1,
+                    "next_run_at": "2026-09-06T00:00:30Z"
+                  },
+                  "current_plan_id": "plan_001",
+                  "current_action_id": null,
+                  "completion_criteria": "用户请求结束且无未决采购动作",
+                  "created_at": "2026-09-06T00:00:00Z",
+                  "updated_at": "2026-09-06T00:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{mission_id}/control": {
+      "post": {
+        "operationId": "control_mission",
+        "tags": [
+          "Missions"
+        ],
+        "summary": "暂停、恢复、完成或取消任务",
+        "description": "暂停、恢复、完成或取消任务",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "operator:pause_resume",
+          "approver:complete_cancel"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Mission"
+                },
+                "example": {
+                  "id": "mission_001",
+                  "store_id": "store_001",
+                  "sku_id": "sku_001",
+                  "objective": "在现金底线约束下覆盖活动需求",
+                  "status": "ACTIVE",
+                  "mission_version": 1,
+                  "policy": {
+                    "cash_floor_minor": 30000,
+                    "candidate_quantities": [
+                      0,
+                      20,
+                      40,
+                      80
+                    ],
+                    "supplier_id": "supplier_001"
+                  },
+                  "policy_version": "policy-1",
+                  "schedule": {
+                    "id": "schedule_001",
+                    "job_type": "check_mission",
+                    "mission_id": "mission_001",
+                    "trigger": "INTERVAL",
+                    "interval_seconds": 30,
+                    "enabled": true,
+                    "version": 1,
+                    "next_run_at": "2026-09-06T00:00:30Z"
+                  },
+                  "current_plan_id": "plan_001",
+                  "current_action_id": null,
+                  "completion_criteria": "用户请求结束且无未决采购动作",
+                  "created_at": "2026-09-06T00:00:00Z",
+                  "updated_at": "2026-09-06T00:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MissionControl"
+              },
+              "example": {
+                "operation": "pause",
+                "expected_mission_version": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{mission_id}/schedule": {
+      "patch": {
+        "operationId": "update_mission_schedule",
+        "tags": [
+          "Scheduling"
+        ],
+        "summary": "更新常规检查计划",
+        "description": "更新常规检查计划",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "operator"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schedule"
+                },
+                "example": {
+                  "id": "schedule_001",
+                  "job_type": "check_mission",
+                  "mission_id": "mission_001",
+                  "trigger": "INTERVAL",
+                  "interval_seconds": 30,
+                  "enabled": true,
+                  "version": 1,
+                  "next_run_at": "2026-09-06T00:00:30Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleUpdate"
+              },
+              "example": {
+                "interval_seconds": 60,
+                "enabled": true,
+                "expected_schedule_version": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{mission_id}/checks": {
+      "post": {
+        "operationId": "request_mission_check",
+        "tags": [
+          "Scheduling"
+        ],
+        "summary": "请求一次检查，可合并已有待执行检查",
+        "description": "请求一次检查，可合并已有待执行检查",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "operator",
+          "agent:check"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          },
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "已持久化受理，不表示业务执行完成",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobAccepted"
+                },
+                "example": {
+                  "job_run_id": "job_001",
+                  "status": "READY",
+                  "merged": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CheckRequest"
+              },
+              "example": {
+                "reason": "用户要求再次检查"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{mission_id}/plans": {
+      "get": {
+        "operationId": "list_mission_plans",
+        "tags": [
+          "Planning"
+        ],
+        "summary": "查询方案历史",
+        "description": "查询方案历史",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlanList"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": "plan_001",
+                      "mission_id": "mission_001",
+                      "plan_version": 1,
+                      "state_version": 7,
+                      "forecast_version": "fixed-1",
+                      "policy_version": "policy-1",
+                      "rule_version": "finite-candidates-v1",
+                      "status": "PENDING_APPROVAL",
+                      "input_snapshot": {
+                        "snapshot_version": "decision-v1",
+                        "state": {
+                          "store_id": "store_001",
+                          "state_version": 7,
+                          "currency": "CNY",
+                          "cash_minor": 100000,
+                          "reserved_cash_minor": 0,
+                          "available_cash_minor": 100000,
+                          "receivables_minor": 0,
+                          "stocks": [
+                            {
+                              "sku_id": "sku_001",
+                              "on_hand": 20,
+                              "in_transit": 0,
+                              "remaining_demand": 60,
+                              "forecast_version": "fixed-1"
+                            }
+                          ],
+                          "data_as_of": "2026-09-06T00:00:00Z",
+                          "simulation_time": "2026-09-06T00:00:00Z"
+                        },
+                        "mission_version": 1,
+                        "policy": {
+                          "cash_floor_minor": 30000,
+                          "candidate_quantities": [
+                            0,
+                            20,
+                            40,
+                            80
+                          ],
+                          "supplier_id": "supplier_001"
+                        },
+                        "policy_version": "policy-1",
+                        "offer": {
+                          "supplier_id": "supplier_001",
+                          "sku_id": "sku_001",
+                          "unit_price_minor": 1000,
+                          "minimum_order_quantity": 20,
+                          "pack_size": 20,
+                          "offer_version": "offer-1",
+                          "currency": "CNY",
+                          "lead_time_seconds": 86400,
+                          "valid_from": "2026-09-06T00:00:00Z",
+                          "valid_until": "2026-09-07T00:00:00Z"
+                        },
+                        "forecast": {
+                          "forecast_id": "forecast_001",
+                          "forecast_version": "fixed-1",
+                          "store_id": "store_001",
+                          "sku_id": "sku_001",
+                          "remaining_demand": 60,
+                          "unit": "piece",
+                          "data_as_of": "2026-09-06T00:00:00Z",
+                          "source_sequence": 0,
+                          "horizon_start": "2026-09-06T00:00:00Z",
+                          "horizon_end": "2026-09-13T00:00:00Z",
+                          "valid_until": "2026-09-06T01:00:00Z",
+                          "source": "fixed",
+                          "model_name": "fixed-scenario",
+                          "model_version": "fixed-1",
+                          "assumptions": [
+                            "SC01 fixed remaining demand; purchases arrive before the remaining sales."
+                          ]
+                        },
+                        "inbound_items": [],
+                        "eligible_inbound_qty": 0,
+                        "rule_version": "finite-candidates-v1",
+                        "evaluated_at": "2026-09-06T00:00:00Z",
+                        "last_successful_sync_at": "2026-09-06T00:00:00Z",
+                        "source_fresh_until": "2026-09-06T00:01:00Z"
+                      },
+                      "candidates": [
+                        {
+                          "id": "candidate_0",
+                          "quantity": 0,
+                          "spend_minor": 0,
+                          "cash_after_minor": 100000,
+                          "shortage_qty": 40,
+                          "feasible": true,
+                          "rejection_reasons": []
+                        },
+                        {
+                          "id": "candidate_20",
+                          "quantity": 20,
+                          "spend_minor": 20000,
+                          "cash_after_minor": 80000,
+                          "shortage_qty": 20,
+                          "feasible": true,
+                          "rejection_reasons": []
+                        },
+                        {
+                          "id": "candidate_40",
+                          "quantity": 40,
+                          "spend_minor": 40000,
+                          "cash_after_minor": 60000,
+                          "shortage_qty": 0,
+                          "feasible": true,
+                          "rejection_reasons": []
+                        },
+                        {
+                          "id": "candidate_80",
+                          "quantity": 80,
+                          "spend_minor": 80000,
+                          "cash_after_minor": 20000,
+                          "shortage_qty": 0,
+                          "feasible": false,
+                          "rejection_reasons": [
+                            "CASH_FLOOR_VIOLATION"
+                          ]
+                        }
+                      ],
+                      "recommended_candidate_id": "candidate_40",
+                      "proposal_hash": "sha256:c7923a499fa4265f81d5fb12a01bb81496af222a29da954e283b3e32127fe4b7",
+                      "explanation": "采购40件可覆盖缺口并保留600元现金。",
+                      "created_at": "2026-09-06T00:00:00Z",
+                      "expires_at": "2026-09-06T00:15:00Z",
+                      "proposed_purchase": {
+                        "store_id": "store_001",
+                        "sku_id": "sku_001",
+                        "supplier_id": "supplier_001",
+                        "quantity": 40,
+                        "unit_price_minor": 1000,
+                        "total_minor": 40000,
+                        "currency": "CNY",
+                        "expected_arrival_at": "2026-09-07T00:00:00Z"
+                      }
+                    }
+                  ],
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{plan_id}": {
+      "get": {
+        "operationId": "get_plan",
+        "tags": [
+          "Planning"
+        ],
+        "summary": "查询方案及全部候选比较",
+        "description": "查询方案及全部候选比较",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer",
+          "agent:read"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          },
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                },
+                "example": {
+                  "id": "plan_001",
+                  "mission_id": "mission_001",
+                  "plan_version": 1,
+                  "state_version": 7,
+                  "forecast_version": "fixed-1",
+                  "policy_version": "policy-1",
+                  "rule_version": "finite-candidates-v1",
+                  "status": "PENDING_APPROVAL",
+                  "input_snapshot": {
+                    "snapshot_version": "decision-v1",
+                    "state": {
+                      "store_id": "store_001",
+                      "state_version": 7,
+                      "currency": "CNY",
+                      "cash_minor": 100000,
+                      "reserved_cash_minor": 0,
+                      "available_cash_minor": 100000,
+                      "receivables_minor": 0,
+                      "stocks": [
+                        {
+                          "sku_id": "sku_001",
+                          "on_hand": 20,
+                          "in_transit": 0,
+                          "remaining_demand": 60,
+                          "forecast_version": "fixed-1"
+                        }
+                      ],
+                      "data_as_of": "2026-09-06T00:00:00Z",
+                      "simulation_time": "2026-09-06T00:00:00Z"
+                    },
+                    "mission_version": 1,
+                    "policy": {
+                      "cash_floor_minor": 30000,
+                      "candidate_quantities": [
+                        0,
+                        20,
+                        40,
+                        80
+                      ],
+                      "supplier_id": "supplier_001"
+                    },
+                    "policy_version": "policy-1",
+                    "offer": {
+                      "supplier_id": "supplier_001",
+                      "sku_id": "sku_001",
+                      "unit_price_minor": 1000,
+                      "minimum_order_quantity": 20,
+                      "pack_size": 20,
+                      "offer_version": "offer-1",
+                      "currency": "CNY",
+                      "lead_time_seconds": 86400,
+                      "valid_from": "2026-09-06T00:00:00Z",
+                      "valid_until": "2026-09-07T00:00:00Z"
+                    },
+                    "forecast": {
+                      "forecast_id": "forecast_001",
+                      "forecast_version": "fixed-1",
+                      "store_id": "store_001",
+                      "sku_id": "sku_001",
+                      "remaining_demand": 60,
+                      "unit": "piece",
+                      "data_as_of": "2026-09-06T00:00:00Z",
+                      "source_sequence": 0,
+                      "horizon_start": "2026-09-06T00:00:00Z",
+                      "horizon_end": "2026-09-13T00:00:00Z",
+                      "valid_until": "2026-09-06T01:00:00Z",
+                      "source": "fixed",
+                      "model_name": "fixed-scenario",
+                      "model_version": "fixed-1",
+                      "assumptions": [
+                        "SC01 fixed remaining demand; purchases arrive before the remaining sales."
+                      ]
+                    },
+                    "inbound_items": [],
+                    "eligible_inbound_qty": 0,
+                    "rule_version": "finite-candidates-v1",
+                    "evaluated_at": "2026-09-06T00:00:00Z",
+                    "last_successful_sync_at": "2026-09-06T00:00:00Z",
+                    "source_fresh_until": "2026-09-06T00:01:00Z"
+                  },
+                  "candidates": [
+                    {
+                      "id": "candidate_0",
+                      "quantity": 0,
+                      "spend_minor": 0,
+                      "cash_after_minor": 100000,
+                      "shortage_qty": 40,
+                      "feasible": true,
+                      "rejection_reasons": []
+                    },
+                    {
+                      "id": "candidate_20",
+                      "quantity": 20,
+                      "spend_minor": 20000,
+                      "cash_after_minor": 80000,
+                      "shortage_qty": 20,
+                      "feasible": true,
+                      "rejection_reasons": []
+                    },
+                    {
+                      "id": "candidate_40",
+                      "quantity": 40,
+                      "spend_minor": 40000,
+                      "cash_after_minor": 60000,
+                      "shortage_qty": 0,
+                      "feasible": true,
+                      "rejection_reasons": []
+                    },
+                    {
+                      "id": "candidate_80",
+                      "quantity": 80,
+                      "spend_minor": 80000,
+                      "cash_after_minor": 20000,
+                      "shortage_qty": 0,
+                      "feasible": false,
+                      "rejection_reasons": [
+                        "CASH_FLOOR_VIOLATION"
+                      ]
+                    }
+                  ],
+                  "recommended_candidate_id": "candidate_40",
+                  "proposal_hash": "sha256:c7923a499fa4265f81d5fb12a01bb81496af222a29da954e283b3e32127fe4b7",
+                  "explanation": "采购40件可覆盖缺口并保留600元现金。",
+                  "created_at": "2026-09-06T00:00:00Z",
+                  "expires_at": "2026-09-06T00:15:00Z",
+                  "proposed_purchase": {
+                    "store_id": "store_001",
+                    "sku_id": "sku_001",
+                    "supplier_id": "supplier_001",
+                    "quantity": 40,
+                    "unit_price_minor": 1000,
+                    "total_minor": 40000,
+                    "currency": "CNY",
+                    "expected_arrival_at": "2026-09-07T00:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/plans/{plan_id}/decision": {
+      "post": {
+        "operationId": "decide_plan",
+        "tags": [
+          "Execution"
+        ],
+        "summary": "批准或拒绝不可变方案",
+        "description": "approve返回202并创建唯一Action；reject返回200且action_id/job_run_id为null。服务身份不能审批；执行前仍需再校验。",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "approver"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionRejected"
+                },
+                "example": {
+                  "plan_id": "plan_001",
+                  "decision": "reject",
+                  "action_id": null,
+                  "job_run_id": null
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "已持久化受理，不表示业务执行完成",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DecisionApproved"
+                },
+                "example": {
+                  "plan_id": "plan_001",
+                  "decision": "approve",
+                  "action_id": "action_001",
+                  "job_run_id": "job_purchase_001"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "STATE_VERSION_CONFLICT",
+                    "message": "经营状态已变化，请重新查看方案",
+                    "request_id": "req_001",
+                    "retryable": false,
+                    "details": {
+                      "expected_version": 7,
+                      "current_version": 8
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanDecision"
+              },
+              "example": {
+                "decision": "approve",
+                "expected_plan_version": 1,
+                "expected_state_version": 7,
+                "proposal_hash": "sha256:c7923a499fa4265f81d5fb12a01bb81496af222a29da954e283b3e32127fe4b7"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/actions/{action_id}": {
+      "get": {
+        "operationId": "get_action",
+        "tags": [
+          "Execution"
+        ],
+        "summary": "查询采购状态和回执",
+        "description": "查询采购状态和回执",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer",
+          "agent:read"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          },
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Action"
+                },
+                "example": {
+                  "id": "action_001",
+                  "mission_id": "mission_001",
+                  "plan_id": "plan_001",
+                  "approval_id": "approval_001",
+                  "status": "SUCCEEDED",
+                  "quantity": 40,
+                  "amount_minor": 40000,
+                  "currency": "CNY",
+                  "external_order_id": "order_001",
+                  "receipt": {
+                    "action_id": "action_001",
+                    "status": "ACCEPTED",
+                    "external_order_id": "order_001",
+                    "quantity": 40,
+                    "total_minor": 40000,
+                    "currency": "CNY",
+                    "recorded_at": "2026-09-06T00:00:00Z",
+                    "reason": null
+                  },
+                  "last_error": null,
+                  "created_at": "2026-09-06T00:00:00Z",
+                  "updated_at": "2026-09-06T00:00:00Z",
+                  "purchase_snapshot": {
+                    "store_id": "store_001",
+                    "sku_id": "sku_001",
+                    "supplier_id": "supplier_001",
+                    "quantity": 40,
+                    "unit_price_minor": 1000,
+                    "total_minor": 40000,
+                    "currency": "CNY",
+                    "expected_arrival_at": "2026-09-07T00:00:00Z"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/alerts": {
+      "get": {
+        "operationId": "list_alerts",
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "查询警报；默认仅返回未解除警报",
+        "description": "查询警报；默认仅返回未解除警报",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "mission_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "ACKNOWLEDGED",
+                "RESOLVED"
+              ]
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlertList"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": "alert_001",
+                      "store_id": "store_001",
+                      "mission_id": "mission_001",
+                      "sku_id": "sku_001",
+                      "type": "STOCKOUT_RISK",
+                      "severity": "WARNING",
+                      "status": "OPEN",
+                      "summary": "预计缺货40件",
+                      "facts": {
+                        "shortage_qty": 40
+                      },
+                      "state_version": 7,
+                      "related_plan_id": "plan_001",
+                      "first_seen_at": "2026-09-06T00:00:00Z",
+                      "last_seen_at": "2026-09-06T00:00:00Z",
+                      "resolved_at": null
+                    }
+                  ],
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/alerts/{alert_id}/acknowledgement": {
+      "post": {
+        "operationId": "acknowledge_alert",
+        "tags": [
+          "Alerts"
+        ],
+        "summary": "确认知晓，不能消除风险或批准采购",
+        "description": "确认知晓，不能消除风险或批准采购",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "operator"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "alert_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Alert"
+                },
+                "example": {
+                  "id": "alert_001",
+                  "store_id": "store_001",
+                  "mission_id": "mission_001",
+                  "sku_id": "sku_001",
+                  "type": "STOCKOUT_RISK",
+                  "severity": "WARNING",
+                  "status": "OPEN",
+                  "summary": "预计缺货40件",
+                  "facts": {
+                    "shortage_qty": 40
+                  },
+                  "state_version": 7,
+                  "related_plan_id": "plan_001",
+                  "first_seen_at": "2026-09-06T00:00:00Z",
+                  "last_seen_at": "2026-09-06T00:00:00Z",
+                  "resolved_at": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{mission_id}/timeline": {
+      "get": {
+        "operationId": "list_mission_timeline",
+        "tags": [
+          "Missions"
+        ],
+        "summary": "查询可追溯业务历史",
+        "description": "查询可追溯业务历史",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer",
+          "agent:read"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          },
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TimelineEntryList"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": "timeline_001",
+                      "mission_id": "mission_001",
+                      "type": "PLAN_CREATED",
+                      "summary": "生成40件采购建议",
+                      "actor_type": "SYSTEM",
+                      "actor_id": null,
+                      "references": [
+                        {
+                          "type": "plan",
+                          "id": "plan_001",
+                          "version": "1"
+                        }
+                      ],
+                      "created_at": "2026-09-06T00:00:00Z"
+                    }
+                  ],
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/job-runs": {
+      "get": {
+        "operationId": "list_job_runs",
+        "tags": [
+          "Scheduling"
+        ],
+        "summary": "查询任务运行记录",
+        "description": "查询任务运行记录",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobRunList"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": "job_001",
+                      "mission_id": "mission_001",
+                      "job_type": "check_mission",
+                      "trigger_source": "MANUAL",
+                      "status": "SUCCEEDED",
+                      "attempt_count": 1,
+                      "scheduled_for": "2026-09-06T00:00:00Z",
+                      "available_at": "2026-09-06T00:00:00Z",
+                      "started_at": "2026-09-06T00:00:00Z",
+                      "finished_at": "2026-09-06T00:00:01Z",
+                      "result": {
+                        "check_status": "ANOMALY",
+                        "summary": "完成检查，发现缺货并生成方案",
+                        "references": [
+                          {
+                            "type": "plan",
+                            "id": "plan_001",
+                            "version": "1"
+                          }
+                        ],
+                        "input_state_version": 7,
+                        "output_state_version": 7
+                      },
+                      "error_code": null,
+                      "last_error": null,
+                      "request_id": "req_001"
+                    }
+                  ],
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/job-runs/{job_run_id}": {
+      "get": {
+        "operationId": "get_job_run",
+        "tags": [
+          "Scheduling"
+        ],
+        "summary": "查询单次异步任务结果",
+        "description": "查询单次异步任务结果",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "job_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobRun"
+                },
+                "example": {
+                  "id": "job_001",
+                  "mission_id": "mission_001",
+                  "job_type": "check_mission",
+                  "trigger_source": "MANUAL",
+                  "status": "SUCCEEDED",
+                  "attempt_count": 1,
+                  "scheduled_for": "2026-09-06T00:00:00Z",
+                  "available_at": "2026-09-06T00:00:00Z",
+                  "started_at": "2026-09-06T00:00:00Z",
+                  "finished_at": "2026-09-06T00:00:01Z",
+                  "result": {
+                    "check_status": "ANOMALY",
+                    "summary": "完成检查，发现缺货并生成方案",
+                    "references": [
+                      {
+                        "type": "plan",
+                        "id": "plan_001",
+                        "version": "1"
+                      }
+                    ],
+                    "input_state_version": 7,
+                    "output_state_version": 7
+                  },
+                  "error_code": null,
+                  "last_error": null,
+                  "request_id": "req_001"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/monitoring/status": {
+      "get": {
+        "operationId": "get_monitoring_status",
+        "tags": [
+          "Monitoring"
+        ],
+        "summary": "查询worker与外部数据源状态",
+        "description": "查询worker与外部数据源状态",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "admin"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MonitoringStatus"
+                },
+                "example": {
+                  "worker_status": "RUNNING",
+                  "worker_heartbeat_at": "2026-09-06T00:00:00Z",
+                  "due_job_count": 0,
+                  "oldest_due_seconds": 0,
+                  "sources": [
+                    {
+                      "source": "simulation",
+                      "last_success_at": "2026-09-06T00:00:00Z",
+                      "last_sequence": 1,
+                      "status": "FRESH",
+                      "last_error": null
+                    }
+                  ],
+                  "agent_enabled": false,
+                  "forecast_provider": "fixed"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/missions/{mission_id}/messages": {
+      "post": {
+        "operationId": "create_mission_message",
+        "tags": [
+          "AgentFuture"
+        ],
+        "summary": "B2：提交消息并调度Agent",
+        "description": "B2：提交消息并调度Agent",
+        "x-phase": "B2",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "operator"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "已持久化受理，不表示业务执行完成",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentDispatchAccepted"
+                },
+                "example": {
+                  "agent_run_id": "agent_run_001",
+                  "job_run_id": "job_dispatch_001",
+                  "status": "QUEUED"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MessageCreate"
+              },
+              "example": {
+                "content": "解释当前采购方案"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "list_mission_messages",
+        "tags": [
+          "AgentFuture"
+        ],
+        "summary": "B2：查询消息历史",
+        "description": "B2：查询消息历史",
+        "x-phase": "B2",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageList"
+                },
+                "example": {
+                  "items": [
+                    {
+                      "id": "message_001",
+                      "mission_id": "mission_001",
+                      "role": "assistant",
+                      "content": "采购80件会使现金降至200元，低于300元底线。",
+                      "agent_run_id": "agent_run_001",
+                      "references": [
+                        {
+                          "type": "plan",
+                          "id": "plan_001",
+                          "version": "1"
+                        }
+                      ],
+                      "created_at": "2026-09-06T00:00:00Z"
+                    }
+                  ],
+                  "next_cursor": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/agent-runs/{agent_run_id}": {
+      "get": {
+        "operationId": "get_backend_agent_run",
+        "tags": [
+          "AgentFuture"
+        ],
+        "summary": "B2：查询Agent运行展示镜像",
+        "description": "B2：查询Agent运行展示镜像",
+        "x-phase": "B2",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "viewer"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agent_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRun"
+                },
+                "example": {
+                  "agent_run_id": "agent_run_001",
+                  "mission_id": "mission_001",
+                  "status": "SUCCEEDED",
+                  "response_text": "采购80件会使现金降至200元，低于300元底线。",
+                  "references": [
+                    {
+                      "type": "plan",
+                      "id": "plan_001",
+                      "version": "1"
+                    }
+                  ],
+                  "proposed_actions": [],
+                  "usage": {
+                    "input_tokens": 120,
+                    "output_tokens": 30,
+                    "model": "shopsteward-llm",
+                    "provider": "configured-local"
+                  },
+                  "error": null,
+                  "created_at": "2026-09-06T00:00:00Z",
+                  "updated_at": "2026-09-06T00:00:00Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/internal/v1/events/batches": {
+      "post": {
+        "operationId": "ingest_event_batch",
+        "tags": [
+          "Internal"
+        ],
+        "summary": "接收并原子应用源事件批次",
+        "description": "与主动拉取共用去重。全批校验；sequence缺口或重复ID不同内容返回409。",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "simulation:events"
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventBatchResult"
+                },
+                "example": {
+                  "accepted_event_ids": [
+                    "event_001"
+                  ],
+                  "duplicate_event_ids": [],
+                  "last_sequence": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventBatch"
+              },
+              "example": {
+                "source": "simulation",
+                "scenario_run_id": "scenario_001",
+                "events": [
+                  {
+                    "event_id": "event_001",
+                    "sequence": 1,
+                    "schema_version": "1.0",
+                    "event_type": "SALE_RECORDED",
+                    "store_id": "store_001",
+                    "occurred_at": "2026-09-06T00:00:00Z",
+                    "simulation_time": "2026-09-06T00:00:00Z",
+                    "payload": {
+                      "sku_id": "sku_001",
+                      "quantity": 10,
+                      "unit_price_minor": 2000
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev/v1/scenarios": {
+      "post": {
+        "operationId": "create_dev_scenario",
+        "tags": [
+          "Development"
+        ],
+        "summary": "新建隔离的模拟运行及门店",
+        "description": "仅DEV_API_ENABLED开放；异步初始化。scenario_run_id/store_id可在受理时为空，完成后从JobRun结果references取得。",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "admin"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "已持久化受理，不表示业务执行完成",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioAccepted"
+                },
+                "example": {
+                  "job_run_id": "job_init_001",
+                  "status": "READY",
+                  "scenario_run_id": null,
+                  "store_id": null
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioCreate"
+              },
+              "example": {
+                "scenario": "SC01"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dev/v1/scenarios/{run_id}/advance": {
+      "post": {
+        "operationId": "advance_dev_scenario",
+        "tags": [
+          "Development"
+        ],
+        "summary": "显式推进模拟场景",
+        "description": "显式推进模拟场景",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [
+          "admin"
+        ],
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "description": "同一逻辑命令网络重试复用；同键不同内容返回409。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "已持久化受理，不表示业务执行完成",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobAccepted"
+                },
+                "example": {
+                  "job_run_id": "job_001",
+                  "status": "READY",
+                  "merged": false
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无有效身份",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "无对应权限",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不存在或不可见",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "版本、幂等或业务并发冲突",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "字段或业务约束无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "超过频率限制",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "内部错误",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务暂不可用",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioAdvance"
+              },
+              "example": {
+                "steps": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/live": {
+      "get": {
+        "operationId": "health_live",
+        "tags": [
+          "Health"
+        ],
+        "summary": "API进程存活",
+        "description": "API进程存活",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [],
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                },
+                "example": {
+                  "status": "ok",
+                  "component": "backend"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/ready": {
+      "get": {
+        "operationId": "health_ready",
+        "tags": [
+          "Health"
+        ],
+        "summary": "B0依赖就绪",
+        "description": "B0依赖就绪",
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-permissions": [],
+        "security": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                },
+                "example": {
+                  "status": "ok",
+                  "component": "backend"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "用户身份；角色与门店范围由服务端验证。"
+      },
+      "ServiceBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "服务身份；Agent无审批权限，simulation仅提交授权事件。"
+      }
+    },
+    "schemas": {
+      "ErrorDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "retryable": {
+            "type": "boolean"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "request_id",
+          "retryable",
+          "details"
+        ],
+        "additionalProperties": false
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": false
+      },
+      "Health": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "unavailable"
+            ]
+          },
+          "component": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "component"
+        ],
+        "additionalProperties": false
+      },
+      "Policy": {
+        "type": "object",
+        "properties": {
+          "cash_floor_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "candidate_quantities": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "minItems": 1,
+            "maxItems": 20,
+            "uniqueItems": true
+          },
+          "supplier_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "required": [
+          "cash_floor_minor",
+          "candidate_quantities",
+          "supplier_id"
+        ],
+        "additionalProperties": false
+      },
+      "Offer": {
+        "type": "object",
+        "properties": {
+          "supplier_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minimum_order_quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pack_size": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "offer_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "lead_time_seconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "supplier_id",
+          "sku_id",
+          "unit_price_minor",
+          "minimum_order_quantity",
+          "pack_size",
+          "offer_version",
+          "currency",
+          "lead_time_seconds",
+          "valid_from",
+          "valid_until"
+        ],
+        "additionalProperties": false
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "name": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "piece"
+            ]
+          }
+        },
+        "required": [
+          "sku_id",
+          "name",
+          "unit"
+        ],
+        "additionalProperties": false
+      },
+      "Catalog": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "offers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Offer"
+            }
+          }
+        },
+        "required": [
+          "store_id",
+          "currency",
+          "products",
+          "offers"
+        ],
+        "additionalProperties": false
+      },
+      "Stock": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "on_hand": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "in_transit": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "remaining_demand": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "forecast_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "sku_id",
+          "on_hand",
+          "in_transit",
+          "remaining_demand",
+          "forecast_version"
+        ],
+        "additionalProperties": false
+      },
+      "State": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "cash_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reserved_cash_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "available_cash_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "receivables_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stock"
+            }
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "simulation_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "store_id",
+          "state_version",
+          "currency",
+          "cash_minor",
+          "reserved_cash_minor",
+          "available_cash_minor",
+          "receivables_minor",
+          "stocks",
+          "data_as_of",
+          "simulation_time"
+        ],
+        "additionalProperties": false
+      },
+      "Freshness": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "FRESH",
+              "STALE",
+              "UNKNOWN"
+            ]
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "last_sync_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "status",
+          "data_as_of",
+          "last_sync_at"
+        ],
+        "additionalProperties": false
+      },
+      "Dashboard": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "freshness": {
+            "$ref": "#/components/schemas/Freshness"
+          },
+          "active_mission_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "active_alert_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "last_check_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "next_check_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "state",
+          "freshness",
+          "active_mission_count",
+          "active_alert_count",
+          "last_check_at",
+          "next_check_at"
+        ],
+        "additionalProperties": false
+      },
+      "Schedule": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "job_type": {
+            "type": "string",
+            "enum": [
+              "check_mission"
+            ]
+          },
+          "mission_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "trigger": {
+            "type": "string",
+            "enum": [
+              "INTERVAL"
+            ]
+          },
+          "interval_seconds": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 3600
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "next_run_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "job_type",
+          "mission_id",
+          "trigger",
+          "interval_seconds",
+          "enabled",
+          "version",
+          "next_run_at"
+        ],
+        "additionalProperties": false
+      },
+      "MissionCreate": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "objective": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          },
+          "check_interval_seconds": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 3600,
+            "default": 30
+          }
+        },
+        "required": [
+          "store_id",
+          "sku_id",
+          "objective",
+          "policy",
+          "check_interval_seconds"
+        ],
+        "additionalProperties": false
+      },
+      "MissionControl": {
+        "type": "object",
+        "properties": {
+          "operation": {
+            "type": "string",
+            "enum": [
+              "pause",
+              "resume",
+              "complete",
+              "cancel"
+            ]
+          },
+          "expected_mission_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "operation",
+          "expected_mission_version"
+        ],
+        "additionalProperties": false
+      },
+      "ScheduleUpdate": {
+        "type": "object",
+        "properties": {
+          "interval_seconds": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 3600
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "expected_schedule_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "interval_seconds",
+          "enabled",
+          "expected_schedule_version"
+        ],
+        "additionalProperties": false
+      },
+      "Mission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "objective": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PAUSED",
+              "COMPLETED",
+              "CANCELLED"
+            ]
+          },
+          "mission_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/Schedule"
+          },
+          "current_plan_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "current_action_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "completion_criteria": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "store_id",
+          "sku_id",
+          "objective",
+          "status",
+          "mission_version",
+          "policy",
+          "policy_version",
+          "schedule",
+          "current_plan_id",
+          "current_action_id",
+          "completion_criteria",
+          "created_at",
+          "updated_at"
+        ],
+        "additionalProperties": false
+      },
+      "CheckRequest": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "description": "用户要求重新检查的原因",
+            "maxLength": 1000
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "JobAccepted": {
+        "type": "object",
+        "properties": {
+          "job_run_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "RUNNING",
+              "RETRY_WAIT"
+            ]
+          },
+          "merged": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "job_run_id",
+          "status",
+          "merged"
+        ],
+        "additionalProperties": false
+      },
+      "Candidate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "spend_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cash_after_minor": {
+            "type": "integer"
+          },
+          "shortage_qty": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "feasible": {
+            "type": "boolean"
+          },
+          "rejection_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "quantity",
+          "spend_minor",
+          "cash_after_minor",
+          "shortage_qty",
+          "feasible",
+          "rejection_reasons"
+        ],
+        "additionalProperties": false
+      },
+      "Plan": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "plan_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "forecast_version": {
+            "type": "string"
+          },
+          "policy_version": {
+            "type": "string"
+          },
+          "rule_version": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING_APPROVAL",
+              "APPROVED",
+              "REJECTED",
+              "SUPERSEDED",
+              "EXPIRED"
+            ]
+          },
+          "input_snapshot": {
+            "$ref": "#/components/schemas/DecisionSnapshot"
+          },
+          "candidates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Candidate"
+            },
+            "minItems": 1
+          },
+          "recommended_candidate_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "proposal_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "explanation": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "expires_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "proposed_purchase": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProposedPurchase"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "mission_id",
+          "plan_version",
+          "state_version",
+          "forecast_version",
+          "policy_version",
+          "rule_version",
+          "status",
+          "input_snapshot",
+          "candidates",
+          "recommended_candidate_id",
+          "proposal_hash",
+          "explanation",
+          "created_at",
+          "expires_at",
+          "proposed_purchase"
+        ],
+        "additionalProperties": false
+      },
+      "PlanDecision": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "reject"
+            ]
+          },
+          "expected_plan_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "expected_state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "proposal_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "decision",
+          "expected_plan_version",
+          "expected_state_version",
+          "proposal_hash"
+        ],
+        "additionalProperties": false
+      },
+      "DecisionResult": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/DecisionApproved"
+          },
+          {
+            "$ref": "#/components/schemas/DecisionRejected"
+          }
+        ]
+      },
+      "PurchaseReceipt": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "REJECTED",
+              "PENDING"
+            ]
+          },
+          "external_order_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "recorded_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "action_id",
+          "status",
+          "external_order_id",
+          "quantity",
+          "total_minor",
+          "currency",
+          "recorded_at",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "ACCEPTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "external_order_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "total_minor": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "REJECTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Action": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "plan_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "approval_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "EXECUTING",
+              "SUCCEEDED",
+              "FAILED",
+              "UNKNOWN",
+              "STALE",
+              "CANCELLED"
+            ]
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "amount_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "external_order_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "receipt": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PurchaseReceipt"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "last_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "purchase_snapshot": {
+            "$ref": "#/components/schemas/ProposedPurchase"
+          }
+        },
+        "required": [
+          "id",
+          "mission_id",
+          "plan_id",
+          "approval_id",
+          "status",
+          "quantity",
+          "amount_minor",
+          "currency",
+          "external_order_id",
+          "receipt",
+          "last_error",
+          "created_at",
+          "updated_at",
+          "purchase_snapshot"
+        ],
+        "additionalProperties": false
+      },
+      "AlertFacts": {
+        "type": "object",
+        "properties": {
+          "shortage_qty": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "cash_floor_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "available_cash_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "action_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "data_as_of": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "Alert": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sku_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "STOCKOUT_RISK",
+              "CASH_CONSTRAINT",
+              "ACTION_EXCEPTION",
+              "DATA_STALE"
+            ]
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "INFO",
+              "WARNING",
+              "CRITICAL"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "OPEN",
+              "ACKNOWLEDGED",
+              "RESOLVED"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "facts": {
+            "$ref": "#/components/schemas/AlertFacts"
+          },
+          "state_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "related_plan_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "first_seen_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "last_seen_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "resolved_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "store_id",
+          "mission_id",
+          "sku_id",
+          "type",
+          "severity",
+          "status",
+          "summary",
+          "facts",
+          "state_version",
+          "related_plan_id",
+          "first_seen_at",
+          "last_seen_at",
+          "resolved_at"
+        ],
+        "additionalProperties": false
+      },
+      "Reference": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "mission",
+              "plan",
+              "action",
+              "event",
+              "forecast",
+              "artifact",
+              "scenario",
+              "store",
+              "alert"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "TimelineEntry": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "type": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "actor_type": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "SERVICE",
+              "SYSTEM"
+            ]
+          },
+          "actor_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reference"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "mission_id",
+          "type",
+          "summary",
+          "actor_type",
+          "actor_id",
+          "references",
+          "created_at"
+        ],
+        "additionalProperties": false
+      },
+      "JobResult": {
+        "type": "object",
+        "properties": {
+          "check_status": {
+            "type": "string",
+            "enum": [
+              "HEALTHY",
+              "ANOMALY",
+              "INCONCLUSIVE",
+              "SKIPPED"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reference"
+            }
+          },
+          "input_state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "output_state_version": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "summary",
+          "references"
+        ],
+        "additionalProperties": false
+      },
+      "JobRun": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "job_type": {
+            "type": "string",
+            "enum": [
+              "worker_probe",
+              "sync_events",
+              "check_mission",
+              "execute_purchase",
+              "reconcile_action",
+              "check_freshness",
+              "agent_followup",
+              "initialize_scenario",
+              "advance_scenario"
+            ]
+          },
+          "trigger_source": {
+            "type": "string",
+            "enum": [
+              "INTERVAL",
+              "AT",
+              "EVENT",
+              "MANUAL",
+              "APPROVAL"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELLED",
+              "RETRY_WAIT"
+            ]
+          },
+          "attempt_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "scheduled_for": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "available_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "started_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "result": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/JobResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "last_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "mission_id",
+          "job_type",
+          "trigger_source",
+          "status",
+          "attempt_count",
+          "scheduled_for",
+          "available_at",
+          "started_at",
+          "finished_at",
+          "result",
+          "error_code",
+          "last_error",
+          "request_id"
+        ],
+        "additionalProperties": false
+      },
+      "SourceStatus": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "last_success_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "last_sequence": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FRESH",
+              "STALE",
+              "UNKNOWN"
+            ]
+          },
+          "last_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "source",
+          "last_success_at",
+          "last_sequence",
+          "status",
+          "last_error"
+        ],
+        "additionalProperties": false
+      },
+      "MonitoringStatus": {
+        "type": "object",
+        "properties": {
+          "worker_status": {
+            "type": "string",
+            "enum": [
+              "RUNNING",
+              "STALE",
+              "STOPPED",
+              "UNKNOWN"
+            ]
+          },
+          "worker_heartbeat_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "due_job_count": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "oldest_due_seconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SourceStatus"
+            }
+          },
+          "agent_enabled": {
+            "type": "boolean"
+          },
+          "forecast_provider": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "http"
+            ]
+          }
+        },
+        "required": [
+          "worker_status",
+          "worker_heartbeat_at",
+          "due_job_count",
+          "oldest_due_seconds",
+          "sources",
+          "agent_enabled",
+          "forecast_provider"
+        ],
+        "additionalProperties": false
+      },
+      "ScenarioCreate": {
+        "type": "object",
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "SC01"
+            ]
+          }
+        },
+        "required": [
+          "scenario"
+        ],
+        "additionalProperties": false
+      },
+      "ScenarioAdvance": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "steps"
+        ],
+        "additionalProperties": false
+      },
+      "ScenarioAccepted": {
+        "type": "object",
+        "properties": {
+          "job_run_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "RUNNING",
+              "RETRY_WAIT"
+            ]
+          },
+          "scenario_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "store_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "job_run_id",
+          "status",
+          "scenario_run_id",
+          "store_id"
+        ],
+        "additionalProperties": false
+      },
+      "SalePayload": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "sku_id",
+          "quantity",
+          "unit_price_minor"
+        ],
+        "additionalProperties": false
+      },
+      "ReceivedPayload": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "action_id",
+          "sku_id",
+          "quantity"
+        ],
+        "additionalProperties": false
+      },
+      "DemandPayload": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "forecast_version": {
+            "type": "string"
+          },
+          "data_as_of": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "valid_until": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "horizon_start": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "horizon_end": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "sku_id",
+          "remaining_demand",
+          "forecast_version",
+          "data_as_of",
+          "valid_until",
+          "horizon_start",
+          "horizon_end"
+        ],
+        "additionalProperties": false
+      },
+      "PurchasePayload": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "external_order_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "total_minor": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "action_id",
+          "external_order_id",
+          "sku_id",
+          "quantity",
+          "total_minor"
+        ],
+        "additionalProperties": false
+      },
+      "SaleEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "SALE_RECORDED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/SalePayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "ReceivedEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "GOODS_RECEIVED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ReceivedPayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DemandEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "DEMAND_REVISED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/DemandPayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "PurchaseEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "PURCHASE_ACCEPTED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/PurchasePayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "BusinessEvent": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SaleEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ReceivedEvent"
+          },
+          {
+            "$ref": "#/components/schemas/DemandEvent"
+          },
+          {
+            "$ref": "#/components/schemas/PurchaseEvent"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "event_type",
+          "mapping": {
+            "SALE_RECORDED": "#/components/schemas/SaleEvent",
+            "GOODS_RECEIVED": "#/components/schemas/ReceivedEvent",
+            "DEMAND_REVISED": "#/components/schemas/DemandEvent",
+            "PURCHASE_ACCEPTED": "#/components/schemas/PurchaseEvent"
+          }
+        }
+      },
+      "EventBatch": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "simulation"
+            ]
+          },
+          "scenario_run_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BusinessEvent"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          }
+        },
+        "required": [
+          "source",
+          "scenario_run_id",
+          "events"
+        ],
+        "additionalProperties": false
+      },
+      "EventBatchResult": {
+        "type": "object",
+        "properties": {
+          "accepted_event_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "duplicate_event_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "不透明资源 ID",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "last_sequence": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "accepted_event_ids",
+          "duplicate_event_ids",
+          "last_sequence"
+        ],
+        "additionalProperties": false
+      },
+      "MessageCreate": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          }
+        },
+        "required": [
+          "content"
+        ],
+        "additionalProperties": false
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant"
+            ]
+          },
+          "content": {
+            "type": "string"
+          },
+          "agent_run_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reference"
+            }
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "mission_id",
+          "role",
+          "content",
+          "agent_run_id",
+          "references",
+          "created_at"
+        ],
+        "additionalProperties": false
+      },
+      "AgentDispatchAccepted": {
+        "type": "object",
+        "properties": {
+          "agent_run_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "job_run_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "QUEUED"
+            ]
+          }
+        },
+        "required": [
+          "agent_run_id",
+          "job_run_id",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "Usage": {
+        "type": "object",
+        "properties": {
+          "input_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "output_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "model": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "ProposedAction": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "REQUEST_CHECK",
+              "SUGGEST_PURCHASE"
+            ]
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "AgentRun": {
+        "type": "object",
+        "properties": {
+          "agent_run_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELLED"
+            ]
+          },
+          "response_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reference"
+            }
+          },
+          "proposed_actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProposedAction"
+            }
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Usage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "agent_run_id",
+          "mission_id",
+          "status",
+          "response_text",
+          "references",
+          "proposed_actions",
+          "usage",
+          "error",
+          "created_at",
+          "updated_at"
+        ],
+        "additionalProperties": false
+      },
+      "MissionList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Mission"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "PlanList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Plan"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "AlertList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Alert"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "TimelineEntryList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimelineEntry"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "JobRunList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JobRun"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "MessageList": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "additionalProperties": false
+      },
+      "DecisionApproved": {
+        "type": "object",
+        "properties": {
+          "plan_id": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string",
+            "const": "approve"
+          },
+          "action_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "job_run_id": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "plan_id",
+          "decision",
+          "action_id",
+          "job_run_id"
+        ],
+        "additionalProperties": false
+      },
+      "DecisionRejected": {
+        "type": "object",
+        "properties": {
+          "plan_id": {
+            "type": "string"
+          },
+          "decision": {
+            "type": "string",
+            "const": "reject"
+          },
+          "action_id": {
+            "type": "null"
+          },
+          "job_run_id": {
+            "type": "null"
+          }
+        },
+        "required": [
+          "plan_id",
+          "decision",
+          "action_id",
+          "job_run_id"
+        ],
+        "additionalProperties": false
+      },
+      "ForecastSnapshot": {
+        "type": "object",
+        "properties": {
+          "forecast_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "forecast_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "piece"
+            ]
+          },
+          "data_as_of": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source_sequence": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "horizon_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "horizon_end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "manual",
+              "model"
+            ]
+          },
+          "model_name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "model_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "forecast_id",
+          "forecast_version",
+          "store_id",
+          "sku_id",
+          "remaining_demand",
+          "unit",
+          "data_as_of",
+          "source_sequence",
+          "horizon_start",
+          "horizon_end",
+          "valid_until",
+          "source",
+          "model_name",
+          "model_version",
+          "assumptions"
+        ],
+        "additionalProperties": false
+      },
+      "InboundSnapshot": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "remaining_quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "expected_arrival_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "eligible": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "action_id",
+          "sku_id",
+          "remaining_quantity",
+          "expected_arrival_at",
+          "eligible"
+        ],
+        "additionalProperties": false
+      },
+      "ProposedPurchase": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "supplier_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "total_minor": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "expected_arrival_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "store_id",
+          "sku_id",
+          "supplier_id",
+          "quantity",
+          "unit_price_minor",
+          "total_minor",
+          "currency",
+          "expected_arrival_at"
+        ],
+        "additionalProperties": false
+      },
+      "DecisionSnapshot": {
+        "type": "object",
+        "properties": {
+          "snapshot_version": {
+            "type": "string",
+            "const": "decision-v1"
+          },
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "mission_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          },
+          "policy_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "forecast": {
+            "$ref": "#/components/schemas/ForecastSnapshot"
+          },
+          "offer": {
+            "$ref": "#/components/schemas/Offer"
+          },
+          "inbound_items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InboundSnapshot"
+            }
+          },
+          "eligible_inbound_qty": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "rule_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_successful_sync_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "source_fresh_until": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "snapshot_version",
+          "state",
+          "mission_version",
+          "policy",
+          "policy_version",
+          "forecast",
+          "offer",
+          "inbound_items",
+          "eligible_inbound_qty",
+          "rule_version",
+          "evaluated_at",
+          "last_successful_sync_at",
+          "source_fresh_until"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

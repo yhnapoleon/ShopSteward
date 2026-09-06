@@ -1,0 +1,12 @@
+{
+  "date": "2026-09-06",
+  "job_run_id": "924bdfaf-00bd-40c4-bc7a-81a8a6c09a8e",
+  "status_before": "READY",
+  "status_after": "SUCCEEDED",
+  "attempt_count": 1,
+  "worker_status_after_once": "STOPPED",
+  "health_live": 200,
+  "health_ready": 200,
+  "swagger": 200,
+  "sources": []
+}

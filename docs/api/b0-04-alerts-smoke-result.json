@@ -1,0 +1,174 @@
+{
+  "recorded_at": "2026-09-06T11:49:35.526562+00:00",
+  "work_package": "B0-04",
+  "store_id": "store_cd15229c4c1e4a04a3d9853165af45b0",
+  "scenario_run_id": "run_377fbb93e0bb4a33852fdc6481865d20",
+  "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+  "alert": {
+    "id": "76452664-7db8-47cd-a7c8-d262a71ba360",
+    "store_id": "store_cd15229c4c1e4a04a3d9853165af45b0",
+    "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+    "sku_id": "sku_001",
+    "type": "STOCKOUT_RISK",
+    "severity": "WARNING",
+    "status": "ACKNOWLEDGED",
+    "summary": "预计缺货40件；尚未执行的采购建议未计入库存。",
+    "facts": {
+      "shortage_qty": 40,
+      "cash_floor_minor": 30000,
+      "available_cash_minor": 100000,
+      "data_as_of": "2026-09-06T11:49:33.361275Z"
+    },
+    "state_version": 1,
+    "related_plan_id": "7e1d207e-61b3-4646-a340-56ff0776819f",
+    "first_seen_at": "2026-09-06T11:49:35.369441Z",
+    "last_seen_at": "2026-09-06T11:49:35.369441Z",
+    "resolved_at": null
+  },
+  "dashboard": {
+    "state": {
+      "store_id": "store_cd15229c4c1e4a04a3d9853165af45b0",
+      "state_version": 1,
+      "currency": "CNY",
+      "cash_minor": 100000,
+      "reserved_cash_minor": 0,
+      "available_cash_minor": 100000,
+      "receivables_minor": 0,
+      "stocks": [
+        {
+          "sku_id": "sku_001",
+          "on_hand": 20,
+          "in_transit": 0,
+          "remaining_demand": 60,
+          "forecast_version": "local-c67920e1189c966f3e0dfabc290005d4"
+        }
+      ],
+      "data_as_of": "2026-09-06T11:49:33.361275Z",
+      "simulation_time": "2026-09-06T11:49:33.361275Z"
+    },
+    "freshness": {
+      "status": "FRESH",
+      "data_as_of": "2026-09-06T11:49:33.361275Z",
+      "last_sync_at": "2026-09-06T11:49:34.343059Z"
+    },
+    "active_mission_count": 1,
+    "active_alert_count": 1,
+    "last_check_at": "2026-09-06T11:49:35.386421Z",
+    "next_check_at": null
+  },
+  "ack_replay_identical": true,
+  "ack_does_not_resolve_or_mutate_state": true,
+  "runtime_matches_export": true,
+  "backend_runtime_operations": 18,
+  "scope": "Separate API/worker/simulator; initial risk, acknowledgement, dashboard, timeline and restart. Recurring dispatch and action alerts await B0-06/05.",
+  "timeline": {
+    "items": [
+      {
+        "id": "d7312a8c-4528-4545-89b3-dfb2a59cf5a5",
+        "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+        "type": "ALERT_ACKNOWLEDGED",
+        "summary": "已知晓STOCKOUT_RISK；风险尚未解除。",
+        "actor_type": "USER",
+        "actor_id": "local-admin",
+        "references": [
+          {
+            "type": "alert",
+            "id": "76452664-7db8-47cd-a7c8-d262a71ba360"
+          }
+        ],
+        "created_at": "2026-09-06T11:49:35.474843Z"
+      },
+      {
+        "id": "4c3c633e-c149-4c9b-bf36-c2a02eac5e70",
+        "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+        "type": "CHECK_COMPLETED",
+        "summary": "检查ANOMALY：Candidate comparison saved（任务ac3805e6-f63d-404e-8714-326ea3730dad）",
+        "actor_type": "SYSTEM",
+        "actor_id": null,
+        "references": [
+          {
+            "type": "mission",
+            "id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+            "version": "1"
+          },
+          {
+            "type": "plan",
+            "id": "7e1d207e-61b3-4646-a340-56ff0776819f",
+            "version": "1"
+          }
+        ],
+        "created_at": "2026-09-06T11:49:35.389726Z"
+      },
+      {
+        "id": "bd9e07de-4272-484f-9adc-b6ee2da6b8b3",
+        "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+        "type": "ALERT_OPENED",
+        "summary": "STOCKOUT_RISK：预计缺货40件；尚未执行的采购建议未计入库存。",
+        "actor_type": "SYSTEM",
+        "actor_id": null,
+        "references": [
+          {
+            "type": "alert",
+            "id": "76452664-7db8-47cd-a7c8-d262a71ba360"
+          },
+          {
+            "type": "mission",
+            "id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+            "version": "1"
+          }
+        ],
+        "created_at": "2026-09-06T11:49:35.374504Z"
+      },
+      {
+        "id": "46fcfbc6-1a56-4600-b0c1-265da7c17e53",
+        "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+        "type": "PLAN_CREATED",
+        "summary": "推荐采购40件；预计支出40000分，采购后可用现金60000分，剩余缺口0件。",
+        "actor_type": "SYSTEM",
+        "actor_id": null,
+        "references": [
+          {
+            "type": "plan",
+            "id": "7e1d207e-61b3-4646-a340-56ff0776819f",
+            "version": "1"
+          }
+        ],
+        "created_at": "2026-09-06T11:49:35.356606Z"
+      },
+      {
+        "id": "c2bb10d7-f13c-416e-8484-e3b846b60f04",
+        "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+        "type": "CHECK_REQUESTED",
+        "summary": "Manual check（任务ac3805e6-f63d-404e-8714-326ea3730dad）",
+        "actor_type": "USER",
+        "actor_id": "local-admin",
+        "references": [
+          {
+            "type": "mission",
+            "id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+            "version": "1"
+          }
+        ],
+        "created_at": "2026-09-06T11:49:34.521759Z"
+      },
+      {
+        "id": "319b5763-f964-4e93-a62e-43ba3072bc50",
+        "mission_id": "1dfa3485-c9d9-4279-b87f-691288ec69ab",
+        "type": "MISSION_CREATED",
+        "summary": "Mission created",
+        "actor_type": "USER",
+        "actor_id": "local-admin",
+        "references": [],
+        "created_at": "2026-09-06T11:49:34.481474Z"
+      }
+    ],
+    "next_cursor": null
+  },
+  "restart_acknowledgement_preserved": true,
+  "verified_after_process_restart_at": "2026-09-06T11:51:12.671896+00:00",
+  "tests": {
+    "backend_passed": 87,
+    "simulator_passed": 2,
+    "skipped": 0
+  }
+}
