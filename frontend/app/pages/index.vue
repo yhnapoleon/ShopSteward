@@ -178,11 +178,10 @@ function briefing() {
 </script>
 <template>
   <div class="app">
-    <aside class="sidebar" aria-label="侧边导航">
+    <header class="app-header">
       <div class="brand">
         <span class="brand-mark"><AppIcon name="layers-2" /></span><span>ShopSteward</span>
       </div>
-      <div class="sidebar-caption">YOUR EVERYDAY ALLY</div>
       <nav class="nav" aria-label="主导航">
         <button
           v-for="(label, id) in { today: '今日', following: '持续跟进', journal: '经营记录' }"
@@ -197,31 +196,7 @@ function briefing() {
           ><span v-if="id === 'today' && decisionCount" class="count">{{ decisionCount }}</span>
         </button>
       </nav>
-      <div class="sidebar-divider" />
-      <div class="sidebar-label">进行中的委托</div>
-      <button v-if="mission" class="goal-link" @click="open('mission')">
-        <span class="goal-dot" /><span>活动备货<small>守住现金，备好商品</small></span>
-      </button>
-      <div class="sidebar-bottom">
-        <div class="agent-status">
-          <div>
-            <span
-              class="goal-dot"
-              :class="{ muted: !s.connected || mission?.status !== 'ACTIVE' }"
-            />{{
-              s.loading
-                ? '正在连接'
-                : !s.connected
-                  ? '连接待确认'
-                  : mission?.status === 'PAUSED'
-                    ? '主动跟进已暂停'
-                    : mission
-                      ? '查看最近检查记录'
-                      : '尚未建立委托'
-            }}
-          </div>
-          <span>进展在应用内查看。</span>
-        </div>
+      <div class="header-store">
         <button class="store-switch" @click="open('controls')">
           <span class="avatar">店</span
           ><span
@@ -232,7 +207,7 @@ function briefing() {
           ><AppIcon name="chevron-down" />
         </button>
       </div>
-    </aside>
+    </header>
     <main class="workspace">
       <header class="topbar">
         <div class="breadcrumb">
@@ -522,6 +497,43 @@ function briefing() {
       </div>
     </main>
   </div>
+  <nav class="workspace-dock" aria-label="经营快捷入口">
+    <div class="dock-status">
+      <div class="agent-status">
+        <div>
+          <span
+            class="goal-dot"
+            :class="{ muted: !s.connected || mission?.status !== 'ACTIVE' }"
+          />{{
+            s.loading
+              ? '正在连接'
+              : !s.connected
+                ? '连接待确认'
+                : mission?.status === 'PAUSED'
+                  ? '主动跟进已暂停'
+                  : mission
+                    ? '查看最近检查记录'
+                    : '尚未建立委托'
+          }}
+        </div>
+        <span>进展在应用内查看。</span>
+      </div>
+    </div>
+    <button :class="{ active: view === 'today' }" @click="navigate('today')">
+      <AppIcon name="panels-top-left" /><span>今日决策</span>
+      <span v-if="decisionCount" class="small-count">{{ decisionCount }}</span>
+    </button>
+    <button :class="{ active: view === 'following' }" @click="navigate('following')">
+      <AppIcon name="orbit" /><span>持续跟进</span>
+    </button>
+    <button :class="{ active: view === 'journal' }" @click="navigate('journal')">
+      <AppIcon name="notebook-pen" /><span>经营记录</span>
+    </button>
+    <span class="dock-divider" aria-hidden="true" />
+    <button class="dock-utility" aria-label="打开联调控制" @click="open('controls')">
+      <AppIcon name="sliders-horizontal" /><span>联调控制</span>
+    </button>
+  </nav>
   <nav class="mobile-nav" aria-label="移动端导航">
     <button
       v-for="(label, id) in { today: '今日', following: '持续跟进', journal: '经营记录' }"

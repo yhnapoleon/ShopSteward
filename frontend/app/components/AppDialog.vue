@@ -3,12 +3,20 @@ const props = defineProps<{ open: boolean; title: string; busy?: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLDialogElement>()
 let origin: HTMLElement | null = null
+// Remember the trigger before an asynchronous action temporarily disables it.
+function rememberFocus(event: FocusEvent) {
+  if (!props.open && event.target instanceof HTMLElement && event.target !== document.body)
+    origin = event.target
+}
+onMounted(() => document.addEventListener('focusin', rememberFocus))
+onUnmounted(() => document.removeEventListener('focusin', rememberFocus))
 watch(
   () => props.open,
   async (open) => {
     await nextTick()
     if (open) {
-      origin = document.activeElement as HTMLElement
+      const active = document.activeElement
+      if (active instanceof HTMLElement && active !== document.body) origin = active
       dialog.value?.showModal()
     } else {
       dialog.value?.close()

@@ -2,6 +2,17 @@
 import { money, number, when } from '~/utils/presentation'
 const { s, stock, mission, product, unresolved } = useShop()
 defineEmits<{ details: []; mission: [] }>()
+// Visual scale only; all amounts and business decisions remain backend-owned.
+const cashScale = computed(() => {
+  const cash = s.dashboard?.state.available_cash_minor
+  if (cash == null) return null
+  const floor = mission.value?.policy.cash_floor_minor ?? 30000
+  const extent = Math.max(cash, floor * 1.35, 1)
+  return {
+    fill: `${Math.max(0, cash / extent) * 100}%`,
+    floor: `${Math.max(0, floor / extent) * 100}%`,
+  }
+})
 </script>
 <template>
   <div class="fact-strip" aria-label="当前经营事实">
@@ -30,6 +41,10 @@ defineEmits<{ details: []; mission: [] }>()
       </div>
       <div class="balance" data-testid="cash">
         {{ money(s.dashboard?.state.available_cash_minor) }}
+      </div>
+      <div v-if="cashScale" class="cash-track" aria-hidden="true">
+        <span class="cash-track-fill" :style="{ width: cashScale.fill }" />
+        <span class="cash-track-floor" :style="{ left: cashScale.floor }" />
       </div>
       <p class="cash-reserve">
         最低保留 {{ money(mission?.policy.cash_floor_minor ?? 30000) }}<br /><b v-if="unresolved"

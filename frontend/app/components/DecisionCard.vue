@@ -25,20 +25,6 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
 <template>
   <article v-if="plan && selected" class="decision-card glass">
     <div class="card-core">
-      <div class="card-meta">
-        <span class="tag"><AppIcon name="flag" />待你决定</span
-        ><button class="text-link" @click="$emit('mission')">
-          同一项备货委托<AppIcon name="chevron-right" />
-        </button>
-      </div>
-      <div class="task-context-line">
-        <b>{{ product?.name }}</b
-        ><span>活动备货 · {{ plan.input_snapshot.offer.supplier_id }}</span>
-      </div>
-      <p class="timing-note">
-        预计到货：{{ when(plan.proposed_purchase?.expected_arrival_at) }} · 需求周期截至
-        {{ when(plan.input_snapshot.forecast.horizon_end) }}
-      </p>
       <h2>
         {{
           changed
@@ -50,6 +36,17 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
         剩余需求假设 {{ plan.input_snapshot.forecast.remaining_demand }} 件，在库
         {{ plan.input_snapshot.state.stocks.find((x) => x.sku_id === mission?.sku_id)?.on_hand }}
         件，周期内可到的在途 {{ plan.input_snapshot.eligible_inbound_qty }} 件。
+      </p>
+      <div class="task-context-line">
+        <b>{{ product?.name }}</b
+        ><span>活动备货 · {{ plan.input_snapshot.offer.supplier_id }}</span>
+        <button class="text-link" @click="$emit('mission')">
+          查看这项委托<AppIcon name="chevron-right" />
+        </button>
+      </div>
+      <p class="timing-note">
+        预计到货：{{ when(plan.proposed_purchase?.expected_arrival_at) }} · 需求周期截至
+        {{ when(plan.input_snapshot.forecast.horizon_end) }}
       </p>
       <p v-if="changed" class="selection-note">
         系统当前推荐 {{ recommended }} 件；下面影响与确认对象对应你选择的
