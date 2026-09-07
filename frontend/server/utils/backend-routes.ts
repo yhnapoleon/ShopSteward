@@ -150,6 +150,42 @@ export const backendRoutes = [
   ],
   [
     "POST",
+    "/api/v1/stores/{store_id}/documents"
+  ],
+  [
+    "GET",
+    "/api/v1/stores/{store_id}/documents"
+  ],
+  [
+    "GET",
+    "/api/v1/documents/{document_id}"
+  ],
+  [
+    "PATCH",
+    "/api/v1/documents/{document_id}"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/versions"
+  ],
+  [
+    "GET",
+    "/api/v1/documents/{document_id}/versions"
+  ],
+  [
+    "GET",
+    "/api/v1/documents/{document_id}/versions/{version_id}"
+  ],
+  [
+    "GET",
+    "/api/v1/documents/{document_id}/versions/{version_id}/content"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/control"
+  ],
+  [
+    "POST",
     "/dev/v1/scenarios"
   ],
   [
