@@ -33,6 +33,9 @@ class MissionRow(Base):
     plan_counter: Mapped[int] = mapped_column(BigInteger, default=0)
     recheck_required: Mapped[bool] = mapped_column(Boolean, default=False)
     manual_check_requested: Mapped[bool] = mapped_column(Boolean, default=False)
+    task_constraints: Mapped[dict] = mapped_column(
+        JSONB, default=dict, server_default=text("'{}'::jsonb")
+    )
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     __table_args__ = (

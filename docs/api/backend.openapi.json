@@ -7130,6 +7130,18 @@
           "source_fresh_until": {
             "type": "string",
             "format": "date-time"
+          },
+          "task_constraints": {
+            "type": "object",
+            "properties": {
+              "max_purchase_qty": {
+                "type": "integer",
+                "minimum": 0
+              }
+            },
+            "additionalProperties": false,
+            "default": {},
+            "description": "Temporary constraints for the current purchase round; authoritative cash policy is unchanged."
           }
         },
         "required": [

@@ -2,7 +2,21 @@
 name = "shopsteward-agent"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = ["langgraph==1.2.11", "langgraph-checkpoint-postgres==3.1.2", "langchain-openai==1.6.0", "psycopg[binary]>=3.2,<4"]
 
-[tool.uv]
-package = false
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]
+ignore = ["E501"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"THIRD_PARTY_NOTICES.md" = "shopsteward_agent/THIRD_PARTY_NOTICES.md"

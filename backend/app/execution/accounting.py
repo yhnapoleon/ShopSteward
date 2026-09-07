@@ -51,6 +51,10 @@ async def close_action(session, store, mission, action, status, *, reason=None):
         store.active_action_id = None
     if mission.current_action_id == action.id:
         mission.current_action_id = None
+    if status == "SUCCEEDED" and mission.task_constraints:
+        # This purchase round is over; a temporary quantity limit is not a lasting policy.
+        mission.task_constraints = {}
+        mission.mission_version += 1
     await timeline(
         session,
         mission,

@@ -1,6 +1,6 @@
 # Swagger / OpenAPI 契约使用说明
 
-完整设计契约仍包含待实现业务；B0及首批前端查询已实现，真实 `/docs` 显示29个已注册操作（28条路径）。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
+完整设计契约仍包含待实现业务；B0、首批前端查询和 B2-A Agent 已实现，当前源码导出40个已注册操作（36条路径）。Agent 的11个操作见 [agent-v1.openapi.json](agent-v1.openapi.json)，启动与对话流程见 [Agent README](../../agent/README.md)。原开发服务尚未切换到本次代码。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
 
 B0-07组合验收没有新增接口或迁移；当前验证见[测试报告](../reports/b0-07-test-report.md)、[进程证据](b0-07-process-result.json)及[验证汇总](b0-07-verification-result.json)。历史B0-05/06证据保留原适用范围。
 

@@ -34,6 +34,12 @@ class Settings(BaseSettings):
     source_stale_seconds: int = Field(default=30, ge=1, le=3600)
     plan_ttl_seconds: int = Field(default=900, ge=1, le=86400)
     fixed_forecast_ttl_seconds: int = Field(default=3600, ge=1, le=86400)
+    agent_enabled: bool = False
+    agent_base_url: str = "https://api.openai.com/v1"
+    agent_model: str = "gpt-4.1-mini"
+    agent_api_key_file: str | None = Field(default=None, repr=False)
+    agent_backend_url: str = "http://127.0.0.1:8000"
+    agent_worker_concurrency: int = Field(default=1, ge=1, le=8)
 
     @field_validator("database_url", mode="before")
     @classmethod

@@ -50,6 +50,7 @@ class DecisionSnapshot(DTO):
     state: State
     mission_version: Positive
     policy: Policy
+    task_constraints: dict[Literal["max_purchase_qty"], Nonnegative] = Field(default_factory=dict)
     policy_version: str = Field(min_length=1)
     forecast: ForecastSnapshot
     offer: Offer
