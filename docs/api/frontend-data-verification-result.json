@@ -1,0 +1,73 @@
+{
+  "work_package": "frontend-data-v1",
+  "status": "passed",
+  "recorded_at": "2026-09-07T04:12:50.427017+00:00",
+  "base_commit": "da79cbded5a6493f63788a62c666201ab1d5a7c6",
+  "branch": "YH",
+  "changes_committed": false,
+  "tests": {
+    "backend": {
+      "tests": 186,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 63.118,
+      "categories": {
+        "api": 19,
+        "integration": 119,
+        "unit": 48
+      }
+    },
+    "simulator": {
+      "tests": 12,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "seconds": 3.293
+    }
+  },
+  "runtime": {
+    "operations": 29,
+    "paths": 28,
+    "new_get_operations": 7
+  },
+  "ruff": {
+    "backend_check": "passed",
+    "formatted_python_files": 108,
+    "contract_validator_check": "passed"
+  },
+  "migrations": {
+    "backend_head": "0006_periodic",
+    "simulator_head": "sim_0002_purchases",
+    "drift_checks": "both passed",
+    "new_migrations": 0
+  },
+  "contracts": {
+    "existing_examples": 53,
+    "plan_hash_examples": 2,
+    "frontend_examples": 14,
+    "unchanged_shared_schemas": 8,
+    "schema_negatives": 10,
+    "cross_field_negatives": 4,
+    "status": "passed"
+  },
+  "http_evidence": "frontend-data-http-result.json",
+  "review": "no remaining material issues after fixes",
+  "scope": "Read-only API implementation; HTTP reads persisted B0-07 SC01, not a new scenario or resilience run.",
+  "source_sha256": {
+    "backend/app/api/router.py": "751c3ea79eb2bb64d6284d7a0720ac033630aa39dc7c8063e208474731b8d7a3",
+    "backend/app/core/logging.py": "511149d3271405d40da3973acc896b33ee0d4c10156b8c95b21261e8512a1086",
+    "backend/app/main.py": "c8c6d4f991b4fd358dec71929ea2649e85713168b251025865b43f51e8007234",
+    "backend/app/reporting/read_pagination.py": "6d64b0f4bb1d66e63c9951988ea12684b10515102c2b248caca08b6d05869b0b",
+    "backend/app/reporting/read_projections.py": "86fcac554ee82aeba43391254b8b15482f73894dc95042f38192d4449f5cf3f6",
+    "backend/app/reporting/read_repository.py": "3ce2d2982c4039690765355e78dd52eead82e8e20e4c408edb64152a44df91f9",
+    "backend/app/reporting/read_router.py": "1c29977af8f54837c3280c17956c34ab13ac792055b4b149c37989b7e1cf3610",
+    "backend/app/reporting/read_schemas.py": "de2aaa0f97f50bb1d34484d76cedd6060d79f17fb6250866ad4765b267a4b449",
+    "backend/tests/api/test_foundation.py": "a10eeb70937e137619f9324586aaf19d3edd1de9dd6af43ab0ac0c68efb2fa1f",
+    "backend/tests/integration/test_frontend_reads.py": "0af5fada79ef1dcbf56cd6524906a4d382fb7ee52062cf094c0a6602d6b8585f",
+    "backend/tests/unit/test_read_projections.py": "23de0df12d6677500f95d3961da3834ccf26b33438605f3b955b9347f9d9f6eb",
+    "backend/tests/unit/test_read_queries.py": "d5575bbfe4a3b36eda818a5875f604efea23086483dd6290496ce3c7734be58b",
+    "backend/tools/verify_frontend_reads.py": "5031a07b408aefb3a1ce75089e79aa81cf96647d54ebe5aa90fc2e0372e9d359",
+    "docs/api/backend.runtime.openapi.json": "679a6abd1699fe82ca79f0e7fb7b114c9eb431be2f1d2ddff47b0a4adb6a25d0"
+  }
+}

@@ -1,13 +1,16 @@
 # Swagger / OpenAPI 契约使用说明
 
-完整设计契约仍包含待实现业务；B0-01至B0-06已有可运行API，真实 `/docs` 显示22个已注册操作（21条路径）。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
+完整设计契约仍包含待实现业务；B0及首批前端查询已实现，真实 `/docs` 显示29个已注册操作（28条路径）。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
 
 B0-07组合验收没有新增接口或迁移；当前验证见[测试报告](../reports/b0-07-test-report.md)、[进程证据](b0-07-process-result.json)及[验证汇总](b0-07-verification-result.json)。历史B0-05/06证据保留原适用范围。
+
+2026-09-07新增**7个前端只读接口**：身份/店铺发现、销售明细/日汇总、采购列表、收货明细和经营流水。[数据字典](../data-dictionary.md)、[设计规格](../superpowers/specs/2026-09-07-frontend-data-contract-design.md)、[补充设计OpenAPI](frontend-data.openapi.json)已落实；补充设计稿的planned标签保留为设计阶段记录，实际已实现状态以[runtime](backend.runtime.openapi.json)及实现清单为准。真实HTTP响应、分页、权限和SC01账本证据见[联调记录](frontend-data-http-result.json)与[测试报告](../reports/frontend-data-test-report.md)。
 
 | 文件 | 用途 | 设计操作数 |
 |---|---|---:|
 | [backend.openapi.json](backend.openapi.json) | 前端、内部事件和开发演示接口，含 B2 草案 | 26 |
 | [services.openapi.json](services.openapi.json) | simulation、预测、Agent、LLM 文本兼容子集 | 10 |
+| [frontend-data.openapi.json](frontend-data.openapi.json) | 7个前端只读查询的设计基线；实际已实现，运行schema见runtime | 7 |
 | [validate_contracts.py](validate_contracts.py) | 验证规范、引用、示例和项目契约约束 | 不运行业务服务 |
 
 接口语义、事务、状态和实施顺序见 [Backend 开发文档](../backend-development.md)。
@@ -83,7 +86,7 @@ app = FastAPI(
 uv run python -c 'import json; from pathlib import Path; from app.main import app; Path("../docs/api/backend.runtime.openapi.json").write_text(json.dumps(app.openapi(), ensure_ascii=False, indent=2), encoding="utf-8")'
 ```
 
-导出应只导入应用和注册路由，不连接模型、启动 worker 或执行数据库迁移；有副作用的初始化放受控生命周期/独立命令。`backend.runtime.openapi.json` 当前由B0-06真实应用导出，包含22个操作（21条路径）；新增PATCH Mission schedule。
+导出只导入应用和注册路由，不连接模型、启动worker或执行数据库迁移；有副作用的初始化放受控生命周期/独立命令。`backend.runtime.openapi.json`当前由实际应用导出，包含29个操作（28条路径）；本批新增7个GET，不新增迁移或worker handler。
 
 ## 3. 字段与版本维护
 
@@ -104,6 +107,15 @@ uv run --no-project --with openapi-spec-validator==0.7.2 --with jsonschema==4.23
 ```
 
 这是固定直接工具版本的临时验证环境，不把这些包加入 backend 的业务依赖。首次运行可能需要获取工具依赖；团队 CI 后续锁定完整传递依赖。若Windows默认uv缓存不可用，可在uv参数中增加 `--cache-dir "$env:TEMP\shopsteward-contract-cache"`。
+
+已有项目虚拟环境时，可分别校验原契约和前端补充契约：
+
+```powershell
+.venv/Scripts/python.exe docs/api/validate_contracts.py
+.venv/Scripts/python.exe docs/api/validate_frontend_data_contract.py
+```
+
+后者核验设计基线的7个GET与实际路由/实现清单匹配、22个设计schema、14个响应示例、8个runtime共享schema一致，以及销售/到货/SC01账本算术、10个schema负例和4个跨字段负例。成功示例还按runtime schema校验。真实HTTP验收可在根目录运行`.venv/Scripts/python.exe backend/tools/verify_frontend_reads.py`：要求8014空闲及B0-07持久化SC01场景仍在；仅启动自有API并读取该场景，使用临时viewer/service身份，最后停止API。它不创建场景或推进模拟器，结果写入[联调记录](frontend-data-http-result.json)。
 
 校验器检查：OpenAPI 3.1 结构、JSON Schema、全部本地引用、operationId 唯一、路径参数、阶段标记、写命令幂等头、外部服务地址、媒体类型示例、共享 schema 一致性，并核算示例 Plan 的规范化hash及采购/快照数值一致性。负例覆盖旧版快照、缺失采购/报价/分页字段、受理缺订单号、拒绝缺原因。它不代替实际 HTTP、权限、数据库并发或业务测试，也不提供业务运行实现。
 

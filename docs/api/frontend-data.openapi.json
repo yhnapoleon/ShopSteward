@@ -1,0 +1,2791 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ShopSteward 前端数据补充契约（设计，尚未实现）",
+    "version": "0.1.0-draft",
+    "description": "7个拟增只读操作。当前runtime仍是22操作；本文件供前后端设计/Mock协作，不证明路由可调用。复用的Action/State/Freshness/Error与runtime快照一致。"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000",
+      "description": "拟部署API地址；未实现的路径当前返回404"
+    }
+  ],
+  "paths": {
+    "/api/v1/me": {
+      "get": {
+        "operationId": "get_current_user",
+        "summary": "当前用户（待实现）",
+        "description": "只返回当前身份与角色，不签发token，不返回其他身份或任何秘密。",
+        "tags": [
+          "Frontend data — planned"
+        ],
+        "x-phase": "B0",
+        "x-work-package": "frontend-data-v1",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "设计示例；接口尚未实现。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUser"
+                },
+                "examples": {
+                  "sc01": {
+                    "summary": "教学合成契约示例，不是本轮服务响应",
+                    "value": {
+                      "principal_id": "demo_operator",
+                      "roles": [
+                        "viewer",
+                        "operator",
+                        "approver"
+                      ],
+                      "store_scope": "ASSIGNED"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无效用户凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务身份不可作为用户",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不可见或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": "Store is not visible or does not exist",
+                    "request_id": "request_demo",
+                    "retryable": false,
+                    "details": {}
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数、范围或游标无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "数据库不可用或已存记录无法安全解释",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stores": {
+      "get": {
+        "operationId": "list_visible_stores",
+        "summary": "可见店铺（待实现）",
+        "description": "admin返回所有已初始化店铺；其他用户按store_ids与非空roles过滤。store_id升序。",
+        "tags": [
+          "Frontend data — planned"
+        ],
+        "x-phase": "B0",
+        "x-work-package": "frontend-data-v1",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "页大小。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "opaque cursor；绑定身份、资源与规范化筛选，换筛选后重置。",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "设计示例；接口尚未实现。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StoreList"
+                },
+                "examples": {
+                  "sc01": {
+                    "summary": "教学合成契约示例，不是本轮服务响应",
+                    "value": {
+                      "items": [
+                        {
+                          "store_id": "store_demo",
+                          "currency": "CNY",
+                          "source_type": "simulation",
+                          "simulation_time": "2026-09-11T00:00:00Z"
+                        }
+                      ],
+                      "next_cursor": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无效用户凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务身份不可作为用户",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不可见或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": "Store is not visible or does not exist",
+                    "request_id": "request_demo",
+                    "retryable": false,
+                    "details": {}
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数、范围或游标无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "数据库不可用或已存记录无法安全解释",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sales": {
+      "get": {
+        "operationId": "list_sales",
+        "summary": "已记录销售（待实现）",
+        "description": "from/to同时省略表示全部本地已记录历史，同时提供则按simulation_time筛选[from,to)，跨度≤90天。sequence DESC,event_id DESC。",
+        "tags": [
+          "Frontend data — planned"
+        ],
+        "x-phase": "B0",
+        "x-work-package": "frontend-data-v1",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "description": "当前用户可访问的门店ID。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "sku_id",
+            "in": "query",
+            "required": false,
+            "description": "可选门店内SKU；不存在返回404。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "description": "模拟经营时间包含起点；必须带时区，先转换UTC。",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "description": "模拟经营时间不含终点；与from同时提供，跨度≤90天。",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "页大小。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "opaque cursor；绑定身份、资源与规范化筛选，换筛选后重置。",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "设计示例；接口尚未实现。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleList"
+                },
+                "examples": {
+                  "sc01": {
+                    "summary": "教学合成契约示例，不是本轮服务响应",
+                    "value": {
+                      "context": {
+                        "store_id": "store_demo",
+                        "currency": "CNY",
+                        "state_version": 9,
+                        "as_of": "2026-09-07T00:06:10Z",
+                        "simulation_time": "2026-09-11T00:00:00Z",
+                        "source_sequence": 6,
+                        "freshness": {
+                          "status": "FRESH",
+                          "data_as_of": "2026-09-07T00:06:00Z",
+                          "last_sync_at": "2026-09-07T00:06:08Z"
+                        }
+                      },
+                      "items": [
+                        {
+                          "event_id": "event_sale_3",
+                          "sequence": 3,
+                          "sku_id": "sku_001",
+                          "quantity": 10,
+                          "unit_price_minor": 2000,
+                          "sales_amount_minor": 20000,
+                          "occurred_at": "2026-09-07T00:03:00Z",
+                          "simulation_time": "2026-09-09T00:00:00Z"
+                        }
+                      ],
+                      "next_cursor": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无效用户凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务身份不可作为用户",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不可见或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": "Store is not visible or does not exist",
+                    "request_id": "request_demo",
+                    "retryable": false,
+                    "details": {}
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数、范围或游标无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "数据库不可用或已存记录无法安全解释",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/sales/summary": {
+      "get": {
+        "operationId": "get_sales_summary",
+        "summary": "已记录销售日汇总（待实现）",
+        "description": "固定UTC日桶，最多90天跨度，整段统计所有匹配事件而非某一页。保留RECORDED_EVENTS_ONLY；空桶不证明零真实销量。",
+        "tags": [
+          "Frontend data — planned"
+        ],
+        "x-phase": "B0",
+        "x-work-package": "frontend-data-v1",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "description": "当前用户可访问的门店ID。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "sku_id",
+            "in": "query",
+            "required": false,
+            "description": "可选门店内SKU；不存在返回404。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "模拟经营时间包含起点；必须带时区，先转换UTC。",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "description": "模拟经营时间不含终点；与from同时提供，跨度≤90天。",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "设计示例；接口尚未实现。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaleSummary"
+                },
+                "examples": {
+                  "sc01": {
+                    "summary": "教学合成契约示例，不是本轮服务响应",
+                    "value": {
+                      "context": {
+                        "store_id": "store_demo",
+                        "currency": "CNY",
+                        "state_version": 9,
+                        "as_of": "2026-09-07T00:06:10Z",
+                        "simulation_time": "2026-09-11T00:00:00Z",
+                        "source_sequence": 6,
+                        "freshness": {
+                          "status": "FRESH",
+                          "data_as_of": "2026-09-07T00:06:00Z",
+                          "last_sync_at": "2026-09-07T00:06:08Z"
+                        }
+                      },
+                      "from": "2026-09-07T00:00:00Z",
+                      "to": "2026-09-12T00:00:00Z",
+                      "time_basis": "simulation_time",
+                      "timezone": "UTC",
+                      "granularity": "day",
+                      "coverage": "RECORDED_EVENTS_ONLY",
+                      "record_count": 1,
+                      "recorded_quantity": 10,
+                      "recorded_sales_amount_minor": 20000,
+                      "buckets": [
+                        {
+                          "from": "2026-09-07T00:00:00Z",
+                          "to": "2026-09-08T00:00:00Z",
+                          "record_count": 0,
+                          "recorded_quantity": 0,
+                          "recorded_sales_amount_minor": 0
+                        },
+                        {
+                          "from": "2026-09-08T00:00:00Z",
+                          "to": "2026-09-09T00:00:00Z",
+                          "record_count": 0,
+                          "recorded_quantity": 0,
+                          "recorded_sales_amount_minor": 0
+                        },
+                        {
+                          "from": "2026-09-09T00:00:00Z",
+                          "to": "2026-09-10T00:00:00Z",
+                          "record_count": 1,
+                          "recorded_quantity": 10,
+                          "recorded_sales_amount_minor": 20000
+                        },
+                        {
+                          "from": "2026-09-10T00:00:00Z",
+                          "to": "2026-09-11T00:00:00Z",
+                          "record_count": 0,
+                          "recorded_quantity": 0,
+                          "recorded_sales_amount_minor": 0
+                        },
+                        {
+                          "from": "2026-09-11T00:00:00Z",
+                          "to": "2026-09-12T00:00:00Z",
+                          "record_count": 0,
+                          "recorded_quantity": 0,
+                          "recorded_sales_amount_minor": 0
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无效用户凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务身份不可作为用户",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不可见或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": "Store is not visible or does not exist",
+                    "request_id": "request_demo",
+                    "retryable": false,
+                    "details": {}
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数、范围或游标无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "数据库不可用或已存记录无法安全解释",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/actions": {
+      "get": {
+        "operationId": "list_actions",
+        "summary": "采购执行列表（待实现）",
+        "description": "created_at DESC,id DESC；复用Action详情DTO，状态变化是实时列表，不保证跨页同一快照。",
+        "tags": [
+          "Frontend data — planned"
+        ],
+        "x-phase": "B0",
+        "x-work-package": "frontend-data-v1",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "description": "当前用户可访问的门店ID。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "mission_id",
+            "in": "query",
+            "required": false,
+            "description": "可选门店内Mission；不可见或不属于门店返回404。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "sku_id",
+            "in": "query",
+            "required": false,
+            "description": "可选门店内SKU；不存在返回404。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "可选Action执行状态。",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "QUEUED",
+                "EXECUTING",
+                "SUCCEEDED",
+                "FAILED",
+                "UNKNOWN",
+                "STALE",
+                "CANCELLED"
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "页大小。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "opaque cursor；绑定身份、资源与规范化筛选，换筛选后重置。",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "设计示例；接口尚未实现。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActionList"
+                },
+                "examples": {
+                  "sc01": {
+                    "summary": "教学合成契约示例，不是本轮服务响应",
+                    "value": {
+                      "context": {
+                        "store_id": "store_demo",
+                        "currency": "CNY",
+                        "state_version": 9,
+                        "as_of": "2026-09-07T00:06:10Z",
+                        "simulation_time": "2026-09-11T00:00:00Z",
+                        "source_sequence": 6,
+                        "freshness": {
+                          "status": "FRESH",
+                          "data_as_of": "2026-09-07T00:06:00Z",
+                          "last_sync_at": "2026-09-07T00:06:08Z"
+                        }
+                      },
+                      "items": [
+                        {
+                          "id": "action_20",
+                          "mission_id": "mission_demo",
+                          "plan_id": "plan_2",
+                          "approval_id": "approval_2",
+                          "status": "SUCCEEDED",
+                          "quantity": 20,
+                          "amount_minor": 20000,
+                          "currency": "CNY",
+                          "external_order_id": "order_20",
+                          "last_error": null,
+                          "created_at": "2026-09-07T00:04:30Z",
+                          "updated_at": "2026-09-07T00:05:00Z",
+                          "receipt": {
+                            "action_id": "action_20",
+                            "status": "ACCEPTED",
+                            "external_order_id": "order_20",
+                            "quantity": 20,
+                            "total_minor": 20000,
+                            "currency": "CNY",
+                            "recorded_at": "2026-09-07T00:05:00Z",
+                            "reason": null
+                          },
+                          "purchase_snapshot": {
+                            "store_id": "store_demo",
+                            "sku_id": "sku_001",
+                            "supplier_id": "supplier_001",
+                            "quantity": 20,
+                            "unit_price_minor": 1000,
+                            "total_minor": 20000,
+                            "currency": "CNY",
+                            "expected_arrival_at": "2026-09-11T00:00:00Z"
+                          }
+                        },
+                        {
+                          "id": "action_40",
+                          "mission_id": "mission_demo",
+                          "plan_id": "plan_1",
+                          "approval_id": "approval_1",
+                          "status": "SUCCEEDED",
+                          "quantity": 40,
+                          "amount_minor": 40000,
+                          "currency": "CNY",
+                          "external_order_id": "order_40",
+                          "last_error": null,
+                          "created_at": "2026-09-07T00:00:30Z",
+                          "updated_at": "2026-09-07T00:01:00Z",
+                          "receipt": {
+                            "action_id": "action_40",
+                            "status": "ACCEPTED",
+                            "external_order_id": "order_40",
+                            "quantity": 40,
+                            "total_minor": 40000,
+                            "currency": "CNY",
+                            "recorded_at": "2026-09-07T00:01:00Z",
+                            "reason": null
+                          },
+                          "purchase_snapshot": {
+                            "store_id": "store_demo",
+                            "sku_id": "sku_001",
+                            "supplier_id": "supplier_001",
+                            "quantity": 40,
+                            "unit_price_minor": 1000,
+                            "total_minor": 40000,
+                            "currency": "CNY",
+                            "expected_arrival_at": "2026-09-08T00:00:00Z"
+                          }
+                        }
+                      ],
+                      "next_cursor": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无效用户凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务身份不可作为用户",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不可见或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": "Store is not visible or does not exist",
+                    "request_id": "request_demo",
+                    "retryable": false,
+                    "details": {}
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数、范围或游标无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "数据库不可用或已存记录无法安全解释",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inbounds": {
+      "get": {
+        "operationId": "list_inbounds",
+        "summary": "当前采购收货明细（待实现）",
+        "description": "包含已确认的历史和在途采购；默认包含已全收。action_id ASC,sku_id ASC。逾期使用模拟时间，暂停/取消Mission仍可见已发采购。",
+        "tags": [
+          "Frontend data — planned"
+        ],
+        "x-phase": "B0",
+        "x-work-package": "frontend-data-v1",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "description": "当前用户可访问的门店ID。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "mission_id",
+            "in": "query",
+            "required": false,
+            "description": "可选门店内Mission；不可见或不属于门店返回404。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "sku_id",
+            "in": "query",
+            "required": false,
+            "description": "可选门店内SKU；不存在返回404。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "arrival_status",
+            "in": "query",
+            "required": false,
+            "description": "可选收货状态，与Action状态不同。",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "NOT_RECEIVED",
+                "PARTIALLY_RECEIVED",
+                "RECEIVED"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "页大小。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "opaque cursor；绑定身份、资源与规范化筛选，换筛选后重置。",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "设计示例；接口尚未实现。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InboundList"
+                },
+                "examples": {
+                  "sc01": {
+                    "summary": "教学合成契约示例，不是本轮服务响应",
+                    "value": {
+                      "context": {
+                        "store_id": "store_demo",
+                        "currency": "CNY",
+                        "state_version": 9,
+                        "as_of": "2026-09-07T00:06:10Z",
+                        "simulation_time": "2026-09-11T00:00:00Z",
+                        "source_sequence": 6,
+                        "freshness": {
+                          "status": "FRESH",
+                          "data_as_of": "2026-09-07T00:06:00Z",
+                          "last_sync_at": "2026-09-07T00:06:08Z"
+                        }
+                      },
+                      "items": [
+                        {
+                          "action_id": "action_20",
+                          "mission_id": "mission_demo",
+                          "sku_id": "sku_001",
+                          "external_order_id": "order_20",
+                          "ordered_quantity": 20,
+                          "received_quantity": 20,
+                          "remaining_quantity": 0,
+                          "expected_arrival_at": "2026-09-11T00:00:00Z",
+                          "arrival_status": "RECEIVED",
+                          "is_overdue": false
+                        },
+                        {
+                          "action_id": "action_40",
+                          "mission_id": "mission_demo",
+                          "sku_id": "sku_001",
+                          "external_order_id": "order_40",
+                          "ordered_quantity": 40,
+                          "received_quantity": 40,
+                          "remaining_quantity": 0,
+                          "expected_arrival_at": "2026-09-08T00:00:00Z",
+                          "arrival_status": "RECEIVED",
+                          "is_overdue": false
+                        }
+                      ],
+                      "next_cursor": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无效用户凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务身份不可作为用户",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不可见或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": "Store is not visible or does not exist",
+                    "request_id": "request_demo",
+                    "retryable": false,
+                    "details": {}
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数、范围或游标无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "数据库不可用或已存记录无法安全解释",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/ledger-entries": {
+      "get": {
+        "operationId": "list_ledger_entries",
+        "summary": "经营效果流水（待实现）",
+        "description": "state_version DESC,id DESC。类型化增量或INIT快照；不含预留/释放历史，不可称为完整会计总账。",
+        "tags": [
+          "Frontend data — planned"
+        ],
+        "x-phase": "B0",
+        "x-work-package": "frontend-data-v1",
+        "x-implementation-status": "planned",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "query",
+            "required": true,
+            "description": "当前用户可访问的门店ID。",
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "effect_type",
+            "in": "query",
+            "required": false,
+            "description": "可选效果类型；本版本不按日期过滤。",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "INIT",
+                "PURCHASE_ACCEPTED",
+                "GOODS_RECEIVED",
+                "SALE_RECORDED",
+                "DEMAND_REVISED"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "description": "页大小。",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "description": "opaque cursor；绑定身份、资源与规范化筛选，换筛选后重置。",
+            "schema": {
+              "type": "string",
+              "maxLength": 2048
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "设计示例；接口尚未实现。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LedgerEntryList"
+                },
+                "examples": {
+                  "sc01": {
+                    "summary": "教学合成契约示例，不是本轮服务响应",
+                    "value": {
+                      "context": {
+                        "store_id": "store_demo",
+                        "currency": "CNY",
+                        "state_version": 9,
+                        "as_of": "2026-09-07T00:06:10Z",
+                        "simulation_time": "2026-09-11T00:00:00Z",
+                        "source_sequence": 6,
+                        "freshness": {
+                          "status": "FRESH",
+                          "data_as_of": "2026-09-07T00:06:00Z",
+                          "last_sync_at": "2026-09-07T00:06:08Z"
+                        }
+                      },
+                      "items": [
+                        {
+                          "id": "ledger_9",
+                          "state_version": 9,
+                          "effect_type": "GOODS_RECEIVED",
+                          "sku_id": "sku_001",
+                          "action_id": "action_20",
+                          "source_event_id": "event_6",
+                          "occurred_at": "2026-09-07T00:06:00Z",
+                          "simulation_time": "2026-09-11T00:00:00Z",
+                          "changes": {
+                            "cash_delta_minor": 0,
+                            "receivables_delta_minor": 0,
+                            "on_hand_delta": 20,
+                            "in_transit_delta": -20
+                          },
+                          "opening_state": null,
+                          "remaining_demand_after": null
+                        },
+                        {
+                          "id": "ledger_8",
+                          "state_version": 8,
+                          "effect_type": "PURCHASE_ACCEPTED",
+                          "sku_id": "sku_001",
+                          "action_id": "action_20",
+                          "source_event_id": null,
+                          "occurred_at": "2026-09-07T00:05:00Z",
+                          "simulation_time": null,
+                          "changes": {
+                            "cash_delta_minor": -20000,
+                            "receivables_delta_minor": 0,
+                            "on_hand_delta": 0,
+                            "in_transit_delta": 20
+                          },
+                          "opening_state": null,
+                          "remaining_demand_after": null
+                        },
+                        {
+                          "id": "ledger_6",
+                          "state_version": 6,
+                          "effect_type": "DEMAND_REVISED",
+                          "sku_id": "sku_001",
+                          "action_id": null,
+                          "source_event_id": "event_4",
+                          "occurred_at": "2026-09-07T00:04:00Z",
+                          "simulation_time": "2026-09-10T00:00:00Z",
+                          "changes": {
+                            "cash_delta_minor": 0,
+                            "receivables_delta_minor": 0,
+                            "on_hand_delta": 0,
+                            "in_transit_delta": 0
+                          },
+                          "opening_state": null,
+                          "remaining_demand_after": 70
+                        },
+                        {
+                          "id": "ledger_5",
+                          "state_version": 5,
+                          "effect_type": "SALE_RECORDED",
+                          "sku_id": "sku_001",
+                          "action_id": null,
+                          "source_event_id": "event_sale_3",
+                          "occurred_at": "2026-09-07T00:03:00Z",
+                          "simulation_time": "2026-09-09T00:00:00Z",
+                          "changes": {
+                            "cash_delta_minor": 0,
+                            "receivables_delta_minor": 20000,
+                            "on_hand_delta": -10,
+                            "in_transit_delta": 0
+                          },
+                          "opening_state": null,
+                          "remaining_demand_after": null
+                        },
+                        {
+                          "id": "ledger_4",
+                          "state_version": 4,
+                          "effect_type": "GOODS_RECEIVED",
+                          "sku_id": "sku_001",
+                          "action_id": "action_40",
+                          "source_event_id": "event_2",
+                          "occurred_at": "2026-09-07T00:02:00Z",
+                          "simulation_time": "2026-09-08T00:00:00Z",
+                          "changes": {
+                            "cash_delta_minor": 0,
+                            "receivables_delta_minor": 0,
+                            "on_hand_delta": 40,
+                            "in_transit_delta": -40
+                          },
+                          "opening_state": null,
+                          "remaining_demand_after": null
+                        },
+                        {
+                          "id": "ledger_3",
+                          "state_version": 3,
+                          "effect_type": "PURCHASE_ACCEPTED",
+                          "sku_id": "sku_001",
+                          "action_id": "action_40",
+                          "source_event_id": null,
+                          "occurred_at": "2026-09-07T00:01:00Z",
+                          "simulation_time": null,
+                          "changes": {
+                            "cash_delta_minor": -40000,
+                            "receivables_delta_minor": 0,
+                            "on_hand_delta": 0,
+                            "in_transit_delta": 40
+                          },
+                          "opening_state": null,
+                          "remaining_demand_after": null
+                        },
+                        {
+                          "id": "ledger_1",
+                          "state_version": 1,
+                          "effect_type": "INIT",
+                          "sku_id": null,
+                          "action_id": null,
+                          "source_event_id": null,
+                          "occurred_at": "2026-09-07T00:00:00Z",
+                          "simulation_time": "2026-09-07T00:00:00Z",
+                          "changes": null,
+                          "opening_state": {
+                            "store_id": "store_demo",
+                            "state_version": 1,
+                            "currency": "CNY",
+                            "cash_minor": 100000,
+                            "reserved_cash_minor": 0,
+                            "available_cash_minor": 100000,
+                            "receivables_minor": 0,
+                            "stocks": [
+                              {
+                                "sku_id": "sku_001",
+                                "on_hand": 20,
+                                "in_transit": 0,
+                                "remaining_demand": 60,
+                                "forecast_version": "fixed-1"
+                              }
+                            ],
+                            "data_as_of": "2026-09-07T00:00:00Z",
+                            "simulation_time": "2026-09-07T00:00:00Z"
+                          },
+                          "remaining_demand_after": null
+                        }
+                      ],
+                      "next_cursor": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "无效用户凭证",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务身份不可作为用户",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "资源不可见或不存在",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                },
+                "example": {
+                  "error": {
+                    "code": "RESOURCE_NOT_FOUND",
+                    "message": "Store is not visible or does not exist",
+                    "request_id": "request_demo",
+                    "retryable": false,
+                    "details": {}
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "参数、范围或游标无效",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "数据库不可用或已存记录无法安全解释",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "UserBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Action": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Id"
+          },
+          "mission_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Mission Id"
+          },
+          "plan_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Plan Id"
+          },
+          "approval_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Approval Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "EXECUTING",
+              "SUCCEEDED",
+              "FAILED",
+              "UNKNOWN",
+              "STALE",
+              "CANCELLED"
+            ],
+            "title": "Status"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "amount_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Amount Minor"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "external_order_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Order Id"
+          },
+          "receipt": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PurchaseReceipt"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "last_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Error"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "purchase_snapshot": {
+            "$ref": "#/components/schemas/ProposedPurchase"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "mission_id",
+          "plan_id",
+          "approval_id",
+          "status",
+          "quantity",
+          "amount_minor",
+          "currency",
+          "external_order_id",
+          "receipt",
+          "last_error",
+          "created_at",
+          "updated_at",
+          "purchase_snapshot"
+        ],
+        "title": "Action"
+      },
+      "PurchaseReceipt": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "REJECTED",
+              "PENDING"
+            ],
+            "title": "Status"
+          },
+          "external_order_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Order Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Quantity"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Total Minor"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Recorded At"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "status",
+          "external_order_id",
+          "quantity",
+          "total_minor",
+          "currency",
+          "recorded_at",
+          "reason"
+        ],
+        "title": "PurchaseReceipt"
+      },
+      "ProposedPurchase": {
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Unit Price Minor"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Total Minor"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "expected_arrival_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Expected Arrival At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "store_id",
+          "sku_id",
+          "supplier_id",
+          "quantity",
+          "unit_price_minor",
+          "total_minor",
+          "currency",
+          "expected_arrival_at"
+        ],
+        "title": "ProposedPurchase"
+      },
+      "State": {
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "state_version": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "State Version"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "cash_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Cash Minor"
+          },
+          "reserved_cash_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Reserved Cash Minor"
+          },
+          "available_cash_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Available Cash Minor"
+          },
+          "receivables_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Receivables Minor"
+          },
+          "stocks": {
+            "items": {
+              "$ref": "#/components/schemas/Stock"
+            },
+            "type": "array",
+            "title": "Stocks"
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data As Of"
+          },
+          "simulation_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simulation Time"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "store_id",
+          "state_version",
+          "currency",
+          "cash_minor",
+          "reserved_cash_minor",
+          "available_cash_minor",
+          "receivables_minor",
+          "stocks",
+          "data_as_of",
+          "simulation_time"
+        ],
+        "title": "State"
+      },
+      "Stock": {
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "on_hand": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "On Hand"
+          },
+          "in_transit": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "In Transit"
+          },
+          "remaining_demand": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Demand"
+          },
+          "forecast_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forecast Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku_id",
+          "on_hand",
+          "in_transit",
+          "remaining_demand",
+          "forecast_version"
+        ],
+        "title": "Stock"
+      },
+      "Freshness": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "FRESH",
+              "STALE",
+              "UNKNOWN"
+            ],
+            "title": "Status"
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data As Of"
+          },
+          "last_sync_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Sync At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "data_as_of",
+          "last_sync_at"
+        ],
+        "title": "Freshness"
+      },
+      "Error": {
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "error"
+        ],
+        "title": "Error"
+      },
+      "ErrorDetail": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "request_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "retryable": {
+            "type": "boolean",
+            "title": "Retryable"
+          },
+          "details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Details"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "message",
+          "request_id",
+          "retryable",
+          "details"
+        ],
+        "title": "ErrorDetail"
+      },
+      "CurrentUser": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "principal_id",
+          "roles",
+          "store_scope"
+        ],
+        "properties": {
+          "principal_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "当前用户身份，不返回凭证。",
+            "x-storage": "Settings.auth_tokens[].principal_id"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "viewer",
+                "operator",
+                "approver",
+                "admin"
+              ]
+            },
+            "uniqueItems": true,
+            "description": "去重的当前角色；服务端仍逐请求鉴权。",
+            "x-storage": "Settings.auth_tokens[].roles"
+          },
+          "store_scope": {
+            "type": "string",
+            "enum": [
+              "ALL",
+              "ASSIGNED"
+            ],
+            "description": "admin为ALL，否则ASSIGNED；实际可见店铺由stores查询。",
+            "x-storage": "derived from roles"
+          }
+        },
+        "description": "用户Bearer身份发现；不是注册、登录或token签发接口。"
+      },
+      "StoreSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "store_id",
+          "currency",
+          "source_type",
+          "simulation_time"
+        ],
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "真实可访问且已初始化的门店ID；没有名称时前端以ID显示。",
+            "x-storage": "stores.id"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "description": "当前经营币种。",
+            "x-storage": "stores.currency"
+          },
+          "source_type": {
+            "type": "string",
+            "const": "simulation",
+            "description": "首批仅SC01模拟来源，不表示真实店铺接入。",
+            "x-storage": "source_cursors.source"
+          },
+          "simulation_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "已应用到本地的经营时间，未知返回null。",
+            "x-storage": "stores.simulation_time"
+          }
+        },
+        "description": "不编造店铺名称、业务时区、地址或账号档案。"
+      },
+      "StoreList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StoreSummary"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "description": "按store_id升序；只返回当前身份可见门店。"
+      },
+      "ReadContext": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "store_id",
+          "currency",
+          "state_version",
+          "as_of",
+          "simulation_time",
+          "source_sequence",
+          "freshness"
+        ],
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "本响应唯一门店作用范围。",
+            "x-storage": "stores.id"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "description": "所有金额的币种。",
+            "x-storage": "stores.currency"
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854775807,
+            "description": "同一只读事务中观察的状态版本，不是历史记录自身版本。",
+            "x-storage": "stores.state_version"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date-time",
+            "description": "本次数据库只读快照建立后采集的服务器实际时间；不是来源完整性证明。",
+            "x-storage": "transaction timestamp observation"
+          },
+          "simulation_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "当前已记录的经营时间；用于到货逾期判定。",
+            "x-storage": "stores.simulation_time"
+          },
+          "source_sequence": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "本地已连续接受的来源序号；没有游标时null。",
+            "x-storage": "source_cursors.last_sequence"
+          },
+          "freshness": {
+            "$ref": "#/components/schemas/Freshness",
+            "description": "复用dashboard的新鲜度语义；不证明任意历史日期完整。",
+            "x-storage": "stores + source_cursors"
+          }
+        },
+        "description": "context与items/汇总来自同一REPEATABLE READ READ ONLY事务；跨请求、跨分页不是同一快照。"
+      },
+      "SaleRecord": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "event_id",
+          "sequence",
+          "sku_id",
+          "quantity",
+          "unit_price_minor",
+          "sales_amount_minor",
+          "occurred_at",
+          "simulation_time"
+        ],
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "已接受销售事件标识，不是销售订单号。",
+            "x-storage": "business_events.event_id"
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854775807,
+            "description": "该场景来源序号，用于稳定倒序分页。",
+            "x-storage": "business_events.sequence"
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "销售商品。",
+            "x-storage": "document.payload.sku_id"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854775807,
+            "description": "本次已记录销售件数。",
+            "x-storage": "document.payload.quantity"
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854775807,
+            "description": "本次成交单价，整数分；不代表当前标价。",
+            "x-storage": "document.payload.unit_price_minor"
+          },
+          "sales_amount_minor": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854775807,
+            "description": "quantity × unit_price_minor，成交金额，非现金到账。",
+            "x-storage": "derived from sale payload"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "来源报告的实际发生时间；不使用它做本版本日销量分桶。",
+            "x-storage": "document.occurred_at"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "销售经营时间，本版本日期筛选/分桶依据。",
+            "x-storage": "document.simulation_time"
+          }
+        },
+        "description": "只映射SALE_RECORDED事实，不从库存差值、forecast或账本再计算第二份销量。"
+      },
+      "SaleList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/ReadContext"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SaleRecord"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "description": "sequence DESC,event_id DESC。"
+      },
+      "SaleBucket": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "from",
+          "to",
+          "record_count",
+          "recorded_quantity",
+          "recorded_sales_amount_minor"
+        ],
+        "properties": {
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "record_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "所选范围内唯一销售事件数量；不叫订单数。",
+            "x-storage": "count accepted sale events"
+          },
+          "recorded_quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "已同步销售事件的数量和，不声称历史总销量完整。",
+            "x-storage": "sum sale quantity"
+          },
+          "recorded_sales_amount_minor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "已同步成交金额之和；不代表净收入、现金或毛利。",
+            "x-storage": "sum quantity * unit_price_minor"
+          }
+        },
+        "description": "UTC日桶与[from,to)求交；升序连续输出空桶，空桶只表示没有已记录销售。"
+      },
+      "SaleSummary": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context",
+          "from",
+          "to",
+          "time_basis",
+          "timezone",
+          "granularity",
+          "coverage",
+          "record_count",
+          "recorded_quantity",
+          "recorded_sales_amount_minor",
+          "buckets"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/ReadContext"
+          },
+          "from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "to": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "time_basis": {
+            "type": "string",
+            "const": "simulation_time"
+          },
+          "timezone": {
+            "type": "string",
+            "const": "UTC"
+          },
+          "granularity": {
+            "type": "string",
+            "const": "day"
+          },
+          "coverage": {
+            "type": "string",
+            "const": "RECORDED_EVENTS_ONLY",
+            "description": "仅保证统计本地已接受事件；FRESH不等于任意历史日期已覆盖。"
+          },
+          "record_count": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "所选范围内唯一销售事件数量；不叫订单数。",
+            "x-storage": "count accepted sale events"
+          },
+          "recorded_quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "已同步销售事件的数量和，不声称历史总销量完整。",
+            "x-storage": "sum sale quantity"
+          },
+          "recorded_sales_amount_minor": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "已同步成交金额之和；不代表净收入、现金或毛利。",
+            "x-storage": "sum quantity * unit_price_minor"
+          },
+          "buckets": {
+            "type": "array",
+            "maxItems": 91,
+            "items": {
+              "$ref": "#/components/schemas/SaleBucket"
+            }
+          }
+        },
+        "description": "UTC [from,to)，跨度不超过90×24小时。未知历史不伪装已证实零销量；前端空桶提示“无已记录销售”。"
+      },
+      "ActionList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/ReadContext"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Action"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "description": "直接复用现有Action DTO；created_at DESC,id DESC。"
+      },
+      "InboundItem": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "action_id",
+          "mission_id",
+          "sku_id",
+          "external_order_id",
+          "ordered_quantity",
+          "received_quantity",
+          "remaining_quantity",
+          "expected_arrival_at",
+          "arrival_status",
+          "is_overdue"
+        ],
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "对应已确认采购Action。",
+            "x-storage": "inbound_items.action_id"
+          },
+          "mission_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "对应持续任务。",
+            "x-storage": "actions.mission_id"
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "对应商品。",
+            "x-storage": "inbound_items.sku_id"
+          },
+          "external_order_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "已确认供应商订单号，缺失时不编造。",
+            "x-storage": "actions.external_order_id"
+          },
+          "ordered_quantity": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854775807,
+            "description": "确认订购量。",
+            "x-storage": "inbound_items.ordered_qty"
+          },
+          "received_quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "截至当前快照累计收货量。",
+            "x-storage": "inbound_items.received_qty"
+          },
+          "remaining_quantity": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807,
+            "description": "ordered_quantity - received_quantity。",
+            "x-storage": "derived"
+          },
+          "expected_arrival_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "模拟经营时间上的ETA，未知返回null。",
+            "x-storage": "inbound_items.expected_arrival_at"
+          },
+          "arrival_status": {
+            "type": "string",
+            "enum": [
+              "NOT_RECEIVED",
+              "PARTIALLY_RECEIVED",
+              "RECEIVED"
+            ],
+            "description": "0收货为NOT_RECEIVED，部分为PARTIALLY_RECEIVED，全收为RECEIVED。",
+            "x-storage": "derived from quantities"
+          },
+          "is_overdue": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "已全收为false；未全收且ETA或当前模拟时间缺失为null；否则simulation_time > ETA。",
+            "x-storage": "derived; never wall clock"
+          }
+        },
+        "description": "Action执行状态与收货状态分开；取消Mission不删除已发采购。"
+      },
+      "InboundList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/ReadContext"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InboundItem"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "description": "所有已确认采购的收货进度，包含已收完；默认action_id ASC,sku_id ASC。"
+      },
+      "LedgerChanges": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "cash_delta_minor",
+          "receivables_delta_minor",
+          "on_hand_delta",
+          "in_transit_delta"
+        ],
+        "properties": {
+          "cash_delta_minor": {
+            "type": "integer",
+            "minimum": -9223372036854775807,
+            "maximum": 9223372036854775807
+          },
+          "receivables_delta_minor": {
+            "type": "integer",
+            "minimum": -9223372036854775807,
+            "maximum": 9223372036854775807
+          },
+          "on_hand_delta": {
+            "type": "integer",
+            "minimum": -9223372036854775807,
+            "maximum": 9223372036854775807
+          },
+          "in_transit_delta": {
+            "type": "integer",
+            "minimum": -9223372036854775807,
+            "maximum": 9223372036854775807
+          }
+        },
+        "description": "已确认经营效果的四项增量。不包含预留/释放历史，不用于重建完整可用现金曲线。"
+      },
+      "LedgerEntryView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "state_version",
+          "effect_type",
+          "sku_id",
+          "action_id",
+          "source_event_id",
+          "occurred_at",
+          "simulation_time",
+          "changes",
+          "opening_state",
+          "remaining_demand_after"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128,
+            "description": "唯一账本效果ID。",
+            "x-storage": "ledger_entries.id"
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9223372036854775807,
+            "description": "该效果入账时版本，允许版本缺口。",
+            "x-storage": "ledger_entries.state_version"
+          },
+          "effect_type": {
+            "type": "string",
+            "enum": [
+              "INIT",
+              "PURCHASE_ACCEPTED",
+              "GOODS_RECEIVED",
+              "SALE_RECORDED",
+              "DEMAND_REVISED"
+            ],
+            "description": "只读经营效果分类。",
+            "x-storage": "ledger_entries.effect_type"
+          },
+          "sku_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "非INIT效果对应SKU；INIT整店快照时null。",
+            "x-storage": "event payload / associated action purchase_snapshot"
+          },
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "采购/到货关联动作，其余null。",
+            "x-storage": "receipt.action_id / event.payload.action_id"
+          },
+          "source_event_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "账本原有来源事件引用；回执先入账时保持null。",
+            "x-storage": "ledger_entries.source_event_id"
+          },
+          "occurred_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Event.occurred_at、Receipt.recorded_at或INIT.data_as_of；缺失null，不编造统一created_at。",
+            "x-storage": "typed ledger document"
+          },
+          "simulation_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Event或INIT提供的经营时间；仅有采购回执时null，不借用当前时间。",
+            "x-storage": "typed ledger document"
+          },
+          "changes": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/LedgerChanges"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "非INIT为增量；INIT为null。",
+            "x-storage": "typed event / receipt mapping"
+          },
+          "opening_state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/State"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "仅INIT为原始期初State，其余null。",
+            "x-storage": "INIT document"
+          },
+          "remaining_demand_after": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9223372036854775807
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "仅DEMAND_REVISED为新剩余需求，其余null。",
+            "x-storage": "DEMAND_REVISED payload"
+          }
+        },
+        "description": "按state_version DESC,id DESC。保留事件/回执类型差异，不直接暴露raw document或异常原始响应。",
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "effect_type": {
+                  "const": "INIT"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "changes": {
+                  "type": "null"
+                },
+                "opening_state": {
+                  "$ref": "#/components/schemas/State"
+                },
+                "sku_id": {
+                  "type": "null"
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "changes": {
+                  "$ref": "#/components/schemas/LedgerChanges"
+                },
+                "opening_state": {
+                  "type": "null"
+                },
+                "sku_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "effect_type": {
+                  "const": "DEMAND_REVISED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "remaining_demand_after": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9223372036854775807
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "remaining_demand_after": {
+                  "type": "null"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "LedgerEntryList": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "context",
+          "items",
+          "next_cursor"
+        ],
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/ReadContext"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LedgerEntryView"
+            }
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "description": "经营流水，不是完整会计总账；不含资金预留/释放流水。"
+      }
+    }
+  }
+}

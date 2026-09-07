@@ -1,15 +1,49 @@
 from typing import Annotated
 
 from asyncpg import PostgresError
-from fastapi import Path, Request, Response
+from fastapi import Path, Query, Request, Response
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.dependencies import Admin, User
 from app.api.routing import B0Router, errors
 from app.api.schemas import Health, JobRun, MonitoringStatus
 from app.core.errors import AppError
+from app.reporting.read_repository import list_stores
+from app.reporting.read_router import PageQuery, read_transaction
+from app.reporting.read_schemas import CurrentUser, StoreList
 
 router = B0Router()
+
+
+@router.get(
+    "/api/v1/me",
+    response_model=CurrentUser,
+    operation_id="get_current_user",
+    tags=["Frontend data"],
+    responses=errors,
+    openapi_extra={"x-work-package": "frontend-data-v1"},
+)
+async def current_user(request: Request, principal: User):
+    if request.query_params:
+        raise AppError(422, "VALIDATION_ERROR", "This endpoint accepts no query parameters")
+    return CurrentUser(
+        principal_id=principal.principal_id,
+        roles=sorted(set(principal.roles)),
+        store_scope="ALL" if "admin" in principal.roles else "ASSIGNED",
+    )
+
+
+@router.get(
+    "/api/v1/stores",
+    response_model=StoreList,
+    operation_id="list_visible_stores",
+    tags=["Frontend data"],
+    responses=errors,
+    openapi_extra={"x-work-package": "frontend-data-v1"},
+)
+async def stores(request: Request, principal: User, query: Annotated[PageQuery, Query()]):
+    async with read_transaction(request) as session:
+        return await list_stores(session, principal, limit=query.limit, cursor=query.cursor)
 
 
 @router.get("/health/live", response_model=Health, operation_id="health_live", tags=["Health"])

@@ -1,8 +1,12 @@
 # ShopSteward 当前开发交接
 
-更新：2026-09-07（B0-07完成并验收）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
+更新：2026-09-07（首批7个前端只读接口已验收；backend API已重启并保持运行）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
 
-本轮已完成B0-07组合故障、并发和真实进程验收，自动修复两处锁竞争缺陷。backend 146项、simulator 12项通过，无跳过；最新[测试报告](docs/reports/b0-07-test-report.md)、[进程证据](docs/api/b0-07-process-result.json)与[验证汇总](docs/api/b0-07-verification-result.json)。验收脚本已停止自己创建的API/两个worker/simulator；PostgreSQL容器继续运行。历史B0-05/06证据保留。
+B0-07阶段已完成组合故障、并发和真实进程验收，自动修复两处锁竞争缺陷。backend 146项、simulator 12项通过，无跳过；最新业务[测试报告](docs/reports/b0-07-test-report.md)、[进程证据](docs/api/b0-07-process-result.json)与[验证汇总](docs/api/b0-07-verification-result.json)。验收脚本已停止自己创建的API/两个worker/simulator；PostgreSQL容器继续运行。历史B0-05/06证据保留。
+
+本轮已落实[数据字典](docs/data-dictionary.md)中的7个GET，runtime为29操作/28路径，无新表/迁移。backend 186项、simulator 12项全部通过；真实HTTP读取持久SC01、分页、权限和只读性通过，临时8014 API已停止。见[测试报告](docs/reports/frontend-data-test-report.md)、[HTTP证据](docs/api/frontend-data-http-result.json)和[验证汇总](docs/api/frontend-data-verification-result.json)。设计稿planned标签保留历史含义，实际状态以runtime和实现清单为准。
+
+**最新运行状态：** 用户随后要求重启backend，已于2026-09-07 13:15（Asia/Shanghai）重启默认8000端口API，当前保持后台运行。更新本文时再次核验：`/health/ready`返回ok，`/docs`返回200，`/openapi.json`包含29个操作、28条路径，新增7个GET已生效。[打开Swagger](http://127.0.0.1:8000/docs)。此前“验收进程已停止”指历史验收自建进程，不代表当前8000 API已停止。
 
 ## 1. 用户已经明确的工程原则
 
@@ -21,11 +25,12 @@
 |---|---|
 | 工作资料根目录 | `D:/HuaweiMoveData/Users/13736/Desktop/AIS/Group_Project` |
 | 应用仓库 | 上述目录下的`ShopSteward`；命令需在正确目录执行 |
-| 分支 / HEAD | `YH` / `516252df73f77ef5d3507968e2f943e2fdcde7db`，`feat: backend B0 foundation and simulation service` |
-| 已提交基础 | B0-01至B0-05功能在上述提交中 |
-| 未提交工作 | 保留B0-05质量收口及B0-06全部改动；新增B0-07组合测试、两处锁竞争修复、进程验收脚本、报告/交接 |
-| 下一阶段 | B0-01至B0-07完成；按用户指定进入前端联调、B1预测或B2 Agent，不自动扩大范围 |
-| 暂未接入 | 真实预测模型、Agent/LLM、RAG/记忆/技能；前端进度未在本任务核验 |
+| 分支 / HEAD | `YH` / `da79cbded5a6493f63788a62c666201ab1d5a7c6`，`backend test` |
+| 已提交基础 | 当前HEAD已包含B0-01至B0-07业务代码、测试和历史报告；本轮未创建提交 |
+| 未提交工作 | 首批7个只读GET及DTO/查询/游标/投影、测试和HTTP工具、runtime/清单、数据字典/设计及报告交接；保留此前边界分析 |
+| 下一阶段 | 前端页面可按已实现接口联调；真实主数据/仓储/财务范围、B1预测和B2 Agent另按工作包推进 |
+| 暂未接入 | 真实预测模型、Agent/LLM、RAG/记忆/技能；前端目前只有基础配置 |
+| 当前API | `http://127.0.0.1:8000`，已重启并验证；不要重复启动占用8000的实例 |
 
 接手先执行`git status --short`、`git log -1 --oneline`、`git branch --show-current`。不要把未提交改动当垃圾清掉，也不要假定远程仓库包含它们。本次没有提交、推送或远程最新状态核验。
 
@@ -81,9 +86,9 @@ Handler的职责：
 | B0-06 | 固定锚点周期派发、Schedule接口/生命周期、源同步/新鲜度、事件合并及租约恢复 | backend迁移0006_periodic |
 | B0-07 | 组合竞争/故障测试、101门店锁竞争、双worker中断/停机/源恢复、自动SC01与精确重启回放 | 有界本机运行，非长期负载或生产SLA；无新接口/迁移 |
 
-本轮验证：backend **146通过**（19 API、16单元、111真实PostgreSQL/跨服务集成），simulator **12通过**，无跳过；Ruff通过，backend app/tests/migrations/tools共99个Python文件格式通过；backend及simulator Alembic无漂移；53个设计示例、2个Plan hash通过。见[verification-result](docs/api/b0-07-verification-result.json)。
+B0-07阶段验证：backend **146通过**（19 API、16单元、111真实PostgreSQL/跨服务集成），simulator **12通过**，无跳过；Ruff通过，backend app/tests/migrations/tools共99个Python文件格式通过；backend及simulator Alembic无漂移；53个设计示例、2个Plan hash通过。见[verification-result](docs/api/b0-07-verification-result.json)。
 
-本轮另运行独立API、两个worker与simulator，完成两轮各8个同键并发审批、自动SC01、RUNNING源任务所属worker强杀、来源中断与告警恢复、双worker停机跨周期及不少于90秒的有界观测。重启全部服务后Action、供应商回执、六条完整来源事件及精确账本均不变。细节与参数见[报告](docs/reports/b0-07-test-report.md)。这不等于长期负载验证；B0-06的11.6秒自动检查结果仍保存在原[periodic-smoke-result](docs/api/b0-06-periodic-smoke-result.json)。
+B0-07阶段另运行独立API、两个worker与simulator，完成两轮各8个同键并发审批、自动SC01、RUNNING源任务所属worker强杀、来源中断与告警恢复、双worker停机跨周期及不少于90秒的有界观测。重启全部服务后Action、供应商回执、六条完整来源事件及精确账本均不变。细节与参数见[报告](docs/reports/b0-07-test-report.md)。这不等于长期负载验证；B0-06的11.6秒自动检查结果仍保存在原[periodic-smoke-result](docs/api/b0-06-periodic-smoke-result.json)。
 
 历史B0-05的122/12测试记录及显式SC01/restart证据保持原文件，不冒充本轮结果；旧结构收口没有重跑smoke的限制仅适用于那一轮。
 
@@ -91,10 +96,11 @@ SC01固定验收：成本10元/件、售价20元/件、现金底线300元、候�
 
 ### 当前接口边界
 
-实际backend有22个操作、21条路径，全部有B0实现元数据；完整设计稿有26个操作，不能当作已实现清单。
+实际backend有29个操作、28条路径，全部有B0实现元数据；原完整设计稿26操作与前端补充设计7操作属于设计基线，实际清单以runtime为准。
 
 | 入口组 | 当前接口 |
 |---|---|
+| 首批前端查询 | GET `/api/v1/me`、`/api/v1/stores`、`/api/v1/sales`、`/api/v1/sales/summary`、`/api/v1/actions`、`/api/v1/inbounds`、`/api/v1/ledger-entries` |
 | 健康/运维 | GET `/health/live`、`/health/ready`、`/api/v1/monitoring/status`、`/api/v1/job-runs/{job_run_id}` |
 | 经营/展示 | GET `/api/v1/catalog`、`/api/v1/dashboard`、`/api/v1/alerts`；POST `/api/v1/alerts/{alert_id}/acknowledgement` |
 | Mission | POST/GET `/api/v1/missions`；GET `/api/v1/missions/{mission_id}`；POST其`/control`、`/checks`；PATCH其`/schedule`；GET其`/plans`、`/timeline` |
@@ -119,7 +125,17 @@ simulator有create run、list events、purchase、query purchase、advance五个
 
 B0-07计划见[2026-09-07-b0-07.md](docs/superpowers/plans/2026-09-07-b0-07.md)。在仓库根运行 `.venv/Scripts/python.exe backend/tools/verify_resilience.py` 可复现验收。要求8010～8013空闲且无其他活跃worker；创建新开发场景并保留数据与var目录日志；使用租约6秒/心跳2秒/来源过期8秒覆盖值，最后只停止自身进程。
 
+**B0-07后数据边界核对（2026-09-07）：** 用户询问应保存哪些数据、前端可读取什么。本次读取7份飞书正文及2块相关画板，并对照21张应用表的源码和22个runtime操作，形成[数据存储与前端访问边界](docs/data-and-frontend-boundaries.md)。结论是核心类别可明确；缺销售查询/汇总、采购列表/当前到货明细、经营流水及身份/店铺发现。当前售价、活动/仓储深度、真实数据接入、财务范围及Agent产物契约仍需按文档所列边界定下。该文是范围核对和建议，不是新增API已实现或数据库迁移已批准；本轮没有改业务代码/数据库/飞书，也不改变B0测试报告的适用版本。
+
 ## 6. 已知边界与CC复核结论
+
+### 首批前端数据契约交接
+
+边界核对后的设计与实现已完成：7个只读GET复用现有表，不需要新增表或迁移。字段类型、来源、空值、权限及时间口径见[数据字典](docs/data-dictionary.md)；分页、快照、错误与聚合规则见[设计规格](docs/superpowers/specs/2026-09-07-frontend-data-contract-design.md)。销售汇总只表示已记录事件；采购受理与到货状态分离；经营流水不是完整财务总账。真实商品售价、仓库/批次、回款/退款及Agent范围没有被这批查询替代。
+
+[补充OpenAPI](docs/api/frontend-data.openapi.json)保留7个操作的设计基线、22个schema和14个响应示例，8个既有共享schema与runtime完全一致。校验器已改为核验路由实际注册和实现清单、runtime响应兼容及原算术/负例；本轮全部通过。backend全量186项（19 API/48单元/119集成）、simulator 12项通过，无跳过；新增40项覆盖查询/日期/投影等分支。实现与验收细节见[测试报告](docs/reports/frontend-data-test-report.md)。在根目录运行`.venv/Scripts/python.exe backend/tools/verify_frontend_reads.py`可复现只读HTTP验收，要求8014空闲及原B0-07场景仍在；它只启动自有API，最后停止，不重新运行场景或进程故障测试。
+
+### 既有审查结论
 
 - 接受并完成：纯digest放core；路由公共定义集中；4个缺失操作元数据补齐；错误模板统一含409；runner业务特判改为有具体用途的两个钩子；make_handlers统一注册。
 - CC“每个模块完整五件套”不准确；“删Store局部导入即可”需先在顶部补Store；“约40行零行为变化”不适用于租约失败路径。移动Python模型定义通常不需要数据库迁移，当前不搬是收益不足，而不是必然需要迁表。
@@ -136,6 +152,10 @@ B0-07计划见[2026-09-07-b0-07.md](docs/superpowers/plans/2026-09-07-b0-07.md)�
 当前默认值（本地.env可以覆盖）：worker并发4、poll1秒、租约30秒、续租10秒、任务超时120秒、停机等待10秒、来源新鲜30秒、Plan TTL900秒、固定预测TTL3600秒。普通安全任务最多3次尝试，临时失败2/4秒重试；Action核对5/10/30/60秒，是另一层机制。
 
 ### 启动（已有配置时）
+
+**当前已有API运行，以下是服务未运行时的启动说明。** 本次重启仅处理已核验属于本项目的API进程，未启动或重启worker/simulator；本文更新时没有重新核验这两个服务的在线状态。API健康不等于自动同步/任务执行正常，只读页面数据可用性和新鲜度仍需分别判断。
+
+最近一次API以仓库`.venv/Scripts/python.exe -m app`、工作目录`backend`隐藏启动，启动器PID为`38492`（历史定位信息，后续操作前重新核对进程身份和端口归属）。本次日志位于Git忽略目录：`var/backend-api-20260907-131524.stdout.log`和`var/backend-api-20260907-131524.stderr.log`。没有覆盖.env、执行迁移、提交或推送。此次交接更新只复核HTTP可用性，186/12业务测试结果仍指上面的接口实施验收，没有再次运行全量测试。
 
 从仓库根启动数据库：
 
@@ -162,7 +182,7 @@ docker compose --env-file infra/.env -f infra/compose.yaml up -d --wait
 ..\.venv\Scripts\python.exe -m app.worker
 ```
 
-API不自动启动worker、不自动迁移。开发Swagger为http://127.0.0.1:8000/docs；production默认关闭docs与dev路由。接手时先确认端口和进程归属，不盲目启动第二份或终止不明进程；升级0006_periodic前停止旧worker；迁移会合并重复未完成只读源任务，保留一个任务及后继追平请求，不修改采购账本。验收后已停止本轮自建三进程，普通开发需按上述命令启动。
+API不自动启动worker、不自动迁移。开发Swagger为http://127.0.0.1:8000/docs；production默认关闭docs与dev路由。接手时先确认端口和进程归属，不盲目启动第二份或终止不明进程；升级0006_periodic前停止旧worker；迁移会合并重复未完成只读源任务，保留一个任务及后继追平请求，不修改采购账本。历史验收自建进程已停止；当前8000 API已按用户要求重新启动，其余服务按实际在线情况决定是否启动。
 
 ### 验证命令（按变更需要执行）
 
@@ -190,7 +210,7 @@ simulation目录设置TEST_SIM_DATABASE_URL后执行`..\.venv\Scripts\python.exe
 ## 8. 新对话接手顺序与交接维护
 
 1. 读PROJECT_CONTEXT与本文，先确定用户本轮任务；不要把历史建议自动提升为当前待办。
-2. 核对Git、已有未提交文件、相关源码和运行环境；保留B0-05质量收口及B0-06/07所有未提交改动，暂不清理记录级问题。
+2. 核对Git、已有未提交文件、相关源码和运行环境；保留当前数据契约与交接改动，暂不清理记录级问题。B0-05至07现已在HEAD中，旧报告中的基准提交仅描述当时现场。
 3. B0-07已经完成，阅读报告后执行用户新指定的工作；不要再次把组合验收列为未开始。
 4. 修改完成后更新PROJECT_CONTEXT的状态/设计变更和本文的现场/待办/验证日期；保存可区分测试、真实HTTP和重启验收的证据，不覆盖历史结论的适用范围。
 

@@ -10,7 +10,15 @@ class JsonFormatter(logging.Formatter):
             "level": record.levelname,
             "event": record.getMessage(),
         }
-        for key in ("request_id", "job_run_id", "worker_id", "status_code", "error_type"):
+        for key in (
+            "request_id",
+            "job_run_id",
+            "worker_id",
+            "status_code",
+            "error_type",
+            "record_id",
+            "record_type",
+        ):
             if hasattr(record, key):
                 payload[key] = getattr(record, key)
         return json.dumps(payload, ensure_ascii=False)

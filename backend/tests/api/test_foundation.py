@@ -115,6 +115,13 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
     app = make_app()
     schema = app.openapi()  # Must not connect to a database.
     assert set(schema["paths"]) == {
+        "/api/v1/me",
+        "/api/v1/stores",
+        "/api/v1/sales",
+        "/api/v1/sales/summary",
+        "/api/v1/actions",
+        "/api/v1/inbounds",
+        "/api/v1/ledger-entries",
         "/health/live",
         "/health/ready",
         "/api/v1/monitoring/status",
