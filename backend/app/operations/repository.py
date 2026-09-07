@@ -1,11 +1,10 @@
-import hashlib
-import json
 from datetime import datetime
 
 from sqlalchemy import func, or_, select
 from sqlalchemy.dialects.postgresql import insert
 
 from app.core.errors import AppError
+from app.core.hashing import digest
 from app.operations.models import (
     Command,
     EventRow,
@@ -18,14 +17,6 @@ from app.operations.models import (
     Store,
 )
 from app.operations.schemas import Catalog, EventBatchResult, State, Stock
-
-
-def digest(value):
-    return hashlib.sha256(
-        json.dumps(
-            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
-        ).encode()
-    ).hexdigest()
 
 
 def conflict(code, message):
@@ -118,7 +109,11 @@ async def initialize(session, seed):
         )
     )
     await session.flush()
-    return await session.get(Store, seed.store_id)
+    from app.operations.scheduling import initialize_schedules
+
+    store = await session.get(Store, seed.store_id)
+    await initialize_schedules(session, store)
+    return store
 
 
 async def get_state(session, store_id):
@@ -246,6 +241,12 @@ async def ingest(session, batch, *, command_scope, key, receipts=None):
         result.accepted_event_ids.append(event.event_id)
         await session.flush()
     result.last_sequence = cursor.last_sequence
+    if result.accepted_event_ids:
+        from app.missions.repository import wake_store_missions
+
+        await wake_store_missions(
+            session, store, key=f"events:{batch.scenario_run_id}:{cursor.last_sequence}"
+        )
     # A pushed batch provides no source head proof. Do not mark it caught up.
     original.response = result.model_dump()
     await session.flush()

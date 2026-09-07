@@ -1,10 +1,10 @@
 # ShopSteward Backend 开发与接口规范
 
-版本：0.2.0-draft · 日期：2026-09-06 · 状态：整体为开发设计；B0-01至B0-05已实现；正向采购/到货及显式完整SC01已验证
+版本：0.2.0-draft · 日期：2026-09-07 · 状态：整体为开发设计；B0-01至B0-07已完成；自动SC01、双worker故障恢复及全服务重启已验证
 
 本文面向后端、Nuxt 前端、模拟环境、预测模型和 Agent 的开发人员。目标是先完成不依赖 Agent/RAG 的确定性业务后端，再通过稳定契约接入智能能力。本文中的路径、端口、频率、状态和字段是本项目建议采用的约定；不表示当前仓库已经提供这些能力。
 
-当前实现范围以 [Backend说明](../backend/README.md) 与 [实现清单](api/implementation-status.json) 为准：21个backend操作（20条路径）、状态/INIT/销售/需求账本、Mission管理、固定预测与有限候选规划、不可变Plan、警报去重/知晓/恢复、只读看板/历史、initialize/sync/check/execute/reconcile/advance worker及simulator五接口。B0-05已补齐审批、资金预留、UNKNOWN核对、唯一采购/到货入账和显式SC01。Schedule仅存配置，周期派发仍待B0-06。当前代码按app/operations、missions、planning、alerts、reporting、execution内聚，复杂后再拆分目录。
+当前实现范围以 [Backend说明](../backend/README.md) 与 [实现清单](api/implementation-status.json) 为准：22个backend操作（21条路径）、状态/INIT/销售/需求账本、Mission管理、固定预测与有限候选规划、不可变Plan、警报去重/知晓/恢复、只读看板/历史、initialize/sync/check/execute/reconcile/advance worker及simulator五接口。B0-05已补齐审批、资金预留、UNKNOWN核对、唯一采购/到货入账和显式SC01。B0-06已实现Schedule配置与固定锚点派发、源同步/新鲜度周期和事件合并。当前代码按app/operations、missions、planning、alerts、reporting、execution内聚，复杂后再拆分目录。
 
 配套文件：
 
@@ -81,7 +81,7 @@
 - 可用结果：用户查看缺货风险、确认 40 件采购，并查询到现金 600 元、现货 20 件、在途 40 件及可追溯回执。
 - 功能成功：SC01 数值正确，同请求/同采购重复输入不重复产生效果；后续扩展到销售、到货、需求上修与重启恢复。1/5/30 秒是配置默认值，实际时延记录后报告。
 - 核心路径前置：版本化 payload **及行为契约**、backend 事务/唯一约束、最小持久任务 runner，以及在采购联调前可用的最小 simulator；无需等待完整模拟平台。
-- 后续验证：多频率调度与恢复在 B0-06/07 验收；模型效果、复杂需求、吞吐压测与生产运维在对应后续阶段验收，不阻断独立业务开发。
+- 验证进度：多频率调度与组合恢复已在B0-06/07验收，见[B0-07报告](reports/b0-07-test-report.md)；模型适配/效果、复杂需求、吞吐压测与生产运维在对应后续阶段验收，不阻断独立业务开发。
 - 下一步：按第14章交错开发 backend 和最小 simulator。先约定接口可以开始 backend 的模型、规则和 API；只有静态 payload 或 mock 不能证明采购、事件顺序和重启恢复已跑通。
 
 ## 2. 部署、目录与依赖
@@ -121,76 +121,52 @@ flowchart TD
     AG -. B3 .-> RAG[RAG / 知识索引]
 ```
 
-### 2.2 目标目录
+### 2.2 当前目录与模型归属
 
-文件随功能开发创建，当前不要求一次填满所有目录。
+截至B0-05收口，目录按实际代码列出；没有单独的 `modules/`、`workflows/`、`integrations/` 或 `api/routes/` 层。
 
 ```text
 backend/
 ├── app/
-│   ├── main.py
-│   ├── worker.py
-│   ├── api/
-│   │   ├── router.py
-│   │   ├── dependencies.py
-│   │   ├── errors.py
-│   │   └── routes/
-│   │       ├── dashboard.py
-│   │       ├── missions.py
-│   │       ├── plans.py
-│   │       ├── actions.py
-│   │       ├── alerts.py
-│   │       ├── monitoring.py
-│   │       └── internal.py
-│   ├── modules/
-│   │   ├── operations/       # store、stock、ledger、events、catalog
-│   │   ├── missions/         # 目标、状态、timeline
-│   │   ├── planning/         # forecast、policy、risk、candidate、plan
-│   │   ├── alerts/           # 生命周期、去重与恢复
-│   │   └── execution/        # approval、action、receipt
-│   ├── workflows/
-│   │   ├── ingest_events.py
-│   │   ├── check_mission.py
-│   │   └── execute_plan.py
-│   ├── scheduling/
-│   │   ├── scheduler.py
-│   │   ├── runner.py
-│   │   ├── handlers.py
-│   │   ├── policies.py
-│   │   ├── models.py
-│   │   └── repository.py
-│   ├── integrations/
-│   │   ├── contracts.py
-│   │   ├── simulation.py
-│   │   └── forecast.py
-│   ├── db/
-│   │   ├── base.py
-│   │   └── session.py
-│   └── core/
-│       ├── config.py
-│       ├── errors.py
-│       ├── logging.py
-│       └── clock.py
+│   ├── main.py、worker.py、cli.py
+│   ├── bootstrap.py          # 统一装配各模块make_handlers(settings)
+│   ├── api/                  # dependencies、routing、errors、schemas、基础router
+│   ├── core/                 # config、errors、logging、pagination、hashing
+│   ├── db/                   # base、session
+│   ├── operations/           # 状态/事件/账本/目录；HTTP client与事件用例
+│   ├── missions/             # Mission/Plan/Schedule/Timeline/Inbound模型与管理
+│   ├── planning/             # snapshot、engine、canonical、schemas、jobs
+│   ├── alerts/               # models、schemas、rules、repository、router
+│   ├── execution/            # models、schemas、repository、router、jobs、accounting、events
+│   ├── reporting/            # schemas、repository、router
+│   ├── scheduling/           # models、repository、handlers、runner
+│   └── smoke_*.py、export_openapi.py  # 开发验收与导出工具
 ├── migrations/
-├── tests/
-│   ├── unit/
-│   ├── integration/
-│   └── api/
+├── tests/                    # api、unit、integration
 ├── .env.example
 └── pyproject.toml
 ```
 
-模块内部使用 `schemas.py / models.py / service.py`；纯规则增至一定规模后拆 `rules.py`，复杂查询拆 `repository.py`。不强制每个模块再拆 domain/application/infrastructure。API 的 HTTP 专属查询参数放路由旁，业务 DTO 放所属模块 schemas；避免两套同名模型各自漂移。
+模块按需要使用models/schemas/repository/router/jobs，并非每个模块固定五件套。PlanRow、ScheduleRow、InboundRow仍在missions/models.py，planning没有独立models.py；B0-05质量收口没有搬模型；B0-06迁移0006_periodic新增源周期表及源任务唯一活跃约束。跨模块原子用例目前由planning/jobs.py、execution/accounting.py及operations/repository.py等承载，文中workflow指职责而非已有目录。复杂度或独立部署需求出现后，再决定是否提取用例层。
+
+API公共身份、门店/Mission可见性与参数类型在api/dependencies.py；统一错误响应与B0Router在api/routing.py。B0Router在注册路由时添加实现元数据，避免各业务router复制循环并遗漏。业务router之间不再相互导入。
 
 ### 2.3 依赖规则
 
 - routes 只做输入、身份、调用、响应；不直接计算采购量或修改余额。
 - workflow 组织跨模块用例；模块公开服务封装本模块不变量。
-- scheduling 只知道 job_type、scope、handler，不包含商品或现金算法。
-- 业务模块不导入 FastAPI Request、LLM SDK 或具体 HTTP 客户端。
-- workflow 在事务中调用调度存储登记后续 JobRun；调度存储不反向导入 workflow。handlers 在启动装配阶段注册，避免循环依赖。
+- Runner只知道job_type、scope及handler协议，不包含商品、现金或特定采购异常逻辑。现有scheduling/repository.py的monitoring_status仍读取SourceCursor，这是保留的查询耦合，并非整个scheduling包已经完全独立。
+- 纯规则不导入FastAPI Request、数据库会话或HTTP客户端；模块内router处理HTTP边界，jobs/client承担外部适配。当前为模块化单体，仍有跨业务模块依赖，不承诺模块可单独抽离。
+- 用例在事务中调用调度存储登记后续JobRun。app/bootstrap.py统一调用各模块make_handlers(settings)，拒绝重复job_type；Runner只调用Handler协议，不识别某个业务任务名或异常类。
 - repository 不自行随处 commit。workflow 明确事务边界，外部 HTTP 调用不持有数据库行锁。
 - 同一 SQLAlchemy Session 不跨并发任务共享。官方文档将 Session/AsyncSession 的并发使用单位分别定义为线程/任务；本项目采用每个 JobRun 独立会话。[SQLAlchemy Session](https://docs.sqlalchemy.org/en/20/orm/session_basics.html)
+
+Handler保留run/apply/after_complete，并增加两个钩子：
+
+- before_claim(db)：领取事务前调用，自行管理短事务；同一回调被多个job_type共享时，每次run_once只执行一次。收到停止信号不再调用；钩子异常时不领取任务。execute/reconcile通过此钩子恢复孤立Action。
+- on_error(session, job, error)：原业务事务回滚后，在新失败事务中处理证据，不执行HTTP。只在retry_safe任务且续租未报告丢失时调用；先取业务行锁，再由repo.fail核验当前token/状态/实际租约。失败转换不获接纳时，钩子全部写入回滚。钩子自身异常也回滚，Job保持RUNNING等待租约恢复。
+
+sync_events的冲突识别在operations/jobs.py的错误钩子中，Runner不导入EventActionConflict。显式拒绝、UNKNOWN及资金变动语义维持B0-05约定；这些钩子属于B0-05收口；B0-06另由dispatcher与Runner.serve的独立扫描循环实现周期派发。
 
 ### 2.4 I/O 与事务读取约定
 
@@ -362,7 +338,7 @@ feasible(q) = cash_after(q) >= cash_floor_minor
 - Schedule：某类重复或定点任务的到期规则。
 - JobRun：一次可领取、可恢复的具体运行，同时作为本期数据库工作队列。
 
-Mission 的 next_check_at 从对应 Schedule 返回，不在两处独立维护。技术重试通过 JobRun.available_at 表示，不修改用户的常规检查周期。
+看板next_check_at取真实排队检查和启用的Mission Schedule中较早时刻，不在两处独立维护。技术重试通过 JobRun.available_at 表示，不修改用户的常规检查周期。
 
 ### 5.2 本期任务注册
 
@@ -378,6 +354,16 @@ Mission 的 next_check_at 从对应 Schedule 返回，不在两处独立维护�
 
 scan interval 初始 1 秒，worker 并发初始 4。它们是工程默认值，不是时延保证。外部接口配额、负载、最长任务耗时都需实际测量。
 
+### 5.2.1 B0-06实际落点
+
+- Mission ScheduleRow保持原归属；source_schedules以scenario_run_id/job_type为主键，持久保存sync_events（5秒）和check_freshness（60秒）的interval/next_run_at/rerun_requested。旧禁用Mission保持禁用，新Mission默认启用。
+- scheduling/dispatcher.py选候选时以FOR UPDATE OF store SKIP LOCKED在LIMIT之前跳过忙门店，释放发现阶段的短锁后，按store→mission/schedule→job顺序逐项短事务重查到期。入队/合并和推进到下个未来锚点一起提交。每类扫描上限100项；B0-07已修复前100个门店被锁导致后续空闲门店饥饿的问题。
+- Runner.serve的独立扫描循环不占handler并发槽位，也不等待HTTP；run_once仍只执行排队任务。
+- operations/scheduling.py将初始化、周期、advance、Action完成和CLI同步统一合并；同门店/源类型只有一个活跃Job。运行期间的新显式请求记录rerun_requested；分页和请求后继在完成事务内创建。
+- 新事件入账在同一store锁内唤醒受门店现金/状态版本影响的ACTIVE Missions，合并目标版本；已有running检查保留recheck_required。重复事件不重复唤醒，源事件本身不被合并丢弃。
+- 同步错误与失败JobRun受同一租约保护。check_freshness检查ACTIVE/PAUSED Missions，来源不可读只增加DATA_STALE，不清除原业务风险；源重新追平会唤醒ACTIVE Mission重新判断全部输入，不能仅凭源恢复宣告报价/预测有效。
+- PATCH schedule采用独立schedule.version；周期派发不提升配置版本。暂停null到期时间但保留enabled偏好，恢复重新计时，终态关闭；仅暂停Mission不停止来源事实与已发采购核对。
+
 ### 5.3 周期语义
 
 本期 interval 使用固定时间锚点：next_run_at 按上次 scheduled_for + interval 推进。落后多个周期时合并为一次最新检查，并直接推进到未来的第一个到期点；不因每次耗时而无限漂移。用户修改频率后从修改生效时刻计算下一次到期，不修改正在执行的 JobRun。
@@ -386,7 +372,7 @@ scan interval 初始 1 秒，worker 并发初始 4。它们是工程默认值，
 
 ### 5.4 原子调度与任务领取
 
-1. scheduler 先无锁选择候选 Schedule ID，再在短事务内按统一顺序锁关联 store/mission（业务检查需要时）、Schedule、JobRun，并重查是否仍到期。
+1. scheduler 选择候选 Schedule ID时先以SKIP LOCKED跳过忙store，再限制批量；释放发现阶段的store锁后，在逐项短事务内按统一顺序锁关联store/mission、Schedule、JobRun，并重查是否仍到期。Action孤立恢复扫描同样跳过忙store，避免领取前钩子阻塞无关任务。
 2. 以 `schedule_id + scheduled_for` 记录周期发生身份：无未结束检查时创建 JobRun；已有同 Mission 未结束检查则合并原因/目标版本到该 JobRun，不强行插入第二条。入队/合并与推进 next_run_at 同事务；Schedule 行锁和 next_run_at 防止合并情况下重复调度。其他不可合并动作使用独立 dedup_key。
 3. runner 原子领取 READY/RETRY_WAIT 且 available_at 到期的记录，更新 RUNNING、lease_token、lease_until、attempt_count。
 4. 释放事务后调用 handler；每个任务使用自己的数据库会话。
@@ -416,7 +402,7 @@ READY → RUNNING → SUCCEEDED / FAILED / CANCELLED
 - RUNNING 时登记目标版本；任务完成事务若发现目标比本次输入新，先结束本次 JobRun，再同事务创建后继 READY 检查。事件登记使用相同锁顺序，因此提交之后的新事件也会找到后继任务或创建一条，不留丢唤醒窗口。
 - 任务合并要有数据库保护；仅在内存维护 set 不足以恢复。
 - scheduler 不等待 handler 执行结束；限制并发、单请求超时和每轮领取数量。
-- 只读网络失败按 5/10/30 秒加少量抖动重试，单次 JobRun 最多 3 次，然后 FAILED；后续常规计划仍可继续。
+- 当前安全JobRun临时失败按2/4秒重试，最多3次，然后FAILED；后续常规计划继续。采购Action的5/10/30/60秒核对是另一层机制。
 - 外部写操作不因通用重试自动创建新 action_id。结果未知先查回执；保持 pending 的核对不是无限重复提交。
 - 普通检查停机后合并补跑；销售/到货事件按游标全部补齐；每日总结未来按业务日期补跑。
 - shutdown 停止领取新任务，等待限定时间让运行中任务结束；未完成任务按租约恢复。

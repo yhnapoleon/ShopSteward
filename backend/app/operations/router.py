@@ -1,10 +1,11 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Header, Path, Query, Request
+from fastapi import Path, Query, Request
 
-from app.api.dependencies import Admin, Service, User, authorize_store
-from app.api.schemas import Error
+from app.api.dependencies import Admin, Key, Service, User, authorize_store
+from app.api.routing import B0Router, errors
 from app.core.errors import AppError
+from app.core.hashing import digest
 from app.execution.schemas import ScenarioAdvance
 from app.missions.schemas import JobAccepted
 from app.operations import repository
@@ -17,9 +18,7 @@ from app.operations.schemas import (
 )
 from app.scheduling.repository import enqueue
 
-router, dev_router = APIRouter(), APIRouter()
-Key = Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=128)]
-errors = {code: {"model": Error} for code in [401, 403, 404, 409, 422, 500, 503]}
+router, dev_router = B0Router(), B0Router()
 
 
 @router.get(
@@ -77,7 +76,7 @@ async def create_scenario(request: Request, principal: Admin, body: ScenarioCrea
         job = await enqueue(
             session,
             job_type="initialize_scenario",
-            dedup_key=repository.digest(["initialize", principal.principal_id, key]),
+            dedup_key=digest(["initialize", principal.principal_id, key]),
             payload=body.model_dump(),
         )
         # Replay the original acceptance receipt; GET JobRun is the live status authority.
@@ -107,12 +106,8 @@ async def advance_scenario(
             session,
             job_type="advance_scenario",
             store_id=store.id,
-            dedup_key=repository.digest(["advance_dev_scenario", principal.principal_id, key]),
+            dedup_key=digest(["advance_dev_scenario", principal.principal_id, key]),
             payload={"scenario_run_id": run_id, **body.model_dump()},
         )
         # The acceptance response is immutable even after the job completes.
         return JobAccepted(job_run_id=job.id, status="READY", merged=False)
-
-
-for route in [*router.routes, *dev_router.routes]:
-    route.openapi_extra = {"x-phase": "B0", "x-implementation-status": "implemented"}

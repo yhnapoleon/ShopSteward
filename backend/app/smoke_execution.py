@@ -19,7 +19,7 @@ DIRECTORY = Path(__file__).resolve().parents[2] / "docs/api"
 RESULT = DIRECTORY / "b0-05-execution-smoke-result.json"
 
 
-async def run(verify_restart):
+async def run(verify_restart, *, output=RESULT, automatic=False):
     settings = Settings()
     grant = next(g for g in settings.auth_tokens if g.kind == "user" and "admin" in g.roles)
     contract = json.loads((DIRECTORY / "backend.openapi.json").read_text("utf-8"))
@@ -77,7 +77,7 @@ async def run(verify_restart):
             (DIRECTORY / "backend.runtime.openapi.json").read_text("utf-8")
         )
         if verify_restart:
-            record = json.loads(RESULT.read_text("utf-8"))
+            record = json.loads(output.read_text("utf-8"))
             store_id, run_id = record["store_id"], record["scenario_run_id"]
             for original in record["actions"]:
                 current = await request("GET", "/api/v1/actions/" + original["id"])
@@ -117,18 +117,71 @@ async def run(verify_restart):
                         "candidate_quantities": [0, 20, 40, 80],
                         "supplier_id": offer["supplier_id"],
                     },
-                    "check_interval_seconds": 30,
+                    "check_interval_seconds": 5 if automatic else 30,
                 },
                 201,
             )
             mission_id = mission["id"]
+            periodic_evidence = None
+            if automatic:
+                started = datetime.now(UTC)
+                async with asyncio.timeout(30):
+                    while True:
+                        async with db.session() as session:
+                            checks = (
+                                (
+                                    await session.execute(
+                                        text(
+                                            "SELECT id, scheduled_for, finished_at FROM job_runs "
+                                            "WHERE mission_id=:id AND trigger_source='INTERVAL' "
+                                            "AND status='SUCCEEDED' ORDER BY scheduled_for"
+                                        ),
+                                        {"id": mission_id},
+                                    )
+                                )
+                                .mappings()
+                                .all()
+                            )
+                            syncs = await session.scalar(
+                                text(
+                                    "SELECT count(*) FROM job_runs WHERE store_id=:id "
+                                    "AND job_type='sync_events' AND trigger_source='INTERVAL' "
+                                    "AND status='SUCCEEDED'"
+                                ),
+                                {"id": store_id},
+                            )
+                        if len(checks) >= 2 and syncs >= 2:
+                            periodic_evidence = {
+                                "observed_wall_seconds": (
+                                    datetime.now(UTC) - started
+                                ).total_seconds(),
+                                "mission_interval_seconds": 5,
+                                "completed_interval_checks": [dict(row) for row in checks],
+                                "completed_interval_syncs": syncs,
+                                "manual_check_requests": 0,
+                            }
+                            break
+                        await asyncio.sleep(0.2)
 
             async def purchase(quantity):
-                await wait_job(
-                    (await post(f"/api/v1/missions/{mission_id}/checks", {}))["job_run_id"]
-                )
-                mission = await request("GET", "/api/v1/missions/" + mission_id)
-                plan = await request("GET", "/api/v1/plans/" + mission["current_plan_id"])
+                if not automatic:
+                    await wait_job(
+                        (await post(f"/api/v1/missions/{mission_id}/checks", {}))["job_run_id"]
+                    )
+                async with asyncio.timeout(30):
+                    while True:
+                        mission = await request("GET", "/api/v1/missions/" + mission_id)
+                        if mission["current_plan_id"]:
+                            plan = await request(
+                                "GET", "/api/v1/plans/" + mission["current_plan_id"]
+                            )
+                            if (
+                                plan["status"] == "PENDING_APPROVAL"
+                                and plan["proposed_purchase"]
+                                and plan["proposed_purchase"]["quantity"] == quantity
+                            ):
+                                break
+                        await asyncio.sleep(0.2)
                 assert plan["proposed_purchase"]["quantity"] == quantity, plan
                 validate("Plan", plan)
                 decision = {
@@ -173,19 +226,29 @@ async def run(verify_restart):
             ) == (40000, 0, 20000, 70, 0)
             record = {
                 "recorded_at": datetime.now(UTC).isoformat(),
-                "work_package": "B0-05",
+                "work_package": "B0-06" if automatic else "B0-05",
                 "scenario_run_id": run_id,
                 "store_id": store_id,
                 "mission_id": mission_id,
                 "actions": [first, second],
                 "final_state": final,
                 "runtime_matches_export": True,
-                "backend_runtime_operations": 21,
+                "backend_runtime_operations": sum(
+                    1
+                    for path in runtime["paths"].values()
+                    for method in path
+                    if method in {"get", "post", "patch", "put", "delete"}
+                ),
                 "approval_and_advance_replay_identical": True,
                 "scope": "Separate API, worker and simulator processes; explicit SC01 advance. "
-                "Fault and lease cases use PostgreSQL tests with controlled transports; "
-                "recurring dispatch remains B0-06.",
+                + (
+                    "Automatic periodic/event checks and source synchronization; no manual checks."
+                    if automatic
+                    else "Explicit manual Mission checks."
+                ),
             }
+            if periodic_evidence:
+                record["periodic_evidence"] = periodic_evidence
         async with db.session() as session:
             counts = dict(
                 (
@@ -206,7 +269,9 @@ async def run(verify_restart):
             "DEMAND_REVISED": 1,
         }, counts
         record["ledger_effect_counts"] = counts
-        RESULT.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+        output.write_text(
+            json.dumps(record, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8"
+        )
         print(
             json.dumps(
                 {

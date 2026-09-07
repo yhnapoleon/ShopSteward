@@ -99,7 +99,8 @@ async def test_create_replay_unique_active_scope_and_persistent_initial_check(db
         mission = first.json()
         assert mission["status"] == "ACTIVE" and mission["mission_version"] == 1
         assert (
-            mission["schedule"]["enabled"] is False and mission["schedule"]["next_run_at"] is None
+            mission["schedule"]["enabled"] is True
+            and mission["schedule"]["next_run_at"] is not None
         )
         replay = await client.post("/api/v1/missions", json=body(seed), headers=headers(key=key))
         assert replay.json() == mission

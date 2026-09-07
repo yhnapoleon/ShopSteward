@@ -1,15 +1,14 @@
-from fastapi import APIRouter, Request, Response
+from fastapi import Request, Response
 
-from app.api.dependencies import User, authorize_store
+from app.api.dependencies import Id, Key, User, authorize_store, require_role, visible_mission
+from app.api.routing import B0Router, errors
 from app.core.errors import AppError
 from app.execution.models import ActionRow
 from app.execution.repository import decide
 from app.execution.schemas import Action, DecisionApproved, DecisionRejected, PlanDecision
 from app.missions.models import PlanRow
-from app.missions.router import Id, require_role, visible_mission
-from app.operations.router import Key, errors
 
-router = APIRouter(tags=["Execution"], responses=errors)
+router = B0Router(tags=["Execution"], responses=errors)
 
 
 @router.post(
@@ -42,7 +41,3 @@ async def action(request: Request, principal: User, action_id: Id):
             raise AppError(404, "RESOURCE_NOT_FOUND", "Action does not exist")
         authorize_store(principal, row.store_id)
         return Action.model_validate(row)
-
-
-for route in router.routes:
-    route.openapi_extra = {"x-phase": "B0", "x-implementation-status": "implemented"}

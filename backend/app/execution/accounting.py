@@ -6,13 +6,13 @@ from sqlalchemy.dialects.postgresql import insert
 
 from app.alerts.repository import reconcile
 from app.alerts.rules import Finding
+from app.core.hashing import digest
 from app.execution.models import EvidenceRow
 from app.execution.repository import PENDING
 from app.execution.schemas import PurchaseReceipt
 from app.missions.models import InboundRow
 from app.missions.repository import timeline
 from app.operations.models import LedgerEntry, StockRow
-from app.operations.repository import digest
 
 
 async def action_alert(session, store, mission, action, reason=None):

@@ -1,15 +1,14 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Query, Request
+from fastapi import Query, Request
 from sqlalchemy import text
 
-from app.api.dependencies import User, authorize_store
-from app.missions.router import Cursor, Id, Limit, visible_mission
-from app.operations.router import errors
+from app.api.dependencies import Cursor, Id, Limit, User, authorize_store, visible_mission
+from app.api.routing import B0Router, errors
 from app.reporting import repository as repo
 from app.reporting.schemas import Dashboard, TimelineEntryList
 
-router = APIRouter(tags=["Dashboard and history"], responses=errors)
+router = B0Router(tags=["Dashboard and history"], responses=errors)
 
 
 @router.get("/api/v1/dashboard", response_model=Dashboard, operation_id="get_dashboard")

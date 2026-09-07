@@ -45,13 +45,14 @@ async def test_dashboard_contract_counts_due_work_and_reads_have_no_writes(db):
         initial = await dashboard(client, seed)
         assert initial["active_mission_count"] == initial["active_alert_count"] == 0
         assert initial["last_check_at"] is initial["next_check_at"] is None
-        await start(client, seed)
+        mission = await start(client, seed)
         before = await dashboard(client, seed)
         assert before["active_mission_count"] == 1 and before["next_check_at"] is not None
         await run_check(db, seed)
         after = await dashboard(client, seed)
         assert after["active_alert_count"] == 1 and after["last_check_at"] is not None
-        assert after["next_check_at"] is None and after["freshness"]["status"] == "FRESH"
+        assert after["next_check_at"] == mission["schedule"]["next_run_at"]
+        assert after["freshness"]["status"] == "FRESH"
         alerts = await listing(client, seed)
         design("AlertList", alerts)
         await client.post(

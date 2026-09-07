@@ -1,6 +1,6 @@
 # 简化架构与分工
 
-按交付模块划分，backend的B0-01、B0-02核心、B0-03及B0-04已实现；Mission、规划、警报、看板和历史可用，审批采购和周期调度待开发。实际启动见 [Backend说明](../backend/README.md)。后端内部聚类与开发契约见 [Backend 开发与接口规范](backend-development.md)，接口预览见 [Swagger / OpenAPI](api/README.md)。以下按“先做 backend，Agent/RAG 后接”的最新安排更新职责。
+按交付模块划分，backend的B0-01至B0-07已完成；Mission、规划、警报、看板、审批采购、持续源同步及周期/事件调度可用。B0-07补齐组合故障与双worker进程验收，并修复两处锁竞争阻塞；范围与边界见[测试报告](reports/b0-07-test-report.md)。实际启动见 [Backend说明](../backend/README.md)。后端内部聚类与开发契约见 [Backend 开发与接口规范](backend-development.md)，接口预览见 [Swagger / OpenAPI](api/README.md)。以下按“先做 backend，Agent/RAG 后接”的最新安排更新职责。
 
 ## 模块职责
 

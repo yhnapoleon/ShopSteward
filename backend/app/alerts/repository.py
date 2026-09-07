@@ -5,9 +5,9 @@ from sqlalchemy import func, select, tuple_
 from app.alerts.models import AlertRow
 from app.alerts.schemas import Alert, AlertFacts, AlertList
 from app.core.errors import AppError
+from app.core.hashing import digest
 from app.core.pagination import decode_cursor, encode_cursor
 from app.missions.repository import command, lock_mission, timeline
-from app.operations.repository import digest
 
 SEVERITY = {"INFO": 0, "WARNING": 1, "CRITICAL": 2}
 

@@ -1,0 +1,142 @@
+{
+  "recorded_at": "2026-09-07T01:21:27.750608+00:00",
+  "work_package": "B0-06",
+  "scenario_run_id": "run_3d7046a8ef1f41c199340b3ec6510303",
+  "store_id": "store_c890de7d4dbf48da824573b14104ec28",
+  "mission_id": "b465590e-14fd-4144-ba8a-acc3cf49f999",
+  "actions": [
+    {
+      "id": "67419e86-6868-4714-9e58-9d5fe0cda8bf",
+      "mission_id": "b465590e-14fd-4144-ba8a-acc3cf49f999",
+      "plan_id": "7a0ad8a5-3ff0-4938-a632-e05d003fdc52",
+      "approval_id": "4da33bb6-be72-46f9-995f-9ebbb3dcc91f",
+      "status": "SUCCEEDED",
+      "quantity": 40,
+      "amount_minor": 40000,
+      "currency": "CNY",
+      "external_order_id": "order_9887253d87c1460e8af5b16f456d5882",
+      "receipt": {
+        "action_id": "67419e86-6868-4714-9e58-9d5fe0cda8bf",
+        "status": "ACCEPTED",
+        "external_order_id": "order_9887253d87c1460e8af5b16f456d5882",
+        "quantity": 40,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-07T01:21:16.412779Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-07T01:21:15.483776Z",
+      "updated_at": "2026-09-07T01:21:16.465303Z",
+      "purchase_snapshot": {
+        "store_id": "store_c890de7d4dbf48da824573b14104ec28",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 40,
+        "unit_price_minor": 1000,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-08T01:21:02Z"
+      }
+    },
+    {
+      "id": "bae0ce2b-f5e0-4bc9-a9dc-8a71369151f3",
+      "mission_id": "b465590e-14fd-4144-ba8a-acc3cf49f999",
+      "plan_id": "47964d40-9a48-477b-928a-908af56e7c41",
+      "approval_id": "11bce5e8-7247-4894-911e-0b281e72b87a",
+      "status": "SUCCEEDED",
+      "quantity": 20,
+      "amount_minor": 20000,
+      "currency": "CNY",
+      "external_order_id": "order_34d6f2bda26c4cc6b85b8c2b9c53ef83",
+      "receipt": {
+        "action_id": "bae0ce2b-f5e0-4bc9-a9dc-8a71369151f3",
+        "status": "ACCEPTED",
+        "external_order_id": "order_34d6f2bda26c4cc6b85b8c2b9c53ef83",
+        "quantity": 20,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-07T01:21:24.470444Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-07T01:21:23.636423Z",
+      "updated_at": "2026-09-07T01:21:24.506595Z",
+      "purchase_snapshot": {
+        "store_id": "store_c890de7d4dbf48da824573b14104ec28",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 20,
+        "unit_price_minor": 1000,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-09T03:21:02Z"
+      }
+    }
+  ],
+  "final_state": {
+    "store_id": "store_c890de7d4dbf48da824573b14104ec28",
+    "state_version": 9,
+    "currency": "CNY",
+    "cash_minor": 40000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 40000,
+    "receivables_minor": 20000,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 70,
+        "in_transit": 0,
+        "remaining_demand": 70,
+        "forecast_version": "local-c6a9dbd55c5e5abebf2612a5d811c7ea"
+      }
+    ],
+    "data_as_of": "2026-09-07T01:21:26.439690Z",
+    "simulation_time": "2026-09-09T03:21:02.263783Z"
+  },
+  "runtime_matches_export": true,
+  "backend_runtime_operations": 22,
+  "approval_and_advance_replay_identical": true,
+  "scope": "Separate API, worker and simulator processes; explicit SC01 advance. Automatic periodic/event checks and source synchronization; no manual checks.",
+  "periodic_evidence": {
+    "observed_wall_seconds": 11.61717,
+    "mission_interval_seconds": 5,
+    "completed_interval_checks": [
+      {
+        "id": "df892bd0-a945-44fd-a5e5-c4b288e7ec14",
+        "scheduled_for": "2026-09-07 01:21:08.719982+00:00",
+        "finished_at": "2026-09-07 01:21:10.294719+00:00"
+      },
+      {
+        "id": "9f81a906-f849-4e04-ac18-06824fb79fdb",
+        "scheduled_for": "2026-09-07 01:21:13.719982+00:00",
+        "finished_at": "2026-09-07 01:21:15.338845+00:00"
+      }
+    ],
+    "completed_interval_syncs": 2,
+    "manual_check_requests": 0
+  },
+  "ledger_effect_counts": {
+    "DEMAND_REVISED": 1,
+    "GOODS_RECEIVED": 2,
+    "INIT": 1,
+    "PURCHASE_ACCEPTED": 2,
+    "SALE_RECORDED": 1
+  },
+  "restart_verified_at": "2026-09-07T01:21:32.050530+00:00",
+  "restart_action_and_supplier_receipt_identical": true,
+  "supplier_purchase_replay_does_not_duplicate_effect": true,
+  "owned_process_ids_before_and_after_restart": [
+    [
+      11608,
+      23756,
+      21448
+    ],
+    [
+      41432,
+      30716,
+      46264
+    ]
+  ],
+  "owned_processes_stopped_after_acceptance": true
+}

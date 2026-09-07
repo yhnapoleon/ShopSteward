@@ -33,6 +33,12 @@ class MissionControl(DTO):
     expected_mission_version: Positive
 
 
+class ScheduleUpdate(DTO):
+    interval_seconds: Annotated[int, Field(strict=True, ge=5, le=3600)]
+    enabled: Annotated[bool, Field(strict=True)]
+    expected_schedule_version: Positive
+
+
 class Mission(DTO):
     id: Identifier
     store_id: Identifier

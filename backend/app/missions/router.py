@@ -1,12 +1,22 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Path, Query, Request
+from fastapi import Query, Request
 from sqlalchemy import func, select
 
-from app.api.dependencies import User, authorize_store
+from app.api.dependencies import (
+    Cursor,
+    Id,
+    Key,
+    Limit,
+    User,
+    authorize_store,
+    require_role,
+    visible_mission,
+)
+from app.api.routing import B0Router, errors
 from app.core.errors import AppError
 from app.missions import repository as repo
-from app.missions.models import MissionRow, PlanRow
+from app.missions.models import PlanRow
 from app.missions.schemas import (
     CheckRequest,
     JobAccepted,
@@ -15,27 +25,12 @@ from app.missions.schemas import (
     MissionCreate,
     MissionList,
     MissionStatus,
+    Schedule,
+    ScheduleUpdate,
 )
-from app.operations.router import Key, errors
 from app.planning.schemas import Plan, PlanList
 
-router = APIRouter(tags=["Missions"], responses=errors)
-Id = Annotated[str, Path(min_length=1, max_length=128)]
-Limit = Annotated[int, Query(ge=1, le=100)]
-Cursor = Annotated[str | None, Query(max_length=2048)]
-
-
-def require_role(principal, role):
-    if role not in principal.roles and "admin" not in principal.roles:
-        raise AppError(403, "FORBIDDEN", f"{role} permission is required")
-
-
-async def visible_mission(session, principal, identifier):
-    row = await session.get(MissionRow, identifier)
-    if row is None:
-        raise AppError(404, "RESOURCE_NOT_FOUND", "Mission is not visible or does not exist")
-    authorize_store(principal, row.store_id)
-    return row
+router = B0Router(tags=["Missions"], responses=errors)
 
 
 @router.post(
@@ -81,6 +76,21 @@ async def control(
         return await repo.control_mission(session, mission_id, body, principal.principal_id, key)
 
 
+@router.patch(
+    "/api/v1/missions/{mission_id}/schedule",
+    response_model=Schedule,
+    operation_id="update_mission_schedule",
+    tags=["Scheduling"],
+)
+async def update_schedule(
+    request: Request, principal: User, mission_id: Id, body: ScheduleUpdate, key: Key
+):
+    require_role(principal, "operator")
+    async with request.app.state.db.session() as session, session.begin():
+        await visible_mission(session, principal, mission_id)
+        return await repo.update_schedule(session, mission_id, body, principal.principal_id, key)
+
+
 @router.post(
     "/api/v1/missions/{mission_id}/checks",
     status_code=202,
@@ -118,7 +128,3 @@ async def plan(request: Request, principal: User, plan_id: Id):
         await visible_mission(session, principal, row.mission_id)
         now = await session.scalar(select(func.clock_timestamp()))
         return repo.plan_dto(row, now)
-
-
-for route in router.routes:
-    route.openapi_extra = {"x-phase": "B0", "x-implementation-status": "implemented"}

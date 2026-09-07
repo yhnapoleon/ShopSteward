@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-09-06",
+  "updated_at": "2026-09-07",
   "application_version": "0.1.0",
-  "work_package": "B0-05 approval purchase and reconciliation",
+  "work_package": "B0-07 combined concurrency and fault acceptance",
   "runtime_schema": "backend.runtime.openapi.json",
   "implemented_operation_ids": [
     "list_alerts",
@@ -24,7 +24,8 @@
     "list_mission_plans",
     "get_plan",
     "create_dev_scenario",
-    "advance_dev_scenario"
+    "advance_dev_scenario",
+    "update_mission_schedule"
   ],
   "registered_job_types": [
     "worker_probe",
@@ -33,7 +34,8 @@
     "check_mission",
     "execute_purchase",
     "reconcile_action",
-    "advance_scenario"
+    "advance_scenario",
+    "check_freshness"
   ],
   "simulation": {
     "runtime_schema": "simulation.runtime.openapi.json",
@@ -47,11 +49,12 @@
     "health": "GET /health/ready"
   },
   "notes": [
-    "B0-01 through B0-05 implemented, including positive purchase/goods acceptance previously deferred from B0-02.",
-    "Exact user approval creates one durable Action; pre-send revalidation and reservation are lease-fenced. Unknown results preserve cash reservation and the store gate; reconciliation queries the original action before guaranteed-idempotent replay.",
-    "HTTP receipt and PURCHASE_ACCEPTED share one action-keyed ledger effect. Goods are bounded by confirmed quantity; missing receipts are fetched outside the atomic event transaction. Conflicts preserve evidence and raise ACTION_EXCEPTION without automatic financial overwrites.",
-    "Action-specific orphan recovery is implemented. Schedule remains disabled; recurring source/check/freshness dispatch and broader recovery/load acceptance remain B0-06/07.",
-    "Independent persistent simulator implements create/events/purchase/query/advance. Explicit full SC01 and API/worker/simulator restart smoke are recorded in b0-05-execution-smoke-result.json.",
-    "Supplier conflict evidence requires manual investigation; no automatic correction or administrative override API is provided. Controlled fault tests do not imply a deployed fault-injection endpoint."
+    "B0-01 through B0-06 implemented. New Missions enable fixed-anchor interval checks; existing disabled schedules remain disabled on migration.",
+    "PATCH schedule supports operator authorization, version CAS, exact command replay, pause/resume preferences and terminal disabling.",
+    "Durable source schedules dispatch sync every 5 seconds and freshness every 60 seconds. Scanner is independent of execution slots; store locks and unique active source jobs protect coalescing.",
+    "Events wake Mission checks with target versions; running work creates a durable successor. Sync pagination never discards source events. Failed sync preserves source errors; freshness does not clear other business risk.",
+    "Lease-fenced exact approval, UNKNOWN reconciliation, unique purchase/goods accounting and independent persistent simulator remain in force.",
+    "B0-06 automatic checks/source sync, full SC01 and API/worker/simulator restart were verified; see b0-06-periodic-smoke-result.json. B0-05 evidence files are preserved as historical results.",
+    "B0-07 combination tests, two-worker process interruption/source outage/downtime, automatic SC01 and exact restart replay passed. Two lock-contention defects fixed; see b0-07-verification-result.json and ../reports/b0-07-test-report.md. No production load SLA, manual financial override, runtime fault endpoint, Agent or real ML model was added."
   ]
 }

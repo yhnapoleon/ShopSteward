@@ -23,6 +23,16 @@ class Job(Base):
         Index("ix_job_runs_lease", "status", "lease_until"),
         Index("ix_job_runs_mission", "mission_id", "created_at", "id"),
         Index(
+            "uq_job_runs_active_source",
+            "store_id",
+            "job_type",
+            unique=True,
+            postgresql_where=text(
+                "job_type IN ('sync_events','check_freshness') AND store_id IS NOT NULL "
+                "AND status IN ('READY','RUNNING','RETRY_WAIT')"
+            ),
+        ),
+        Index(
             "uq_job_runs_active_check",
             "mission_id",
             unique=True,

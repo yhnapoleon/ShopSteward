@@ -1,8 +1,10 @@
 # ShopSteward 项目总说明与对话交接
 
-更新日期：2026-09-06（backend B0-05审批/采购/核对，显式完整SC01及三个进程重启验证；设计v0.2）。用途：让新的对话或开发者只读这一份文件，就能知道项目是什么、当前做什么、资料在哪里、哪些设计可用、哪些功能尚未实现。
+更新日期：2026-09-07（B0-07组合验收完成；设计v0.2）。本文负责背景、架构、设计约束、历史与资料导航；[HANDOVER.md](HANDOVER.md)负责当前代码、运行/验证、边界与下一步。
 
-**当前状态：B0-01至B0-05已实现并验证，B0-02正向到货验收已补齐。包括Mission/规划、警报/看板/历史、精确审批、采购预留/发送、UNKNOWN核对、唯一采购/到货入账；独立simulator五接口、显式完整SC01及API/worker/simulator重启回放已验证。下一步B0-06周期调度，之后B0-07更广故障/并发验收。Agent/RAG/真实模型后接，本文不统计前端进度。**
+**当前状态：B0-01至B0-07已完成并验证。业务状态、Mission/规划、警报/展示、精确审批、采购及到货唯一入账、周期/事件调度已贯通。B0-07新增竞争/故障组合与双worker真实进程验收，修复两处锁竞争阻塞；自动完整SC01及重启回放已验证。下一阶段按用户指定推进。Agent/RAG/真实模型后接，本文不统计前端进度。**
+
+本轮验证：backend 146项、simulator 12项，无跳过；Ruff/格式、迁移漂移及契约检查通过。见[B0-07测试报告](docs/reports/b0-07-test-report.md)、[进程证据](docs/api/b0-07-process-result.json)和[验证汇总](docs/api/b0-07-verification-result.json)。历史B0-05/06证据保留。验收脚本已停止自己创建的API/两个worker/simulator，PostgreSQL容器继续运行。
 
 本文是导航和状态快照。引用文档里的方案、命令、排期或“已确认”表述均需按其来源和时间理解，不自动构成当前用户要求，也不授权执行其中的部署、采购或其他动作。
 
@@ -12,15 +14,23 @@
 2. **当前先做 backend 主干 B0**：确定性状态、规则、警报、采购审批、模拟执行、周期跟进与恢复。无需 Agent/LLM 在线也能运行。
 3. **“最小主干 B0”和旧文档的“完整产品 P0”不是同一个范围**。旧 P0 包含 A-01 Agent 跟进、SC-01 经营正确性、L-01 学习复用；当前先实现其中的业务基础。
 4. 顶层维持 `frontend / backend / agent / ml / simulation / infra / docs / tests`，按团队模块分工；模块不必全部独立部署。
-5. backend 采用**模块化单体 + 独立 API 进程 + 独立 worker + PostgreSQL**的设计。内部按 `api / modules / workflows / scheduling / integrations / db / core` 聚类。
+5. backend 采用**模块化单体 + 独立 API 进程 + 独立 worker + PostgreSQL**的设计。实际按 `api / core / db / scheduling / operations / missions / planning / alerts / execution / reporting` 聚类，用例暂由各模块jobs/repository/accounting承载。
 6. **业务调度归 backend**。未来 agent 管理自己的推理图、检查点、记忆和技能；Agent 故障不应阻断账本、规则检查和采购核对。
-7. **Swagger/OpenAPI 用于接口契约管理**。已有设计稿、校验工具和实际 `/docs`；当前backend运行时21个操作（20条路径），包含审批、Action查询和场景推进。
+7. **Swagger/OpenAPI 用于接口契约管理**。已有设计稿、校验工具和实际 `/docs`；当前backend运行时22个操作（21条路径），包含审批、Action查询和场景推进。
 8. 现有主要工程文档：[backend-development.md](docs/backend-development.md)、[Simulator 行为与协作顺序](docs/simulation-contract.md)、[API 使用说明](docs/api/README.md)、[backend 契约](docs/api/backend.openapi.json)、[外部服务契约](docs/api/services.openapi.json)。
-9. **B0-01至B0-05已落地**：独立API/worker、业务账本、Mission/规划、警报/展示、审批采购与回执核对。simulator拥有独立持久世界和五个业务接口；周期调度、模型/Agent仍未实现。
-10. 任何“已通过”结论必须说明验证对象。当前为backend 115项、simulator 12项测试（无跳过），以及真实API/worker/simulator的显式SC01与重启回放。受控故障/租约测试使用真实PostgreSQL和传输替身；不代表已有线上故障注入端点或周期调度验收。
+9. **B0-01至B0-07已落地**：独立API/worker、业务账本、Mission/规划、警报/展示、审批采购与回执核对。simulator拥有独立持久世界和五个业务接口；周期/事件调度及组合验收已完成，模型/Agent仍未接入。
+10. 任何“已通过”结论必须说明验证对象。当前backend 146项、simulator 12项测试（无跳过），以及真实API/两个worker/simulator自动SC01、进程故障恢复和重启回放。集成测试的故障使用真实PostgreSQL与传输替身；进程测试实际中断自建服务。至少90秒有界观测不代表长期负载验证，没有增加线上故障注入端点。
 11. **无需先完成完整 simulator 才能开发 backend**。先固定 payload 及行为契约，backend 基础/规则/API 与最小 simulator 交错开发；首次采购联调前接入单一持久 HTTP simulator。进程内 fake 仅用于开发/单元测试，不代表跨进程或恢复验收。
 
-建议阅读顺序：本文 → backend 开发文档 → simulator 行为契约与 API 契约 → 相关业务来源/参考源码。只有研究后续 Agent、RAG、预测或学习时，再展开对应历史研究。
+建议阅读顺序：本文 → [HANDOVER.md](HANDOVER.md)。这两份足以理解项目、设计、进度与待办；进入具体工作包后，再按需读backend开发文档、simulator/API契约和相关源码。只有研究后续Agent、RAG、预测或学习时，再展开历史研究。
+
+### 1.1 用户最新工程原则（2026-09-07）
+
+**唯一原则：结构正确，功能完整满足要求，且没有赘余的设计。**
+
+代码审查意见需要独立验证，不是必须全部执行的命令。修复真实缺陷，重构须有明确需求或实际维护收益，并衡量新增复杂度；不为“五件套”、目录对称、完全消除包级双向依赖或抽象层数而改代码。当前模块化单体允许跨模块原子用例和共享模型归属，业务模块并不需要提前满足独立部署条件。测试数量与代码行数都不能替代功能验收。
+
+B0-05后的前三项收口保留，因为各自解决了实际问题；不据此扩展插件系统、通用工作流框架或更复杂的模拟平台。模型搬迁、apply_event文件位置及其他CC记录级建议不是B0-06的前置任务。最新工作现场、已采纳/未采纳意见及具体待办见HANDOVER。
 
 ## 2. 仓库与资料位置
 
@@ -30,11 +40,12 @@
 |---|---|---|
 | 工作资料根目录 | `D:/HuaweiMoveData/Users/13736/Desktop/AIS/Group_Project` | 课程原件、早期研究、飞书快照 |
 | 应用仓库根目录 | `D:/HuaweiMoveData/Users/13736/Desktop/AIS/Group_Project/ShopSteward` | 当前模块骨架、开发文档、接口契约 |
-| 本文件 | `ShopSteward/PROJECT_CONTEXT.md` | 集成说明与交接入口 |
+| 本文件 | `ShopSteward/PROJECT_CONTEXT.md` | 项目背景、设计与历史入口 |
+| 当前交接 | `ShopSteward/HANDOVER.md` | 工作现场、工程原则、运行/验证与具体待办 |
 
 远程仓库：[yhnapoleon/ShopSteward](https://github.com/yhnapoleon/ShopSteward)。
 
-本次检查本地 HEAD 为 `21b8231`（`chore: simplify skeleton into team-owned modules`）。当前开发分支为 `codex/backend-b0-foundation`，B0-01/02/03/04/05代码、文档和契约仍在本地工作树，尚未形成新的Git提交。**不能假定仅从远程克隆就已拥有这些新文档。** 此记录不是远程最新状态核验，后续以实际 Git 状态更新。
+本次收口基于本地HEAD `516252d`（`feat: backend B0 foundation and simulation service`），分支 `YH`。B0-01至05基础已在该提交中；B0-05公共依赖、路由和runner收口，以及B0-06实现/迁移、B0-07修复/测试/报告和交接更新仍未提交/推送。此记录不是远程最新状态核验，后续以实际Git状态更新。
 
 本文使用 `docs/...` 指应用仓库内文档；`../docs/...` 指工作资料根目录下的历史资料。后者及绝对本地路径**不随应用仓库自动携带**，在其他电脑/GitHub 页面可能无法打开。飞书内容也需要相应访问权限。
 
@@ -51,6 +62,7 @@ ShopSteward/
 ├── tests/         # .gitkeep
 ├── docs/          # 架构、backend 规范、OpenAPI
 ├── PROJECT_CONTEXT.md
+├── HANDOVER.md     # 当前开发现场与待办
 └── README.md、Python/pnpm workspace 配置等
 ```
 
@@ -106,21 +118,24 @@ flowchart TD
 
 ```text
 app/
-  api/routes/       HTTP 入口、身份、校验、响应
-  modules/
-    operations/     现金、库存、事件与账本
-    missions/       目标、状态、历史
-    planning/       预测输入、风险、候选与方案
-    alerts/         警报生命周期
-    execution/      审批、动作、回执
-  workflows/        跨模块用例：接事件、查任务、执行方案
-  scheduling/       到期扫描、持久任务领取、重试与恢复
-  integrations/     simulation / forecast 等适配协议
-  db/               连接、Session、基础模型
-  core/             配置、日志、错误、可注入时钟
+  main.py、worker.py、cli.py       应用入口
+  bootstrap.py                    统一注册make_handlers，检测重复job_type
+  api/                            身份/共享参数、B0Router/错误响应、基础HTTP
+  core/                           配置、错误、日志、分页、纯JSON哈希
+  db/                             Session与模型基类
+  operations/                     现金、库存、事件、账本、simulator client
+  missions/                       Mission管理；Plan/Schedule/Timeline/Inbound模型
+  planning/                       快照、纯候选规则、规范化、检查用例
+  alerts/                         风险规则与警报生命周期
+  execution/                      审批、Action、回执、资金/在途入账
+  reporting/                      看板和历史查询
+  scheduling/                     JobRun、通用handler协议、领取/续租/恢复
+  smoke_*.py、export_openapi.py    开发验收/导出工具
 ```
 
-数据模型、字段和流程详见 [开发规范第2～6章](docs/backend-development.md#2-部署目录与依赖)。选型建议为 Python >=3.11、FastAPI/Pydantic、PostgreSQL、SQLAlchemy 2.x、Alembic；B0默认异步路由/AsyncSession/HTTP适配，每个任务独立会话，准确依赖版本待实现时锁定。规划与权威State使用短REPEATABLE READ只读快照，发布时另开事务锁定并核对版本。
+当前没有modules/workflows/integrations三层目录。各模块按需要使用models/schemas/repository/router/jobs；PlanRow、ScheduleRow、InboundRow暂留missions/models.py，不为目录整齐搬表。跨模块事务就是用例边界，仍有业务包双向依赖；接入agent/ml时应通过公开接口接入，不能假定现有模块可单独部署。
+
+详见[开发规范第2章](docs/backend-development.md#22-当前目录与模型归属)。依赖版本由uv.lock锁定；规划和权威State使用短REPEATABLE READ快照，发布时另开事务锁定并核对版本。所有B0路由由B0Router附加phase/implementation元数据；共享鉴权和参数在api/dependencies.py，router不再充当其他router的工具箱。
 
 ### 3.4 关键不变量
 
@@ -137,7 +152,7 @@ app/
 - API 读请求不触发采购、不推进模拟时间、不成为后台定时器。
 - 租约校验与Plan/Alert/timeline发布同事务，失去租约整次派生结果回滚；真实采购证据仍由当前核对任务按action_id唯一入账。
 
-### 3.5 多频率调度
+### 3.5 多频率调度（B0-06已实现）
 
 一个统一调度入口管理多种任务计划；每个 Schedule 有自己的 next_run_at。JobRun 持久化运行实例，worker 在独立进程领取执行。初始设计支持 INTERVAL、AT、EVENT、MANUAL；CRON 有实际日历需求时再加入。
 
@@ -149,7 +164,7 @@ app/
 | 数据新鲜度 | 60秒 | 无法读取不等于健康 |
 | 需求变化 | 事件触发 | 只重算受影响任务 |
 
-上述频率是默认设计，不是已测时延。调度扫描与执行解耦；使用数据库领取、租约和短事务；停机后普通检查合并补跑，销售/到货事件不能省略。worker 租约使用真实时间，simulation 使用独立模拟时间。
+上述频率已作为默认周期落实，不是负载下时延保证。Mission创建时明确传入周期；本轮真实演示使用5秒Mission周期。调度扫描与执行解耦；使用数据库领取、租约和短事务；停机后普通检查合并补跑，销售/到货事件不能省略。worker 租约使用真实时间，simulation 使用独立模拟时间。
 
 ### 3.6 接口与 Swagger
 
@@ -162,7 +177,7 @@ app/
 | agent → backend | 复用受限读取与检查接口 | 服务身份没有审批权限 |
 | agent → LLM | `/v1/chat/completions` 文本子集 | 本地vLLM/Ollama等适配参考，未部署 |
 
-Swagger当前同时有两份完整设计稿和真实runtime快照。当前 `/docs` 来自21个实际操作（20条路径）；backend.runtime.openapi.json及simulation.runtime.openapi.json已导出，实现清单见docs/api/implementation-status.json。完整字段以 [API 契约](docs/api/README.md)为准。
+Swagger当前同时有两份完整设计稿和真实runtime快照。当前 `/docs` 来自22个实际操作（21条路径）；backend.runtime.openapi.json及simulation.runtime.openapi.json已导出，实现清单见docs/api/implementation-status.json。完整字段以 [API 契约](docs/api/README.md)为准。
 
 ## 4. 既有文档索引
 
@@ -178,9 +193,9 @@ Swagger当前同时有两份完整设计稿和真实runtime快照。当前 `/doc
 | E05 | [docs/api/backend.openapi.json](docs/api/backend.openapi.json) | backend设计接口和schema | 前端/后端契约审阅；不是运行服务 |
 | E06 | [docs/api/services.openapi.json](docs/api/services.openapi.json) | 模拟、预测、Agent、LLM的服务协议 | 跨模块联调约定 |
 | E07 | [docs/api/validate_contracts.py](docs/api/validate_contracts.py) | 检查OpenAPI、引用、示例、共享结构和非法输入 | 仅文档契约验证工具 |
-| E08 | [docs/simulation-contract.md](docs/simulation-contract.md) | 五接口行为、唯一世界、事件顺序、采购幂等、advance原子性、重启与开发顺序 | B0最小simulator与backend共同实施依据；create/events已实现，其余待实施 |
-| E09 | [backend/README.md](backend/README.md) | 本机配置、API/worker启动、迁移、专用PG测试与探针命令 | B0-01/02/03/04实际使用入口 |
-| E10 | [docs/api/implementation-status.json](docs/api/implementation-status.json) | 21个实际operationId及7个worker handler | 配套runtime快照与B0-05 SC01/restart smoke |
+| E08 | [docs/simulation-contract.md](docs/simulation-contract.md) | 五接口行为、唯一世界、事件顺序、采购幂等、advance原子性、重启与开发顺序 | B0最小simulator与backend共同实施依据；五接口均已实现 |
+| E09 | [backend/README.md](backend/README.md) | 本机配置、API/worker启动、迁移、专用PG测试与探针命令 | B0-01至B0-06实际使用入口 |
+| E10 | [docs/api/implementation-status.json](docs/api/implementation-status.json) | 22个实际operationId及8个worker handler | 配套runtime快照与B0-05 SC01/restart smoke |
 
 ### 4.2 工作资料根目录下的研究与历史文档
 
@@ -390,25 +405,25 @@ Prediko、Inventory Planner、Float/Xero的对照和具体来源链接保存在�
 - **历史概念设计**：研究中讨论过，当前未作为B0任务落实。
 - **未实施**：没有可运行的相应业务代码；不以目录、文档或参考仓库代替。
 
-不计算容易误导的“设计完成百分比”。B0-01至B0-05已完成验证，B0-02正向到货已补齐；显式SC01数值闭环已通过。周期自动运行与更广故障/并发验收仍为B0-06/07。
+不计算容易误导的“设计完成百分比”。B0-01至B0-07已完成验证，B0-02正向到货已补齐；自动检查SC01数值闭环、双worker故障恢复和全服务重启已通过。长期负载、真实模型与Agent效果仍需后续验证。
 
 ### 7.2 按能力拆分
 
 | 主干能力 | 设计状态与依据 | 尚需在实施中落实 | 实施状态 |
 |---|---|---|---|
 | 模块边界与部署 | E02/E03已成文 | 后续业务模块 | API/worker/simulator独立入口、uv.lock、PG compose已实现 |
-| PostgreSQL数据模型 | E03第3章已定义 | 后续调度扩展 | backend迁移0005_execution；simulator独立库sim_0002_purchases |
+| PostgreSQL数据模型 | E03第3章已定义 | 更广运行验证 | backend迁移0006_periodic；simulator独立库sim_0002_purchases |
 | 业务状态与事件账本 | E03第3/6/9章已定义 | 更广并发/故障矩阵 | INIT/销售/需求/采购/到货、幂等、连续游标、整批回滚与冲突证据已实现 |
-| Mission状态管理 | E03第4/8章已定义 | 周期调度联动 | 创建、暂停/恢复、完成/取消已实现；取消未发送采购，已发送采购继续核对 |
+| Mission状态管理 | E03第4/8章已定义 | 更广生命周期竞争验证 | 创建、暂停/恢复、完成/取消已实现；取消未发送采购，已发送采购继续核对 |
 | 固定需求与方案比较 | SC01及E03规则已成文 | 后续真实模型接入 | FixedForecastProvider、候选规则、快照/hash、版本化Plan及安全发布已实现 |
-| 警报生命周期 | E03第4章已定义四类风险 | B0-06周期检查 | 四类风险及ACTION_EXCEPTION自动来源/核对解除、知晓与历史已实现 |
+| 警报生命周期 | E03第4章已定义四类风险 | 后续真实模型/Agent接入回归 | 四类风险及ACTION_EXCEPTION自动来源/核对解除、知晓与历史已实现；B0-07源故障/恢复已验证 |
 | 审批/采购/回执 | E03第4/6/9章已定义 | 更广异常竞争验收 | 精确审批、唯一Action、发送前预留/重验、UNKNOWN核对、唯一入账与冲突人工核查已实现 |
-| 多频率调度 | E03第5章已定义 | Schedule周期/事件合并、业务动作恢复 | 已实现JobRun领取/租约、检查合并、过时结果复查；Schedule仅保存未启用配置，非完整B0-06 |
-| 后端HTTP接口 | E05设计契约已成文 | Schedule及B2路由 | 已实现21项backend操作及身份/统一错误 |
+| 多频率调度 | E03第5章已定义 | Schedule周期/事件合并、业务动作恢复 | 已实现独立派发扫描、固定锚点、停机合并、目标版本/后继检查、5/60秒源周期及Schedule生命周期 |
+| 后端HTTP接口 | E05设计契约已成文 | B2路由 | 已实现22项backend操作及身份/统一错误 |
 | Swagger管理 | E04/E05/E06及校验脚本已有 | 随业务路由扩展契约和CI | 真实/docs、runtime快照及实现清单已提供 |
 | simulation协议与最小行为 | E03第9章/E06/E08 | 运行时故障注入未提供 | 独立HTTP/数据库，create/events/purchase/query/advance五接口及重放已实现 |
 | 运维与恢复 | E03第13章已定义 | 数据源与业务动作监控/恢复 | 基础health、heartbeat、结构化日志、停机停止新领取已实现 |
-| 自动化测试与SC01 | E03第15章已有验收矩阵 | 自动周期、慢任务及更广竞争恢复 | backend115项及simulator12项；显式完整SC01、三个进程重启回放已验证 |
+| 自动化测试与SC01 | E03第15章已有验收矩阵 | 长期负载、生产部署及真实外部服务 | backend146项及simulator12项；自动SC01、双worker中断/源故障/停机恢复、全服务重启与来源历史回放已验证 |
 
 ### 7.3 后续能力的设计位置
 
@@ -473,7 +488,7 @@ Prediko、Inventory Planner、Float/Xero的对照和具体来源链接保存在�
 - 分进程及重启证据：[b0-04-alerts-smoke-result.json](docs/api/b0-04-alerts-smoke-result.json)。真实API/worker/simulator创建初始警报，知晓后仍为有效风险，现金100000分、库存20不变；API/worker重启后警报知晓和timeline保留。
 - 边界：ACTION_EXCEPTION的自动来源与解除需要B0-05真实Action；周期同步、检查、过期派发仍为B0-06。看板新鲜度可随时间变化，持久DATA_STALE只随检查更新。采购、到货、advance和完整SC01仍未验收；Git未提交/推送。
 
-### 7.4.5 B0-05本轮实现与验证
+### 7.4.5 B0-05功能实现与验证（后续收口见7.4.6）
 
 - 新增app/execution与0005_execution：Approval、Action、采购请求快照、资金预留、门店执行门控、冲突证据；开发/测试库均升级。B0-02的正向采购/到货入账已补齐。
 - 新增3个backend API：POST plans/{id}/decision、GET actions/{id}、POST dev/scenarios/{run_id}/advance；运行时21个操作、20条路径，worker共7种handler。
@@ -484,6 +499,38 @@ Prediko、Inventory Planner、Float/Xero的对照和具体来源链接保存在�
 - 验证：backend115项（18 API、16单元、81真实PostgreSQL/跨服务），simulator12项，无跳过；Ruff/格式、迁移漂移、53个契约示例和2个Plan hash通过。受控传输覆盖丢响应、租约丢失、冲突、先到货、取消后核对与恢复；独立审查发现的协议证据/恢复饥饿边界已修复并补回归。
 - 真实HTTP与重启证据：[b0-05-execution-smoke-result.json](docs/api/b0-05-execution-smoke-result.json)，复现入口backend/app/smoke_execution.py。SC01采购40→到货→销售10→需求70→采购20→到货；现金40000分、应收20000分、现货70、在途0、预留0，采购账本2条、到货2条。三个进程重启后原Action/供应商回执一致，采购重放不重复生效。
 - 边界：Schedule仍未启用，周期同步/检查和更广竞争/慢任务/恢复验收归B0-06/07。manual_review需人工调查，尚无强制改账接口；simulator无运行时故障注入端点。Git仍未提交/推送。
+
+### 7.4.6 B0-05后代码质量复核与收口（历史记录；当前现场见HANDOVER）
+
+已核对CC复核：分层和原子用例边界总体合理；“8个模块都有完整五件套”不符合实际，且runtime缺少4个操作的x-phase属真实缺陷。此次执行范围为前三项收口和文档对齐，不把估计的40行改动视为约束。
+
+- digest原实现逐字迁至app/core/hashing.py，全部调用方使用共享工具；core与纯规划规则不再为哈希反向导入operations.repository。规范化与摘要结果不变。
+- Id/Limit/Cursor/Key、require_role、visible_mission集中到api/dependencies.py；errors及B0Router集中到api/routing.py。21个实际操作统一包含x-phase/x-implementation-status；统一错误模板含409。重新导出backend.runtime.openapi.json。
+- Handler新增before_claim/on_error；恢复与异常处理回到对应业务handler。Runner不按reconcile_action字符串特判、不导入EventActionConflict。错误钩子的证据和失败状态同事务、同租约保护；共享回调去重。app/bootstrap.py统一装配四个make_handlers工厂，规划注册约定同步统一。
+- planning/jobs.py的Store导入改为模块级一次导入。CC所谓“直接删函数内导入”需修正：原顶部虽导入同一模块的其他类，却未导入Store，故必须先补Store名称。
+- 模型归属保持不变；§3.3及backend-development.md §2.2已按实际目录更新。operations.apply_event的位置、跨包依赖、smoke工具的运行时包位置/开发依赖、金额上限常量、local版本两种生成方式，以及simulator剧本与持久化耦合列为后续记录，不在本次扩大重构。
+- 新增回归验证：全路由元数据、before_claim去重/停止/失败不领取、on_error成功留证与租约过期/换主回滚、错误钩子自身异常回滚。采购故障、租约恢复及既有SC01回归继续执行。验证：backend122项（19 API、16单元、87真实PostgreSQL/跨服务集成）、simulator12项通过，无跳过；Ruff/格式88个backend文件通过，Alembic无漂移，53个设计示例及2个Plan hash检查通过。独立复核无阻塞发现。
+- 证据：[b0-05-quality-review-result.json](docs/api/b0-05-quality-review-result.json)。此次未重新运行三进程SC01 smoke，7.4.5的记录保留为历史证据；本次验证是全量测试、数据库/契约与导入图复核。运行中的旧API/worker需要重启才会加载新代码。
+- 后续仍进入B0-06：周期同步、检查、事件合并与持续后台运行。钩子仅提供扩展点，尚未实现周期调度。
+
+### 7.4.7 B0-06周期/事件调度（2026-09-07）
+
+- 新增backend迁移0006_periodic：source_schedules保存源同步/新鲜度的独立锚点；同源/任务类型唯一活跃Job。旧重复未完成只读源任务在迁移时合并，保留一个及后继追平请求；旧Mission禁用偏好保持。升级前停止旧worker。
+- PATCH Mission schedule落实权限、版本及幂等；新Mission默认启用，暂停保留偏好且清空到期，恢复重新计时，结束关闭。周期派发不提升配置版本，改频不修改运行中的任务。
+- 独立扫描循环与执行槽位解耦；逐项store→mission/schedule→job短事务重查并提交到期点，停机跨多个周期只补一次最新发生点。
+- 源同步默认5秒，check_freshness默认60秒；来源错误持久可观察，空页追平不误判缺页。分页与运行中新请求用持久后继标记，完成事务内创建下一同步任务。事件完整入账后唤醒ACTIVE Missions并合并目标版本，复用已有防丢唤醒与租约保护。
+- 验证backend138项（19 API、16单元、103真实PostgreSQL/跨服务集成）、simulator12项，无跳过。Ruff与95个backend Python文件格式通过，backend/simulator迁移无漂移，53个契约示例及2个Plan hash通过。独立代码审查无P1/P2阻塞发现。
+- [B0-06自动验收](docs/api/b0-06-periodic-smoke-result.json)：约11.6秒内完成2次5秒周期Mission检查及2次周期同步，完整SC01不发送手动checks；三进程重启后Action/供应商回执/最终State相同，采购回放不重复入账。验收脚本停止自己创建的服务，PG保留。
+- [本轮验证汇总](docs/api/b0-06-verification-result.json)。B0-05历史证据文件未覆盖；更广负载/故障组合仍为B0-07。本轮未提交/推送，未接入Agent/ML/RAG。
+
+### 7.4.8 B0-07组合验收与缺陷修复（2026-09-07）
+
+- 新增8个PG集成用例：竞争审批/丢响应、重试耗尽后周期恢复、规划事件突发与生命周期、到货与晚到超时、101门店派发公平性、孤立Action恢复公平性。
+- 复现并修复2处生产缺陷：派发LIMIT之前未跳过忙Store导致空闲第101个门店饥饿；孤立Action恢复等待Store锁导致无关Job领取卡住。发现阶段短Store锁使用SKIP LOCKED，释放后逐项重查，保留原锁顺序与租约保护。
+- 全量backend146项（19 API、16单元、111PG/跨服务集成）、simulator12项，无跳过；Ruff/格式、两侧迁移无漂移、runtime22操作/21路径/8 handler一致、53契约示例和2个Plan hash通过。
+- 最终真实进程验收102.516秒，含90.110秒有界活动：API/两个worker/simulator、两轮各8个并发审批、强杀RUNNING同步worker、源中断9.125秒、双worker停机11.515秒、全服务重启与采购回放。供应商六条完整事件、原回执与后端精确账本均不变；SC01最终现金400元/应收200元/现货70/预留0/在途0。
+- 独立审查发现验收证据P2并补齐供应方事件历史前后对比，重跑后通过，静态复审无剩余重要发现。报告：[b0-07-test-report](docs/reports/b0-07-test-report.md)；[验证汇总](docs/api/b0-07-verification-result.json)；[进程原始证据](docs/api/b0-07-process-result.json)。
+- 使用6秒租约/2秒心跳/8秒来源过期的测试覆盖值；不承诺默认配置下生产SLA或长期负载能力。真实预测适配器替换仍属B1，Agent/RAG未接入。自建进程已停止，PG与开发数据保留；本轮未提交/推送。
 
 ### 7.5 SC01：唯一明确的首条经营验收
 
@@ -520,39 +567,28 @@ Prediko、Inventory Planner、Float/Xero的对照和具体来源链接保存在�
 
 ## 9. 从这里继续实施的顺序
 
-B0共7个工作包。B0-01至B0-05已验证，B0-02正向到货已补齐。下一步B0-06周期/事件调度，再进行B0-07广泛联调与恢复验收；显式完整SC01已在B0-05提前贯通。
+B0共7个工作包，B0-01至B0-07已完成并验证。采购/到货、自动SC01、竞争审批、慢任务与来源故障、版本变化、进程中断及有界连续运行均有证据。下一工作包由用户指定，可进入前端联调或B1/B2；不因B0完成自动扩大范围。
 
-| 次序 | 工作包 | 第一个可验收结果 |
-|---|---|---|
-| 1 | B0-01 契约与运行基础 | API、数据库连接、迁移、身份依赖、统一错误、真实Swagger/health及最小持久JobRun runner |
-| 2 | B0-02 业务事实 | 导入catalog/INIT和模拟事件；simulation同期实现create/events；重复输入无重复影响 |
-| 3 | B0-03 Mission与规划 | 手动检查可得SC01候选比较及版本化Plan |
-| 4 | B0-04 警报与历史 | 风险去重/恢复，看板和timeline可查 |
-| 5 | B0-05 审批采购 | 精确审批、唯一Action、回执记账、UNKNOWN核对；最小部分提前与B0-03贯通首笔采购 |
-| 6 | B0-06 后台运行 | 扩展多频率/事件合并、续租和恢复；不等到此包才首次实现runner |
-| 7 | B0-07 联调与恢复验收 | SC01、竞争审批、慢任务、版本冲突、断点恢复测试通过 |
+| 工作包 | 当前结果 |
+|---|---|
+| B0-01 契约与运行基础 | API、数据库、身份与持久worker已完成 |
+| B0-02 业务事实 | 状态、事件、采购/到货账本与simulator已完成 |
+| B0-03 Mission与规划 | 固定预测、候选比较、版本化Plan已完成 |
+| B0-04 警报与历史 | 风险去重/恢复、看板与timeline已完成 |
+| B0-05 审批采购 | 精确审批、唯一Action、UNKNOWN核对与唯一入账已完成 |
+| B0-06 后台运行 | 周期派发、源同步/新鲜度、Schedule接口、事件唤醒与自动SC01已完成 |
+| B0-07 综合验收 | 组合测试、101门店锁竞争修复、双worker进程故障/恢复与测试报告已完成 |
 
-工作包不是严格瀑布顺序：先贯通B0-01/02/03/05的最小路径，得到采购40后现金600、现货20、在途40，再补展示和多频率/恢复。backend可先用fake开发规则与API；首笔采购联调前最小持久HTTP simulator须可用，完整SC01再补advance。
-
-开始具体工作包时需要落实但不必现在扩成另一个架构项目的事项：
-
-- 实际Python/框架版本、依赖锁定与数据库启动方式。
-- simulation默认单一持久HTTP服务；实现独立表/迁移、run行锁和五接口，不再把跨进程状态所有权留作未决项。
-- 数据迁移中的类型、索引、唯一约束和统一锁顺序。
-- 演示身份与门店权限映射、哪些开发入口开启。
-- 将契约草案落实为真实模型/路由，明确各操作的实现状态。
-- 在真实PostgreSQL上检验领取、租约和采购幂等，不靠内存替身证明并发正确性。
-
-用户已依次授权并完成B0-01至B0-05搭建：当前交付含审批采购、到货核对、独立simulator五接口、测试和显式SC01/重启证据。下一步进入B0-06，无需重新建设模拟平台。
+后续复用现有JobRun、检查合并、租约、Action恢复及独立扫描循环。大规模积压和锁竞争时的延迟尚未作为本轮时延承诺；有实际验收发现再修复，不为抽象或目录整齐继续重构。详细运行命令和边界见[HANDOVER.md](HANDOVER.md)。
 
 ## 10. 给任何新对话的交接方式
 
 可以直接发送：
 
-> 请先阅读 `D:/HuaweiMoveData/Users/13736/Desktop/AIS/Group_Project/ShopSteward/PROJECT_CONTEXT.md`，将它作为项目导航和状态快照。当前先做不依赖Agent/RAG的backend主干，B0-01至B0-05已实现，下一步B0-06。采购/到货及显式SC01、三进程重启已验证；周期调度和更广并发/故障仍待验收。启动见backend/README.md，设计细节在docs/backend-development.md，接口契约在docs/api。请根据我接下来指定的工作包开展工作。
+> 请先阅读 `D:/HuaweiMoveData/Users/13736/Desktop/AIS/Group_Project/ShopSteward/PROJECT_CONTEXT.md` 和同目录的 `HANDOVER.md`，完整了解项目背景、当前设计、代码现场、已验证进度和待办。工程原则是：结构正确、功能完整满足要求、没有赘余设计；审查意见需独立判断，不机械遵循。当前B0-01至07已完成并验收，B0-07测试报告在docs/reports。请先核对当前Git状态并保留已有未提交改动，然后按我本轮指定的工作继续，不重复已完成阶段或扩大记录级重构。
 
-若对话只拿得到应用仓库，先读本文和E03/E04即可理解B0，不必为了找到所有历史资料停止工作。需要研究依据时再打开飞书或索取对应外部文档；缺少访问权限时说明使用的是已有摘要及快照版本。
+两份文件足以完成概念和工作现场交接；实现某个字段/事务时再查源码与现行契约。历史研究及外部资料不在当前主干实施的必读清单内，不能因打不开旧链接而停止能够继续的工作。
 
-后续每完成一个工作包，更新本文第7节：修改日期、设计状态、实际实现文件、对应提交、测试命令与结果、尚未覆盖的情况。提交或推送文档后更新第2节仓库状态。不要长期保留“实施为空”而让新对话误判，也不要只写“完成”而不给证据。
+维护约定：PROJECT_CONTEXT保存长期背景、架构、历史证据与阶段总览；HANDOVER保存最新工程原则、Git现场、当前待办、运行/验证方式和边界。每轮完成后同步更新日期、阶段、测试证据的范围及提交状态；旧smoke和旧测试记录保留其日期，不当作新版本已经重新验证。最新用户要求优先于历史建议；若事实与文档不符，核对实际代码与Git后修正文档。
 
-初版整合核查范围：本地工程/研究文档、飞书历史快照映射、当前模块目录；BAU采用此前源码阅读结论并核对入口；RAilG/TallyGuard仅读取说明与核对文件位置。v0.2本轮修订核查backend/架构/API/模拟行为文档及契约示例，未重新执行业务系统、未重新在线审计全部参考项目、未修改飞书页面。
+初版整合核查范围：本地工程/研究文档、飞书历史快照映射、当前模块目录；BAU采用此前源码阅读结论并核对入口；RAilG/TallyGuard仅读取说明与核对文件位置。v0.2早期修订核查文档与契约；本轮B0-07重新执行全量测试、自动SC01、双worker故障恢复和全服务重启。外部参考项目未重新在线审计，飞书页面未修改。

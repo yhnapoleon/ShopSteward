@@ -1,14 +1,15 @@
+from datetime import timedelta
 from uuid import uuid4
 
 from sqlalchemy import func, select, tuple_, update
 from sqlalchemy.dialects.postgresql import insert
 
 from app.core.errors import AppError
+from app.core.hashing import digest
 from app.core.pagination import decode_cursor, encode_cursor
 from app.missions.models import MissionRow, PlanRow, ScheduleRow, TimelineRow
 from app.missions.schemas import JobAccepted, Mission, MissionList, Schedule
 from app.operations.models import Command, OfferRow, StockRow, Store
-from app.operations.repository import digest
 from app.planning.schemas import Plan, PlanList
 from app.scheduling.models import Job
 from app.scheduling.repository import enqueue
@@ -89,7 +90,16 @@ async def read_mission(session, mission_id):
     return mission_dto(*pair)
 
 
-async def queue_check(session, store, mission, *, key, manual=False):
+async def queue_check(
+    session,
+    store,
+    mission,
+    *,
+    key,
+    manual=False,
+    trigger_source="EVENT",
+    scheduled_for=None,
+):
     active = await session.scalar(
         select(Job)
         .where(
@@ -103,8 +113,14 @@ async def queue_check(session, store, mission, *, key, manual=False):
     if manual:
         mission.manual_check_requested = True
     if active:
+        active.target_state_version = max(active.target_state_version or 0, store.state_version)
+        active.target_mission_version = max(
+            active.target_mission_version or 0, mission.mission_version
+        )
         if active.status == "RUNNING":
             mission.recheck_required = True
+        elif manual or trigger_source == "EVENT":
+            active.available_at = await session.scalar(select(func.clock_timestamp()))
         return JobAccepted(job_run_id=active.id, status=active.status, merged=True)
     job = await enqueue(
         session,
@@ -113,8 +129,27 @@ async def queue_check(session, store, mission, *, key, manual=False):
         store_id=store.id,
         mission_id=mission.id,
         payload={"mission_id": mission.id},
+        trigger_source="MANUAL" if manual else trigger_source,
+        scheduled_for=scheduled_for,
+        target_state_version=store.state_version,
+        target_mission_version=mission.mission_version,
     )
     return JobAccepted(job_run_id=job.id, status=job.status, merged=False)
+
+
+async def wake_store_missions(session, store, *, key):
+    """Caller holds the store lock; all Missions consume store-level cash/version."""
+    missions = list(
+        await session.scalars(
+            select(MissionRow)
+            .where(MissionRow.store_id == store.id, MissionRow.status == "ACTIVE")
+            .order_by(MissionRow.id)
+            .with_for_update()
+            .execution_options(populate_existing=True)
+        )
+    )
+    for mission in missions:
+        await queue_check(session, store, mission, key=f"{key}:{mission.id}")
 
 
 async def create_mission(session, body, principal, key):
@@ -158,8 +193,9 @@ async def create_mission(session, body, principal, key):
         job_type="check_mission",
         trigger="INTERVAL",
         interval_seconds=body.check_interval_seconds,
-        enabled=False,
+        enabled=True,
         version=1,
+        next_run_at=now + timedelta(seconds=body.check_interval_seconds),
     )
     session.add(schedule)
     await session.flush()
@@ -215,6 +251,20 @@ async def control_mission(session, mission_id, body, principal, key):
         if plan and plan.status == "PENDING_APPROVAL":
             plan.status = "SUPERSEDED"
         mission.current_plan_id = None
+    schedule = await session.scalar(
+        select(ScheduleRow)
+        .where(ScheduleRow.mission_id == mission.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    schedule.version += 1
+    if mission.status in {"COMPLETED", "CANCELLED"}:
+        schedule.enabled = False
+    schedule.next_run_at = (
+        mission.updated_at + timedelta(seconds=schedule.interval_seconds)
+        if mission.status == "ACTIVE" and schedule.enabled
+        else None
+    )
     await timeline(session, mission, "MISSION_CONTROLLED", body.operation, actor=principal)
     if body.operation == "resume":
         await queue_check(session, store, mission, key=str(uuid4()), manual=True)
@@ -230,6 +280,42 @@ async def control_mission(session, mission_id, body, principal, key):
         )
     await session.flush()
     result = await read_mission(session, mission.id)
+    receipt.response = result.model_dump(mode="json")
+    return result
+
+
+async def update_schedule(session, mission_id, body, principal, key):
+    _, mission = await lock_mission(session, mission_id)
+    receipt, replay = await command(
+        session,
+        principal,
+        "update_mission_schedule",
+        key,
+        {"mission_id": mission_id, **body.model_dump()},
+    )
+    if replay:
+        return Schedule.model_validate(receipt.response)
+    if mission.status in {"COMPLETED", "CANCELLED"}:
+        raise AppError(409, "MISSION_TERMINAL", "A terminal Mission schedule cannot be changed")
+    schedule = await session.scalar(
+        select(ScheduleRow)
+        .where(ScheduleRow.mission_id == mission.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    if schedule.version != body.expected_schedule_version:
+        raise AppError(409, "SCHEDULE_VERSION_CONFLICT", "Schedule version has changed")
+    now = await session.scalar(select(func.clock_timestamp()))
+    schedule.interval_seconds = body.interval_seconds
+    schedule.enabled = body.enabled
+    schedule.version += 1
+    schedule.next_run_at = (
+        now + timedelta(seconds=body.interval_seconds)
+        if mission.status == "ACTIVE" and body.enabled
+        else None
+    )
+    await session.flush()
+    result = Schedule.model_validate(schedule)
     receipt.response = result.model_dump(mode="json")
     return result
 

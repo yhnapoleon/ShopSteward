@@ -179,7 +179,9 @@
             },
             "description": "Service Unavailable"
           }
-        }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
       }
     },
     "/api/v1/alerts/{alert_id}/acknowledgement": {
@@ -299,7 +301,9 @@
             },
             "description": "Service Unavailable"
           }
-        }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
       }
     },
     "/api/v1/dashboard": {
@@ -408,7 +412,9 @@
             },
             "description": "Service Unavailable"
           }
-        }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
       }
     },
     "/api/v1/missions/{mission_id}/timeline": {
@@ -546,7 +552,9 @@
             },
             "description": "Service Unavailable"
           }
-        }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
       }
     },
     "/api/v1/plans/{plan_id}/decision": {
@@ -915,6 +923,16 @@
               }
             }
           },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "422": {
             "description": "Unprocessable Entity",
             "content": {
@@ -1020,6 +1038,16 @@
               }
             },
             "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
           },
           "422": {
             "content": {
@@ -1733,6 +1761,139 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Mission"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/missions/{mission_id}/schedule": {
+      "patch": {
+        "tags": [
+          "Missions",
+          "Scheduling"
+        ],
+        "summary": "Update Schedule",
+        "operationId": "update_mission_schedule",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mission_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Mission Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScheduleUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Schedule"
                 }
               }
             }
@@ -5025,6 +5186,34 @@
           "next_run_at"
         ],
         "title": "Schedule"
+      },
+      "ScheduleUpdate": {
+        "properties": {
+          "interval_seconds": {
+            "type": "integer",
+            "maximum": 3600.0,
+            "minimum": 5.0,
+            "title": "Interval Seconds"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "Enabled"
+          },
+          "expected_schedule_version": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Expected Schedule Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "interval_seconds",
+          "enabled",
+          "expected_schedule_version"
+        ],
+        "title": "ScheduleUpdate"
       },
       "SourceStatus": {
         "properties": {

@@ -23,11 +23,13 @@ async def start(client, seed):
 
 
 async def run_check(db, seed):
-    from app.planning.jobs import make_handler
+    from app.planning.jobs import make_handlers
     from app.scheduling.runner import Runner
 
     runner = Runner(
-        db, settings(db, seed), handlers={"check_mission": make_handler(settings(db, seed))}
+        db,
+        settings(db, seed),
+        handlers={"check_mission": make_handlers(settings(db, seed))["check_mission"]},
     )
     assert await runner.run_once()
 
@@ -133,14 +135,14 @@ async def test_expired_fixed_forecast_renews_current_remaining_demand_after_sale
 
 
 async def test_state_change_between_prepare_and_publish_discards_plan_and_queues_followup(db):
-    from app.planning.jobs import make_handler
+    from app.planning.jobs import make_handlers
     from app.scheduling.handlers import Handler
     from app.scheduling.models import Job
     from app.scheduling.runner import Runner
 
     async with environment(db) as (seed, client):
         mission = await start(client, seed)
-        handler = make_handler(settings(db, seed))
+        handler = make_handlers(settings(db, seed))["check_mission"]
 
         async def changing(database, job):
             prepared = await handler.run(database, job)
@@ -174,13 +176,13 @@ async def test_state_change_between_prepare_and_publish_discards_plan_and_queues
 
 
 async def test_pause_during_calculation_and_expired_lease_cannot_publish(db):
-    from app.planning.jobs import make_handler
+    from app.planning.jobs import make_handlers
     from app.scheduling.handlers import Handler
     from app.scheduling.runner import Runner
 
     async with environment(db) as (seed, client):
         mission = await start(client, seed)
-        handler = make_handler(settings(db, seed))
+        handler = make_handlers(settings(db, seed))["check_mission"]
 
         async def pausing(database, job):
             prepared = await handler.run(database, job)

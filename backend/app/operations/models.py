@@ -1,6 +1,15 @@
 from datetime import datetime
 
-from sqlalchemy import BigInteger, CheckConstraint, DateTime, ForeignKey, String, UniqueConstraint
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    CheckConstraint,
+    DateTime,
+    ForeignKey,
+    Index,
+    String,
+    UniqueConstraint,
+)
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -77,6 +86,22 @@ class SourceCursor(Base):
     last_success_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     last_error: Mapped[str | None] = mapped_column(String(128))
     __table_args__ = (CheckConstraint("last_sequence >= 0", name="sequence_valid"),)
+
+
+class SourceSchedule(Base):
+    __tablename__ = "source_schedules"
+    scenario_run_id: Mapped[str] = mapped_column(
+        ForeignKey("source_cursors.scenario_run_id"), primary_key=True
+    )
+    job_type: Mapped[str] = mapped_column(String(32), primary_key=True)
+    interval_seconds: Mapped[int] = mapped_column(BigInteger)
+    next_run_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    rerun_requested: Mapped[bool] = mapped_column(Boolean, default=False)
+    __table_args__ = (
+        CheckConstraint("job_type IN ('sync_events','check_freshness')", name="job_type"),
+        CheckConstraint("interval_seconds BETWEEN 5 AND 3600", name="interval"),
+        Index("ix_source_schedules_due", "next_run_at"),
+    )
 
 
 class EventRow(Base):

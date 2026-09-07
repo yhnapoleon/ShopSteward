@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 
 from app.core.errors import AppError
-from app.operations.repository import digest
+from app.core.hashing import digest
 
 
 def encode_cursor(scope, row):

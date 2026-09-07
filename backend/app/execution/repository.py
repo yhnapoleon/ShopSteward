@@ -4,12 +4,12 @@ from uuid import uuid4
 from sqlalchemy import func, select
 
 from app.core.errors import AppError
+from app.core.hashing import digest
 from app.execution.models import ActionRow, ApprovalRow
 from app.execution.schemas import DecisionApproved, DecisionRejected, PurchaseRequest
 from app.missions.models import PlanRow
 from app.missions.repository import command, lock_mission, timeline
 from app.operations.models import OfferRow, SourceCursor, StockRow
-from app.operations.repository import digest
 from app.planning.canonical import canonical
 from app.planning.engine import build_plan, proposal_hash
 from app.planning.schemas import Plan

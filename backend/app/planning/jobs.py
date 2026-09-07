@@ -2,10 +2,10 @@ from sqlalchemy import func, select
 
 from app.alerts.repository import reconcile
 from app.alerts.rules import evaluate, inconclusive
+from app.core.hashing import digest
 from app.missions.models import MissionRow, PlanRow
 from app.missions.repository import lock_mission, queue_check, timeline
-from app.operations.models import ForecastRow, SourceCursor, StockRow
-from app.operations.repository import digest
+from app.operations.models import ForecastRow, SourceCursor, StockRow, Store
 from app.planning.canonical import canonical
 from app.planning.engine import build_plan, check_status, input_hash
 from app.planning.schemas import DecisionSnapshot
@@ -52,7 +52,7 @@ def result(summary, status, mission, *, plan=None, state_version=None):
     return value
 
 
-def make_handler(settings):
+def make_handlers(settings):
     async def run(db, job):
         prepared = await prepare(db, job.mission_id, settings)
         # Pure computation is outside the publication transaction.
@@ -221,10 +221,10 @@ def make_handler(settings):
                 references=outcome["references"],
             )
         if mission and mission.status == "ACTIVE" and mission.recheck_required:
-            from app.operations.models import Store
-
             store = await session.get(Store, mission.store_id)
             mission.recheck_required = False
             await queue_check(session, store, mission, key="followup-" + job.id)
 
-    return Handler(run, retry_safe=True, apply=apply, after_complete=after_complete)
+    return {
+        "check_mission": Handler(run, retry_safe=True, apply=apply, after_complete=after_complete)
+    }

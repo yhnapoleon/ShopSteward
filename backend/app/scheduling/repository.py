@@ -12,7 +12,19 @@ from app.core.errors import AppError
 from app.scheduling.models import Job, WorkerHeartbeat
 
 
-async def enqueue(session, *, job_type, dedup_key, store_id=None, mission_id=None, payload=None):
+async def enqueue(
+    session,
+    *,
+    job_type,
+    dedup_key,
+    store_id=None,
+    mission_id=None,
+    payload=None,
+    trigger_source="MANUAL",
+    scheduled_for=None,
+    target_state_version=None,
+    target_mission_version=None,
+):
     """Caller owns the transaction, including any business mutation associated with enqueue."""
     TypeAdapter(JobType).validate_python(job_type)
     content = {
@@ -33,10 +45,12 @@ async def enqueue(session, *, job_type, dedup_key, store_id=None, mission_id=Non
             request_hash=digest,
             **content,
             status="READY",
-            trigger_source="MANUAL",
+            trigger_source=trigger_source,
             attempt_count=0,
-            scheduled_for=now,
+            scheduled_for=scheduled_for or now,
             available_at=now,
+            target_state_version=target_state_version,
+            target_mission_version=target_mission_version,
         )
         .on_conflict_do_nothing(index_elements=[Job.dedup_key])
     )

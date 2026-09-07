@@ -1,0 +1,53 @@
+{
+  "recorded_at": "2026-09-06T13:26:23.121651+00:00",
+  "work_package": "B0-05 quality review before B0-06",
+  "base_commit": "516252df73f77ef5d3507968e2f943e2fdcde7db",
+  "branch": "YH",
+  "scope": [
+    "core hashing",
+    "shared API helpers and B0 route metadata",
+    "generic handler hooks and factory registration",
+    "Handover and actual directory alignment"
+  ],
+  "tests": {
+    "backend_passed": 122,
+    "api": 19,
+    "unit": 16,
+    "postgresql_integration": 87,
+    "simulator_passed": 12,
+    "skipped": 0
+  },
+  "checks": {
+    "ruff": "passed",
+    "format_backend_files": 88,
+    "alembic_drift": false,
+    "design_examples": 53,
+    "plan_hash_examples": 2,
+    "eager_module_import_cycles": 0,
+    "digest_function_ast_unchanged": true
+  },
+  "openapi": {
+    "operations": 21,
+    "paths": 20,
+    "schemas_unchanged": true,
+    "operation_ids_unchanged": true,
+    "metadata_added": [
+      "list_alerts",
+      "acknowledge_alert",
+      "get_dashboard",
+      "list_mission_timeline"
+    ],
+    "shared_409_added": [
+      "get_monitoring_status",
+      "get_job_run"
+    ]
+  },
+  "independent_review": "No blocking correctness, regression, or scope findings",
+  "limits": [
+    "No schema migration",
+    "No new periodic dispatch",
+    "No new three-process smoke this review; B0-05 historical smoke retained",
+    "Existing live API/worker need restart to load changed code",
+    "Changes remain uncommitted"
+  ]
+}

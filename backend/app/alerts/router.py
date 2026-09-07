@@ -1,17 +1,25 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Query, Request
+from fastapi import Query, Request
 
 from app.alerts import repository as repo
 from app.alerts.models import AlertRow
 from app.alerts.schemas import Alert, AlertList, AlertStatus
-from app.api.dependencies import User, authorize_store
+from app.api.dependencies import (
+    Cursor,
+    Id,
+    Key,
+    Limit,
+    User,
+    authorize_store,
+    require_role,
+    visible_mission,
+)
+from app.api.routing import B0Router, errors
 from app.core.errors import AppError
-from app.missions.router import Cursor, Id, Limit, require_role, visible_mission
 from app.operations.models import Store
-from app.operations.router import Key, errors
 
-router = APIRouter(tags=["Alerts"], responses=errors)
+router = B0Router(tags=["Alerts"], responses=errors)
 
 
 @router.get(

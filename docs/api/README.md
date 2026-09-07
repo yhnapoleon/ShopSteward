@@ -1,6 +1,8 @@
 # Swagger / OpenAPI 契约使用说明
 
-完整设计契约仍包含待实现业务；B0-01至B0-05已有可运行API，真实 `/docs` 显示21个已注册操作（20条路径）。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
+完整设计契约仍包含待实现业务；B0-01至B0-06已有可运行API，真实 `/docs` 显示22个已注册操作（21条路径）。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
+
+B0-07组合验收没有新增接口或迁移；当前验证见[测试报告](../reports/b0-07-test-report.md)、[进程证据](b0-07-process-result.json)及[验证汇总](b0-07-verification-result.json)。历史B0-05/06证据保留原适用范围。
 
 | 文件 | 用途 | 设计操作数 |
 |---|---|---:|
@@ -81,7 +83,7 @@ app = FastAPI(
 uv run python -c 'import json; from pathlib import Path; from app.main import app; Path("../docs/api/backend.runtime.openapi.json").write_text(json.dumps(app.openapi(), ensure_ascii=False, indent=2), encoding="utf-8")'
 ```
 
-导出应只导入应用和注册路由，不连接模型、启动 worker 或执行数据库迁移；有副作用的初始化放受控生命周期/独立命令。`backend.runtime.openapi.json` 已由B0-01真实应用导出，仅含4个操作。
+导出应只导入应用和注册路由，不连接模型、启动 worker 或执行数据库迁移；有副作用的初始化放受控生命周期/独立命令。`backend.runtime.openapi.json` 当前由B0-06真实应用导出，包含22个操作（21条路径）；新增PATCH Mission schedule。
 
 ## 3. 字段与版本维护
 
@@ -115,3 +117,5 @@ uv run --no-project --with openapi-spec-validator==0.7.2 --with jsonschema==4.23
 6. 更新实现状态及生成快照，再交付前端联调。
 
 两个契约中共享的 State、事件、回执等结构暂各自内联，以便单文件导入。校验器比较相同名称 schema，防止漂移；实现后从模块公共 DTO 生成，避免手工维护副本。
+
+B0-05后质量收口：所有21个运行时操作均有x-phase=B0及x-implementation-status=implemented，由B0Router统一登记。补齐原先遗漏的list_alerts、acknowledge_alert、get_dashboard、list_mission_timeline；统一错误模板包含409。请求/响应schema和operationId保持一致，元数据完整性有API回归测试。

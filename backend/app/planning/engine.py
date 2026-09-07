@@ -1,7 +1,7 @@
 from datetime import timedelta
 from uuid import uuid4
 
-from app.operations.repository import digest
+from app.core.hashing import digest
 from app.planning.canonical import canonical
 from app.planning.schemas import Candidate, DecisionSnapshot, Plan, ProposedPurchase
 

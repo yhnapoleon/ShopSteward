@@ -5,9 +5,10 @@ from uuid import uuid4
 from pydantic import ValidationError
 from sqlalchemy import func, select, text
 
+from app.core.hashing import digest
 from app.missions.models import InboundRow, MissionRow
 from app.operations.models import ForecastRow, OfferRow, SourceCursor
-from app.operations.repository import digest, get_state
+from app.operations.repository import get_state
 from app.operations.schemas import Offer
 from app.planning.engine import RULE_VERSION
 from app.planning.schemas import DecisionSnapshot, ForecastSnapshot, InboundSnapshot, Policy

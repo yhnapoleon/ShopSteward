@@ -4,7 +4,6 @@ from uuid import uuid4
 
 from app.core.errors import AppError
 from app.scheduling import repository as repo
-from app.scheduling.handlers import HANDLERS
 
 logger = logging.getLogger("shopsteward")
 
@@ -17,29 +16,31 @@ async def wait_or_stop(event: asyncio.Event, seconds: float):
 
 
 class Runner:
-    def __init__(self, db, settings, *, worker_id=None, handlers=None):
+    def __init__(self, db, settings, *, worker_id=None, handlers=None, dispatcher=None):
         self.db = db
         self.settings = settings
         self.worker_id = worker_id or str(uuid4())
         if handlers is None:
-            from app.operations.jobs import make_handlers
-            from app.planning.jobs import make_handler
+            from app.bootstrap import make_handlers
+            from app.scheduling.dispatcher import dispatch_due
 
-            self.handlers = dict(HANDLERS) | make_handlers(settings)
-            self.handlers["check_mission"] = make_handler(settings)
-            from app.execution.jobs import make_handlers as execution_handlers
-
-            self.handlers.update(execution_handlers(settings))
-        else:
-            self.handlers = dict(handlers)
+            handlers = make_handlers(settings)
+            dispatcher = dispatcher or dispatch_due
+        self.dispatcher = dispatcher
+        self.handlers = dict(handlers)
+        self.before_claim = tuple(
+            dict.fromkeys(
+                handler.before_claim for handler in self.handlers.values() if handler.before_claim
+            )
+        )
 
     async def run_once(self, stop: asyncio.Event | None = None) -> bool:
         if stop is not None and stop.is_set():
             return False
-        if "reconcile_action" in self.handlers:
-            from app.execution.jobs import recover_actions
-
-            await recover_actions(self.db)
+        for hook in self.before_claim:
+            await hook(self.db)
+            if stop is not None and stop.is_set():
+                return False
         async with self.db.session() as session, session.begin():
             await repo.heartbeat(session, self.worker_id)
             await repo.recover_expired(
@@ -89,23 +90,19 @@ class Runner:
             )
             if self.handlers[job.job_type].retry_safe and not lost.is_set():
                 async with self.db.session() as session, session.begin():
-                    from app.execution.events import EventActionConflict, persist_conflict
-
-                    if isinstance(exc, EventActionConflict):
-                        await persist_conflict(session, exc)
-                        if not await repo.renew(
-                            session, job.id, job.lease_token, self.settings.job_lease_seconds
-                        ):
-                            await session.rollback()
-                            return True
-                    await repo.fail(
+                    on_error = self.handlers[job.job_type].on_error
+                    if on_error is not None:
+                        await on_error(session, job, exc)
+                    # Business locks precede the job lock, as in successful publication.
+                    accepted = await repo.fail(
                         session,
                         job.id,
                         job.lease_token,
                         exc.code if isinstance(exc, AppError) else "HANDLER_FAILED",
                         retryable=isinstance(exc, AppError) and exc.retryable,
                     )
-            # Action recovery handles uncertain external writes independently of JobRun failure.
+                    if not accepted:
+                        await session.rollback()
         finally:
             done.set()
             await renewal
@@ -144,9 +141,18 @@ class Runner:
                 )
             await wait_or_stop(stop, self.settings.job_heartbeat_seconds)
 
+    async def _dispatch(self, stop):
+        while not stop.is_set():
+            try:
+                await self.dispatcher(self.db)
+            except Exception as exc:
+                logger.error("schedule_dispatch_failed", extra={"error_type": type(exc).__name__})
+            await wait_or_stop(stop, self.settings.worker_poll_seconds)
+
     async def serve(self, stop: asyncio.Event):
         pulse_stop = asyncio.Event()
         pulse = asyncio.create_task(self._pulse(pulse_stop))
+        dispatch = asyncio.create_task(self._dispatch(stop)) if self.dispatcher else None
         active = set()
         try:
             while not stop.is_set():
@@ -167,6 +173,9 @@ class Runner:
                     active.add(asyncio.create_task(self.run_once(stop)))
                 await wait_or_stop(stop, self.settings.worker_poll_seconds)
         finally:
+            if dispatch is not None:
+                dispatch.cancel()
+                await asyncio.gather(dispatch, return_exceptions=True)
             if active:
                 _, pending = await asyncio.wait(
                     active, timeout=self.settings.worker_shutdown_seconds

@@ -4,8 +4,10 @@ import json
 from uuid import uuid4
 
 from app.core.config import Settings
+from app.core.hashing import digest
 from app.db.session import Database
-from app.operations.repository import digest, get_state, store_for_run
+from app.operations.repository import get_state, store_for_run
+from app.operations.scheduling import queue_source
 from app.scheduling.repository import enqueue
 
 
@@ -20,12 +22,8 @@ async def execute(command, key, run_id=None, store_id=None):
                 return
             if command == "sync-events":
                 store = await store_for_run(session, run_id)
-                job = await enqueue(
-                    session,
-                    job_type="sync_events",
-                    store_id=store.id,
-                    dedup_key=digest(["cli-sync", key]),
-                    payload={"scenario_run_id": run_id},
+                job = await queue_source(
+                    session, store, key=digest(["cli-sync", key]), trigger_source="MANUAL"
                 )
             else:
                 job = await enqueue(session, job_type="worker_probe", dedup_key=key)

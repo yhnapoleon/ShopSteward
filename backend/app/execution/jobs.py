@@ -3,15 +3,16 @@ from datetime import timedelta
 from sqlalchemy import exists, func, or_, select
 
 from app.core.errors import AppError
+from app.core.hashing import digest
 from app.execution.accounting import action_alert, apply_receipt, close_action
 from app.execution.models import ActionRow
 from app.execution.repository import PENDING, lock_action, queue_action, validate_current
 from app.missions.repository import queue_check, timeline
 from app.operations.client import SimulationClient
-from app.operations.repository import digest
+from app.operations.models import Store
 from app.scheduling.handlers import Handler
 from app.scheduling.models import Job
-from app.scheduling.repository import enqueue, renew
+from app.scheduling.repository import renew
 
 
 async def recover_actions(db):
@@ -20,6 +21,7 @@ async def recover_actions(db):
         ids = list(
             await session.scalars(
                 select(ActionRow.id)
+                .join(Store, Store.id == ActionRow.store_id)
                 .where(
                     ActionRow.status.in_(PENDING),
                     ActionRow.manual_review.is_(False),
@@ -37,10 +39,21 @@ async def recover_actions(db):
                 )
                 .order_by(ActionRow.store_id, ActionRow.id)
                 .limit(100)
+                .with_for_update(of=Store, skip_locked=True)
             )
         )
     for identifier in ids:
         async with db.session() as session, session.begin():
+            initial = await session.get(ActionRow, identifier)
+            # A busy store must not stall this before-claim hook for unrelated jobs.
+            # Discovery locks were released; try again to cover intervening writers.
+            available = await session.scalar(
+                select(Store.id)
+                .where(Store.id == initial.store_id)
+                .with_for_update(skip_locked=True)
+            )
+            if available is None:
+                continue
             _, _, _, action = await lock_action(session, identifier)
             if action.status in PENDING and not action.manual_review:
                 await queue_action(session, action)
@@ -121,15 +134,17 @@ def make_handlers(settings, *, client=None):
         if action.status in PENDING and not action.manual_review:
             await queue_action(session, action)
         elif action.status in {"SUCCEEDED", "FAILED"}:
-            await enqueue(
-                session,
-                job_type="sync_events",
-                store_id=store.id,
-                dedup_key=digest(["action-sync", job.id]),
-                payload={"scenario_run_id": store.scenario_run_id},
-            )
+            from app.operations.scheduling import queue_source
+
+            await queue_source(session, store, key=digest(["action-sync", job.id]))
             if mission.status == "ACTIVE":
                 await queue_check(session, store, mission, key="action-check-" + job.id)
 
-    handler = Handler(run, retry_safe=True, apply=apply, after_complete=after_complete)
+    handler = Handler(
+        run,
+        retry_safe=True,
+        apply=apply,
+        after_complete=after_complete,
+        before_claim=recover_actions,
+    )
     return {"execute_purchase": handler, "reconcile_action": handler}

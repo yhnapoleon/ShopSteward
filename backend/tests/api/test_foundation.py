@@ -125,6 +125,7 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/missions",
         "/api/v1/missions/{mission_id}",
         "/api/v1/missions/{mission_id}/control",
+        "/api/v1/missions/{mission_id}/schedule",
         "/api/v1/missions/{mission_id}/checks",
         "/api/v1/missions/{mission_id}/plans",
         "/api/v1/plans/{plan_id}",
@@ -146,6 +147,17 @@ async def test_production_default_hides_docs():
     async with client_for(make_app(app_env="production")) as client:
         assert (await client.get("/docs")).status_code == 404
         assert (await client.get("/openapi.json")).status_code == 404
+
+
+async def test_all_runtime_operations_have_phase_and_implementation_metadata():
+    for environment in ("development", "production"):
+        schema = make_app(app_env=environment).openapi()
+        for path, item in schema["paths"].items():
+            for method, operation in item.items():
+                if method not in {"get", "post", "patch"}:
+                    continue
+                assert operation.get("x-phase") == "B0", (method, path)
+                assert operation.get("x-implementation-status") == "implemented", (method, path)
 
 
 @pytest.mark.parametrize(

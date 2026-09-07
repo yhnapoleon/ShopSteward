@@ -153,13 +153,13 @@ async def test_ack_permissions_concurrency_and_cross_alert_idempotency(db):
 async def test_expired_lease_rolls_back_alert_plan_and_check_timeline(db):
     from app.alerts.models import AlertRow
     from app.missions.models import TimelineRow
-    from app.planning.jobs import make_handler
+    from app.planning.jobs import make_handlers
     from app.scheduling.handlers import Handler
     from app.scheduling.runner import Runner
 
     async with environment(db) as (seed, client):
         mission = await start(client, seed)
-        handler = make_handler(settings(db, seed))
+        handler = make_handlers(settings(db, seed))["check_mission"]
 
         async def expire(database, job):
             prepared = await handler.run(database, job)

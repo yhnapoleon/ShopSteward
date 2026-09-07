@@ -1,0 +1,1691 @@
+{
+  "work_package": "B0-07",
+  "status": "PASS",
+  "phase": "complete",
+  "recorded_at": "2026-09-07T02:45:30.834127+00:00",
+  "runtime_overrides": {
+    "SIMULATION_BASE_URL": "http://127.0.0.1:8011",
+    "JOB_LEASE_SECONDS": "6",
+    "JOB_HEARTBEAT_SECONDS": "2",
+    "WORKER_POLL_SECONDS": "0.2",
+    "WORKER_CONCURRENCY": "4",
+    "SOURCE_STALE_SECONDS": "8"
+  },
+  "scope": "New development SC01, real API/simulator/two workers, automatic checks, concurrent exact approvals, source-job kill, source outage, downtime, restart replay.",
+  "limitations": [
+    "Read-only backend SQL is used to inspect leases, schedules, and ledger evidence.",
+    "Processes share configured development databases; only the new scenario is asserted.",
+    "Purchase lost-response injection belongs to separate integration acceptance.",
+    "Observed local timing is not a production SLA or sustained-load benchmark.",
+    "Fault intervals interrupt service; continuous activity means one bounded wall-clock acceptance run including recovery, not uninterrupted service uptime.",
+    "All development data is retained; no database cleanup is performed."
+  ],
+  "ports_occupied_before_start": {
+    "8000": false,
+    "8001": false,
+    "8010": false,
+    "8011": false,
+    "8012": false,
+    "8013": false
+  },
+  "logs_directory": "D:\\HuaweiMoveData\\Users\\13736\\Desktop\\AIS\\Group_Project\\ShopSteward\\var\\b0-07-cac61afa7daa40468372c758297d73b8",
+  "owned_processes": [
+    {
+      "name": "simulator",
+      "pid": 6124,
+      "started_at": "2026-09-07T02:45:32.823574+00:00",
+      "stopped_at": "2026-09-07T02:45:45.930923+00:00",
+      "exit_code": 1,
+      "fault_kill": true
+    },
+    {
+      "name": "api",
+      "pid": 36760,
+      "started_at": "2026-09-07T02:45:32.829373+00:00",
+      "stopped_at": "2026-09-07T02:47:04.565481+00:00",
+      "exit_code": 1
+    },
+    {
+      "name": "worker1",
+      "pid": 22332,
+      "started_at": "2026-09-07T02:45:32.834845+00:00",
+      "stopped_at": "2026-09-07T02:45:39.614237+00:00",
+      "exit_code": 1,
+      "fault_kill": true
+    },
+    {
+      "name": "worker2",
+      "pid": 19624,
+      "started_at": "2026-09-07T02:45:32.840606+00:00",
+      "stopped_at": "2026-09-07T02:46:00.283730+00:00",
+      "exit_code": 1,
+      "fault_kill": true
+    },
+    {
+      "name": "worker1",
+      "pid": 35356,
+      "started_at": "2026-09-07T02:45:45.883669+00:00",
+      "stopped_at": "2026-09-07T02:46:00.282721+00:00",
+      "exit_code": 1,
+      "fault_kill": true
+    },
+    {
+      "name": "simulator",
+      "pid": 5444,
+      "started_at": "2026-09-07T02:45:55.056442+00:00",
+      "stopped_at": "2026-09-07T02:47:04.570554+00:00",
+      "exit_code": 1
+    },
+    {
+      "name": "worker1",
+      "pid": 37064,
+      "started_at": "2026-09-07T02:46:11.820921+00:00",
+      "stopped_at": "2026-09-07T02:47:04.562180+00:00",
+      "exit_code": 1,
+      "fault_kill": true
+    },
+    {
+      "name": "worker2",
+      "pid": 21572,
+      "started_at": "2026-09-07T02:46:11.826270+00:00",
+      "stopped_at": "2026-09-07T02:47:04.563788+00:00",
+      "exit_code": 1,
+      "fault_kill": true
+    },
+    {
+      "name": "simulator",
+      "pid": 9552,
+      "started_at": "2026-09-07T02:47:04.580601+00:00",
+      "stopped_at": "2026-09-07T02:47:12.597702+00:00",
+      "exit_code": 1
+    },
+    {
+      "name": "api",
+      "pid": 11644,
+      "started_at": "2026-09-07T02:47:04.587283+00:00",
+      "stopped_at": "2026-09-07T02:47:12.594604+00:00",
+      "exit_code": 1
+    },
+    {
+      "name": "worker1",
+      "pid": 46404,
+      "started_at": "2026-09-07T02:47:04.592710+00:00",
+      "stopped_at": "2026-09-07T02:47:12.592935+00:00",
+      "exit_code": 1
+    },
+    {
+      "name": "worker2",
+      "pid": 19440,
+      "started_at": "2026-09-07T02:47:04.599895+00:00",
+      "stopped_at": "2026-09-07T02:47:12.591697+00:00",
+      "exit_code": 1
+    }
+  ],
+  "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+  "scenario_run_id": "run_640cd14e282947a6bd05ac74a8b5d035",
+  "activity_started_at": "2026-09-07T02:45:34.413977+00:00",
+  "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+  "manual_check_requests": 0,
+  "concurrent_approval_rounds": [
+    {
+      "quantity": 40,
+      "requests": 8,
+      "identical_responses": true,
+      "plan_id": "9493fa90-fb0c-4c90-8db2-64addf700c15",
+      "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+      "elapsed_seconds": 0.391
+    },
+    {
+      "quantity": 20,
+      "requests": 8,
+      "identical_responses": true,
+      "plan_id": "acd09223-f4f9-4888-9334-88c2295cceb5",
+      "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+      "elapsed_seconds": 0.328
+    }
+  ],
+  "actions": [
+    {
+      "id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+      "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+      "plan_id": "9493fa90-fb0c-4c90-8db2-64addf700c15",
+      "approval_id": "449c8ebe-7aab-4e73-8c46-a64773473bfb",
+      "status": "SUCCEEDED",
+      "quantity": 40,
+      "amount_minor": 40000,
+      "currency": "CNY",
+      "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3",
+      "receipt": {
+        "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+        "status": "ACCEPTED",
+        "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3",
+        "quantity": 40,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-07T02:45:35.628672Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-07T02:45:35.117132Z",
+      "updated_at": "2026-09-07T02:45:35.668650Z",
+      "purchase_snapshot": {
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 40,
+        "unit_price_minor": 1000,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-08T02:45:34Z"
+      }
+    },
+    {
+      "id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+      "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+      "plan_id": "acd09223-f4f9-4888-9334-88c2295cceb5",
+      "approval_id": "2d8c7ac3-b755-421a-86d1-fb91f4e4824b",
+      "status": "SUCCEEDED",
+      "quantity": 20,
+      "amount_minor": 20000,
+      "currency": "CNY",
+      "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38",
+      "receipt": {
+        "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+        "status": "ACCEPTED",
+        "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38",
+        "quantity": 20,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-07T02:45:37.753258Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-07T02:45:37.395823Z",
+      "updated_at": "2026-09-07T02:45:37.791434Z",
+      "purchase_snapshot": {
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 20,
+        "unit_price_minor": 1000,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-09T04:45:34Z"
+      }
+    }
+  ],
+  "final_state": {
+    "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+    "state_version": 9,
+    "currency": "CNY",
+    "cash_minor": 40000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 40000,
+    "receivables_minor": 20000,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 70,
+        "in_transit": 0,
+        "remaining_demand": 70,
+        "forecast_version": "local-f0a206029e39c2be15ddc3aa7bfb9279"
+      }
+    ],
+    "data_as_of": "2026-09-07T02:45:38.420246Z",
+    "simulation_time": "2026-09-09T04:45:34.311713Z"
+  },
+  "worker_kill": {
+    "worker": "worker1",
+    "job_id": "7b0c0823-d494-409d-be4d-fecbfc3d7e23",
+    "observed_status": "RUNNING",
+    "killed_at": "2026-09-07 02:45:39.610682+00:00",
+    "lease_until": "2026-09-07 02:45:45.480858+00:00",
+    "attempts_before": 1,
+    "recovered_job": {
+      "id": "7b0c0823-d494-409d-be4d-fecbfc3d7e23",
+      "status": "SUCCEEDED",
+      "attempt_count": 2,
+      "finished_at": "2026-09-07 02:45:45.779358+00:00",
+      "error_code": null
+    },
+    "elapsed_seconds": 6.266,
+    "same_job_id_recovered_by_surviving_worker": true
+  },
+  "source_outage": {
+    "stopped_seconds": 9.125,
+    "source_stale_seconds": 8,
+    "stale_evidence": {
+      "freshness": {
+        "status": "STALE",
+        "data_as_of": "2026-09-07T02:45:38.420246Z",
+        "last_sync_at": "2026-09-07T02:45:45.775885Z"
+      },
+      "alert_ids": [
+        "4790e442-7351-4ab1-8df5-6080633a09af"
+      ]
+    },
+    "resolved_alert_ids": [
+      "4790e442-7351-4ab1-8df5-6080633a09af"
+    ],
+    "freshness_after": {
+      "status": "FRESH",
+      "data_as_of": "2026-09-07T02:45:38.420246Z",
+      "last_sync_at": "2026-09-07T02:45:59.921102Z"
+    }
+  },
+  "worker_downtime": {
+    "stopped_seconds": 11.515,
+    "elapsed_including_restart_seconds": 13.047,
+    "schedule_before": {
+      "id": "61123ef1-91cd-4532-a362-81fd723cae02",
+      "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+      "job_type": "check_mission",
+      "trigger": "INTERVAL",
+      "interval_seconds": 5,
+      "enabled": true,
+      "version": 1,
+      "next_run_at": "2026-09-07 02:46:04.744176+00:00"
+    },
+    "schedule_after": {
+      "id": "61123ef1-91cd-4532-a362-81fd723cae02",
+      "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+      "job_type": "check_mission",
+      "trigger": "INTERVAL",
+      "interval_seconds": 5,
+      "enabled": true,
+      "version": 1,
+      "next_run_at": "2026-09-07 02:46:14.744176+00:00",
+      "observed_at": "2026-09-07 02:46:13.338845+00:00"
+    },
+    "anchor_jump_seconds": 10.0,
+    "missed_interval_job_rows": [
+      {
+        "id": "20087706-568a-419e-a2d5-c38d1f9fa346",
+        "scheduled_for": "2026-09-07 02:46:09.744176+00:00",
+        "status": "READY"
+      }
+    ],
+    "schedule_unchanged_while_stopped": true,
+    "fixed_anchor_preserved": true
+  },
+  "continuous_activity": {
+    "wall_seconds": 90.11,
+    "minimum_wall_seconds": 90,
+    "completed_mission_checks": 16,
+    "completed_source_syncs": 13,
+    "samples": [
+      {
+        "elapsed_seconds": 39.25,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 6
+          },
+          {
+            "job_type": "sync_events",
+            "count": 3
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 40.281,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 6
+          },
+          {
+            "job_type": "sync_events",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 41.297,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 7
+          },
+          {
+            "job_type": "sync_events",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 42.344,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 7
+          },
+          {
+            "job_type": "sync_events",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 43.375,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 7
+          },
+          {
+            "job_type": "sync_events",
+            "count": 4
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 44.406,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 4
+          },
+          {
+            "job_type": "check_mission",
+            "count": 7
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 45.453,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 5
+          },
+          {
+            "job_type": "check_mission",
+            "count": 7
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 46.485,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 5
+          },
+          {
+            "job_type": "check_mission",
+            "count": 8
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 47.516,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 5
+          },
+          {
+            "job_type": "check_mission",
+            "count": 8
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 48.547,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 5
+          },
+          {
+            "job_type": "check_mission",
+            "count": 8
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 49.594,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 5
+          },
+          {
+            "job_type": "check_mission",
+            "count": 8
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 50.625,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 6
+          },
+          {
+            "job_type": "check_mission",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 51.672,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 6
+          },
+          {
+            "job_type": "check_mission",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 52.719,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 6
+          },
+          {
+            "job_type": "check_mission",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 53.75,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 6
+          },
+          {
+            "job_type": "check_mission",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 54.797,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 6
+          },
+          {
+            "job_type": "check_mission",
+            "count": 9
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 55.828,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 7
+          },
+          {
+            "job_type": "check_mission",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 56.86,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 7
+          },
+          {
+            "job_type": "check_mission",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 57.906,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 7
+          },
+          {
+            "job_type": "check_mission",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 58.938,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 7
+          },
+          {
+            "job_type": "check_mission",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 59.969,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 7
+          },
+          {
+            "job_type": "check_mission",
+            "count": 10
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 61.047,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 8
+          },
+          {
+            "job_type": "check_mission",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 62.078,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 8
+          },
+          {
+            "job_type": "check_mission",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 63.125,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 8
+          },
+          {
+            "job_type": "check_mission",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 64.172,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 8
+          },
+          {
+            "job_type": "check_mission",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 65.219,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 9
+          },
+          {
+            "job_type": "check_mission",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 66.266,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 9
+          },
+          {
+            "job_type": "check_mission",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 67.313,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 9
+          },
+          {
+            "job_type": "check_mission",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 68.36,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 9
+          },
+          {
+            "job_type": "check_mission",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 69.391,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 9
+          },
+          {
+            "job_type": "check_mission",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 70.422,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 10
+          },
+          {
+            "job_type": "check_mission",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 71.469,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 10
+          },
+          {
+            "job_type": "check_mission",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 72.5,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 10
+          },
+          {
+            "job_type": "check_mission",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 73.547,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 10
+          },
+          {
+            "job_type": "check_mission",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 74.578,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "sync_events",
+            "count": 10
+          },
+          {
+            "job_type": "check_mission",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 75.625,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 14
+          },
+          {
+            "job_type": "sync_events",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 76.656,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 14
+          },
+          {
+            "job_type": "sync_events",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 77.688,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 14
+          },
+          {
+            "job_type": "sync_events",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 78.735,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 14
+          },
+          {
+            "job_type": "sync_events",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 79.781,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 14
+          },
+          {
+            "job_type": "sync_events",
+            "count": 11
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 80.797,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 15
+          },
+          {
+            "job_type": "sync_events",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 81.86,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 15
+          },
+          {
+            "job_type": "sync_events",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 82.891,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 15
+          },
+          {
+            "job_type": "sync_events",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 83.938,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 15
+          },
+          {
+            "job_type": "sync_events",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 84.969,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 15
+          },
+          {
+            "job_type": "sync_events",
+            "count": 12
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 86.016,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 16
+          },
+          {
+            "job_type": "sync_events",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 87.047,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 16
+          },
+          {
+            "job_type": "sync_events",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 88.063,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 16
+          },
+          {
+            "job_type": "sync_events",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      },
+      {
+        "elapsed_seconds": 89.11,
+        "freshness": "FRESH",
+        "completed_interval_jobs": [
+          {
+            "job_type": "check_mission",
+            "count": 16
+          },
+          {
+            "job_type": "sync_events",
+            "count": 13
+          },
+          {
+            "job_type": "check_freshness",
+            "count": 1
+          }
+        ]
+      }
+    ],
+    "interval_jobs": [
+      {
+        "id": "7b0c0823-d494-409d-be4d-fecbfc3d7e23",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:45:39.352696+00:00",
+        "started_at": "2026-09-07 02:45:45.679154+00:00",
+        "finished_at": "2026-09-07 02:45:45.779358+00:00"
+      },
+      {
+        "id": "bd05a55d-8963-404c-89eb-9f93a8c0f70a",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:45:39.744176+00:00",
+        "started_at": "2026-09-07 02:45:40.050112+00:00",
+        "finished_at": "2026-09-07 02:45:40.103594+00:00"
+      },
+      {
+        "id": "89d95980-79bb-4fbf-9d2d-3acbca4f7e9e",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:45:44.744176+00:00",
+        "started_at": "2026-09-07 02:45:44.864270+00:00",
+        "finished_at": "2026-09-07 02:45:44.904033+00:00"
+      },
+      {
+        "id": "444b2631-0745-484e-9c8c-b74a73884d53",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:45:49.352696+00:00",
+        "started_at": "2026-09-07 02:45:59.826385+00:00",
+        "finished_at": "2026-09-07 02:45:59.935363+00:00"
+      },
+      {
+        "id": "c47425d4-e8a9-4fdb-b519-98b9adce28f4",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:45:49.744176+00:00",
+        "started_at": "2026-09-07 02:45:49.912738+00:00",
+        "finished_at": "2026-09-07 02:45:49.973566+00:00"
+      },
+      {
+        "id": "94abf9bd-5e4c-46a7-a606-f8572b175e9b",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:45:54.744176+00:00",
+        "started_at": "2026-09-07 02:45:54.887198+00:00",
+        "finished_at": "2026-09-07 02:45:54.921471+00:00"
+      },
+      {
+        "id": "9973a33a-4448-4d96-a715-7b7e35927bc3",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:45:59.744176+00:00",
+        "started_at": "2026-09-07 02:45:59.849105+00:00",
+        "finished_at": "2026-09-07 02:45:59.888479+00:00"
+      },
+      {
+        "id": "9369bf28-4ca9-4cda-8eba-93e0d21cd23c",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:09.352696+00:00",
+        "started_at": "2026-09-07 02:46:13.296235+00:00",
+        "finished_at": "2026-09-07 02:46:13.399424+00:00"
+      },
+      {
+        "id": "20087706-568a-419e-a2d5-c38d1f9fa346",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:09.744176+00:00",
+        "started_at": "2026-09-07 02:46:13.497759+00:00",
+        "finished_at": "2026-09-07 02:46:13.568036+00:00"
+      },
+      {
+        "id": "b4ca41da-cf4a-4fd2-a817-2df87d52e56a",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:14.352696+00:00",
+        "started_at": "2026-09-07 02:46:14.495538+00:00",
+        "finished_at": "2026-09-07 02:46:14.565132+00:00"
+      },
+      {
+        "id": "09193f4b-829f-4814-87c5-0017df8381b0",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:14.744176+00:00",
+        "started_at": "2026-09-07 02:46:14.898011+00:00",
+        "finished_at": "2026-09-07 02:46:14.934148+00:00"
+      },
+      {
+        "id": "95cd0faa-9ae8-44da-b0a7-44c52b3dddcb",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:19.352696+00:00",
+        "started_at": "2026-09-07 02:46:19.496595+00:00",
+        "finished_at": "2026-09-07 02:46:19.555372+00:00"
+      },
+      {
+        "id": "1812dc17-4ea4-4ed3-a27c-937c12dafb60",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:19.744176+00:00",
+        "started_at": "2026-09-07 02:46:19.951779+00:00",
+        "finished_at": "2026-09-07 02:46:20.003854+00:00"
+      },
+      {
+        "id": "c5bce496-1f7b-4e16-995c-4e3500074022",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:24.352696+00:00",
+        "started_at": "2026-09-07 02:46:24.394179+00:00",
+        "finished_at": "2026-09-07 02:46:24.481645+00:00"
+      },
+      {
+        "id": "d5f4d234-8c7d-4d2f-bc47-ca58867b7298",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:24.744176+00:00",
+        "started_at": "2026-09-07 02:46:24.823121+00:00",
+        "finished_at": "2026-09-07 02:46:24.858652+00:00"
+      },
+      {
+        "id": "141eb9b5-45d5-4825-9439-efac027b70ff",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:29.352696+00:00",
+        "started_at": "2026-09-07 02:46:29.402314+00:00",
+        "finished_at": "2026-09-07 02:46:29.490842+00:00"
+      },
+      {
+        "id": "bbb289f5-8dac-4fbc-9181-7a89816167e9",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:29.744176+00:00",
+        "started_at": "2026-09-07 02:46:29.842754+00:00",
+        "finished_at": "2026-09-07 02:46:29.889027+00:00"
+      },
+      {
+        "id": "4f0ff095-71bc-4524-8d81-800645bc357c",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:34.352696+00:00",
+        "started_at": "2026-09-07 02:46:34.533061+00:00",
+        "finished_at": "2026-09-07 02:46:34.604242+00:00"
+      },
+      {
+        "id": "6ce72a6c-9b7a-4663-ab85-52f61d0367d4",
+        "job_type": "check_freshness",
+        "scheduled_for": "2026-09-07 02:46:34.352696+00:00",
+        "started_at": "2026-09-07 02:46:34.441559+00:00",
+        "finished_at": "2026-09-07 02:46:34.462703+00:00"
+      },
+      {
+        "id": "49090baa-0d01-4355-ab45-880068649abd",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:34.744176+00:00",
+        "started_at": "2026-09-07 02:46:34.873936+00:00",
+        "finished_at": "2026-09-07 02:46:34.919436+00:00"
+      },
+      {
+        "id": "dd1d6b13-84ee-4c3c-8518-d3bcf7ed1841",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:39.352696+00:00",
+        "started_at": "2026-09-07 02:46:39.417235+00:00",
+        "finished_at": "2026-09-07 02:46:39.519203+00:00"
+      },
+      {
+        "id": "b796e4a0-d6ae-413b-8c0c-462ea62f88e1",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:39.744176+00:00",
+        "started_at": "2026-09-07 02:46:39.867965+00:00",
+        "finished_at": "2026-09-07 02:46:39.943019+00:00"
+      },
+      {
+        "id": "e30ecc5a-264f-4a18-9bff-2858ed33e094",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:44.352696+00:00",
+        "started_at": "2026-09-07 02:46:44.412149+00:00",
+        "finished_at": "2026-09-07 02:46:44.478856+00:00"
+      },
+      {
+        "id": "49166c2d-2f72-4f5b-8975-8870c782114d",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:44.744176+00:00",
+        "started_at": "2026-09-07 02:46:44.975198+00:00",
+        "finished_at": "2026-09-07 02:46:45.020174+00:00"
+      },
+      {
+        "id": "c738fafd-0010-49a1-aea6-e37062583190",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:49.352696+00:00",
+        "started_at": "2026-09-07 02:46:49.528075+00:00",
+        "finished_at": "2026-09-07 02:46:49.616848+00:00"
+      },
+      {
+        "id": "4b84f5bd-33fd-42e5-9149-a3032e2c1d0c",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:49.744176+00:00",
+        "started_at": "2026-09-07 02:46:49.953296+00:00",
+        "finished_at": "2026-09-07 02:46:49.999614+00:00"
+      },
+      {
+        "id": "55198cfe-9974-4d40-8e26-20b318cc50da",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:54.352696+00:00",
+        "started_at": "2026-09-07 02:46:54.533906+00:00",
+        "finished_at": "2026-09-07 02:46:54.593435+00:00"
+      },
+      {
+        "id": "63074168-cbbf-4ffa-9f85-abf23b31958c",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:54.744176+00:00",
+        "started_at": "2026-09-07 02:46:54.921421+00:00",
+        "finished_at": "2026-09-07 02:46:54.964315+00:00"
+      },
+      {
+        "id": "d750d83e-9ba7-4493-bb11-a2bc036aac06",
+        "job_type": "sync_events",
+        "scheduled_for": "2026-09-07 02:46:59.352696+00:00",
+        "started_at": "2026-09-07 02:46:59.492886+00:00",
+        "finished_at": "2026-09-07 02:46:59.574306+00:00"
+      },
+      {
+        "id": "2ecc0c75-4966-46d9-b2e3-488bca2bc9b8",
+        "job_type": "check_mission",
+        "scheduled_for": "2026-09-07 02:46:59.744176+00:00",
+        "started_at": "2026-09-07 02:46:59.900173+00:00",
+        "finished_at": "2026-09-07 02:46:59.937133+00:00"
+      }
+    ],
+    "max_observed_final_attempt_start_lag_seconds": 10.474,
+    "final_attempt_start_lag_description": "Final recorded started_at minus scheduled_for; includes worker downtime and retry delays because retries overwrite started_at. This is not a measurement of dispatch delay alone."
+  },
+  "supplier_event_history": {
+    "before_restart_and_replay": {
+      "events": [
+        {
+          "event_id": "event_16bd8887a2e54111b232d72e2b990980",
+          "sequence": 1,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:35.628672Z",
+          "simulation_time": "2026-09-07T02:45:34.311713Z",
+          "event_type": "PURCHASE_ACCEPTED",
+          "payload": {
+            "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "sku_id": "sku_001",
+            "quantity": 40,
+            "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3",
+            "total_minor": 40000
+          }
+        },
+        {
+          "event_id": "event_a86e5cd0965f40fcb4a25c95aad25650",
+          "sequence": 2,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:36.215434Z",
+          "simulation_time": "2026-09-08T02:45:34.311713Z",
+          "event_type": "GOODS_RECEIVED",
+          "payload": {
+            "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "sku_id": "sku_001",
+            "quantity": 40
+          }
+        },
+        {
+          "event_id": "event_9fe6cc3c8e9941b7a144f91a37d821ef",
+          "sequence": 3,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:36.905644Z",
+          "simulation_time": "2026-09-08T03:45:34.311713Z",
+          "event_type": "SALE_RECORDED",
+          "payload": {
+            "sku_id": "sku_001",
+            "quantity": 10,
+            "unit_price_minor": 2000
+          }
+        },
+        {
+          "event_id": "event_f2ea128dfccd48fda4a9bebf948f315f",
+          "sequence": 4,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:36.905644Z",
+          "simulation_time": "2026-09-08T04:45:34.311713Z",
+          "event_type": "DEMAND_REVISED",
+          "payload": {
+            "sku_id": "sku_001",
+            "remaining_demand": 70,
+            "forecast_version": "fixed-081840fcba0f4b62910f4101b4bd7ec5",
+            "data_as_of": "2026-09-07T02:45:36.905644Z",
+            "valid_until": "2026-09-07T03:45:36.905644Z",
+            "horizon_start": "2026-09-08T04:45:34.311713Z",
+            "horizon_end": "2026-09-14T02:45:34.311713Z"
+          }
+        },
+        {
+          "event_id": "event_002c0b2a67cf40248ea5c1a8752c984f",
+          "sequence": 5,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:37.753258Z",
+          "simulation_time": "2026-09-08T04:45:34.311713Z",
+          "event_type": "PURCHASE_ACCEPTED",
+          "payload": {
+            "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "sku_id": "sku_001",
+            "quantity": 20,
+            "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38",
+            "total_minor": 20000
+          }
+        },
+        {
+          "event_id": "event_a8a9cb8e9d59409e9263febe5c1e1205",
+          "sequence": 6,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:38.420246Z",
+          "simulation_time": "2026-09-09T04:45:34.311713Z",
+          "event_type": "GOODS_RECEIVED",
+          "payload": {
+            "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "sku_id": "sku_001",
+            "quantity": 20
+          }
+        }
+      ],
+      "last_sequence": 6,
+      "has_more": false,
+      "source_head_sequence": 6
+    },
+    "after_restart_and_replay": {
+      "events": [
+        {
+          "event_id": "event_16bd8887a2e54111b232d72e2b990980",
+          "sequence": 1,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:35.628672Z",
+          "simulation_time": "2026-09-07T02:45:34.311713Z",
+          "event_type": "PURCHASE_ACCEPTED",
+          "payload": {
+            "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "sku_id": "sku_001",
+            "quantity": 40,
+            "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3",
+            "total_minor": 40000
+          }
+        },
+        {
+          "event_id": "event_a86e5cd0965f40fcb4a25c95aad25650",
+          "sequence": 2,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:36.215434Z",
+          "simulation_time": "2026-09-08T02:45:34.311713Z",
+          "event_type": "GOODS_RECEIVED",
+          "payload": {
+            "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "sku_id": "sku_001",
+            "quantity": 40
+          }
+        },
+        {
+          "event_id": "event_9fe6cc3c8e9941b7a144f91a37d821ef",
+          "sequence": 3,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:36.905644Z",
+          "simulation_time": "2026-09-08T03:45:34.311713Z",
+          "event_type": "SALE_RECORDED",
+          "payload": {
+            "sku_id": "sku_001",
+            "quantity": 10,
+            "unit_price_minor": 2000
+          }
+        },
+        {
+          "event_id": "event_f2ea128dfccd48fda4a9bebf948f315f",
+          "sequence": 4,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:36.905644Z",
+          "simulation_time": "2026-09-08T04:45:34.311713Z",
+          "event_type": "DEMAND_REVISED",
+          "payload": {
+            "sku_id": "sku_001",
+            "remaining_demand": 70,
+            "forecast_version": "fixed-081840fcba0f4b62910f4101b4bd7ec5",
+            "data_as_of": "2026-09-07T02:45:36.905644Z",
+            "valid_until": "2026-09-07T03:45:36.905644Z",
+            "horizon_start": "2026-09-08T04:45:34.311713Z",
+            "horizon_end": "2026-09-14T02:45:34.311713Z"
+          }
+        },
+        {
+          "event_id": "event_002c0b2a67cf40248ea5c1a8752c984f",
+          "sequence": 5,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:37.753258Z",
+          "simulation_time": "2026-09-08T04:45:34.311713Z",
+          "event_type": "PURCHASE_ACCEPTED",
+          "payload": {
+            "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "sku_id": "sku_001",
+            "quantity": 20,
+            "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38",
+            "total_minor": 20000
+          }
+        },
+        {
+          "event_id": "event_a8a9cb8e9d59409e9263febe5c1e1205",
+          "sequence": 6,
+          "schema_version": "1.0",
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "occurred_at": "2026-09-07T02:45:38.420246Z",
+          "simulation_time": "2026-09-09T04:45:34.311713Z",
+          "event_type": "GOODS_RECEIVED",
+          "payload": {
+            "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "sku_id": "sku_001",
+            "quantity": 20
+          }
+        }
+      ],
+      "last_sequence": 6,
+      "has_more": false,
+      "source_head_sequence": 6
+    },
+    "exact_six_events_unchanged": true,
+    "source_head_unchanged": true
+  },
+  "ledger_effect_counts": {
+    "INIT": 1,
+    "DEMAND_REVISED": 1,
+    "PURCHASE_ACCEPTED": 2,
+    "SALE_RECORDED": 1,
+    "GOODS_RECEIVED": 2
+  },
+  "ledger_rows": [
+    {
+      "id": "5fbe50da29a26603938edb261b965a8d0f58a6f7a0f9dff181178e2fac662d2f",
+      "effect_type": "GOODS_RECEIVED",
+      "source_event_id": "event_a86e5cd0965f40fcb4a25c95aad25650",
+      "state_version": 4,
+      "document": {
+        "payload": {
+          "sku_id": "sku_001",
+          "quantity": 40,
+          "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988"
+        },
+        "event_id": "event_a86e5cd0965f40fcb4a25c95aad25650",
+        "sequence": 2,
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "event_type": "GOODS_RECEIVED",
+        "occurred_at": "2026-09-07T02:45:36.215434Z",
+        "schema_version": "1.0",
+        "simulation_time": "2026-09-08T02:45:34.311713Z"
+      }
+    },
+    {
+      "id": "681be34fb147f338a513a80706f5c0a62ad485fdff51f5c97fdfbf6e2a41825f",
+      "effect_type": "GOODS_RECEIVED",
+      "source_event_id": "event_a8a9cb8e9d59409e9263febe5c1e1205",
+      "state_version": 9,
+      "document": {
+        "payload": {
+          "sku_id": "sku_001",
+          "quantity": 20,
+          "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18"
+        },
+        "event_id": "event_a8a9cb8e9d59409e9263febe5c1e1205",
+        "sequence": 6,
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "event_type": "GOODS_RECEIVED",
+        "occurred_at": "2026-09-07T02:45:38.420246Z",
+        "schema_version": "1.0",
+        "simulation_time": "2026-09-09T04:45:34.311713Z"
+      }
+    },
+    {
+      "id": "7a2a8408cc7e821a481534be1ac7230a84d585c9e1ddaea416f506991a46bcc2",
+      "effect_type": "DEMAND_REVISED",
+      "source_event_id": "event_f2ea128dfccd48fda4a9bebf948f315f",
+      "state_version": 6,
+      "document": {
+        "payload": {
+          "sku_id": "sku_001",
+          "data_as_of": "2026-09-07T02:45:36.905644Z",
+          "horizon_end": "2026-09-14T02:45:34.311713Z",
+          "valid_until": "2026-09-07T03:45:36.905644Z",
+          "horizon_start": "2026-09-08T04:45:34.311713Z",
+          "forecast_version": "fixed-081840fcba0f4b62910f4101b4bd7ec5",
+          "remaining_demand": 70
+        },
+        "event_id": "event_f2ea128dfccd48fda4a9bebf948f315f",
+        "sequence": 4,
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "event_type": "DEMAND_REVISED",
+        "occurred_at": "2026-09-07T02:45:36.905644Z",
+        "schema_version": "1.0",
+        "simulation_time": "2026-09-08T04:45:34.311713Z"
+      }
+    },
+    {
+      "id": "b19e9b3da525549555726dd8e7c50c130227e93b723b753d591563f691a5756e",
+      "effect_type": "PURCHASE_ACCEPTED",
+      "source_event_id": null,
+      "state_version": 3,
+      "document": {
+        "reason": null,
+        "status": "ACCEPTED",
+        "currency": "CNY",
+        "quantity": 40,
+        "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+        "recorded_at": "2026-09-07T02:45:35.628672Z",
+        "total_minor": 40000,
+        "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3"
+      }
+    },
+    {
+      "id": "b957a8b6f0d8e548377b7c83efb3e1af9ff5541705a6af93ab35d5fff045c177",
+      "effect_type": "PURCHASE_ACCEPTED",
+      "source_event_id": null,
+      "state_version": 8,
+      "document": {
+        "reason": null,
+        "status": "ACCEPTED",
+        "currency": "CNY",
+        "quantity": 20,
+        "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+        "recorded_at": "2026-09-07T02:45:37.753258Z",
+        "total_minor": 20000,
+        "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38"
+      }
+    },
+    {
+      "id": "fa332a0242ecea8df8dd6b24ae8eda8f3bf70a04927d7808cfce303d13357efb",
+      "effect_type": "SALE_RECORDED",
+      "source_event_id": "event_9fe6cc3c8e9941b7a144f91a37d821ef",
+      "state_version": 5,
+      "document": {
+        "payload": {
+          "sku_id": "sku_001",
+          "quantity": 10,
+          "unit_price_minor": 2000
+        },
+        "event_id": "event_9fe6cc3c8e9941b7a144f91a37d821ef",
+        "sequence": 3,
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "event_type": "SALE_RECORDED",
+        "occurred_at": "2026-09-07T02:45:36.905644Z",
+        "schema_version": "1.0",
+        "simulation_time": "2026-09-08T03:45:34.311713Z"
+      }
+    },
+    {
+      "id": "fc083cf3270480de0e25da891e88212433375ef50c74964fca9da69e6da815b7",
+      "effect_type": "INIT",
+      "source_event_id": null,
+      "state_version": 1,
+      "document": {
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 20,
+            "in_transit": 0,
+            "forecast_version": "fixed-1",
+            "remaining_demand": 60
+          }
+        ],
+        "currency": "CNY",
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "cash_minor": 100000,
+        "data_as_of": "2026-09-07T02:45:34.311713Z",
+        "state_version": 1,
+        "simulation_time": "2026-09-07T02:45:34.311713Z",
+        "receivables_minor": 0,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 100000
+      }
+    }
+  ],
+  "restart_action_and_supplier_receipt_identical": true,
+  "supplier_purchase_replay_does_not_duplicate_effect": true,
+  "restart_exact_ledger_rows_unchanged": true,
+  "unique_action_count": 2,
+  "owned_processes_stopped_after_acceptance": true,
+  "total_wall_seconds": 102.516,
+  "finished_at": "2026-09-07T02:47:13.353716+00:00"
+}

@@ -1,15 +1,15 @@
 from typing import Annotated
 
 from asyncpg import PostgresError
-from fastapi import APIRouter, Path, Request, Response
+from fastapi import Path, Request, Response
 from sqlalchemy.exc import SQLAlchemyError
 
 from app.api.dependencies import Admin, User
-from app.api.schemas import Error, Health, JobRun, MonitoringStatus
+from app.api.routing import B0Router, errors
+from app.api.schemas import Health, JobRun, MonitoringStatus
 from app.core.errors import AppError
 
-router = APIRouter()
-errors = {code: {"model": Error} for code in (401, 403, 404, 422, 500, 503)}
+router = B0Router()
 
 
 @router.get("/health/live", response_model=Health, operation_id="health_live", tags=["Health"])
@@ -75,7 +75,3 @@ async def get_job(
         ):
             raise AppError(404, "RESOURCE_NOT_FOUND", "Job is not visible or does not exist")
         return JobRun.model_validate(job)
-
-
-for route in router.routes:
-    route.openapi_extra = {"x-phase": "B0", "x-implementation-status": "implemented"}
