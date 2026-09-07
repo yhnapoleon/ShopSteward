@@ -143,11 +143,19 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/alerts",
         "/api/v1/alerts/{alert_id}/acknowledgement",
         "/api/v1/missions/{mission_id}/timeline",
+        "/api/v1/missions/{mission_id}/conversations",
+        "/api/v1/conversations/{conversation_id}/messages",
+        "/api/v1/conversations/{conversation_id}/followup",
+        "/api/v1/agent-runs/{run_id}",
+        "/api/v1/agent-runs/{run_id}/resume",
+        "/api/v1/agent-runs/{run_id}/cancel",
+        "/api/v1/stores/{store_id}/agent-knowledge",
+        "/internal/v1/agent-tools/{tool_name}",
     }
     assert schema["paths"]["/api/v1/monitoring/status"]["get"]["security"] == [{"UserBearer": []}]
     async with client_for(app) as client:
         assert (await client.get("/docs")).status_code == 200
-        assert (await client.get("/api/v1/agent-runs/anything")).status_code == 404
+        assert (await client.get("/api/v1/agent-runs/anything")).status_code == 401
 
 
 async def test_production_default_hides_docs():
@@ -163,7 +171,7 @@ async def test_all_runtime_operations_have_phase_and_implementation_metadata():
             for method, operation in item.items():
                 if method not in {"get", "post", "patch"}:
                     continue
-                assert operation.get("x-phase") == "B0", (method, path)
+                assert operation.get("x-phase") in {"B0", "B2-A"}, (method, path)
                 assert operation.get("x-implementation-status") == "implemented", (method, path)
 
 

@@ -4,6 +4,7 @@ from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import create_async_engine
 
+from app.agent_bridge import models as agent_models  # noqa: F401
 from app.alerts import models as alert_models  # noqa: F401
 from app.core.config import Settings
 from app.db.base import Base
@@ -20,7 +21,13 @@ target_metadata = Base.metadata
 
 
 def migrate(connection):
-    context.configure(connection=connection, target_metadata=target_metadata, compare_type=True)
+    context.configure(
+        connection=connection,
+        target_metadata=target_metadata,
+        compare_type=True,
+        include_schemas=True,
+        include_name=lambda name, type_, parents: type_ != "schema" or name in {None, "agent_data"},
+    )
     with context.begin_transaction():
         context.run_migrations()
 

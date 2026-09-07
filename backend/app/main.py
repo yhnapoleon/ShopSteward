@@ -5,6 +5,8 @@ from uuid import uuid4
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.agent_bridge.router import router as agent_router
+from app.agent_bridge.tools import router as agent_tool_router
 from app.alerts.router import router as alerts_router
 from app.api.errors import install_errors
 from app.api.router import router
@@ -37,6 +39,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         redoc_url=None,
     )
     app.include_router(alerts_router)
+    app.include_router(agent_router)
+    app.include_router(agent_tool_router)
     app.include_router(reporting_router)
     app.include_router(read_router)
     app.include_router(execution_router)

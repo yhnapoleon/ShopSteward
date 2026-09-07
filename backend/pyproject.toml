@@ -12,6 +12,12 @@ dependencies = [
     "httpx>=0.28,<1",
 ]
 
+[project.optional-dependencies]
+agent = ["shopsteward-agent"]
+
+[tool.uv.sources]
+shopsteward-agent = { workspace = true }
+
 [dependency-groups]
 dev = [
     "pytest>=8,<10",

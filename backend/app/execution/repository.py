@@ -51,6 +51,7 @@ async def validate_current(session, store, mission, row, settings):
         mission.mission_version != snapshot.mission_version
         or mission.policy_version != plan.policy_version
         or mission.policy != snapshot.policy.model_dump(mode="json")
+        or mission.task_constraints != snapshot.task_constraints
     ):
         raise conflict("MISSION_VERSION_CONFLICT", "Mission policy changed")
     if (

@@ -189,6 +189,7 @@ async def prepare(db, mission_id, settings):
                 state=state,
                 mission_version=mission.mission_version,
                 policy=Policy.model_validate(mission.policy),
+                task_constraints=mission.task_constraints,
                 policy_version=mission.policy_version,
                 forecast=forecast,
                 offer=offer,

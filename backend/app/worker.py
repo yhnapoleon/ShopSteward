@@ -1,6 +1,7 @@
 import argparse
 import asyncio
 import signal
+import sys
 
 from app.core.config import Settings
 from app.core.logging import configure_logging
@@ -9,14 +10,22 @@ from app.scheduling.repository import heartbeat
 from app.scheduling.runner import Runner
 
 
-async def run(once: bool):
+async def run(once: bool, profile: str = "business"):
     settings = Settings()
     db = Database(settings.database_url.get_secret_value() if settings.database_url else None)
     configure_logging()
     try:
         if not await db.ready():
             raise RuntimeError("Run Alembic upgrade head before starting the worker")
-        runner = Runner(db, settings)
+        if profile == "agent":
+            if not settings.agent_enabled:
+                raise RuntimeError("Set AGENT_ENABLED=true before starting the agent worker")
+            from app.agent_bridge.jobs import make_handlers
+
+            settings.worker_concurrency = settings.agent_worker_concurrency
+            runner = Runner(db, settings, handlers=make_handlers(settings))
+        else:
+            runner = Runner(db, settings)
         if once:
             await runner.run_once()
             async with db.session() as session, session.begin():
@@ -39,5 +48,8 @@ async def run(once: bool):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the independent ShopSteward worker")
     parser.add_argument("--once", action="store_true", help="Process at most one registered job")
+    parser.add_argument("--profile", choices=["business", "agent"], default="business")
     args = parser.parse_args()
-    asyncio.run(run(args.once))
+    if sys.platform == "win32" and args.profile == "agent":
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+    asyncio.run(run(args.once, args.profile))

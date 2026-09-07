@@ -57,9 +57,10 @@ async def lock_mission(session, mission_id):
 
 
 async def timeline(session, mission, kind, summary, *, actor=None, references=None):
+    event_id = str(uuid4())
     session.add(
         TimelineRow(
-            id=str(uuid4()),
+            id=event_id,
             mission_id=mission.id,
             type=kind,
             summary=summary,
@@ -69,6 +70,21 @@ async def timeline(session, mission, kind, summary, *, actor=None, references=No
             created_at=await session.scalar(select(func.clock_timestamp())),
         )
     )
+    if kind in {
+        "PLAN_CREATED",
+        "PLAN_REVISED",
+        "ACTION_SUCCEEDED",
+        "ACTION_FAILED",
+        "PURCHASE_RECEIVED",
+        "MISSION_COMPLETED",
+        "MISSION_CANCELLED",
+        "ALERT_OPENED",
+        "ALERT_ESCALATED",
+        "ALERT_RESOLVED",
+    }:
+        from app.agent_bridge.triggers import record_event
+
+        await record_event(session, mission.id, event_id, references or [])
 
 
 def mission_dto(row, schedule):

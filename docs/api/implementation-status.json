@@ -1,15 +1,33 @@
 {
   "updated_at": "2026-09-07",
   "application_version": "0.1.0",
-  "work_package": "frontend-data-v1 read APIs",
+  "work_package": "B2-A Agent framework",
   "runtime_schema": "backend.runtime.openapi.json",
   "implemented_operation_ids": [
     "list_alerts",
     "acknowledge_alert",
+    "create_agent_conversation",
+    "list_agent_conversations",
+    "send_agent_message",
+    "list_agent_messages",
+    "get_agent_run",
+    "resume_agent_run",
+    "cancel_agent_run",
+    "configure_agent_followup",
+    "list_agent_knowledge",
+    "edit_agent_knowledge",
+    "call_agent_tool",
     "get_dashboard",
     "list_mission_timeline",
+    "list_sales",
+    "get_sales_summary",
+    "list_actions",
+    "list_inbounds",
+    "list_ledger_entries",
     "decide_plan",
     "get_action",
+    "get_current_user",
+    "list_visible_stores",
     "health_live",
     "health_ready",
     "get_monitoring_status",
@@ -20,19 +38,12 @@
     "list_missions",
     "get_mission",
     "control_mission",
+    "update_mission_schedule",
     "request_mission_check",
     "list_mission_plans",
     "get_plan",
     "create_dev_scenario",
-    "advance_dev_scenario",
-    "update_mission_schedule",
-    "get_current_user",
-    "list_visible_stores",
-    "list_sales",
-    "get_sales_summary",
-    "list_actions",
-    "list_inbounds",
-    "list_ledger_entries"
+    "advance_dev_scenario"
   ],
   "registered_job_types": [
     "worker_probe",
@@ -63,5 +74,14 @@
     "Lease-fenced exact approval, UNKNOWN reconciliation, unique purchase/goods accounting and independent persistent simulator remain in force.",
     "B0-06 automatic checks/source sync, full SC01 and API/worker/simulator restart were verified; see b0-06-periodic-smoke-result.json. B0-05 evidence files are preserved as historical results.",
     "B0-07 combination tests, two-worker process interruption/source outage/downtime, automatic SC01 and exact restart replay passed. Two lock-contention defects fixed; see b0-07-verification-result.json and ../reports/b0-07-test-report.md. No production load SLA, manual financial override, runtime fault endpoint, Agent or real ML model was added."
-  ]
+  ],
+  "agent": {
+    "runtime_schema": "agent-v1.openapi.json",
+    "worker_profile": "agent",
+    "registered_job_types": [
+      "agent_followup"
+    ],
+    "deployment": "backend API + independent Agent worker",
+    "external_agent_http": "planned"
+  }
 }

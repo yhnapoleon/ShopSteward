@@ -48,6 +48,8 @@ def build_plan(mission_id, plan_version, snapshot, *, ttl_seconds):
         spend = quantity * offer.unit_price_minor
         cash_after = snapshot.state.available_cash_minor - spend
         reasons = []
+        if quantity > snapshot.task_constraints.get("max_purchase_qty", quantity):
+            reasons.append("TASK_QUANTITY_LIMIT")
         if cash_after < snapshot.policy.cash_floor_minor:
             reasons.append("CASH_FLOOR_VIOLATION")
         if quantity:

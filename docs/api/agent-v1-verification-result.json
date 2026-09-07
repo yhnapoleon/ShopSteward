@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-07",
+  "scope": "B2-A first Agent framework; scoped acceptance, not the full original fault matrix",
+  "branch": "YH",
+  "base_head": "ab01ae3",
+  "working_tree_committed": false,
+  "schema_revision": "0009_agent_scopes",
+  "checks": {
+    "backend_and_agent_pytest": {"passed": 226, "failed": 0, "skipped": 0, "seconds": 91.65},
+    "simulation_pytest": {"passed": 12, "failed": 0, "skipped": 0, "seconds": 3.49},
+    "ruff_check": "passed",
+    "ruff_format_check": {"passed": true, "files": 160},
+    "alembic_drift": "No new upgrade operations detected",
+    "design_contract_validation": "passed",
+    "frontend_data_contract_validation": "passed",
+    "runtime_export": {"operations": 40, "paths": 36},
+    "agent_export": {"operations": 11, "paths": 8},
+    "wheel_and_sdist_build": "passed",
+    "exact_authorized_api_key_scan": "No match in changed or nonignored untracked files",
+    "git_diff_check": "passed"
+  },
+  "real_process_evidence": "agent-v1-process-result.json",
+  "test_report": "../reports/agent-v1-test-report.md",
+  "real_process_summary": {
+    "knowledge_cycles": 3,
+    "knowledge_checks": 51,
+    "knowledge_runs": 24,
+    "preceding_nonmemory_baseline_checks": 14,
+    "recovery_checks": 7,
+    "reported_tokens": 392667,
+    "unknown_usage_runs": 2,
+    "prior_failures_retained": true
+  },
+  "environment": {
+    "migrated_databases": ["shopsteward_test", "shopsteward_agent_acceptance"],
+    "development_database_migrated": false,
+    "existing_ports_8000_8001_replaced": false,
+    "owned_acceptance_processes_stopped": true
+  },
+  "limitations": [
+    "Last clarification-denial guard was regression tested with PostgreSQL after real-model process acceptance; no further real-model call for that branch.",
+    "Semantic conversation summary, external RAG, real forecast, automatic skill learning and chat frontend are not implemented.",
+    "Memory commit followed by a lost HTTP response was not process fault-injected; full original A8 fault matrix is not claimed.",
+    "Model busy periods can delay Agent followup scans; no production latency SLA or full natural-language correctness claim."
+  ]
+}

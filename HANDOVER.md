@@ -1,14 +1,41 @@
 # ShopSteward 当前开发交接
 
-更新：2026-09-07（首批7个前端只读接口已验收；backend API已重启并保持运行）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
+更新：2026-09-07（B2-A Agent 首版框架实现与验收；原开发服务未切换）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
+
+### 最新交付与测试归档（2026-09-07）
+
+**已完成的代码：** `agent/src/shopsteward_agent/` 提供真实 LangGraph、可配置模型、租约保护的 PG checkpoint、Hermes 派生记忆规则和扩展接口；`backend/app/agent_bridge/` 提供会话/Run、独立 worker 装配、授权工具、知识版本及持久跟进。支持澄清/恢复/取消、同会话排队、唯一最终回复、跨会话 USER/NOTES 与补货任务 SKILL 的显式增改删。业务工具支持只读 what-if 和本轮数量上限修订，新 Plan 仍由既有用户审批 API 确认。
+
+**已保存的最近测试结果：** backend+agent 联合226项通过（91.65秒），simulator 12项通过（3.49秒），均无失败、无跳过；Ruff、160个文件格式检查、Alembic漂移、契约检查、Agent wheel/sdist 构建通过。真实模型完成3轮知识闭环（24个Run/51项检查），此前非记忆基线14项通过，真实进程恢复套件7项通过。早期失败与后续修复复测均保存在详细证据中。本次仅归档和补齐索引，未重跑业务/模型验收。
+
+| 接手时需要的资料 | 保存地址 |
+|---|---|
+| 安装、配置、迁移、启动与调用流程 | [agent/README.md](agent/README.md) |
+| 综合测试报告（含回归、审查修复、局限） | [docs/reports/agent-v1-test-report.md](docs/reports/agent-v1-test-report.md) |
+| 自动验证结果（机器可读） | [docs/api/agent-v1-verification-result.json](docs/api/agent-v1-verification-result.json) |
+| 真实模型/进程报告 | [docs/reports/agent-v1-process-report.md](docs/reports/agent-v1-process-report.md) |
+| 真实进程原始验收结果与历次尝试 | [docs/api/agent-v1-process-result.json](docs/api/agent-v1-process-result.json) |
+| 实施记录与审查修复 | [docs/reports/agent-implementation-progress.md](docs/reports/agent-implementation-progress.md) |
+| 设计与计划（顶部有实际交付对照） | [设计](docs/superpowers/specs/2026-09-07-agent-framework-design.md)、[A0～A8计划](docs/superpowers/plans/2026-09-07-agent-framework.md) |
+| 研究与依赖来源 | [调研](docs/research/2026-09-07-agent-framework-research.md)、[Hermes许可](agent/THIRD_PARTY_NOTICES.md) |
+| 已实现接口 | [Agent契约](docs/api/agent-v1.openapi.json)、[完整runtime](docs/api/backend.runtime.openapi.json)、[实现清单](docs/api/implementation-status.json) |
+| 可重复使用的验收程序 | [backend/tools/verify_agent.py](backend/tools/verify_agent.py)、[契约导出程序](backend/tools/export_agent_contract.py) |
+
+**接下来的具体工作：** 按启动说明配置并迁移目标开发库、切换 API 和两类 worker，然后接入聊天页面。外部 RAG、真实预测、语义摘要、自动技能学习及原计划剩余故障矩阵另行推进；特别是“记忆提交后HTTP响应丢失”尚未做真实进程注入。当前首版不代表完整P0或生产负载验收。
+
+**现场保留：** 当前源码40操作/36路径，新增Agent为11操作/8路径；迁移head `0009_agent_scopes` 仅在专用测试/验收库应用。原开发库与8000/8001服务未切换，8024验收API与自建worker已停止。工作区代码、报告与文档尚未提交或推送，接手时需一并保留。
+
+### 历史验证与运行记录
 
 B0-07阶段已完成组合故障、并发和真实进程验收，自动修复两处锁竞争缺陷。backend 146项、simulator 12项通过，无跳过；最新业务[测试报告](docs/reports/b0-07-test-report.md)、[进程证据](docs/api/b0-07-process-result.json)与[验证汇总](docs/api/b0-07-verification-result.json)。验收脚本已停止自己创建的API/两个worker/simulator；PostgreSQL容器继续运行。历史B0-05/06证据保留。
 
-本轮已落实[数据字典](docs/data-dictionary.md)中的7个GET，runtime为29操作/28路径，无新表/迁移。backend 186项、simulator 12项全部通过；真实HTTP读取持久SC01、分页、权限和只读性通过，临时8014 API已停止。见[测试报告](docs/reports/frontend-data-test-report.md)、[HTTP证据](docs/api/frontend-data-http-result.json)和[验证汇总](docs/api/frontend-data-verification-result.json)。设计稿planned标签保留历史含义，实际状态以runtime和实现清单为准。
+此前已落实[数据字典](docs/data-dictionary.md)中的7个GET，runtime为29操作/28路径，无新表/迁移。backend 186项、simulator 12项全部通过；真实HTTP读取持久SC01、分页、权限和只读性通过，临时8014 API已停止。见[测试报告](docs/reports/frontend-data-test-report.md)、[HTTP证据](docs/api/frontend-data-http-result.json)和[验证汇总](docs/api/frontend-data-verification-result.json)。设计稿planned标签保留历史含义，实际状态以runtime和实现清单为准。
 
-**最新运行状态：** 用户随后要求重启backend，已于2026-09-07 13:15（Asia/Shanghai）重启默认8000端口API，当前保持后台运行。更新本文时再次核验：`/health/ready`返回ok，`/docs`返回200，`/openapi.json`包含29个操作、28条路径，新增7个GET已生效。[打开Swagger](http://127.0.0.1:8000/docs)。此前“验收进程已停止”指历史验收自建进程，不代表当前8000 API已停止。
+**运行状态区分：** 原开发 API 于此前 13:15 在 8000 启动（当时 29 操作/28 路径），simulator 使用 8001。本次 Agent 工作没有停止或替换这些进程，也没有迁移原开发库。新代码在 `shopsteward_test` 和独立 `shopsteward_agent_acceptance` 库迁移并验证；8024 验收 API 与自建 worker 均已停止。启动新版需按 [Agent README](agent/README.md) 配置、迁移并启动 API/两类 worker，不能把原 8000 实例视为已部署新版。
 
 ## 1. 用户已经明确的工程原则
+
+**B2-A Agent 首版框架已实现（2026-09-07）：** LangGraph 主图、独立 Agent worker、真实 OpenAI 模型、租约保护的 PG 检查点、受限业务工具、跨会话 USER/NOTES 与可维护的补货任务 Skill、持久后台跟进已贯通。对话支持只读 what-if 和显式方案修订，新版本仍由用户通过既有审批 API 确认。当前源码导出 40 个操作/36 条路径，迁移 head 为 `0009_agent_scopes`。启动见 [agent/README.md](agent/README.md)，验证范围见 [Agent 测试报告](docs/reports/agent-v1-test-report.md) 和 [真实进程报告](docs/reports/agent-v1-process-report.md)。代码尚未提交；原开发库与 8000/8001 服务未切换到此版本。外部 RAG、真实预测、聊天页面、自动从结果学习技能与语义摘要尚未实现。
 
 **唯一原则：结构正确，功能完整满足要求，且没有赘余的设计。**
 
@@ -21,26 +48,28 @@ B0-07阶段已完成组合故障、并发和真实进程验收，自动修复两
 
 ## 2. 当前开发现场
 
+最新 B2-A 验证：backend+agent 联合226项、simulator 12项全部通过且无跳过；Ruff/格式、迁移漂移、契约检查及 Agent wheel/sdist 构建通过。真实模型完成三轮知识闭环及进程恢复检查，详见 [Agent 测试报告](docs/reports/agent-v1-test-report.md)。原计划的语义摘要与完整进程故障矩阵尚未全部交付，不能把首版框架等同完整产品P0。
+
 | 项目 | 本次核对结果 |
 |---|---|
 | 工作资料根目录 | `D:/HuaweiMoveData/Users/13736/Desktop/AIS/Group_Project` |
 | 应用仓库 | 上述目录下的`ShopSteward`；命令需在正确目录执行 |
-| 分支 / HEAD | `YH` / `da79cbded5a6493f63788a62c666201ab1d5a7c6`，`backend test` |
-| 已提交基础 | 当前HEAD已包含B0-01至B0-07业务代码、测试和历史报告；本轮未创建提交 |
-| 未提交工作 | 首批7个只读GET及DTO/查询/游标/投影、测试和HTTP工具、runtime/清单、数据字典/设计及报告交接；保留此前边界分析 |
-| 下一阶段 | 前端页面可按已实现接口联调；真实主数据/仓储/财务范围、B1预测和B2 Agent另按工作包推进 |
-| 暂未接入 | 真实预测模型、Agent/LLM、RAG/记忆/技能；前端目前只有基础配置 |
-| 当前API | `http://127.0.0.1:8000`，已重启并验证；不要重复启动占用8000的实例 |
+| 分支 / HEAD | `YH` / `ab01ae3`，`backend more retreive`；Agent调研期间由外部提交推进，本轮助手未执行提交 |
+| 已提交基础 | B0-01至B0-07、首批7个前端只读查询及相关测试/契约、初版Agent研究文档 |
+| 未提交工作 | Agent 包、backend agent_bridge、3个迁移、业务方案约束适配、测试、依赖锁、契约、研究及交接 |
+| 下一阶段 | 按 Agent README 切换开发环境并接聊天页面；扩展语义摘要、外部 RAG/预测、技能自动学习需独立工作包 |
+| 暂未接入 | 真实预测、外部 RAG、自动学习技能、聊天页面；Agent/LLM/显式记忆与任务 Skill 已实现 |
+| 原开发API | `http://127.0.0.1:8000`，本轮未切换；新 Agent 代码在隔离验收进程验证 |
 
 接手先执行`git status --short`、`git log -1 --oneline`、`git branch --show-current`。不要把未提交改动当垃圾清掉，也不要假定远程仓库包含它们。本次没有提交、推送或远程最新状态核验。
 
 ## 3. 项目和设计的必要摘要
 
-ShopSteward是面向小商家的持续经营助手，首条业务线为活动备货与现金安全。当前先交付不依赖AI在线的backend主干B0：记录经营事实、比较采购候选、提出方案、用户审批、执行并根据新事实继续检查。未来Agent负责解释、推理和跟进，不能取代账本、确定性约束或审批。
+ShopSteward是面向小商家的持续经营助手，首条业务线为活动备货与现金安全。当前先交付不依赖AI在线的backend主干B0：记录经营事实、比较采购候选、提出方案、用户审批、执行并根据新事实继续检查。Agent负责解释、推理和跟进，不能取代账本、确定性约束或审批。
 
 采用FastAPI模块化单体、独立API进程、独立worker、PostgreSQL。simulator是独立HTTP进程，拥有自己的持久世界、数据库、账号及迁移；backend通过契约调用，不能直接读取simulator表。多个API/worker实例共享同一模拟世界。
 
-当前实际代码按`api/core/db/scheduling/operations/missions/planning/alerts/execution/reporting`组织，没有`app/modules/`、`app/workflows/`、`app/integrations/`或`api/routes/`层。PlanRow、ScheduleRow、TimelineRow、InboundRow仍在`missions/models.py`；纯候选规则在`planning/engine.py`，哈希规范化在`planning/canonical.py`，风险规则在`alerts/rules.py`。跨模块用例暂由jobs/repository/accounting等函数承担，不为目录整齐搬模型。
+当前实际代码按`api/core/db/scheduling/operations/missions/planning/alerts/execution/reporting/agent_bridge`组织，没有`app/modules/`、`app/workflows/`、`app/integrations/`或`api/routes/`层。PlanRow、ScheduleRow、TimelineRow、InboundRow仍在`missions/models.py`；纯候选规则在`planning/engine.py`，哈希规范化在`planning/canonical.py`，风险规则在`alerts/rules.py`。跨模块用例暂由jobs/repository/accounting等函数承担，不为目录整齐搬模型。
 
 ### 必须保持的业务与事务约束
 
@@ -59,7 +88,7 @@ ShopSteward是面向小商家的持续经营助手，首条业务线为活动备
 
 ### worker当前扩展方式
 
-`app/bootstrap.py`统一调用四个`make_handlers(settings)`工厂，发现重复job_type即报错。当前8种handler：worker_probe、initialize_scenario、sync_events、check_mission、execute_purchase、reconcile_action、advance_scenario、check_freshness。agent_followup仍未注册。
+`app/bootstrap.py`统一调用四个`make_handlers(settings)`工厂，发现重复job_type即报错。当前8种handler：worker_probe、initialize_scenario、sync_events、check_mission、execute_purchase、reconcile_action、advance_scenario、check_freshness。`--profile agent` 单独注册 agent_followup，默认并发1；business profile 保留上述8类。Agent 跟进在领取前扫描持久触发，模型忙碌时扫描可能延后，业务扫描循环仍独立运行。
 
 Handler的职责：
 
@@ -96,11 +125,12 @@ SC01固定验收：成本10元/件、售价20元/件、现金底线300元、候�
 
 ### 当前接口边界
 
-实际backend有29个操作、28条路径，全部有B0实现元数据；原完整设计稿26操作与前端补充设计7操作属于设计基线，实际清单以runtime为准。
+当前源码导出40个操作、36条路径，包含29个B0操作与11个B2-A操作；原完整设计稿26操作与前端补充设计7操作属于设计基线，实际清单以runtime为准。
 
 | 入口组 | 当前接口 |
 |---|---|
 | 首批前端查询 | GET `/api/v1/me`、`/api/v1/stores`、`/api/v1/sales`、`/api/v1/sales/summary`、`/api/v1/actions`、`/api/v1/inbounds`、`/api/v1/ledger-entries` |
+| Agent | 会话创建/列表、消息提交/读取、Run读取/恢复/取消、followup配置、知识读取/编辑；见 [Agent契约](docs/api/agent-v1.openapi.json)；内部工具网关仅接受绑定Run租约的凭证 |
 | 健康/运维 | GET `/health/live`、`/health/ready`、`/api/v1/monitoring/status`、`/api/v1/job-runs/{job_run_id}` |
 | 经营/展示 | GET `/api/v1/catalog`、`/api/v1/dashboard`、`/api/v1/alerts`；POST `/api/v1/alerts/{alert_id}/acknowledgement` |
 | Mission | POST/GET `/api/v1/missions`；GET `/api/v1/missions/{mission_id}`；POST其`/control`、`/checks`；PATCH其`/schedule`；GET其`/plans`、`/timeline` |
@@ -119,7 +149,7 @@ simulator有create run、list events、purchase、query purchase、advance五个
 4. **事件与恢复。** 事件入账后在同一事务中合并受门店状态版本影响的ACTIVE Mission检查及目标版本；重复事件不重复唤醒。RUNNING检查仍以recheck_required在完成事务创建后继；旧租约不能提交派生结果。扫描循环独立于执行槽位，慢HTTP不会阻止到期登记。源事实和已发采购核对不随Mission暂停/取消停止。
 5. **验收。** 新测试覆盖周期锚点/停机合并、多派发并发、事务回滚、事件唤醒、分页/运行中请求合并、手动同步重放、源错误/新鲜度、饱和槽位与其他worker推进、旧租约回滚、Schedule权限/版本/生命周期。自动三进程SC01和重启已验证。
 
-**B0-07已完成：** 新增8个集成用例，覆盖不同键竞争审批+丢响应核对、来源重试耗尽后周期恢复、规划中事件突发与暂停恢复、暂停/取消中先到货后超时，以及101门店候选公平性和忙门店Action恢复。复现并修复两处生产缺陷：LIMIT之前未跳过锁导致候选饥饿；孤立Action恢复等待门店锁导致整个领取前钩子卡住。真实进程验收与独立审查通过，具体断言、修复及边界见报告。B1预测、B2 Agent/LLM、RAG、多SKU/多供应商优化仍未开始；下一工作包按用户指定，不承诺负载下5/30/60秒时延上限。
+**B0-07已完成：** 新增8个集成用例，覆盖不同键竞争审批+丢响应核对、来源重试耗尽后周期恢复、规划中事件突发与暂停恢复、暂停/取消中先到货后超时，以及101门店候选公平性和忙门店Action恢复。复现并修复两处生产缺陷：LIMIT之前未跳过锁导致候选饥饿；孤立Action恢复等待门店锁导致整个领取前钩子卡住。真实进程验收与独立审查通过，具体断言、修复及边界见报告。该阶段尚未开始 B2 Agent；现已在后续 B2-A 接入。B1预测、RAG、多SKU/多供应商优化仍未开始；下一工作包按用户指定，不承诺负载下5/30/60秒时延上限。
 
 实现计划与决定见[2026-09-07-b0-06.md](docs/superpowers/plans/2026-09-07-b0-06.md)。无需重新实现Schedule、source同步或现有Action恢复。
 

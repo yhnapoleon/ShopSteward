@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.core.errors import AppError
 
-SCHEMA_REVISION = "0006_periodic"
+SCHEMA_REVISION = "0009_agent_scopes"
 
 
 class Database:

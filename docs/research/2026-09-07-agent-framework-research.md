@@ -1,6 +1,6 @@
 # Agent 框架定向调研：LangGraph、Hermes 与 ShopSteward
 
-日期：2026-09-07。状态：调研完成，设计建议；尚未安装依赖、实现 Agent、运行模型或验证图恢复。
+日期：2026-09-07。状态：调研与少量模型协议验证完成，设计建议；尚未安装 Agent 依赖、实现 Agent 或验证图恢复。
 
 用户已确认首版包含真实模型对话、受限业务工具、跨会话记忆及后台跟进；采购审批继续由现有页面/API 承接；优先使用可配置的 OpenAI 风格 API。本文按这个范围开展定向技术调研，不将历史完整 P0 的所有学习能力一起纳入。
 
@@ -69,7 +69,9 @@ Hermes 主仓库 LICENSE 当前为 MIT。本项目若抽取源码，交付时须
 
 能力验证至少覆盖：中文文本、单次工具请求、工具结果回填、非法参数、超时、usage 缺省；结构化响应与流式为单独能力。默认只发必要字段，工具串行；不默认发送 strict、parallel_tool_calls、response_format、temperature 等未验证选项。缺少 token usage 时记录 null，不能当零成本。
 
-用户提供的 `openai.txt` 已以不输出内容的方式核对：只有一行 Key，没有 base_url 或模型。服务归属仍在澄清，尚未向任何服务发送该 Key。该信息不影响架构与计划交付；真实兼容性结果需等地址确认后取得。
+用户提供的 `openai.txt` 已以不输出内容的方式核对：只有一行 Key，没有 base_url 或模型。用户随后确认归属 OpenAI 官方 API。本轮仅向该官方地址执行一个GET模型列表和三个短小Chat Completions请求，使用虚构测试SKU/库存；所有请求200，文本返回、强制单工具请求及工具结果回填通过，累计报告171 tokens。探针模型为gpt-4.1-mini，仅作为协议基线，未作最终模型选型。[脱敏协议结果](../api/agent-research-model-probe-result.json)
+
+该实验使用Python标准库直接HTTP，没有安装LangChain；未测试自主工具选择、结构化JSON schema输出、流式、故障恢复或经营场景质量，不能据此宣布Agent已跑通。具体调用格式另核对[OpenAI官方function calling](https://developers.openai.com/api/docs/guides/function-calling)与[探针模型文档](https://developers.openai.com/api/docs/models/gpt-4.1-mini)。凭证仅从指定文件读取，没有进入研究产物。
 
 ## 5. 候选版本
 
@@ -98,6 +100,6 @@ Hermes 主仓库 LICENSE 当前为 MIT。本项目若抽取源码，交付时须
 
 第一轮核对项目源码/历史契约并查官方能力；第二轮跟读持久化、恢复、模型兼容及 Hermes 具体文件；第三轮固定 Hermes commit、核对发行版本并检查 saver 连接机制。关键设计选择已有一手依据，不继续泛搜其他 Agent 框架。
 
-未完成的实验已明确移入实施第一阶段：依赖解析、固定版本事务组合、真实模型协议测试。Hermes skills 两个固定源码链接抓取失败，本轮仅阅读官方技能说明，后续技能写入扩展必须另做源码核验。[Skills 官方说明](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)
+未完成的实验已明确移入实施阶段：依赖解析、固定版本事务组合、实际LangChain客户端兼容与真模型业务评测。Hermes skills 两个固定源码链接抓取失败，本轮仅阅读官方技能说明，后续技能写入扩展必须另做源码核验。[Skills 官方说明](https://hermes-agent.nousresearch.com/docs/user-guide/features/skills)
 
 配套：[架构设计](../superpowers/specs/2026-09-07-agent-framework-design.md)、[实施计划](../superpowers/plans/2026-09-07-agent-framework.md)。
