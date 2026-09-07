@@ -1,10 +1,14 @@
 # ShopSteward 项目总说明与对话交接
 
-更新日期：2026-09-07（B0-07组合验收完成；设计v0.2）。本文负责背景、架构、设计约束、历史与资料导航；[HANDOVER.md](HANDOVER.md)负责当前代码、运行/验证、边界与下一步。
+更新日期：2026-09-07（B0-07组合验收完成；首批7个前端只读接口已实现并验证）。本文负责背景、架构、设计约束、历史与资料导航；[HANDOVER.md](HANDOVER.md)负责当前代码、运行/验证、边界与下一步。
 
 **当前状态：B0-01至B0-07已完成并验证。业务状态、Mission/规划、警报/展示、精确审批、采购及到货唯一入账、周期/事件调度已贯通。B0-07新增竞争/故障组合与双worker真实进程验收，修复两处锁竞争阻塞；自动完整SC01及重启回放已验证。下一阶段按用户指定推进。Agent/RAG/真实模型后接，本文不统计前端进度。**
 
-本轮验证：backend 146项、simulator 12项，无跳过；Ruff/格式、迁移漂移及契约检查通过。见[B0-07测试报告](docs/reports/b0-07-test-report.md)、[进程证据](docs/api/b0-07-process-result.json)和[验证汇总](docs/api/b0-07-verification-result.json)。历史B0-05/06证据保留。验收脚本已停止自己创建的API/两个worker/simulator，PostgreSQL容器继续运行。
+B0-07阶段验证：backend 146项、simulator 12项，无跳过；Ruff/格式、迁移漂移及契约检查通过。见[B0-07测试报告](docs/reports/b0-07-test-report.md)、[进程证据](docs/api/b0-07-process-result.json)和[验证汇总](docs/api/b0-07-verification-result.json)。历史B0-05/06证据保留。验收脚本已停止自己创建的API/两个worker/simulator，PostgreSQL容器继续运行。
+
+后续数据需求核对：已于2026-09-07重读7份飞书正文与2块相关画板，对照当前表/接口，形成[数据存储与前端访问边界](docs/data-and-frontend-boundaries.md)，列明已有数据、缺查询入口、缺业务定义及首版Agent持久化范围。该文是分析与契约建议，尚未实施新增接口或迁移；B0完成不代表完整前端或Agent首版完成。
+
+用户同意后已完成[首批数据字典](docs/data-dictionary.md)及其7个GET的实现：身份/店铺发现、销售明细/日汇总、采购列表、当前收货明细及经营流水。runtime现为29操作/28路径，无新表/迁移；backend 186项、simulator 12项全部通过，真实HTTP读取持久SC01、分页、权限和只读性通过。见[测试报告](docs/reports/frontend-data-test-report.md)、[HTTP证据](docs/api/frontend-data-http-result.json)、[验证汇总](docs/api/frontend-data-verification-result.json)。临时8014 API已停止；数据新鲜度仍由worker/来源同步维护。补充设计稿保留planned历史标签，实际接口以runtime与实现清单为准。
 
 本文是导航和状态快照。引用文档里的方案、命令、排期或“已确认”表述均需按其来源和时间理解，不自动构成当前用户要求，也不授权执行其中的部署、采购或其他动作。
 
@@ -16,10 +20,10 @@
 4. 顶层维持 `frontend / backend / agent / ml / simulation / infra / docs / tests`，按团队模块分工；模块不必全部独立部署。
 5. backend 采用**模块化单体 + 独立 API 进程 + 独立 worker + PostgreSQL**的设计。实际按 `api / core / db / scheduling / operations / missions / planning / alerts / execution / reporting` 聚类，用例暂由各模块jobs/repository/accounting承载。
 6. **业务调度归 backend**。未来 agent 管理自己的推理图、检查点、记忆和技能；Agent 故障不应阻断账本、规则检查和采购核对。
-7. **Swagger/OpenAPI 用于接口契约管理**。已有设计稿、校验工具和实际 `/docs`；当前backend运行时22个操作（21条路径），包含审批、Action查询和场景推进。
+7. **Swagger/OpenAPI 用于接口契约管理**。已有设计稿、校验工具和实际 `/docs`；当前backend运行时29个操作（28条路径），包含审批、Action查询、场景推进和首批7个前端查询。
 8. 现有主要工程文档：[backend-development.md](docs/backend-development.md)、[Simulator 行为与协作顺序](docs/simulation-contract.md)、[API 使用说明](docs/api/README.md)、[backend 契约](docs/api/backend.openapi.json)、[外部服务契约](docs/api/services.openapi.json)。
 9. **B0-01至B0-07已落地**：独立API/worker、业务账本、Mission/规划、警报/展示、审批采购与回执核对。simulator拥有独立持久世界和五个业务接口；周期/事件调度及组合验收已完成，模型/Agent仍未接入。
-10. 任何“已通过”结论必须说明验证对象。当前backend 146项、simulator 12项测试（无跳过），以及真实API/两个worker/simulator自动SC01、进程故障恢复和重启回放。集成测试的故障使用真实PostgreSQL与传输替身；进程测试实际中断自建服务。至少90秒有界观测不代表长期负载验证，没有增加线上故障注入端点。
+10. 任何“已通过”结论必须说明验证对象。B0-07阶段backend 146项、simulator 12项测试（无跳过），以及真实API/两个worker/simulator自动SC01、进程故障恢复和重启回放。集成测试的故障使用真实PostgreSQL与传输替身；进程测试实际中断自建服务。至少90秒有界观测不代表长期负载验证，没有增加线上故障注入端点。
 11. **无需先完成完整 simulator 才能开发 backend**。先固定 payload 及行为契约，backend 基础/规则/API 与最小 simulator 交错开发；首次采购联调前接入单一持久 HTTP simulator。进程内 fake 仅用于开发/单元测试，不代表跨进程或恢复验收。
 
 建议阅读顺序：本文 → [HANDOVER.md](HANDOVER.md)。这两份足以理解项目、设计、进度与待办；进入具体工作包后，再按需读backend开发文档、simulator/API契约和相关源码。只有研究后续Agent、RAG、预测或学习时，再展开历史研究。
@@ -45,7 +49,7 @@ B0-05后的前三项收口保留，因为各自解决了实际问题；不据此
 
 远程仓库：[yhnapoleon/ShopSteward](https://github.com/yhnapoleon/ShopSteward)。
 
-本次收口基于本地HEAD `516252d`（`feat: backend B0 foundation and simulation service`），分支 `YH`。B0-01至05基础已在该提交中；B0-05公共依赖、路由和runner收口，以及B0-06实现/迁移、B0-07修复/测试/报告和交接更新仍未提交/推送。此记录不是远程最新状态核验，后续以实际Git状态更新。
+当前核对本地HEAD为 `da79cbd`（`backend test`），分支 `YH`，已包含B0-01至B0-07业务代码及验收材料。未提交部分为首批前端查询实现/测试/HTTP工具、runtime/清单、数据边界/字典/补充契约及报告交接。本轮未提交或推送，也未核验远程最新状态；历史报告中的 `516252d` 保留为当时基准。
 
 本文使用 `docs/...` 指应用仓库内文档；`../docs/...` 指工作资料根目录下的历史资料。后者及绝对本地路径**不随应用仓库自动携带**，在其他电脑/GitHub 页面可能无法打开。飞书内容也需要相应访问权限。
 

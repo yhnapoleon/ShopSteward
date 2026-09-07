@@ -1,7 +1,7 @@
 {
   "updated_at": "2026-09-07",
   "application_version": "0.1.0",
-  "work_package": "B0-07 combined concurrency and fault acceptance",
+  "work_package": "frontend-data-v1 read APIs",
   "runtime_schema": "backend.runtime.openapi.json",
   "implemented_operation_ids": [
     "list_alerts",
@@ -25,7 +25,14 @@
     "get_plan",
     "create_dev_scenario",
     "advance_dev_scenario",
-    "update_mission_schedule"
+    "update_mission_schedule",
+    "get_current_user",
+    "list_visible_stores",
+    "list_sales",
+    "get_sales_summary",
+    "list_actions",
+    "list_inbounds",
+    "list_ledger_entries"
   ],
   "registered_job_types": [
     "worker_probe",

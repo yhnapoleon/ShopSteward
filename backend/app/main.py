@@ -15,6 +15,7 @@ from app.execution.router import router as execution_router
 from app.missions.router import router as missions_router
 from app.operations.router import dev_router
 from app.operations.router import router as operations_router
+from app.reporting.read_router import router as read_router
 from app.reporting.router import router as reporting_router
 
 
@@ -37,6 +38,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.include_router(alerts_router)
     app.include_router(reporting_router)
+    app.include_router(read_router)
     app.include_router(execution_router)
     app.state.settings = settings
     url = settings.database_url.get_secret_value() if settings.database_url else None

@@ -1,0 +1,447 @@
+{
+  "recorded_at": "2026-09-07T04:04:51.653847+00:00",
+  "work_package": "frontend-data-v1",
+  "fixture_source": "b0-07-process-result.json (persisted SC01, read only; not a new SC01 run)",
+  "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+  "runtime_operations": 29,
+  "runtime_paths": 28,
+  "requests": {
+    "/api/v1/me": {
+      "params": {},
+      "response": {
+        "principal_id": "frontend-read-verifier",
+        "roles": [
+          "viewer"
+        ],
+        "store_scope": "ASSIGNED"
+      }
+    },
+    "/api/v1/stores": {
+      "params": {},
+      "response": {
+        "items": [
+          {
+            "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+            "currency": "CNY",
+            "source_type": "simulation",
+            "simulation_time": "2026-09-09T04:45:34.311713Z"
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    "/api/v1/sales": {
+      "params": {
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad"
+      },
+      "response": {
+        "context": {
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "currency": "CNY",
+          "state_version": 9,
+          "as_of": "2026-09-07T04:04:51.128093Z",
+          "simulation_time": "2026-09-09T04:45:34.311713Z",
+          "source_sequence": 6,
+          "freshness": {
+            "status": "STALE",
+            "data_as_of": "2026-09-07T02:45:38.420246Z",
+            "last_sync_at": "2026-09-07T02:47:10.745294Z"
+          }
+        },
+        "items": [
+          {
+            "event_id": "event_9fe6cc3c8e9941b7a144f91a37d821ef",
+            "sequence": 3,
+            "sku_id": "sku_001",
+            "quantity": 10,
+            "unit_price_minor": 2000,
+            "sales_amount_minor": 20000,
+            "occurred_at": "2026-09-07T02:45:36.905644Z",
+            "simulation_time": "2026-09-08T03:45:34.311713Z"
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    "/api/v1/actions": {
+      "params": {
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad"
+      },
+      "response": {
+        "context": {
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "currency": "CNY",
+          "state_version": 9,
+          "as_of": "2026-09-07T04:04:51.163477Z",
+          "simulation_time": "2026-09-09T04:45:34.311713Z",
+          "source_sequence": 6,
+          "freshness": {
+            "status": "STALE",
+            "data_as_of": "2026-09-07T02:45:38.420246Z",
+            "last_sync_at": "2026-09-07T02:47:10.745294Z"
+          }
+        },
+        "items": [
+          {
+            "id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+            "plan_id": "acd09223-f4f9-4888-9334-88c2295cceb5",
+            "approval_id": "2d8c7ac3-b755-421a-86d1-fb91f4e4824b",
+            "status": "SUCCEEDED",
+            "quantity": 20,
+            "amount_minor": 20000,
+            "currency": "CNY",
+            "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38",
+            "receipt": {
+              "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+              "status": "ACCEPTED",
+              "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38",
+              "quantity": 20,
+              "total_minor": 20000,
+              "currency": "CNY",
+              "recorded_at": "2026-09-07T02:45:37.753258Z",
+              "reason": null
+            },
+            "last_error": null,
+            "created_at": "2026-09-07T02:45:37.395823Z",
+            "updated_at": "2026-09-07T02:45:37.791434Z",
+            "purchase_snapshot": {
+              "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+              "sku_id": "sku_001",
+              "supplier_id": "supplier_001",
+              "quantity": 20,
+              "unit_price_minor": 1000,
+              "total_minor": 20000,
+              "currency": "CNY",
+              "expected_arrival_at": "2026-09-09T04:45:34Z"
+            }
+          },
+          {
+            "id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+            "plan_id": "9493fa90-fb0c-4c90-8db2-64addf700c15",
+            "approval_id": "449c8ebe-7aab-4e73-8c46-a64773473bfb",
+            "status": "SUCCEEDED",
+            "quantity": 40,
+            "amount_minor": 40000,
+            "currency": "CNY",
+            "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3",
+            "receipt": {
+              "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+              "status": "ACCEPTED",
+              "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3",
+              "quantity": 40,
+              "total_minor": 40000,
+              "currency": "CNY",
+              "recorded_at": "2026-09-07T02:45:35.628672Z",
+              "reason": null
+            },
+            "last_error": null,
+            "created_at": "2026-09-07T02:45:35.117132Z",
+            "updated_at": "2026-09-07T02:45:35.668650Z",
+            "purchase_snapshot": {
+              "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+              "sku_id": "sku_001",
+              "supplier_id": "supplier_001",
+              "quantity": 40,
+              "unit_price_minor": 1000,
+              "total_minor": 40000,
+              "currency": "CNY",
+              "expected_arrival_at": "2026-09-08T02:45:34Z"
+            }
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    "/api/v1/inbounds": {
+      "params": {
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad"
+      },
+      "response": {
+        "context": {
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "currency": "CNY",
+          "state_version": 9,
+          "as_of": "2026-09-07T04:04:51.192511Z",
+          "simulation_time": "2026-09-09T04:45:34.311713Z",
+          "source_sequence": 6,
+          "freshness": {
+            "status": "STALE",
+            "data_as_of": "2026-09-07T02:45:38.420246Z",
+            "last_sync_at": "2026-09-07T02:47:10.745294Z"
+          }
+        },
+        "items": [
+          {
+            "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+            "sku_id": "sku_001",
+            "external_order_id": "order_36c21a1f6bc4491ba3af14b058390ad3",
+            "ordered_quantity": 40,
+            "received_quantity": 40,
+            "remaining_quantity": 0,
+            "expected_arrival_at": "2026-09-08T02:45:34Z",
+            "arrival_status": "RECEIVED",
+            "is_overdue": false
+          },
+          {
+            "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "mission_id": "bfea3975-545f-468c-9abc-ab67eed4f645",
+            "sku_id": "sku_001",
+            "external_order_id": "order_896dbbfa1bed412b99bc7e7655708e38",
+            "ordered_quantity": 20,
+            "received_quantity": 20,
+            "remaining_quantity": 0,
+            "expected_arrival_at": "2026-09-09T04:45:34Z",
+            "arrival_status": "RECEIVED",
+            "is_overdue": false
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    "/api/v1/ledger-entries": {
+      "params": {
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad"
+      },
+      "response": {
+        "context": {
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "currency": "CNY",
+          "state_version": 9,
+          "as_of": "2026-09-07T04:04:51.221612Z",
+          "simulation_time": "2026-09-09T04:45:34.311713Z",
+          "source_sequence": 6,
+          "freshness": {
+            "status": "STALE",
+            "data_as_of": "2026-09-07T02:45:38.420246Z",
+            "last_sync_at": "2026-09-07T02:47:10.745294Z"
+          }
+        },
+        "items": [
+          {
+            "id": "681be34fb147f338a513a80706f5c0a62ad485fdff51f5c97fdfbf6e2a41825f",
+            "state_version": 9,
+            "effect_type": "GOODS_RECEIVED",
+            "sku_id": "sku_001",
+            "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "source_event_id": "event_a8a9cb8e9d59409e9263febe5c1e1205",
+            "occurred_at": "2026-09-07T02:45:38.420246Z",
+            "simulation_time": "2026-09-09T04:45:34.311713Z",
+            "changes": {
+              "cash_delta_minor": 0,
+              "receivables_delta_minor": 0,
+              "on_hand_delta": 20,
+              "in_transit_delta": -20
+            },
+            "opening_state": null,
+            "remaining_demand_after": null
+          },
+          {
+            "id": "b957a8b6f0d8e548377b7c83efb3e1af9ff5541705a6af93ab35d5fff045c177",
+            "state_version": 8,
+            "effect_type": "PURCHASE_ACCEPTED",
+            "sku_id": "sku_001",
+            "action_id": "6b26041a-c668-46f6-8d4a-5257c52b4c18",
+            "source_event_id": null,
+            "occurred_at": "2026-09-07T02:45:37.753258Z",
+            "simulation_time": null,
+            "changes": {
+              "cash_delta_minor": -20000,
+              "receivables_delta_minor": 0,
+              "on_hand_delta": 0,
+              "in_transit_delta": 20
+            },
+            "opening_state": null,
+            "remaining_demand_after": null
+          },
+          {
+            "id": "7a2a8408cc7e821a481534be1ac7230a84d585c9e1ddaea416f506991a46bcc2",
+            "state_version": 6,
+            "effect_type": "DEMAND_REVISED",
+            "sku_id": "sku_001",
+            "action_id": null,
+            "source_event_id": "event_f2ea128dfccd48fda4a9bebf948f315f",
+            "occurred_at": "2026-09-07T02:45:36.905644Z",
+            "simulation_time": "2026-09-08T04:45:34.311713Z",
+            "changes": {
+              "cash_delta_minor": 0,
+              "receivables_delta_minor": 0,
+              "on_hand_delta": 0,
+              "in_transit_delta": 0
+            },
+            "opening_state": null,
+            "remaining_demand_after": 70
+          },
+          {
+            "id": "fa332a0242ecea8df8dd6b24ae8eda8f3bf70a04927d7808cfce303d13357efb",
+            "state_version": 5,
+            "effect_type": "SALE_RECORDED",
+            "sku_id": "sku_001",
+            "action_id": null,
+            "source_event_id": "event_9fe6cc3c8e9941b7a144f91a37d821ef",
+            "occurred_at": "2026-09-07T02:45:36.905644Z",
+            "simulation_time": "2026-09-08T03:45:34.311713Z",
+            "changes": {
+              "cash_delta_minor": 0,
+              "receivables_delta_minor": 20000,
+              "on_hand_delta": -10,
+              "in_transit_delta": 0
+            },
+            "opening_state": null,
+            "remaining_demand_after": null
+          },
+          {
+            "id": "5fbe50da29a26603938edb261b965a8d0f58a6f7a0f9dff181178e2fac662d2f",
+            "state_version": 4,
+            "effect_type": "GOODS_RECEIVED",
+            "sku_id": "sku_001",
+            "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "source_event_id": "event_a86e5cd0965f40fcb4a25c95aad25650",
+            "occurred_at": "2026-09-07T02:45:36.215434Z",
+            "simulation_time": "2026-09-08T02:45:34.311713Z",
+            "changes": {
+              "cash_delta_minor": 0,
+              "receivables_delta_minor": 0,
+              "on_hand_delta": 40,
+              "in_transit_delta": -40
+            },
+            "opening_state": null,
+            "remaining_demand_after": null
+          },
+          {
+            "id": "b19e9b3da525549555726dd8e7c50c130227e93b723b753d591563f691a5756e",
+            "state_version": 3,
+            "effect_type": "PURCHASE_ACCEPTED",
+            "sku_id": "sku_001",
+            "action_id": "1ab876f1-d4e9-4a44-974c-78fcf0127988",
+            "source_event_id": null,
+            "occurred_at": "2026-09-07T02:45:35.628672Z",
+            "simulation_time": null,
+            "changes": {
+              "cash_delta_minor": -40000,
+              "receivables_delta_minor": 0,
+              "on_hand_delta": 0,
+              "in_transit_delta": 40
+            },
+            "opening_state": null,
+            "remaining_demand_after": null
+          },
+          {
+            "id": "fc083cf3270480de0e25da891e88212433375ef50c74964fca9da69e6da815b7",
+            "state_version": 1,
+            "effect_type": "INIT",
+            "sku_id": null,
+            "action_id": null,
+            "source_event_id": null,
+            "occurred_at": "2026-09-07T02:45:34.311713Z",
+            "simulation_time": "2026-09-07T02:45:34.311713Z",
+            "changes": null,
+            "opening_state": {
+              "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+              "state_version": 1,
+              "currency": "CNY",
+              "cash_minor": 100000,
+              "reserved_cash_minor": 0,
+              "available_cash_minor": 100000,
+              "receivables_minor": 0,
+              "stocks": [
+                {
+                  "sku_id": "sku_001",
+                  "on_hand": 20,
+                  "in_transit": 0,
+                  "remaining_demand": 60,
+                  "forecast_version": "fixed-1"
+                }
+              ],
+              "data_as_of": "2026-09-07T02:45:34.311713Z",
+              "simulation_time": "2026-09-07T02:45:34.311713Z"
+            },
+            "remaining_demand_after": null
+          }
+        ],
+        "next_cursor": null
+      }
+    },
+    "/api/v1/sales/summary": {
+      "params": {
+        "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+        "from": "2026-09-08T00:00:00+00:00",
+        "to": "2026-09-09T00:00:00+00:00"
+      },
+      "response": {
+        "context": {
+          "store_id": "store_75b4c5a5defe433aa6cf12ddbf6a36ad",
+          "currency": "CNY",
+          "state_version": 9,
+          "as_of": "2026-09-07T04:04:51.258279Z",
+          "simulation_time": "2026-09-09T04:45:34.311713Z",
+          "source_sequence": 6,
+          "freshness": {
+            "status": "STALE",
+            "data_as_of": "2026-09-07T02:45:38.420246Z",
+            "last_sync_at": "2026-09-07T02:47:10.745294Z"
+          }
+        },
+        "from": "2026-09-08T00:00:00Z",
+        "to": "2026-09-09T00:00:00Z",
+        "time_basis": "simulation_time",
+        "timezone": "UTC",
+        "granularity": "day",
+        "coverage": "RECORDED_EVENTS_ONLY",
+        "record_count": 1,
+        "recorded_quantity": 10,
+        "recorded_sales_amount_minor": 20000,
+        "buckets": [
+          {
+            "from": "2026-09-08T00:00:00Z",
+            "to": "2026-09-09T00:00:00Z",
+            "record_count": 1,
+            "recorded_quantity": 10,
+            "recorded_sales_amount_minor": 20000
+          }
+        ]
+      }
+    }
+  },
+  "error_checks": [
+    {
+      "status": 401,
+      "code": "UNAUTHENTICATED"
+    },
+    {
+      "status": 403,
+      "code": "FORBIDDEN"
+    },
+    {
+      "status": 404,
+      "code": "RESOURCE_NOT_FOUND"
+    },
+    {
+      "status": 422,
+      "code": "VALIDATION_ERROR"
+    }
+  ],
+  "page_size_one_reconstructs_full_lists": true,
+  "action_list_matches_detail": true,
+  "sc01_ledger_reconstruction": {
+    "cash_minor": 40000,
+    "receivables_minor": 20000,
+    "on_hand": 70,
+    "in_transit": 0
+  },
+  "business_counts_before_and_after": {
+    "business_events": 30,
+    "ledger_entries": 38,
+    "job_runs": 569,
+    "command_receipts": 49,
+    "alerts": 27,
+    "mission_timeline": 305
+  },
+  "business_state_unchanged": true,
+  "owned_api_pid": 4080,
+  "owned_api_stopped": true,
+  "port": 8014,
+  "wall_seconds": 3.578
+}
