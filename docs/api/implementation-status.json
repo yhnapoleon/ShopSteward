@@ -43,7 +43,8 @@
     "list_mission_plans",
     "get_plan",
     "create_dev_scenario",
-    "advance_dev_scenario"
+    "advance_dev_scenario",
+    "revise_plan"
   ],
   "registered_job_types": [
     "worker_probe",

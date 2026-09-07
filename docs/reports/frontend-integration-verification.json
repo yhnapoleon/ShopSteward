@@ -1,0 +1,83 @@
+{
+  "recorded_at": "2026-09-07T12:06:00.919373+00:00",
+  "branch": "jeffrey",
+  "base_commit": "93827790b0f93deb9f9e023cadfa72e46901c3af",
+  "working_tree": "uncommitted; includes preceding macOS setup changes plus this frontend delivery",
+  "frontend": "Nuxt/Vue, v0.3 visual reference; real API-backed business state",
+  "backend_runtime": {
+    "operations": 41,
+    "paths": 37,
+    "contract_sha256": "80b1cde403a67774793b993a75ba24729f62f3d88cfb5433530deb7b77919876"
+  },
+  "checks": [
+    {
+      "name": "真实SC01：40件确认、刷新、暂停中到货、需求变化再20件、最终账目",
+      "status": "passed",
+      "duration_ms": 32221
+    },
+    {
+      "name": "真实非推荐20：后端生成新版本；已有后端随后再次建议补足20",
+      "status": "passed",
+      "duration_ms": 8471
+    },
+    {
+      "name": "真实拒绝与警报知晓：无采购，知晓不等于解除",
+      "status": "passed",
+      "duration_ms": 6256
+    },
+    {
+      "name": "真实采购丢响应：刷新后沿用同一确认恢复，不产生第二笔",
+      "status": "passed",
+      "duration_ms": 11437
+    },
+    {
+      "name": "旧接口能力降级：可比较20件但禁止确认，仍能拒绝原方案",
+      "status": "passed",
+      "duration_ms": 10859
+    },
+    {
+      "name": "报价本地工具：实际文件输入、甲乙计算、原币种和下载",
+      "status": "passed",
+      "duration_ms": 1122
+    },
+    {
+      "name": "历史窗口：受控分页响应超过30条，轮询后仍保留旧记录",
+      "status": "passed",
+      "duration_ms": 13037
+    },
+    {
+      "name": "手机：事实先于决策，改选与关闭弹层可用，无横向溢出",
+      "status": "passed",
+      "duration_ms": 11059
+    }
+  ],
+  "python_regression": {
+    "backend_and_agent_passed": 228,
+    "simulator_passed": 12,
+    "failed": 0,
+    "skipped": 0
+  },
+  "static_checks": [
+    "runtime contract/types/allowlist match",
+    "Nuxt typecheck passed",
+    "Nuxt production build passed",
+    "scoped Ruff passed",
+    "git diff --check passed",
+    "no unused app declarations passed",
+    "configured backend credentials absent from public bundle (limited exact-value check)"
+  ],
+  "evidence": "frontend-business-state.json contains the actual API dashboard and action-list responses captured in the passing SC01 run",
+  "controlled_checks": [
+    "Browser deliberately lost the response after a real purchase confirmation; then recovered with the original idempotency key. This is not a server/process crash test.",
+    "Legacy revision capability and pagination replies were controlled in the browser.",
+    "CSV processing is a local browser feature, not a backend/Agent pipeline."
+  ],
+  "backend_change": "One optional public plan-revision endpoint reusing the existing evaluate logic; no algorithm/approval/accounting/execution change and no migration",
+  "limitations": [
+    "Real model and Agent worker remain disabled. Real model A-01/L-01 frontend acceptance not performed.",
+    "After a 20-unit purchase the current backend can recommend another20; this existing rule is intentionally preserved.",
+    "Quotes/requirements/history are local to this browser; backend integration remains pending.",
+    "Only this browser-created scenario references can be advanced in development controls.",
+    "No public deployment, commit, push or merge performed."
+  ]
+}

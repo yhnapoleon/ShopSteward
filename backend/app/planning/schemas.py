@@ -105,3 +105,8 @@ class Plan(DTO):
 class PlanList(DTO):
     items: list[Plan]
     next_cursor: str | None
+
+
+class PlanRevisionRequest(DTO):
+    expected_mission_version: Positive
+    max_purchase_qty: Annotated[int, Field(strict=True, ge=0, le=1000000)] | None

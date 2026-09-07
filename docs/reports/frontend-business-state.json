@@ -1,0 +1,105 @@
+{
+  "storeId": "store_f1768107f1064cd881242e8a7cb0c9ea",
+  "dashboard": {
+    "state": {
+      "store_id": "store_f1768107f1064cd881242e8a7cb0c9ea",
+      "state_version": 9,
+      "currency": "CNY",
+      "cash_minor": 40000,
+      "reserved_cash_minor": 0,
+      "available_cash_minor": 40000,
+      "receivables_minor": 20000,
+      "stocks": [
+        {
+          "sku_id": "sku_001",
+          "on_hand": 70,
+          "in_transit": 0,
+          "remaining_demand": 70,
+          "forecast_version": "local-68ca2749ee5ac6715eb6381f4fe45b3c"
+        }
+      ],
+      "data_as_of": "2026-09-07T11:54:10.229012Z",
+      "simulation_time": "2026-09-09T13:53:41.201015Z"
+    },
+    "freshness": {
+      "status": "FRESH",
+      "data_as_of": "2026-09-07T11:54:10.229012Z",
+      "last_sync_at": "2026-09-07T11:54:11.257411Z"
+    },
+    "active_mission_count": 1,
+    "active_alert_count": 0,
+    "last_check_at": "2026-09-07T11:54:09.228556Z",
+    "next_check_at": "2026-09-07T11:54:11.256021Z"
+  },
+  "actions": [
+    {
+      "id": "c0454867-4c08-4081-b956-0ba8db553b35",
+      "mission_id": "e5bbb5d1-333e-4a5b-94c5-2821a6477b89",
+      "plan_id": "941ae269-3bbc-44ce-ad14-8a8f7327fb28",
+      "approval_id": "972c2f95-5d03-4734-b905-e8986e98e53c",
+      "status": "SUCCEEDED",
+      "quantity": 20,
+      "amount_minor": 20000,
+      "currency": "CNY",
+      "external_order_id": "order_80700a0813cc4eeaa176a27f8467f151",
+      "receipt": {
+        "action_id": "c0454867-4c08-4081-b956-0ba8db553b35",
+        "status": "ACCEPTED",
+        "external_order_id": "order_80700a0813cc4eeaa176a27f8467f151",
+        "quantity": 20,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-07T11:54:07.236229Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-07T11:54:06.956545Z",
+      "updated_at": "2026-09-07T11:54:07.241501Z",
+      "purchase_snapshot": {
+        "store_id": "store_f1768107f1064cd881242e8a7cb0c9ea",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 20,
+        "unit_price_minor": 1000,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-09T13:53:41Z"
+      }
+    },
+    {
+      "id": "7b3c2e73-0831-449e-99e9-2827695a29e9",
+      "mission_id": "e5bbb5d1-333e-4a5b-94c5-2821a6477b89",
+      "plan_id": "4215e406-8993-4b13-a490-49b318e88651",
+      "approval_id": "2a7ca4b9-dcb1-46f5-8d49-1750190f55d0",
+      "status": "SUCCEEDED",
+      "quantity": 40,
+      "amount_minor": 40000,
+      "currency": "CNY",
+      "external_order_id": "order_ec836a3fad87416d9666829f1b91b130",
+      "receipt": {
+        "action_id": "7b3c2e73-0831-449e-99e9-2827695a29e9",
+        "status": "ACCEPTED",
+        "external_order_id": "order_ec836a3fad87416d9666829f1b91b130",
+        "quantity": 40,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-07T11:53:50.224041Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-07T11:53:48.745715Z",
+      "updated_at": "2026-09-07T11:53:50.232348Z",
+      "purchase_snapshot": {
+        "store_id": "store_f1768107f1064cd881242e8a7cb0c9ea",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 40,
+        "unit_price_minor": 1000,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-08T11:53:41Z"
+      }
+    }
+  ],
+  "firstAction": "7b3c2e73-0831-449e-99e9-2827695a29e9"
+}

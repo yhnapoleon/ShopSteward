@@ -1,0 +1,8 @@
+node_modules
+.nuxt
+.output
+app/types/backend.d.ts
+server/utils/backend-routes.ts
+public/icons.svg
+test-results
+playwright-report

@@ -1,0 +1,39 @@
+name: Windows compatibility
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install frontend dependencies from lockfile
+        run: corepack pnpm install --frozen-lockfile
+      - name: Check generated API types and routes
+        run: corepack pnpm --filter @shopsteward/frontend api:check
+      - name: Typecheck frontend
+        run: corepack pnpm --filter @shopsteward/frontend typecheck
+      - name: Build frontend
+        run: corepack pnpm --filter @shopsteward/frontend build
+      - name: Install Python dependencies from lockfile
+        run: |
+          python -m pip install uv==0.11.6
+          uv sync --frozen --all-packages --all-groups
+      - name: Verify Windows event loop and async database dependencies
+        run: |
+          uv run --frozen python -c "import asyncio, runpy, greenlet; from sqlalchemy.ext.asyncio import create_async_engine; hook = runpy.run_path('agent/tests/conftest.py')['pytest_asyncio_loop_factories']; assert hook(None, None) == {'selector': asyncio.SelectorEventLoop}; print('Windows Selector loop and async database imports passed')"
+      - name: Run platform-independent business and API checks on Windows
+        run: uv run --frozen python -m pytest backend/tests/unit/test_planning.py backend/tests/unit/test_agent_constraints.py backend/tests/api/test_foundation.py -c backend/pyproject.toml -q

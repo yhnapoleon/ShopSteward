@@ -137,6 +137,7 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/missions/{mission_id}/plans",
         "/api/v1/plans/{plan_id}",
         "/api/v1/plans/{plan_id}/decision",
+        "/api/v1/plans/{plan_id}/revision",
         "/api/v1/actions/{action_id}",
         "/dev/v1/scenarios/{run_id}/advance",
         "/api/v1/dashboard",
