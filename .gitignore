@@ -22,3 +22,7 @@ var/**/*
 !var/**/.gitkeep
 .DS_Store
 Thumbs.db
+
+# Local browser verification outputs
+frontend/test-results/
+frontend/playwright-report/

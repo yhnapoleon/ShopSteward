@@ -1,0 +1,178 @@
+{
+  "checked_at": "2026-09-07T18:40:25.571442+08:00",
+  "source_commit": "93827790b0f93deb9f9e023cadfa72e46901c3af",
+  "branch": "jeffrey",
+  "basis": "source commit plus uncommitted macOS environment fixes; no commit or push",
+  "platform": "macOS arm64",
+  "versions": {
+    "python": "3.12.13",
+    "postgresql": "17.11",
+    "node": "22.23.1",
+    "pnpm": "10.17.1",
+    "nuxt": "4.5.2"
+  },
+  "tests": {
+    "backend_agent": {
+      "tests": "226",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "30.794"
+    },
+    "simulator": {
+      "tests": "12",
+      "errors": "0",
+      "failures": "0",
+      "skipped": "0",
+      "time": "1.175"
+    }
+  },
+  "checks": [
+    "ruff_backend_agent_simulator_local_dev",
+    "format_backend_agent_simulator_local_dev",
+    "alembic_check_backend_simulator",
+    "api_contract_validation",
+    "nuxt_prepare_and_build",
+    "api_simulator_frontend_http_200",
+    "owned_services_stop_and_restart"
+  ],
+  "database_heads": {
+    "backend_dev_and_test": "0009_agent_scopes",
+    "simulator_dev_and_test": "sim_0002_purchases"
+  },
+  "smoke_result": {
+    "recorded_at": "2026-09-07T10:36:56.155738+00:00",
+    "work_package": "B0-06",
+    "scenario_run_id": "run_590e4d1dd3444219b9bb0520fc576552",
+    "store_id": "store_a35cd57e333f449eae8e29708bd7d6b2",
+    "mission_id": "175d8a68-8069-460a-9dff-b1a61e3f1529",
+    "actions": [
+      {
+        "id": "8a4b3224-7a7b-4146-a688-880dcb85d378",
+        "mission_id": "175d8a68-8069-460a-9dff-b1a61e3f1529",
+        "plan_id": "79bcdaf1-d626-4ab2-a8da-c444a6017d4c",
+        "approval_id": "29086342-656a-42a2-8c5a-4b7f243537ee",
+        "status": "SUCCEEDED",
+        "quantity": 40,
+        "amount_minor": 40000,
+        "currency": "CNY",
+        "external_order_id": "order_2e0f5fa69b5e4d6facb968aab649c444",
+        "receipt": {
+          "action_id": "8a4b3224-7a7b-4146-a688-880dcb85d378",
+          "status": "ACCEPTED",
+          "external_order_id": "order_2e0f5fa69b5e4d6facb968aab649c444",
+          "quantity": 40,
+          "total_minor": 40000,
+          "currency": "CNY",
+          "recorded_at": "2026-09-07T10:36:46.064297Z",
+          "reason": null
+        },
+        "last_error": null,
+        "created_at": "2026-09-07T10:36:45.109464Z",
+        "updated_at": "2026-09-07T10:36:46.073854Z",
+        "purchase_snapshot": {
+          "store_id": "store_a35cd57e333f449eae8e29708bd7d6b2",
+          "sku_id": "sku_001",
+          "supplier_id": "supplier_001",
+          "quantity": 40,
+          "unit_price_minor": 1000,
+          "total_minor": 40000,
+          "currency": "CNY",
+          "expected_arrival_at": "2026-09-08T10:36:33Z"
+        }
+      },
+      {
+        "id": "910bf760-cb07-441a-a813-1a60b5434eba",
+        "mission_id": "175d8a68-8069-460a-9dff-b1a61e3f1529",
+        "plan_id": "91316b77-57da-4ae4-acb9-bf1479af7db5",
+        "approval_id": "e9baeda8-0212-43fa-8359-b10a78903824",
+        "status": "SUCCEEDED",
+        "quantity": 20,
+        "amount_minor": 20000,
+        "currency": "CNY",
+        "external_order_id": "order_42e07ba023bd439ab31e5dec17937f91",
+        "receipt": {
+          "action_id": "910bf760-cb07-441a-a813-1a60b5434eba",
+          "status": "ACCEPTED",
+          "external_order_id": "order_42e07ba023bd439ab31e5dec17937f91",
+          "quantity": 20,
+          "total_minor": 20000,
+          "currency": "CNY",
+          "recorded_at": "2026-09-07T10:36:53.077581Z",
+          "reason": null
+        },
+        "last_error": null,
+        "created_at": "2026-09-07T10:36:52.145474Z",
+        "updated_at": "2026-09-07T10:36:53.084101Z",
+        "purchase_snapshot": {
+          "store_id": "store_a35cd57e333f449eae8e29708bd7d6b2",
+          "sku_id": "sku_001",
+          "supplier_id": "supplier_001",
+          "quantity": 20,
+          "unit_price_minor": 1000,
+          "total_minor": 20000,
+          "currency": "CNY",
+          "expected_arrival_at": "2026-09-09T12:36:33Z"
+        }
+      }
+    ],
+    "final_state": {
+      "store_id": "store_a35cd57e333f449eae8e29708bd7d6b2",
+      "state_version": 9,
+      "currency": "CNY",
+      "cash_minor": 40000,
+      "reserved_cash_minor": 0,
+      "available_cash_minor": 40000,
+      "receivables_minor": 20000,
+      "stocks": [
+        {
+          "sku_id": "sku_001",
+          "on_hand": 70,
+          "in_transit": 0,
+          "remaining_demand": 70,
+          "forecast_version": "local-601bd23e931bce912fb7207864e75738"
+        }
+      ],
+      "data_as_of": "2026-09-07T10:36:55.075543Z",
+      "simulation_time": "2026-09-09T12:36:33.079889Z"
+    },
+    "runtime_matches_export": true,
+    "backend_runtime_operations": 40,
+    "approval_and_advance_replay_identical": true,
+    "scope": "Separate API, worker and simulator processes; explicit SC01 advance. Automatic periodic/event checks and source synchronization; no manual checks.",
+    "periodic_evidence": {
+      "observed_wall_seconds": 10.992351,
+      "mission_interval_seconds": 5,
+      "completed_interval_checks": [
+        {
+          "id": "8901fde7-ac6f-4ce2-a2c6-f565f8e21ebc",
+          "scheduled_for": "2026-09-07 10:36:39.087712+00:00",
+          "finished_at": "2026-09-07 10:36:40.060331+00:00"
+        },
+        {
+          "id": "8cb42af6-0910-4473-be8c-238897ed8940",
+          "scheduled_for": "2026-09-07 10:36:44.087712+00:00",
+          "finished_at": "2026-09-07 10:36:45.063274+00:00"
+        }
+      ],
+      "completed_interval_syncs": 2,
+      "manual_check_requests": 0
+    },
+    "ledger_effect_counts": {
+      "DEMAND_REVISED": 1,
+      "GOODS_RECEIVED": 2,
+      "INIT": 1,
+      "PURCHASE_ACCEPTED": 2,
+      "SALE_RECORDED": 1
+    },
+    "restart_verified_at": "2026-09-07T10:38:10.500014+00:00",
+    "restart_action_and_supplier_receipt_identical": true,
+    "supplier_purchase_replay_does_not_duplicate_effect": true
+  },
+  "real_model_configured": false,
+  "real_model_called": false,
+  "agent_worker_started": false,
+  "frontend_business_ui_implemented": false,
+  "python_locked_versions_changed": false,
+  "raw_evidence_location": "~/.local/share/shopsteward/logs/"
+}

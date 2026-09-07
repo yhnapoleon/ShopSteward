@@ -52,7 +52,8 @@
     "download_knowledge_original",
     "control_knowledge_document",
     "create_dev_scenario",
-    "advance_dev_scenario"
+    "advance_dev_scenario",
+    "revise_plan"
   ],
   "registered_job_types": [
     "worker_probe",

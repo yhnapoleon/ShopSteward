@@ -3099,6 +3099,138 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/plans/{plan_id}/revision": {
+      "post": {
+        "tags": [
+          "Planning"
+        ],
+        "summary": "Revise",
+        "operationId": "revise_plan",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "plan_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Plan Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlanRevisionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Plan"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
     "/api/v1/me": {
       "get": {
         "tags": [
@@ -9638,6 +9770,36 @@
           "next_cursor"
         ],
         "title": "PlanList"
+      },
+      "PlanRevisionRequest": {
+        "properties": {
+          "expected_mission_version": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Expected Mission Version"
+          },
+          "max_purchase_qty": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Purchase Qty"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_mission_version",
+          "max_purchase_qty"
+        ],
+        "title": "PlanRevisionRequest"
       },
       "Policy": {
         "properties": {

@@ -16,6 +16,16 @@ K1新增上传/追加、元数据分页与管理、原件版本/鉴权下载、�
 
 阅读：[K0–K1执行设计](docs/superpowers/plans/2026-09-07-k0-k1-execution.md)、[embedding/检索存储/图与取回方式比较](docs/research/2026-09-07-knowledge-technology-options.md)、[K0实验报告](docs/reports/knowledge-baseline-report.md)、[K1接口说明](backend/app/knowledge/README.md)。下方既有Simulator/Agent/B0进度保留为历史背景。
 
+### 前端基础联调版（2026-09-07）
+
+已按v0.3原型实现Nuxt三视图、真实状态/方案/确认/回执、暂停恢复、事件推进、警报与账本、Agent会话协议和本地报价工具。前端不维护模拟业务账本。仅新增一处普通用户revision接口，复用原Agent规划逻辑，无算法/资金/审批规则变更、无迁移；缺少此接口时有兼容降级。真实模型仍关闭，报价后端与少买后的再建议语义留给后端同学继续确认。
+
+接入与边界：[frontend/README.md](frontend/README.md)。验证：[前端联调记录](docs/reports/frontend-integration-verification.json)、[实际业务终态](docs/reports/frontend-business-state.json)。本版本包含此前Mac环境适配；提交与合并状态以Git及对应PR为准。下方旧进度按其日期理解。
+
+### macOS本机开发适配与复现（2026-09-07）
+
+新增[macOS开发入口](docs/local-macos-development.md)与[实测记录](docs/reports/macos-development-verification.json)：依赖、四个开发/测试数据库、API/业务worker/simulator与Nuxt骨架已在Apple Silicon验证。后端+Agent 226项、模拟器12项测试通过，SC01和服务/数据库重启复核通过。修复SQLAlchemy asyncio依赖及Agent非Windows测试循环工厂，新增本机服务脚本和前端锁文件。基准为 `9382779` 加这些未提交改动，未推送或合并；未调用真实模型，前端仍为框架页面。以下Windows现场与早期状态保留其原适用范围，不能当作这台Mac的当前进程信息。
+
 ### Simulator 控制台已实施（2026-09-07）
 
 已在用户批准后实现**可配置 SANDBOX、写入 PostgreSQL 的模拟数据与本地 Dashboard**。入口 <http://127.0.0.1:8001/console/>；支持独立/联动创建、销售/需求/订单到货 Trigger、事件及 backend 同步观察。SC01 基准和既有数据保留；产品 frontend 独立开发。运行说明见 [simulation/README.md](simulation/README.md)，验收见 [测试报告](docs/reports/simulator-console-test-report.md) 与 [真实 HTTP 证据](docs/api/simulator-console-acceptance-result.json)。
