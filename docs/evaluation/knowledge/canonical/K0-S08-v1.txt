@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+百川服务窗口
+E-STORE | K0-S08-v1
+[section:1] 时窗 / Service window
+百川 E-SUP-BC 补单客服在工作日09:00–17:00在线；退箱预约在周三10:00前提交。Support: weekdays 09:00–17:00; tote returns booked before Wednesday 10:00.
+[section:2] 调度 / Dispatch
+追加订单必须获得书面确认编号；聊天中的收到不表示已排车。A written confirmation ID is required; a chat acknowledgment is not dispatch confirmation.
+[section:3] 紧急情况 / Emergency
+超过窗口时登记下个工作日回电，不承诺当日补发。Log a callback for the next business day; do not promise same-day dispatch.

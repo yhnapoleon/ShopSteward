@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+纸杯活动物料计算
+E-STORE | K0-A03-v1
+[section:1] 计划 / Draft plan
+午间快闪草稿拟设6桌，每桌20只纸杯，合计120只；这不是正式领料单。Six tables × twenty cups = 120 cups in a draft plan.
+[section:2] 缓存 / Saved result
+表内公式保存了120的缓存值；必须保留公式和缓存来源区别。The formula has a saved result of 120; retain the distinction between expression and cache.
+[section:3] 审批 / Approval
+领取物料前由店长核准正式需求，不依据本表直接扣库存。The manager approves the official demand before stock is issued.

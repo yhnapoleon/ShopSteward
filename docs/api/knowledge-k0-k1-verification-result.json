@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "completed_at": "2026-09-07T12:12:31.935462+00:00",
+  "git_base": "6fb71fa573ca8834f2a2f3d2b522643ec15bc751",
+  "scope": "K0 reproducible no-model baseline and technology design; K1 original document management backend",
+  "tests": {
+    "backend_agent_cross_service_full_after_pdf_office_fix": {
+      "passed": 302,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 119.27,
+      "command": "python backend/tests/integration/test_knowledge_runner.py --with-simulator-db tests ../agent/tests -q --tb=short -x"
+    },
+    "final_K1_after_chartsheet_fix": {
+      "passed": 78,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 20.11,
+      "command": "python backend/tests/integration/test_knowledge_runner.py tests/unit/test_knowledge_storage.py tests/unit/test_knowledge_contract.py tests/integration/test_knowledge_documents.py -q --tb=short"
+    },
+    "chartsheet_after_test_constant_refactor": {
+      "passed": 2,
+      "failed": 0,
+      "seconds": 0.59
+    },
+    "simulator": {
+      "passed": 23,
+      "failed": 0,
+      "skipped": 0,
+      "seconds": 6.04
+    },
+    "real_http_restart": {
+      "passed": 22,
+      "model_calls": 0,
+      "result": "knowledge-k1-http-result.json"
+    },
+    "upstream_contract_chunker": {
+      "passed": 26,
+      "failed": 0,
+      "seconds": 1.01
+    },
+    "corpus_integrity": {
+      "checks": 900,
+      "result": "../evaluation/knowledge/freeze-evidence.json"
+    },
+    "core_retrieval": {
+      "cases": 60,
+      "result": "knowledge-k0-baseline-result.json"
+    },
+    "relations": {
+      "cases": 12,
+      "same_C_D_paths": true,
+      "result": "knowledge-k0-relations-result.json"
+    }
+  },
+  "validation": {
+    "ruff": "passed",
+    "format_python_files": 164,
+    "alembic_check": "No new upgrade operations detected",
+    "uv_lock_packages": 88,
+    "installed_compatible_packages": 83,
+    "openapi_runtime_operations": 49,
+    "openapi_runtime_paths": 42,
+    "knowledge_operations": 9,
+    "knowledge_paths": 6,
+    "old_runtime_paths_changed": [],
+    "old_runtime_schemas_changed": [],
+    "design_contracts": "passed",
+    "frontend_read_contract": "passed"
+  },
+  "review": {
+    "initial_pdf_encrypt_false_positive": "fixed",
+    "initial_malformed_pdf_office_accepted": "fixed",
+    "chartsheet_compatibility": "fixed; targeted positive and negative tests passed",
+    "independent_final_recheck": "All three P2 findings closed; chartsheet positive and MIME-negative independently rechecked; no new important issue in focused diff."
+  },
+  "environment": {
+    "development_database_revision": "0009_agent_scopes",
+    "test_database_revision": "0010_knowledge",
+    "development_api_8000_health": 200,
+    "simulator_8001_health": 200,
+    "temporary_api_8016": "stopped",
+    "isolated_opensearch": "stopped; own container retained",
+    "development_migration_or_restart": false,
+    "git_commit_or_push": false
+  },
+  "not_run": [
+    "real embedding and rerank model comparisons",
+    "pgvector/Qdrant ANN and Chinese engine comparisons",
+    "OCR quality",
+    "Neo4j/GraphRAG",
+    "load or production SLA"
+  ],
+  "limits": [
+    "Assistant-authored synthetic labels; human review pending",
+    "SQL path correctness is not end-to-end generated answer correctness",
+    "Filesystem/DB are not atomic; unreferenced originals may need later GC",
+    "K1 has no parser/index worker, semantic search, Agent document tools, or document UI"
+  ],
+  "source_sha256": {
+    "backend/app/knowledge/models.py": "9cdb25ee6c06345da5fbb7b327e945e2afc6c3a1a55ed68b40d2f56d6bf6be6c",
+    "backend/app/knowledge/repository.py": "76d1d7f7965d5a382cf5b4c54c61178255517407b4081d7e4c746fa978edff4a",
+    "backend/app/knowledge/router.py": "b9982086b9d70572f0a9c801c47de127bb46206c10cf846a339156e747b5b3af",
+    "backend/app/knowledge/schemas.py": "a7391645ab8cf5fcc22aab45820dd55e5bf850d53ab9ba5f5fab1bd5fad2d566",
+    "backend/app/knowledge/storage.py": "eeba918a67a1a1e0b244a4bb3a0a82d83044f934f3186e94abcb7cdac4796210",
+    "backend/app/knowledge/__init__.py": "dfea5989ae329932eeed76a26afddc6af678f323a6f49070e5dbdac801865767",
+    "backend/app/core/config.py": "5e4e5b903851542a1343a5612d9944ca40ef8bbb83a0a3545cc91d0eff36d3ae",
+    "backend/app/db/session.py": "cfcd310a38ed83e29e600f5a909acbe8650d31bbfd8f8f07f09ceec527e3af63",
+    "backend/app/main.py": "6035efcef33d3625eb19e5b5b8e058ba9b74b408cd854c10315f771e790b3198",
+    "backend/migrations/env.py": "98d2100289ab63c8f604489bf71255fab5e014fb2bc10ec83f60ad1115467d25",
+    "backend/migrations/versions/0010_knowledge.py": "0d7d21daa90ef81a450f0a061a1c7d7d075f05d2c6fc57e604e1ecc20e664fdf",
+    "backend/pyproject.toml": "8806859263e205b74de992a705f02df05949ec47dbe2a01bb1367328dc2573d7",
+    "uv.lock": "34429bf4fa87db248dff48ff52e50a7f5b06c1c390051b1402b3a97c6a4b2853",
+    "backend/tests/api/test_foundation.py": "2a9a49bff44be41e7bed4869a75e4f9e9675eb4bd88fd418f071807b60f046d0",
+    "backend/tests/unit/test_knowledge_contract.py": "68068bdbb5263b5ab4d2eee36aea5d30c3e6c48297abaf38d9321cf991f4431f",
+    "backend/tests/unit/test_knowledge_storage.py": "0b811f9d73258c969f986a12e3b862bbc29b1b670cfd0639ff4c4f225de9e90f",
+    "backend/tests/integration/test_knowledge_documents.py": "21509dd5c58e146d29415d83fde5bdb4dcdda8fba5a2b9a36382163f9717f514",
+    "backend/tests/integration/test_knowledge_runner.py": "dda4c3b75c2c6a235dd4f4b8a861512419c1c392d9afa86d32b960351f20d8d2"
+  }
+}

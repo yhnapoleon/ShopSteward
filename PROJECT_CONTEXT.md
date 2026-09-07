@@ -1,5 +1,21 @@
 # ShopSteward 项目总说明与对话交接
 
+### 最新方向补充：云端检索与扩展语料（2026-09-07）
+
+用户确认由助手寻找/合成足量且有意义的资料，允许文本发送云模型；优先云端embedding、知识索引与关系存储，本地Agent取回带正文/元数据的candidates。部署区域暂不限定，按实测选择。已形成[扩展设计](docs/superpowers/specs/2026-09-07-cloud-knowledge-and-corpus-design.md)及[首批10个公开来源家族目录](docs/research/2026-09-07-knowledge-public-source-catalog.md)：先200份试运行，再以1000独立文档+另计版本为目标，300题独立效果评测；规模为计划，尚未生成/入库。保留原K0冻结集，云存储/模型未决出实测胜者，关系优先云PG；本轮没有开通云资源或实现K2–K5。既有K0/K1完成状态如下。
+
+### 最新进度：知识资料基线与文档管理（2026-09-07）
+
+**K0基线与K1后端已实现。** 文档资料用于供应商条款、商品说明、SOP、活动要求、复盘等可引用证据；实时经营数据与计算继续由现有backend负责。结构清楚并不意味着需要向量或独立图数据库，实体/条件优先精确索引、PG关联与确定性规则。
+
+K0提供40份合成原件版本、60核心问、12关系问、来源hash与实际解析/关键词/关系基线。复用RAilG核心算法的方向保留，但BGE-M3/OpenSearch是候选组合；Qwen embedding、OpenAI embedding、pgvector与Qdrant的比较和选择门槛已补齐。真实模型/其他向量引擎尚未实测，不声称选型胜出。关系12题的SQL固定JOIN与有界递归同事实结果一致，先保留PG关系方案。
+
+K1新增上传/追加、元数据分页与管理、原件版本/鉴权下载、归档恢复9个操作，使用现有身份与PG，不绑定embedding/检索存储。上传返回201和UPLOADED/NOT_INDEXED；索引任务、检索、Agent取用和文档UI分别留在K2–K5。代码/测试库迁移head为0010_knowledge；开发库仍0009，8000/8001未切换。原件目录与PG需要共同备份，孤儿原件自动GC尚待后续实现。
+
+全量backend/Agent/跨服务PG302项通过；随后图表页兼容修复的78项知识模块与22项真实HTTP/重启验收通过，simulator23项通过。最新现场、测试批次与后续操作以[HANDOVER顶部](HANDOVER.md)及[K1测试报告](docs/reports/knowledge-k1-test-report.md)为准。本轮未提交/推送，基准HEAD6fb71fa。
+
+阅读：[K0–K1执行设计](docs/superpowers/plans/2026-09-07-k0-k1-execution.md)、[embedding/检索存储/图与取回方式比较](docs/research/2026-09-07-knowledge-technology-options.md)、[K0实验报告](docs/reports/knowledge-baseline-report.md)、[K1接口说明](backend/app/knowledge/README.md)。下方既有Simulator/Agent/B0进度保留为历史背景。
+
 ### 前端基础联调版（2026-09-07）
 
 已按v0.3原型实现Nuxt三视图、真实状态/方案/确认/回执、暂停恢复、事件推进、警报与账本、Agent会话协议和本地报价工具。前端不维护模拟业务账本。仅新增一处普通用户revision接口，复用原Agent规划逻辑，无算法/资金/审批规则变更、无迁移；缺少此接口时有兼容降级。真实模型仍关闭，报价后端与少买后的再建议语义留给后端同学继续确认。
@@ -10,12 +26,21 @@
 
 新增[macOS开发入口](docs/local-macos-development.md)与[实测记录](docs/reports/macos-development-verification.json)：依赖、四个开发/测试数据库、API/业务worker/simulator与Nuxt骨架已在Apple Silicon验证。后端+Agent 226项、模拟器12项测试通过，SC01和服务/数据库重启复核通过。修复SQLAlchemy asyncio依赖及Agent非Windows测试循环工厂，新增本机服务脚本和前端锁文件。基准为 `9382779` 加这些未提交改动，未推送或合并；未调用真实模型，前端仍为框架页面。以下Windows现场与早期状态保留其原适用范围，不能当作这台Mac的当前进程信息。
 
+### Simulator 控制台已实施（2026-09-07）
 
-更新日期：2026-09-07（B2-A Agent 首版框架实现与验收）。本文负责背景、架构、设计约束、历史与资料导航；[HANDOVER.md](HANDOVER.md)负责当前代码、运行/验证、边界与下一步。
+已在用户批准后实现**可配置 SANDBOX、写入 PostgreSQL 的模拟数据与本地 Dashboard**。入口 <http://127.0.0.1:8001/console/>；支持独立/联动创建、销售/需求/订单到货 Trigger、事件及 backend 同步观察。SC01 基准和既有数据保留；产品 frontend 独立开发。运行说明见 [simulation/README.md](simulation/README.md)，验收见 [测试报告](docs/reports/simulator-console-test-report.md) 与 [真实 HTTP 证据](docs/api/simulator-console-acceptance-result.json)。
 
-**当前状态：B0-01 至 B0-07、首批 7 个前端只读接口，以及 B2-A Agent 首版框架已实现。** 确定性业务主干继续独立运行；新增 Agent 通过受限工具解释、试算、修订方案，并维护跨会话记忆与任务 Skill。下面的 B0 和前端阶段数字保留为历史记录；最新实现与验收入口见后文 B2-A 段落。
+本次 simulator 23 项、backend＋Agent 226 项回归通过；真实联动与 simulator 重启持久化通过。开发库已升级：simulator `sim_0003_controls`、backend `0009_agent_scopes`；8001 控制台、8000 backend 与 business worker 已运行，Agent 关闭。**Docker Desktop 始终由用户手动启动。** Git 基准仍为 `YH / 4389747`，本次改动未提交；以下 Agent/B0 文段是对应历史阶段记录，当前现场以 [HANDOVER](HANDOVER.md) 顶部为准。
 
-### 最新进度、测试结果与文档索引（2026-09-07）
+最终补充：Node UI 异步回归 3 项通过，真实 HTTP 13 项与重启检查 3 项通过；浏览器完成独立/联动创建、销售、需求修订、部分/全部到货和刷新持久化验证，桌面与窄屏布局通过。已修复未知写入重试入口、切换场景误操作、旧分页响应污染及启动器认证配置优先级问题。[浏览器证据](docs/api/simulator-console-browser-result.json)与[可重复 UI 回归](simulation/tests/console_ui_regression.cjs)均已保存。
+
+当前边界与下一步：联动创建只导入店铺，Mission 创建和 Plan 审批仍走既有 backend API；Agent 尚未在当前开发环境启用。优先让产品前端接入这些持久场景，再单独启用 Agent worker 验证“来源事件 → 业务方案 → Agent 解释/跟进 → 用户审批”闭环。真实数据集回放、RAG、随机流量与故障注入仍为后续事项。
+
+更新日期：2026-09-07（持久 Simulator 与 Dashboard 首版交付及交接补齐）。本文负责背景、架构、设计约束、历史与资料导航；[HANDOVER.md](HANDOVER.md)负责当前代码、运行/验证、边界与下一步。
+
+**当前状态：B0-01 至 B0-07、首批 7 个前端只读接口、B2-A Agent 首版框架，以及持久 Simulator 与 Dashboard 已实现。** 确定性业务主干继续独立运行；Agent 框架提供受限解释、试算、修订方案及跨会话记忆能力。最新交付以本文顶部 Simulator 段落和 HANDOVER 为准；下方 Agent、B0 和前端阶段数字保留为历史记录。
+
+### Agent 阶段进度、测试结果与文档索引（历史记录，2026-09-07）
 
 已完成：可安装的 `shopsteward_agent` 包、LangGraph 有限工具主图、可配置 OpenAI 风格模型、独立 Agent worker、持久会话/Run、PG 检查点及租约保护、澄清/恢复/取消、受限业务工具、Hermes 派生 USER/NOTES 记忆、可增改删的任务 Skill、事件与周期跟进。方案反馈支持“解释 → 假设试算 → 显式修改本轮数量上限 → 新待确认 Plan → 既有用户审批”；确定性计算与业务写入仍归 backend。
 

@@ -1,0 +1,12 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+# 部分到货处理
+W-STORE | K0-O07-v1
+
+## [section:1] 西店交接 / West handover
+西店缺货差异单交值班主管，补发须通过西店服务台，不走东店店长链路。West-store discrepancies go to the shift supervisor and west service desk.
+
+## [section:2] 签收 / Signing
+只签西店实收数量，禁止借用东店订单号。Sign only the west-store receipt; do not reuse east-store order IDs.
+
+## [section:3] 权限 / Scope
+此流程只适用于 W-STORE 的订单和成员。This workflow applies to west-store orders and members only.

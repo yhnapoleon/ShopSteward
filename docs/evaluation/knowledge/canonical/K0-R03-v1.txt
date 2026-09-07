@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+临期标记演练统计
+E-STORE | K0-R03-v1
+[section:1] 演练记录 / Trial record
+9月3日模拟巡检10项，其中2项漏贴日期；仅是演练记录，不是门店实时经营指标。In a ten-item drill, two items lacked date labels; these are historical drill observations.
+[section:2] 公式 / Formula
+漏贴占比公式为2/10，工作簿未存缓存；可另外确定性计算20%，但不能说是已提取的缓存结果。The ratio formula has no saved result; a separate calculation is not cached extraction.
+[section:3] 建议 / Suggestion
+建议双人交叉检查，尚无证据证明已降低实际漏贴率。Recommend pair checks; effectiveness in live operations is unknown.

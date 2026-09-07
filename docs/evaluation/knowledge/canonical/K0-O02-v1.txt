@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+部分到货处理
+E-STORE | K0-O02-v1
+[section:1] 实收登记 / Receipt
+只录实际到货，缺少部分保持待交；不补造收货流水。Record delivered quantities and leave missing units outstanding.
+[section:2] 证据 / Evidence
+收货员拍整箱、箱签与差异单，保留司机签字；店长联系供应商确认补发日期。Photograph cartons, labels and the discrepancy form; obtain driver sign-off.
+[section:3] 授权 / Authorization
+不得按文档建议自动取消余额、改价或付款；这些动作走原业务审批。Cancellation, repricing and payment require the existing business approval flow.

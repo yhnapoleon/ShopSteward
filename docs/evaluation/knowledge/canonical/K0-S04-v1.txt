@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+青禾短暂停发通知
+E-STORE | K0-S04-v1
+[section:1] 停发范围 / Dispatch suspension
+青禾 E-SUP-QH 暂停 E-SKU-OAT 发货，窗口为2026-09-06至09-10，不含结束日。Oat drink dispatch is suspended during this half-open interval.
+[section:2] 不涉及商品 / Exclusion
+E-SKU-TEA 茉莉茶不在停发范围。Jasmine tea is excluded from this suspension.
+[section:3] 处理方式 / Next step
+恢复日期只是通知安排；既有订单是否延期仍查业务订单。A notice does not establish the actual status of any order.

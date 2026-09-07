@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#f4f7f8" />
+    <title>ShopSteward · 模拟控制台</title>
+    <link rel="stylesheet" href="/console/static/console.css" />
+    <script src="/console/static/console.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#workspace">跳到控制区</a>
+
+    <header class="topbar">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true">SS</div>
+        <div>
+          <p class="eyebrow">ShopSteward development tools</p>
+          <h1>模拟控制台</h1>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <span class="synthetic-badge">
+          <span class="status-dot status-dot--amber" aria-hidden="true"></span>
+          合成数据
+        </span>
+        <div id="service-status" class="service-pill" role="status" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>正在连接模拟器</span>
+        </div>
+        <button id="refresh-all" class="icon-button" type="button" title="刷新当前数据" aria-label="刷新当前数据">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20 6v5h-5M4 18v-5h5M18.4 9A7 7 0 0 0 6.1 6.6L4 9m16 6-2.1 2.4A7 7 0 0 1 5.6 15" /></svg>
+        </button>
+      </div>
+    </header>
+
+    <div id="global-alert" class="global-alert" role="alert" hidden>
+      <div>
+        <strong id="global-alert-title">请求未完成</strong>
+        <p id="global-alert-message"></p>
+      </div>
+      <div class="global-alert-actions">
+        <button id="retry-write" class="button button--danger" type="button" hidden>使用原请求重试</button>
+        <button id="dismiss-alert" class="button button--ghost" type="button">关闭</button>
+      </div>
+    </div>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="场景导航">
+        <section class="sidebar-section create-section">
+          <div class="section-heading section-heading--compact">
+            <div>
+              <p class="eyebrow">Scenario builder</p>
+              <h2>创建场景</h2>
+            </div>
+            <button id="toggle-create" class="text-button" type="button" aria-expanded="true" aria-controls="create-panel">收起</button>
+          </div>
+
+          <div id="create-panel">
+            <form id="create-run-form" novalidate>
+              <fieldset class="segmented-control">
+                <legend>创建方式</legend>
+                <label>
+                  <input type="radio" name="create-mode" value="direct" checked />
+                  <span>独立模拟</span>
+                </label>
+                <label>
+                  <input type="radio" name="create-mode" value="linked" />
+                  <span>联动后端</span>
+                </label>
+              </fieldset>
+              <p id="create-mode-help" class="field-help">立即写入模拟器；后端不会自动导入。</p>
+
+              <label class="field">
+                <span>场景类型</span>
+                <select id="scenario-type" name="scenario">
+                  <option value="SANDBOX">SANDBOX · 自由触发</option>
+                  <option value="SC01">SC01 · 固定基准剧本</option>
+                </select>
+              </label>
+
+              <div id="sandbox-fields">
+                <label class="field">
+                  <span>模板</span>
+                  <select id="preset" name="preset">
+                    <option value="standard">常规补货 · ¥1000 / 库存 20 / 需求 60</option>
+                    <option value="cash-tight">低现金 · ¥500 / 库存 20 / 需求 60</option>
+                    <option value="well-stocked">库存充足 · ¥1000 / 库存 100 / 需求 60</option>
+                  </select>
+                </label>
+
+                <div class="field-grid field-grid--2">
+                  <label class="field">
+                    <span>初始现金（元）</span>
+                    <input id="seed-cash" name="cash" inputmode="decimal" value="1000.00" required />
+                  </label>
+                  <label class="field">
+                    <span>初始库存（件）</span>
+                    <input id="seed-stock" name="stock" type="number" min="0" step="1" value="20" required />
+                  </label>
+                  <label class="field">
+                    <span>剩余需求（件）</span>
+                    <input id="seed-demand" name="demand" type="number" min="0" step="1" value="60" required />
+                  </label>
+                  <label class="field">
+                    <span>采购单价（元）</span>
+                    <input id="seed-cost" name="cost" inputmode="decimal" value="10.00" required />
+                  </label>
+                  <label class="field">
+                    <span>最小订购量</span>
+                    <input id="seed-moq" name="moq" type="number" min="1" step="1" value="20" required />
+                  </label>
+                  <label class="field">
+                    <span>包装量</span>
+                    <input id="seed-pack" name="pack" type="number" min="1" step="1" value="20" required />
+                  </label>
+                  <label class="field">
+                    <span>交期（天）</span>
+                    <input id="seed-lead" name="lead" type="number" min="0" step="1" value="1" required />
+                  </label>
+                  <label class="field">
+                    <span>活动期（天）</span>
+                    <input id="seed-horizon" name="horizon" type="number" min="1" step="1" value="7" required />
+                  </label>
+                </div>
+              </div>
+
+              <label class="field">
+                <span>场景名称 <small>可选</small></span>
+                <input id="seed-label" name="label" maxlength="120" placeholder="例如：补货审批演示" />
+              </label>
+
+              <button id="create-run-submit" class="button button--primary button--block" type="submit">
+                <span class="button-label">创建场景</span>
+                <span class="button-spinner" aria-hidden="true"></span>
+              </button>
+              <p id="create-progress" class="form-status" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+        </section>
+
+        <section class="sidebar-section run-section">
+          <div class="section-heading section-heading--compact">
+            <div>
+              <p class="eyebrow">Persistent runs</p>
+              <h2>场景记录</h2>
+            </div>
+            <span id="run-count" class="count-badge">0</span>
+          </div>
+          <div id="run-list" class="run-list" aria-live="polite"></div>
+          <button id="load-more-runs" class="button button--ghost button--block" type="button" hidden>加载更早场景</button>
+        </section>
+      </aside>
+
+      <main id="workspace" class="workspace" tabindex="-1">
+        <section id="empty-state" class="empty-state">
+          <div class="empty-state-graphic" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </div>
+          <p class="eyebrow">Control room</p>
+          <h2>选择一个持久场景开始观察</h2>
+          <p>可从左侧打开已有场景，或创建新的 SANDBOX。所有结果均来自当前模拟器数据。</p>
+        </section>
+
+        <div id="run-workspace" hidden>
+          <section class="run-hero panel">
+            <div class="run-hero-main">
+              <div class="run-title-line">
+                <span id="run-scenario-badge" class="scenario-badge">SANDBOX</span>
+                <span id="run-sync-badge" class="sync-badge">源序号 —</span>
+              </div>
+              <h2 id="run-title">场景</h2>
+              <p id="run-subtitle" class="mono muted"></p>
+            </div>
+            <dl class="run-meta">
+              <div><dt>模拟时间</dt><dd id="run-simulation-time">—</dd></div>
+              <div><dt>活动期</dt><dd id="run-horizon">—</dd></div>
+              <div><dt>剧本进度</dt><dd id="run-step">—</dd></div>
+            </dl>
+          </section>
+
+          <section class="metric-grid" aria-label="模拟器源状态">
+            <article class="metric-card metric-card--cash">
+              <div class="metric-icon" aria-hidden="true">¥</div>
+              <p>现金</p><strong id="metric-cash">—</strong><small>采购受理后扣减</small>
+            </article>
+            <article class="metric-card">
+              <div class="metric-icon" aria-hidden="true">↗</div>
+              <p>应收</p><strong id="metric-receivables">—</strong><small>销售金额，尚未回款</small>
+            </article>
+            <article class="metric-card">
+              <div class="metric-icon" aria-hidden="true">□</div>
+              <p>现货</p><strong id="metric-stock">—</strong><small>件</small>
+            </article>
+            <article class="metric-card">
+              <div class="metric-icon" aria-hidden="true">→</div>
+              <p>在途</p><strong id="metric-transit">—</strong><small>件</small>
+            </article>
+            <article class="metric-card metric-card--demand">
+              <div class="metric-icon" aria-hidden="true">◎</div>
+              <p>剩余需求</p><strong id="metric-demand">—</strong><small>件</small>
+            </article>
+          </section>
+
+          <div class="dashboard-grid">
+            <section class="panel control-panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Source controls</p>
+                  <h2>业务触发</h2>
+                </div>
+                <span class="live-sequence">当前源序号 <strong id="control-sequence">—</strong></span>
+              </div>
+
+              <div id="sandbox-controls">
+                <div class="control-grid">
+                  <form id="sale-form" class="action-card" novalidate>
+                    <div class="action-card-heading">
+                      <span class="action-index">01</span>
+                      <div><h3>记录销售</h3><p>扣减现货，增加应收与销售事实</p></div>
+                    </div>
+                    <div class="field-grid field-grid--2">
+                      <label class="field"><span>数量（件）</span><input id="sale-quantity" type="number" min="1" step="1" value="1" required /></label>
+                      <label class="field"><span>成交单价（元）</span><input id="sale-price" inputmode="decimal" value="20.00" required /></label>
+                    </div>
+                    <label class="field"><span>同时推进时间（小时）</span><input id="sale-advance" type="number" min="0" step="1" value="0" required /></label>
+                    <p id="sale-impact" class="impact-preview">预计影响将在这里显示。</p>
+                    <button class="button button--primary" type="submit">提交销售</button>
+                  </form>
+
+                  <form id="demand-form" class="action-card" novalidate>
+                    <div class="action-card-heading">
+                      <span class="action-index">02</span>
+                      <div><h3>修订需求</h3><p>更新剩余需求并写入预测事实</p></div>
+                    </div>
+                    <label class="field"><span>新的剩余需求（件）</span><input id="demand-remaining" type="number" min="0" step="1" required /></label>
+                    <label class="field"><span>同时推进时间（小时）</span><input id="demand-advance" type="number" min="0" step="1" value="0" required /></label>
+                    <p id="demand-impact" class="impact-preview">只调整预测，不改变现金和库存。</p>
+                    <button class="button button--primary" type="submit">提交修订</button>
+                  </form>
+                </div>
+
+                <form id="receipt-form" class="action-card action-card--wide" novalidate>
+                  <div class="action-card-heading">
+                    <span class="action-index">03</span>
+                    <div><h3>登记到货</h3><p>选择本场景已受理且尚未收完的订单</p></div>
+                  </div>
+                  <div id="receipt-available">
+                    <div class="field-grid field-grid--2">
+                      <label class="field"><span>待收订单</span><select id="receipt-order" required></select></label>
+                      <label class="field"><span>本次到货（件）<small>留空即全部</small></span><input id="receipt-quantity" type="number" min="1" step="1" placeholder="全部剩余数量" /></label>
+                    </div>
+                    <p id="receipt-impact" class="impact-preview">到货时，模拟时间会推进到订单 ETA。</p>
+                    <button class="button button--primary" type="submit">登记到货</button>
+                  </div>
+                  <div id="receipt-empty" class="inline-empty" hidden>
+                    <strong>当前没有待收订单</strong>
+                    <p>采购必须先由后端生成方案并获得批准。控制台不提供绕过审批的下单入口；联动后端后，可在下方观察方案与同步进度。</p>
+                  </div>
+                </form>
+              </div>
+
+              <div id="sc01-controls" class="action-card action-card--wide" hidden>
+                <div class="action-card-heading">
+                  <span class="action-index">SC</span>
+                  <div><h3>推进固定剧本</h3><p>严格按 SC01 原始步骤推进，不开放自由业务触发。</p></div>
+                </div>
+                <form id="advance-form" class="inline-form">
+                  <label class="field"><span>推进步数</span><input id="advance-steps" type="number" min="1" max="100" step="1" value="1" required /></label>
+                  <button class="button button--primary" type="submit">推进 SC01</button>
+                </form>
+              </div>
+            </section>
+
+            <aside class="panel backend-panel" aria-labelledby="backend-title">
+              <div class="section-heading">
+                <div><p class="eyebrow">Backend observation</p><h2 id="backend-title">后端观察</h2></div>
+                <span id="backend-status-badge" class="backend-status">读取中</span>
+              </div>
+              <div id="backend-message" class="backend-message">正在读取后端同步状态…</div>
+              <dl id="backend-sync" class="sync-table">
+                <div><dt>源头序号</dt><dd id="backend-source-head">—</dd></div>
+                <div><dt>后端已追平</dt><dd id="backend-source-sequence">—</dd></div>
+                <div><dt>同步差距</dt><dd id="backend-lag">—</dd></div>
+                <div><dt>读取时间</dt><dd id="backend-read-at">—</dd></div>
+              </dl>
+              <div class="backend-groups">
+                <section><h3>经营概览</h3><div id="backend-dashboard" class="compact-list"></div></section>
+                <section><h3>任务 Mission</h3><div id="backend-missions" class="compact-list"></div></section>
+                <section><h3>方案 Plan</h3><div id="backend-plans" class="compact-list"></div></section>
+                <section><h3>警报 Alert</h3><div id="backend-alerts" class="compact-list"></div></section>
+              </div>
+            </aside>
+          </div>
+
+          <section class="panel event-panel">
+            <div class="section-heading">
+              <div><p class="eyebrow">Immutable source facts</p><h2>事件记录</h2></div>
+              <span id="event-range" class="muted">等待读取</span>
+            </div>
+            <div id="event-list" class="event-list"></div>
+            <button id="load-more-events" class="button button--ghost button--block" type="button" hidden>加载后续事件</button>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="toast-region" class="toast-region" aria-live="polite" aria-atomic="true"></div>
+  </body>
+</html>

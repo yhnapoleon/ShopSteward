@@ -1,0 +1,29 @@
+{
+  "verified_at": "2026-09-07T09:23:53.395445+00:00",
+  "base_url": "http://127.0.0.1:8001",
+  "ready_http_status": 200,
+  "ready": {
+    "status": "ok",
+    "component": "simulation"
+  },
+  "api_title": "ShopSteward Simulator",
+  "paths": [
+    "/health/ready",
+    "/sim/v1/runs",
+    "/sim/v1/runs/{run_id}/events",
+    "/sim/v1/purchases",
+    "/sim/v1/purchases/{action_id}",
+    "/sim/v1/runs/{run_id}/advance"
+  ],
+  "authentication_required": 401,
+  "simulation_pytest": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0,
+    "seconds": 2.97
+  },
+  "database_revision": "sim_0002_purchases",
+  "preexisting_development_runs": 8,
+  "dashboard_implemented": false,
+  "note": "Existing simulator started; HTTP checks read only. Pytest used shopsteward_sim_test. Docker Desktop was manually started by the user."
+}

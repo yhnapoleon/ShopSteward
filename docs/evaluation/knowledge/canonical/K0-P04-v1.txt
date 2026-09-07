@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+酸奶拆箱计算表
+E-STORE | K0-P04-v1
+[section:1] 包装 / Packaging
+E-SKU-YOG 每箱8杯，每杯125 g；整箱净含量为8×125 g。Yogurt: eight 125 g cups per case.
+[section:2] 公式说明 / Formula note
+净含量公式没有保存计算缓存。读取者应报告缺少缓存，不能把空值当零或声称Excel已算出结果。The formula has no saved result; blank does not mean zero.
+[section:3] 冷藏 / Chilling
+拆箱后仍需2–6°C储存，外包装单位不改变温控要求。Keep at 2–6°C after unpacking.

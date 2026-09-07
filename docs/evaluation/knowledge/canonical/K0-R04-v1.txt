@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+供应商回电记录
+E-STORE | K0-R04-v1
+[section:1] 记录 / Call log
+9月5日10:10向百川询问退箱，10:42回电，确认下周三收箱；记录号 CALL-0905。Baichuan called back at 10:42 after a 10:10 inquiry and confirmed next Wednesday tote collection.
+[section:2] 范围 / Scope
+回电只确认退箱预约，不确认任何新订单发车。The callback confirms tote collection, not dispatch of a new order.
+[section:3] 缺失 / Missing evidence
+记录未包含司机姓名；不可据此猜测承运人。The driver's name is absent.

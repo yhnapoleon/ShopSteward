@@ -9,7 +9,14 @@ from sqlalchemy import select, text
 from sqlalchemy.dialects.postgresql import insert
 
 from simulator.models import CommandRecord, EventRow, Purchase, Run
-from simulator.schemas import DemandEvent, PurchaseEvent, PurchaseReceipt, ReceivedEvent, SaleEvent
+from simulator.schemas import (
+    DemandEvent,
+    PurchaseEvent,
+    PurchaseReceipt,
+    ReceivedEvent,
+    SaleEvent,
+    ScenarioParameters,
+)
 
 # The configured bearer credential identifies the single backend service principal.
 # Token rotation must not change command ownership or invalidate historical retries.
@@ -59,7 +66,7 @@ async def locked_run(session, run_id):
     return run
 
 
-def initial_snapshot():
+def initial_snapshot(request=None):
     now = datetime.now(UTC)
     timestamp = now.isoformat()
     store_id, run_id = "store_" + uuid4().hex, "run_" + uuid4().hex
@@ -118,6 +125,22 @@ def initial_snapshot():
             }
         ],
     }
+    if request and request["scenario"] == "SANDBOX":
+        params = ScenarioParameters.model_validate(request.get("parameters") or {})
+        state["cash_minor"] = state["available_cash_minor"] = params.cash_minor
+        state["stocks"][0]["on_hand"] = params.on_hand
+        state["stocks"][0]["remaining_demand"] = params.remaining_demand
+        forecast["predicted_quantity"] = params.remaining_demand
+        forecast["horizon_end"] = (now + timedelta(days=params.horizon_days)).isoformat()
+        forecast["assumptions"] = ["Synthetic SANDBOX remaining demand; not a learned prediction"]
+        catalog["products"][0]["name"] = "Sandbox sample product"
+        for field in (
+            "unit_price_minor",
+            "minimum_order_quantity",
+            "pack_size",
+            "lead_time_seconds",
+        ):
+            catalog["offers"][0][field] = getattr(params, field)
     return {
         "scenario_run_id": run_id,
         "store_id": store_id,
@@ -133,7 +156,7 @@ async def create_run(session, key, request):
     replay = await command_replay(session, "simulation_create_run", key, content_hash)
     if replay is not None:
         return replay
-    seed = initial_snapshot()
+    seed = initial_snapshot(request)
     await session.execute(
         insert(Run)
         .values(
@@ -141,6 +164,7 @@ async def create_run(session, key, request):
             command_key=key,
             content_hash=content_hash,
             initial_snapshot=seed,
+            configuration=request,
             world=seed["initial_state"],
             last_sequence=0,
             step_index=0,
@@ -335,6 +359,8 @@ async def advance_run(session, run_id, key, request):
     if replay is not None:
         return replay
     run = await locked_run(session, run_id)
+    if run.configuration.get("scenario") != "SC01":
+        raise HTTPException(409, "SCENARIO_MODE_MISMATCH")
     if run.step_index + request["steps"] > 4:
         raise HTTPException(409, "SCENARIO_FINISHED")
     horizon_end = datetime.fromisoformat(run.initial_snapshot["initial_forecast"]["horizon_end"])

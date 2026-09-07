@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+纸杯热饮适用边界
+E-STORE | K0-P06-v1
+[section:1] 温度 / Temperature
+E-SKU-CUP 纸杯只用于不超过80°C的饮品，不进入微波炉。Paper cups support drinks up to 80°C; no microwave use.
+[section:2] 密封 / Lid fit
+只配 E-LID-90 的90 mm杯盖；压合后倒置检查是否渗漏。Use 90 mm E-LID-90 lids and perform a leak check.
+[section:3] 禁止替代 / No replacement
+冷饮薄壁杯未通过热饮测试，不得替代本杯承装热饮。Untested thin-wall cold cups are not approved for hot service.

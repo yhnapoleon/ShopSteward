@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+百川包装装箱表
+E-STORE | K0-S07-v1
+[section:1] 计量规则 / Units
+百川 E-SUP-BC 为 E-SKU-CUP 供货。每箱12袋，每袋50只，共600只；这是包装说明，不是当前报价。12 packs × 50 cups = 600 cups per carton; not an active offer.
+[section:2] 核对 / Check
+收货按袋核对，破袋单独登记，不能把一袋当一只。Count packs and log damaged packs separately.
+[section:3] 换算表 / Conversion
+下面公式只说明包装换算，不提供现存库存。The formula describes packaging, not live stock.

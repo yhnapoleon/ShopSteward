@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+常温燕麦饮规格
+E-STORE | K0-P01-v1
+[section:1] 储存 / Storage
+E-SKU-OAT 常温燕麦饮未开封置阴凉干燥处，5–25°C；开封后冷藏并24小时内用完。Store unopened at 5–25°C; refrigerate after opening and use within 24 hours.
+[section:2] 包装 / Pack
+250 mL每盒，24盒每箱；整箱与单盒不能混用数量单位。250 mL cartons, 24 per case; units must remain explicit.
+[section:3] 替代方向 / Direction
+E-SKU-OAT-B可有条件替代本品；本说明不授权反向替代。A conditional alternative is specified separately; the reverse is not implied.

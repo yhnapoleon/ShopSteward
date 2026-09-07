@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+早餐演练沟通纪要
+E-STORE | K0-R02-v1
+[section:1] 演练事实 / Trial facts
+9月4日演练发现陈列卡缺少开封时间栏，店长在当日确认补栏。The September 4 trial identified missing opening-time fields; the manager approved adding them.
+[section:2] 准备判断 / Readiness opinion
+店员判断新卡能减少过期误用，但未做对照统计，不能报告改善百分比。The expected reduction in misuse has not been measured.
+[section:3] 关联 / Link
+本纪要适用于 E-MISSION-BREAKFAST 的陈列检查，不修改正式需求或到货日期。Applies to breakfast display checks; does not amend demand or delivery dates.

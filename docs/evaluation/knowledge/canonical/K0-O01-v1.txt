@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+收货分区作业
+E-STORE | K0-O01-v1
+[section:1] 门口检查 / Arrival checks
+收货员先核对供应商、订单号、批号，外箱放待检区；禁止堵塞消防通道。Match supplier, order and batch before moving cartons to inspection.
+[section:2] 签收交接 / Handover
+逐箱核对后才签实收数量；冷藏品测温，异常转隔离区并通知店长。Sign actual quantities only; temperature-check chilled goods and escalate exceptions.
+[section:3] 表格连续性 / Table continuity
+跨页检查清单每页重复列名：步骤、责任人、判定、记录。页2和页3属于同一张表，最后一项是店长复核差异单。Repeated headers identify one continued checklist; its last item is manager review of the discrepancy log.

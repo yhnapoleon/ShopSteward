@@ -14,6 +14,7 @@ from app.core.config import Settings
 from app.core.logging import configure_logging
 from app.db.session import Database
 from app.execution.router import router as execution_router
+from app.knowledge.router import router as knowledge_router
 from app.missions.router import router as missions_router
 from app.operations.router import dev_router
 from app.operations.router import router as operations_router
@@ -76,6 +77,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(router)
     app.include_router(operations_router)
     app.include_router(missions_router)
+    app.include_router(knowledge_router)
     if settings.app_env != "production":
         app.include_router(dev_router)
     return app

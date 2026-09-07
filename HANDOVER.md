@@ -1,5 +1,24 @@
 # ShopSteward 当前开发交接
 
+### 最新需求补充：云端知识检索（2026-09-07）
+
+- 用户允许文本出云；要求助手寻找/合成有意义的大规模资料；偏好云端DB/知识关系与embedding、本地Agent读取带正文及元数据的候选。区域选择回答为“暂不限定，按实测选择”。
+- 已落盘[云端与语料设计](docs/superpowers/specs/2026-09-07-cloud-knowledge-and-corpus-design.md)、[公开来源目录](docs/research/2026-09-07-knowledge-public-source-catalog.md)。1000逻辑文档、另约200版本和300题均为新增目标；首批目录10个来源家族，不等于原件已经入库。原K0数据/hash/评测不变。
+- 后续云端query/document embedding均走可替换API；云PG关系/metadata投影与向量候选引擎同区部署，现有backend保留业务/权限/版本权威。本地Agent由backend取证据，无需本地embedding。关系模型不要求独立Neo4j。模型/DB/区域需要实测，尚未配置付费账号或预算、未部署。新方向不改变下述已完成K0/K1和运行现场。
+
+### 当前交付：K0知识基线 + K1文档管理后端（2026-09-07）
+
+- **K0已完成可运行无模型基线与选型设计**：40份合成原件版本（38逻辑文档）、60核心问、12关系问；20份RAilG候选源文件清单与SHA256。冻结语料900项校验通过。RAilG解析生成165块，扫描/混合PDF缺失已归档；实际复现bool.should无匹配仍返回、父块50条截断丢失hit两个迁移问题。
+- **RAG数据边界**：条款、商品说明、SOP、活动要求、复盘用于文档取回；库存/现价/现金/订单/Plan/审批仍走现有backend与确定性计算。结构关联先PG JOIN/有界递归；C/D同事实12题路径结果相同，未证明需要独立图数据库。
+- **embedding/vectorDB尚未最终选型**：BGE-M3、Qwen3-Embedding-0.6B/4B、OpenAI small/large及PG+pgvector/OpenSearch/Qdrant已完成官方资料比较与试验门槛。没有可用模型配置，真实dense/RRF/rerank、pgvector/Qdrant未实测；K1保持检索引擎独立。
+- **K1已实现9操作/6路径**：原件上传/追加、元数据筛选分页、详情、版本、鉴权下载、PATCH、归档/恢复。上传201，UPLOADED/NOT_INDEXED，不登记空索引任务；所有写入幂等，变更CAS；private正文仅owner，admin可发现元数据但不能读他人正文。新增两张知识表、不可变版本触发器和同文档latest指针FK。
+- **验证**：PDF/Office审查修复后全量backend/Agent/跨服务PG **302 passed、0 skipped**；随后chartsheet兼容修复的最终知识模块 **78 passed**；最终真实HTTP/重启 **22项通过**；simulator **23 passed**。Ruff、164文件格式、迁移漂移、依赖锁与契约通过。具体运行批次和局限见[测试报告](docs/reports/knowledge-k1-test-report.md)与[机器汇总](docs/api/knowledge-k0-k1-verification-result.json)，不将分批检查虚报为一次304项全量。
+- **运行现场**：代码与专用测试库head为`0010_knowledge`；开发库只读确认仍是`0009_agent_scopes`。原8000/8001服务健康均200，未迁移或重启。8016验收API与本轮K0 OpenSearch已停止；后者容器保留供显式复测。Docker Desktop仍只由用户手动启动。**新文档API尚未部署到原8000进程。**
+- **下一步K2**：修正RAilG两个已复现缺陷，接真实解析/索引worker、OCR_REQUIRED/PARTIAL状态、稳定引用定位、可回滚generation发布和关键词取回；之后K3才做模型/存储实测，K4接Agent，K5做文档中心。原件事务失败/重放可能产生孤儿文件，GC尚未实现。没有全文RAG、Agent文档工具或前端文档UI。
+- Git起始/当前HEAD：`YH / 6fb71fa`；本轮修改在工作区，未提交/推送。下方Simulator/Agent记录为历史阶段，旧HEAD与“当前”表述按其日期理解。
+
+入口：[本轮执行计划](docs/superpowers/plans/2026-09-07-k0-k1-execution.md)、[技术比较](docs/research/2026-09-07-knowledge-technology-options.md)、[K0报告](docs/reports/knowledge-baseline-report.md)、[语料说明](docs/evaluation/knowledge/README.md)、[K1 API/配置](backend/app/knowledge/README.md)、[Knowledge契约](docs/api/knowledge-v1.openapi.json)。
+
 ### 前端基础联调版（2026-09-07）
 
 已按v0.3原型实现Nuxt三视图、真实状态/方案/确认/回执、暂停恢复、事件推进、警报与账本、Agent会话协议和本地报价工具。前端不维护模拟业务账本。仅新增一处普通用户revision接口，复用原Agent规划逻辑，无算法/资金/审批规则变更、无迁移；缺少此接口时有兼容降级。真实模型仍关闭，报价后端与少买后的再建议语义留给后端同学继续确认。
@@ -10,10 +29,29 @@
 
 新增[macOS开发入口](docs/local-macos-development.md)与[实测记录](docs/reports/macos-development-verification.json)：依赖、四个开发/测试数据库、API/业务worker/simulator与Nuxt骨架已在Apple Silicon验证。后端+Agent 226项、模拟器12项测试通过，SC01和服务/数据库重启复核通过。修复SQLAlchemy asyncio依赖及Agent非Windows测试循环工厂，新增本机服务脚本和前端锁文件。基准为 `9382779` 加这些未提交改动，未推送或合并；未调用真实模型，前端仍为框架页面。以下Windows现场与早期状态保留其原适用范围，不能当作这台Mac的当前进程信息。
 
+### 当前交付：持久 Simulator + Dashboard（2026-09-07）
 
-更新：2026-09-07（B2-A Agent 首版框架实现与验收；原开发服务未切换）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
+- **Docker Desktop 由用户手动启动。** 助手只检查和使用已经运行的 Docker，不自行启动。
+- Dashboard：<http://127.0.0.1:8001/console/>。可配置初始现金/库存/需求/采购条件，支持独立模拟与后端联动创建；销售、需求修订、部分/全部到货均落入 simulator 数据库与源事件流。SC01 固定剧本仍可用。
+- 后端联动创建只导入店铺；Mission 创建与 Plan 审批仍使用 backend 原 API。页面观察 Mission、Plan 推荐量、警报与已同步源序号。已保留验收场景及对应 Mission/Plan，可直接打开演示。
+- 实际开发迁移：simulator `sim_0003_controls`，backend `0009_agent_scopes`。原 8 个 simulator run 保留；验收另建场景，没有清库。Agent 关闭，没有模型调用。backend API 8000、simulator 8001、business worker 均已启动。
+- 当前启动记录：backend API/worker 在 `var/simulator-console-20260907-095640/`；重启后的 simulator 在 `var/simulator-console-20260907-100657/`。PID 只用于定位，后续操作先核对进程归属，避免重复 worker。
+- 启动：仓库根目录 `.venv/Scripts/python.exe simulation/tools/start_console.py --migrate --with-backend`；backend 已运行时省略 `--with-backend`。日志隐藏后台保存，不覆盖 `.env`，凭据仅服务器持有。
+- 自动验证：simulator 23 passed（4.81 秒）、backend＋Agent 226 passed（80.82 秒），无失败或跳过。真实 HTTP 验收 13 项、重启持久/幂等 3 项通过；浏览器创建、销售、需求修订、部分/全部到货及刷新持久化已验证；Node UI 异步回归 3 项通过。详情见 [测试报告](docs/reports/simulator-console-test-report.md) 和 [机器证据](docs/api/simulator-console-acceptance-result.json)。
+- 独立审查已复核事务、幂等、来源权限和本地 HTTP 边界；当前阶段没有 RAG、真实数据集、退款回款、随机流量或故障注入。下一步优先将产品前端与 Agent 接到同一组场景进行业务验收，再决定数据集回放/RAG。
+- Git 基准 `YH / 4389747`（Agent Skelon），本次实现未提交/推送；产品 `frontend/` 未修改。旧文段的端口、迁移和未提交说明保留各自历史适用范围。
 
-### 最新交付与测试归档（2026-09-07）
+资料：[运行与操作说明](simulation/README.md)、[实施计划](docs/superpowers/plans/2026-09-07-simulator-console.md)、[控制台 runtime 契约](docs/api/simulator-console.runtime.openapi.json)、[研究依据](docs/research/2026-09-07-simulator-console-research.md)。
+
+最终验收补充：浏览器独立场景 `run_40f1141f33c6443c99c8ed851537f2b4` 在销售 3 件、需求改为 80 后刷新，仍为现金 1000 元、应收 60 元、现货 17、源序号 2；联动场景 `run_ace55c8511fc4ae08030afffcc15e524` 经原后端审批采购 40 件，页面分 12/28 件收完，最终现金 600 元、现货 60、在途 0、源/后端序号均为 3。[浏览器证据](docs/api/simulator-console-browser-result.json)已保存。
+
+收尾修复：未知写入重试入口不再被读取错误覆盖，确定失败会解锁表单；场景加载期间禁用旧控件，操作绑定已加载 run；旧事件分页响应不会污染切换后的场景；启动器优先使用环境变量中的 backend 认证配置。回归命令为 `node simulation/tests/console_ui_regression.cjs`（3 项通过）。
+
+接续顺序：先让产品前端对接现有 backend 和持久场景，再单独配置/启用 Agent worker 验证事件跟进、解释与审批闭环；这两项尚未完成。随后按业务需求决定真实数据集回放及 RAG。后续接手先检查服务健康和进程归属，本节运行信息是本次交付快照，不代表服务永久在线。
+
+更新：2026-09-07（持久 Simulator 与 Dashboard 首版交付及交接补齐）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
+
+### Agent 阶段交付与测试归档（历史记录，2026-09-07）
 
 **已完成的代码：** `agent/src/shopsteward_agent/` 提供真实 LangGraph、可配置模型、租约保护的 PG checkpoint、Hermes 派生记忆规则和扩展接口；`backend/app/agent_bridge/` 提供会话/Run、独立 worker 装配、授权工具、知识版本及持久跟进。支持澄清/恢复/取消、同会话排队、唯一最终回复、跨会话 USER/NOTES 与补货任务 SKILL 的显式增改删。业务工具支持只读 what-if 和本轮数量上限修订，新 Plan 仍由既有用户审批 API 确认。
 

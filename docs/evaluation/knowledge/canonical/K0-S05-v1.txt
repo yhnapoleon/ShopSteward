@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+青禾交付规则
+W-STORE | K0-S05-v1
+[section:1] 西店同名 / West-store namesake
+西店青禾 W-SUP-QH 与东店青禾不是同一供应商ID。西店 W-SKU-OAT 于16:30截单。The west-store Qinghe cutoff is 16:30; names do not establish shared identity.
+[section:2] 运输要求 / Transit
+西店燕麦饮使用封箱周转箱，禁止散箱上车。Use sealed totes; loose cartons are not accepted.
+[section:3] 权限 / Access
+此资料仅西店成员可见，东店检索不得返回正文。West-store membership is required.

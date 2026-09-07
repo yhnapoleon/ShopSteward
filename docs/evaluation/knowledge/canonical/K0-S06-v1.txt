@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+海桥冷链交接协议
+E-STORE | K0-S06-v1
+[section:1] 测温 / Temperature
+海桥 E-SUP-HQ 的 E-SKU-YOG 酸奶到店应为2–6°C，箱内探针测温并留照。Yogurt must arrive at 2–6°C; record an in-box probe reading and photograph.
+[section:2] 温度例外 / Exception
+高于6°C隔离并联系店长，不可先上架再补测。Above 6°C, quarantine and contact the manager before shelving.
+[section:3] 等待 / Holding
+等待复核期间保持冷藏；司机离场不等于异常解除。Keep chilled while awaiting review; departure is not acceptance.

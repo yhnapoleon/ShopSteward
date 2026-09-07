@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+到货延迟升级
+E-STORE | K0-O04-v1
+[section:1] 触发 / Trigger
+超过确认到店时间30分钟未到，由店长联系调度并记录预计时间。Escalate to dispatch after a 30-minute delay beyond the confirmed arrival.
+[section:2] 顾客沟通 / Customer message
+预计时间未经确认时告知正在核实，不许承诺一定赶上活动。Tell customers the timing is being checked; do not guarantee readiness.
+[section:3] 计算边界 / Calculation
+活动能否满足须查当前库存、在途和正式需求；SOP不包含实时结论。Use business inputs to determine feasibility.

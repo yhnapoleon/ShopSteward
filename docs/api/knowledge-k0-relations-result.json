@@ -1,0 +1,810 @@
+{
+  "ran_at": "2026-09-07T11:51:21.756296+00:00",
+  "status": "passed",
+  "postgresql": "PostgreSQL 17.11 (Debian 17.11-1.pgdg12+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 12.2.0-14+deb12u1) 12.2.0, 64-bit",
+  "scope": "connection-local temporary table in shopsteward_test; no business tables modified",
+  "profile": "assistant-authored explicit query plans, same facts/filters/conditions; fixed joins vs recursive SQL",
+  "limits": [
+    "Manual graph facts may refer to scanned evidence not yet OCR-readable.",
+    "No natural-language planning, full answer correctness, Neo4j, or embedding measured.",
+    "12 fixtures do not establish performance/scalability superiority."
+  ],
+  "input_hashes": {
+    "relations.json": "ff58fda40dd4e62d87a13067b65f38a0068eaa0807bb1c258377ab9dee70b4ab",
+    "relation-cases.jsonl": "39d43af41ed72d9086171a456c80f132b3272b1a69e8a42f086fcf518862a79f",
+    "entities-fixture.json": "8e9b3cee7ab7212975718e3d6bacc08b5fc66eaa6b071783497f931b4706fbe1",
+    "corpus-manifest.json": "c5f4c87a13d5059248abe7057364aa725f1d3df109bbd4241341e0e82e71ad20"
+  },
+  "cases": [
+    {
+      "id": "K0-RQ01",
+      "split": "dev",
+      "group": "single_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e01",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S04-v1",
+                "E-SUP-QH"
+              ],
+              "qualifiers": [
+                {
+                  "only_skus": [
+                    "E-SKU-OAT"
+                  ],
+                  "excluded_skus": [
+                    "E-SKU-TEA"
+                  ],
+                  "impact": "potential_only"
+                }
+              ],
+              "evidence_versions": [
+                "K0-S04-v1"
+              ]
+            }
+          ],
+          "latency_ms": 2.8147001285105944
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e01",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S04-v1",
+                "E-SUP-QH"
+              ],
+              "qualifiers": [
+                {
+                  "only_skus": [
+                    "E-SKU-OAT"
+                  ],
+                  "excluded_skus": [
+                    "E-SKU-TEA"
+                  ],
+                  "impact": "potential_only"
+                }
+              ],
+              "evidence_versions": [
+                "K0-S04-v1"
+              ]
+            }
+          ],
+          "latency_ms": 3.145999973639846
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ02",
+      "split": "dev",
+      "group": "single_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-OAT-09"
+              ],
+              "qualifiers": [
+                {
+                  "not_long_term_supply_commitment": true
+                }
+              ],
+              "evidence_versions": []
+            },
+            {
+              "path": [
+                {
+                  "edge_id": "e16",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-TEA-09"
+              ],
+              "qualifiers": [
+                {}
+              ],
+              "evidence_versions": []
+            }
+          ],
+          "latency_ms": 1.4523998834192753
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-OAT-09"
+              ],
+              "qualifiers": [
+                {
+                  "not_long_term_supply_commitment": true
+                }
+              ],
+              "evidence_versions": []
+            },
+            {
+              "path": [
+                {
+                  "edge_id": "e16",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-TEA-09"
+              ],
+              "qualifiers": [
+                {}
+              ],
+              "evidence_versions": []
+            }
+          ],
+          "latency_ms": 1.2356999795883894
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ03",
+      "split": "dev",
+      "group": "single_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e07",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S02-v2",
+                "K0-S01-v1"
+              ],
+              "qualifiers": [
+                {
+                  "scope": "section:1 cutoff only",
+                  "retained": "section:2 damage report within 24 hours with batch photos",
+                  "historical_target": "metadata linkage does not authorize default search of expired body"
+                }
+              ],
+              "evidence_versions": [
+                "K0-S02-v2"
+              ]
+            }
+          ],
+          "latency_ms": 0.9916999842971563
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e07",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S02-v2",
+                "K0-S01-v1"
+              ],
+              "qualifiers": [
+                {
+                  "scope": "section:1 cutoff only",
+                  "retained": "section:2 damage report within 24 hours with batch photos",
+                  "historical_target": "metadata linkage does not authorize default search of expired body"
+                }
+              ],
+              "evidence_versions": [
+                "K0-S02-v2"
+              ]
+            }
+          ],
+          "latency_ms": 1.0071001015603542
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ04",
+      "split": "test",
+      "group": "single_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e08",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S05-v1",
+                "W-SUP-QH"
+              ],
+              "qualifiers": [
+                {}
+              ],
+              "evidence_versions": [
+                "K0-S05-v1"
+              ]
+            }
+          ],
+          "latency_ms": 0.9507001377642155
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e08",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S05-v1",
+                "W-SUP-QH"
+              ],
+              "qualifiers": [
+                {}
+              ],
+              "evidence_versions": [
+                "K0-S05-v1"
+              ]
+            }
+          ],
+          "latency_ms": 0.9131999686360359
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ05",
+      "split": "dev",
+      "group": "multi_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e01",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e03",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S04-v1",
+                "E-SUP-QH",
+                "E-OFFER-OAT-09",
+                "E-SKU-OAT"
+              ],
+              "qualifiers": [
+                {
+                  "only_skus": [
+                    "E-SKU-OAT"
+                  ],
+                  "excluded_skus": [
+                    "E-SKU-TEA"
+                  ],
+                  "impact": "potential_only"
+                },
+                {
+                  "not_long_term_supply_commitment": true
+                },
+                {}
+              ],
+              "evidence_versions": [
+                "K0-S04-v1"
+              ]
+            }
+          ],
+          "latency_ms": 3.720800159499049
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e01",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e03",
+                  "direction": "forward"
+                }
+              ],
+              "nodes": [
+                "K0-S04-v1",
+                "E-SUP-QH",
+                "E-OFFER-OAT-09",
+                "E-SKU-OAT"
+              ],
+              "qualifiers": [
+                {
+                  "only_skus": [
+                    "E-SKU-OAT"
+                  ],
+                  "excluded_skus": [
+                    "E-SKU-TEA"
+                  ],
+                  "impact": "potential_only"
+                },
+                {
+                  "not_long_term_supply_commitment": true
+                },
+                {}
+              ],
+              "evidence_versions": [
+                "K0-S04-v1"
+              ]
+            }
+          ],
+          "latency_ms": 1.6077000182121992
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ06",
+      "split": "dev",
+      "group": "multi_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e03",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e04",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-OAT-09",
+                "E-SKU-OAT",
+                "E-MISSION-BREAKFAST"
+              ],
+              "qualifiers": [
+                {
+                  "not_long_term_supply_commitment": true
+                },
+                {},
+                {
+                  "mission_status": "preparing"
+                }
+              ],
+              "evidence_versions": []
+            }
+          ],
+          "latency_ms": 1.6600999515503645
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e03",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e04",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-OAT-09",
+                "E-SKU-OAT",
+                "E-MISSION-BREAKFAST"
+              ],
+              "qualifiers": [
+                {
+                  "not_long_term_supply_commitment": true
+                },
+                {},
+                {
+                  "mission_status": "preparing"
+                }
+              ],
+              "evidence_versions": []
+            }
+          ],
+          "latency_ms": 1.408000010997057
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ07",
+      "split": "dev",
+      "group": "multi_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e09",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e10",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e11",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "E-MISSION-BREAKFAST",
+                "E-PLAN-BREAKFAST",
+                "E-ACTION-BREAKFAST",
+                "K0-O02-v1"
+              ],
+              "qualifiers": [
+                {
+                  "plan_status": "draft"
+                },
+                {
+                  "action_status": "pending_approval"
+                },
+                {
+                  "manual_tag_reason": "synthetic receipt action is manually tagged with the store-wide partial-receipt SOP",
+                  "does_not_assert_document_mentions_action_id": true
+                }
+              ],
+              "evidence_versions": [
+                "K0-O02-v1"
+              ]
+            }
+          ],
+          "latency_ms": 1.1617999989539385
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e09",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e10",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e11",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "E-MISSION-BREAKFAST",
+                "E-PLAN-BREAKFAST",
+                "E-ACTION-BREAKFAST",
+                "K0-O02-v1"
+              ],
+              "qualifiers": [
+                {
+                  "plan_status": "draft"
+                },
+                {
+                  "action_status": "pending_approval"
+                },
+                {
+                  "manual_tag_reason": "synthetic receipt action is manually tagged with the store-wide partial-receipt SOP",
+                  "does_not_assert_document_mentions_action_id": true
+                }
+              ],
+              "evidence_versions": [
+                "K0-O02-v1"
+              ]
+            }
+          ],
+          "latency_ms": 1.1948999017477036
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ08",
+      "split": "test",
+      "group": "multi_step",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e06",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e12",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "K0-S02-v2",
+                "E-SKU-OAT",
+                "K0-O02-v1"
+              ],
+              "qualifiers": [
+                {},
+                {
+                  "manual_tag_reason": "store-wide partial-receipt process explicitly assigned to this fixture SKU",
+                  "does_not_assert_document_mentions_sku_id": true
+                }
+              ],
+              "evidence_versions": [
+                "K0-O02-v1",
+                "K0-S02-v2"
+              ]
+            }
+          ],
+          "latency_ms": 2.5659999810159206
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e06",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e12",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "K0-S02-v2",
+                "E-SKU-OAT",
+                "K0-O02-v1"
+              ],
+              "qualifiers": [
+                {},
+                {
+                  "manual_tag_reason": "store-wide partial-receipt process explicitly assigned to this fixture SKU",
+                  "does_not_assert_document_mentions_sku_id": true
+                }
+              ],
+              "evidence_versions": [
+                "K0-O02-v1",
+                "K0-S02-v2"
+              ]
+            }
+          ],
+          "latency_ms": 1.272900030016899
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ09",
+      "split": "dev",
+      "group": "conditional",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [],
+          "latency_ms": 1.1511000338941813
+        },
+        "D_recursive": {
+          "paths": [],
+          "latency_ms": 1.0797998402267694
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ10",
+      "split": "test",
+      "group": "conditional",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [],
+          "latency_ms": 1.042200019583106
+        },
+        "D_recursive": {
+          "paths": [],
+          "latency_ms": 1.2616999447345734
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ11",
+      "split": "dev",
+      "group": "unknown",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e03",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e04",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-OAT-09",
+                "E-SKU-OAT",
+                "E-MISSION-BREAKFAST"
+              ],
+              "qualifiers": [
+                {
+                  "not_long_term_supply_commitment": true
+                },
+                {},
+                {
+                  "mission_status": "preparing"
+                }
+              ],
+              "evidence_versions": []
+            }
+          ],
+          "latency_ms": 1.5508001670241356
+        },
+        "D_recursive": {
+          "paths": [
+            {
+              "path": [
+                {
+                  "edge_id": "e02",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e03",
+                  "direction": "forward"
+                },
+                {
+                  "edge_id": "e04",
+                  "direction": "reverse"
+                }
+              ],
+              "nodes": [
+                "E-SUP-QH",
+                "E-OFFER-OAT-09",
+                "E-SKU-OAT",
+                "E-MISSION-BREAKFAST"
+              ],
+              "qualifiers": [
+                {
+                  "not_long_term_supply_commitment": true
+                },
+                {},
+                {
+                  "mission_status": "preparing"
+                }
+              ],
+              "evidence_versions": []
+            }
+          ],
+          "latency_ms": 1.4981001149863005
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    },
+    {
+      "id": "K0-RQ12",
+      "split": "test",
+      "group": "unknown",
+      "same_paths": true,
+      "expected_paths_match": true,
+      "comparison": {
+        "C_fixed_joins": {
+          "paths": [],
+          "latency_ms": 1.2042999733239412
+        },
+        "D_recursive": {
+          "paths": [],
+          "latency_ms": 1.0895999148488045
+        }
+      },
+      "completeness": "open_world_not_guaranteed",
+      "answer_assertions": "not_scored; no text generation or parsing in this experiment"
+    }
+  ],
+  "case_count": 12,
+  "splits": {
+    "dev": 8,
+    "test": 4
+  },
+  "decision": "No path-correctness gain from recursive traversal over equivalent fixed joins in these fixtures; keep PG relations."
+}

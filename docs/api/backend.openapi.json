@@ -5899,19 +5899,45 @@
         "additionalProperties": false
       },
       "ScenarioCreate": {
-        "type": "object",
         "properties": {
           "scenario": {
             "type": "string",
             "enum": [
-              "SC01"
+              "SC01",
+              "SANDBOX"
+            ],
+            "title": "Scenario"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScenarioParameters"
+              },
+              {
+                "type": "null"
+              }
             ]
           }
         },
+        "additionalProperties": false,
+        "type": "object",
         "required": [
           "scenario"
         ],
-        "additionalProperties": false
+        "title": "ScenarioCreate"
       },
       "ScenarioAdvance": {
         "type": "object",
@@ -7160,6 +7186,69 @@
           "source_fresh_until"
         ],
         "additionalProperties": false
+      },
+      "ScenarioParameters": {
+        "properties": {
+          "cash_minor": {
+            "type": "integer",
+            "maximum": 1000000000000.0,
+            "minimum": 0.0,
+            "title": "Cash Minor",
+            "default": 100000
+          },
+          "on_hand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "On Hand",
+            "default": 20
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Remaining Demand",
+            "default": 60
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 100000000.0,
+            "minimum": 1.0,
+            "title": "Unit Price Minor",
+            "default": 1000
+          },
+          "minimum_order_quantity": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Minimum Order Quantity",
+            "default": 20
+          },
+          "pack_size": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Pack Size",
+            "default": 20
+          },
+          "lead_time_seconds": {
+            "type": "integer",
+            "maximum": 7776000.0,
+            "minimum": 0.0,
+            "title": "Lead Time Seconds",
+            "default": 86400
+          },
+          "horizon_days": {
+            "type": "integer",
+            "maximum": 90.0,
+            "minimum": 1.0,
+            "title": "Horizon Days",
+            "default": 7
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ScenarioParameters"
       }
     }
   }

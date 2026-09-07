@@ -1,0 +1,2715 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ShopSteward Simulator",
+    "version": "0.3.0"
+  },
+  "paths": {
+    "/health/ready": {
+      "get": {
+        "summary": "Ready",
+        "operationId": "ready_health_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs": {
+      "post": {
+        "summary": "Create",
+        "operationId": "simulation_create_run",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioRun"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Runs",
+        "operationId": "simulation_list_runs",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 2048
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Before"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 30,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs/{run_id}": {
+      "get": {
+        "summary": "Run Detail",
+        "operationId": "simulation_get_run",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs/{run_id}/triggers": {
+      "post": {
+        "summary": "Trigger",
+        "operationId": "simulation_trigger",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SaleTrigger"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DemandTrigger"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReceiptTrigger"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "kind",
+                  "mapping": {
+                    "sale": "#/components/schemas/SaleTrigger",
+                    "demand": "#/components/schemas/DemandTrigger",
+                    "receipt": "#/components/schemas/ReceiptTrigger"
+                  }
+                },
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TriggerResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs/{run_id}/events": {
+      "get": {
+        "summary": "Events",
+        "operationId": "simulation_list_events",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "after_sequence",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "maximum": 9223372036854775807,
+              "minimum": 0,
+              "title": "After Sequence"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/purchases": {
+      "post": {
+        "summary": "Purchase",
+        "operationId": "simulation_purchase",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PurchaseRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseReceipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/purchases/{action_id}": {
+      "get": {
+        "summary": "Receipt",
+        "operationId": "simulation_get_purchase",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Action Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseReceipt"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs/{run_id}/advance": {
+      "post": {
+        "summary": "Advance",
+        "operationId": "simulation_advance",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioAdvance"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdvanceResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/status": {
+      "get": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Status",
+        "operationId": "status_console_api_status_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/runs": {
+      "get": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Runs",
+        "operationId": "runs_console_api_runs_get",
+        "parameters": [
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 2048
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Before"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 30,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Create",
+        "operationId": "create_console_api_runs_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioRun"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/runs/{run_id}": {
+      "get": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_console_api_runs__run_id__get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/runs/{run_id}/events": {
+      "get": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Events",
+        "operationId": "events_console_api_runs__run_id__events_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "after_sequence",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "After Sequence"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventPage"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/runs/{run_id}/triggers": {
+      "post": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Trigger",
+        "operationId": "trigger_console_api_runs__run_id__triggers_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SaleTrigger"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DemandTrigger"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReceiptTrigger"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "kind",
+                  "mapping": {
+                    "sale": "#/components/schemas/SaleTrigger",
+                    "demand": "#/components/schemas/DemandTrigger",
+                    "receipt": "#/components/schemas/ReceiptTrigger"
+                  }
+                },
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TriggerResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/runs/{run_id}/advance": {
+      "post": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Advance",
+        "operationId": "advance_console_api_runs__run_id__advance_post",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioAdvance"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdvanceResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/linked-runs": {
+      "post": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Create Linked",
+        "operationId": "create_linked_console_api_linked_runs_post",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/jobs/{job_id}": {
+      "get": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Job",
+        "operationId": "job_console_api_jobs__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/console/api/runs/{run_id}/backend": {
+      "get": {
+        "tags": [
+          "Local simulator console"
+        ],
+        "summary": "Backend",
+        "operationId": "backend_console_api_runs__run_id__backend_get",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AdvanceResult": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "simulation_time",
+          "last_sequence"
+        ],
+        "title": "AdvanceResult"
+      },
+      "Catalog": {
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "products": {
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            },
+            "type": "array",
+            "title": "Products"
+          },
+          "offers": {
+            "items": {
+              "$ref": "#/components/schemas/Offer"
+            },
+            "type": "array",
+            "title": "Offers"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "store_id",
+          "currency",
+          "products",
+          "offers"
+        ],
+        "title": "Catalog"
+      },
+      "DemandEvent": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Event Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Sequence"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Schema Version"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "event_type": {
+            "type": "string",
+            "const": "DEMAND_REVISED",
+            "title": "Event Type"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/DemandPayload"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "event_type",
+          "payload"
+        ],
+        "title": "DemandEvent"
+      },
+      "DemandPayload": {
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Remaining Demand"
+          },
+          "forecast_version": {
+            "type": "string",
+            "title": "Forecast Version"
+          },
+          "data_as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Data As Of"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid Until"
+          },
+          "horizon_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Horizon Start"
+          },
+          "horizon_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Horizon End"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku_id",
+          "remaining_demand",
+          "forecast_version",
+          "data_as_of",
+          "valid_until",
+          "horizon_start",
+          "horizon_end"
+        ],
+        "title": "DemandPayload"
+      },
+      "DemandTrigger": {
+        "properties": {
+          "expected_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Expected Sequence"
+          },
+          "advance_seconds": {
+            "type": "integer",
+            "maximum": 604800.0,
+            "minimum": 0.0,
+            "title": "Advance Seconds",
+            "default": 0
+          },
+          "kind": {
+            "type": "string",
+            "const": "demand",
+            "title": "Kind"
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Remaining Demand"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_sequence",
+          "kind",
+          "remaining_demand"
+        ],
+        "title": "DemandTrigger"
+      },
+      "EventPage": {
+        "properties": {
+          "events": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SaleEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/DemandEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/ReceivedEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/PurchaseEvent"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "event_type",
+                "mapping": {
+                  "DEMAND_REVISED": "#/components/schemas/DemandEvent",
+                  "GOODS_RECEIVED": "#/components/schemas/ReceivedEvent",
+                  "PURCHASE_ACCEPTED": "#/components/schemas/PurchaseEvent",
+                  "SALE_RECORDED": "#/components/schemas/SaleEvent"
+                }
+              }
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Events"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          },
+          "source_head_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Source Head Sequence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "events",
+          "last_sequence",
+          "has_more",
+          "source_head_sequence"
+        ],
+        "title": "EventPage"
+      },
+      "Forecast": {
+        "properties": {
+          "forecast_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Forecast Id"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "input_state_version": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Input State Version"
+          },
+          "predicted_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Predicted Quantity"
+          },
+          "unit": {
+            "type": "string",
+            "const": "piece",
+            "title": "Unit"
+          },
+          "data_as_of": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Data As Of"
+          },
+          "horizon_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Horizon Start"
+          },
+          "horizon_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Horizon End"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid Until"
+          },
+          "model_name": {
+            "type": "string",
+            "title": "Model Name"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "manual",
+              "model"
+            ],
+            "title": "Source"
+          },
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Assumptions"
+          },
+          "lower_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Lower Quantity"
+          },
+          "upper_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Upper Quantity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "forecast_id",
+          "store_id",
+          "sku_id",
+          "input_state_version",
+          "predicted_quantity",
+          "unit",
+          "data_as_of",
+          "horizon_start",
+          "horizon_end",
+          "valid_until",
+          "model_name",
+          "model_version",
+          "source",
+          "assumptions"
+        ],
+        "title": "Forecast"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Offer": {
+        "properties": {
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Unit Price Minor"
+          },
+          "minimum_order_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Minimum Order Quantity"
+          },
+          "pack_size": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Pack Size"
+          },
+          "offer_version": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Offer Version"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "lead_time_seconds": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Lead Time Seconds"
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid Until"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "supplier_id",
+          "sku_id",
+          "unit_price_minor",
+          "minimum_order_quantity",
+          "pack_size",
+          "offer_version",
+          "currency",
+          "lead_time_seconds",
+          "valid_from",
+          "valid_until"
+        ],
+        "title": "Offer"
+      },
+      "OrderSummary": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "REJECTED",
+              "PENDING"
+            ],
+            "title": "Status"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Quantity"
+          },
+          "received_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Received Quantity"
+          },
+          "remaining_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Remaining Quantity"
+          },
+          "eta": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Eta"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Total Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "status",
+          "quantity",
+          "received_quantity",
+          "remaining_quantity",
+          "eta",
+          "total_minor"
+        ],
+        "title": "OrderSummary"
+      },
+      "Product": {
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "unit": {
+            "type": "string",
+            "const": "piece",
+            "title": "Unit"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku_id",
+          "name",
+          "unit"
+        ],
+        "title": "Product"
+      },
+      "PurchaseEvent": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Event Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Sequence"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Schema Version"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "event_type": {
+            "type": "string",
+            "const": "PURCHASE_ACCEPTED",
+            "title": "Event Type"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/PurchasePayload"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "event_type",
+          "payload"
+        ],
+        "title": "PurchaseEvent"
+      },
+      "PurchasePayload": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "external_order_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "External Order Id"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Total Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "sku_id",
+          "quantity",
+          "external_order_id",
+          "total_minor"
+        ],
+        "title": "PurchasePayload"
+      },
+      "PurchaseReceipt": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "REJECTED",
+              "PENDING"
+            ],
+            "title": "Status"
+          },
+          "external_order_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "External Order Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Quantity"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Total Minor"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Recorded At"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "status",
+          "external_order_id",
+          "quantity",
+          "total_minor",
+          "currency",
+          "recorded_at",
+          "reason"
+        ],
+        "title": "PurchaseReceipt"
+      },
+      "PurchaseRequest": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "expected_total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Expected Total Minor"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "scenario_run_id",
+          "store_id",
+          "sku_id",
+          "supplier_id",
+          "quantity",
+          "expected_total_minor",
+          "currency"
+        ],
+        "title": "PurchaseRequest"
+      },
+      "ReceiptTrigger": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "receipt",
+            "title": "Kind"
+          },
+          "expected_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Expected Sequence"
+          },
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000000.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "expected_sequence",
+          "action_id"
+        ],
+        "title": "ReceiptTrigger"
+      },
+      "ReceivedEvent": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Event Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Sequence"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Schema Version"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "event_type": {
+            "type": "string",
+            "const": "GOODS_RECEIVED",
+            "title": "Event Type"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ReceivedPayload"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "event_type",
+          "payload"
+        ],
+        "title": "ReceivedEvent"
+      },
+      "ReceivedPayload": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Quantity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "sku_id",
+          "quantity"
+        ],
+        "title": "ReceivedPayload"
+      },
+      "RunDetail": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "SC01",
+              "SANDBOX"
+            ],
+            "title": "Scenario"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          },
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "initial_snapshot": {
+            "$ref": "#/components/schemas/ScenarioRun"
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/ScenarioCreate"
+          },
+          "step_index": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Step Index"
+          },
+          "orders": {
+            "items": {
+              "$ref": "#/components/schemas/OrderSummary"
+            },
+            "type": "array",
+            "title": "Orders"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "store_id",
+          "scenario",
+          "label",
+          "created_at",
+          "simulation_time",
+          "last_sequence",
+          "state",
+          "initial_snapshot",
+          "configuration",
+          "step_index",
+          "orders"
+        ],
+        "title": "RunDetail"
+      },
+      "RunList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RunSummary"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "RunList"
+      },
+      "RunSummary": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "SC01",
+              "SANDBOX"
+            ],
+            "title": "Scenario"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "store_id",
+          "scenario",
+          "label",
+          "created_at",
+          "simulation_time",
+          "last_sequence"
+        ],
+        "title": "RunSummary"
+      },
+      "SaleEvent": {
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Event Id"
+          },
+          "sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Sequence"
+          },
+          "schema_version": {
+            "type": "string",
+            "const": "1.0",
+            "title": "Schema Version"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "occurred_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Occurred At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "event_type": {
+            "type": "string",
+            "const": "SALE_RECORDED",
+            "title": "Event Type"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/SalePayload"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "event_type",
+          "payload"
+        ],
+        "title": "SaleEvent"
+      },
+      "SalePayload": {
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Unit Price Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku_id",
+          "quantity",
+          "unit_price_minor"
+        ],
+        "title": "SalePayload"
+      },
+      "SaleTrigger": {
+        "properties": {
+          "expected_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Expected Sequence"
+          },
+          "advance_seconds": {
+            "type": "integer",
+            "maximum": 604800.0,
+            "minimum": 0.0,
+            "title": "Advance Seconds",
+            "default": 0
+          },
+          "kind": {
+            "type": "string",
+            "const": "sale",
+            "title": "Kind"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 100000000.0,
+            "minimum": 1.0,
+            "title": "Unit Price Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_sequence",
+          "kind",
+          "quantity",
+          "unit_price_minor"
+        ],
+        "title": "SaleTrigger"
+      },
+      "ScenarioAdvance": {
+        "properties": {
+          "steps": {
+            "type": "integer",
+            "maximum": 100.0,
+            "minimum": 1.0,
+            "title": "Steps"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "steps"
+        ],
+        "title": "ScenarioAdvance"
+      },
+      "ScenarioCreate": {
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "SC01",
+              "SANDBOX"
+            ],
+            "title": "Scenario"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScenarioParameters"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario"
+        ],
+        "title": "ScenarioCreate"
+      },
+      "ScenarioParameters": {
+        "properties": {
+          "cash_minor": {
+            "type": "integer",
+            "maximum": 1000000000000.0,
+            "minimum": 0.0,
+            "title": "Cash Minor",
+            "default": 100000
+          },
+          "on_hand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "On Hand",
+            "default": 20
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Remaining Demand",
+            "default": 60
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 100000000.0,
+            "minimum": 1.0,
+            "title": "Unit Price Minor",
+            "default": 1000
+          },
+          "minimum_order_quantity": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Minimum Order Quantity",
+            "default": 20
+          },
+          "pack_size": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Pack Size",
+            "default": 20
+          },
+          "lead_time_seconds": {
+            "type": "integer",
+            "maximum": 7776000.0,
+            "minimum": 0.0,
+            "title": "Lead Time Seconds",
+            "default": 86400
+          },
+          "horizon_days": {
+            "type": "integer",
+            "maximum": 90.0,
+            "minimum": 1.0,
+            "title": "Horizon Days",
+            "default": 7
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ScenarioParameters"
+      },
+      "ScenarioRun": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "initial_state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "initial_forecast": {
+            "$ref": "#/components/schemas/Forecast"
+          },
+          "initial_catalog": {
+            "$ref": "#/components/schemas/Catalog"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "store_id",
+          "simulation_time",
+          "initial_state",
+          "initial_forecast",
+          "initial_catalog"
+        ],
+        "title": "ScenarioRun"
+      },
+      "State": {
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "state_version": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "State Version"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "cash_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Cash Minor"
+          },
+          "reserved_cash_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Reserved Cash Minor"
+          },
+          "available_cash_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Available Cash Minor"
+          },
+          "receivables_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Receivables Minor"
+          },
+          "stocks": {
+            "items": {
+              "$ref": "#/components/schemas/Stock"
+            },
+            "type": "array",
+            "title": "Stocks"
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data As Of"
+          },
+          "simulation_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simulation Time"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "store_id",
+          "state_version",
+          "currency",
+          "cash_minor",
+          "reserved_cash_minor",
+          "available_cash_minor",
+          "receivables_minor",
+          "stocks",
+          "data_as_of",
+          "simulation_time"
+        ],
+        "title": "State"
+      },
+      "Stock": {
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "on_hand": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "On Hand"
+          },
+          "in_transit": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "In Transit"
+          },
+          "remaining_demand": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Demand"
+          },
+          "forecast_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forecast Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku_id",
+          "on_hand",
+          "in_transit",
+          "remaining_demand",
+          "forecast_version"
+        ],
+        "title": "Stock"
+      },
+      "TriggerResult": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "first_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "First Sequence"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "before": {
+            "$ref": "#/components/schemas/State"
+          },
+          "after": {
+            "$ref": "#/components/schemas/State"
+          },
+          "events": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SaleEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/DemandEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/ReceivedEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/PurchaseEvent"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "event_type",
+                "mapping": {
+                  "DEMAND_REVISED": "#/components/schemas/DemandEvent",
+                  "GOODS_RECEIVED": "#/components/schemas/ReceivedEvent",
+                  "PURCHASE_ACCEPTED": "#/components/schemas/PurchaseEvent",
+                  "SALE_RECORDED": "#/components/schemas/SaleEvent"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "first_sequence",
+          "last_sequence",
+          "simulation_time",
+          "before",
+          "after",
+          "events"
+        ],
+        "title": "TriggerResult"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    },
+    "securitySchemes": {
+      "ServiceBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

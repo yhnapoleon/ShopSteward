@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "ShopSteward Simulator",
-    "version": "0.2.0"
+    "version": "0.3.0"
   },
   "paths": {
     "/health/ready": {
@@ -60,6 +60,200 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ScenarioRun"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Runs",
+        "operationId": "simulation_list_runs",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "before",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 2048
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Before"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 30,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs/{run_id}": {
+      "get": {
+        "summary": "Run Detail",
+        "operationId": "simulation_get_run",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs/{run_id}/triggers": {
+      "post": {
+        "summary": "Trigger",
+        "operationId": "simulation_trigger",
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SaleTrigger"
+                  },
+                  {
+                    "$ref": "#/components/schemas/DemandTrigger"
+                  },
+                  {
+                    "$ref": "#/components/schemas/ReceiptTrigger"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "kind",
+                  "mapping": {
+                    "sale": "#/components/schemas/SaleTrigger",
+                    "demand": "#/components/schemas/DemandTrigger",
+                    "receipt": "#/components/schemas/ReceiptTrigger"
+                  }
+                },
+                "title": "Body"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TriggerResult"
                 }
               }
             }
@@ -495,6 +689,42 @@
         ],
         "title": "DemandPayload"
       },
+      "DemandTrigger": {
+        "properties": {
+          "expected_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Expected Sequence"
+          },
+          "advance_seconds": {
+            "type": "integer",
+            "maximum": 604800.0,
+            "minimum": 0.0,
+            "title": "Advance Seconds",
+            "default": 0
+          },
+          "kind": {
+            "type": "string",
+            "const": "demand",
+            "title": "Kind"
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Remaining Demand"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_sequence",
+          "kind",
+          "remaining_demand"
+        ],
+        "title": "DemandTrigger"
+      },
       "EventPage": {
         "properties": {
           "events": {
@@ -755,6 +985,73 @@
           "valid_until"
         ],
         "title": "Offer"
+      },
+      "OrderSummary": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "REJECTED",
+              "PENDING"
+            ],
+            "title": "Status"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Quantity"
+          },
+          "received_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Received Quantity"
+          },
+          "remaining_quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Remaining Quantity"
+          },
+          "eta": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Eta"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Total Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "status",
+          "quantity",
+          "received_quantity",
+          "remaining_quantity",
+          "eta",
+          "total_minor"
+        ],
+        "title": "OrderSummary"
       },
       "Product": {
         "properties": {
@@ -1027,6 +1324,48 @@
         ],
         "title": "PurchaseRequest"
       },
+      "ReceiptTrigger": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "receipt",
+            "title": "Kind"
+          },
+          "expected_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Expected Sequence"
+          },
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000000.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "expected_sequence",
+          "action_id"
+        ],
+        "title": "ReceiptTrigger"
+      },
       "ReceivedEvent": {
         "properties": {
           "event_id": {
@@ -1114,6 +1453,174 @@
           "quantity"
         ],
         "title": "ReceivedPayload"
+      },
+      "RunDetail": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "SC01",
+              "SANDBOX"
+            ],
+            "title": "Scenario"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          },
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "initial_snapshot": {
+            "$ref": "#/components/schemas/ScenarioRun"
+          },
+          "configuration": {
+            "$ref": "#/components/schemas/ScenarioCreate"
+          },
+          "step_index": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Step Index"
+          },
+          "orders": {
+            "items": {
+              "$ref": "#/components/schemas/OrderSummary"
+            },
+            "type": "array",
+            "title": "Orders"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "store_id",
+          "scenario",
+          "label",
+          "created_at",
+          "simulation_time",
+          "last_sequence",
+          "state",
+          "initial_snapshot",
+          "configuration",
+          "step_index",
+          "orders"
+        ],
+        "title": "RunDetail"
+      },
+      "RunList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/RunSummary"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "next_cursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Cursor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "items",
+          "next_cursor"
+        ],
+        "title": "RunList"
+      },
+      "RunSummary": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "SC01",
+              "SANDBOX"
+            ],
+            "title": "Scenario"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "store_id",
+          "scenario",
+          "label",
+          "created_at",
+          "simulation_time",
+          "last_sequence"
+        ],
+        "title": "RunSummary"
       },
       "SaleEvent": {
         "properties": {
@@ -1203,6 +1710,49 @@
         ],
         "title": "SalePayload"
       },
+      "SaleTrigger": {
+        "properties": {
+          "expected_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Expected Sequence"
+          },
+          "advance_seconds": {
+            "type": "integer",
+            "maximum": 604800.0,
+            "minimum": 0.0,
+            "title": "Advance Seconds",
+            "default": 0
+          },
+          "kind": {
+            "type": "string",
+            "const": "sale",
+            "title": "Kind"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 100000000.0,
+            "minimum": 1.0,
+            "title": "Unit Price Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_sequence",
+          "kind",
+          "quantity",
+          "unit_price_minor"
+        ],
+        "title": "SaleTrigger"
+      },
       "ScenarioAdvance": {
         "properties": {
           "steps": {
@@ -1223,8 +1773,34 @@
         "properties": {
           "scenario": {
             "type": "string",
-            "const": "SC01",
+            "enum": [
+              "SC01",
+              "SANDBOX"
+            ],
             "title": "Scenario"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScenarioParameters"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -1233,6 +1809,69 @@
           "scenario"
         ],
         "title": "ScenarioCreate"
+      },
+      "ScenarioParameters": {
+        "properties": {
+          "cash_minor": {
+            "type": "integer",
+            "maximum": 1000000000000.0,
+            "minimum": 0.0,
+            "title": "Cash Minor",
+            "default": 100000
+          },
+          "on_hand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "On Hand",
+            "default": 20
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 0.0,
+            "title": "Remaining Demand",
+            "default": 60
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 100000000.0,
+            "minimum": 1.0,
+            "title": "Unit Price Minor",
+            "default": 1000
+          },
+          "minimum_order_quantity": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Minimum Order Quantity",
+            "default": 20
+          },
+          "pack_size": {
+            "type": "integer",
+            "maximum": 1000000.0,
+            "minimum": 1.0,
+            "title": "Pack Size",
+            "default": 20
+          },
+          "lead_time_seconds": {
+            "type": "integer",
+            "maximum": 7776000.0,
+            "minimum": 0.0,
+            "title": "Lead Time Seconds",
+            "default": 86400
+          },
+          "horizon_days": {
+            "type": "integer",
+            "maximum": 90.0,
+            "minimum": 1.0,
+            "title": "Horizon Days",
+            "default": 7
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "ScenarioParameters"
       },
       "ScenarioRun": {
         "properties": {
@@ -1421,6 +2060,80 @@
           "forecast_version"
         ],
         "title": "Stock"
+      },
+      "TriggerResult": {
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Scenario Run Id"
+          },
+          "first_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "First Sequence"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Last Sequence"
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Simulation Time"
+          },
+          "before": {
+            "$ref": "#/components/schemas/State"
+          },
+          "after": {
+            "$ref": "#/components/schemas/State"
+          },
+          "events": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/SaleEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/DemandEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/ReceivedEvent"
+                },
+                {
+                  "$ref": "#/components/schemas/PurchaseEvent"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "event_type",
+                "mapping": {
+                  "DEMAND_REVISED": "#/components/schemas/DemandEvent",
+                  "GOODS_RECEIVED": "#/components/schemas/ReceivedEvent",
+                  "PURCHASE_ACCEPTED": "#/components/schemas/PurchaseEvent",
+                  "SALE_RECORDED": "#/components/schemas/SaleEvent"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Events"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_run_id",
+          "first_sequence",
+          "last_sequence",
+          "simulation_time",
+          "before",
+          "after",
+          "events"
+        ],
+        "title": "TriggerResult"
       },
       "ValidationError": {
         "properties": {
