@@ -15,6 +15,7 @@ class Run(Base):
     command_key: Mapped[str] = mapped_column(String(128), unique=True)
     content_hash: Mapped[str] = mapped_column(String(64))
     initial_snapshot: Mapped[dict] = mapped_column(JSONB)
+    configuration: Mapped[dict] = mapped_column(JSONB, server_default='{"scenario":"SC01"}')
     world: Mapped[dict] = mapped_column(JSONB)
     last_sequence: Mapped[int] = mapped_column(BigInteger)
     step_index: Mapped[int] = mapped_column(BigInteger)

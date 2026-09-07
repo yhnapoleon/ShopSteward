@@ -13,6 +13,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from simulator.config import Settings
+from simulator.control_schemas import RunDetail, RunList, TriggerRequest, TriggerResult
+from simulator.controls import get_run, list_runs, trigger_run
 from simulator.db import Database
 from simulator.repository import advance_run, create_run, get_purchase, list_events, submit_purchase
 from simulator.schemas import (
@@ -50,7 +52,7 @@ def create_app(settings=None):
         yield
         await app.state.db.dispose()
 
-    app = FastAPI(title="ShopSteward Simulator", version="0.2.0", lifespan=lifespan)
+    app = FastAPI(title="ShopSteward Simulator", version="0.3.0", lifespan=lifespan)
     app.state.settings = settings
     app.state.db = Database(
         settings.sim_database_url.get_secret_value() if settings.sim_database_url else None
@@ -121,7 +123,50 @@ def create_app(settings=None):
         key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=128)],
     ):
         async with app.state.db.session() as session, session.begin():
-            return await create_run(session, key, body.model_dump())
+            return await create_run(session, key, body.model_dump(exclude_none=True))
+
+    @app.get(
+        "/sim/v1/runs",
+        operation_id="simulation_list_runs",
+        response_model=RunList,
+        dependencies=[Depends(authenticate)],
+    )
+    async def runs(
+        before: Annotated[str | None, Query(max_length=2048)] = None,
+        limit: Annotated[int, Query(ge=1, le=100)] = 30,
+    ):
+        async with app.state.db.session() as session, session.begin():
+            await session.execute(
+                text("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+            )
+            return await list_runs(session, before, limit)
+
+    @app.get(
+        "/sim/v1/runs/{run_id}",
+        operation_id="simulation_get_run",
+        response_model=RunDetail,
+        dependencies=[Depends(authenticate)],
+    )
+    async def run_detail(run_id: Annotated[str, Path(min_length=1, max_length=128)]):
+        async with app.state.db.session() as session, session.begin():
+            await session.execute(
+                text("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY")
+            )
+            return await get_run(session, run_id)
+
+    @app.post(
+        "/sim/v1/runs/{run_id}/triggers",
+        operation_id="simulation_trigger",
+        response_model=TriggerResult,
+        dependencies=[Depends(authenticate)],
+    )
+    async def trigger(
+        run_id: Annotated[str, Path(min_length=1, max_length=128)],
+        body: TriggerRequest,
+        key: Annotated[str, Header(alias="Idempotency-Key", min_length=1, max_length=128)],
+    ):
+        async with app.state.db.session() as session, session.begin():
+            return await trigger_run(session, run_id, key, body)
 
     @app.get(
         "/sim/v1/runs/{run_id}/events",
@@ -177,6 +222,10 @@ def create_app(settings=None):
         async with app.state.db.session() as session, session.begin():
             return await advance_run(session, run_id, key, body.model_dump())
 
+    if settings.sim_console_enabled:
+        from simulator.console import install_console
+
+        install_console(app)
     return app
 
 

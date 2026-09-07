@@ -1,10 +1,20 @@
 # ShopSteward 项目总说明与对话交接
 
-更新日期：2026-09-07（B2-A Agent 首版框架实现与验收）。本文负责背景、架构、设计约束、历史与资料导航；[HANDOVER.md](HANDOVER.md)负责当前代码、运行/验证、边界与下一步。
+### Simulator 控制台已实施（2026-09-07）
 
-**当前状态：B0-01 至 B0-07、首批 7 个前端只读接口，以及 B2-A Agent 首版框架已实现。** 确定性业务主干继续独立运行；新增 Agent 通过受限工具解释、试算、修订方案，并维护跨会话记忆与任务 Skill。下面的 B0 和前端阶段数字保留为历史记录；最新实现与验收入口见后文 B2-A 段落。
+已在用户批准后实现**可配置 SANDBOX、写入 PostgreSQL 的模拟数据与本地 Dashboard**。入口 <http://127.0.0.1:8001/console/>；支持独立/联动创建、销售/需求/订单到货 Trigger、事件及 backend 同步观察。SC01 基准和既有数据保留；产品 frontend 独立开发。运行说明见 [simulation/README.md](simulation/README.md)，验收见 [测试报告](docs/reports/simulator-console-test-report.md) 与 [真实 HTTP 证据](docs/api/simulator-console-acceptance-result.json)。
 
-### 最新进度、测试结果与文档索引（2026-09-07）
+本次 simulator 23 项、backend＋Agent 226 项回归通过；真实联动与 simulator 重启持久化通过。开发库已升级：simulator `sim_0003_controls`、backend `0009_agent_scopes`；8001 控制台、8000 backend 与 business worker 已运行，Agent 关闭。**Docker Desktop 始终由用户手动启动。** Git 基准仍为 `YH / 4389747`，本次改动未提交；以下 Agent/B0 文段是对应历史阶段记录，当前现场以 [HANDOVER](HANDOVER.md) 顶部为准。
+
+最终补充：Node UI 异步回归 3 项通过，真实 HTTP 13 项与重启检查 3 项通过；浏览器完成独立/联动创建、销售、需求修订、部分/全部到货和刷新持久化验证，桌面与窄屏布局通过。已修复未知写入重试入口、切换场景误操作、旧分页响应污染及启动器认证配置优先级问题。[浏览器证据](docs/api/simulator-console-browser-result.json)与[可重复 UI 回归](simulation/tests/console_ui_regression.cjs)均已保存。
+
+当前边界与下一步：联动创建只导入店铺，Mission 创建和 Plan 审批仍走既有 backend API；Agent 尚未在当前开发环境启用。优先让产品前端接入这些持久场景，再单独启用 Agent worker 验证“来源事件 → 业务方案 → Agent 解释/跟进 → 用户审批”闭环。真实数据集回放、RAG、随机流量与故障注入仍为后续事项。
+
+更新日期：2026-09-07（持久 Simulator 与 Dashboard 首版交付及交接补齐）。本文负责背景、架构、设计约束、历史与资料导航；[HANDOVER.md](HANDOVER.md)负责当前代码、运行/验证、边界与下一步。
+
+**当前状态：B0-01 至 B0-07、首批 7 个前端只读接口、B2-A Agent 首版框架，以及持久 Simulator 与 Dashboard 已实现。** 确定性业务主干继续独立运行；Agent 框架提供受限解释、试算、修订方案及跨会话记忆能力。最新交付以本文顶部 Simulator 段落和 HANDOVER 为准；下方 Agent、B0 和前端阶段数字保留为历史记录。
+
+### Agent 阶段进度、测试结果与文档索引（历史记录，2026-09-07）
 
 已完成：可安装的 `shopsteward_agent` 包、LangGraph 有限工具主图、可配置 OpenAI 风格模型、独立 Agent worker、持久会话/Run、PG 检查点及租约保护、澄清/恢复/取消、受限业务工具、Hermes 派生 USER/NOTES 记忆、可增改删的任务 Skill、事件与周期跟进。方案反馈支持“解释 → 假设试算 → 显式修改本轮数量上限 → 新待确认 Plan → 既有用户审批”；确定性计算与业务写入仍归 backend。
 

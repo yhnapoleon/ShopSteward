@@ -92,8 +92,33 @@ class Forecast(DTO):
         return self
 
 
+class ScenarioParameters(DTO):
+    cash_minor: Annotated[int, Field(strict=True, ge=0, le=10**12)] = 100000
+    on_hand: Annotated[int, Field(strict=True, ge=0, le=10**6)] = 20
+    remaining_demand: Annotated[int, Field(strict=True, ge=0, le=10**6)] = 60
+    unit_price_minor: Annotated[int, Field(strict=True, ge=1, le=10**8)] = 1000
+    minimum_order_quantity: Annotated[int, Field(strict=True, ge=1, le=10**6)] = 20
+    pack_size: Annotated[int, Field(strict=True, ge=1, le=10**6)] = 20
+    lead_time_seconds: Annotated[int, Field(strict=True, ge=0, le=7776000)] = 86400
+    horizon_days: Annotated[int, Field(strict=True, ge=1, le=90)] = 7
+
+    @model_validator(mode="after")
+    def delivery_window(self):
+        if self.lead_time_seconds > self.horizon_days * 86400:
+            raise ValueError("Lead time must fit the scenario horizon")
+        return self
+
+
 class ScenarioCreate(DTO):
-    scenario: Literal["SC01"]
+    scenario: Literal["SC01", "SANDBOX"]
+    label: str | None = Field(default=None, min_length=1, max_length=120)
+    parameters: ScenarioParameters | None = None
+
+    @model_validator(mode="after")
+    def baseline(self):
+        if self.scenario == "SC01" and (self.parameters is not None or self.label is not None):
+            raise ValueError("SC01 is a fixed baseline; use SANDBOX for custom scenarios")
+        return self
 
 
 class ScenarioRun(DTO):

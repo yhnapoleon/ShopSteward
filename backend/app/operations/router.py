@@ -77,7 +77,7 @@ async def create_scenario(request: Request, principal: Admin, body: ScenarioCrea
             session,
             job_type="initialize_scenario",
             dedup_key=digest(["initialize", principal.principal_id, key]),
-            payload=body.model_dump(),
+            payload=body.model_dump(exclude_none=True),
         )
         # Replay the original acceptance receipt; GET JobRun is the live status authority.
         return ScenarioAccepted(

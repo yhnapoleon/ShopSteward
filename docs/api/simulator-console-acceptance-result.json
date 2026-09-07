@@ -1,0 +1,207 @@
+{
+  "started_at": "2026-09-07T09:59:31.607428+00:00",
+  "checks": [
+    {
+      "name": "services_ready",
+      "passed": true
+    },
+    {
+      "name": "backend_recommends_40",
+      "passed": true
+    },
+    {
+      "name": "real_simulator_purchase_accepted",
+      "passed": true
+    },
+    {
+      "name": "receipt_synchronized",
+      "passed": true,
+      "source_sequence": 2,
+      "sync_wait_seconds": 3.031,
+      "total_seconds": 3.046
+    },
+    {
+      "name": "sale_synchronized",
+      "passed": true,
+      "source_sequence": 3,
+      "sync_wait_seconds": 5.922,
+      "total_seconds": 5.954
+    },
+    {
+      "name": "demand_synchronized",
+      "passed": true,
+      "source_sequence": 4,
+      "sync_wait_seconds": 4.969,
+      "total_seconds": 4.985
+    },
+    {
+      "name": "receipt_synchronized",
+      "passed": true,
+      "source_sequence": 5,
+      "sync_wait_seconds": 4.015,
+      "total_seconds": 4.046
+    },
+    {
+      "name": "old_successful_key_replays_after_other_events",
+      "passed": true
+    },
+    {
+      "name": "exact_final_world",
+      "passed": true
+    },
+    {
+      "name": "continuous_five_events",
+      "passed": true
+    },
+    {
+      "name": "现金紧张 · 500元",
+      "passed": true,
+      "recommended_quantity": 20
+    },
+    {
+      "name": "库存充足 · 100件",
+      "passed": true,
+      "recommended_quantity": 0
+    },
+    {
+      "name": "preexisting_runs_unchanged",
+      "passed": true,
+      "count": 11
+    },
+    {
+      "name": "restart_persistent_world",
+      "passed": true
+    },
+    {
+      "name": "restart_original_trigger_replay",
+      "passed": true
+    },
+    {
+      "name": "restart_replay_no_duplicate",
+      "passed": true
+    }
+  ],
+  "scenarios": [
+    {
+      "label": "联动验收 · 部分到货与需求上调",
+      "run_id": "run_931cae4bac6f4fe5ab9c359e5f575779",
+      "store_id": "store_855328e0355c4894a91722a9f3438e2e",
+      "mission_id": "6a62fef1-0c16-4a3a-ad6d-5aaec4758693",
+      "initial_plan_id": "05dce5ce-419e-4038-8686-72459ff1def7",
+      "final_source_state": {
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 55,
+            "in_transit": 0,
+            "forecast_version": "manual-b732111fbf714d80a658295f759cf6c3",
+            "remaining_demand": 90
+          }
+        ],
+        "currency": "CNY",
+        "store_id": "store_855328e0355c4894a91722a9f3438e2e",
+        "cash_minor": 60000,
+        "data_as_of": "2026-09-07T09:59:57.286846+00:00",
+        "state_version": 1,
+        "simulation_time": "2026-09-08T10:59:32.685377+00:00",
+        "receivables_minor": 10000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 60000
+      },
+      "last_sequence": 5,
+      "action_id": "772ade9f-8b9f-4a50-8948-b653c0b48e06"
+    },
+    {
+      "label": "现金紧张 · 500元",
+      "run_id": "run_805ab9dfe7af43c3941898d75b50e50c",
+      "store_id": "store_ba13f901b9d74347ab112b062453231a",
+      "mission_id": "b2627d69-db71-4983-98fa-661b910d9b9e",
+      "initial_plan_id": "c0b2f755-66e3-470a-a46e-753accd994db"
+    },
+    {
+      "label": "库存充足 · 100件",
+      "run_id": "run_f6e59ed36be24f1ebfd3170ac19b56fd",
+      "store_id": "store_881d22c353a64f2388a2ed6f80504d94",
+      "mission_id": "5795a9f7-2757-4f51-9d1c-0d7f977bd9b4",
+      "initial_plan_id": "d4a9ab9c-b5d0-4c01-97a9-5c8838cc6cee"
+    }
+  ],
+  "agent_enabled": false,
+  "data_source": "synthetic",
+  "approval": "explicit backend API, simulated purchases only",
+  "replay": {
+    "path": "runs/run_931cae4bac6f4fe5ab9c359e5f575779/triggers",
+    "body": {
+      "expected_sequence": 2,
+      "kind": "sale",
+      "quantity": 5,
+      "unit_price_minor": 2000,
+      "advance_seconds": 3600
+    },
+    "key": "83c037c6-05b3-43ad-a4ea-68d193835bc7",
+    "response": {
+      "scenario_run_id": "run_931cae4bac6f4fe5ab9c359e5f575779",
+      "first_sequence": 3,
+      "last_sequence": 3,
+      "simulation_time": "2026-09-08T10:59:32.685377Z",
+      "before": {
+        "store_id": "store_855328e0355c4894a91722a9f3438e2e",
+        "state_version": 1,
+        "currency": "CNY",
+        "cash_minor": 60000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 60000,
+        "receivables_minor": 0,
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 35,
+            "in_transit": 25,
+            "remaining_demand": 60,
+            "forecast_version": "fixed-1"
+          }
+        ],
+        "data_as_of": "2026-09-07T09:59:43.283800Z",
+        "simulation_time": "2026-09-08T09:59:32.685377Z"
+      },
+      "after": {
+        "store_id": "store_855328e0355c4894a91722a9f3438e2e",
+        "state_version": 1,
+        "currency": "CNY",
+        "cash_minor": 60000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 60000,
+        "receivables_minor": 10000,
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 30,
+            "in_transit": 25,
+            "remaining_demand": 55,
+            "forecast_version": "fixed-1"
+          }
+        ],
+        "data_as_of": "2026-09-07T09:59:46.339797Z",
+        "simulation_time": "2026-09-08T10:59:32.685377Z"
+      },
+      "events": [
+        {
+          "event_id": "event_dabfebf6d9fd40d38587a40112c68be7",
+          "sequence": 3,
+          "schema_version": "1.0",
+          "store_id": "store_855328e0355c4894a91722a9f3438e2e",
+          "occurred_at": "2026-09-07T09:59:46.339797Z",
+          "simulation_time": "2026-09-08T10:59:32.685377Z",
+          "event_type": "SALE_RECORDED",
+          "payload": {
+            "sku_id": "sku_001",
+            "quantity": 5,
+            "unit_price_minor": 2000
+          }
+        }
+      ]
+    }
+  },
+  "finished_at": "2026-09-07T10:00:24.616727+00:00",
+  "restart_verified_at": "2026-09-07T10:07:04.308042+00:00"
+}

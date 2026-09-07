@@ -21,11 +21,11 @@ class Database:
     async def ready(self):
         async with self.session() as session:
             revision = await session.scalar(text("SELECT version_num FROM alembic_version"))
-            await session.execute(text("SELECT id FROM simulation_runs LIMIT 0"))
+            await session.execute(text("SELECT id, configuration FROM simulation_runs LIMIT 0"))
             await session.execute(text("SELECT sequence FROM simulation_events LIMIT 0"))
             await session.execute(text("SELECT action_id FROM simulation_purchases LIMIT 0"))
             await session.execute(text("SELECT key FROM simulation_commands LIMIT 0"))
-            return revision == "sim_0002_purchases"
+            return revision == "sim_0003_controls"
 
     async def dispose(self):
         if self.engine:

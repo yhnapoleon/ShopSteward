@@ -1,6 +1,8 @@
 # Swagger / OpenAPI 契约使用说明
 
-完整设计契约仍包含待实现业务；B0、首批前端查询和 B2-A Agent 已实现，当前源码导出40个已注册操作（36条路径）。Agent 的11个操作见 [agent-v1.openapi.json](agent-v1.openapi.json)，启动与对话流程见 [Agent README](../../agent/README.md)。原开发服务尚未切换到本次代码。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
+完整设计契约仍包含待实现业务；B0、首批前端查询和 B2-A Agent 已实现，当前源码导出40个已注册操作（36条路径）。Agent 的11个操作见 [agent-v1.openapi.json](agent-v1.openapi.json)，启动与对话流程见 [Agent README](../../agent/README.md)。开发 backend 已迁移至 0009 并切换至当前代码，Agent 仍关闭。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
+
+2026-09-07 Simulator 控制台已实现：默认服务 9 个操作（含 ready），开启本地控制台后 19 个操作。可配置 SANDBOX 输入已同步到共享设计契约；运行契约见 [simulation runtime](simulation.runtime.openapi.json)、[console runtime](simulator-console.runtime.openapi.json)，验收见 [结果](simulator-console-acceptance-result.json)。
 
 B0-07组合验收没有新增接口或迁移；当前验证见[测试报告](../reports/b0-07-test-report.md)、[进程证据](b0-07-process-result.json)及[验证汇总](b0-07-verification-result.json)。历史B0-05/06证据保留原适用范围。
 

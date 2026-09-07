@@ -1,8 +1,28 @@
 # ShopSteward 当前开发交接
 
-更新：2026-09-07（B2-A Agent 首版框架实现与验收；原开发服务未切换）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
+### 当前交付：持久 Simulator + Dashboard（2026-09-07）
 
-### 最新交付与测试归档（2026-09-07）
+- **Docker Desktop 由用户手动启动。** 助手只检查和使用已经运行的 Docker，不自行启动。
+- Dashboard：<http://127.0.0.1:8001/console/>。可配置初始现金/库存/需求/采购条件，支持独立模拟与后端联动创建；销售、需求修订、部分/全部到货均落入 simulator 数据库与源事件流。SC01 固定剧本仍可用。
+- 后端联动创建只导入店铺；Mission 创建与 Plan 审批仍使用 backend 原 API。页面观察 Mission、Plan 推荐量、警报与已同步源序号。已保留验收场景及对应 Mission/Plan，可直接打开演示。
+- 实际开发迁移：simulator `sim_0003_controls`，backend `0009_agent_scopes`。原 8 个 simulator run 保留；验收另建场景，没有清库。Agent 关闭，没有模型调用。backend API 8000、simulator 8001、business worker 均已启动。
+- 当前启动记录：backend API/worker 在 `var/simulator-console-20260907-095640/`；重启后的 simulator 在 `var/simulator-console-20260907-100657/`。PID 只用于定位，后续操作先核对进程归属，避免重复 worker。
+- 启动：仓库根目录 `.venv/Scripts/python.exe simulation/tools/start_console.py --migrate --with-backend`；backend 已运行时省略 `--with-backend`。日志隐藏后台保存，不覆盖 `.env`，凭据仅服务器持有。
+- 自动验证：simulator 23 passed（4.81 秒）、backend＋Agent 226 passed（80.82 秒），无失败或跳过。真实 HTTP 验收 13 项、重启持久/幂等 3 项通过；浏览器创建、销售、需求修订、部分/全部到货及刷新持久化已验证；Node UI 异步回归 3 项通过。详情见 [测试报告](docs/reports/simulator-console-test-report.md) 和 [机器证据](docs/api/simulator-console-acceptance-result.json)。
+- 独立审查已复核事务、幂等、来源权限和本地 HTTP 边界；当前阶段没有 RAG、真实数据集、退款回款、随机流量或故障注入。下一步优先将产品前端与 Agent 接到同一组场景进行业务验收，再决定数据集回放/RAG。
+- Git 基准 `YH / 4389747`（Agent Skelon），本次实现未提交/推送；产品 `frontend/` 未修改。旧文段的端口、迁移和未提交说明保留各自历史适用范围。
+
+资料：[运行与操作说明](simulation/README.md)、[实施计划](docs/superpowers/plans/2026-09-07-simulator-console.md)、[控制台 runtime 契约](docs/api/simulator-console.runtime.openapi.json)、[研究依据](docs/research/2026-09-07-simulator-console-research.md)。
+
+最终验收补充：浏览器独立场景 `run_40f1141f33c6443c99c8ed851537f2b4` 在销售 3 件、需求改为 80 后刷新，仍为现金 1000 元、应收 60 元、现货 17、源序号 2；联动场景 `run_ace55c8511fc4ae08030afffcc15e524` 经原后端审批采购 40 件，页面分 12/28 件收完，最终现金 600 元、现货 60、在途 0、源/后端序号均为 3。[浏览器证据](docs/api/simulator-console-browser-result.json)已保存。
+
+收尾修复：未知写入重试入口不再被读取错误覆盖，确定失败会解锁表单；场景加载期间禁用旧控件，操作绑定已加载 run；旧事件分页响应不会污染切换后的场景；启动器优先使用环境变量中的 backend 认证配置。回归命令为 `node simulation/tests/console_ui_regression.cjs`（3 项通过）。
+
+接续顺序：先让产品前端对接现有 backend 和持久场景，再单独配置/启用 Agent worker 验证事件跟进、解释与审批闭环；这两项尚未完成。随后按业务需求决定真实数据集回放及 RAG。后续接手先检查服务健康和进程归属，本节运行信息是本次交付快照，不代表服务永久在线。
+
+更新：2026-09-07（持久 Simulator 与 Dashboard 首版交付及交接补齐）。配套入口：[PROJECT_CONTEXT.md](PROJECT_CONTEXT.md)。先读PROJECT_CONTEXT理解项目、架构和历史，再读本文掌握当前开发现场；两份文件足以确定范围、设计约束、进度和下一步，实施某个接口时再查具体源码或契约。
+
+### Agent 阶段交付与测试归档（历史记录，2026-09-07）
 
 **已完成的代码：** `agent/src/shopsteward_agent/` 提供真实 LangGraph、可配置模型、租约保护的 PG checkpoint、Hermes 派生记忆规则和扩展接口；`backend/app/agent_bridge/` 提供会话/Run、独立 worker 装配、授权工具、知识版本及持久跟进。支持澄清/恢复/取消、同会话排队、唯一最终回复、跨会话 USER/NOTES 与补货任务 SKILL 的显式增改删。业务工具支持只读 what-if 和本轮数量上限修订，新 Plan 仍由既有用户审批 API 确认。
 
