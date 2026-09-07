@@ -17,6 +17,12 @@ corepack pnpm --filter @shopsteward/frontend dev --host 127.0.0.1 --port 3000
 
 `infra/local_dev.py start`只给本机前端进程注入既有开发用户凭证和开发控制开关，不打印密钥。其余服务及此前Mac配置保留。没有配置真实模型时，Agent入口显示未启用，已有会话仍可读取。
 
+## Windows 兼容边界
+
+Windows 同学沿用后端/模拟器 README 中的 PowerShell 与 Docker 启动方式；不要运行 `infra/local_dev.py`，它只管理 macOS 本机环境。前端的 pnpm 命令和 API 接入方式保持通用。SQLAlchemy 的 asyncio 依赖修复适用于各平台，Agent 测试的 Windows SelectorEventLoop 分支保留。
+
+PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校验前端类型/构建、验证 Windows 事件循环和基础业务/API测试。它不替代 Windows 上数据库、模拟器与浏览器的完整端到端联调。
+
 ## 基础用例
 
 1. 从“联调控制”创建独立SC-01店铺，旧场景保留。
