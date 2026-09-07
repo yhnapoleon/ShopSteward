@@ -4,7 +4,7 @@
 
 ## 运行
 
-本机优先使用仓库的[macOS开发指南](../docs/local-macos-development.md)。服务分别是前端3000、API8000、模拟器8001；业务worker和PostgreSQL需要同时运行。真实模型当前保持关闭。
+服务分别是前端3000、API8000、模拟器8001；业务worker和PostgreSQL需要同时运行。Windows 完整启动与模型配置见[全栈联调报告](../docs/reports/frontend-agent-fullstack-test-report.md)。macOS 使用[开发指南](../docs/local-macos-development.md)。Windows 已完成官方 Luna 真实模型联调，是否启用取决于本机配置。
 
 其他开发环境先按后端和模拟器README启动服务，再安装前端依赖、复制本目录`.env.example`为`.env`并配置后端地址。执行：
 
@@ -25,7 +25,7 @@ PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校�
 
 ## 基础用例
 
-1. 从“联调控制”创建独立SC-01店铺，旧场景保留。
+1. 在模拟器默认“联动后端”模式创建 SANDBOX，或从“联调控制”创建 SC-01。导入成功后成为后端当前环境，已打开的前端自动切换，旧场景保留。
 2. 建立备货委托。前端等待业务worker产生方案，不自己计算推荐。
 3. 比较0/20/40/80的后果；选中数量后核对具体方案，逐笔确认。
 4. 查看采购受理、在途与到货；刷新页面继续原店铺与原任务。
@@ -48,7 +48,7 @@ PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校�
 | 检查/暂停/恢复 | POST `missions/{id}/checks`、`control`；PATCH `schedule` | 检查记录与计划不等于后台永远在线 |
 | 风险与记录 | GET `alerts`、`ledger-entries`、`missions/{id}/timeline`；POST `alerts/{id}/acknowledgement` | 风险知晓与解除分开；分页历史在轮询后保留 |
 | 开发场景 | POST `/dev/v1/scenarios`、`{run_id}/advance`；GET `job-runs/{id}` | 仅开发控制+后端admin；异步完成后读取真实结果 |
-| Agent会话 | conversations/messages、agent-runs、resume/cancel、followup | 已接协议；当前模型未启用，未做真实模型前端验收 |
+| Agent会话 | conversations/messages、agent-runs、resume/cancel、followup | 官方Luna真实模型前端验收已通过；启用状态由本机配置决定 |
 | 报价、展示偏好、整理要求 | 本地浏览器工具 | 当前后端没有报价接口；不算真实L-01 |
 
 上表未重复全部路径前缀，完整字段由[实际OpenAPI](../docs/api/backend.runtime.openapi.json)生成到`app/types/backend.d.ts`。`server/utils/backend-routes.ts`也由该契约生成，只允许注册的公开操作；内部事件与Agent租约工具不对浏览器代理。
@@ -70,7 +70,7 @@ PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校�
 2. **数量修订接口。** 本轮只将Agent已用的evaluate逻辑提取为共享服务，并增加普通用户入口；算法、审批、资金和执行规则未变，无数据库迁移。同学可单独审阅这一适配，前端也有未接此接口的降级路径。
 3. **场景控制引用。** 现有店铺列表未提供scenario_run_id；仅本浏览器创建的场景能直接推进。旧场景可查看，或新建一轮；没有让前端直读数据库补字段。
 4. **报价/技能。** 报价解析、下载和整理要求当前仅本地实现；缺后端输入/产物/技能接口，不能当A-01/L-01产品完成。
-5. **Agent与通知。** 真模型按用户决定暂缓；会话协议已接、历史可读，但模型发送/澄清/恢复及自主跟进的前端真模型验收仍待后端配置。没有外部通知。
+5. **Agent与通知。** 官方 Luna 的发送、澄清/恢复、取消、偏好、方案修订及自主跟进已完成 Windows 前端真实模型验收。需要 `AGENT_ENABLED=true`、`AGENT_API_MODE=responses`、模型与密钥文件，以及独立 Agent worker；启动器同步设置前端能力开关。没有外部通知。
 6. **名称与时间。** 使用后端实际商品名、供应商标识和经营时间，因此内容不照抄原型假名/固定时刻；视觉结构沿用原型。
 
 ## 代码组织
@@ -90,6 +90,8 @@ corepack pnpm --filter @shopsteward/frontend typecheck
 corepack pnpm --filter @shopsteward/frontend build
 corepack pnpm --filter @shopsteward/frontend test:e2e
 ```
+
+真实模型 E2E 需显式设置 `AGENT_E2E=true`，执行 `test:e2e` 即加入 `tests/agent.spec.ts` 三项测试，会产生模型用量。默认运行普通业务和受控故障测试，真实模型项明确跳过。测试会新建合成场景，保留结果。
 
 E2E只允许loopback地址，需要已经运行的后端、模拟器、worker和前端；会新建独立合成店铺并实际执行模拟采购，保留数据供复核，不清开发库。Playwright需安装Chromium。前端原始测试输出在Git忽略的`var/frontend-e2e/`，汇总见[前端联调验证](../docs/reports/frontend-integration-verification.json)、[真实终态](../docs/reports/frontend-business-state.json)。
 

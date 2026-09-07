@@ -17,6 +17,44 @@ async def get(client, path, **params):
     return response.json()
 
 
+async def test_current_environment_tracks_successful_creation_not_completion_or_page(db):
+    from uuid import uuid4
+
+    from app.scheduling.repository import enqueue
+
+    async with environment(db) as (seed, client):
+        other = fresh_seed()
+        await initialize(db, other)
+
+        async def creation(store_id, age, status):
+            async with db.session() as session, session.begin():
+                job = await enqueue(
+                    session, job_type="initialize_scenario", dedup_key=str(uuid4()), payload={}
+                )
+                job.created_at = datetime.now(UTC) + timedelta(seconds=age)
+                job.status = status
+                job.result = {"references": [{"type": "store", "id": store_id}]}
+                return job.id
+
+        await creation(other["store_id"], 0, "SUCCEEDED")
+        newest = await creation(seed["store_id"], 10, "READY")
+        # An unimported/pending environment must not replace the live one.
+        assert (await get(client, "stores"))["active_store"] is None
+        async with db.session() as session, session.begin():
+            await session.execute(
+                text("UPDATE job_runs SET status='SUCCEEDED' WHERE id=:id"), {"id": newest}
+            )
+        assert (await get(client, "stores"))["active_store"]["store_id"] == seed["store_id"]
+        # A late result for an older request cannot switch the environment backwards.
+        await creation(other["store_id"], -10, "SUCCEEDED")
+        await creation(other["store_id"], 20, "FAILED")
+        page = await client.get("/api/v1/stores?limit=1", headers=headers("admin"))
+        assert page.json()["active_store"]["store_id"] == seed["store_id"]
+        # Current-environment metadata never leaks a store outside the caller's scope.
+        await creation(other["store_id"], 30, "SUCCEEDED")
+        assert (await get(client, "stores"))["active_store"] is None
+
+
 async def test_identity_and_store_discovery_are_scoped(db):
     async with environment(db) as (seed, client):
         other = fresh_seed()
@@ -300,14 +338,21 @@ async def test_corrupt_stored_sales_fail_explicitly_without_payload_leak(db):
 
 
 async def test_empty_roles_and_service_identity_and_unknown_queries(db):
+    from uuid import uuid4
+
     import httpx
     from test_missions import settings
 
     from app.core.config import TokenGrant
     from app.main import create_app
+    from app.scheduling.repository import enqueue
 
     seed = fresh_seed()
     await initialize(db, seed)
+    async with db.session() as session, session.begin():
+        job = await enqueue(session, job_type="initialize_scenario", dedup_key=str(uuid4()))
+        job.status = "SUCCEEDED"
+        job.result = {"references": [{"type": "store", "id": seed["store_id"]}]}
     config = settings(db, seed)
     config.auth_tokens.extend(
         [
@@ -330,6 +375,7 @@ async def test_empty_roles_and_service_identity_and_unknown_queries(db):
         me = await client.get("/api/v1/me", headers=empty)
         assert me.json()["roles"] == []
         assert (await client.get("/api/v1/stores", headers=empty)).json()["items"] == []
+        assert (await client.get("/api/v1/stores", headers=empty)).json()["active_store"] is None
         for path in [
             "me",
             "stores",

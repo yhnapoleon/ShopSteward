@@ -35,6 +35,7 @@ class StoreSummary(DTO):
 class StoreList(DTO):
     items: list[StoreSummary]
     next_cursor: Cursor | None
+    active_store: StoreSummary | None = None
 
 
 class ReadContext(DTO):

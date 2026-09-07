@@ -2335,6 +2335,7 @@ export interface components {
             items: components["schemas"]["StoreSummary"][];
             /** Next Cursor */
             next_cursor: string | null;
+            active_store?: components["schemas"]["StoreSummary"] | null;
         };
         /** StoreSummary */
         StoreSummary: {

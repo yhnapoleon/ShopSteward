@@ -1,5 +1,21 @@
 # ShopSteward 项目总说明与对话交接
 
+### 最新补充：模拟器是当前经营环境来源（2026-09-07）
+
+用户要求模拟器新建场景驱动 backend 和已打开产品前端，而非在 console 中单独运行。现已默认联动创建，以 backend 持久初始化结果确定当前环境；前端自动切换并继续读取真实事件投影，新任务与 Agent绑定该场景。旧场景保留为历史，不混写账本。用户原 SANDBOX 的现金1000已在实际前端验证一致。
+
+隔离端到端5项（含官方 Luna）、backend相关23项、查询/契约11项及console异步3项通过。最新行为与运行现场以[环境同步报告](docs/reports/environment-sync-test-report.md)和HANDOVER顶部为准。此项修复此前联调未覆盖的自动切换缺口。
+
+### 最新交付：Windows 前端 / backend / 官方 Luna 全栈联调（2026-09-07）
+
+最终补充：监控接口已从实际配置返回 Agent 启用状态（修复旧硬编码false）；队列/监控/API **33项追加回归通过**，在线 session 与 monitoring 均为 true。
+
+现有 Nuxt 产品前端已与新版 API、业务 worker、持久 simulator 和独立 Agent worker 贯通。官方 `gpt-5.6-luna` 使用新增的可配置 Responses API 适配；解释、只读试算、明确方案修订、用户审批、澄清/恢复/取消、USER 偏好与事件主动解读均通过真实浏览器验收。修复刷新后最近失败 Run 丢失及澄清阶段无取消入口。
+
+本轮 backend+Agent **308 passed**、simulator **23 passed**；分批浏览器验证为原有业务 **8 passed**、真实 Luna **3 passed**、新增受控恢复 **1 passed**；类型/构建、Ruff、迁移漂移与契约通过。重启 API/两类 worker/前端/simulator 后，4 店铺与3会话（8 Run）的状态、账本、消息、偏好完全一致。前端 http://127.0.0.1:3000 ，API 8000，simulator 8001，当前 Agent 已启用；开发库已备份并迁移到 `0010_knowledge`。
+
+代码基准 `YH / b7db9a0`，本轮修改未提交/推送。启动器 `infra/start_windows.py`；详见[全栈测试与启动报告](docs/reports/frontend-agent-fullstack-test-report.md)和[重启证据](docs/api/frontend-agent-restart-result.json)。K2–K5/真实预测未扩展，报价工具仍为本地功能。下面的旧进程、Agent关闭、未迁移与未联调表述均为历史快照。
+
 ### 最新方向补充：云端检索与扩展语料（2026-09-07）
 
 用户确认由助手寻找/合成足量且有意义的资料，允许文本发送云模型；优先云端embedding、知识索引与关系存储，本地Agent取回带正文/元数据的candidates。部署区域暂不限定，按实测选择。已形成[扩展设计](docs/superpowers/specs/2026-09-07-cloud-knowledge-and-corpus-design.md)及[首批10个公开来源家族目录](docs/research/2026-09-07-knowledge-public-source-catalog.md)：先200份试运行，再以1000独立文档+另计版本为目标，300题独立效果评测；规模为计划，尚未生成/入库。保留原K0冻结集，云存储/模型未决出实测胜者，关系优先云PG；本轮没有开通云资源或实现K2–K5。既有K0/K1完成状态如下。

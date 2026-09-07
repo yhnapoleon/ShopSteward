@@ -1,6 +1,6 @@
 # ShopSteward Agent
 
-首版已实现为 Python 包，由 backend 的独立 Agent worker 装配。真实 LangGraph 主图、OpenAI 风格 Chat Completions、PostgreSQL 检查点、Hermes 派生记忆策略、任务 Skill 和受限业务工具已经贯通。前端聊天页面、外部 Agent HTTP 服务、向量 RAG、真实预测模型仍属于后续接入。
+首版已实现为 Python 包，由 backend 的独立 Agent worker 装配。真实 LangGraph 主图、OpenAI 模型、PostgreSQL 检查点、Hermes 派生记忆策略、任务 Skill 和受限业务工具已经贯通。前端聊天现已通过官方 `gpt-5.6-luna` 真实浏览器验收，包含解释、试算、修订、澄清恢复、偏好和主动跟进。外部 Agent HTTP 服务、向量 RAG、真实预测模型仍属于后续接入。
 
 ```mermaid
 flowchart LR
@@ -27,10 +27,13 @@ flowchart LR
 AGENT_ENABLED=true
 AGENT_BASE_URL=https://api.openai.com/v1
 AGENT_MODEL=gpt-4.1-mini
+AGENT_API_MODE=chat_completions
 AGENT_API_KEY_FILE=C:/private/openai.txt
 AGENT_BACKEND_URL=http://127.0.0.1:8000
 AGENT_WORKER_CONCURRENCY=1
 ```
+
+官方 `gpt-5.6-luna` 使用 `AGENT_API_MODE=responses`，由适配器将 Responses 文本块与函数调用转换为现有图协议。默认仍为 `chat_completions`，兼容此前模型配置。Luna 在 Chat Completions 中拒绝带推理的工具调用，本次按真实 API 错误与复测采用 Responses；无需改变业务工具或审批权限。
 
 继续使用现有 `DATABASE_URL`、`AUTH_TOKENS`、simulator 配置。切换到新版本前，在 backend 目录运行迁移；然后分别在三个终端启动 API、业务 worker 和 Agent worker：
 

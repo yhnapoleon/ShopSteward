@@ -41,6 +41,33 @@ async def claim_job(db):
         return await claim(session, lease_seconds=30, job_types=["worker_probe"])
 
 
+@pytest.mark.parametrize("enabled", [False, True])
+async def test_monitoring_reports_actual_agent_configuration(db, enabled):
+    from httpx import ASGITransport, AsyncClient
+
+    from app.core.config import Settings
+    from app.main import create_app
+
+    token = "monitoring-test-admin-credential-0001"
+    app = create_app(
+        Settings(
+            _env_file=None,
+            database_url=os.environ["TEST_DATABASE_URL"],
+            agent_enabled=enabled,
+            auth_tokens=[{"token": token, "principal_id": "monitoring-admin", "roles": ["admin"]}],
+        )
+    )
+    async with (
+        app.router.lifespan_context(app),
+        AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client,
+    ):
+        response = await client.get(
+            "/api/v1/monitoring/status", headers={"Authorization": f"Bearer {token}"}
+        )
+        assert response.status_code == 200
+        assert response.json()["agent_enabled"] is enabled
+
+
 @pytest_asyncio.fixture(autouse=True)
 async def isolated_queue(db):
     # These are only the two B0-01 tables in the dedicated database created for this suite.

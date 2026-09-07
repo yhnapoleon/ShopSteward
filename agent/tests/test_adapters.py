@@ -25,6 +25,40 @@ async def test_chat_completions_adapter():
     assert result["tool_calls"][0]["function"]["arguments"] == "{}"
 
 
+@pytest.mark.asyncio
+async def test_responses_adapter_separates_text_from_protocol_blocks():
+    class Client:
+        def bind_tools(self, tools):
+            return self
+
+        async def ainvoke(self, messages):
+            return AIMessage(
+                content=[
+                    {"type": "reasoning", "summary": []},
+                    {"type": "text", "text": "方案依据", "annotations": []},
+                    {"type": "function_call", "name": "read", "arguments": "{}"},
+                ],
+                tool_calls=[{"name": "read", "args": {}, "id": "call_1"}],
+            )
+
+    model = package.OpenAIModel(
+        base_url="https://example.invalid/v1", model="test", client=Client()
+    )
+    result = await model.complete([], [])
+    assert result["content"] == "方案依据"
+    assert result["tool_calls"][0]["id"] == "call_1"
+
+
+def test_responses_api_is_explicitly_configurable():
+    model = package.OpenAIModel(
+        base_url="https://example.invalid/v1",
+        model="gpt-5.6-luna",
+        key="test-key",
+        api_mode="responses",
+    )
+    assert model.client.use_responses_api is True
+
+
 def test_memory_atomic_budget_duplicate_and_ambiguity():
     assert hasattr(package, "apply_memory_changes")
     policy = package.apply_memory_changes

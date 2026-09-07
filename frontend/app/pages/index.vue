@@ -19,6 +19,15 @@ const dialog = ref(''),
   scheduleSeconds = ref(30),
   recordFilter = ref('business')
 const approval = ref<{ plan: Schema<'Plan'>; quantity: number } | null>(null)
+watch(
+  () => s.storeId,
+  (_id, previous) => {
+    if (!previous) return
+    approval.value = null
+    dialog.value = ''
+    deck.value = false
+  },
+)
 let poll: ReturnType<typeof setInterval> | undefined
 let noticeTimer: ReturnType<typeof setTimeout> | undefined
 watch(
@@ -33,7 +42,7 @@ watch(
 )
 onMounted(async () => {
   await shop.init()
-  poll = setInterval(() => void shop.refresh(), 2500)
+  poll = setInterval(() => void shop.pollEnvironment(), 2500)
 })
 onUnmounted(() => {
   if (poll) clearInterval(poll)
@@ -109,7 +118,7 @@ const title = computed(
     })[view.value],
 )
 const issue = computed(() =>
-  s.pending?.storeId === s.storeId
+  s.pending
     ? 'confirmation'
     : unresolved.value?.status === 'UNKNOWN'
       ? 'unknown'
@@ -216,7 +225,9 @@ function briefing() {
         <button class="store-switch" @click="open('controls')">
           <span class="avatar">店</span
           ><span
-            ><strong>{{ s.storeId ? '示例店铺' : '选择店铺' }}</strong
+            ><strong>{{
+              s.storeId ? (s.storeId === s.activeStoreId ? '当前经营环境' : '历史场景') : '选择店铺'
+            }}</strong
             ><small>我的经营空间</small></span
           ><AppIcon name="chevron-down" />
         </button>
@@ -298,7 +309,9 @@ function briefing() {
               <h2>
                 {{
                   issue === 'confirmation'
-                    ? '确认结果尚未取得'
+                    ? s.pending?.storeId !== s.storeId
+                      ? '历史场景的确认结果尚未取得'
+                      : '确认结果尚未取得'
                     : issue === 'unknown'
                       ? '采购结果还没有核实'
                       : issue === 'expired'
@@ -349,7 +362,7 @@ function briefing() {
                   >库存{{ number(stock?.on_hand) }}件 · 现金{{
                     money(s.dashboard?.state.available_cash_minor)
                   }}</span
-                ><span>最低保留¥300 · 使用SC-01经营条件</span>
+                ><span>建议现金底线¥300 · 采购条件来自当前场景</span>
               </div>
               <button class="primary" :disabled="!hasRole('operator')" @click="deck = true">
                 开始备货跟进<AppIcon name="arrow-right" />
@@ -835,7 +848,7 @@ function briefing() {
       <p class="source-note">标记知晓不会解除风险；解除必须有新的业务证据。</p></template
     >
     <template v-else-if="dialog === 'controls'"
-      ><p>这里操作的是后端与模拟器中的真实合成场景。新建一轮会保留旧店铺与任务。</p>
+      ><p>模拟器创建并导入新场景后，此页面自动切换到新的经营环境。历史场景与任务保留供查看。</p>
       <label class="field-label" for="store">当前可访问的店铺</label
       ><select
         id="store"
@@ -845,9 +858,17 @@ function briefing() {
       >
         <option v-if="!s.stores.length" value="">尚无场景</option>
         <option v-for="st in s.stores" :key="st.store_id" :value="st.store_id">
-          示例店铺 · {{ st.store_id.slice(-8) }} · {{ when(st.simulation_time) }}
+          {{ st.store_id === s.activeStoreId ? '当前环境' : '历史场景' }} ·
+          {{ st.store_id.slice(-8) }} · {{ when(st.simulation_time) }}
         </option>
       </select>
+      <button
+        v-if="s.activeStoreId && s.storeId !== s.activeStoreId"
+        class="text-link"
+        @click="act(() => shop.selectStore(s.activeStoreId), true)"
+      >
+        返回当前经营环境
+      </button>
       <div v-if="s.session?.devTools" class="demo-actions">
         <button
           class="primary"

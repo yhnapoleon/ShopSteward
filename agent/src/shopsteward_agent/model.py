@@ -1,4 +1,4 @@
-"""Explicit Chat Completions adapter, no provider detection or global settings."""
+"""Explicit OpenAI API adapter, no provider detection or global settings."""
 
 import json
 from pathlib import Path
@@ -7,7 +7,11 @@ from langchain_openai import ChatOpenAI
 
 
 class OpenAIModel:
-    def __init__(self, *, base_url, model, key=None, key_file=None, client=None):
+    def __init__(
+        self, *, base_url, model, key=None, key_file=None, client=None, api_mode="chat_completions"
+    ):
+        if api_mode not in {"chat_completions", "responses"}:
+            raise ValueError("unsupported API mode")
         if client is None:
             if key is not None and key_file is not None:
                 raise ValueError("choose key or key_file")
@@ -21,7 +25,7 @@ class OpenAIModel:
                 api_key=key,
                 timeout=30,
                 max_retries=0,
-                use_responses_api=False,
+                use_responses_api=api_mode == "responses",
                 max_completion_tokens=2048,
             )
         self.client = client
@@ -30,7 +34,7 @@ class OpenAIModel:
         options = {"tool_choice": tool_choice} if tool_choice else {}
         response = await self.client.bind_tools(tools, **options).ainvoke(messages)
         return {
-            "content": response.content,
+            "content": response.text,
             "tool_calls": [
                 {
                     "type": "function",
