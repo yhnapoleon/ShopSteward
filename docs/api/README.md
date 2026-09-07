@@ -131,3 +131,9 @@ uv run --no-project --with openapi-spec-validator==0.7.2 --with jsonschema==4.23
 两个契约中共享的 State、事件、回执等结构暂各自内联，以便单文件导入。校验器比较相同名称 schema，防止漂移；实现后从模块公共 DTO 生成，避免手工维护副本。
 
 B0-05后质量收口：所有21个运行时操作均有x-phase=B0及x-implementation-status=implemented，由B0Router统一登记。补齐原先遗漏的list_alerts、acknowledge_alert、get_dashboard、list_mission_timeline；统一错误模板包含409。请求/响应schema和operationId保持一致，元数据完整性有API回归测试。
+
+## 前端联调适配 · 2026-09-07
+
+新增 `POST /api/v1/plans/{plan_id}/revision`，operationId `revise_plan`。请求为 `expected_mission_version` 与 `max_purchase_qty`（null清除本轮数量上限），要求用户operator/admin及门店权限、Idempotency-Key；返回新待确认Plan。复用原Agent工具evaluate服务，未改变算法、审批或执行规则，无迁移。运行时契约现为41个操作、37条路径。
+
+前端从runtime生成DTO和公开代理白名单，并探测实际后端是否支持此路径。没有该路径时不允许非推荐采购确认。见[前端接入说明](../../frontend/README.md)。
