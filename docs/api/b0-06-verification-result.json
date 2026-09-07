@@ -1,0 +1,40 @@
+{
+  "recorded_at": "2026-09-07T01:27:21.560547+00:00",
+  "work_package": "B0-06",
+  "base_commit": "516252df73f77ef5d3507968e2f943e2fdcde7db",
+  "branch": "YH",
+  "committed": false,
+  "tests": {
+    "backend_passed": 138,
+    "api": 19,
+    "unit": 16,
+    "postgresql_integration": 103,
+    "simulator_passed": 12,
+    "skipped": 0
+  },
+  "checks": {
+    "ruff": "passed",
+    "backend_formatted_python_files": 95,
+    "backend_alembic_drift": false,
+    "simulator_alembic_drift": false,
+    "design_examples": 53,
+    "plan_hash_examples": 2
+  },
+  "schema_revision": {
+    "backend": "0006_periodic",
+    "simulator": "sim_0002_purchases"
+  },
+  "openapi": {
+    "operations": 22,
+    "paths": 21,
+    "registered_job_types": 8
+  },
+  "real_process_acceptance": "b0-06-periodic-smoke-result.json",
+  "independent_review": "No P1/P2 blockers in scheduling/source and Schedule API/lifecycle; no test databases touched by reviewers.",
+  "boundaries": [
+    "B0-07 broader fault/load combinations remain",
+    "No Agent/ML/RAG added",
+    "Old disabled Mission schedules are preserved",
+    "Owned API/worker/simulator processes stopped after acceptance; PostgreSQL remains running"
+  ]
+}

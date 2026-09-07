@@ -1,0 +1,3423 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "ShopSteward 外部服务契约 — 设计稿",
+    "version": "0.2.0-draft",
+    "description": "每个operation指定所属服务地址。模拟/模型/Agent为项目约定；LLM仅描述客户端使用子集，不替代供应商规范。"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8001",
+      "description": "默认仅供模拟服务；各operation覆盖地址"
+    }
+  ],
+  "tags": [
+    {
+      "name": "simulation",
+      "description": "B0：模拟环境"
+    },
+    {
+      "name": "ml",
+      "description": "B1：预测服务"
+    },
+    {
+      "name": "agent",
+      "description": "B2：Agent运行协议"
+    },
+    {
+      "name": "llm",
+      "description": "B2：本地/远程模型文本兼容子集"
+    }
+  ],
+  "paths": {
+    "/sim/v1/runs": {
+      "post": {
+        "operationId": "simulation_create_run",
+        "tags": [
+          "simulation"
+        ],
+        "summary": "创建隔离模拟运行",
+        "description": "Idempotency-Key跨重试返回同一run和初始快照；不删除旧场景。\n行为、持久化、幂等和事件顺序以 docs/simulation-contract.md v0.2 为准。",
+        "servers": [
+          {
+            "url": "http://localhost:8001",
+            "description": "规划的simulation地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "description": "逻辑命令幂等键；采购同时以action_id为业务幂等键。"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioRun"
+                },
+                "example": {
+                  "scenario_run_id": "scenario_001",
+                  "store_id": "store_001",
+                  "simulation_time": "2026-09-06T00:00:00Z",
+                  "initial_state": {
+                    "store_id": "store_001",
+                    "state_version": 1,
+                    "currency": "CNY",
+                    "cash_minor": 100000,
+                    "reserved_cash_minor": 0,
+                    "available_cash_minor": 100000,
+                    "receivables_minor": 0,
+                    "stocks": [
+                      {
+                        "sku_id": "sku_001",
+                        "on_hand": 20,
+                        "in_transit": 0,
+                        "remaining_demand": 60,
+                        "forecast_version": "fixed-1"
+                      }
+                    ],
+                    "data_as_of": "2026-09-06T00:00:00Z",
+                    "simulation_time": "2026-09-06T00:00:00Z"
+                  },
+                  "initial_forecast": {
+                    "forecast_id": "forecast_001",
+                    "store_id": "store_001",
+                    "sku_id": "sku_001",
+                    "input_state_version": 1,
+                    "predicted_quantity": 60,
+                    "unit": "piece",
+                    "data_as_of": "2026-09-06T00:00:00Z",
+                    "horizon_start": "2026-09-06T00:00:00Z",
+                    "horizon_end": "2026-09-13T00:00:00Z",
+                    "valid_until": "2026-09-06T01:00:00Z",
+                    "model_name": "fixed-scenario",
+                    "model_version": "fixed-1",
+                    "source": "fixed",
+                    "assumptions": [
+                      "SC01预设需求，约定到货早于需求发生"
+                    ]
+                  },
+                  "initial_catalog": {
+                    "store_id": "store_001",
+                    "currency": "CNY",
+                    "products": [
+                      {
+                        "sku_id": "sku_001",
+                        "name": "示例商品",
+                        "unit": "piece"
+                      }
+                    ],
+                    "offers": [
+                      {
+                        "supplier_id": "supplier_001",
+                        "sku_id": "sku_001",
+                        "unit_price_minor": 1000,
+                        "minimum_order_quantity": 20,
+                        "pack_size": 20,
+                        "offer_version": "offer-1",
+                        "currency": "CNY",
+                        "lead_time_seconds": 86400,
+                        "valid_from": "2026-09-06T00:00:00Z",
+                        "valid_until": "2026-09-07T00:00:00Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-provider": "simulation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioCreate"
+              },
+              "example": {
+                "scenario": "SC01"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/runs/{run_id}/events": {
+      "get": {
+        "operationId": "simulation_list_events",
+        "tags": [
+          "simulation"
+        ],
+        "summary": "按sequence拉取新增事件",
+        "description": "按sequence拉取新增事件\n行为、持久化、幂等和事件顺序以 docs/simulation-contract.md v0.2 为准。 last_sequence是本页末尾；source_head_sequence是源头部，空页追平也属于成功同步。游标超前返回409 EVENT_CURSOR_AHEAD。",
+        "servers": [
+          {
+            "url": "http://localhost:8001",
+            "description": "规划的simulation地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "after_sequence",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventPage"
+                },
+                "example": {
+                  "events": [
+                    {
+                      "event_id": "event_001",
+                      "sequence": 1,
+                      "schema_version": "1.0",
+                      "event_type": "SALE_RECORDED",
+                      "store_id": "store_001",
+                      "occurred_at": "2026-09-06T00:00:00Z",
+                      "simulation_time": "2026-09-06T00:00:00Z",
+                      "payload": {
+                        "sku_id": "sku_001",
+                        "quantity": 10,
+                        "unit_price_minor": 2000
+                      }
+                    }
+                  ],
+                  "last_sequence": 1,
+                  "has_more": false,
+                  "source_head_sequence": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-provider": "simulation"
+      }
+    },
+    "/sim/v1/runs/{run_id}/advance": {
+      "post": {
+        "operationId": "simulation_advance",
+        "tags": [
+          "simulation"
+        ],
+        "summary": "显式推进模拟步骤",
+        "description": "显式推进模拟步骤\n行为、持久化、幂等和事件顺序以 docs/simulation-contract.md v0.2 为准。 多步同事务，前置失败整批回滚并返回409 SCENARIO_STEP_BLOCKED；已结束返回409 SCENARIO_FINISHED。",
+        "servers": [
+          {
+            "url": "http://localhost:8001",
+            "description": "规划的simulation地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "description": "逻辑命令幂等键；采购同时以action_id为业务幂等键。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdvanceResult"
+                },
+                "example": {
+                  "scenario_run_id": "scenario_001",
+                  "simulation_time": "2026-09-07T00:00:00Z",
+                  "last_sequence": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-provider": "simulation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScenarioAdvance"
+              },
+              "example": {
+                "steps": 1
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/purchases": {
+      "post": {
+        "operationId": "simulation_purchase",
+        "tags": [
+          "simulation"
+        ],
+        "summary": "幂等提交采购",
+        "description": "本期成功受理或明确拒绝返回200回执；PENDING保持未决。重复action_id不同内容409。\n行为、持久化、幂等和事件顺序以 docs/simulation-contract.md v0.2 为准。",
+        "servers": [
+          {
+            "url": "http://localhost:8001",
+            "description": "规划的simulation地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "description": "逻辑命令幂等键；采购同时以action_id为业务幂等键。"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseReceipt"
+                },
+                "example": {
+                  "action_id": "action_001",
+                  "status": "ACCEPTED",
+                  "external_order_id": "order_001",
+                  "quantity": 40,
+                  "total_minor": 40000,
+                  "currency": "CNY",
+                  "recorded_at": "2026-09-06T00:00:00Z",
+                  "reason": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-provider": "simulation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PurchaseRequest"
+              },
+              "example": {
+                "action_id": "action_001",
+                "scenario_run_id": "scenario_001",
+                "store_id": "store_001",
+                "sku_id": "sku_001",
+                "supplier_id": "supplier_001",
+                "quantity": 40,
+                "expected_total_minor": 40000,
+                "currency": "CNY"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sim/v1/purchases/{action_id}": {
+      "get": {
+        "operationId": "simulation_get_purchase",
+        "tags": [
+          "simulation"
+        ],
+        "summary": "查询原采购回执",
+        "description": "查询原采购回执\n行为、持久化、幂等和事件顺序以 docs/simulation-contract.md v0.2 为准。",
+        "servers": [
+          {
+            "url": "http://localhost:8001",
+            "description": "规划的simulation地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PurchaseReceipt"
+                },
+                "example": {
+                  "action_id": "action_001",
+                  "status": "ACCEPTED",
+                  "external_order_id": "order_001",
+                  "quantity": 40,
+                  "total_minor": 40000,
+                  "currency": "CNY",
+                  "recorded_at": "2026-09-06T00:00:00Z",
+                  "reason": null
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "planned",
+        "x-provider": "simulation"
+      }
+    },
+    "/ml/v1/forecasts": {
+      "post": {
+        "operationId": "predict_demand",
+        "tags": [
+          "ml"
+        ],
+        "summary": "预测指定范围的剩余需求",
+        "description": "预测无采购副作用。响应回传input_state_version；校验来源、单位和时间范围。",
+        "servers": [
+          {
+            "url": "http://localhost:8002",
+            "description": "规划的ml地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Forecast"
+                },
+                "example": {
+                  "forecast_id": "forecast_001",
+                  "store_id": "store_001",
+                  "sku_id": "sku_001",
+                  "input_state_version": 7,
+                  "predicted_quantity": 60,
+                  "unit": "piece",
+                  "data_as_of": "2026-09-06T00:00:00Z",
+                  "horizon_start": "2026-09-06T00:00:00Z",
+                  "horizon_end": "2026-09-13T00:00:00Z",
+                  "valid_until": "2026-09-06T01:00:00Z",
+                  "model_name": "fixed-scenario",
+                  "model_version": "fixed-1",
+                  "source": "fixed",
+                  "assumptions": [
+                    "SC01预设需求，约定到货早于需求发生"
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B1",
+        "x-implementation-status": "planned",
+        "x-provider": "ml",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForecastRequest"
+              },
+              "example": {
+                "request_id": "forecast_request_001",
+                "store_id": "store_001",
+                "sku_id": "sku_001",
+                "input_state_version": 7,
+                "data_as_of": "2026-09-06T00:00:00Z",
+                "horizon_start": "2026-09-06T00:00:00Z",
+                "horizon_end": "2026-09-13T00:00:00Z",
+                "unit": "piece",
+                "history": [
+                  {
+                    "date": "2026-09-05",
+                    "sold_quantity": 10
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent/v1/runs": {
+      "post": {
+        "operationId": "agent_create_run",
+        "tags": [
+          "agent"
+        ],
+        "summary": "创建或恢复同一AgentRun",
+        "description": "allowed_tools与服务端实际授权取交集；绝不自动授予审批权限。",
+        "servers": [
+          {
+            "url": "http://localhost:8003",
+            "description": "规划的agent地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "description": "逻辑命令幂等键；采购同时以action_id为业务幂等键。"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "服务已持久化受理",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentAccepted"
+                },
+                "example": {
+                  "agent_run_id": "agent_run_001",
+                  "status": "QUEUED"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B2",
+        "x-implementation-status": "planned",
+        "x-provider": "agent",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AgentRunCreate"
+              },
+              "example": {
+                "agent_run_id": "agent_run_001",
+                "mission_id": "mission_001",
+                "trigger": "USER_MESSAGE",
+                "message": "解释当前采购方案",
+                "context": {
+                  "store_id": "store_001",
+                  "sku_id": "sku_001",
+                  "state_version": 7,
+                  "plan_id": "plan_001"
+                },
+                "allowed_tools": [
+                  "get_mission",
+                  "get_plan",
+                  "request_check"
+                ],
+                "deadline_at": "2026-09-06T00:02:00Z"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/agent/v1/runs/{agent_run_id}": {
+      "get": {
+        "operationId": "agent_get_run",
+        "tags": [
+          "agent"
+        ],
+        "summary": "查询Agent运行及结构化引用",
+        "description": "查询Agent运行及结构化引用",
+        "servers": [
+          {
+            "url": "http://localhost:8003",
+            "description": "规划的agent地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agent_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentRun"
+                },
+                "example": {
+                  "agent_run_id": "agent_run_001",
+                  "mission_id": "mission_001",
+                  "status": "SUCCEEDED",
+                  "response_text": "采购80件会使现金降至200元，低于300元底线。",
+                  "references": [
+                    {
+                      "type": "plan",
+                      "id": "plan_001",
+                      "version": "1"
+                    }
+                  ],
+                  "proposed_actions": [],
+                  "usage": {
+                    "input_tokens": 120,
+                    "output_tokens": 30,
+                    "model": "shopsteward-llm",
+                    "provider": "configured-local"
+                  },
+                  "error": null,
+                  "created_at": "2026-09-06T00:00:00Z",
+                  "updated_at": "2026-09-06T00:00:00Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B2",
+        "x-implementation-status": "planned",
+        "x-provider": "agent"
+      }
+    },
+    "/agent/v1/runs/{agent_run_id}/cancel": {
+      "post": {
+        "operationId": "agent_cancel_run",
+        "tags": [
+          "agent"
+        ],
+        "summary": "请求协作取消Agent运行",
+        "description": "202表示取消请求已受理，状态可能仍RUNNING；已执行业务动作不会撤销。",
+        "servers": [
+          {
+            "url": "http://localhost:8003",
+            "description": "规划的agent地址"
+          }
+        ],
+        "security": [
+          {
+            "ServiceBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "agent_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "description": "逻辑命令幂等键；采购同时以action_id为业务幂等键。"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "服务已持久化受理",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentAccepted"
+                },
+                "example": {
+                  "agent_run_id": "agent_run_001",
+                  "status": "QUEUED"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B2",
+        "x-implementation-status": "planned",
+        "x-provider": "agent"
+      }
+    },
+    "/v1/chat/completions": {
+      "post": {
+        "operationId": "llm_chat_completion_subset",
+        "tags": [
+          "llm"
+        ],
+        "summary": "文本Chat Completions最小兼容子集",
+        "description": "非完整供应商API。仅非流式文本，未定义工具/图像/embedding。模型与鉴权由部署确认；LLM自身不保证请求幂等。",
+        "servers": [
+          {
+            "url": "http://localhost:8004",
+            "description": "规划的vLLM地址"
+          },
+          {
+            "url": "http://localhost:11434",
+            "description": "Ollama本地地址；由部署确认认证"
+          }
+        ],
+        "security": [
+          {
+            "ModelBearer": []
+          },
+          {}
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "成功",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMChatResponse"
+                },
+                "example": {
+                  "id": "chatcmpl_001",
+                  "object": "chat.completion",
+                  "created": 1788652800,
+                  "model": "shopsteward-llm",
+                  "choices": [
+                    {
+                      "index": 0,
+                      "message": {
+                        "role": "assistant",
+                        "content": "该方案会使现金低于底线。"
+                      },
+                      "finish_reason": "stop"
+                    }
+                  ],
+                  "usage": {
+                    "prompt_tokens": 120,
+                    "completion_tokens": 30,
+                    "total_tokens": 150
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "服务错误；调用方按状态和错误码区分重试/核对。",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LLMError"
+                }
+              }
+            }
+          }
+        },
+        "x-phase": "B2",
+        "x-implementation-status": "planned",
+        "x-provider": "llm",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LLMChatRequest"
+              },
+              "example": {
+                "model": "shopsteward-llm",
+                "messages": [
+                  {
+                    "role": "user",
+                    "content": "说明为何80件方案突破现金底线"
+                  }
+                ],
+                "temperature": 0.2,
+                "max_tokens": 512,
+                "stream": false
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ServiceBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "服务间凭据，服务端限制资源与操作。"
+      },
+      "ModelBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "由模型部署确认。Ollama兼容端点可忽略API key，需要额外访问控制时由代理承担。"
+      }
+    },
+    "schemas": {
+      "AdvanceResult": {
+        "type": "object",
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_sequence": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "scenario_run_id",
+          "simulation_time",
+          "last_sequence"
+        ],
+        "additionalProperties": false
+      },
+      "AgentAccepted": {
+        "type": "object",
+        "properties": {
+          "agent_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELLED"
+            ]
+          }
+        },
+        "required": [
+          "agent_run_id",
+          "status"
+        ],
+        "additionalProperties": false
+      },
+      "AgentContext": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "store_id",
+          "sku_id",
+          "state_version",
+          "plan_id"
+        ],
+        "additionalProperties": false
+      },
+      "AgentRun": {
+        "type": "object",
+        "properties": {
+          "agent_run_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELLED"
+            ]
+          },
+          "response_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Reference"
+            }
+          },
+          "proposed_actions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProposedAction"
+            }
+          },
+          "usage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Usage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "agent_run_id",
+          "mission_id",
+          "status",
+          "response_text",
+          "references",
+          "proposed_actions",
+          "usage",
+          "error",
+          "created_at",
+          "updated_at"
+        ],
+        "additionalProperties": false
+      },
+      "AgentRunCreate": {
+        "type": "object",
+        "properties": {
+          "agent_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "mission_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "trigger": {
+            "type": "string",
+            "enum": [
+              "USER_MESSAGE",
+              "SCHEDULED_FOLLOWUP",
+              "BUSINESS_EVENT"
+            ]
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 10000
+          },
+          "context": {
+            "$ref": "#/components/schemas/AgentContext"
+          },
+          "allowed_tools": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "get_mission",
+                "get_plan",
+                "request_check",
+                "get_action",
+                "read_timeline"
+              ]
+            }
+          },
+          "deadline_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "agent_run_id",
+          "mission_id",
+          "trigger",
+          "message",
+          "context",
+          "allowed_tools",
+          "deadline_at"
+        ],
+        "additionalProperties": false
+      },
+      "BusinessEvent": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/SaleEvent"
+          },
+          {
+            "$ref": "#/components/schemas/ReceivedEvent"
+          },
+          {
+            "$ref": "#/components/schemas/DemandEvent"
+          },
+          {
+            "$ref": "#/components/schemas/PurchaseEvent"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "event_type",
+          "mapping": {
+            "SALE_RECORDED": "#/components/schemas/SaleEvent",
+            "GOODS_RECEIVED": "#/components/schemas/ReceivedEvent",
+            "DEMAND_REVISED": "#/components/schemas/DemandEvent",
+            "PURCHASE_ACCEPTED": "#/components/schemas/PurchaseEvent"
+          }
+        }
+      },
+      "DemandEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "DEMAND_REVISED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/DemandPayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "DemandPayload": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "forecast_version": {
+            "type": "string"
+          },
+          "data_as_of": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "valid_until": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "horizon_start": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "horizon_end": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "sku_id",
+          "remaining_demand",
+          "forecast_version",
+          "data_as_of",
+          "valid_until",
+          "horizon_start",
+          "horizon_end"
+        ],
+        "additionalProperties": false
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetail"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": false
+      },
+      "ErrorDetail": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "request_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "retryable": {
+            "type": "boolean"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "request_id",
+          "retryable",
+          "details"
+        ],
+        "additionalProperties": false
+      },
+      "EventPage": {
+        "type": "object",
+        "properties": {
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BusinessEvent"
+            }
+          },
+          "last_sequence": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "本页最后一条事件序号；空页等于请求 after_sequence。"
+          },
+          "has_more": {
+            "type": "boolean"
+          },
+          "source_head_sequence": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "与本页相同读取快照中的已提交源头部序号。"
+          }
+        },
+        "required": [
+          "events",
+          "last_sequence",
+          "has_more",
+          "source_head_sequence"
+        ],
+        "additionalProperties": false
+      },
+      "Forecast": {
+        "type": "object",
+        "properties": {
+          "forecast_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "input_state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "predicted_quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "piece"
+            ]
+          },
+          "data_as_of": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "horizon_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "horizon_end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "model_name": {
+            "type": "string"
+          },
+          "model_version": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "manual",
+              "model"
+            ]
+          },
+          "assumptions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "lower_quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "upper_quantity": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "forecast_id",
+          "store_id",
+          "sku_id",
+          "input_state_version",
+          "predicted_quantity",
+          "unit",
+          "data_as_of",
+          "horizon_start",
+          "horizon_end",
+          "valid_until",
+          "model_name",
+          "model_version",
+          "source",
+          "assumptions"
+        ],
+        "additionalProperties": false
+      },
+      "ForecastRequest": {
+        "type": "object",
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "input_state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "data_as_of": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "horizon_start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "horizon_end": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "piece"
+            ]
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SalesHistory"
+            }
+          }
+        },
+        "required": [
+          "request_id",
+          "store_id",
+          "sku_id",
+          "input_state_version",
+          "data_as_of",
+          "horizon_start",
+          "horizon_end",
+          "unit",
+          "history"
+        ],
+        "additionalProperties": false
+      },
+      "LLMChatRequest": {
+        "type": "object",
+        "properties": {
+          "model": {
+            "type": "string",
+            "minLength": 1
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LLMMessage"
+            },
+            "minItems": 1
+          },
+          "temperature": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2
+          },
+          "max_tokens": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "stream": {
+            "const": false,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "model",
+          "messages"
+        ],
+        "additionalProperties": false
+      },
+      "LLMChatResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "object": {
+            "type": "string"
+          },
+          "created": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "model": {
+            "type": "string"
+          },
+          "choices": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LLMChoice"
+            },
+            "minItems": 1
+          },
+          "usage": {
+            "$ref": "#/components/schemas/LLMUsage"
+          }
+        },
+        "required": [
+          "id",
+          "object",
+          "created",
+          "model",
+          "choices"
+        ],
+        "additionalProperties": true
+      },
+      "LLMChoice": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "message": {
+            "$ref": "#/components/schemas/LLMResponseMessage"
+          },
+          "finish_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "index",
+          "message",
+          "finish_reason"
+        ],
+        "additionalProperties": true
+      },
+      "LLMError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/LLMErrorBody"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "additionalProperties": true
+      },
+      "LLMErrorBody": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "additionalProperties": true
+      },
+      "LLMMessage": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "system",
+              "user",
+              "assistant"
+            ]
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "additionalProperties": false
+      },
+      "LLMResponseMessage": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "assistant"
+            ]
+          },
+          "content": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "role",
+          "content"
+        ],
+        "additionalProperties": true
+      },
+      "LLMUsage": {
+        "type": "object",
+        "properties": {
+          "prompt_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "completion_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_tokens": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "prompt_tokens",
+          "completion_tokens",
+          "total_tokens"
+        ],
+        "additionalProperties": true
+      },
+      "ProposedAction": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "REQUEST_CHECK",
+              "SUGGEST_PURCHASE"
+            ]
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "reason"
+        ],
+        "additionalProperties": false
+      },
+      "PurchaseEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "PURCHASE_ACCEPTED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/PurchasePayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "PurchasePayload": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "external_order_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "total_minor": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "action_id",
+          "external_order_id",
+          "sku_id",
+          "quantity",
+          "total_minor"
+        ],
+        "additionalProperties": false
+      },
+      "PurchaseReceipt": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACCEPTED",
+              "REJECTED",
+              "PENDING"
+            ]
+          },
+          "external_order_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "不透明资源 ID",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "total_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "recorded_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "action_id",
+          "status",
+          "external_order_id",
+          "quantity",
+          "total_minor",
+          "currency",
+          "recorded_at",
+          "reason"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "ACCEPTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "external_order_id": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 128
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "total_minor": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "REJECTED"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "reason": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        ]
+      },
+      "PurchaseRequest": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "scenario_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "supplier_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "expected_total_minor": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          }
+        },
+        "required": [
+          "action_id",
+          "scenario_run_id",
+          "store_id",
+          "sku_id",
+          "supplier_id",
+          "quantity",
+          "expected_total_minor",
+          "currency"
+        ],
+        "additionalProperties": false
+      },
+      "ReceivedEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "GOODS_RECEIVED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/ReceivedPayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "ReceivedPayload": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "action_id",
+          "sku_id",
+          "quantity"
+        ],
+        "additionalProperties": false
+      },
+      "Reference": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "mission",
+              "plan",
+              "action",
+              "event",
+              "forecast",
+              "artifact",
+              "scenario",
+              "store",
+              "alert"
+            ]
+          },
+          "id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "id"
+        ],
+        "additionalProperties": false
+      },
+      "SaleEvent": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sequence": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "schema_version": {
+            "type": "string",
+            "enum": [
+              "1.0"
+            ]
+          },
+          "event_type": {
+            "type": "string",
+            "enum": [
+              "SALE_RECORDED"
+            ]
+          },
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "occurred_at": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "simulation_time": {
+            "type": "string",
+            "description": "RFC3339 UTC 时间",
+            "format": "date-time"
+          },
+          "payload": {
+            "$ref": "#/components/schemas/SalePayload"
+          }
+        },
+        "required": [
+          "event_id",
+          "sequence",
+          "schema_version",
+          "event_type",
+          "store_id",
+          "occurred_at",
+          "simulation_time",
+          "payload"
+        ],
+        "additionalProperties": false
+      },
+      "SalePayload": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "required": [
+          "sku_id",
+          "quantity",
+          "unit_price_minor"
+        ],
+        "additionalProperties": false
+      },
+      "SalesHistory": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "sold_quantity": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "date",
+          "sold_quantity"
+        ],
+        "additionalProperties": false
+      },
+      "ScenarioAdvance": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          }
+        },
+        "required": [
+          "steps"
+        ],
+        "additionalProperties": false
+      },
+      "ScenarioCreate": {
+        "type": "object",
+        "properties": {
+          "scenario": {
+            "type": "string",
+            "enum": [
+              "SC01"
+            ]
+          }
+        },
+        "required": [
+          "scenario"
+        ],
+        "additionalProperties": false
+      },
+      "ScenarioRun": {
+        "type": "object",
+        "properties": {
+          "scenario_run_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "store_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "simulation_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "initial_state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "initial_forecast": {
+            "$ref": "#/components/schemas/Forecast"
+          },
+          "initial_catalog": {
+            "$ref": "#/components/schemas/Catalog"
+          }
+        },
+        "required": [
+          "scenario_run_id",
+          "store_id",
+          "simulation_time",
+          "initial_state",
+          "initial_forecast",
+          "initial_catalog"
+        ],
+        "additionalProperties": false
+      },
+      "State": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "cash_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "reserved_cash_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "available_cash_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "receivables_minor": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "stocks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Stock"
+            }
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "simulation_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "description": "RFC3339 UTC 时间",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "store_id",
+          "state_version",
+          "currency",
+          "cash_minor",
+          "reserved_cash_minor",
+          "available_cash_minor",
+          "receivables_minor",
+          "stocks",
+          "data_as_of",
+          "simulation_time"
+        ],
+        "additionalProperties": false
+      },
+      "Stock": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "on_hand": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "in_transit": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "remaining_demand": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "forecast_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "sku_id",
+          "on_hand",
+          "in_transit",
+          "remaining_demand",
+          "forecast_version"
+        ],
+        "additionalProperties": false
+      },
+      "Usage": {
+        "type": "object",
+        "properties": {
+          "input_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "output_tokens": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "model": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          }
+        },
+        "required": [],
+        "additionalProperties": false
+      },
+      "Offer": {
+        "type": "object",
+        "properties": {
+          "supplier_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "minimum_order_quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "pack_size": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "offer_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "lead_time_seconds": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "supplier_id",
+          "sku_id",
+          "unit_price_minor",
+          "minimum_order_quantity",
+          "pack_size",
+          "offer_version",
+          "currency",
+          "lead_time_seconds",
+          "valid_from",
+          "valid_until"
+        ],
+        "additionalProperties": false
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "name": {
+            "type": "string"
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "piece"
+            ]
+          }
+        },
+        "required": [
+          "sku_id",
+          "name",
+          "unit"
+        ],
+        "additionalProperties": false
+      },
+      "Catalog": {
+        "type": "object",
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "description": "不透明资源 ID",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "currency": {
+            "type": "string",
+            "enum": [
+              "CNY"
+            ]
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Product"
+            }
+          },
+          "offers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Offer"
+            }
+          }
+        },
+        "required": [
+          "store_id",
+          "currency",
+          "products",
+          "offers"
+        ],
+        "additionalProperties": false
+      }
+    }
+  }
+}

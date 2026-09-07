@@ -1,0 +1,73 @@
+{
+  "recorded_at": "2026-09-07T02:53:02.134134+00:00",
+  "work_package": "B0-07",
+  "base_commit": "516252df73f77ef5d3507968e2f943e2fdcde7db",
+  "branch": "YH",
+  "committed": false,
+  "status": "PASS",
+  "tests": {
+    "backend_passed": 146,
+    "backend_seconds": 67.731,
+    "api": 19,
+    "unit": 16,
+    "postgresql_integration": 111,
+    "simulator_passed": 12,
+    "simulator_seconds": 3.202,
+    "skipped": 0,
+    "new_b007_integration_cases": 8
+  },
+  "checks": {
+    "backend_ruff": "passed",
+    "simulator_ruff": "passed",
+    "backend_formatted_python_files": 99,
+    "simulator_formatted_python_files": 13,
+    "backend_alembic_drift": false,
+    "simulator_alembic_drift": false,
+    "design_examples": 53,
+    "plan_hash_examples": 2,
+    "contract_negative_cases": "passed",
+    "git_diff_check": "passed"
+  },
+  "schema_revision": {
+    "backend": "0006_periodic",
+    "simulator": "sim_0002_purchases"
+  },
+  "openapi": {
+    "runtime_snapshot_exact_match": true,
+    "implementation_operations_match": true,
+    "registered_handlers_match": true,
+    "operations": 22,
+    "paths": 21,
+    "registered_job_types": 8
+  },
+  "production_fixes": [
+    {
+      "id": "B007-01",
+      "problem": "Locked first 100 due stores starved later free schedule candidates",
+      "reproduction": "Source and Mission fairness cases both failed with zero dispatched jobs",
+      "fix": "Skip locked Store rows before limiting candidate discovery; recheck each occurrence transaction"
+    },
+    {
+      "id": "B007-02",
+      "problem": "Busy-store orphan Action recovery blocked before_claim and unrelated jobs",
+      "reproduction": "Unrelated probe timed out while orphan Store remained locked",
+      "fix": "Skip locked stores during recovery discovery and per-candidate recheck"
+    }
+  ],
+  "real_process_acceptance": "b0-07-process-result.json",
+  "process_total_seconds": 102.516,
+  "continuous_activity_seconds": 90.11,
+  "independent_review": {
+    "status": "No remaining important findings in B007 scope",
+    "resolved_p2": "Capture exact supplier event history/head before and after restart/replay; backend deduplication alone cannot prove supplier uniqueness",
+    "method": "Static read-only review; execution by parent"
+  },
+  "report": "../reports/b0-07-test-report.md",
+  "boundaries": [
+    "Bounded local run includes injected outages; not uninterrupted service uptime or load SLA",
+    "Process kill targets source fetch; purchase lost-response/lease-loss cases use real PostgreSQL and controlled transport",
+    "EXT-01 real prediction-adapter swap belongs to B1 and was not validated",
+    "No Agent/ML/RAG integration or frontend acceptance",
+    "All owned acceptance processes stopped; development data/logs retained; PostgreSQL remains running"
+  ]
+}

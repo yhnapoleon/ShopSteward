@@ -1,0 +1,161 @@
+{
+  "recorded_at": "2026-09-06T11:22:26.691036+00:00",
+  "work_package": "B0-03",
+  "scenario_run_id": "run_30c085fd391f46c8b2476082a3bc48d6",
+  "store_id": "store_95e8a40a47ca4d20bdf23654adb5d80c",
+  "mission_id": "d45a7e29-de17-4ffe-ac0e-20cb1afaceb8",
+  "initialize_job_id": "93ac6269-b76e-4e11-adef-b8331e046472",
+  "manual_check_job_id": "da19ffb6-5b97-4d44-a99f-fb107efd2227",
+  "check_status": "ANOMALY",
+  "mission_create_replay_identical": true,
+  "unchanged_plan_reused": true,
+  "cash_and_inventory_unchanged": true,
+  "runtime_matches_export": true,
+  "backend_runtime_operations": 14,
+  "plan_matches_design_schema": true,
+  "tests": {
+    "backend_passed": 74,
+    "simulator_passed": 2,
+    "skipped": 0
+  },
+  "scope": "Separate API/worker/simulator; initial deterministic plan only. Approval, purchase, recurring dispatch and full SC01 await later stages.",
+  "plan": {
+    "id": "980abfcb-8073-4563-b4cf-657fc904ce41",
+    "mission_id": "d45a7e29-de17-4ffe-ac0e-20cb1afaceb8",
+    "plan_version": 1,
+    "state_version": 1,
+    "forecast_version": "local-d605e3c045cc8db70d7b635bdcecd723",
+    "policy_version": "policy-1",
+    "rule_version": "finite-candidates-v1",
+    "status": "PENDING_APPROVAL",
+    "input_snapshot": {
+      "snapshot_version": "decision-v1",
+      "state": {
+        "store_id": "store_95e8a40a47ca4d20bdf23654adb5d80c",
+        "state_version": 1,
+        "currency": "CNY",
+        "cash_minor": 100000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 100000,
+        "receivables_minor": 0,
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 20,
+            "in_transit": 0,
+            "remaining_demand": 60,
+            "forecast_version": "local-d605e3c045cc8db70d7b635bdcecd723"
+          }
+        ],
+        "data_as_of": "2026-09-06T11:22:23Z",
+        "simulation_time": "2026-09-06T11:22:23Z"
+      },
+      "mission_version": 1,
+      "policy": {
+        "cash_floor_minor": 30000,
+        "candidate_quantities": [
+          0,
+          20,
+          40,
+          80
+        ],
+        "supplier_id": "supplier_001"
+      },
+      "policy_version": "policy-1",
+      "forecast": {
+        "forecast_id": "forecast_e4a8de04986c431d8d66ad848527e507",
+        "forecast_version": "local-d605e3c045cc8db70d7b635bdcecd723",
+        "store_id": "store_95e8a40a47ca4d20bdf23654adb5d80c",
+        "sku_id": "sku_001",
+        "remaining_demand": 60,
+        "unit": "piece",
+        "data_as_of": "2026-09-06T11:22:23Z",
+        "source_sequence": 0,
+        "horizon_start": "2026-09-06T11:22:23Z",
+        "horizon_end": "2026-09-13T11:22:23Z",
+        "valid_until": "2026-09-06T12:22:23Z",
+        "source": "fixed",
+        "model_name": "fixed-scenario",
+        "model_version": "fixed-1",
+        "assumptions": [
+          "SC01 fixed remaining demand; not a learned prediction"
+        ]
+      },
+      "offer": {
+        "supplier_id": "supplier_001",
+        "sku_id": "sku_001",
+        "unit_price_minor": 1000,
+        "minimum_order_quantity": 20,
+        "pack_size": 20,
+        "offer_version": "offer-1",
+        "currency": "CNY",
+        "lead_time_seconds": 86400,
+        "valid_from": "2026-09-06T11:22:23Z",
+        "valid_until": "2026-09-07T11:22:23Z"
+      },
+      "inbound_items": [],
+      "eligible_inbound_qty": 0,
+      "rule_version": "finite-candidates-v1",
+      "evaluated_at": "2026-09-06T11:22:25Z",
+      "last_successful_sync_at": "2026-09-06T11:22:24Z",
+      "source_fresh_until": "2026-09-06T11:22:54Z"
+    },
+    "candidates": [
+      {
+        "id": "candidate_0",
+        "quantity": 0,
+        "spend_minor": 0,
+        "cash_after_minor": 100000,
+        "shortage_qty": 40,
+        "feasible": true,
+        "rejection_reasons": []
+      },
+      {
+        "id": "candidate_20",
+        "quantity": 20,
+        "spend_minor": 20000,
+        "cash_after_minor": 80000,
+        "shortage_qty": 20,
+        "feasible": true,
+        "rejection_reasons": []
+      },
+      {
+        "id": "candidate_40",
+        "quantity": 40,
+        "spend_minor": 40000,
+        "cash_after_minor": 60000,
+        "shortage_qty": 0,
+        "feasible": true,
+        "rejection_reasons": []
+      },
+      {
+        "id": "candidate_80",
+        "quantity": 80,
+        "spend_minor": 80000,
+        "cash_after_minor": 20000,
+        "shortage_qty": 0,
+        "feasible": false,
+        "rejection_reasons": [
+          "CASH_FLOOR_VIOLATION"
+        ]
+      }
+    ],
+    "recommended_candidate_id": "candidate_40",
+    "proposal_hash": "sha256:b8cf627be34184e801130e1d9e41157fb9b983499dd9a15f7ced70a6a81a6949",
+    "explanation": "推荐采购40件；预计支出40000分，采购后可用现金60000分，剩余缺口0件。",
+    "created_at": "2026-09-06T11:22:25Z",
+    "expires_at": "2026-09-06T11:37:25Z",
+    "proposed_purchase": {
+      "store_id": "store_95e8a40a47ca4d20bdf23654adb5d80c",
+      "sku_id": "sku_001",
+      "supplier_id": "supplier_001",
+      "quantity": 40,
+      "unit_price_minor": 1000,
+      "total_minor": 40000,
+      "currency": "CNY",
+      "expected_arrival_at": "2026-09-07T11:22:23Z"
+    }
+  },
+  "restart_plan_identical": true,
+  "verified_after_process_restart_at": "2026-09-06T11:23:05.193021+00:00"
+}

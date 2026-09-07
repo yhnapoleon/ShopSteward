@@ -1,0 +1,52 @@
+{
+  "recorded_at": "2026-09-06T10:39:13.259578+00:00",
+  "work_package": "B0-02 bootstrap",
+  "health_ready": 200,
+  "job_run_id": "37aad780-8748-4302-be31-1107dc97f3e5",
+  "job_status": "SUCCEEDED",
+  "attempt_count": 1,
+  "scenario_run_id": "run_bb834ef76fd4432186d5fa81bf185704",
+  "store_id": "store_6f668deed2384d348df22fd5d74c5179",
+  "initial_state_version": 1,
+  "catalog_status": 200,
+  "worker_status": "RUNNING",
+  "source": {
+    "source": "simulation:run_bb834ef76fd4432186d5fa81bf185704",
+    "last_success_at": "2026-09-06T10:49:39.983083Z",
+    "last_sequence": 0,
+    "status": "FRESH",
+    "last_error": null
+  },
+  "command_replay_identical": true,
+  "backend_runtime_operations": 7,
+  "scope": "Real separate HTTP API, simulator and worker; bootstrap and empty caught-up sync only. Full SC01 not yet implemented.",
+  "verified_after_process_restart_at": "2026-09-06T10:49:40.636124+00:00",
+  "restart_replay_same_run": true,
+  "post_restart_sync_job_id": "bd7cec44-4d70-4291-b0e3-74108c14c353",
+  "initial_state": {
+    "store_id": "store_6f668deed2384d348df22fd5d74c5179",
+    "state_version": 1,
+    "currency": "CNY",
+    "cash_minor": 100000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 100000,
+    "receivables_minor": 0,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 20,
+        "in_transit": 0,
+        "remaining_demand": 60,
+        "forecast_version": "local-2cbb46b3c3661b3403ace291313d4a31"
+      }
+    ],
+    "data_as_of": "2026-09-06T10:39:12.162390Z",
+    "simulation_time": "2026-09-06T10:39:12.162390Z"
+  },
+  "runtime_matches_exports": true,
+  "tests": {
+    "backend_passed": 50,
+    "simulator_passed": 2,
+    "skipped": 0
+  }
+}

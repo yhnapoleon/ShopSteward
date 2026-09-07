@@ -1,0 +1,123 @@
+{
+  "recorded_at": "2026-09-06T12:26:49.598117+00:00",
+  "work_package": "B0-05",
+  "scenario_run_id": "run_9379887e98fb4fb6910dc866265a2c5f",
+  "store_id": "store_de397712e6f64a46b8114a3cd29d321c",
+  "mission_id": "55bc4003-e1d8-4c58-8c6c-afd447b5550a",
+  "actions": [
+    {
+      "id": "e5d1fb4b-6cc0-4b68-aed0-2715165fedcc",
+      "mission_id": "55bc4003-e1d8-4c58-8c6c-afd447b5550a",
+      "plan_id": "8d2971de-a944-4b64-bb9b-bd8c7784f09e",
+      "approval_id": "ad3c7393-cdbe-440f-be2e-8a1a788d583e",
+      "status": "SUCCEEDED",
+      "quantity": 40,
+      "amount_minor": 40000,
+      "currency": "CNY",
+      "external_order_id": "order_4a6169fb5b0b460c9c4ae0cb64c52322",
+      "receipt": {
+        "action_id": "e5d1fb4b-6cc0-4b68-aed0-2715165fedcc",
+        "status": "ACCEPTED",
+        "external_order_id": "order_4a6169fb5b0b460c9c4ae0cb64c52322",
+        "quantity": 40,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-06T12:26:39.369362Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-06T12:26:38.509407Z",
+      "updated_at": "2026-09-06T12:26:39.397873Z",
+      "purchase_snapshot": {
+        "store_id": "store_de397712e6f64a46b8114a3cd29d321c",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 40,
+        "unit_price_minor": 1000,
+        "total_minor": 40000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-07T12:26:36Z"
+      }
+    },
+    {
+      "id": "f3718355-bf49-468d-93e8-139d334c1ef3",
+      "mission_id": "55bc4003-e1d8-4c58-8c6c-afd447b5550a",
+      "plan_id": "e81519f8-499a-477d-afa4-43006b585475",
+      "approval_id": "a1ed43aa-8ee0-4a1f-8ea4-26c61fe6b7cf",
+      "status": "SUCCEEDED",
+      "quantity": 20,
+      "amount_minor": 20000,
+      "currency": "CNY",
+      "external_order_id": "order_8d13d88bacab474881c039e448baf0d8",
+      "receipt": {
+        "action_id": "f3718355-bf49-468d-93e8-139d334c1ef3",
+        "status": "ACCEPTED",
+        "external_order_id": "order_8d13d88bacab474881c039e448baf0d8",
+        "quantity": 20,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "recorded_at": "2026-09-06T12:26:46.379179Z",
+        "reason": null
+      },
+      "last_error": null,
+      "created_at": "2026-09-06T12:26:45.398968Z",
+      "updated_at": "2026-09-06T12:26:46.401236Z",
+      "purchase_snapshot": {
+        "store_id": "store_de397712e6f64a46b8114a3cd29d321c",
+        "sku_id": "sku_001",
+        "supplier_id": "supplier_001",
+        "quantity": 20,
+        "unit_price_minor": 1000,
+        "total_minor": 20000,
+        "currency": "CNY",
+        "expected_arrival_at": "2026-09-08T14:26:36Z"
+      }
+    }
+  ],
+  "final_state": {
+    "store_id": "store_de397712e6f64a46b8114a3cd29d321c",
+    "state_version": 9,
+    "currency": "CNY",
+    "cash_minor": 40000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 40000,
+    "receivables_minor": 20000,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 70,
+        "in_transit": 0,
+        "remaining_demand": 70,
+        "forecast_version": "local-92d0d7d4c0b67a5eee509c5b7b4b83e2"
+      }
+    ],
+    "data_as_of": "2026-09-06T12:26:48.351001Z",
+    "simulation_time": "2026-09-08T14:26:36.329770Z"
+  },
+  "runtime_matches_export": true,
+  "backend_runtime_operations": 21,
+  "approval_and_advance_replay_identical": true,
+  "scope": "Separate API, worker and simulator HTTP processes; explicit SC01 advance. Fault and lease cases use PostgreSQL integration tests with controlled transports; recurring dispatch remains B0-06.",
+  "ledger_effect_counts": {
+    "DEMAND_REVISED": 1,
+    "GOODS_RECEIVED": 2,
+    "INIT": 1,
+    "PURCHASE_ACCEPTED": 2,
+    "SALE_RECORDED": 1
+  },
+  "restart_verified_at": "2026-09-06T12:36:52.933897+00:00",
+  "restart_action_and_supplier_receipt_identical": true,
+  "supplier_purchase_replay_does_not_duplicate_effect": true,
+  "tests": {
+    "backend_passed": 115,
+    "simulator_passed": 12,
+    "skipped": 0
+  },
+  "validation": {
+    "ruff": true,
+    "format": true,
+    "migration_drift": false,
+    "design_examples": 53,
+    "plan_hash_examples": 2
+  }
+}
