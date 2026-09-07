@@ -131,6 +131,7 @@ async def execute(context):
                 base_url=settings.agent_base_url,
                 model=settings.agent_model,
                 key_file=settings.agent_api_key_file,
+                api_mode=settings.agent_api_mode,
             ),
             saver,
             schemas,

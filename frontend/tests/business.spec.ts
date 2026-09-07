@@ -267,3 +267,66 @@ test('手机：事实先于决策，改选与关闭弹层可用，无横向溢�
   await page.setViewportSize({ width: 320, height: 640 })
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320)
 })
+
+test('Agent受控故障：刷新后仍展示最近失败；澄清等待可取消', async ({ page }) => {
+  await scenario(page)
+  await start(page)
+  let status = 'FAILED'
+  const cid = 'test-conversation',
+    rid = 'test-run'
+  await page.route('**/api/backend/api/v1/missions/*/conversations?*', (r) =>
+    r.fulfill({
+      json: {
+        items: [
+          {
+            id: cid,
+            is_default: true,
+            active_run_id: status === 'WAITING_INPUT' ? rid : null,
+            followup_enabled: false,
+            followup_version: 1,
+          },
+        ],
+        next_cursor: null,
+      },
+    }),
+  )
+  await page.route(`**/api/backend/api/v1/conversations/${cid}/messages?*`, (r) =>
+    r.fulfill({
+      json: {
+        items: [
+          {
+            id: 'test-message',
+            conversation_id: cid,
+            seq: 1,
+            role: 'user',
+            content: '解释当前方案',
+            run_id: rid,
+            references: [],
+            created_at: new Date().toISOString(),
+          },
+        ],
+        next_after_seq: null,
+      },
+    }),
+  )
+  const run = () => ({
+    id: rid,
+    conversation_id: cid,
+    status,
+    interrupt_id: 'test-interrupt',
+    question: status === 'WAITING_INPUT' ? '请补充偏好内容' : null,
+    error_code: status === 'FAILED' ? 'AGENT_MODEL_FAILURE' : null,
+  })
+  await page.route(`**/api/backend/api/v1/agent-runs/${rid}`, (r) => r.fulfill({ json: run() }))
+  await page.route(`**/api/backend/api/v1/agent-runs/${rid}/cancel`, (r) => {
+    status = 'CANCELLED'
+    return r.fulfill({ json: run() })
+  })
+  await page.reload()
+  await expect(page.getByText(/这次回答未完成：AGENT_MODEL_FAILURE/)).toBeVisible()
+  status = 'WAITING_INPUT'
+  await page.reload()
+  await expect(page.getByText('请补充偏好内容', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: '停止本轮回答', exact: true }).click()
+  await expect(page.getByText('请补充偏好内容', { exact: true })).toHaveCount(0)
+})

@@ -951,7 +951,7 @@
   function updateCreateModeHelp() {
     const linked = document.querySelector("input[name='create-mode']:checked")?.value === "linked";
     $("create-mode-help").textContent = linked
-      ? "由后端开发任务创建并导入，完成后自动打开对应模拟场景。"
+      ? "创建并导入后成为后端当前经营环境；已打开的产品前端会自动切换并同步数据。"
       : "立即写入模拟器；后端不会自动导入。";
   }
 

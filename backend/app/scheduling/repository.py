@@ -197,7 +197,9 @@ async def heartbeat(session, worker_id, status="RUNNING"):
     )
 
 
-async def monitoring_status(session, stale_seconds, source_stale_seconds=30):
+async def monitoring_status(
+    session, stale_seconds, source_stale_seconds=30, *, agent_enabled=False
+):
     from app.operations.models import SourceCursor
 
     now = await session.scalar(select(func.clock_timestamp()))
@@ -238,6 +240,6 @@ async def monitoring_status(session, stale_seconds, source_stale_seconds=30):
             }
             for cursor in cursors
         ],
-        "agent_enabled": False,
+        "agent_enabled": agent_enabled,
         "forecast_provider": "fixed",
     }

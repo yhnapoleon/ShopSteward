@@ -11264,6 +11264,16 @@
               }
             ],
             "title": "Next Cursor"
+          },
+          "active_store": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/StoreSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,

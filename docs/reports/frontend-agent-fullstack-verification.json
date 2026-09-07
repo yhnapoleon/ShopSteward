@@ -1,0 +1,69 @@
+{
+  "verified_at": "2026-09-07T13:41:14.588207+00:00",
+  "base_commit": "b7db9a0",
+  "branch": "YH",
+  "uncommitted_changes": true,
+  "model": "gpt-5.6-luna",
+  "api_mode": "responses",
+  "frontend": "http://127.0.0.1:3000",
+  "backend": "http://127.0.0.1:8000",
+  "simulator": "http://127.0.0.1:8001/console/",
+  "backend_migration": "0010_knowledge",
+  "batches": [
+    {
+      "suite": "backend_and_agent",
+      "passed": 308,
+      "skipped": 0,
+      "seconds": 130.98
+    },
+    {
+      "suite": "simulator",
+      "passed": 23,
+      "seconds": 6.37
+    },
+    {
+      "suite": "business_browser_original",
+      "passed": 8,
+      "reported_duration": "4.3m"
+    },
+    {
+      "suite": "real_luna_browser",
+      "passed": 3,
+      "reported_duration": "4.4m"
+    },
+    {
+      "suite": "controlled_agent_ui_recovery",
+      "passed": 1,
+      "seconds": 42.6
+    },
+    {
+      "suite": "final_monitoring_queue_api_regression",
+      "passed": 33,
+      "seconds": 10.2
+    }
+  ],
+  "checks": {
+    "typecheck": true,
+    "generated_api_current": true,
+    "production_build": true,
+    "ruff": true,
+    "alembic_no_drift": true,
+    "contract_validation": true,
+    "restart_unchanged": true,
+    "desktop_and_mobile_page_errors": 0,
+    "mobile_scroll_width": 390,
+    "live_monitoring_agent_enabled": true
+  },
+  "restart_evidence": "docs/api/frontend-agent-restart-result.json",
+  "runtime_manifest": "var/windows-stack-20260907-133412/processes.json",
+  "review": {
+    "mode": "independent_read_only",
+    "p1_p2_findings": 0
+  },
+  "scope_notes": [
+    "Counts are separate batches, not one combined suite.",
+    "Real model tests are opt-in and create persistent synthetic scenarios.",
+    "Local quotation tool, K2-K5 RAG, and real prediction remain separate scope.",
+    "Earlier Chat Completions failure retained in runtime logs/database."
+  ]
+}

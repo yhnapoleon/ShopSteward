@@ -1,0 +1,51 @@
+{
+  "active_store": {
+    "store_id": "store_306305666ce640468b083731e7788e8d",
+    "currency": "CNY",
+    "source_type": "simulation",
+    "simulation_time": "2026-09-07T13:49:37.447615Z"
+  },
+  "backend_state": {
+    "store_id": "store_306305666ce640468b083731e7788e8d",
+    "state_version": 1,
+    "currency": "CNY",
+    "cash_minor": 100000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 100000,
+    "receivables_minor": 0,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 20,
+        "in_transit": 0,
+        "remaining_demand": 60,
+        "forecast_version": "local-2735be6839abf0156dd2ff65c3bd970b"
+      }
+    ],
+    "data_as_of": "2026-09-07T13:49:37.447615Z",
+    "simulation_time": "2026-09-07T13:49:37.447615Z"
+  },
+  "simulator_state": {
+    "store_id": "store_306305666ce640468b083731e7788e8d",
+    "state_version": 1,
+    "currency": "CNY",
+    "cash_minor": 100000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 100000,
+    "receivables_minor": 0,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 20,
+        "in_transit": 0,
+        "remaining_demand": 60,
+        "forecast_version": "fixed-1"
+      }
+    ],
+    "data_as_of": "2026-09-07T13:49:37.447615Z",
+    "simulation_time": "2026-09-07T13:49:37.447615Z"
+  },
+  "source_sequence": 0,
+  "api_restarted": true,
+  "note": "Quantities and cash match; backend forecast_version identifies its own computed projection."
+}

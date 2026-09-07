@@ -25,6 +25,7 @@ from app.reporting.read_schemas import (
     StoreSummary,
 )
 from app.reporting.schemas import Freshness
+from app.scheduling.models import Job
 
 
 def invalid_record(row):
@@ -93,17 +94,37 @@ async def list_stores(session, principal, *, limit, cursor):
     if anchor:
         query = query.where(Store.id > anchor[0])
     rows = list(await session.scalars(query.order_by(Store.id).limit(limit + 1)))
+    # Successful initialization and its result commit with the imported business state.
+    # Order by request time so a slower, older creation cannot supersede a newer one.
+    latest = await session.scalar(
+        select(Job)
+        .where(Job.job_type == "initialize_scenario", Job.status == "SUCCEEDED")
+        .order_by(Job.created_at.desc(), Job.id.desc())
+        .limit(1)
+    )
+    active = None
+    if latest and latest.result:
+        store_id = next(
+            (ref["id"] for ref in latest.result.get("references", []) if ref["type"] == "store"),
+            None,
+        )
+        if store_id and (
+            "admin" in principal.roles or (principal.roles and store_id in principal.store_ids)
+        ):
+            active = await session.get(Store, store_id)
+
+    def summary(row):
+        return StoreSummary(
+            store_id=row.id,
+            currency=row.currency,
+            source_type="simulation",
+            simulation_time=row.simulation_time,
+        )
+
     return StoreList(
-        items=[
-            StoreSummary(
-                store_id=row.id,
-                currency=row.currency,
-                source_type="simulation",
-                simulation_time=row.simulation_time,
-            )
-            for row in rows[:limit]
-        ],
+        items=[summary(row) for row in rows[:limit]],
         next_cursor=encode_read_cursor(scope, (rows[limit - 1].id,)) if len(rows) > limit else None,
+        active_store=summary(active) if active else None,
     )
 
 

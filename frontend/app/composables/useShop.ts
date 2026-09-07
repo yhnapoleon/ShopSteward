@@ -5,6 +5,8 @@ export function useShop() {
     session: null as Session | null,
     stores: [] as Schema<'StoreSummary'>[],
     storeId: '',
+    activeStoreId: '',
+    discovering: false,
     missionId: '',
     dashboard: null as Schema<'Dashboard'> | null,
     catalog: null as Schema<'Catalog'> | null,
@@ -25,6 +27,7 @@ export function useShop() {
     connected: false,
     notice: '',
     requestSeq: 0,
+    storeVersion: 0,
     pending: null as PendingApproval | null,
     runs: {} as Record<string, string>,
   })).value
@@ -67,7 +70,7 @@ export function useShop() {
         return
       }
       const list = await api<Schema<'StoreList'>>('/api/v1/stores?limit=100')
-      s.stores = list.items
+      applyStores(list)
       try {
         s.runs = JSON.parse(localStorage.getItem('ss.scenarios') || '{}')
         const pending = JSON.parse(sessionStorage.getItem('ss.approval') || 'null')
@@ -75,7 +78,8 @@ export function useShop() {
       } catch {}
       const saved = localStorage.getItem('ss.store')
       await selectStore(
-        s.stores.some((x) => x.store_id === saved) ? saved! : s.stores[0]?.store_id || '',
+        s.activeStoreId ||
+          (s.stores.some((x) => x.store_id === saved) ? saved! : s.stores[0]?.store_id || ''),
       )
     } catch (e) {
       s.error = (e as Error).message
@@ -84,8 +88,35 @@ export function useShop() {
       s.loading = false
     }
   }
+  function applyStores(list: Schema<'StoreList'>) {
+    s.stores = list.items
+    s.activeStoreId = list.active_store?.store_id || ''
+    if (list.active_store && !s.stores.some((st) => st.store_id === s.activeStoreId))
+      s.stores.unshift(list.active_store)
+  }
+  async function pollEnvironment() {
+    if (!s.session?.authenticated || s.discovering || s.busy) return
+    s.discovering = true
+    try {
+      const list = await api<Schema<'StoreList'>>('/api/v1/stores?limit=100')
+      // A user command may have started while discovery was in flight.
+      if (s.busy) return
+      const previous = s.activeStoreId
+      applyStores(list)
+      if (s.activeStoreId && s.activeStoreId !== previous) {
+        await selectStore(s.activeStoreId)
+        notify('模拟器已切换经营环境，正在使用新场景的实际数据。')
+      } else await refresh()
+    } catch (e) {
+      s.connected = false
+      s.error = (e as Error).message
+    } finally {
+      s.discovering = false
+    }
+  }
   async function selectStore(id: string) {
     s.requestSeq++
+    s.storeVersion++
     s.storeId = id
     s.missionId = ''
     s.plan = null
@@ -95,9 +126,12 @@ export function useShop() {
     s.catalog = null
     s.inbounds = []
     s.timeline = []
+    s.timelineCursor = null
     s.ledger = []
+    s.ledgerCursor = null
     s.alerts = []
     s.error = ''
+    s.connected = false
     if (id) localStorage.setItem('ss.store', id)
     await refresh(true)
   }
@@ -201,9 +235,13 @@ export function useShop() {
       if (!id || !run) throw new Error('初始化回执缺少店铺或场景引用')
       s.runs[id] = run
       localStorage.setItem('ss.scenarios', JSON.stringify(s.runs))
-      s.stores = (await api<Schema<'StoreList'>>('/api/v1/stores?limit=100')).items
-      await selectStore(id)
-      notify('新示例店铺已准备好，尚未采购。')
+      applyStores(await api<Schema<'StoreList'>>('/api/v1/stores?limit=100'))
+      await selectStore(s.activeStoreId || id)
+      notify(
+        s.storeId === id
+          ? '新示例店铺已准备好，尚未采购。'
+          : '场景已创建，当前正在使用随后创建的最新经营环境。',
+      )
     })
   }
   async function startMission() {
@@ -278,6 +316,8 @@ export function useShop() {
   }
   async function decide(snapshot: { plan: Schema<'Plan'>; quantity: number }) {
     return command('正在提交确认', async () => {
+      if (snapshot.plan.id !== s.plan?.id || snapshot.plan.mission_id !== s.missionId)
+        throw new Error('经营环境或方案已经变化，请重新核对。')
       const pending: PendingApproval = {
         storeId: s.storeId,
         planId: snapshot.plan.id,
@@ -346,12 +386,15 @@ export function useShop() {
   }
   async function moreTimeline() {
     if (!mission.value || !s.timelineCursor) return
+    const missionId = mission.value.id,
+      version = s.storeVersion
     const r = await api<Schema<'TimelineEntryList'>>(
       '/api/v1/missions/' +
-        mission.value.id +
+        missionId +
         '/timeline' +
         query({ cursor: s.timelineCursor, limit: 30 }),
     )
+    if (version !== s.storeVersion || missionId !== s.missionId) return
     s.timeline.push(...r.items)
     s.timelineCursor = r.next_cursor
   }
@@ -368,6 +411,7 @@ export function useShop() {
     hasRole,
     init,
     refresh,
+    pollEnvironment,
     selectStore,
     createScenario,
     startMission,

@@ -39,6 +39,7 @@ class Settings(BaseSettings):
     agent_enabled: bool = False
     agent_base_url: str = "https://api.openai.com/v1"
     agent_model: str = "gpt-4.1-mini"
+    agent_api_mode: Literal["chat_completions", "responses"] = "chat_completions"
     agent_api_key_file: str | None = Field(default=None, repr=False)
     agent_backend_url: str = "http://127.0.0.1:8000"
     agent_worker_concurrency: int = Field(default=1, ge=1, le=8)

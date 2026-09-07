@@ -43,7 +43,7 @@ async function load() {
     }
     if (v !== version) return
     messages.value = all
-    const rid = c.active_run_id || run.value?.id
+    const rid = c.active_run_id || all.findLast((m) => m.run_id)?.run_id || run.value?.id
     if (rid) {
       const next = await api<Schema<'RunView'>>('/api/v1/agent-runs/' + rid)
       if (v !== version) return
@@ -65,6 +65,8 @@ watch(
     run.value = null
     conversation.value = null
     error.value = ''
+    input.value = ''
+    sending.value = false
     void load()
   },
 )
@@ -79,15 +81,22 @@ onUnmounted(() => {
 async function send() {
   const content = input.value.trim()
   if (!content || !enabled.value || sending.value) return
+  const v = version,
+    missionId = mission.value!.id,
+    storeId = s.storeId,
+    current = () => v === version && mission.value?.id === missionId && s.storeId === storeId
   sending.value = true
   error.value = ''
   try {
-    if (!conversation.value)
-      conversation.value = await api<Schema<'ConversationView'>>(
-        `/api/v1/missions/${mission.value!.id}/conversations`,
+    if (!conversation.value) {
+      const created = await api<Schema<'ConversationView'>>(
+        `/api/v1/missions/${missionId}/conversations`,
         'POST',
         { is_default: true, title: '活动备货' },
       )
+      if (!current()) return
+      conversation.value = created
+    }
     let id: string
     if (run.value?.status === 'WAITING_INPUT') {
       const r = await api<Schema<'ResumeAccepted'>>(
@@ -104,32 +113,45 @@ async function send() {
       )
       id = r.agent_run_id
     }
+    if (!current()) return
     input.value = ''
-    run.value = await api<Schema<'RunView'>>('/api/v1/agent-runs/' + id)
+    const next = await api<Schema<'RunView'>>('/api/v1/agent-runs/' + id)
+    if (!current()) return
+    run.value = next
     await load()
   } catch (e) {
-    error.value = (e as Error).message
+    if (current()) error.value = (e as Error).message
   } finally {
-    sending.value = false
+    if (current()) sending.value = false
   }
 }
 async function cancel() {
   if (!run.value) return
+  const v = version,
+    missionId = mission.value?.id,
+    storeId = s.storeId,
+    current = () => v === version && mission.value?.id === missionId && s.storeId === storeId
   try {
-    run.value = await api<Schema<'RunView'>>(
+    const next = await api<Schema<'RunView'>>(
       `/api/v1/agent-runs/${run.value.id}/cancel`,
       'POST',
       {},
     )
+    if (!current()) return
+    run.value = next
     await load()
   } catch (e) {
-    error.value = (e as Error).message
+    if (current()) error.value = (e as Error).message
   }
 }
 async function toggleFollowup() {
   if (!conversation.value) return
+  const v = version,
+    missionId = mission.value?.id,
+    storeId = s.storeId,
+    current = () => v === version && mission.value?.id === missionId && s.storeId === storeId
   try {
-    conversation.value = await api<Schema<'ConversationView'>>(
+    const next = await api<Schema<'ConversationView'>>(
       `/api/v1/conversations/${conversation.value.id}/followup`,
       'PATCH',
       {
@@ -138,8 +160,10 @@ async function toggleFollowup() {
         expected_version: conversation.value.followup_version,
       },
     )
+    if (!current()) return
+    conversation.value = next
   } catch (e) {
-    error.value = (e as Error).message
+    if (current()) error.value = (e as Error).message
   }
 }
 </script>
@@ -160,7 +184,10 @@ async function toggleFollowup() {
         {{ m.content }}
       </div>
     </div>
-    <p v-if="run?.status === 'WAITING_INPUT'" class="notice">{{ run.question }}</p>
+    <p v-if="run?.status === 'WAITING_INPUT'" class="notice">
+      <span>{{ run.question }}</span
+      ><button class="text-link" @click="cancel">停止本轮回答</button>
+    </p>
     <p v-else-if="active" role="status" class="channel-note">
       {{ run?.status === 'QUEUED' ? '等待Agent处理…' : '正在处理…'
       }}<button class="text-link" @click="cancel">停止本轮回答</button>

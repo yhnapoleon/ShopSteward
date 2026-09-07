@@ -1,0 +1,53 @@
+{
+  "previous": "store_1614f912587844d38601b46f671000e0",
+  "current": "store_b63a7fa2b2fc41f9ad31afeda3f87789",
+  "run": {
+    "id": "022f252a-e040-48c5-9a1d-26c0af1e68e2",
+    "conversation_id": "1f7e8edc-3d99-4aec-b2bd-6dddce184bcc",
+    "status": "SUCCEEDED",
+    "input_through_seq": 1,
+    "trigger": "USER",
+    "graph_version": "agent-v1",
+    "interrupt_id": null,
+    "question": null,
+    "output": {
+      "cards": [],
+      "model": "gpt-5.6-luna",
+      "usage": {
+        "input_tokens": 3337,
+        "total_tokens": 3439,
+        "output_tokens": 102
+      },
+      "status": "SUCCEEDED",
+      "content": "- 现金：¥1234.00\n- 现货：34 件\n- 应收：¥60.00",
+      "references": [
+        {
+          "id": "store_b63a7fa2b2fc41f9ad31afeda3f87789",
+          "type": "store",
+          "version": "2"
+        }
+      ],
+      "tool_calls": 1,
+      "model_calls": 2,
+      "graph_version": "agent-v1",
+      "tool_catalog_version": "agent-tools-v1"
+    },
+    "error_code": null,
+    "created_at": "2026-09-07T14:20:02.478320Z",
+    "finished_at": "2026-09-07T14:20:10.985069Z",
+    "tools": [
+      {
+        "tool": "get_dashboard",
+        "invocation_id": "022f252a-e040-48c5-9a1d-26c0af1e68e2:1:0",
+        "ok": true,
+        "references": [
+          {
+            "id": "store_b63a7fa2b2fc41f9ad31afeda3f87789",
+            "type": "store",
+            "version": "2"
+          }
+        ]
+      }
+    ]
+  }
+}

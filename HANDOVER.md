@@ -1,5 +1,25 @@
 # ShopSteward 当前开发交接
 
+### 最新修复：模拟器驱动当前环境（2026-09-07）
+
+console 默认联动创建；成功导入后 backend 返回持久的当前场景，已打开前端每2.5秒自动跟随，资金/库存/事件和新任务 Agent 均使用该场景。保留历史数据，修复跨场景审批、分页及 Agent 异步响应污染。用户原 SANDBOX 已在实际前端显示现金1000、库存20，未改变其数据。
+
+最终隔离浏览器5项通过（含官方 Luna）；backend相关23项、查询/契约11项、console异步3项通过；类型/构建/契约/Ruff通过。隔离服务已关闭，3000/8000/8001与原worker继续运行；最终API根PID39108，操作前核对。无迁移或提交。行为、复现及证据见[环境同步验收](docs/reports/environment-sync-test-report.md)。此前“完整联调”未覆盖外部创建自动切场景的缺口已在本轮补齐。
+
+### 最新现场：Windows 全栈运行与官方 Luna E2E（2026-09-07）
+
+最终补充：监控接口已从实际配置返回 Agent 启用状态（修复旧硬编码false）；队列/监控/API **33项追加回归通过**，在线 session 与 monitoring 均为 true。
+
+- **已拉起**：前端 http://127.0.0.1:3000 、新版 API 8000、simulator 8001、business worker 与 Agent worker。官方模型 `gpt-5.6-luna`，`AGENT_API_MODE=responses`，并发1；用户指定密钥文件仅在私有配置中引用。
+- **已迁移**：开发 PG 已从 `0009_agent_scopes` 升到 `0010_knowledge`，新版数量修订和K1知识接口已部署到8000。迁移前开发库备份为 `var/full-stack-20260907/before-knowledge-migration.sql`；原件路径未变。Docker Desktop一直由用户启动，本轮未启动/重启它。
+- **验证**：backend+Agent 308通过、simulator23通过；业务浏览器8项、真实Luna3项、受控恢复1项分批通过。真实模型已覆盖解释、试算、修订后用户采购、澄清刷新恢复、偏好保存、取消与主动解读。类型/构建、Ruff、迁移漂移与契约通过。
+- **重启**：API/业务worker/Agent worker/Nuxt/simulator全部重启后，4店铺与3会话完全一致；7个成功Run和1个取消Run、消息、偏好及精确账本均保留。SC01保持现金400/应收200/现货70/在途0/预留0。
+- **进程**：最新记录 `var/windows-stack-20260907-133412/processes.json`，日志同目录。PID仅作定位，操作前核对身份。复现入口 `infra/start_windows.py`；脚本拒绝占用的3000/8000，不覆盖.env、不自动迁移、不终止未知进程。
+- **Git**：`YH / b7db9a0` 加本轮未提交修改；未推送。前次交接中的 `6fb71fa` 和工作区状态已过时。
+- **待办**：K2解析/索引、云端语料与模型存储实测、K3–K5、真实预测仍按原独立工作包推进。报价CSV仍是本地工具；少买后再次建议补足的后端语义未更改。本轮测试会话最后关闭主动解读，用户可按需开启；业务自动检查保持运行。
+
+完整说明：[测试/启动报告](docs/reports/frontend-agent-fullstack-test-report.md)、[重启状态证据](docs/api/frontend-agent-restart-result.json)、[桌面截图](docs/reports/frontend-agent-desktop.png)。以下同日旧阶段的“当前”说明按其历史版本理解。
+
 ### 最新需求补充：云端知识检索（2026-09-07）
 
 - 用户允许文本出云；要求助手寻找/合成有意义的大规模资料；偏好云端DB/知识关系与embedding、本地Agent读取带正文及元数据的候选。区域选择回答为“暂不限定，按实测选择”。

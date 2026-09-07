@@ -82,6 +82,7 @@ async def monitoring(request: Request, principal: Admin):
             session,
             request.app.state.settings.job_lease_seconds,
             request.app.state.settings.source_stale_seconds,
+            agent_enabled=request.app.state.settings.agent_enabled,
         )
 
 
