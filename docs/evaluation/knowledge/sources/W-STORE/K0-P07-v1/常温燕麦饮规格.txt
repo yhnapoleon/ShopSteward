@@ -1,0 +1,12 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+# 常温燕麦饮规格
+W-STORE | K0-P07-v1
+
+## [section:1] 西店规格 / West pack
+W-SKU-OAT 同名常温燕麦饮为330 mL每盒、18盒每箱。The west-store namesake is 330 mL, 18 cartons per case.
+
+## [section:2] 身份 / Identity
+W-SKU-OAT 不等于 E-SKU-OAT；不得按东店24盒箱规换算。West and east SKU identities must not merge.
+
+## [section:3] 开封 / Opened product
+开封冷藏后12小时内用完；仅适用于本西店型号。Use within 12 hours after opening; this applies only to this west-store model.

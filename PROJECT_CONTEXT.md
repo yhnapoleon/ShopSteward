@@ -1,5 +1,21 @@
 # ShopSteward 项目总说明与对话交接
 
+### 最新方向补充：云端检索与扩展语料（2026-09-07）
+
+用户确认由助手寻找/合成足量且有意义的资料，允许文本发送云模型；优先云端embedding、知识索引与关系存储，本地Agent取回带正文/元数据的candidates。部署区域暂不限定，按实测选择。已形成[扩展设计](docs/superpowers/specs/2026-09-07-cloud-knowledge-and-corpus-design.md)及[首批10个公开来源家族目录](docs/research/2026-09-07-knowledge-public-source-catalog.md)：先200份试运行，再以1000独立文档+另计版本为目标，300题独立效果评测；规模为计划，尚未生成/入库。保留原K0冻结集，云存储/模型未决出实测胜者，关系优先云PG；本轮没有开通云资源或实现K2–K5。既有K0/K1完成状态如下。
+
+### 最新进度：知识资料基线与文档管理（2026-09-07）
+
+**K0基线与K1后端已实现。** 文档资料用于供应商条款、商品说明、SOP、活动要求、复盘等可引用证据；实时经营数据与计算继续由现有backend负责。结构清楚并不意味着需要向量或独立图数据库，实体/条件优先精确索引、PG关联与确定性规则。
+
+K0提供40份合成原件版本、60核心问、12关系问、来源hash与实际解析/关键词/关系基线。复用RAilG核心算法的方向保留，但BGE-M3/OpenSearch是候选组合；Qwen embedding、OpenAI embedding、pgvector与Qdrant的比较和选择门槛已补齐。真实模型/其他向量引擎尚未实测，不声称选型胜出。关系12题的SQL固定JOIN与有界递归同事实结果一致，先保留PG关系方案。
+
+K1新增上传/追加、元数据分页与管理、原件版本/鉴权下载、归档恢复9个操作，使用现有身份与PG，不绑定embedding/检索存储。上传返回201和UPLOADED/NOT_INDEXED；索引任务、检索、Agent取用和文档UI分别留在K2–K5。代码/测试库迁移head为0010_knowledge；开发库仍0009，8000/8001未切换。原件目录与PG需要共同备份，孤儿原件自动GC尚待后续实现。
+
+全量backend/Agent/跨服务PG302项通过；随后图表页兼容修复的78项知识模块与22项真实HTTP/重启验收通过，simulator23项通过。最新现场、测试批次与后续操作以[HANDOVER顶部](HANDOVER.md)及[K1测试报告](docs/reports/knowledge-k1-test-report.md)为准。本轮未提交/推送，基准HEAD6fb71fa。
+
+阅读：[K0–K1执行设计](docs/superpowers/plans/2026-09-07-k0-k1-execution.md)、[embedding/检索存储/图与取回方式比较](docs/research/2026-09-07-knowledge-technology-options.md)、[K0实验报告](docs/reports/knowledge-baseline-report.md)、[K1接口说明](backend/app/knowledge/README.md)。下方既有Simulator/Agent/B0进度保留为历史背景。
+
 ### Simulator 控制台已实施（2026-09-07）
 
 已在用户批准后实现**可配置 SANDBOX、写入 PostgreSQL 的模拟数据与本地 Dashboard**。入口 <http://127.0.0.1:8001/console/>；支持独立/联动创建、销售/需求/订单到货 Trigger、事件及 backend 同步观察。SC01 基准和既有数据保留；产品 frontend 独立开发。运行说明见 [simulation/README.md](simulation/README.md)，验收见 [测试报告](docs/reports/simulator-console-test-report.md) 与 [真实 HTTP 证据](docs/api/simulator-console-acceptance-result.json)。

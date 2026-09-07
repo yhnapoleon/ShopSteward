@@ -1,5 +1,24 @@
 # ShopSteward 当前开发交接
 
+### 最新需求补充：云端知识检索（2026-09-07）
+
+- 用户允许文本出云；要求助手寻找/合成有意义的大规模资料；偏好云端DB/知识关系与embedding、本地Agent读取带正文及元数据的候选。区域选择回答为“暂不限定，按实测选择”。
+- 已落盘[云端与语料设计](docs/superpowers/specs/2026-09-07-cloud-knowledge-and-corpus-design.md)、[公开来源目录](docs/research/2026-09-07-knowledge-public-source-catalog.md)。1000逻辑文档、另约200版本和300题均为新增目标；首批目录10个来源家族，不等于原件已经入库。原K0数据/hash/评测不变。
+- 后续云端query/document embedding均走可替换API；云PG关系/metadata投影与向量候选引擎同区部署，现有backend保留业务/权限/版本权威。本地Agent由backend取证据，无需本地embedding。关系模型不要求独立Neo4j。模型/DB/区域需要实测，尚未配置付费账号或预算、未部署。新方向不改变下述已完成K0/K1和运行现场。
+
+### 当前交付：K0知识基线 + K1文档管理后端（2026-09-07）
+
+- **K0已完成可运行无模型基线与选型设计**：40份合成原件版本（38逻辑文档）、60核心问、12关系问；20份RAilG候选源文件清单与SHA256。冻结语料900项校验通过。RAilG解析生成165块，扫描/混合PDF缺失已归档；实际复现bool.should无匹配仍返回、父块50条截断丢失hit两个迁移问题。
+- **RAG数据边界**：条款、商品说明、SOP、活动要求、复盘用于文档取回；库存/现价/现金/订单/Plan/审批仍走现有backend与确定性计算。结构关联先PG JOIN/有界递归；C/D同事实12题路径结果相同，未证明需要独立图数据库。
+- **embedding/vectorDB尚未最终选型**：BGE-M3、Qwen3-Embedding-0.6B/4B、OpenAI small/large及PG+pgvector/OpenSearch/Qdrant已完成官方资料比较与试验门槛。没有可用模型配置，真实dense/RRF/rerank、pgvector/Qdrant未实测；K1保持检索引擎独立。
+- **K1已实现9操作/6路径**：原件上传/追加、元数据筛选分页、详情、版本、鉴权下载、PATCH、归档/恢复。上传201，UPLOADED/NOT_INDEXED，不登记空索引任务；所有写入幂等，变更CAS；private正文仅owner，admin可发现元数据但不能读他人正文。新增两张知识表、不可变版本触发器和同文档latest指针FK。
+- **验证**：PDF/Office审查修复后全量backend/Agent/跨服务PG **302 passed、0 skipped**；随后chartsheet兼容修复的最终知识模块 **78 passed**；最终真实HTTP/重启 **22项通过**；simulator **23 passed**。Ruff、164文件格式、迁移漂移、依赖锁与契约通过。具体运行批次和局限见[测试报告](docs/reports/knowledge-k1-test-report.md)与[机器汇总](docs/api/knowledge-k0-k1-verification-result.json)，不将分批检查虚报为一次304项全量。
+- **运行现场**：代码与专用测试库head为`0010_knowledge`；开发库只读确认仍是`0009_agent_scopes`。原8000/8001服务健康均200，未迁移或重启。8016验收API与本轮K0 OpenSearch已停止；后者容器保留供显式复测。Docker Desktop仍只由用户手动启动。**新文档API尚未部署到原8000进程。**
+- **下一步K2**：修正RAilG两个已复现缺陷，接真实解析/索引worker、OCR_REQUIRED/PARTIAL状态、稳定引用定位、可回滚generation发布和关键词取回；之后K3才做模型/存储实测，K4接Agent，K5做文档中心。原件事务失败/重放可能产生孤儿文件，GC尚未实现。没有全文RAG、Agent文档工具或前端文档UI。
+- Git起始/当前HEAD：`YH / 6fb71fa`；本轮修改在工作区，未提交/推送。下方Simulator/Agent记录为历史阶段，旧HEAD与“当前”表述按其日期理解。
+
+入口：[本轮执行计划](docs/superpowers/plans/2026-09-07-k0-k1-execution.md)、[技术比较](docs/research/2026-09-07-knowledge-technology-options.md)、[K0报告](docs/reports/knowledge-baseline-report.md)、[语料说明](docs/evaluation/knowledge/README.md)、[K1 API/配置](backend/app/knowledge/README.md)、[Knowledge契约](docs/api/knowledge-v1.openapi.json)。
+
 ### 当前交付：持久 Simulator + Dashboard（2026-09-07）
 
 - **Docker Desktop 由用户手动启动。** 助手只检查和使用已经运行的 Docker，不自行启动。

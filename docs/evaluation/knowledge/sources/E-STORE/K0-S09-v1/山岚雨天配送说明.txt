@@ -1,0 +1,12 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+# 山岚雨天配送说明
+E-STORE | K0-S09-v1
+
+## [section:1] 雨天路线 / Rain route
+山岚 E-SUP-SL 雨天走北门卸货，南门坡道关闭。Use the north unloading entrance during rain.
+
+## [section:2] 货损界限 / Damage
+外箱湿但内袋完整时记录外观并正常验收；内袋进水则隔离。Log wet cartons; quarantine if inner bags are wet.
+
+## [section:3] 联系 / Contact
+延迟超过30分钟由店长联系调度，不让收货员离开岗位追车。After a 30-minute delay, the manager contacts dispatch.

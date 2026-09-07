@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+临期巡检阈值表
+E-STORE | K0-O03-v1
+[section:1] 标记 / Flag
+E-SKU-YOG 剩余保质期不超过3天标黄并放临期区；已过期直接隔离。Flag yogurt yellow at three days or fewer remaining; quarantine expired stock.
+[section:2] 复核 / Review
+每日开店与16:00两次核查标签，店长决定处理方案。Check labels at opening and 16:00; the manager decides disposition.
+[section:3] 不可自动打折 / No automatic discount
+标黄只触发复核，不自动打折或报损。A yellow flag authorizes neither a discount nor a write-off.

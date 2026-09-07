@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+青禾交付规则
+E-STORE | K0-S02-v2
+[section:1] 当前截单 / Current cutoff
+青禾 E-SUP-QH 的 E-SKU-OAT 常温燕麦饮工作日14:00截单，次工作日送达。Current cutoff: 14:00 on business days; delivery next business day.
+[section:2] 部分履约 / Partial fulfilment
+实收数量与签收数量一致；未到部分保留待交，不得将整单标成全部到货。Sign for received units only; retain the balance as outstanding.
+[section:3] 局部替换 / Limited amendment
+本版仅把旧版第1节截单由15:00改为14:00；旧版第2节破损24小时附批次照片申报继续适用。Only the cutoff is amended; damage reports still require batch photos within 24 hours.

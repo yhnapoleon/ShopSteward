@@ -1,0 +1,37 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-09-07",
+  "synthetic": true,
+  "status": "frozen",
+  "input_sha256": {
+    "corpus-spec.json": "1f3278c1184d452e5f27b0fc4e0fd6680949f072775c7583be4d6c5722425f5b",
+    "corpus-manifest.json": "c5f4c87a13d5059248abe7057364aa725f1d3df109bbd4241341e0e82e71ad20",
+    "cases.jsonl": "03c7dd14c6b2c4f54bc152ee5619565c3b8c46431516978ea9b26846b98c08d7",
+    "relation-cases.jsonl": "39d43af41ed72d9086171a456c80f132b3272b1a69e8a42f086fcf518862a79f",
+    "relations.json": "ff58fda40dd4e62d87a13067b65f38a0068eaa0807bb1c258377ab9dee70b4ab",
+    "entities-fixture.json": "8e9b3cee7ab7212975718e3d6bacc08b5fc66eaa6b071783497f931b4706fbe1"
+  },
+  "generator_sha256": "3c737be035b00a49b5d317193b8cfa8290e5357aa525a1aa421fa2ddb860568f",
+  "validation": {
+    "repeat_build_runs": 2,
+    "generated_bytes_and_mtimes_unchanged": true,
+    "foreign_file_preserved": true,
+    "unowned_overwrite_refused": true,
+    "in_memory_rebuild_matches": true,
+    "verified_owned_files_including_inventory": 83,
+    "ruff_check": "passed",
+    "ruff_format_check": "passed",
+    "visual_review": {
+      "method": "PDFium rendering inspected by authoring assistant",
+      "pages": [
+        "S04 page 1",
+        "P02 page 2",
+        "O01 page 3"
+      ],
+      "result": "simulation marker, bilingual content and final table row legible without clipping"
+    },
+    "human_label_review": "pending",
+    "retrieval_or_external_api_runs": 0
+  },
+  "note": "Frozen input digests are for run comparison; update deliberately after any future authored revision. No retrieval effectiveness is claimed."
+}

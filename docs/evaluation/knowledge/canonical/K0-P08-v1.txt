@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+秋季限定配料卡
+E-STORE | K0-P08-v1
+[section:1] 未来用途 / Future use
+E-SKU-SYRUP 桂花糖浆仅在9月12日起的限定活动使用，每杯10 mL。Osmanthus syrup: 10 mL per cup, effective September 12.
+[section:2] 保质 / Shelf life
+未开封180天，开封写日期并冷藏7天。Unopened shelf life is 180 days; date and refrigerate for seven days after opening.
+[section:3] 边界 / Boundary
+9月7日尚未生效，不能作为当前操作指引。Not an effective operating instruction on September 7.

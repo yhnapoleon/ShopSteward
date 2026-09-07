@@ -151,6 +151,12 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/agent-runs/{run_id}/cancel",
         "/api/v1/stores/{store_id}/agent-knowledge",
         "/internal/v1/agent-tools/{tool_name}",
+        "/api/v1/stores/{store_id}/documents",
+        "/api/v1/documents/{document_id}",
+        "/api/v1/documents/{document_id}/versions",
+        "/api/v1/documents/{document_id}/versions/{version_id}",
+        "/api/v1/documents/{document_id}/versions/{version_id}/content",
+        "/api/v1/documents/{document_id}/control",
     }
     assert schema["paths"]["/api/v1/monitoring/status"]["get"]["security"] == [{"UserBearer": []}]
     async with client_for(app) as client:
@@ -171,7 +177,7 @@ async def test_all_runtime_operations_have_phase_and_implementation_metadata():
             for method, operation in item.items():
                 if method not in {"get", "post", "patch"}:
                     continue
-                assert operation.get("x-phase") in {"B0", "B2-A"}, (method, path)
+                assert operation.get("x-phase") in {"B0", "B2-A", "K1"}, (method, path)
                 assert operation.get("x-implementation-status") == "implemented", (method, path)
 
 

@@ -1,0 +1,12 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+# 周五早餐活动方案
+W-STORE | K0-A05-v1
+
+## [section:1] 西店活动 / West event
+W-MISSION-BREAKFAST 在9月11日08:00开始，仅使用 W-SKU-OAT；西店草稿数量为36盒。West breakfast begins at 08:00; its draft calls for 36 cartons.
+
+## [section:2] 店铺隔离 / Store scope
+东店活动不是本活动，时间与数量不能跨店套用。Do not reuse this schedule or quantity for east-store breakfast.
+
+## [section:3] 准备 / Setup
+西店在前一日19:00核对台签，由西店主管确认。West-store signage is checked at 19:00 the previous day.

@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+杏仁饮使用说明
+E-STORE | K0-P03-v1
+[section:1] 单向替代 / One-way replacement
+E-SKU-ALM 杏仁饮仅可在甜点试吃 E-MISSION-TASTING 中替代 E-SKU-OAT-B，须明确标注坚果。Almond drink can replace backup oat drink only for dessert tasting with nut labeling.
+[section:2] 反例 / Counterexample
+不得推断杏仁饮可以替代早餐活动的 E-SKU-OAT；活动和过敏条件不同。This does not establish an almond-to-original-oat replacement.
+[section:3] 包装差异 / Pack mismatch
+杏仁饮330 mL每盒，不能把一盒视作250 mL。Almond cartons are 330 mL, not 250 mL.

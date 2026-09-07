@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+雨天少货复盘
+E-STORE | K0-R01-v1
+[section:1] 已确认事实 / Recorded facts
+8月28日纸杯少到2袋，差异单 RET-0828 由司机签字；次日补到。Two packs were missing on August 28; driver-signed RET-0828 records next-day completion.
+[section:2] 意见 / Opinion
+员工认为雨天装车忙导致漏装，但未获得仓库装车记录，原因未证实。Staff suspected rain-related loading pressure; causation is unconfirmed.
+[section:3] 改进建议 / Recommendation
+建议装车与签收双次核袋，不能把复盘建议当已部署控制。Recommend checks at loading and receipt; implementation is not established.

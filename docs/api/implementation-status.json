@@ -1,7 +1,7 @@
 {
   "updated_at": "2026-09-07",
   "application_version": "0.1.0",
-  "work_package": "B2-A Agent framework",
+  "work_package": "K0 baseline + K1 knowledge document management",
   "runtime_schema": "backend.runtime.openapi.json",
   "implemented_operation_ids": [
     "list_alerts",
@@ -42,6 +42,15 @@
     "request_mission_check",
     "list_mission_plans",
     "get_plan",
+    "create_knowledge_document",
+    "list_knowledge_documents",
+    "get_knowledge_document",
+    "patch_knowledge_document",
+    "append_knowledge_version",
+    "list_knowledge_versions",
+    "get_knowledge_version",
+    "download_knowledge_original",
+    "control_knowledge_document",
     "create_dev_scenario",
     "advance_dev_scenario"
   ],
@@ -89,5 +98,32 @@
     ],
     "deployment": "backend API + independent Agent worker",
     "external_agent_http": "planned"
+  },
+  "knowledge": {
+    "phase": "K1",
+    "runtime_schema": "knowledge-v1.openapi.json",
+    "migration": "0010_knowledge",
+    "implemented_operation_ids": [
+      "create_knowledge_document",
+      "list_knowledge_documents",
+      "get_knowledge_document",
+      "patch_knowledge_document",
+      "append_knowledge_version",
+      "list_knowledge_versions",
+      "get_knowledge_version",
+      "download_knowledge_original",
+      "control_knowledge_document"
+    ],
+    "registered_job_types": [],
+    "upload_status": "201 UPLOADED / NOT_INDEXED",
+    "planned": [
+      "parsing",
+      "indexing",
+      "search",
+      "reindex",
+      "activation",
+      "Agent tools",
+      "UI"
+    ]
   }
 }

@@ -34,6 +34,8 @@ class Settings(BaseSettings):
     source_stale_seconds: int = Field(default=30, ge=1, le=3600)
     plan_ttl_seconds: int = Field(default=900, ge=1, le=86400)
     fixed_forecast_ttl_seconds: int = Field(default=3600, ge=1, le=86400)
+    # Relative paths resolve against the API process working directory.
+    knowledge_storage_root: str = "var/knowledge"
     agent_enabled: bool = False
     agent_base_url: str = "https://api.openai.com/v1"
     agent_model: str = "gpt-4.1-mini"

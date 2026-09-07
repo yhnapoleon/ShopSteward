@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+甜点试吃台执行单
+E-STORE | K0-A02-v1
+[section:1] 安排 / Schedule
+E-MISSION-TASTING 在9月13日14:00试吃，使用 E-SKU-OAT-B 与 E-SKU-ALM；该任务仍处准备中。Dessert tasting uses backup oat and almond drinks on September 13 at 14:00.
+[section:2] 过敏原 / Allergen
+杏仁饮试吃卡必须显著标注坚果；顾客拒绝时不提供替代。Display nut allergens prominently; no substitution without consent.
+[section:3] 现场 / Station
+试吃台分开量杯，不共用搅拌棒，责任人是当班主管。Use separate measuring cups and stirrers; the shift lead is responsible.

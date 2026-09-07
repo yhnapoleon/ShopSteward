@@ -1,0 +1,9 @@
+模拟 / SYNTHETIC — fictional K0 evaluation fixture
+周五早餐活动方案
+E-STORE | K0-A01-v1
+[section:1] 活动范围 / Scope
+E-MISSION-BREAKFAST 为9月11日07:30开始的冷饮早餐活动，涉及 E-SKU-OAT 与 E-SKU-CUP。Friday breakfast starts at 07:30 and uses oat drinks and paper cups.
+[section:2] 准备节点 / Readiness
+陈列检查在9月10日18:00完成；供应商送达承诺仍以订单确认时间为准。Complete display checks by September 10 at 18:00; order confirmations govern delivery.
+[section:3] 需求边界 / Draft demand
+方案草稿写80盒燕麦饮，未确认进入正式需求；不可据此声称已预留或已采购80盒。The draft suggests 80 cartons, not a confirmed demand, reservation or purchase.

@@ -1,0 +1,310 @@
+{
+  "schema_version": "1.0",
+  "as_of": "2026-09-07",
+  "status": "passed",
+  "scope": "Offline artifact and label-reference integrity only; no retrieval, OCR, embedding, database or external API evaluation.",
+  "human_review_status": "pending; gold labels are individually specified by the authoring assistant, not retriever-generated and not claimed human-reviewed",
+  "source_count": 40,
+  "logical_document_count": 38,
+  "formats": {
+    "pdf": 8,
+    "docx": 6,
+    "md": 11,
+    "xlsx": 4,
+    "csv": 4,
+    "txt": 7
+  },
+  "categories": {
+    "supplier": 12,
+    "product": 8,
+    "sop": 8,
+    "campaign": 6,
+    "retrospective": 6
+  },
+  "cases": {
+    "cases.jsonl": {
+      "count": 60,
+      "splits": {
+        "dev": 40,
+        "test": 20
+      },
+      "groups": {
+        "exact": 12,
+        "keyword": 12,
+        "synonym": 12,
+        "synthesis": 8,
+        "no_answer": 8,
+        "business_mixed": 8
+      },
+      "sha256": "03c7dd14c6b2c4f54bc152ee5619565c3b8c46431516978ea9b26846b98c08d7"
+    },
+    "relation-cases.jsonl": {
+      "count": 12,
+      "splits": {
+        "dev": 8,
+        "test": 4
+      },
+      "groups": {
+        "single_step": 4,
+        "multi_step": 4,
+        "conditional": 2,
+        "unknown": 2
+      },
+      "sha256": "39d43af41ed72d9086171a456c80f132b3272b1a69e8a42f086fcf518862a79f"
+    }
+  },
+  "relation_count": 28,
+  "entity_count": 26,
+  "checks_passed": 899,
+  "files": [
+    {
+      "version_id": "K0-S01-v1",
+      "format": "pdf",
+      "pages": 1,
+      "text_characters": [
+        503
+      ],
+      "images": [
+        0
+      ]
+    },
+    {
+      "version_id": "K0-S02-v2",
+      "format": "docx",
+      "paragraphs": 9,
+      "tables": 1
+    },
+    {
+      "version_id": "K0-S03-v3",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-S04-v1",
+      "format": "pdf",
+      "pages": 1,
+      "text_characters": [
+        0
+      ],
+      "images": [
+        1
+      ]
+    },
+    {
+      "version_id": "K0-S05-v1",
+      "format": "pdf",
+      "pages": 1,
+      "text_characters": [
+        436
+      ],
+      "images": [
+        0
+      ]
+    },
+    {
+      "version_id": "K0-S06-v1",
+      "format": "docx",
+      "paragraphs": 9,
+      "tables": 1
+    },
+    {
+      "version_id": "K0-S07-v1",
+      "format": "xlsx",
+      "formula": "=B3*C3",
+      "cached_value": 600
+    },
+    {
+      "version_id": "K0-S08-v1",
+      "format": "csv"
+    },
+    {
+      "version_id": "K0-S09-v1",
+      "format": "txt"
+    },
+    {
+      "version_id": "K0-S10-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-S11-v1",
+      "format": "txt"
+    },
+    {
+      "version_id": "K0-S12-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-P01-v1",
+      "format": "pdf",
+      "pages": 1,
+      "text_characters": [
+        486
+      ],
+      "images": [
+        0
+      ]
+    },
+    {
+      "version_id": "K0-P02-v1",
+      "format": "pdf",
+      "pages": 2,
+      "text_characters": [
+        237,
+        0
+      ],
+      "images": [
+        0,
+        1
+      ]
+    },
+    {
+      "version_id": "K0-P03-v1",
+      "format": "docx",
+      "paragraphs": 9,
+      "tables": 1
+    },
+    {
+      "version_id": "K0-P04-v1",
+      "format": "xlsx",
+      "formula": "=B3*C3",
+      "cached_value": null
+    },
+    {
+      "version_id": "K0-P05-v1",
+      "format": "csv"
+    },
+    {
+      "version_id": "K0-P06-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-P07-v1",
+      "format": "txt"
+    },
+    {
+      "version_id": "K0-P08-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-O01-v1",
+      "format": "pdf",
+      "pages": 3,
+      "text_characters": [
+        348,
+        358,
+        407
+      ],
+      "images": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "version_id": "K0-O02-v1",
+      "format": "docx",
+      "paragraphs": 9,
+      "tables": 1
+    },
+    {
+      "version_id": "K0-O03-v1",
+      "format": "csv"
+    },
+    {
+      "version_id": "K0-O04-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-O05-v1",
+      "format": "txt"
+    },
+    {
+      "version_id": "K0-O06-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-O07-v1",
+      "format": "txt"
+    },
+    {
+      "version_id": "K0-O08-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-A01-v1",
+      "format": "pdf",
+      "pages": 1,
+      "text_characters": [
+        556
+      ],
+      "images": [
+        0
+      ]
+    },
+    {
+      "version_id": "K0-A02-v1",
+      "format": "docx",
+      "paragraphs": 9,
+      "tables": 1
+    },
+    {
+      "version_id": "K0-A03-v1",
+      "format": "xlsx",
+      "formula": "=B3*C3",
+      "cached_value": 120
+    },
+    {
+      "version_id": "K0-A04-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-A05-v1",
+      "format": "txt"
+    },
+    {
+      "version_id": "K0-A06-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-R01-v1",
+      "format": "pdf",
+      "pages": 1,
+      "text_characters": [
+        516
+      ],
+      "images": [
+        0
+      ]
+    },
+    {
+      "version_id": "K0-R02-v1",
+      "format": "docx",
+      "paragraphs": 9,
+      "tables": 1
+    },
+    {
+      "version_id": "K0-R03-v1",
+      "format": "xlsx",
+      "formula": "=B3/C3",
+      "cached_value": null
+    },
+    {
+      "version_id": "K0-R04-v1",
+      "format": "csv"
+    },
+    {
+      "version_id": "K0-R05-v1",
+      "format": "md"
+    },
+    {
+      "version_id": "K0-R06-v1",
+      "format": "txt"
+    }
+  ],
+  "dependencies": {
+    "reportlab": "4.4.9",
+    "pillow": "12.3.0",
+    "python-docx": "1.2.0",
+    "openpyxl": "3.1.5",
+    "pypdf": "6.10.0"
+  }
+}

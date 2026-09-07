@@ -1,0 +1,238 @@
+{
+  "schema_version": 1,
+  "audited_at": "2026-09-07T11:59:30.806385+00:00",
+  "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+  "source_worktree_dirty": true,
+  "source_license_sha256": "b60164ac8de6b78a033a555c16b885e2038a3a43005fd22eb78ff1443f58ba6c",
+  "files": [
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/extractors/base.py",
+      "source_sha256": "d25ad702831c0a62d85948c53b509db6241eef1dc8341628ee7de2a3a59e9691",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/extractors/base.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Retain markdown contract; add parse status and stable locators."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/extractors/office.py",
+      "source_sha256": "13c609abeb6bdec0b110f153d21c1b4c19f6a556b9da111c48949ffd4b3d7965",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/extractors/office.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Bound ZIP/XML; preserve sheet/range and formula state; never infer business amounts."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/extractors/pdf.py",
+      "source_sha256": "fec2a22fa53f5c5c474f49a2521dfc95ea5a615c26d1092a354bd890256b24cb",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/extractors/pdf.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Retain low-text detection; require explicit partial/OCR status and page locators."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/extractors/text_formats.py",
+      "source_sha256": "313ed8f07372741ba54ce46155fc19a14ddfcc60a57ae30d7a95e5afd970ffd4",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/extractors/text_formats.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Bound input; UTF-8 validation, CSV row/cell locators; no silent truncation."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/extractors/layout.py",
+      "source_sha256": "f2b87931af86fea2283750597a042b36091f3a684ed722089ced1d0a0431db1a",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/extractors/layout.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Optional OCR adapter only after a measured layout failure."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/extractors/ocr_backends.py",
+      "source_sha256": "7e19755db3b5319ea6771f9fd660a7362bd5fdb99fe33b9c373db274657fe2f5",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/extractors/ocr_backends.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Optional dependency; no automatic download or remote credentials."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/chunker.py",
+      "source_sha256": "e10bb76349e350e1414d3549d943810fed3ffd79585ec77d0a675978927615a7",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/chunker.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Keep section/context/chunk idea; benchmark larger chunks and version-aware parent keys."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/ingest/page.py",
+      "source_sha256": "080d2b7d606af082a7aa1a2e1708bc29ef2a98296b462395e84245006f23f1ac",
+      "destination_path": "backend/app/knowledge/railg_core/ingest/page.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Keep table structure; verify table headers, original offsets, and lossless provenance."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/schema/document.py",
+      "source_sha256": "451f01d0e3bc6ac97a82724aaec8546efa0251e0ae3d463416612a1d0c34f4a6",
+      "destination_path": "backend/app/knowledge/railg_core/schema/document.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Adapt to store/document/version/index-profile IDs; fail-closed ACL; no path identity."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/schema/mapping.py",
+      "source_sha256": "b1fd6d47575c9576c8b7bb4e8c8915906c2c24cde910ebb7460fad7128902fbf",
+      "destination_path": "backend/app/knowledge/railg_core/schema/mapping.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Optional OpenSearch adapter; explicit store/version fields and tested dimensions."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/retrieval/builder.py",
+      "source_sha256": "ff458f83275dd2df78cbe6f5e9e6428b1eefc5c5e017ac91c5f2051bdc342a1b",
+      "destination_path": "backend/app/knowledge/railg_core/retrieval/builder.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Set minimum_should_match for scoring queries; include every ACL/version/exclusion inside vector filter."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/retrieval/processors.py",
+      "source_sha256": "8338e6b97f8de5d714a40ddafab9bec17580f72229006aedab99a8405db0c9b2",
+      "destination_path": "backend/app/knowledge/railg_core/retrieval/processors.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Use server-owned scope; separate exact, lexical, and vector branches with RRF."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/retrieval/service.py",
+      "source_sha256": "ad13c505960b1677291fabf093d266a539f687cc8d2eeee9086eb1c1bb611ead",
+      "destination_path": "backend/app/knowledge/railg_core/retrieval/service.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Lazy optional embedding; absolute deadline; no model requirement for lexical search."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/retrieval/parents.py",
+      "source_sha256": "998dd2e9ad792ec9dded9237ebad393ad1c5233946c805cad2a29ee3a3937b0f",
+      "destination_path": "backend/app/knowledge/railg_core/retrieval/parents.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Reauthorize every parent fetch; document/version/profile key; bounded context budget."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/providers/base.py",
+      "source_sha256": "7b3cad05eb112d07f74ef95946d337358f3aafa3931d0715d598dc33a03c559e",
+      "destination_path": "backend/app/knowledge/railg_core/providers/base.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Keep small provider interfaces; dependency injection from ShopSteward."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/providers/openai_compat.py",
+      "source_sha256": "5ad19d617d0e5259f8227e2964fb32c153f80b3bdc192b57dc7d1f0fd554f6f9",
+      "destination_path": "backend/app/knowledge/railg_core/providers/openai_compat.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Validate dimension, token budget, batch ordering, retry deadline; keys from own config."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/providers/tokens.py",
+      "source_sha256": "6a71725392421e9c254a3c204c2747b463a1b5a401091306e7f63cab1d1f327d",
+      "destination_path": "backend/app/knowledge/railg_core/providers/tokens.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Replace heuristic budgets with model-specific tokenization where available."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/generation/attribution.py",
+      "source_sha256": "aa8ee6312c8505d0039c9d2b882ec6ba96b99ea58e298d4e632c7b4604458d99",
+      "destination_path": "backend/app/knowledge/railg_core/generation/attribution.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Citation syntax checks only; similarity is not entailment or factual confidence."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/generation/packer.py",
+      "source_sha256": "e759c276d417b8a1ab6e36115aa4075934b0c3865367c7931f2dc8a89866c4ab",
+      "destination_path": "backend/app/knowledge/railg_core/generation/packer.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Keep source packing idea; reuse existing Agent output, not RAilG chat stack."
+    },
+    {
+      "source_repo": "IH/railg",
+      "source_commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+      "dirty": false,
+      "source_path": "railg/evaluation/metrics.py",
+      "source_sha256": "fc238ac1ba1b9923b6a60fc8e62d19ee81a70b5f14fc5d85f92a415df32708a9",
+      "destination_path": "backend/app/knowledge/railg_core/evaluation/metrics.py",
+      "destination_status": "candidate_K2_plus_not_copied",
+      "license": "repository MIT; preserve notice and verify upstream provenance before copying",
+      "adaptation": "Add split/group, no-answer, ACL, document-version and evidence metrics."
+    }
+  ],
+  "excluded": [
+    "api.py",
+    "auth.py",
+    "sessions",
+    "web",
+    "ingest/pipeline.py",
+    "config loader"
+  ],
+  "other_IH_repositories": "Design references only; repository-level license not established in prior audit. No code copied."
+}

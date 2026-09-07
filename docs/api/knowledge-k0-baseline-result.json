@@ -1,0 +1,3083 @@
+{
+  "schema_version": 1,
+  "ran_at": "2026-09-07T11:59:29.565202+00:00",
+  "python": "3.12.13",
+  "source": {
+    "commit": "c7048a3b4d3d8546a7e8d2f7cd5fbdf1b7df232d",
+    "dirty": true,
+    "candidate_files": 20
+  },
+  "packages": {
+    "railg": "0.1.0",
+    "aiohappyeyeballs": "2.7.1",
+    "aiohttp": "3.14.3",
+    "aiosignal": "1.4.0",
+    "annotated-types": "0.8.0",
+    "anyio": "4.15.1",
+    "attrs": "26.1.0",
+    "beautifulsoup4": "4.15.0",
+    "certifi": "2026.7.22",
+    "charset-normalizer": "3.5.1",
+    "colorama": "0.4.6",
+    "distro": "1.9.0",
+    "et_xmlfile": "2.0.0",
+    "Events": "0.5",
+    "frozenlist": "1.8.0",
+    "grpcio": "1.83.1",
+    "h11": "0.16.0",
+    "httpcore": "1.0.9",
+    "httpcore2": "2.12.0",
+    "httpx": "0.28.1",
+    "httpx2": "2.12.0",
+    "idna": "3.19",
+    "iniconfig": "2.3.0",
+    "jsonpatch": "1.33",
+    "jsonpointer": "3.1.1",
+    "langchain-core": "1.6.2",
+    "langchain-protocol": "0.0.19",
+    "langchain-text-splitters": "1.1.2",
+    "langsmith": "0.12.2",
+    "lxml": "6.1.3",
+    "mistletoe": "1.6.0",
+    "multidict": "6.7.1",
+    "openpyxl": "3.1.5",
+    "opensearch-protobufs": "1.2.0",
+    "opensearch-py": "3.2.0",
+    "orjson": "3.12.0",
+    "packaging": "26.3",
+    "pluggy": "1.6.0",
+    "propcache": "0.5.2",
+    "protobuf": "7.36.1",
+    "pydantic": "2.13.5",
+    "pydantic_core": "2.46.5",
+    "Pygments": "2.21.0",
+    "pypdf": "6.17.0",
+    "pytest": "9.1.1",
+    "pytest-asyncio": "1.4.0",
+    "python-dateutil": "2.9.0.post0",
+    "python-docx": "1.2.0",
+    "PyYAML": "6.0.3",
+    "RapidFuzz": "3.14.6",
+    "requests": "2.34.2",
+    "requests-toolbelt": "1.0.0",
+    "six": "1.17.0",
+    "sniffio": "1.3.1",
+    "soupsieve": "2.9.2",
+    "tenacity": "9.1.4",
+    "truststore": "0.10.4",
+    "typing_extensions": "4.16.0",
+    "typing-inspection": "0.4.4",
+    "urllib3": "2.7.0",
+    "uuid_utils": "0.17.0",
+    "websockets": "17.1",
+    "xxhash": "4.0.1",
+    "yarl": "1.24.5",
+    "zstandard": "0.25.0"
+  },
+  "image_digest": "opensearchproject/opensearch@sha256:1193b7c29c5d63028523728243cc4da047ac49f697a8f8105e5aeee2f89bcc4c",
+  "embedding_and_rerank": {
+    "status": "not_run",
+    "reason": "No configured model endpoint/key or installed local model; no model downloaded or borrowed key used."
+  },
+  "engine": {
+    "distribution": "opensearch",
+    "number": "2.17.1",
+    "build_type": "tar",
+    "build_hash": "1893d20797e30110e5877170e44d42275ce5951e",
+    "build_date": "2024-09-26T21:59:32.078798875Z",
+    "build_snapshot": false,
+    "lucene_version": "9.11.1",
+    "minimum_wire_compatibility_version": "7.10.0",
+    "minimum_index_compatibility_version": "7.0.0"
+  },
+  "protocol_probes": {
+    "mapping_contract": "passed",
+    "vector_probe_kind": "synthetic_4d_protocol_only_not_embedding_quality",
+    "scoped_no_match_original_ids": [
+      "east-current"
+    ],
+    "scoped_no_match_minimum_should_match_1_ids": [],
+    "lucene_knn_scope_filter_ids": [
+      "east-current"
+    ],
+    "chinese_tokens": [
+      "冷",
+      "冷链",
+      "链",
+      "链断",
+      "断",
+      "断电",
+      "电"
+    ],
+    "long_parent_original": {
+      "source_chunks": 60,
+      "fetched_siblings": 50,
+      "hit_index": 55,
+      "returned_parent_contains_hit": false,
+      "returned_parent": "ROW-022\nROW-023\nROW-024\nROW-025\nROW-026\nROW-027\nROW-028",
+      "finding": "50-sibling limit loses the hit; window falls back to middle of fetched siblings"
+    }
+  },
+  "corpus": {
+    "source_count": 40,
+    "indexed_chunk_count": 165,
+    "profile": {
+      "retrieval": "A_strict_CJK_BM25_only",
+      "chunk_size": 100,
+      "context_size_newlines": 20,
+      "top_chunks": 50,
+      "final_unique_versions": 5,
+      "rerank": false,
+      "parent": false,
+      "query_router": "none; full question sent to match text",
+      "ocr": false
+    },
+    "limitations": [
+      "Synthetic assistant-authored labels; human review pending.",
+      "Recall is document-version retrieval, not answer correctness or citation support.",
+      "No canonical transcription or label text was indexed.",
+      "Single-pass serial warm-service latency includes cold first query; no load/SLA inference.",
+      "No-answer correctness is not inferred from presence/absence of candidate documents."
+    ],
+    "input_hashes": {
+      "corpus-manifest.json": "c5f4c87a13d5059248abe7057364aa725f1d3df109bbd4241341e0e82e71ad20",
+      "cases.jsonl": "03c7dd14c6b2c4f54bc152ee5619565c3b8c46431516978ea9b26846b98c08d7",
+      "entities-fixture.json": "8e9b3cee7ab7212975718e3d6bacc08b5fc66eaa6b071783497f931b4706fbe1"
+    },
+    "parsing": [
+      {
+        "version_id": "K0-S01-v1",
+        "format": "pdf",
+        "status": "text_extracted",
+        "characters": 502,
+        "chunks": 3,
+        "parse_and_chunk_ms": 355.61039997264743,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 1,
+          "title": "SYNTHETIC K0-S01-v1",
+          "author": "ShopSteward K0 fictional fixtures"
+        }
+      },
+      {
+        "version_id": "K0-S02-v2",
+        "format": "docx",
+        "status": "text_extracted",
+        "characters": 1076,
+        "chunks": 6,
+        "parse_and_chunk_ms": 162.5558000523597,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "author": "ShopSteward fictional K0 fixtures"
+        }
+      },
+      {
+        "version_id": "K0-S03-v3",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 436,
+        "chunks": 5,
+        "parse_and_chunk_ms": 0.9909002110362053,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-S04-v1",
+        "format": "pdf",
+        "status": "empty",
+        "characters": 0,
+        "chunks": 0,
+        "parse_and_chunk_ms": 1.3814999256283045,
+        "low_text_pages": [
+          1
+        ],
+        "ocr_pages": [],
+        "full_sections_present": [],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 1,
+          "title": "SYNTHETIC K0-S04-v1",
+          "author": "ShopSteward K0 fictional fixtures",
+          "low_text_pages": [
+            1
+          ]
+        }
+      },
+      {
+        "version_id": "K0-S05-v1",
+        "format": "pdf",
+        "status": "text_extracted",
+        "characters": 435,
+        "chunks": 2,
+        "parse_and_chunk_ms": 4.794300068169832,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 1,
+          "title": "SYNTHETIC K0-S05-v1",
+          "author": "ShopSteward K0 fictional fixtures"
+        }
+      },
+      {
+        "version_id": "K0-S06-v1",
+        "format": "docx",
+        "status": "text_extracted",
+        "characters": 920,
+        "chunks": 6,
+        "parse_and_chunk_ms": 13.633999973535538,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "author": "ShopSteward fictional K0 fixtures"
+        }
+      },
+      {
+        "version_id": "K0-S07-v1",
+        "format": "xlsx",
+        "status": "text_extracted",
+        "characters": 656,
+        "chunks": 2,
+        "parse_and_chunk_ms": 351.80269996635616,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": {
+          "sheet": "换算",
+          "cell": "D3",
+          "formula": "=B3*C3",
+          "has_cache": true
+        },
+        "extracted_formula_sheet": "## 换算\n\n| 模拟 / SYNTHETIC — fictional K0 evaluation fixture |  |  |  |\n| --- | --- | --- | --- |\n| 单位/units | 输入/input A | 输入/input B | 公式/formula |\n| 袋/箱 × 只/袋 = 只/箱 | 12 | 50 | 600 |",
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "sheets": [
+            "说明",
+            "换算"
+          ]
+        }
+      },
+      {
+        "version_id": "K0-S08-v1",
+        "format": "csv",
+        "status": "text_extracted",
+        "characters": 780,
+        "chunks": 2,
+        "parse_and_chunk_ms": 1.4065001159906387,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-S09-v1",
+        "format": "txt",
+        "status": "text_extracted",
+        "characters": 407,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.198899932205677,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-S10-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 494,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.335300039499998,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-S11-v1",
+        "format": "txt",
+        "status": "text_extracted",
+        "characters": 463,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.191300107166171,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-S12-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 442,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.1481000110507011,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-P01-v1",
+        "format": "pdf",
+        "status": "text_extracted",
+        "characters": 485,
+        "chunks": 2,
+        "parse_and_chunk_ms": 4.0778000839054585,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 1,
+          "title": "SYNTHETIC K0-P01-v1",
+          "author": "ShopSteward K0 fictional fixtures"
+        }
+      },
+      {
+        "version_id": "K0-P02-v1",
+        "format": "pdf",
+        "status": "partial",
+        "characters": 238,
+        "chunks": 1,
+        "parse_and_chunk_ms": 4.876899998635054,
+        "low_text_pages": [
+          2
+        ],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 2,
+          "title": "SYNTHETIC K0-P02-v1",
+          "author": "ShopSteward K0 fictional fixtures",
+          "low_text_pages": [
+            2
+          ]
+        }
+      },
+      {
+        "version_id": "K0-P03-v1",
+        "format": "docx",
+        "status": "text_extracted",
+        "characters": 999,
+        "chunks": 6,
+        "parse_and_chunk_ms": 13.443500036373734,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "author": "ShopSteward fictional K0 fixtures"
+        }
+      },
+      {
+        "version_id": "K0-P04-v1",
+        "format": "xlsx",
+        "status": "text_extracted",
+        "characters": 635,
+        "chunks": 2,
+        "parse_and_chunk_ms": 6.4674001187086105,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": {
+          "sheet": "换算",
+          "cell": "D3",
+          "formula": "=B3*C3",
+          "has_cache": false
+        },
+        "extracted_formula_sheet": "## 换算\n\n| 模拟 / SYNTHETIC — fictional K0 evaluation fixture |  |  |  |\n| --- | --- | --- | --- |\n| 单位/units | 输入/input A | 输入/input B | 公式/formula |\n| 杯/箱 × g/杯 = g/箱 | 8 | 125 |  |",
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "sheets": [
+            "说明",
+            "换算"
+          ]
+        }
+      },
+      {
+        "version_id": "K0-P05-v1",
+        "format": "csv",
+        "status": "text_extracted",
+        "characters": 683,
+        "chunks": 2,
+        "parse_and_chunk_ms": 1.128799980506301,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-P06-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 438,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.2897001579403877,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-P07-v1",
+        "format": "txt",
+        "status": "text_extracted",
+        "characters": 450,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.3185001444071531,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-P08-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 448,
+        "chunks": 5,
+        "parse_and_chunk_ms": 0.9742998518049717,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-O01-v1",
+        "format": "pdf",
+        "status": "text_extracted",
+        "characters": 1113,
+        "chunks": 8,
+        "parse_and_chunk_ms": 16.833199886605144,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 3,
+          "title": "SYNTHETIC K0-O01-v1",
+          "author": "ShopSteward K0 fictional fixtures"
+        }
+      },
+      {
+        "version_id": "K0-O02-v1",
+        "format": "docx",
+        "status": "text_extracted",
+        "characters": 956,
+        "chunks": 6,
+        "parse_and_chunk_ms": 13.272499898448586,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "author": "ShopSteward fictional K0 fixtures"
+        }
+      },
+      {
+        "version_id": "K0-O03-v1",
+        "format": "csv",
+        "status": "text_extracted",
+        "characters": 726,
+        "chunks": 2,
+        "parse_and_chunk_ms": 3.15770017914474,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-O04-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 463,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.0840999893844128,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-O05-v1",
+        "format": "txt",
+        "status": "text_extracted",
+        "characters": 466,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.0649000760167837,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-O06-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 439,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.1163000017404556,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-O07-v1",
+        "format": "txt",
+        "status": "text_extracted",
+        "characters": 450,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.1748999822884798,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-O08-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 546,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.205500215291977,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-A01-v1",
+        "format": "pdf",
+        "status": "text_extracted",
+        "characters": 555,
+        "chunks": 3,
+        "parse_and_chunk_ms": 4.247599979862571,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 1,
+          "title": "SYNTHETIC K0-A01-v1",
+          "author": "ShopSteward K0 fictional fixtures"
+        }
+      },
+      {
+        "version_id": "K0-A02-v1",
+        "format": "docx",
+        "status": "text_extracted",
+        "characters": 990,
+        "chunks": 6,
+        "parse_and_chunk_ms": 13.169299811124802,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "author": "ShopSteward fictional K0 fixtures"
+        }
+      },
+      {
+        "version_id": "K0-A03-v1",
+        "format": "xlsx",
+        "status": "text_extracted",
+        "characters": 698,
+        "chunks": 2,
+        "parse_and_chunk_ms": 7.402800023555756,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": {
+          "sheet": "换算",
+          "cell": "D3",
+          "formula": "=B3*C3",
+          "has_cache": true
+        },
+        "extracted_formula_sheet": "## 换算\n\n| 模拟 / SYNTHETIC — fictional K0 evaluation fixture |  |  |  |\n| --- | --- | --- | --- |\n| 单位/units | 输入/input A | 输入/input B | 公式/formula |\n| 桌 × 只/桌 = 只 | 6 | 20 | 120 |",
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "sheets": [
+            "说明",
+            "换算"
+          ]
+        }
+      },
+      {
+        "version_id": "K0-A04-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 484,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.189699862152338,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-A05-v1",
+        "format": "txt",
+        "status": "text_extracted",
+        "characters": 466,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.29360007122159,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-A06-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 481,
+        "chunks": 5,
+        "parse_and_chunk_ms": 0.9222999215126038,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-R01-v1",
+        "format": "pdf",
+        "status": "text_extracted",
+        "characters": 515,
+        "chunks": 3,
+        "parse_and_chunk_ms": 3.9987999480217695,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "n_pages": 1,
+          "title": "SYNTHETIC K0-R01-v1",
+          "author": "ShopSteward K0 fictional fixtures"
+        }
+      },
+      {
+        "version_id": "K0-R02-v1",
+        "format": "docx",
+        "status": "text_extracted",
+        "characters": 1018,
+        "chunks": 6,
+        "parse_and_chunk_ms": 14.01889999397099,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "author": "ShopSteward fictional K0 fixtures"
+        }
+      },
+      {
+        "version_id": "K0-R03-v1",
+        "format": "xlsx",
+        "status": "text_extracted",
+        "characters": 751,
+        "chunks": 3,
+        "parse_and_chunk_ms": 7.837099954485893,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": {
+          "sheet": "换算",
+          "cell": "D3",
+          "formula": "=B3/C3",
+          "has_cache": false
+        },
+        "extracted_formula_sheet": "## 换算\n\n| 模拟 / SYNTHETIC — fictional K0 evaluation fixture |  |  |  |\n| --- | --- | --- | --- |\n| 单位/units | 输入/input A | 输入/input B | 公式/formula |\n| 漏贴项 / 巡检项 | 2 | 10 |  |",
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {
+          "sheets": [
+            "说明",
+            "换算"
+          ]
+        }
+      },
+      {
+        "version_id": "K0-R04-v1",
+        "format": "csv",
+        "status": "text_extracted",
+        "characters": 716,
+        "chunks": 2,
+        "parse_and_chunk_ms": 1.061800168827176,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-R05-v1",
+        "format": "md",
+        "status": "text_extracted",
+        "characters": 491,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.1316998861730099,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      },
+      {
+        "version_id": "K0-R06-v1",
+        "format": "txt",
+        "status": "text_extracted",
+        "characters": 418,
+        "chunks": 5,
+        "parse_and_chunk_ms": 1.1531999334692955,
+        "low_text_pages": [],
+        "ocr_pages": [],
+        "full_sections_present": [
+          "section:1",
+          "section:2",
+          "section:3"
+        ],
+        "section_count": 3,
+        "formula_cache_fixture": null,
+        "extracted_formula_sheet": null,
+        "locator_quality": "RAilG estimated page/header only; no verified sheet cell/CSV row mapping",
+        "parser_metadata": {}
+      }
+    ],
+    "metrics_by_split": {
+      "dev": {
+        "all": {
+          "cases": 40,
+          "with_gold_documents": 35,
+          "document_version_recall_at_5": 0.8809523809523809,
+          "mrr_at_5": 0.8142857142857143,
+          "ndcg_at_5": 0.8170425067464204,
+          "scope_leaks": 0,
+          "cases_without_gold_documents": 5,
+          "empty_result_cases_without_gold": 0,
+          "p50_ms": 9.977250010706484,
+          "p95_ms": 13.346999883651733
+        },
+        "groups": {
+          "business_mixed": {
+            "cases": 5,
+            "with_gold_documents": 4,
+            "document_version_recall_at_5": 0.7083333333333334,
+            "mrr_at_5": 0.875,
+            "ndcg_at_5": 0.727307275932831,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 1,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 8.202299941331148,
+            "p95_ms": 8.79630004055798
+          },
+          "exact": {
+            "cases": 8,
+            "with_gold_documents": 8,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 1.0,
+            "ndcg_at_5": 1.0,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 10.504300007596612,
+            "p95_ms": 11.917599942535162
+          },
+          "keyword": {
+            "cases": 8,
+            "with_gold_documents": 8,
+            "document_version_recall_at_5": 0.875,
+            "mrr_at_5": 0.875,
+            "ndcg_at_5": 0.875,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 11.323499958962202,
+            "p95_ms": 50.11499999091029
+          },
+          "no_answer": {
+            "cases": 5,
+            "with_gold_documents": 1,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 1.0,
+            "ndcg_at_5": 1.0,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 4,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 8.91950004734099,
+            "p95_ms": 11.594600044190884
+          },
+          "synonym": {
+            "cases": 8,
+            "with_gold_documents": 8,
+            "document_version_recall_at_5": 0.75,
+            "mrr_at_5": 0.5,
+            "ndcg_at_5": 0.5703590183733422,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 9.290950023569167,
+            "p95_ms": 10.980499908328056
+          },
+          "synthesis": {
+            "cases": 6,
+            "with_gold_documents": 6,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 0.8333333333333334,
+            "ndcg_at_5": 0.8540644142344422,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 8.99040000513196,
+            "p95_ms": 16.093000071123242
+          }
+        }
+      },
+      "test": {
+        "all": {
+          "cases": 20,
+          "with_gold_documents": 18,
+          "document_version_recall_at_5": 0.9722222222222222,
+          "mrr_at_5": 0.9444444444444444,
+          "ndcg_at_5": 0.9375003722171319,
+          "scope_leaks": 0,
+          "cases_without_gold_documents": 2,
+          "empty_result_cases_without_gold": 0,
+          "p50_ms": 9.662200114689767,
+          "p95_ms": 13.148199999704957
+        },
+        "groups": {
+          "business_mixed": {
+            "cases": 3,
+            "with_gold_documents": 3,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 1.0,
+            "ndcg_at_5": 1.0,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 8.463300066068769,
+            "p95_ms": 8.972899988293648
+          },
+          "exact": {
+            "cases": 4,
+            "with_gold_documents": 4,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 0.875,
+            "ndcg_at_5": 0.9077324383928644,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 11.604400002397597,
+            "p95_ms": 13.3907999843359
+          },
+          "keyword": {
+            "cases": 4,
+            "with_gold_documents": 4,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 1.0,
+            "ndcg_at_5": 1.0,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 10.696449899114668,
+            "p95_ms": 11.590699898079038
+          },
+          "no_answer": {
+            "cases": 3,
+            "with_gold_documents": 1,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 0.5,
+            "ndcg_at_5": 0.6309297535714575,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 2,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 7.923100143671036,
+            "p95_ms": 8.367100032046437
+          },
+          "synonym": {
+            "cases": 4,
+            "with_gold_documents": 4,
+            "document_version_recall_at_5": 1.0,
+            "mrr_at_5": 1.0,
+            "ndcg_at_5": 1.0,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 9.178149979561567,
+            "p95_ms": 11.586900101974607
+          },
+          "synthesis": {
+            "cases": 2,
+            "with_gold_documents": 2,
+            "document_version_recall_at_5": 0.75,
+            "mrr_at_5": 1.0,
+            "ndcg_at_5": 0.8065735963827292,
+            "scope_leaks": 0,
+            "cases_without_gold_documents": 0,
+            "empty_result_cases_without_gold": 0,
+            "p50_ms": 11.04615000076592,
+            "p95_ms": 13.148199999704957
+          }
+        }
+      }
+    },
+    "cases": [
+      {
+        "id": "K0-E01",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-S02-v2",
+          "K0-R05-v1",
+          "K0-A04-v1",
+          "K0-S11-v1",
+          "K0-P02-v1"
+        ],
+        "expected_versions": [
+          "K0-S02-v2"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.901500005275011,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S02-v2:2",
+          "K0-R05-v1:2",
+          "K0-S02-v2:5",
+          "K0-A04-v1:2",
+          "K0-S11-v1:2",
+          "K0-P02-v1:0",
+          "K0-S10-v1:2",
+          "K0-A01-v1:1",
+          "K0-P01-v1:0",
+          "K0-A01-v1:2"
+        ]
+      },
+      {
+        "id": "K0-E02",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-S05-v1",
+          "K0-O07-v1",
+          "K0-P07-v1",
+          "K0-R06-v1",
+          "K0-A05-v1"
+        ],
+        "expected_versions": [
+          "K0-S05-v1"
+        ],
+        "allowed_version_count": 5,
+        "latency_ms": 8.807600010186434,
+        "scope_leaks": [],
+        "hit_count": 17,
+        "top_chunk_ids": [
+          "K0-S05-v1:0",
+          "K0-O07-v1:3",
+          "K0-O07-v1:2",
+          "K0-P07-v1:2",
+          "K0-R06-v1:2",
+          "K0-O07-v1:4",
+          "K0-A05-v1:4",
+          "K0-P07-v1:4",
+          "K0-S05-v1:1",
+          "K0-A05-v1:2"
+        ]
+      },
+      {
+        "id": "K0-E03",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-S01-v1"
+        ],
+        "expected_versions": [
+          "K0-S01-v1"
+        ],
+        "allowed_version_count": 1,
+        "latency_ms": 8.510200073942542,
+        "scope_leaks": [],
+        "hit_count": 2,
+        "top_chunk_ids": [
+          "K0-S01-v1:1",
+          "K0-S01-v1:0"
+        ]
+      },
+      {
+        "id": "K0-E04",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-S03-v3",
+          "K0-R05-v1",
+          "K0-O05-v1",
+          "K0-P01-v1",
+          "K0-P03-v1"
+        ],
+        "expected_versions": [
+          "K0-S03-v3"
+        ],
+        "allowed_version_count": 29,
+        "latency_ms": 10.522499913349748,
+        "scope_leaks": [],
+        "hit_count": 47,
+        "top_chunk_ids": [
+          "K0-S03-v3:2",
+          "K0-S03-v3:3",
+          "K0-R05-v1:2",
+          "K0-O05-v1:4",
+          "K0-P01-v1:1",
+          "K0-P03-v1:3",
+          "K0-O04-v1:3",
+          "K0-P04-v1:0",
+          "K0-O06-v1:4",
+          "K0-S11-v1:4"
+        ]
+      },
+      {
+        "id": "K0-E05",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-S08-v1",
+          "K0-R04-v1",
+          "K0-S07-v1",
+          "K0-S11-v1",
+          "K0-O05-v1"
+        ],
+        "expected_versions": [
+          "K0-S08-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.486100101843476,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S08-v1:0",
+          "K0-R04-v1:0",
+          "K0-S07-v1:0",
+          "K0-S11-v1:4",
+          "K0-O05-v1:4",
+          "K0-O04-v1:3",
+          "K0-S11-v1:2",
+          "K0-S02-v2:3",
+          "K0-S10-v1:2",
+          "K0-P03-v1:2"
+        ]
+      },
+      {
+        "id": "K0-E06",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-P01-v1",
+          "K0-P02-v1",
+          "K0-P03-v1",
+          "K0-S02-v2",
+          "K0-P04-v1"
+        ],
+        "expected_versions": [
+          "K0-P01-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 11.062799952924252,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-P01-v1:1",
+          "K0-P02-v1:0",
+          "K0-P03-v1:5",
+          "K0-S02-v2:5",
+          "K0-P04-v1:0",
+          "K0-S07-v1:0",
+          "K0-P03-v1:3",
+          "K0-S02-v2:3",
+          "K0-P03-v1:4",
+          "K0-O01-v1:4"
+        ]
+      },
+      {
+        "id": "K0-E07",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-P07-v1",
+          "K0-S05-v1",
+          "K0-A05-v1",
+          "K0-O07-v1",
+          "K0-R06-v1"
+        ],
+        "expected_versions": [
+          "K0-P07-v1"
+        ],
+        "allowed_version_count": 5,
+        "latency_ms": 10.047300020232797,
+        "scope_leaks": [],
+        "hit_count": 17,
+        "top_chunk_ids": [
+          "K0-P07-v1:4",
+          "K0-P07-v1:3",
+          "K0-P07-v1:2",
+          "K0-S05-v1:0",
+          "K0-S05-v1:1",
+          "K0-A05-v1:2",
+          "K0-O07-v1:2",
+          "K0-R06-v1:2",
+          "K0-O07-v1:4",
+          "K0-O07-v1:3"
+        ]
+      },
+      {
+        "id": "K0-E08",
+        "split": "dev",
+        "group": "exact",
+        "returned_versions": [
+          "K0-A01-v1",
+          "K0-R02-v1",
+          "K0-P03-v1",
+          "K0-A04-v1",
+          "K0-O04-v1"
+        ],
+        "expected_versions": [
+          "K0-A01-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 11.917599942535162,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-A01-v1:1",
+          "K0-A01-v1:0",
+          "K0-R02-v1:5",
+          "K0-R02-v1:4",
+          "K0-R02-v1:2",
+          "K0-P03-v1:3",
+          "K0-A04-v1:4",
+          "K0-O04-v1:4",
+          "K0-P03-v1:5",
+          "K0-O01-v1:5"
+        ]
+      },
+      {
+        "id": "K0-E09",
+        "split": "test",
+        "group": "exact",
+        "returned_versions": [
+          "K0-A04-v1",
+          "K0-P05-v1",
+          "K0-R02-v1",
+          "K0-R05-v1",
+          "K0-S06-v1"
+        ],
+        "expected_versions": [
+          "K0-P05-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.943100089207292,
+        "scope_leaks": [],
+        "hit_count": 13,
+        "top_chunk_ids": [
+          "K0-A04-v1:2",
+          "K0-P05-v1:0",
+          "K0-R02-v1:2",
+          "K0-R05-v1:2",
+          "K0-S06-v1:2",
+          "K0-P06-v1:2",
+          "K0-O06-v1:2",
+          "K0-O01-v1:3",
+          "K0-P03-v1:2",
+          "K0-O01-v1:5"
+        ]
+      },
+      {
+        "id": "K0-E10",
+        "split": "test",
+        "group": "exact",
+        "returned_versions": [
+          "K0-S07-v1",
+          "K0-P06-v1",
+          "K0-A03-v1",
+          "K0-P04-v1",
+          "K0-O01-v1"
+        ],
+        "expected_versions": [
+          "K0-S07-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 12.265699915587902,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S07-v1:0",
+          "K0-P06-v1:3",
+          "K0-A03-v1:0",
+          "K0-P04-v1:0",
+          "K0-O01-v1:4",
+          "K0-P01-v1:1",
+          "K0-R04-v1:0",
+          "K0-P06-v1:4",
+          "K0-S08-v1:0",
+          "K0-P06-v1:2"
+        ]
+      },
+      {
+        "id": "K0-E11",
+        "split": "test",
+        "group": "exact",
+        "returned_versions": [
+          "K0-O03-v1",
+          "K0-R03-v1",
+          "K0-S10-v1",
+          "K0-S06-v1",
+          "K0-O06-v1"
+        ],
+        "expected_versions": [
+          "K0-O03-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 13.3907999843359,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O03-v1:0",
+          "K0-R03-v1:0",
+          "K0-S10-v1:3",
+          "K0-S06-v1:2",
+          "K0-R03-v1:2",
+          "K0-O06-v1:3",
+          "K0-S06-v1:5",
+          "K0-O03-v1:1",
+          "K0-A04-v1:4",
+          "K0-S11-v1:3"
+        ]
+      },
+      {
+        "id": "K0-E12",
+        "split": "test",
+        "group": "exact",
+        "returned_versions": [
+          "K0-A04-v1",
+          "K0-P05-v1",
+          "K0-P03-v1",
+          "K0-R05-v1",
+          "K0-A01-v1"
+        ],
+        "expected_versions": [
+          "K0-A04-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.618799831718206,
+        "scope_leaks": [],
+        "hit_count": 15,
+        "top_chunk_ids": [
+          "K0-A04-v1:2",
+          "K0-A04-v1:4",
+          "K0-P05-v1:0",
+          "K0-A04-v1:3",
+          "K0-P03-v1:2",
+          "K0-R05-v1:2",
+          "K0-A01-v1:2",
+          "K0-S10-v1:4",
+          "K0-O08-v1:2",
+          "K0-R02-v1:4"
+        ]
+      },
+      {
+        "id": "K0-K01",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-R05-v1",
+          "K0-O06-v1",
+          "K0-O01-v1",
+          "K0-S11-v1",
+          "K0-O05-v1"
+        ],
+        "expected_versions": [
+          "K0-S04-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.987599845975637,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R05-v1:2",
+          "K0-R05-v1:3",
+          "K0-R05-v1:4",
+          "K0-R05-v1:1",
+          "K0-O06-v1:4",
+          "K0-O01-v1:3",
+          "K0-S11-v1:2",
+          "K0-O05-v1:2",
+          "K0-S02-v2:2",
+          "K0-O01-v1:6"
+        ]
+      },
+      {
+        "id": "K0-K02",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-S06-v1",
+          "K0-O06-v1",
+          "K0-O01-v1",
+          "K0-P06-v1",
+          "K0-O03-v1"
+        ],
+        "expected_versions": [
+          "K0-S06-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 50.11499999091029,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S06-v1:2",
+          "K0-S06-v1:5",
+          "K0-S06-v1:1",
+          "K0-O06-v1:3",
+          "K0-S06-v1:3",
+          "K0-O01-v1:4",
+          "K0-P06-v1:2",
+          "K0-O03-v1:0",
+          "K0-S09-v1:4",
+          "K0-O08-v1:4"
+        ]
+      },
+      {
+        "id": "K0-K03",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-S09-v1",
+          "K0-R01-v1",
+          "K0-O01-v1",
+          "K0-S07-v1",
+          "K0-S11-v1"
+        ],
+        "expected_versions": [
+          "K0-S09-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 13.346999883651733,
+        "scope_leaks": [],
+        "hit_count": 40,
+        "top_chunk_ids": [
+          "K0-S09-v1:3",
+          "K0-S09-v1:2",
+          "K0-S09-v1:1",
+          "K0-S09-v1:4",
+          "K0-R01-v1:1",
+          "K0-O01-v1:0",
+          "K0-R01-v1:0",
+          "K0-S07-v1:1",
+          "K0-O01-v1:4",
+          "K0-S11-v1:2"
+        ]
+      },
+      {
+        "id": "K0-K04",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-O05-v1",
+          "K0-S02-v2",
+          "K0-O01-v1",
+          "K0-P06-v1",
+          "K0-A04-v1"
+        ],
+        "expected_versions": [
+          "K0-O05-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.151700116693974,
+        "scope_leaks": [],
+        "hit_count": 16,
+        "top_chunk_ids": [
+          "K0-O05-v1:2",
+          "K0-S02-v2:4",
+          "K0-O01-v1:3",
+          "K0-P06-v1:3",
+          "K0-S02-v2:5",
+          "K0-O05-v1:4",
+          "K0-A04-v1:4",
+          "K0-S06-v1:3",
+          "K0-O06-v1:4",
+          "K0-O05-v1:3"
+        ]
+      },
+      {
+        "id": "K0-K05",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-O06-v1",
+          "K0-O01-v1",
+          "K0-O04-v1",
+          "K0-S06-v1",
+          "K0-S09-v1"
+        ],
+        "expected_versions": [
+          "K0-O06-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 12.174500152468681,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O06-v1:2",
+          "K0-O06-v1:4",
+          "K0-O06-v1:3",
+          "K0-O01-v1:4",
+          "K0-O06-v1:1",
+          "K0-O01-v1:3",
+          "K0-O04-v1:2",
+          "K0-S06-v1:5",
+          "K0-S06-v1:3",
+          "K0-S09-v1:4"
+        ]
+      },
+      {
+        "id": "K0-K06",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-P06-v1",
+          "K0-A01-v1",
+          "K0-A02-v1",
+          "K0-P03-v1",
+          "K0-P02-v1"
+        ],
+        "expected_versions": [
+          "K0-P06-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.789599968120456,
+        "scope_leaks": [],
+        "hit_count": 49,
+        "top_chunk_ids": [
+          "K0-P06-v1:3",
+          "K0-P06-v1:2",
+          "K0-A01-v1:0",
+          "K0-A02-v1:2",
+          "K0-P03-v1:2",
+          "K0-P02-v1:0",
+          "K0-S06-v1:2",
+          "K0-S02-v2:1",
+          "K0-O02-v1:1",
+          "K0-O04-v1:1"
+        ]
+      },
+      {
+        "id": "K0-K07",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-R04-v1",
+          "K0-S08-v1",
+          "K0-O06-v1",
+          "K0-S11-v1",
+          "K0-O04-v1"
+        ],
+        "expected_versions": [
+          "K0-R04-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.831200052052736,
+        "scope_leaks": [],
+        "hit_count": 48,
+        "top_chunk_ids": [
+          "K0-R04-v1:0",
+          "K0-S08-v1:1",
+          "K0-O06-v1:3",
+          "K0-S11-v1:3",
+          "K0-O04-v1:2",
+          "K0-O04-v1:3",
+          "K0-S11-v1:2",
+          "K0-S10-v1:4",
+          "K0-R02-v1:2",
+          "K0-A01-v1:1"
+        ]
+      },
+      {
+        "id": "K0-K08",
+        "split": "dev",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-R02-v1",
+          "K0-O04-v1",
+          "K0-S11-v1",
+          "K0-R03-v1",
+          "K0-R05-v1"
+        ],
+        "expected_versions": [
+          "K0-R02-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 11.659400071948767,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R02-v1:2",
+          "K0-R02-v1:5",
+          "K0-R02-v1:1",
+          "K0-O04-v1:2",
+          "K0-S11-v1:2",
+          "K0-R03-v1:0",
+          "K0-R05-v1:4",
+          "K0-O06-v1:2",
+          "K0-A01-v1:0",
+          "K0-O06-v1:3"
+        ]
+      },
+      {
+        "id": "K0-K09",
+        "split": "test",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-O01-v1",
+          "K0-S02-v2",
+          "K0-O02-v1",
+          "K0-S09-v1",
+          "K0-R03-v1"
+        ],
+        "expected_versions": [
+          "K0-O01-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 11.390300001949072,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O01-v1:5",
+          "K0-O01-v1:0",
+          "K0-O01-v1:2",
+          "K0-O01-v1:4",
+          "K0-S02-v2:5",
+          "K0-S02-v2:3",
+          "K0-O02-v1:5",
+          "K0-S09-v1:4",
+          "K0-O01-v1:3",
+          "K0-O01-v1:1"
+        ]
+      },
+      {
+        "id": "K0-K10",
+        "split": "test",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-A02-v1",
+          "K0-P03-v1",
+          "K0-S07-v1",
+          "K0-R03-v1",
+          "K0-P06-v1"
+        ],
+        "expected_versions": [
+          "K0-A02-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 9.852300165221095,
+        "scope_leaks": [],
+        "hit_count": 20,
+        "top_chunk_ids": [
+          "K0-A02-v1:4",
+          "K0-A02-v1:5",
+          "K0-P03-v1:2",
+          "K0-P03-v1:5",
+          "K0-A02-v1:2",
+          "K0-S07-v1:0",
+          "K0-R03-v1:0",
+          "K0-A02-v1:3",
+          "K0-P06-v1:2",
+          "K0-S10-v1:4"
+        ]
+      },
+      {
+        "id": "K0-K11",
+        "split": "test",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-R01-v1",
+          "K0-O02-v1",
+          "K0-O01-v1",
+          "K0-P03-v1",
+          "K0-S07-v1"
+        ],
+        "expected_versions": [
+          "K0-R01-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.002599796280265,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R01-v1:0",
+          "K0-O02-v1:5",
+          "K0-O01-v1:6",
+          "K0-O02-v1:3",
+          "K0-R01-v1:1",
+          "K0-O01-v1:7",
+          "K0-O01-v1:5",
+          "K0-O02-v1:2",
+          "K0-P03-v1:4",
+          "K0-S07-v1:1"
+        ]
+      },
+      {
+        "id": "K0-K12",
+        "split": "test",
+        "group": "keyword",
+        "returned_versions": [
+          "K0-S12-v1",
+          "K0-O01-v1",
+          "K0-S06-v1",
+          "K0-A03-v1",
+          "K0-R03-v1"
+        ],
+        "expected_versions": [
+          "K0-S12-v1"
+        ],
+        "allowed_version_count": 31,
+        "latency_ms": 11.590699898079038,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S12-v1:2",
+          "K0-S12-v1:3",
+          "K0-O01-v1:7",
+          "K0-O01-v1:5",
+          "K0-S06-v1:5",
+          "K0-A03-v1:0",
+          "K0-S12-v1:4",
+          "K0-R03-v1:0",
+          "K0-R02-v1:5",
+          "K0-O01-v1:6"
+        ]
+      },
+      {
+        "id": "K0-Y01",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-O01-v1",
+          "K0-S07-v1",
+          "K0-A03-v1",
+          "K0-S02-v2",
+          "K0-O02-v1"
+        ],
+        "expected_versions": [
+          "K0-O02-v1",
+          "K0-S02-v2"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 9.564799955114722,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O01-v1:5",
+          "K0-S07-v1:0",
+          "K0-A03-v1:0",
+          "K0-S02-v2:3",
+          "K0-O02-v1:5",
+          "K0-O02-v1:2",
+          "K0-O01-v1:4",
+          "K0-O02-v1:3",
+          "K0-S02-v2:5",
+          "K0-R04-v1:0"
+        ]
+      },
+      {
+        "id": "K0-Y02",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-A04-v1",
+          "K0-P03-v1",
+          "K0-R02-v1",
+          "K0-R03-v1",
+          "K0-P06-v1"
+        ],
+        "expected_versions": [
+          "K0-S06-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.159699849784374,
+        "scope_leaks": [],
+        "hit_count": 18,
+        "top_chunk_ids": [
+          "K0-A04-v1:4",
+          "K0-P03-v1:2",
+          "K0-P03-v1:5",
+          "K0-R02-v1:4",
+          "K0-R03-v1:1",
+          "K0-P06-v1:3",
+          "K0-O01-v1:3",
+          "K0-A01-v1:1",
+          "K0-R02-v1:5",
+          "K0-O01-v1:0"
+        ]
+      },
+      {
+        "id": "K0-Y03",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-R03-v1",
+          "K0-S06-v1",
+          "K0-A03-v1",
+          "K0-S07-v1",
+          "K0-O06-v1"
+        ],
+        "expected_versions": [
+          "K0-O03-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.661900043487549,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R03-v1:0",
+          "K0-S06-v1:2",
+          "K0-A03-v1:0",
+          "K0-S07-v1:0",
+          "K0-O06-v1:3",
+          "K0-S06-v1:5",
+          "K0-R03-v1:1",
+          "K0-O05-v1:3",
+          "K0-O02-v1:5",
+          "K0-R05-v1:3"
+        ]
+      },
+      {
+        "id": "K0-Y04",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-S09-v1",
+          "K0-O04-v1",
+          "K0-R02-v1",
+          "K0-A01-v1",
+          "K0-R05-v1"
+        ],
+        "expected_versions": [
+          "K0-O04-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.93560005351901,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S09-v1:4",
+          "K0-O04-v1:4",
+          "K0-O04-v1:3",
+          "K0-R02-v1:3",
+          "K0-A01-v1:0",
+          "K0-O04-v1:2",
+          "K0-R02-v1:5",
+          "K0-R05-v1:3",
+          "K0-O04-v1:1",
+          "K0-A02-v1:5"
+        ]
+      },
+      {
+        "id": "K0-Y05",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-P03-v1",
+          "K0-A01-v1",
+          "K0-A02-v1",
+          "K0-P02-v1",
+          "K0-R02-v1"
+        ],
+        "expected_versions": [
+          "K0-P02-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 9.017100092023611,
+        "scope_leaks": [],
+        "hit_count": 22,
+        "top_chunk_ids": [
+          "K0-P03-v1:2",
+          "K0-P03-v1:5",
+          "K0-A01-v1:0",
+          "K0-A02-v1:2",
+          "K0-P02-v1:0",
+          "K0-A02-v1:5",
+          "K0-R02-v1:4",
+          "K0-P01-v1:1",
+          "K0-O06-v1:3",
+          "K0-R02-v1:5"
+        ]
+      },
+      {
+        "id": "K0-Y06",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-P01-v1",
+          "K0-P02-v1",
+          "K0-A01-v1",
+          "K0-S09-v1",
+          "K0-R05-v1"
+        ],
+        "expected_versions": [
+          "K0-P01-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.064200032502413,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-P01-v1:0",
+          "K0-P02-v1:0",
+          "K0-A01-v1:2",
+          "K0-S09-v1:3",
+          "K0-R05-v1:2",
+          "K0-P04-v1:0",
+          "K0-S02-v2:2",
+          "K0-R05-v1:3",
+          "K0-R02-v1:5",
+          "K0-P03-v1:1"
+        ]
+      },
+      {
+        "id": "K0-Y07",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-S08-v1",
+          "K0-S07-v1",
+          "K0-A02-v1",
+          "K0-O04-v1",
+          "K0-R01-v1"
+        ],
+        "expected_versions": [
+          "K0-S08-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.980499908328056,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S08-v1:0",
+          "K0-S07-v1:0",
+          "K0-A02-v1:5",
+          "K0-O04-v1:3",
+          "K0-R01-v1:0",
+          "K0-O02-v1:2",
+          "K0-R03-v1:0",
+          "K0-O02-v1:5",
+          "K0-O01-v1:1",
+          "K0-S08-v1:1"
+        ]
+      },
+      {
+        "id": "K0-Y08",
+        "split": "dev",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-O06-v1",
+          "K0-O05-v1",
+          "K0-O03-v1",
+          "K0-S06-v1",
+          "K0-O01-v1"
+        ],
+        "expected_versions": [
+          "K0-O06-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.354000048711896,
+        "scope_leaks": [],
+        "hit_count": 10,
+        "top_chunk_ids": [
+          "K0-O06-v1:4",
+          "K0-O05-v1:3",
+          "K0-O03-v1:1",
+          "K0-S06-v1:4",
+          "K0-O01-v1:3",
+          "K0-O03-v1:0",
+          "K0-S07-v1:0",
+          "K0-A03-v1:0",
+          "K0-S06-v1:5",
+          "K0-P04-v1:0"
+        ]
+      },
+      {
+        "id": "K0-Y09",
+        "split": "test",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-S09-v1",
+          "K0-A03-v1",
+          "K0-P06-v1",
+          "K0-S07-v1",
+          "K0-S11-v1"
+        ],
+        "expected_versions": [
+          "K0-S09-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.884199894964695,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S09-v1:3",
+          "K0-A03-v1:0",
+          "K0-P06-v1:3",
+          "K0-P06-v1:2",
+          "K0-S07-v1:0",
+          "K0-S11-v1:2",
+          "K0-R01-v1:0",
+          "K0-P04-v1:0",
+          "K0-P06-v1:1",
+          "K0-S11-v1:3"
+        ]
+      },
+      {
+        "id": "K0-Y10",
+        "split": "test",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-P04-v1",
+          "K0-S07-v1",
+          "K0-O01-v1",
+          "K0-P01-v1",
+          "K0-S06-v1"
+        ],
+        "expected_versions": [
+          "K0-P04-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 11.586900101974607,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-P04-v1:0",
+          "K0-S07-v1:0",
+          "K0-O01-v1:4",
+          "K0-P01-v1:1",
+          "K0-S06-v1:2",
+          "K0-A03-v1:0",
+          "K0-P02-v1:0",
+          "K0-O01-v1:5",
+          "K0-A02-v1:5",
+          "K0-S06-v1:5"
+        ]
+      },
+      {
+        "id": "K0-Y11",
+        "split": "test",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-R01-v1",
+          "K0-S07-v1",
+          "K0-S09-v1",
+          "K0-P03-v1",
+          "K0-R03-v1"
+        ],
+        "expected_versions": [
+          "K0-R01-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 9.47210006415844,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R01-v1:1",
+          "K0-S07-v1:0",
+          "K0-S09-v1:1",
+          "K0-S09-v1:2",
+          "K0-P03-v1:5",
+          "K0-R03-v1:1",
+          "K0-P04-v1:0",
+          "K0-P03-v1:3",
+          "K0-A01-v1:1",
+          "K0-S09-v1:4"
+        ]
+      },
+      {
+        "id": "K0-Y12",
+        "split": "test",
+        "group": "synonym",
+        "returned_versions": [
+          "K0-O07-v1",
+          "K0-S05-v1",
+          "K0-R06-v1",
+          "K0-A05-v1",
+          "K0-P07-v1"
+        ],
+        "expected_versions": [
+          "K0-O07-v1"
+        ],
+        "allowed_version_count": 5,
+        "latency_ms": 8.848399855196476,
+        "scope_leaks": [],
+        "hit_count": 16,
+        "top_chunk_ids": [
+          "K0-O07-v1:2",
+          "K0-O07-v1:3",
+          "K0-S05-v1:0",
+          "K0-S05-v1:1",
+          "K0-R06-v1:2",
+          "K0-A05-v1:3",
+          "K0-A05-v1:4",
+          "K0-R06-v1:3",
+          "K0-A05-v1:2",
+          "K0-O07-v1:4"
+        ]
+      },
+      {
+        "id": "K0-SY01",
+        "split": "dev",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-S02-v2",
+          "K0-O05-v1",
+          "K0-R02-v1",
+          "K0-O02-v1",
+          "K0-S11-v1"
+        ],
+        "expected_versions": [
+          "K0-S02-v2",
+          "K0-O02-v1",
+          "K0-O05-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 9.907200001180172,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S02-v2:5",
+          "K0-S02-v2:4",
+          "K0-O05-v1:4",
+          "K0-S02-v2:3",
+          "K0-R02-v1:3",
+          "K0-O02-v1:5",
+          "K0-R02-v1:5",
+          "K0-O02-v1:2",
+          "K0-S02-v2:2",
+          "K0-S11-v1:2"
+        ]
+      },
+      {
+        "id": "K0-SY02",
+        "split": "dev",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-A04-v1",
+          "K0-S06-v1",
+          "K0-O06-v1",
+          "K0-P04-v1",
+          "K0-P06-v1"
+        ],
+        "expected_versions": [
+          "K0-S06-v1",
+          "K0-O06-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 7.718600099906325,
+        "scope_leaks": [],
+        "hit_count": 15,
+        "top_chunk_ids": [
+          "K0-A04-v1:2",
+          "K0-S06-v1:2",
+          "K0-O06-v1:3",
+          "K0-S06-v1:5",
+          "K0-P04-v1:0",
+          "K0-P06-v1:4",
+          "K0-O04-v1:4",
+          "K0-S09-v1:2",
+          "K0-R02-v1:3",
+          "K0-S06-v1:3"
+        ]
+      },
+      {
+        "id": "K0-SY03",
+        "split": "dev",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-P03-v1",
+          "K0-P02-v1",
+          "K0-A01-v1",
+          "K0-P01-v1",
+          "K0-P06-v1"
+        ],
+        "expected_versions": [
+          "K0-A01-v1",
+          "K0-P02-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.073600009083748,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-P03-v1:3",
+          "K0-P02-v1:0",
+          "K0-P03-v1:5",
+          "K0-A01-v1:0",
+          "K0-P01-v1:1",
+          "K0-P03-v1:1",
+          "K0-P01-v1:0",
+          "K0-P06-v1:3",
+          "K0-P06-v1:4",
+          "K0-P06-v1:1"
+        ]
+      },
+      {
+        "id": "K0-SY04",
+        "split": "dev",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-P03-v1",
+          "K0-A02-v1",
+          "K0-P02-v1",
+          "K0-A01-v1",
+          "K0-S02-v2"
+        ],
+        "expected_versions": [
+          "K0-P02-v1",
+          "K0-P03-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 7.261200109496713,
+        "scope_leaks": [],
+        "hit_count": 25,
+        "top_chunk_ids": [
+          "K0-P03-v1:5",
+          "K0-P03-v1:3",
+          "K0-P03-v1:2",
+          "K0-A02-v1:2",
+          "K0-P02-v1:0",
+          "K0-A02-v1:5",
+          "K0-A01-v1:0",
+          "K0-P03-v1:4",
+          "K0-S02-v2:2",
+          "K0-P01-v1:1"
+        ]
+      },
+      {
+        "id": "K0-SY05",
+        "split": "dev",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-R02-v1",
+          "K0-S10-v1",
+          "K0-A01-v1",
+          "K0-O06-v1",
+          "K0-P01-v1"
+        ],
+        "expected_versions": [
+          "K0-P01-v1",
+          "K0-R02-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 10.308100143447518,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R02-v1:2",
+          "K0-R02-v1:5",
+          "K0-R02-v1:1",
+          "K0-S10-v1:2",
+          "K0-R02-v1:4",
+          "K0-S10-v1:3",
+          "K0-A01-v1:1",
+          "K0-S10-v1:1",
+          "K0-O06-v1:2",
+          "K0-P01-v1:0"
+        ]
+      },
+      {
+        "id": "K0-SY06",
+        "split": "dev",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-A03-v1",
+          "K0-S07-v1",
+          "K0-P06-v1",
+          "K0-O08-v1",
+          "K0-P04-v1"
+        ],
+        "expected_versions": [
+          "K0-S07-v1",
+          "K0-A03-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 16.093000071123242,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-A03-v1:0",
+          "K0-S07-v1:0",
+          "K0-P06-v1:3",
+          "K0-O08-v1:2",
+          "K0-P06-v1:2",
+          "K0-S07-v1:1",
+          "K0-P04-v1:0",
+          "K0-R05-v1:4",
+          "K0-A03-v1:1",
+          "K0-P06-v1:4"
+        ]
+      },
+      {
+        "id": "K0-SY07",
+        "split": "test",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-P05-v1",
+          "K0-P06-v1",
+          "K0-A04-v1",
+          "K0-A03-v1",
+          "K0-P04-v1"
+        ],
+        "expected_versions": [
+          "K0-P05-v1",
+          "K0-P06-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 13.148199999704957,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-P05-v1:0",
+          "K0-P06-v1:3",
+          "K0-P06-v1:2",
+          "K0-A04-v1:2",
+          "K0-A03-v1:0",
+          "K0-P06-v1:1",
+          "K0-P04-v1:0",
+          "K0-P06-v1:4",
+          "K0-A04-v1:1",
+          "K0-S11-v1:3"
+        ]
+      },
+      {
+        "id": "K0-SY08",
+        "split": "test",
+        "group": "synthesis",
+        "returned_versions": [
+          "K0-R03-v1",
+          "K0-P03-v1",
+          "K0-O04-v1",
+          "K0-R02-v1",
+          "K0-O02-v1"
+        ],
+        "expected_versions": [
+          "K0-R03-v1",
+          "K0-O03-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.944100001826882,
+        "scope_leaks": [],
+        "hit_count": 23,
+        "top_chunk_ids": [
+          "K0-R03-v1:0",
+          "K0-P03-v1:2",
+          "K0-O04-v1:4",
+          "K0-R02-v1:5",
+          "K0-R02-v1:3",
+          "K0-O02-v1:5",
+          "K0-R05-v1:4",
+          "K0-S10-v1:2",
+          "K0-S11-v1:4",
+          "K0-A04-v1:4"
+        ]
+      },
+      {
+        "id": "K0-N01",
+        "split": "dev",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-O01-v1",
+          "K0-O02-v1",
+          "K0-P04-v1",
+          "K0-O06-v1",
+          "K0-A01-v1"
+        ],
+        "expected_versions": [],
+        "allowed_version_count": 30,
+        "latency_ms": 8.908299962058663,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O01-v1:6",
+          "K0-O02-v1:5",
+          "K0-O02-v1:3",
+          "K0-O01-v1:1",
+          "K0-P04-v1:0",
+          "K0-O06-v1:2",
+          "K0-A01-v1:1",
+          "K0-O01-v1:0",
+          "K0-O02-v1:2",
+          "K0-S06-v1:4"
+        ]
+      },
+      {
+        "id": "K0-N02",
+        "split": "dev",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-S02-v2",
+          "K0-O05-v1",
+          "K0-S11-v1",
+          "K0-A04-v1",
+          "K0-S06-v1"
+        ],
+        "expected_versions": [],
+        "allowed_version_count": 30,
+        "latency_ms": 11.594600044190884,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S02-v2:1",
+          "K0-O05-v1:4",
+          "K0-S11-v1:2",
+          "K0-A04-v1:3",
+          "K0-S06-v1:2",
+          "K0-P05-v1:1",
+          "K0-O01-v1:2",
+          "K0-S07-v1:0",
+          "K0-S10-v1:2",
+          "K0-S02-v2:2"
+        ]
+      },
+      {
+        "id": "K0-N03",
+        "split": "dev",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-S10-v1",
+          "K0-R02-v1",
+          "K0-O08-v1",
+          "K0-O01-v1",
+          "K0-P02-v1"
+        ],
+        "expected_versions": [],
+        "allowed_version_count": 30,
+        "latency_ms": 9.831300005316734,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S10-v1:4",
+          "K0-R02-v1:5",
+          "K0-O08-v1:2",
+          "K0-O01-v1:0",
+          "K0-O01-v1:5",
+          "K0-R02-v1:3",
+          "K0-P02-v1:0",
+          "K0-O01-v1:2",
+          "K0-O01-v1:1",
+          "K0-P03-v1:3"
+        ]
+      },
+      {
+        "id": "K0-N04",
+        "split": "dev",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-P04-v1",
+          "K0-O08-v1",
+          "K0-R02-v1",
+          "K0-O02-v1",
+          "K0-P03-v1"
+        ],
+        "expected_versions": [],
+        "allowed_version_count": 30,
+        "latency_ms": 8.209400111809373,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-P04-v1:0",
+          "K0-O08-v1:2",
+          "K0-R02-v1:5",
+          "K0-O08-v1:4",
+          "K0-O02-v1:5",
+          "K0-O08-v1:1",
+          "K0-P03-v1:5",
+          "K0-R01-v1:0",
+          "K0-A03-v1:0",
+          "K0-S08-v1:0"
+        ]
+      },
+      {
+        "id": "K0-N05",
+        "split": "dev",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-S11-v1",
+          "K0-S10-v1",
+          "K0-P01-v1",
+          "K0-O04-v1",
+          "K0-O05-v1"
+        ],
+        "expected_versions": [
+          "K0-S10-v1",
+          "K0-S11-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.91950004734099,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-S11-v1:2",
+          "K0-S10-v1:2",
+          "K0-S11-v1:4",
+          "K0-S11-v1:3",
+          "K0-S10-v1:3",
+          "K0-P01-v1:0",
+          "K0-O04-v1:3",
+          "K0-O05-v1:4",
+          "K0-S02-v2:5",
+          "K0-R02-v1:5"
+        ]
+      },
+      {
+        "id": "K0-N06",
+        "split": "test",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-A01-v1",
+          "K0-R02-v1",
+          "K0-O04-v1",
+          "K0-S02-v2",
+          "K0-S10-v1"
+        ],
+        "expected_versions": [],
+        "allowed_version_count": 30,
+        "latency_ms": 8.367100032046437,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-A01-v1:0",
+          "K0-R02-v1:2",
+          "K0-R02-v1:5",
+          "K0-R02-v1:4",
+          "K0-O04-v1:4",
+          "K0-S02-v2:2",
+          "K0-S10-v1:4",
+          "K0-A01-v1:1",
+          "K0-P03-v1:3",
+          "K0-S10-v1:2"
+        ]
+      },
+      {
+        "id": "K0-N07",
+        "split": "test",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-P06-v1",
+          "K0-R02-v1",
+          "K0-A03-v1"
+        ],
+        "expected_versions": [],
+        "allowed_version_count": 30,
+        "latency_ms": 6.698200013488531,
+        "scope_leaks": [],
+        "hit_count": 4,
+        "top_chunk_ids": [
+          "K0-P06-v1:4",
+          "K0-R02-v1:2",
+          "K0-A03-v1:0",
+          "K0-R02-v1:5"
+        ]
+      },
+      {
+        "id": "K0-N08",
+        "split": "test",
+        "group": "no_answer",
+        "returned_versions": [
+          "K0-O02-v1",
+          "K0-R04-v1",
+          "K0-O01-v1",
+          "K0-R01-v1",
+          "K0-S06-v1"
+        ],
+        "expected_versions": [
+          "K0-R04-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 7.923100143671036,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O02-v1:3",
+          "K0-R04-v1:0",
+          "K0-O01-v1:5",
+          "K0-O02-v1:5",
+          "K0-R01-v1:0",
+          "K0-R04-v1:1",
+          "K0-S06-v1:4",
+          "K0-S06-v1:5",
+          "K0-S08-v1:0",
+          "K0-O08-v1:3"
+        ]
+      },
+      {
+        "id": "K0-B01",
+        "split": "dev",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-A01-v1",
+          "K0-P03-v1",
+          "K0-P06-v1",
+          "K0-A03-v1",
+          "K0-O04-v1"
+        ],
+        "expected_versions": [
+          "K0-A01-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.202299941331148,
+        "scope_leaks": [],
+        "hit_count": 43,
+        "top_chunk_ids": [
+          "K0-A01-v1:2",
+          "K0-P03-v1:5",
+          "K0-P06-v1:2",
+          "K0-P03-v1:3",
+          "K0-A03-v1:0",
+          "K0-O04-v1:3",
+          "K0-R05-v1:4",
+          "K0-P03-v1:4",
+          "K0-P01-v1:1",
+          "K0-R02-v1:1"
+        ]
+      },
+      {
+        "id": "K0-B02",
+        "split": "dev",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-R05-v1",
+          "K0-A01-v1",
+          "K0-R02-v1",
+          "K0-O05-v1",
+          "K0-A04-v1"
+        ],
+        "expected_versions": [
+          "K0-S04-v1",
+          "K0-A01-v1",
+          "K0-O04-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 6.4616999588906765,
+        "scope_leaks": [],
+        "hit_count": 6,
+        "top_chunk_ids": [
+          "K0-R05-v1:2",
+          "K0-A01-v1:0",
+          "K0-R02-v1:4",
+          "K0-O05-v1:3",
+          "K0-A04-v1:4",
+          "K0-R02-v1:5"
+        ]
+      },
+      {
+        "id": "K0-B03",
+        "split": "dev",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-O08-v1",
+          "K0-S10-v1",
+          "K0-A01-v1",
+          "K0-O02-v1",
+          "K0-R04-v1"
+        ],
+        "expected_versions": [
+          "K0-O08-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.79630004055798,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O08-v1:3",
+          "K0-S10-v1:4",
+          "K0-A01-v1:2",
+          "K0-O02-v1:5",
+          "K0-O08-v1:4",
+          "K0-R04-v1:0",
+          "K0-S07-v1:0",
+          "K0-S09-v1:3",
+          "K0-O08-v1:2",
+          "K0-O04-v1:2"
+        ]
+      },
+      {
+        "id": "K0-B04",
+        "split": "dev",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-R02-v1",
+          "K0-P02-v1",
+          "K0-A01-v1",
+          "K0-P01-v1",
+          "K0-O02-v1"
+        ],
+        "expected_versions": [],
+        "allowed_version_count": 30,
+        "latency_ms": 8.688699919730425,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R02-v1:2",
+          "K0-P02-v1:0",
+          "K0-A01-v1:2",
+          "K0-R02-v1:5",
+          "K0-P01-v1:0",
+          "K0-O02-v1:2",
+          "K0-O04-v1:4",
+          "K0-R05-v1:2",
+          "K0-S07-v1:0",
+          "K0-A02-v1:4"
+        ]
+      },
+      {
+        "id": "K0-B05",
+        "split": "dev",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-O02-v1",
+          "K0-A03-v1",
+          "K0-O01-v1",
+          "K0-O03-v1",
+          "K0-O08-v1"
+        ],
+        "expected_versions": [
+          "K0-O02-v1",
+          "K0-S02-v2"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 7.7639000955969095,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O02-v1:4",
+          "K0-O02-v1:5",
+          "K0-A03-v1:0",
+          "K0-O01-v1:6",
+          "K0-O03-v1:0",
+          "K0-O08-v1:2",
+          "K0-O04-v1:4",
+          "K0-S11-v1:4",
+          "K0-P04-v1:0",
+          "K0-R02-v1:3"
+        ]
+      },
+      {
+        "id": "K0-B06",
+        "split": "test",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-O08-v1",
+          "K0-O02-v1",
+          "K0-S10-v1",
+          "K0-S07-v1",
+          "K0-O01-v1"
+        ],
+        "expected_versions": [
+          "K0-O08-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.463300066068769,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-O08-v1:3",
+          "K0-O02-v1:4",
+          "K0-S10-v1:4",
+          "K0-S07-v1:0",
+          "K0-O02-v1:5",
+          "K0-O08-v1:4",
+          "K0-O08-v1:2",
+          "K0-O01-v1:5",
+          "K0-R02-v1:3",
+          "K0-S02-v2:4"
+        ]
+      },
+      {
+        "id": "K0-B07",
+        "split": "test",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-A03-v1",
+          "K0-P04-v1",
+          "K0-S07-v1",
+          "K0-R03-v1",
+          "K0-P03-v1"
+        ],
+        "expected_versions": [
+          "K0-A03-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 7.69410002976656,
+        "scope_leaks": [],
+        "hit_count": 44,
+        "top_chunk_ids": [
+          "K0-A03-v1:0",
+          "K0-P04-v1:0",
+          "K0-S07-v1:0",
+          "K0-R03-v1:0",
+          "K0-A03-v1:1",
+          "K0-P03-v1:3",
+          "K0-O04-v1:4",
+          "K0-P06-v1:2",
+          "K0-P06-v1:3",
+          "K0-O06-v1:2"
+        ]
+      },
+      {
+        "id": "K0-B08",
+        "split": "test",
+        "group": "business_mixed",
+        "returned_versions": [
+          "K0-R05-v1",
+          "K0-P04-v1",
+          "K0-R01-v1",
+          "K0-O05-v1",
+          "K0-A02-v1"
+        ],
+        "expected_versions": [
+          "K0-R05-v1"
+        ],
+        "allowed_version_count": 30,
+        "latency_ms": 8.972899988293648,
+        "scope_leaks": [],
+        "hit_count": 50,
+        "top_chunk_ids": [
+          "K0-R05-v1:2",
+          "K0-R05-v1:3",
+          "K0-R05-v1:4",
+          "K0-R05-v1:1",
+          "K0-P04-v1:0",
+          "K0-R01-v1:1",
+          "K0-O05-v1:3",
+          "K0-A02-v1:3",
+          "K0-S02-v2:3",
+          "K0-R02-v1:5"
+        ]
+      }
+    ]
+  },
+  "imported_source_hashes": {
+    "railg/retrieval/builder.py": "ff458f83275dd2df78cbe6f5e9e6428b1eefc5c5e017ac91c5f2051bdc342a1b",
+    "railg/schema/document.py": "451f01d0e3bc6ac97a82724aaec8546efa0251e0ae3d463416612a1d0c34f4a6",
+    "railg/schema/mapping.py": "b1fd6d47575c9576c8b7bb4e8c8915906c2c24cde910ebb7460fad7128902fbf",
+    "railg/schema/__init__.py": "bc21444f8d84de4842d72682c4a95a4f1ca971387555594fae525683fcbdcbf4",
+    "railg/config.py": "08752b9663c4c5e4d3e6858b6df86bc9586537bdf43d123f9b0d4dc68dd5fc98",
+    "railg/store.py": "15d3f4884d110a25bce7d2c687688471cf09c0c4be79001fdfbcabb1495358ac",
+    "railg/retrieval/parents.py": "998dd2e9ad792ec9dded9237ebad393ad1c5233946c805cad2a29ee3a3937b0f",
+    "railg/retrieval/processors.py": "8338e6b97f8de5d714a40ddafab9bec17580f72229006aedab99a8405db0c9b2",
+    "railg/providers/base.py": "7b3cad05eb112d07f74ef95946d337358f3aafa3931d0715d598dc33a03c559e",
+    "railg/providers/openai_compat.py": "5ad19d617d0e5259f8227e2964fb32c153f80b3bdc192b57dc7d1f0fd554f6f9",
+    "railg/providers/tokens.py": "6a71725392421e9c254a3c204c2747b463a1b5a401091306e7f63cab1d1f327d",
+    "railg/providers/__init__.py": "c542bb7a4e2718905ced392232aca52517ca59277efa49ef8a0dbc90521700dc",
+    "railg/retrieval/understand.py": "f38ebf5036f79c0b28c0a07675dc6d3d42b1e2d8eb14781e5da2d25024567e6b",
+    "railg/retrieval/service.py": "ad13c505960b1677291fabf093d266a539f687cc8d2eeee9086eb1c1bb611ead",
+    "railg/retrieval/__init__.py": "72e1944498dcc34b761c8aad66278568b6b832093dffc5f00ac969f47fb9d41e",
+    "railg/ingest/page.py": "080d2b7d606af082a7aa1a2e1708bc29ef2a98296b462395e84245006f23f1ac",
+    "railg/ingest/chunker.py": "e10bb76349e350e1414d3549d943810fed3ffd79585ec77d0a675978927615a7",
+    "railg/ingest/extractors/base.py": "d25ad702831c0a62d85948c53b509db6241eef1dc8341628ee7de2a3a59e9691",
+    "railg/ingest/extractors/layout.py": "f2b87931af86fea2283750597a042b36091f3a684ed722089ced1d0a0431db1a",
+    "railg/ingest/extractors/office.py": "13c609abeb6bdec0b110f153d21c1b4c19f6a556b9da111c48949ffd4b3d7965",
+    "railg/ingest/extractors/pdf.py": "fec2a22fa53f5c5c474f49a2521dfc95ea5a615c26d1092a354bd890256b24cb",
+    "railg/ingest/extractors/text_formats.py": "313ed8f07372741ba54ce46155fc19a14ddfcc60a57ae30d7a95e5afd970ffd4",
+    "railg/ingest/extractors/__init__.py": "249dc63d18295e8e66b59134ab13ff8749b8dba1528b071764aeed1d3261d116",
+    "railg/db.py": "f68fdcd4544de62c140d1ee5e9fae1e60cfdd98193182f5319c993295d93e735",
+    "railg/ingest/sources.py": "1f896d081a93aae44279622f7d80152cddce8c79e0fddbba310c30279d1e9969",
+    "railg/ingest/pipeline.py": "3048b32f0800f99b170ba81b951a5f213e26313ecb9adfab6da97ae6b873aaf4",
+    "railg/ingest/__init__.py": "1bd9eb55ebff332b8f1d9c7e3b7e8284e632397079075ce7ccb70fd5055fcfa5"
+  }
+}
