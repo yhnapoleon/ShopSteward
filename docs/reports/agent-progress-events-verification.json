@@ -1,0 +1,518 @@
+{
+  "date": "2026-09-08",
+  "base_commit": "c46e85ce650d0a1891d99c17e4511997bdc6275e",
+  "phase_1": {
+    "pr": "https://github.com/yhnapoleon/ShopSteward/pull/11",
+    "status": "MERGED",
+    "head": "8b9246b22e58736e97e885c5fde2d74caeaa04c3",
+    "ci": "https://github.com/yhnapoleon/ShopSteward/actions/runs/34228884666"
+  },
+  "phase_2_committed": false,
+  "backend_acceptance": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "64",
+    "time": "16.857",
+    "timestamp": "2026-09-08T22:27:20.102985+08:00",
+    "hostname": "JefMacMinideMac-mini-2.local"
+  },
+  "frontend_acceptance": {
+    "startTime": "2026-09-08T14:29:07.924Z",
+    "duration": 65810.195,
+    "expected": 23,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "real_tool_browser": {
+    "observations": [
+      "real tool.started reached the browser before the tool was released",
+      "refresh restored the original running invocation",
+      "snapshot polling continued real progress while SSE was unavailable",
+      "real plan revision reached the UI, with no purchase and cash unchanged"
+    ],
+    "run": {
+      "id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+      "conversation_id": "90bb63e2-a235-4861-be09-6dd6cd67334b",
+      "status": "SUCCEEDED",
+      "input_through_seq": 1,
+      "trigger": "USER",
+      "graph_version": "agent-v1",
+      "interrupt_id": null,
+      "question": null,
+      "output": {
+        "status": "SUCCEEDED",
+        "content": "待确认方案已更新为20件，尚未采购。",
+        "references": []
+      },
+      "error_code": null,
+      "created_at": "2026-09-08T14:27:25.148738Z",
+      "finished_at": "2026-09-08T14:27:31.896839Z",
+      "tools": [
+        {
+          "tool": "get_dashboard",
+          "invocation_id": "live-get_dashboard",
+          "ok": true,
+          "references": [
+            {
+              "id": "store_1bc36e79f7d44840ba3b010efc9dcb28",
+              "type": "store",
+              "version": "1"
+            }
+          ]
+        },
+        {
+          "tool": "evaluate_plan",
+          "invocation_id": "live-evaluate_plan",
+          "ok": true,
+          "references": []
+        },
+        {
+          "tool": "revise_plan",
+          "invocation_id": "live-revise_plan",
+          "ok": true,
+          "references": [
+            {
+              "id": "a9e41079-453e-4dc6-9900-8b6e9ec0ceb0",
+              "type": "plan",
+              "version": "2"
+            }
+          ]
+        }
+      ],
+      "progress_seq": 9,
+      "activity": [
+        {
+          "invocation_id": "live-get_dashboard",
+          "tool": "get_dashboard",
+          "status": "SUCCEEDED",
+          "attempt": 1,
+          "started_at": "2026-09-08T14:27:25.201227Z",
+          "finished_at": "2026-09-08T14:27:26.248123Z",
+          "duration_ms": 1046,
+          "error_code": null,
+          "references": [
+            {
+              "id": "store_1bc36e79f7d44840ba3b010efc9dcb28",
+              "type": "store",
+              "version": "1"
+            }
+          ]
+        },
+        {
+          "invocation_id": "live-evaluate_plan",
+          "tool": "evaluate_plan",
+          "status": "SUCCEEDED",
+          "attempt": 1,
+          "started_at": "2026-09-08T14:27:26.259824Z",
+          "finished_at": "2026-09-08T14:27:27.245893Z",
+          "duration_ms": 986,
+          "error_code": null,
+          "references": []
+        },
+        {
+          "invocation_id": "live-revise_plan",
+          "tool": "revise_plan",
+          "status": "SUCCEEDED",
+          "attempt": 1,
+          "started_at": "2026-09-08T14:27:27.260705Z",
+          "finished_at": "2026-09-08T14:27:31.889418Z",
+          "duration_ms": 4628,
+          "error_code": null,
+          "references": [
+            {
+              "id": "a9e41079-453e-4dc6-9900-8b6e9ec0ceb0",
+              "type": "plan",
+              "version": "2"
+            }
+          ]
+        }
+      ]
+    },
+    "events": {
+      "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+      "events": [
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:1",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 1,
+          "at": "2026-09-08T14:27:25.150522Z",
+          "type": "run.queued",
+          "invocation_id": null,
+          "payload": {
+            "status": "QUEUED"
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:2",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 2,
+          "at": "2026-09-08T14:27:25.192468Z",
+          "type": "run.started",
+          "invocation_id": null,
+          "payload": {
+            "status": "RUNNING",
+            "attempt": 1
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:3",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 3,
+          "at": "2026-09-08T14:27:25.201959Z",
+          "type": "tool.started",
+          "invocation_id": "live-get_dashboard",
+          "payload": {
+            "activity": {
+              "tool": "get_dashboard",
+              "status": "RUNNING",
+              "attempt": 1,
+              "error_code": null,
+              "references": [],
+              "started_at": "2026-09-08T14:27:25.201227Z",
+              "duration_ms": null,
+              "finished_at": null,
+              "invocation_id": "live-get_dashboard"
+            }
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:4",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 4,
+          "at": "2026-09-08T14:27:26.248363Z",
+          "type": "tool.completed",
+          "invocation_id": "live-get_dashboard",
+          "payload": {
+            "activity": {
+              "tool": "get_dashboard",
+              "status": "SUCCEEDED",
+              "attempt": 1,
+              "error_code": null,
+              "references": [
+                {
+                  "id": "store_1bc36e79f7d44840ba3b010efc9dcb28",
+                  "type": "store",
+                  "version": "1"
+                }
+              ],
+              "started_at": "2026-09-08T14:27:25.201227Z",
+              "duration_ms": 1046,
+              "finished_at": "2026-09-08T14:27:26.248123Z",
+              "invocation_id": "live-get_dashboard"
+            }
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:5",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 5,
+          "at": "2026-09-08T14:27:26.260431Z",
+          "type": "tool.started",
+          "invocation_id": "live-evaluate_plan",
+          "payload": {
+            "activity": {
+              "tool": "evaluate_plan",
+              "status": "RUNNING",
+              "attempt": 1,
+              "error_code": null,
+              "references": [],
+              "started_at": "2026-09-08T14:27:26.259824Z",
+              "duration_ms": null,
+              "finished_at": null,
+              "invocation_id": "live-evaluate_plan"
+            }
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:6",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 6,
+          "at": "2026-09-08T14:27:27.246159Z",
+          "type": "tool.completed",
+          "invocation_id": "live-evaluate_plan",
+          "payload": {
+            "activity": {
+              "tool": "evaluate_plan",
+              "status": "SUCCEEDED",
+              "attempt": 1,
+              "error_code": null,
+              "references": [],
+              "started_at": "2026-09-08T14:27:26.259824Z",
+              "duration_ms": 986,
+              "finished_at": "2026-09-08T14:27:27.245893Z",
+              "invocation_id": "live-evaluate_plan"
+            }
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:7",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 7,
+          "at": "2026-09-08T14:27:27.261448Z",
+          "type": "tool.started",
+          "invocation_id": "live-revise_plan",
+          "payload": {
+            "activity": {
+              "tool": "revise_plan",
+              "status": "RUNNING",
+              "attempt": 1,
+              "error_code": null,
+              "references": [],
+              "started_at": "2026-09-08T14:27:27.260705Z",
+              "duration_ms": null,
+              "finished_at": null,
+              "invocation_id": "live-revise_plan"
+            }
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:8",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 8,
+          "at": "2026-09-08T14:27:31.889603Z",
+          "type": "tool.completed",
+          "invocation_id": "live-revise_plan",
+          "payload": {
+            "activity": {
+              "tool": "revise_plan",
+              "status": "SUCCEEDED",
+              "attempt": 1,
+              "error_code": null,
+              "references": [
+                {
+                  "id": "a9e41079-453e-4dc6-9900-8b6e9ec0ceb0",
+                  "type": "plan",
+                  "version": "2"
+                }
+              ],
+              "started_at": "2026-09-08T14:27:27.260705Z",
+              "duration_ms": 4628,
+              "finished_at": "2026-09-08T14:27:31.889418Z",
+              "invocation_id": "live-revise_plan"
+            }
+          }
+        },
+        {
+          "schema_version": 1,
+          "event_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9:9",
+          "run_id": "4801a77e-5123-4e27-942b-1c0b79dc13d9",
+          "seq": 9,
+          "at": "2026-09-08T14:27:31.897043Z",
+          "type": "run.completed",
+          "invocation_id": null,
+          "payload": {
+            "status": "SUCCEEDED",
+            "error_code": null,
+            "finished_at": "2026-09-08T14:27:31.896839+00:00"
+          }
+        }
+      ],
+      "latest_seq": 9,
+      "next_after_seq": 9,
+      "has_more": false,
+      "run_status": "SUCCEEDED"
+    },
+    "actions": [],
+    "browserErrors": [],
+    "model": "controlled executor; no model call"
+  },
+  "local_upgrade": {
+    "before": "0010_knowledge",
+    "after": "0012_agent_progress",
+    "backup_sha256": "8e790e5f3978b095dff45ef9c42c543565b414b66fa9193ecd61293f3f5440ea",
+    "model_enabled": false,
+    "restarted": [
+      "api",
+      "worker"
+    ],
+    "preserved": [
+      "frontend",
+      "simulator"
+    ],
+    "at": "2026-09-08T14:26:28.238472+00:00"
+  },
+  "private_upgrade_receipt": "var/agent-progress-local-upgrade.json",
+  "business_regression": {
+    "automated": {
+      "startTime": "2026-09-08T14:29:15.507Z",
+      "duration": 596426.549,
+      "expected": 4,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "note": "4 scope cases passed; the full SC01 hit its 300-second total limit while the second purchase was queued. The original scenario was then continued and verified; not recorded as an uninterrupted automated pass.",
+    "continuation": {
+      "status": "passed",
+      "originalScenario": {
+        "store": "store_4fc3ab5999024f5296ade809c86c11dc",
+        "advance_path": "/dev/v1/scenarios/run_f9404e687465485aaf16147fad22f156/advance"
+      },
+      "mission": "0437b93e-51cd-4c6c-8f0a-599856ef0782",
+      "before": {
+        "store_id": "store_4fc3ab5999024f5296ade809c86c11dc",
+        "state_version": 8,
+        "currency": "CNY",
+        "cash_minor": 40000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 40000,
+        "receivables_minor": 20000,
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 50,
+            "in_transit": 20,
+            "remaining_demand": 70,
+            "forecast_version": "local-03320f8f8341aaa95b04a76bdf9d76e8"
+          }
+        ],
+        "data_as_of": "2026-09-08T14:39:27.799743Z",
+        "simulation_time": "2026-09-09T16:34:36.370284Z"
+      },
+      "final": {
+        "store_id": "store_4fc3ab5999024f5296ade809c86c11dc",
+        "state_version": 9,
+        "currency": "CNY",
+        "cash_minor": 40000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 40000,
+        "receivables_minor": 20000,
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 70,
+            "in_transit": 0,
+            "remaining_demand": 70,
+            "forecast_version": "local-03320f8f8341aaa95b04a76bdf9d76e8"
+          }
+        ],
+        "data_as_of": "2026-09-08T14:46:35.287950Z",
+        "simulation_time": "2026-09-10T16:34:36.370284Z"
+      },
+      "actions": [
+        {
+          "id": "69139336-42a5-4802-873f-2d94be790825",
+          "mission_id": "0437b93e-51cd-4c6c-8f0a-599856ef0782",
+          "plan_id": "183fb022-7943-43e7-9b45-cc25a12dfb5c",
+          "approval_id": "5aad104e-24d1-4694-8a9b-9e647ea46301",
+          "status": "SUCCEEDED",
+          "quantity": 20,
+          "amount_minor": 20000,
+          "currency": "CNY",
+          "external_order_id": "order_613f70f8b4f242368fe3b6953c9c34ed",
+          "receipt": {
+            "action_id": "69139336-42a5-4802-873f-2d94be790825",
+            "status": "ACCEPTED",
+            "external_order_id": "order_613f70f8b4f242368fe3b6953c9c34ed",
+            "quantity": 20,
+            "total_minor": 20000,
+            "currency": "CNY",
+            "recorded_at": "2026-09-08T14:39:27.799743Z",
+            "reason": null
+          },
+          "last_error": null,
+          "created_at": "2026-09-08T14:39:02.808133Z",
+          "updated_at": "2026-09-08T14:39:27.805943Z",
+          "purchase_snapshot": {
+            "store_id": "store_4fc3ab5999024f5296ade809c86c11dc",
+            "sku_id": "sku_001",
+            "supplier_id": "supplier_001",
+            "quantity": 20,
+            "unit_price_minor": 1000,
+            "total_minor": 20000,
+            "currency": "CNY",
+            "expected_arrival_at": "2026-09-10T16:34:36Z"
+          }
+        },
+        {
+          "id": "86920891-4f3a-4857-b041-94569aa81fb1",
+          "mission_id": "0437b93e-51cd-4c6c-8f0a-599856ef0782",
+          "plan_id": "1e8a4239-37af-4327-ba9f-5b2ef3a350be",
+          "approval_id": "aeeb1ec6-7584-4a2d-9ce7-bcad382d7c77",
+          "status": "SUCCEEDED",
+          "quantity": 40,
+          "amount_minor": 40000,
+          "currency": "CNY",
+          "external_order_id": "order_739bdd5646a445ed9e7249f135fa7c6f",
+          "receipt": {
+            "action_id": "86920891-4f3a-4857-b041-94569aa81fb1",
+            "status": "ACCEPTED",
+            "external_order_id": "order_739bdd5646a445ed9e7249f135fa7c6f",
+            "quantity": 40,
+            "total_minor": 40000,
+            "currency": "CNY",
+            "recorded_at": "2026-09-08T14:35:56.535621Z",
+            "reason": null
+          },
+          "last_error": null,
+          "created_at": "2026-09-08T14:35:32.121466Z",
+          "updated_at": "2026-09-08T14:35:56.549315Z",
+          "purchase_snapshot": {
+            "store_id": "store_4fc3ab5999024f5296ade809c86c11dc",
+            "sku_id": "sku_001",
+            "supplier_id": "supplier_001",
+            "quantity": 40,
+            "unit_price_minor": 1000,
+            "total_minor": 40000,
+            "currency": "CNY",
+            "expected_arrival_at": "2026-09-09T14:34:36Z"
+          }
+        }
+      ],
+      "note": "Continued the original scenario after the 300-second test timeout; no new purchase created."
+    }
+  },
+  "source_sha256": {
+    "backend/app/agent_bridge/document_evidence.py": "3a8314929221a738747d5febb8cc723934636f1c064f3fd33cc172dd979ba4bf",
+    "backend/app/agent_bridge/jobs.py": "a34e4a742b9be0fe49c8e2237b26484c61e905185057edc127b099235794f4c0",
+    "backend/app/agent_bridge/models.py": "e3a2810d6ceab8581b2836b084ecec0ebdfe6773c9be3c56f888fcc71eb78d1e",
+    "backend/app/agent_bridge/progress.py": "8d2c8f2ea25203736d186d6476ceae11d28fd7668796f42f8d736fb4225bb3b2",
+    "backend/app/agent_bridge/repository.py": "b852dd77ec5471f0a3ae7bf781c81f868d7ba290424fcd712fe1115712064fe9",
+    "backend/app/agent_bridge/router.py": "f1255bf71553fc14e3cd4a78cff057f590e36015b23049f51aef9fcbc843437f",
+    "backend/app/agent_bridge/schemas.py": "c6ea605d5d48584091caec1ac471ad4c3978b320688c0dae62701e3410226879",
+    "backend/app/agent_bridge/tools.py": "f5455dc997d1296a44f8ed718d6988f59f8132f366f35f92129dd90c363ed153",
+    "backend/app/db/session.py": "83e964d5e10cf5a89e995b1643e12bb962400eafc1a7870352b38ea8a9481354",
+    "backend/app/knowledge/router.py": "b9c9e922dee41310051e981ff7f54895e837dfa00ba4328e57d47465b6cf1327",
+    "backend/migrations/versions/0012_agent_progress.py": "b31311ee09993dbddbdfb649acc4b8e2628fc8434bafc07660f622e6245be14d",
+    "frontend/app/assets/css/tasks.css": "988e915e6d629fea3acd73cfce7273464dd7041b972a696c843fdcbd34b40da3",
+    "frontend/app/components/AgentWorkspace.vue": "ace540993df94d9645cfa7b8f648f0c013bcefd1e380626172f1806e324a2422",
+    "frontend/app/components/TaskWorkspace.vue": "b534fbaa9dcf94dc6280f2449b939ce3f34a7be6821ce072b8c7084db02aed1f",
+    "frontend/app/composables/useAgentConversation.ts": "63f4543b69b2df4475c59f4315fdaf07a2006ec7fff9f70f57b984477f22e593",
+    "frontend/app/types/backend.d.ts": "4a879f3c1c96a3bbc740f2883ce912d1fbdf5432066a6970d6c165e389383b26",
+    "frontend/app/utils/agent-progress.ts": "6dbc01af3867aa1c595c874bbf8e5df45b7286682fb4301aea1fd05e80a00ae0",
+    "frontend/app/utils/agent.ts": "6a699e3ff93cb77f950a911b1044566c122b3a133322efeb4589bcc9bbc5ee6f",
+    "frontend/server/api/backend/[...path].ts": "5dc00ddf83ee8e88488926fca12e5af3bd972201c7f7031a71db88936dec7205",
+    "frontend/server/utils/agent-progress-stream.ts": "a495fdfa5bb983767223bd26ff996471b3db11a5014b80a959f85ced86459dcc",
+    "frontend/server/utils/backend-routes.ts": "192bab7a8a6e0df32f86d65981d7035ae5b32bd865d9b81c72f19a337e7c62a3"
+  },
+  "model_enabled_in_development": false,
+  "validation_note": "Real PG / HTTP tools / SSE / Nitro / browser; tool ordering and pauses are controlled by the test executor, not a real model.",
+  "checks": {
+    "typecheck": "passed",
+    "api_contract": "passed",
+    "production_build": "passed",
+    "ruff": "passed",
+    "migration_drift": "none",
+    "git_diff_check": "passed",
+    "local_api_ready": "passed",
+    "workspace_links": {
+      "status": "passed",
+      "files": 109,
+      "links": 751,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "temporary_frontend_preview_stopped": true
+}

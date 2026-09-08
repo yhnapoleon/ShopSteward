@@ -1560,6 +1560,437 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/agent-runs/{run_id}/events": {
+      "get": {
+        "tags": [
+          "Agent"
+        ],
+        "summary": "Events",
+        "operationId": "list_agent_progress_events",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "after_seq",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "After Seq"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 100,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AgentEventPage"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B2-A",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/events/stream": {
+      "get": {
+        "tags": [
+          "Agent"
+        ],
+        "summary": "Stream Events",
+        "operationId": "stream_agent_progress_events",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "after_seq",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "After Seq"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B2-A",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/agent-runs/{run_id}/evidence": {
+      "get": {
+        "tags": [
+          "Agent"
+        ],
+        "summary": "Evidence",
+        "operationId": "get_agent_historical_evidence",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Run Id"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Id"
+            }
+          },
+          {
+            "name": "version_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "generation_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Generation Id"
+            }
+          },
+          {
+            "name": "chunk_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Chunk Id"
+            }
+          },
+          {
+            "name": "metadata_revision",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "title": "Metadata Revision"
+            }
+          },
+          {
+            "name": "content_sha256",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "title": "Content Sha256"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HistoricalEvidence"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B2-A",
+        "x-implementation-status": "implemented"
+      }
+    },
     "/internal/v1/agent-tools/{tool_name}": {
       "post": {
         "tags": [
@@ -5217,6 +5648,91 @@
                           ],
                           "title": "Visibility",
                           "type": "string"
+                        },
+                        "provenance": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "source_kind": {
+                                  "default": "document",
+                                  "maxLength": 64,
+                                  "title": "Source Kind",
+                                  "type": "string"
+                                },
+                                "source_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Family Id"
+                                },
+                                "scenario_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Scenario Family Id"
+                                },
+                                "source_url": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 2000,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Url"
+                                },
+                                "publisher": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 300,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Publisher"
+                                },
+                                "jurisdiction": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 100,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Jurisdiction"
+                                },
+                                "synthetic": {
+                                  "default": false,
+                                  "title": "Synthetic",
+                                  "type": "boolean"
+                                }
+                              },
+                              "title": "Provenance",
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         }
                       },
                       "required": [
@@ -5904,6 +6420,91 @@
                           "minimum": 1,
                           "title": "Expected Metadata Version",
                           "type": "integer"
+                        },
+                        "provenance": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "source_kind": {
+                                  "default": "document",
+                                  "maxLength": 64,
+                                  "title": "Source Kind",
+                                  "type": "string"
+                                },
+                                "source_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Family Id"
+                                },
+                                "scenario_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Scenario Family Id"
+                                },
+                                "source_url": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 2000,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Url"
+                                },
+                                "publisher": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 300,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Publisher"
+                                },
+                                "jurisdiction": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 100,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Jurisdiction"
+                                },
+                                "synthetic": {
+                                  "default": false,
+                                  "title": "Synthetic",
+                                  "type": "boolean"
+                                }
+                              },
+                              "title": "Provenance",
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         }
                       },
                       "required": [
@@ -6487,6 +7088,576 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/documents/{document_id}/versions/{version_id}/index-jobs": {
+      "post": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Request Index",
+        "operationId": "request_knowledge_index",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexProgress"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}": {
+      "get": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Index Progress",
+        "operationId": "get_knowledge_index",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexProgress"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}/retry": {
+      "post": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Retry Index",
+        "operationId": "retry_knowledge_index",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Request Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexProgress"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/documents/{document_id}/publications": {
+      "post": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Publish",
+        "operationId": "publish_knowledge_generation",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Activation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicationResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
     "/dev/v1/scenarios": {
       "post": {
         "tags": [
@@ -6902,6 +8073,196 @@
         ],
         "title": "ActionList"
       },
+      "Activation": {
+        "properties": {
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "version_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version Id"
+          },
+          "generation_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Generation Id"
+          },
+          "manifest_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Manifest Hash"
+          },
+          "expected_publication_revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Publication Revision"
+          },
+          "replace_version_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Replace Version Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "version_id",
+          "generation_id",
+          "manifest_hash",
+          "expected_publication_revision"
+        ],
+        "title": "Activation"
+      },
+      "AgentEvent": {
+        "properties": {
+          "schema_version": {
+            "type": "integer",
+            "const": 1,
+            "title": "Schema Version",
+            "default": 1
+          },
+          "event_id": {
+            "type": "string",
+            "title": "Event Id"
+          },
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "seq": {
+            "type": "integer",
+            "title": "Seq"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "run.queued",
+              "run.started",
+              "run.waiting_input",
+              "run.completed",
+              "run.failed",
+              "run.cancelled",
+              "tool.started",
+              "tool.completed",
+              "tool.failed",
+              "tool.interrupted"
+            ],
+            "title": "Type"
+          },
+          "invocation_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invocation Id"
+          },
+          "payload": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Payload"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "event_id",
+          "run_id",
+          "seq",
+          "at",
+          "type",
+          "invocation_id",
+          "payload"
+        ],
+        "title": "AgentEvent"
+      },
+      "AgentEventPage": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "events": {
+            "items": {
+              "$ref": "#/components/schemas/AgentEvent"
+            },
+            "type": "array",
+            "title": "Events"
+          },
+          "latest_seq": {
+            "type": "integer",
+            "title": "Latest Seq"
+          },
+          "next_after_seq": {
+            "type": "integer",
+            "title": "Next After Seq"
+          },
+          "has_more": {
+            "type": "boolean",
+            "title": "Has More"
+          },
+          "run_status": {
+            "type": "string",
+            "enum": [
+              "QUEUED",
+              "RUNNING",
+              "WAITING_INPUT",
+              "SUCCEEDED",
+              "FAILED",
+              "CANCELLED"
+            ],
+            "title": "Run Status"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "events",
+          "latest_seq",
+          "next_after_seq",
+          "has_more",
+          "run_status"
+        ],
+        "title": "AgentEventPage"
+      },
       "Alert": {
         "properties": {
           "id": {
@@ -7114,6 +8475,75 @@
           "next_cursor"
         ],
         "title": "AlertList"
+      },
+      "BusinessOutcome": {
+        "properties": {
+          "invocation_id": {
+            "type": "string",
+            "title": "Invocation Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "evaluation",
+              "revision"
+            ],
+            "title": "Kind"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Recorded At"
+          },
+          "availability": {
+            "type": "string",
+            "enum": [
+              "available",
+              "unavailable"
+            ],
+            "title": "Availability"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "before": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanComparison"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "after": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PlanComparison"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "invocation_id",
+          "kind",
+          "recorded_at",
+          "availability"
+        ],
+        "title": "BusinessOutcome"
       },
       "Candidate": {
         "properties": {
@@ -7800,6 +9230,11 @@
             "type": "integer",
             "title": "Metadata Version"
           },
+          "evidence_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Evidence Revision"
+          },
           "status": {
             "type": "string",
             "enum": [
@@ -7828,8 +9263,33 @@
           },
           "indexing_status": {
             "type": "string",
-            "const": "NOT_INDEXED",
+            "enum": [
+              "NOT_INDEXED",
+              "QUEUED",
+              "INDEXING",
+              "READY",
+              "PARTIAL",
+              "FAILED"
+            ],
             "title": "Indexing Status"
+          },
+          "publication_revision": {
+            "type": "integer",
+            "title": "Publication Revision",
+            "default": 0
+          },
+          "requires_republication": {
+            "type": "boolean",
+            "title": "Requires Republication",
+            "default": false
+          },
+          "publications": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Publications"
           },
           "created_at": {
             "type": "string",
@@ -7850,6 +9310,7 @@
           "store_id",
           "owner_principal_id",
           "metadata_version",
+          "evidence_revision",
           "status",
           "latest_version_id",
           "ingestion_status",
@@ -8233,6 +9694,58 @@
         ],
         "title": "Health"
       },
+      "HistoricalEvidence": {
+        "properties": {
+          "run_id": {
+            "type": "string",
+            "title": "Run Id"
+          },
+          "reference": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Reference"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "version_no": {
+            "type": "integer",
+            "title": "Version No"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "truncated": {
+            "type": "boolean",
+            "title": "Truncated"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Recorded At"
+          },
+          "historical": {
+            "type": "boolean",
+            "const": true,
+            "title": "Historical",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "run_id",
+          "reference",
+          "title",
+          "version_no",
+          "text",
+          "truncated",
+          "recorded_at"
+        ],
+        "title": "HistoricalEvidence"
+      },
       "InboundItem": {
         "properties": {
           "action_id": {
@@ -8415,6 +9928,126 @@
           "eligible"
         ],
         "title": "InboundSnapshot"
+      },
+      "IndexProgress": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "document_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Document Id"
+          },
+          "version_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version Id"
+          },
+          "metadata_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Metadata Revision"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "RUNNING",
+              "RETRY_WAIT",
+              "SUCCEEDED",
+              "FAILED"
+            ],
+            "title": "State"
+          },
+          "attempt": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Attempt"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Id"
+          },
+          "generation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generation Id"
+          },
+          "manifest_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manifest Hash"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "document_id",
+          "version_id",
+          "metadata_revision",
+          "state",
+          "attempt",
+          "job_id",
+          "generation_id",
+          "manifest_hash",
+          "error"
+        ],
+        "title": "IndexProgress"
+      },
+      "IndexRequest": {
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Profile Id",
+            "default": "lexical-v1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "IndexRequest"
       },
       "JobAccepted": {
         "properties": {
@@ -9704,6 +11337,89 @@
         ],
         "title": "Plan"
       },
+      "PlanComparison": {
+        "properties": {
+          "plan_id": {
+            "type": "string",
+            "title": "Plan Id"
+          },
+          "plan_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Plan Version"
+          },
+          "state_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "State Version"
+          },
+          "mission_version": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Mission Version"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "cash_floor_minor": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Cash Floor Minor"
+          },
+          "max_purchase_qty": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Purchase Qty"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/Candidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "recommended_candidate_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Candidate Id"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Evaluated At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "plan_id",
+          "plan_version",
+          "state_version",
+          "mission_version",
+          "currency",
+          "cash_floor_minor",
+          "max_purchase_qty",
+          "candidates",
+          "recommended_candidate_id",
+          "evaluated_at"
+        ],
+        "title": "PlanComparison"
+      },
       "PlanDecision": {
         "properties": {
           "decision": {
@@ -9925,6 +11641,150 @@
           "expected_arrival_at"
         ],
         "title": "ProposedPurchase"
+      },
+      "Provenance": {
+        "properties": {
+          "source_kind": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Source Kind",
+            "default": "document"
+          },
+          "source_family_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Family Id"
+          },
+          "scenario_family_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Family Id"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "publisher": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Provenance"
+      },
+      "PublicationResult": {
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Document Id"
+          },
+          "version_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version Id"
+          },
+          "generation_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Generation Id"
+          },
+          "manifest_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Manifest Hash"
+          },
+          "publication_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Publication Revision"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "document_id",
+          "version_id",
+          "generation_id",
+          "manifest_hash",
+          "publication_revision"
+        ],
+        "title": "PublicationResult"
       },
       "PurchaseEvent": {
         "properties": {
@@ -10445,6 +12305,25 @@
             },
             "type": "array",
             "title": "Tools"
+          },
+          "progress_seq": {
+            "type": "integer",
+            "title": "Progress Seq",
+            "default": 0
+          },
+          "activity": {
+            "items": {
+              "$ref": "#/components/schemas/ToolActivityView"
+            },
+            "type": "array",
+            "title": "Activity"
+          },
+          "outcomes": {
+            "items": {
+              "$ref": "#/components/schemas/BusinessOutcome"
+            },
+            "type": "array",
+            "title": "Outcomes"
           }
         },
         "additionalProperties": false,
@@ -11425,6 +13304,92 @@
         ],
         "title": "TimelineEntryList"
       },
+      "ToolActivityView": {
+        "properties": {
+          "invocation_id": {
+            "type": "string",
+            "title": "Invocation Id"
+          },
+          "tool": {
+            "type": "string",
+            "title": "Tool"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "RUNNING",
+              "SUCCEEDED",
+              "FAILED",
+              "INTERRUPTED"
+            ],
+            "title": "Status"
+          },
+          "attempt": {
+            "type": "integer",
+            "title": "Attempt"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Started At"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Finished At"
+          },
+          "duration_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Ms"
+          },
+          "error_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error Code"
+          },
+          "references": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "References"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "invocation_id",
+          "tool",
+          "status",
+          "attempt",
+          "started_at",
+          "finished_at",
+          "duration_ms",
+          "error_code"
+        ],
+        "title": "ToolActivityView"
+      },
       "ToolCall": {
         "properties": {
           "run_id": {
@@ -11519,6 +13484,16 @@
               }
             ],
             "title": "Valid Until"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Provenance"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "id": {
             "type": "string",

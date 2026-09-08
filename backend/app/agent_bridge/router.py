@@ -1,12 +1,20 @@
+import asyncio
+import json
+import time
 from datetime import timedelta
 from uuid import uuid4
 
 from fastapi import Query, Request
-from sqlalchemy import func, select
+from fastapi.responses import StreamingResponse
+from fastapi.security import HTTPAuthorizationCredentials
+from sqlalchemy import func, select, text
 
+from app.agent_bridge import progress
 from app.agent_bridge import repository as repo
-from app.agent_bridge.models import AgentRun, Conversation, Message, ToolInvocation
+from app.agent_bridge.models import AgentRun, Conversation, Message, ToolActivity, ToolInvocation
+from app.agent_bridge.outcomes import HistoricalEvidence
 from app.agent_bridge.schemas import (
+    AgentEventPage,
     ConversationCreate,
     ConversationList,
     ConversationView,
@@ -28,6 +36,7 @@ from app.api.dependencies import (
     User,
     authorize_store,
     require_role,
+    require_user,
     visible_mission,
 )
 from app.api.routing import B0Router, errors
@@ -181,8 +190,9 @@ async def visible_run(session, principal, run_id, *, lock=False):
     openapi_extra=META,
 )
 async def detail(request: Request, principal: User, run_id: Id):
-    async with request.app.state.db.session() as session:
-        _, run = await visible_run(session, principal, run_id)
+    async with request.app.state.db.session() as session, session.begin():
+        await session.execute(text("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ"))
+        conversation, run = await visible_run(session, principal, run_id)
         result = repo.run_dto(run)
         calls = (
             await session.scalars(
@@ -200,6 +210,17 @@ async def detail(request: Request, principal: User, run_id: Id):
             }
             for c in calls
         ]
+        activity = (
+            await session.scalars(
+                select(ToolActivity)
+                .where(ToolActivity.run_id == run_id)
+                .order_by(ToolActivity.started_at, ToolActivity.invocation_id)
+            )
+        ).all()
+        result["activity"] = [progress.activity_view(row) for row in activity]
+        from app.agent_bridge.outcomes import outcomes
+
+        result["outcomes"] = await outcomes(session, conversation, calls)
         return result
 
 
@@ -225,6 +246,7 @@ async def resume(request: Request, principal: User, run_id: Id, body: Resume, ke
         else:
             run.resume_value = body.content
             run.status = "QUEUED"
+            await progress.append(session, run, "run.queued", {"status": "QUEUED"})
             await repo.schedule_run(session, conversation, run)
         result = {"agent_run_id": run.id, "message_id": message.id}
         repo.receipt(session, "resume:" + run.id, key, body.model_dump(), result)
@@ -311,4 +333,128 @@ async def knowledge_write(
             key,
             source={"type": "user_api", "principal_id": principal.principal_id},
             allowed_tools=catalog(principal),
+        )
+
+
+@router.get(
+    "/api/v1/agent-runs/{run_id}/events",
+    response_model=AgentEventPage,
+    operation_id="list_agent_progress_events",
+    openapi_extra=META,
+)
+async def events(
+    request: Request,
+    principal: User,
+    run_id: Id,
+    after_seq: int = Query(default=0, ge=0),
+    limit: Limit = 100,
+):
+    return await progress.event_page(request.app.state.db, principal, run_id, after_seq, limit)
+
+
+@router.get(
+    "/api/v1/agent-runs/{run_id}/events/stream",
+    response_class=StreamingResponse,
+    responses={200: {"content": {"text/event-stream": {"schema": {"type": "string"}}}}},
+    operation_id="stream_agent_progress_events",
+    openapi_extra=META,
+)
+async def stream_events(
+    request: Request, principal: User, run_id: Id, after_seq: int = Query(default=0, ge=0)
+):
+    try:
+        previous = int(request.headers.get("last-event-id", "0"))
+        if previous < 0:
+            raise ValueError
+        cursor = max(after_seq, previous)
+    except ValueError:
+        raise AppError(
+            422, "INVALID_EVENT_CURSOR", "Event cursor must be a nonnegative integer"
+        ) from None
+    await progress.event_page(request.app.state.db, principal, run_id, cursor)
+    credentials = HTTPAuthorizationCredentials(
+        scheme="Bearer", credentials=request.headers.get("authorization", "").partition(" ")[2]
+    )
+
+    async def stream():
+        after = cursor
+        deadline = time.monotonic() + 25
+        while time.monotonic() < deadline:
+            if await request.is_disconnected():
+                return
+            try:
+                current = require_user(request, credentials)
+                if current.principal_id != principal.principal_id:
+                    raise AppError(401, "UNAUTHENTICATED", "Connection identity changed")
+                page = await progress.event_page(request.app.state.db, current, run_id, after)
+            except AppError as exc:
+                kind = "access_revoked" if exc.status in {401, 403, 404} else "reset"
+                yield f"event: {kind}\ndata: " + json.dumps({"code": exc.code}) + "\n\n"
+                return
+            for item in page.events:
+                yield f"id: {item.seq}\nevent: progress\ndata: {item.model_dump_json()}\n\n"
+            after = page.next_after_seq
+            if page.has_more:
+                continue
+            yield (
+                "event: sync\ndata: "
+                + json.dumps(
+                    {"run_id": run_id, "latest_seq": page.latest_seq, "status": page.run_status}
+                )
+                + "\n\n"
+            )
+            if page.run_status not in {"QUEUED", "RUNNING"}:
+                return
+            await asyncio.sleep(0.5)
+
+    return StreamingResponse(
+        stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-store", "X-Accel-Buffering": "no"},
+    )
+
+
+@router.get(
+    "/api/v1/agent-runs/{run_id}/evidence",
+    response_model=HistoricalEvidence,
+    operation_id="get_agent_historical_evidence",
+    openapi_extra=META,
+)
+async def evidence(
+    request: Request,
+    principal: User,
+    run_id: Id,
+    id: str = Query(min_length=1, max_length=128),
+    version_id: str = Query(min_length=1, max_length=128),
+    generation_id: str = Query(min_length=1, max_length=128),
+    chunk_id: str = Query(min_length=1, max_length=128),
+    metadata_revision: int = Query(ge=1),
+    content_sha256: str = Query(pattern=r"^[0-9a-f]{64}$"),
+):
+    from app.agent_bridge.outcomes import historical_evidence
+
+    async with request.app.state.db.session() as session:
+        conversation, run = await visible_run(session, principal, run_id)
+        calls = (
+            await session.scalars(
+                select(ToolInvocation)
+                .where(ToolInvocation.run_id == run.id)
+                .order_by(ToolInvocation.created_at)
+            )
+        ).all()
+        return await historical_evidence(
+            session,
+            principal,
+            conversation,
+            run.id,
+            calls,
+            {
+                "id": id,
+                "version_id": version_id,
+                "generation_id": generation_id,
+                "chunk_id": chunk_id,
+                "metadata_revision": metadata_revision,
+                "content_sha256": content_sha256,
+            },
+            request.app.state.settings.knowledge_storage_root,
         )

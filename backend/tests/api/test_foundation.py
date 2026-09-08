@@ -171,6 +171,9 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/conversations/{conversation_id}/messages",
         "/api/v1/conversations/{conversation_id}/followup",
         "/api/v1/agent-runs/{run_id}",
+        "/api/v1/agent-runs/{run_id}/events",
+        "/api/v1/agent-runs/{run_id}/evidence",
+        "/api/v1/agent-runs/{run_id}/events/stream",
         "/api/v1/agent-runs/{run_id}/resume",
         "/api/v1/agent-runs/{run_id}/cancel",
         "/api/v1/stores/{store_id}/agent-knowledge",
@@ -286,3 +289,14 @@ async def test_business_payload_rejects_coerced_money_and_quantities():
             SalePayload(sku_id="sku", quantity=value, unit_price_minor=2000)
         with pytest.raises(ValidationError):
             SalePayload(sku_id="sku", quantity=1, unit_price_minor=value)
+
+
+def test_embedded_upload_provenance_keeps_constraints_without_orphan_refs():
+    schema = make_app().openapi()
+    metadata = schema["paths"]["/api/v1/stores/{store_id}/documents"]["post"]["requestBody"][
+        "content"
+    ]["multipart/form-data"]["schema"]["properties"]["metadata"]["contentSchema"]
+    validator = Draft202012Validator(metadata)
+    validator.validate({"title": "Example", "provenance": {"synthetic": True}})
+    assert list(validator.iter_errors({"title": "Example", "provenance": {"synthetic": "yes"}}))
+    assert "#/$defs/" not in json.dumps(metadata)

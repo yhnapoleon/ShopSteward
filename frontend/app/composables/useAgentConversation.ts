@@ -1,6 +1,7 @@
 import type { Schema } from '~/types/models'
 import { api, ApiFailure, query } from '~/utils/api'
-import { describeTool, type ToolRecord } from '~/utils/agent'
+import { describeTool } from '~/utils/agent'
+import { applyProgressEvent, runTools } from '~/utils/agent-progress'
 
 type PendingMessage = {
   key: string
@@ -22,6 +23,9 @@ export function useAgentConversation(owner = false) {
   const shop = useShop()
   const { s: business, mission } = shop
   const s = useState('agent-workspace', () => ({
+    streamStatus: 'idle' as 'idle' | 'connecting' | 'live' | 'polling',
+    accessRevoked: false,
+    reloadRequested: false,
     scope: '',
     epoch: 0,
     reading: false,
@@ -62,18 +66,23 @@ export function useAgentConversation(owner = false) {
     () => !!s.run && ['QUEUED', 'RUNNING', 'WAITING_INPUT'].includes(s.run.status),
   )
   const running = computed(
-    () => !!s.run && ['QUEUED', 'RUNNING'].includes(s.run.status) && !s.syncError,
+    () =>
+      !!s.run && ['QUEUED', 'RUNNING'].includes(s.run.status) && !s.syncError && !s.accessRevoked,
   )
   const enabled = computed(
     () =>
+      !s.accessRevoked &&
       !!business.session?.agentEnabled &&
       !!scope.value &&
       ['ACTIVE', 'PAUSED'].includes(mission.value?.status || ''),
   )
   const status = computed(() => {
+    if (s.accessRevoked) return '当前任务的Agent访问已失效'
     if (s.syncError) return '连接中断，进度待同步'
     if (s.sending) return '正在发送你的要求'
     if (!s.run) return business.session?.agentEnabled ? '等待你的问题' : 'Agent 暂未启用'
+    if (s.run.status === 'RUNNING' && currentTool.value)
+      return '正在' + describeTool(currentTool.value.tool).title
     return {
       QUEUED: '已收到，等待处理',
       RUNNING: '正在处理你的要求',
@@ -84,28 +93,26 @@ export function useAgentConversation(owner = false) {
     }[s.run.status]
   })
   const inspected = computed(() => (s.inspectedRunId ? s.runs[s.inspectedRunId] || null : s.run))
-  const tools = computed<ToolRecord[]>(() => {
-    const seen = new Set<string>()
-    return (inspected.value?.tools || []).flatMap((raw: unknown) => {
-      if (!raw || typeof raw !== 'object') return []
-      const r = raw as Record<string, unknown>
-      if (
-        typeof r.invocation_id !== 'string' ||
-        typeof r.tool !== 'string' ||
-        seen.has(r.invocation_id)
-      )
-        return []
-      seen.add(r.invocation_id)
-      return [
-        {
-          tool: r.tool,
-          invocation_id: r.invocation_id,
-          ok: typeof r.ok === 'boolean' ? r.ok : null,
-          references: Array.isArray(r.references) ? r.references : [],
-        },
-      ]
-    })
-  })
+  const tools = computed(() => runTools(inspected.value))
+  const currentTool = computed(() => runTools(s.run).find((t) => t.status === 'RUNNING'))
+  const runningTarget = computed(() =>
+    running.value && currentTool.value ? describeTool(currentTool.value.tool).target : undefined,
+  )
+  function revokeAccess() {
+    s.epoch++
+    s.accessRevoked = true
+    s.reading = false
+    s.messages = []
+    s.run = null
+    s.runs = {}
+    s.conversation = null
+    s.inspectedRunId = ''
+    s.activity = null
+    s.input = ''
+    s.pending = null
+    s.submission = null
+    s.error = '当前访问已失效，请重新连接后端身份。'
+  }
   async function pullMessages(id: string, epoch: number, key: string) {
     let after = s.messages.length ? Math.max(...s.messages.map((m) => m.seq)) : 0
     while (current(epoch, key)) {
@@ -121,8 +128,12 @@ export function useAgentConversation(owner = false) {
       after = page.next_after_seq
     }
   }
-  async function load() {
-    if (!scope.value || s.scope !== scope.value || s.reading) return
+  async function load(force = false) {
+    if (!scope.value || s.scope !== scope.value || s.accessRevoked) return
+    if (s.reading) {
+      if (force) s.reloadRequested = true
+      return
+    }
     const epoch = s.epoch,
       key = s.scope,
       id = mission.value!.id
@@ -164,8 +175,11 @@ export function useAgentConversation(owner = false) {
         s.run?.id ||
         last?.run_id
       if (rid) {
+        const runAtRequest = s.run?.id
         const next = await api<Schema<'RunView'>>('/api/v1/agent-runs/' + rid)
         if (!current(epoch, key)) return
+        if (s.run?.id === next.id && (next.progress_seq ?? 0) < (s.run.progress_seq ?? 0)) return
+        if (s.run?.id !== runAtRequest && s.run?.id !== next.id) return
         const previous = s.run
         const fresh = (next.tools || []).filter(
           (t: any) =>
@@ -202,9 +216,18 @@ export function useAgentConversation(owner = false) {
         s.initialized = true
       }
     } catch (e) {
-      if (current(epoch, key)) s.syncError = (e as Error).message
+      if (current(epoch, key)) {
+        if (e instanceof ApiFailure && [401, 403, 404].includes(e.status)) revokeAccess()
+        else s.syncError = (e as Error).message
+      }
     } finally {
-      if (current(epoch, key)) s.reading = false
+      if (current(epoch, key)) {
+        s.reading = false
+        if (s.reloadRequested) {
+          s.reloadRequested = false
+          void load()
+        }
+      }
     }
   }
   async function send() {
@@ -334,20 +357,26 @@ export function useAgentConversation(owner = false) {
   async function inspectRun(id: string) {
     s.inspectedRunId = id
     s.historyError = ''
-    if (!id || s.runs[id]) return
+    if (!id || s.accessRevoked) return
     const epoch = s.epoch,
       key = s.scope
     try {
       const run = await api<Schema<'RunView'>>('/api/v1/agent-runs/' + id)
       if (current(epoch, key)) s.runs[id] = run
     } catch (e) {
-      if (current(epoch, key)) s.historyError = (e as Error).message
+      if (current(epoch, key) && s.inspectedRunId === id) {
+        if (e instanceof ApiFailure && [401, 403, 404].includes(e.status)) revokeAccess()
+        else s.historyError = (e as Error).message
+      }
     }
   }
   if (owner) {
     watch(
       scope,
       (key) => {
+        s.accessRevoked = false
+        s.reloadRequested = false
+        s.streamStatus = 'idle'
         s.epoch++
         s.scope = key
         s.reading = false
@@ -375,14 +404,148 @@ export function useAgentConversation(owner = false) {
       },
       { immediate: true, flush: 'sync' },
     )
+    let source: EventSource | null = null
+    let reconnectTimer: ReturnType<typeof setTimeout> | undefined
+    let transportVersion = 0
+    let reconnectDelay = 1500
+    const streamable = () =>
+      !!s.run &&
+      ['QUEUED', 'RUNNING'].includes(s.run.status) &&
+      typeof s.run.progress_seq === 'number' &&
+      Array.isArray(s.run.activity) &&
+      !s.accessRevoked
+    function closeStream() {
+      transportVersion++
+      source?.close()
+      source = null
+      clearTimeout(reconnectTimer)
+    }
+    function connectStream() {
+      closeStream()
+      if (!streamable() || !scope.value || document.hidden || typeof EventSource === 'undefined') {
+        s.streamStatus = 'idle'
+        return
+      }
+      const epoch = s.epoch,
+        key = s.scope,
+        id = s.run!.id,
+        version = transportVersion
+      const valid = () => current(epoch, key) && s.run?.id === id && version === transportVersion
+      s.streamStatus = 'connecting'
+      source = new EventSource(
+        `/api/backend/api/v1/agent-runs/${id}/events/stream?after_seq=${s.run!.progress_seq || 0}`,
+      )
+      const recover = () => {
+        if (!valid()) return
+        closeStream()
+        s.streamStatus = 'polling'
+        void load(true)
+        reconnectTimer = setTimeout(() => {
+          if (current(epoch, key)) connectStream()
+        }, reconnectDelay)
+        reconnectDelay = Math.min(15000, reconnectDelay * 2)
+      }
+      source.onopen = () => {
+        if (valid()) {
+          s.streamStatus = 'live'
+          reconnectDelay = 1500
+        }
+      }
+      source.addEventListener('progress', (event) => {
+        if (!valid() || !s.run) return
+        try {
+          const data = JSON.parse((event as MessageEvent).data)
+          const result = applyProgressEvent(s.run, data)
+          if (result === 'gap' || result === 'invalid') {
+            recover()
+            return
+          }
+          if (result === 'duplicate') return
+          s.syncError = ''
+          s.runs[id] = s.run
+          if (data.type === 'tool.completed') {
+            void load(true)
+            const tool = data.payload.activity.tool as string
+            const target = describeTool(tool).target
+            if (target)
+              s.activity = {
+                id: id + ':' + data.invocation_id,
+                target,
+                label: describeTool(tool).done,
+                at: Date.now(),
+              }
+            if (['revise_plan', 'request_check'].includes(tool)) void shop.refresh(true)
+          }
+          if (
+            ['run.completed', 'run.failed', 'run.cancelled', 'run.waiting_input'].includes(
+              data.type,
+            )
+          ) {
+            void load(true)
+            void shop.refresh(true)
+          }
+        } catch {
+          recover()
+        }
+      })
+      source.addEventListener('sync', (event) => {
+        if (!valid() || !s.run) return
+        try {
+          const data = JSON.parse((event as MessageEvent).data)
+          if (
+            data.run_id === id &&
+            (data.latest_seq > (s.run.progress_seq || 0) || data.status !== s.run.status)
+          )
+            void load(true)
+        } catch {
+          recover()
+        }
+      })
+      source.addEventListener('access_revoked', () => {
+        if (!valid()) return
+        closeStream()
+        s.epoch++
+        s.reading = false
+        s.sending = false
+        s.controlling = false
+        s.reloadRequested = false
+        s.seenTools = []
+        s.activity = null
+        s.inspectedRunId = ''
+        s.expandedRuns = {}
+        s.accessRevoked = true
+        s.messages = []
+        s.run = null
+        s.runs = {}
+        s.conversation = null
+        s.input = ''
+        s.pending = null
+        s.submission = null
+        s.streamStatus = 'idle'
+        s.error = 'Agent进度访问已失效，请重新连接后端身份。'
+      })
+      source.addEventListener('reset', recover)
+      source.onerror = recover
+    }
+    watch([scope, () => s.run?.id, () => streamable()], () => connectStream())
     let timer: ReturnType<typeof setTimeout> | undefined
     let stopped = false
     async function tick() {
       await load()
-      if (!stopped) timer = setTimeout(tick, document.hidden ? 20000 : active.value ? 2500 : 5000)
+      if (!stopped)
+        timer = setTimeout(
+          tick,
+          document.hidden ? 20000 : s.streamStatus === 'live' ? 10000 : active.value ? 2500 : 5000,
+        )
     }
     const visible = () => {
-      if (!document.hidden) void load()
+      if (!document.hidden) {
+        void load(true)
+        connectStream()
+      } else {
+        closeStream()
+        s.streamStatus = 'idle'
+      }
     }
     onMounted(() => {
       void tick()
@@ -390,6 +553,7 @@ export function useAgentConversation(owner = false) {
     })
     onUnmounted(() => {
       stopped = true
+      closeStream()
       clearTimeout(timer)
       s.epoch++
       document.removeEventListener('visibilitychange', visible)
@@ -404,6 +568,8 @@ export function useAgentConversation(owner = false) {
     status,
     inspected,
     tools,
+    currentTool,
+    runningTarget,
     load,
     send,
     cancel,

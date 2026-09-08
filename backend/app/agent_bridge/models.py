@@ -6,6 +6,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Index,
+    Integer,
     String,
     Text,
     UniqueConstraint,
@@ -51,6 +52,7 @@ class AgentRun(Base):
     __tablename__ = "agent_runs"
     id: Mapped[str] = mapped_column(String(128), primary_key=True)
     conversation_id: Mapped[str] = mapped_column(ForeignKey("agent_conversations.id"), index=True)
+    progress_seq: Mapped[int] = mapped_column(BigInteger, default=0, server_default=text("0"))
     input_through_seq: Mapped[int] = mapped_column(BigInteger)
     trigger: Mapped[str] = mapped_column(String(24), default="USER")
     trigger_watermark: Mapped[int] = mapped_column(BigInteger, default=0)
@@ -148,3 +150,33 @@ class KnowledgeRevision(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=text("clock_timestamp()")
     )
+
+
+class RunEvent(Base):
+    __tablename__ = "agent_run_events"
+    run_id: Mapped[str] = mapped_column(
+        ForeignKey("agent_runs.id", ondelete="CASCADE"), primary_key=True
+    )
+    seq: Mapped[int] = mapped_column(BigInteger, primary_key=True)
+    type: Mapped[str] = mapped_column(String(40))
+    invocation_id: Mapped[str | None] = mapped_column(String(256))
+    payload: Mapped[dict] = mapped_column(JSONB)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+
+
+class ToolActivity(Base):
+    __tablename__ = "agent_tool_activity"
+    run_id: Mapped[str] = mapped_column(
+        ForeignKey("agent_runs.id", ondelete="CASCADE"), primary_key=True
+    )
+    invocation_id: Mapped[str] = mapped_column(String(256), primary_key=True)
+    tool: Mapped[str] = mapped_column(String(64))
+    args_hash: Mapped[str] = mapped_column(String(64))
+    lease_fingerprint: Mapped[str] = mapped_column(String(64))
+    status: Mapped[str] = mapped_column(String(20))
+    attempt: Mapped[int] = mapped_column(Integer)
+    started_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    finished_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    duration_ms: Mapped[int | None] = mapped_column(BigInteger)
+    error_code: Mapped[str | None] = mapped_column(String(80))
+    references: Mapped[list] = mapped_column(JSONB, default=list)
