@@ -1,5 +1,19 @@
 # ShopSteward 项目总说明与对话交接
 
+<!-- md-alignment-2026-09-08 -->
+### 三阶段任务交互已合并（2026-09-08增补）
+
+第一阶段建立同一Mission贯穿的任务卡、独立详情页、常驻Agent区和共享会话，通过[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)合并为 `c46e85c`。第二阶段增加真实工具生命周期与可恢复事件；第三阶段增加准确历史证据、结构化试算/修订成果，并补齐历史原件下载和逐代码块复制，通过[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并为 `1bbcad5`，文件树与已验证 `c7607ea` 一致。
+
+本次是前后端支撑能力交付：backend/agent_bridge、读取契约、事件/活动存储和就绪检查承接前端需求，组合代码需要 `0012_agent_progress`。规划、Mission、账本、审批执行、经营状态、业务调度和 `agent/` 主体源码未改。依据、作用条件与分批验证统一见[组合交付](docs/reports/agent-workspace-delivery.md)，运行接续见[HANDOVER](HANDOVER.md)。
+
+本机Mac mini模型保持关闭；先前Windows真实模型报告仍保留其原版本和环境，不能视为三阶段新增体验的模型验收。语音、正文流、多任务并发、完整A-01/L-01及远端Knowledge新一轮验收仍未完成。
+
+以下“最新”小节按各自阶段时点保留，包括PR #10创建时状态、早期接口数、迁移版本和运行进程。它们不替代本节与HANDOVER顶部的当前接续；知识服务交付、上云限制和原业务职责不因本次前端交付而被删除或判定完成。
+
+原Windows参考工程及仓库外资料链接保留来源环境；本机未能解析的旧路径不能当作当前可用入口，也不通过创建空文件或复制工程来补造来源。
+<!-- /md-alignment-2026-09-08 -->
+
 ### 最新实施与交付：知识检索及服务器交接（2026-09-08）
 
 本轮新增独立 `knowledge` 服务、解析/索引/重试与发布、PG有向关系、可选云embedding与重排接口、Agent只读证据工具及Compose/恢复/验证工具。已按用户要求本地提交并推送到YH，创建 [PR #10](https://github.com/yhnapoleon/ShopSteward/pull/10)（YH → main，更新时为OPEN，未合并）。功能提交 `96ee2a0`，同步main提交 `2406371`，完整手册提交 `e65e066`；未部署到开发服务或创建云资源。原K0冻结集与K1契约保留；新backend迁移 `0011_knowledge_delivery` 和独立knowledge迁移 `knowledge_0002` 已通过专用PG验收。

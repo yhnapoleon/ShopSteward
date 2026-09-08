@@ -1,5 +1,9 @@
 # ShopSteward Agent
 
+<!-- md-alignment-2026-09-08 -->
+> **2026-09-08任务工作区接入增补：** [PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)在 `backend/app/agent_bridge` 增加真实工具生命周期、进度回放与历史证据/业务成果公开投影；本目录Agent主图、模型适配、记忆及技能主体源码没有本轮改动。工具结果仍走原受限协议，`revise_plan` 成功结果额外保留 `base_plan_id`；采购确认不交给模型。运行支撑依赖业务库 `0012_agent_progress`，模型是否启用仍由当前环境配置决定。具体需求、事务/权限条件及受控执行器验收边界见[组合交付](../docs/reports/agent-workspace-delivery.md)。下方原模型/知识实验继续保留各自版本和环境，不计作三阶段新增UI的真实模型验收。
+<!-- /md-alignment-2026-09-08 -->
+
 首版已实现为 Python 包，由 backend 的独立 Agent worker 装配。真实 LangGraph 主图、OpenAI 模型、PostgreSQL 检查点、Hermes 派生记忆策略、任务 Skill 和受限业务工具已经贯通。前端聊天现已通过官方 `gpt-5.6-luna` 真实浏览器验收，包含解释、试算、修订、澄清恢复、偏好和主动跟进。外部 Agent HTTP 服务、向量 RAG、真实预测模型仍属于后续接入。
 
 ```mermaid

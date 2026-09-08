@@ -1,5 +1,15 @@
 # Backend B0-01 至 B0-07
 
+<!-- md-alignment-2026-09-08 -->
+## 任务工作区所需后端支撑（2026-09-08增补）
+
+[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)组合版本需要迁移至 `0012_agent_progress`：新增Run进度序号、`agent_run_events` 与 `agent_tool_activity`，就绪检查验证这些结构。继续使用本模块既有迁移/启动命令，先核对目标数据库；独立Knowledge库的迁移不替代业务库迁移。
+
+Agent桥接层提供真实工具开始/完成/失败/中断记录、事件回放/SSE、历史证据和结构化成果读取；修订结果增加原方案关联。业务目标、调用条件和验证见[组合交付](../docs/reports/agent-workspace-delivery.md)。规划、Mission、库存/现金账本、审批执行、业务调度和Agent主体源码未在此三阶段修改，不增加采购自主权限。
+
+下文B0接口数和旧阶段边界保留历史用途；当前公开字段/路径以[运行时契约及增补](../docs/api/README.md)为准，不把已有设计稿的planned标记当作运行时不可用证明。
+<!-- /md-alignment-2026-09-08 -->
+
 后续已实现 B2-A Agent 框架：会话/Run、受限工具、记忆与任务 Skill、方案试算与修订、独立 Agent worker 和持久跟进。启动与 API 接入见 [Agent README](../agent/README.md)。当前迁移 head 为 `0009_agent_scopes`；原业务 worker 仍是默认 profile，Agent 不在线时原业务链路仍可工作。
 
 已实现运行基础、业务状态/事件账本、Mission/规划、警报/看板/历史，以及B0-05精确审批、采购发送、资金预留、回执核对和到货入账。独立API/worker/simulator的显式完整SC01及重启回放已验证。B0-06已实现持久周期派发、Schedule配置、事件合并和持续新鲜度检查；自动SC01及三进程重启验收见 `docs/api/b0-06-periodic-smoke-result.json`。

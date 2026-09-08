@@ -1,5 +1,13 @@
 # ShopSteward 当前开发交接
 
+<!-- md-alignment-2026-09-08 -->
+### 三阶段合并状态与旧文阅读规则（2026-09-08增补）
+
+[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)已合并第一阶段；[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)已于2026-09-08合并第二/三阶段及补齐项，提交 `1bbcad5`，与已测 `c7607ea` 文件树相同，[Windows CI](https://github.com/yhnapoleon/ShopSteward/actions/runs/34246514054)通过。工程事实统一从[组合交付说明](docs/reports/agent-workspace-delivery.md)进入。
+
+本次Markdown增补只明确当前状态与历史适用范围，原正文、测试数字和验证JSON不改写。下方“第二/三阶段尚未提交”“证据/试算未实现”等仍描述各报告形成时点；不能据此重复开发或重新认领已合并工作。语音、正文流、多任务并发、完整Agent验收和已知排队延迟仍是未完成项。
+<!-- /md-alignment-2026-09-08 -->
+
 ### Agent工作区组合交付（2026-09-08）
 
 第二、三阶段及原件下载/代码块复制已组成同一交付范围。[组合交付说明](docs/reports/agent-workspace-delivery.md)逐项说明业务目标、后端支撑边界、迁移要求与验证；[最终指纹](docs/reports/agent-workspace-delivery-verification.json)对应本轮组合源码。515项后端/Agent普通用例分批通过，2项真实浏览器通过，23项前端回归通过。四项文档运行时配置失败补齐环境后复验通过，未改变业务实现。

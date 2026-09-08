@@ -1,5 +1,15 @@
 # Agent 工作区：第二、三阶段交付
 
+<!-- md-alignment-2026-09-08 -->
+## 合并结果与三阶段关系（2026-09-08增补）
+
+[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)交付第一阶段任务页和共享会话，合并为c46e85c。[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)交付本页第二/三阶段及两个补齐项，已合并为 **1bbcad543554a4324979bb0df452bdfed13060db**；合并树与已测 **c7607ea2490f58482d8cc77036fa653bbaf4e830** 一致，[Windows CI](https://github.com/yhnapoleon/ShopSteward/actions/runs/34246514054)通过。
+
+本文以下验证与范围说明保留，515项普通用例是失败项补配置后分批覆盖，2项显式浏览器另跑，23项前端及复制定向复验不重复累加。合并不等于部署、真实模型/远端检索或完整首版验收。
+
+本次仅增补相关Markdown的当前状态和历史适用说明；原报告JSON继续保留原始哈希及验证时点，其中包含的MD哈希不冒充本次增补后的文件哈希。源码、测试、生成契约和原有证据文件未因本次文档对齐而修改。
+<!-- /md-alignment-2026-09-08 -->
+
 2026-09-08，基于第一阶段合并提交 `c46e85c`。本次交付覆盖真实工具进度、历史证据、结构化试算和方案变化，并补齐原件下载与代码块复制。阶段二/三的原始报告保留各自验证时点；本页及[最终验证指纹](agent-workspace-delivery-verification.json)记录组合版本。
 
 ## 业务目标与后端边界

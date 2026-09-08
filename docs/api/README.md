@@ -1,5 +1,21 @@
 # Swagger / OpenAPI 契约使用说明
 
+<!-- md-alignment-2026-09-08 -->
+## 当前运行时契约增补（2026-09-08，PR #12）
+
+已核对 `1bbcad5` 的[运行时JSON](backend.runtime.openapi.json)：**50条路径、57个HTTP操作**，与当前已注册源码及前端生成类型/代理白名单一致。本文下方21/22/29/40/41等操作数及B2 planned文字属于各批设计/交付时点，原文保留；当前调用以runtime为准，不把设计草案直接当运行服务。
+
+| 三阶段新增/扩展 | 读取语义与条件 |
+|---|---|
+| GET `/api/v1/agent-runs/{run_id}` | 原Run增加progress_seq、activity和outcomes；先校验会话所有者及门店权限；只白名单投影真实成果 |
+| GET `/api/v1/agent-runs/{run_id}/events` | 按after_seq/limit回放，同一Run单调序号，超前游标拒绝 |
+| GET `/api/v1/agent-runs/{run_id}/events/stream` | 同源SSE与Last-Event-ID恢复，连接期间重验身份；不提供模型私有推理 |
+| GET `/api/v1/agent-runs/{run_id}/evidence` | 查询id/version_id/generation_id/chunk_id/metadata_revision/content_sha256，按持久记录读取准确历史片段并重新鉴权，未取到不换最新版 |
+| 既有documents版本与content接口 | 历史片段弹窗复用它们下载原件，前端核对原件版本、大小和hash；不是新增下载协议 |
+
+`revise_plan`内部工具成功结果增加base_plan_id供准确前后比较，未修改普通用户方案审批/修订请求契约。组合代码依赖业务库 `0012_agent_progress`，独立Knowledge服务迁移另行管理。完整字段、错误、身份约束由runtime与[交付说明](../reports/agent-workspace-delivery.md)承接。
+<!-- /md-alignment-2026-09-08 -->
+
 完整设计契约仍包含待实现业务；B0、首批前端查询和 B2-A Agent 已实现，当前源码导出40个已注册操作（36条路径）。Agent 的11个操作见 [agent-v1.openapi.json](agent-v1.openapi.json)，启动与对话流程见 [Agent README](../../agent/README.md)。开发 backend 已迁移至 0009 并切换至当前代码，Agent 仍关闭。启动见 [Backend说明](../../backend/README.md)，实施范围见 [实现清单](implementation-status.json)。
 
 2026-09-07 Simulator 控制台已实现：默认服务 9 个操作（含 ready），开启本地控制台后 19 个操作。可配置 SANDBOX 输入已同步到共享设计契约；运行契约见 [simulation runtime](simulation.runtime.openapi.json)、[console runtime](simulator-console.runtime.openapi.json)，验收见 [结果](simulator-console-acceptance-result.json)。

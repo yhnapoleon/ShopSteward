@@ -1,5 +1,21 @@
 # 首批前端数据字典 v1
 
+<!-- md-alignment-2026-09-08 -->
+## Agent过程、证据与成果的数据增补（2026-09-08）
+
+本字典原有业务字段与查询口径保留。三阶段新增的是可观察过程与只读成果，不能用模型文字或前端副本代替经营账本。当前字段来源见[运行时契约](api/backend.runtime.openapi.json)及[组合交付](reports/agent-workspace-delivery.md)。
+
+| 对象 | 持久来源 | 含义与约束 |
+|---|---|---|
+| Run进度序号 | agent_runs.progress_seq | 0012新增，Run内递增；作为快照/事件恢复水位 |
+| 运行事件 | agent_run_events | Run+seq唯一；记录排队、开始、补充输入、终态及工具生命周期，保留事件发生时点 |
+| 工具活动 | agent_tool_activity | Run+invocation唯一；状态、attempt、服务端起止与耗时，不暴露参数/租约凭据 |
+| 试算/修订成果 | 既有agent_tool_calls与plans | 白名单投影候选、约束和前后版本；修订调用保留base_plan_id，不另建影子方案/账本 |
+| 历史文档片段 | 既有工具结果、文档与原件版本 | 精确绑定document/version/generation/chunk/metadata revision/hash/locator；当前权限、归档及原件存在性仍须检查 |
+
+Plan、Run、工具调用和Action不是同一对象；仅试算不写经营事实，方案更新不代表已采购，采购受理不代表已到货。历史结果版本落后时显示历史口径；缺少明确关联不补造原方案。原字典内早期接口/表计数不涵盖此增补。
+<!-- /md-alignment-2026-09-08 -->
+
 日期：2026-09-07。**新增7个GET接口已实现**，runtime现为29个操作、28条路径；基础提交为`YH / da79cbd`，实现保留在工作区。需求依据见[来源与范围核对](data-and-frontend-boundaries.md)；字段约定和示例见[前端数据OpenAPI](api/frontend-data.openapi.json)，实际服务schema见[runtime](api/backend.runtime.openapi.json)；处理规则见[设计规格](superpowers/specs/2026-09-07-frontend-data-contract-design.md)，验证见[测试报告](reports/frontend-data-test-report.md)。
 
 状态含义：**已有**=当前代码保存/计算并可按接口访问；**新增查询**=本批已提供的7个只读接口；**后续范围**=本批不建立字段或表，不能返回伪造默认值。逻辑对象不必一一建表；派生展示字段不创建第二份权威事实。

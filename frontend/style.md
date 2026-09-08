@@ -1,5 +1,9 @@
 # ShopSteward 前端视觉规范
 
+<!-- md-alignment-2026-09-08 -->
+> **2026-09-08三阶段状态增补：** 当前呈现以第10–12节及其原件下载/代码复制补充为准，实现已随[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)、[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并。前文原材质、排版、控件和响应式规则保留；不同阶段的未实现提示按其时点阅读，功能与验证边界见[组合交付](../docs/reports/agent-workspace-delivery.md)。本次不改样式源码或原设计参数。
+<!-- /md-alignment-2026-09-08 -->
+
 2026-09-07 · 暖光磨砂风格。本文件记录当前已实现的视觉语言，供后续前端迭代沿用。修改界面前先读本文件，再核对对应组件和 `app/assets/css/shop.css`；具体数值以样式源码为准，显著风格调整需同步更新本文。
 
 ## 1. 产品气质与信息层级
