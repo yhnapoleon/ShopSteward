@@ -1,0 +1,614 @@
+{
+  "note": "Controlled browser fixture derived from existing synthetic SC01 GETs; never sent to the backend.",
+  "dashboard": {
+    "state": {
+      "store_id": "overview-fixture-a",
+      "state_version": 11,
+      "currency": "CNY",
+      "cash_minor": 40000,
+      "reserved_cash_minor": 0,
+      "available_cash_minor": 40000,
+      "receivables_minor": 20000,
+      "stocks": [
+        {
+          "sku_id": "sku_001",
+          "on_hand": 70,
+          "in_transit": 0,
+          "remaining_demand": 70,
+          "forecast_version": "local-7056938768e7449c9647d222a88101ca"
+        }
+      ],
+      "data_as_of": "2026-09-07T13:45:19.592891Z",
+      "simulation_time": "2026-09-09T15:44:17.525622Z"
+    },
+    "freshness": {
+      "status": "FRESH",
+      "data_as_of": "2026-09-07T13:45:19.592891Z",
+      "last_sync_at": "2026-09-07T15:57:09.898446Z"
+    },
+    "active_mission_count": 1,
+    "active_alert_count": 0,
+    "last_check_at": "2026-09-07T15:56:52.862748Z",
+    "next_check_at": "2026-09-07T15:57:16.597757Z"
+  },
+  "catalog": {
+    "store_id": "overview-fixture-a",
+    "currency": "CNY",
+    "products": [
+      {
+        "sku_id": "sku_001",
+        "name": "SC01 sample product",
+        "unit": "piece"
+      }
+    ],
+    "offers": [
+      {
+        "supplier_id": "supplier_001",
+        "sku_id": "sku_001",
+        "unit_price_minor": 1000,
+        "minimum_order_quantity": 20,
+        "pack_size": 20,
+        "offer_version": "offer-1",
+        "currency": "CNY",
+        "lead_time_seconds": 86400,
+        "valid_from": "2026-09-07T13:44:17.525622Z",
+        "valid_until": "2026-09-08T13:44:17.525622Z"
+      }
+    ]
+  },
+  "missions": {
+    "items": [
+      {
+        "id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "store_id": "overview-fixture-a",
+        "sku_id": "sku_001",
+        "objective": "活动备货：尽量减少缺货，现金至少保留300元，采购逐笔确认。",
+        "status": "ACTIVE",
+        "mission_version": 3,
+        "policy": {
+          "cash_floor_minor": 30000,
+          "candidate_quantities": [
+            0,
+            20,
+            40,
+            80
+          ],
+          "supplier_id": "supplier_001"
+        },
+        "policy_version": "policy-1",
+        "schedule": {
+          "id": "0e65266d-bb98-41ad-8bfa-4568088ed0c6",
+          "job_type": "check_mission",
+          "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+          "trigger": "INTERVAL",
+          "interval_seconds": 30,
+          "enabled": true,
+          "version": 3,
+          "next_run_at": "2026-09-07T15:57:16.597757Z"
+        },
+        "current_plan_id": "6b36f3f5-006a-4b2b-8e8c-f4556b7e2d8a",
+        "current_action_id": null,
+        "completion_criteria": "用户明确请求结束且无未决采购动作",
+        "created_at": "2026-09-07T13:44:24.676901Z",
+        "updated_at": "2026-09-07T15:45:53.344476Z"
+      }
+    ],
+    "next_cursor": null
+  },
+  "actions": {
+    "context": {
+      "store_id": "overview-fixture-a",
+      "currency": "CNY",
+      "state_version": 11,
+      "as_of": "2026-09-07T15:57:15.015946Z",
+      "simulation_time": "2026-09-09T15:44:17.525622Z",
+      "source_sequence": 6,
+      "freshness": {
+        "status": "FRESH",
+        "data_as_of": "2026-09-07T13:45:19.592891Z",
+        "last_sync_at": "2026-09-07T15:57:09.898446Z"
+      }
+    },
+    "items": [
+      {
+        "id": "5a0b8ba0-1fb5-4595-9d44-73993af25a27",
+        "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "plan_id": "d01a267d-8e82-4ccc-a4fa-b4d7dc4ef09b",
+        "approval_id": "6d272f1e-c905-4ca6-9d4f-80d7c1887e2b",
+        "status": "SUCCEEDED",
+        "quantity": 20,
+        "amount_minor": 20000,
+        "currency": "CNY",
+        "external_order_id": "order_97cdc12bcd3d4c0b8a4a8c8fec7a4c1d",
+        "receipt": {
+          "action_id": "5a0b8ba0-1fb5-4595-9d44-73993af25a27",
+          "status": "ACCEPTED",
+          "external_order_id": "order_97cdc12bcd3d4c0b8a4a8c8fec7a4c1d",
+          "quantity": 20,
+          "total_minor": 20000,
+          "currency": "CNY",
+          "recorded_at": "2026-09-07T13:45:14.623843Z",
+          "reason": null
+        },
+        "last_error": null,
+        "created_at": "2026-09-07T13:45:11.724871Z",
+        "updated_at": "2026-09-07T13:45:14.632680Z",
+        "purchase_snapshot": {
+          "store_id": "overview-fixture-a",
+          "sku_id": "sku_001",
+          "supplier_id": "supplier_001",
+          "quantity": 20,
+          "unit_price_minor": 1000,
+          "total_minor": 20000,
+          "currency": "CNY",
+          "expected_arrival_at": "2026-09-09T15:44:17Z"
+        }
+      },
+      {
+        "id": "4e6233f0-167f-42cb-a68d-4a10c5d81ac9",
+        "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "plan_id": "4103895c-a953-437c-915a-78be56ad273a",
+        "approval_id": "82554ad0-1f13-4e4a-ac16-4ca093974ceb",
+        "status": "SUCCEEDED",
+        "quantity": 40,
+        "amount_minor": 40000,
+        "currency": "CNY",
+        "external_order_id": "order_cd2c950081df45d38fbd40cb334ec2db",
+        "receipt": {
+          "action_id": "4e6233f0-167f-42cb-a68d-4a10c5d81ac9",
+          "status": "ACCEPTED",
+          "external_order_id": "order_cd2c950081df45d38fbd40cb334ec2db",
+          "quantity": 40,
+          "total_minor": 40000,
+          "currency": "CNY",
+          "recorded_at": "2026-09-07T13:44:33.578607Z",
+          "reason": null
+        },
+        "last_error": null,
+        "created_at": "2026-09-07T13:44:30.906771Z",
+        "updated_at": "2026-09-07T13:44:33.588339Z",
+        "purchase_snapshot": {
+          "store_id": "overview-fixture-a",
+          "sku_id": "sku_001",
+          "supplier_id": "supplier_001",
+          "quantity": 40,
+          "unit_price_minor": 1000,
+          "total_minor": 40000,
+          "currency": "CNY",
+          "expected_arrival_at": "2026-09-08T13:44:17Z"
+        }
+      }
+    ],
+    "next_cursor": null
+  },
+  "inbounds": {
+    "context": {
+      "store_id": "overview-fixture-a",
+      "currency": "CNY",
+      "state_version": 11,
+      "as_of": "2026-09-07T15:57:15.024277Z",
+      "simulation_time": "2026-09-09T15:44:17.525622Z",
+      "source_sequence": 6,
+      "freshness": {
+        "status": "FRESH",
+        "data_as_of": "2026-09-07T13:45:19.592891Z",
+        "last_sync_at": "2026-09-07T15:57:09.898446Z"
+      }
+    },
+    "items": [
+      {
+        "action_id": "4e6233f0-167f-42cb-a68d-4a10c5d81ac9",
+        "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "sku_id": "sku_001",
+        "external_order_id": "order_cd2c950081df45d38fbd40cb334ec2db",
+        "ordered_quantity": 40,
+        "received_quantity": 40,
+        "remaining_quantity": 0,
+        "expected_arrival_at": "2026-09-08T13:44:17Z",
+        "arrival_status": "RECEIVED",
+        "is_overdue": false
+      },
+      {
+        "action_id": "5a0b8ba0-1fb5-4595-9d44-73993af25a27",
+        "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "sku_id": "sku_001",
+        "external_order_id": "order_97cdc12bcd3d4c0b8a4a8c8fec7a4c1d",
+        "ordered_quantity": 20,
+        "received_quantity": 20,
+        "remaining_quantity": 0,
+        "expected_arrival_at": "2026-09-09T15:44:17Z",
+        "arrival_status": "RECEIVED",
+        "is_overdue": false
+      }
+    ],
+    "next_cursor": null
+  },
+  "ledger-entries": {
+    "context": {
+      "store_id": "overview-fixture-a",
+      "currency": "CNY",
+      "state_version": 11,
+      "as_of": "2026-09-07T15:57:15.032006Z",
+      "simulation_time": "2026-09-09T15:44:17.525622Z",
+      "source_sequence": 6,
+      "freshness": {
+        "status": "FRESH",
+        "data_as_of": "2026-09-07T13:45:19.592891Z",
+        "last_sync_at": "2026-09-07T15:57:09.898446Z"
+      }
+    },
+    "items": [
+      {
+        "id": "48924aff9fbaa21ca5ba221e80f611fa8c377cd622eecce10ef4e0531e182dd1",
+        "state_version": 9,
+        "effect_type": "GOODS_RECEIVED",
+        "sku_id": "sku_001",
+        "action_id": "5a0b8ba0-1fb5-4595-9d44-73993af25a27",
+        "source_event_id": "event_bc541542a241407d875ca5a078ec4232",
+        "occurred_at": "2026-09-07T13:45:19.592891Z",
+        "simulation_time": "2026-09-09T15:44:17.525622Z",
+        "changes": {
+          "cash_delta_minor": 0,
+          "receivables_delta_minor": 0,
+          "on_hand_delta": 20,
+          "in_transit_delta": -20
+        },
+        "opening_state": null,
+        "remaining_demand_after": null
+      },
+      {
+        "id": "ce37219f8c8b5b74c964ba6d2c836b32177906460683b4891692a903d860bfb1",
+        "state_version": 8,
+        "effect_type": "PURCHASE_ACCEPTED",
+        "sku_id": "sku_001",
+        "action_id": "5a0b8ba0-1fb5-4595-9d44-73993af25a27",
+        "source_event_id": null,
+        "occurred_at": "2026-09-07T13:45:14.623843Z",
+        "simulation_time": null,
+        "changes": {
+          "cash_delta_minor": -20000,
+          "receivables_delta_minor": 0,
+          "on_hand_delta": 0,
+          "in_transit_delta": 20
+        },
+        "opening_state": null,
+        "remaining_demand_after": null
+      },
+      {
+        "id": "a944ce875c36c00c3c982e3e4313f52c20e38cf71603ed1a5f0d82e0f94d69d9",
+        "state_version": 6,
+        "effect_type": "DEMAND_REVISED",
+        "sku_id": "sku_001",
+        "action_id": null,
+        "source_event_id": "event_30992d28eddf4232b2bc5b63c3b4f08e",
+        "occurred_at": "2026-09-07T13:45:03.589270Z",
+        "simulation_time": "2026-09-08T15:44:17.525622Z",
+        "changes": {
+          "cash_delta_minor": 0,
+          "receivables_delta_minor": 0,
+          "on_hand_delta": 0,
+          "in_transit_delta": 0
+        },
+        "opening_state": null,
+        "remaining_demand_after": 70
+      },
+      {
+        "id": "c8037e6e79fac05318dc4262caf91dd0545c1c9c1bc93838bfba986a1dfc361a",
+        "state_version": 5,
+        "effect_type": "SALE_RECORDED",
+        "sku_id": "sku_001",
+        "action_id": null,
+        "source_event_id": "event_0185d60051a140259d0af14e0e0c1b4e",
+        "occurred_at": "2026-09-07T13:44:52.569365Z",
+        "simulation_time": "2026-09-08T14:44:17.525622Z",
+        "changes": {
+          "cash_delta_minor": 0,
+          "receivables_delta_minor": 20000,
+          "on_hand_delta": -10,
+          "in_transit_delta": 0
+        },
+        "opening_state": null,
+        "remaining_demand_after": null
+      },
+      {
+        "id": "ff6ecd68c4ed175c2350188d3d06ca3d46a3c89733e7ec2308eb41e4cb7d9d28",
+        "state_version": 4,
+        "effect_type": "GOODS_RECEIVED",
+        "sku_id": "sku_001",
+        "action_id": "4e6233f0-167f-42cb-a68d-4a10c5d81ac9",
+        "source_event_id": "event_37a4f96cc15a418187db27dc9cc3d551",
+        "occurred_at": "2026-09-07T13:44:40.556642Z",
+        "simulation_time": "2026-09-08T13:44:17.525622Z",
+        "changes": {
+          "cash_delta_minor": 0,
+          "receivables_delta_minor": 0,
+          "on_hand_delta": 40,
+          "in_transit_delta": -40
+        },
+        "opening_state": null,
+        "remaining_demand_after": null
+      },
+      {
+        "id": "8b3c2b614c3889f1466b0c7e0f0209d61e2b0a5671dd3879708072645ee860c1",
+        "state_version": 3,
+        "effect_type": "PURCHASE_ACCEPTED",
+        "sku_id": "sku_001",
+        "action_id": "4e6233f0-167f-42cb-a68d-4a10c5d81ac9",
+        "source_event_id": null,
+        "occurred_at": "2026-09-07T13:44:33.578607Z",
+        "simulation_time": null,
+        "changes": {
+          "cash_delta_minor": -40000,
+          "receivables_delta_minor": 0,
+          "on_hand_delta": 0,
+          "in_transit_delta": 40
+        },
+        "opening_state": null,
+        "remaining_demand_after": null
+      },
+      {
+        "id": "0854d72138e1be02f76e0a493979680b8e117a91e1dfff715c8bc2e24c032bdc",
+        "state_version": 1,
+        "effect_type": "INIT",
+        "sku_id": null,
+        "action_id": null,
+        "source_event_id": null,
+        "occurred_at": "2026-09-07T13:44:17.525622Z",
+        "simulation_time": "2026-09-07T13:44:17.525622Z",
+        "changes": null,
+        "opening_state": {
+          "store_id": "overview-fixture-a",
+          "state_version": 1,
+          "currency": "CNY",
+          "cash_minor": 100000,
+          "reserved_cash_minor": 0,
+          "available_cash_minor": 100000,
+          "receivables_minor": 0,
+          "stocks": [
+            {
+              "sku_id": "sku_001",
+              "on_hand": 20,
+              "in_transit": 0,
+              "remaining_demand": 60,
+              "forecast_version": "fixed-1"
+            }
+          ],
+          "data_as_of": "2026-09-07T13:44:17.525622Z",
+          "simulation_time": "2026-09-07T13:44:17.525622Z"
+        },
+        "remaining_demand_after": null
+      }
+    ],
+    "next_cursor": null
+  },
+  "alerts": {
+    "items": [
+      {
+        "id": "e53bb05c-66fd-4911-ba9b-f69a28fe5421",
+        "store_id": "overview-fixture-a",
+        "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "sku_id": "sku_001",
+        "type": "DATA_STALE",
+        "severity": "WARNING",
+        "status": "RESOLVED",
+        "summary": "当前数据不足以完成可靠检查。",
+        "facts": {
+          "reason": "PLAN_INPUT_EXPIRED"
+        },
+        "state_version": 10,
+        "related_plan_id": null,
+        "first_seen_at": "2026-09-07T15:45:25.311093Z",
+        "last_seen_at": "2026-09-07T15:45:25.311093Z",
+        "resolved_at": "2026-09-07T15:45:53.348196Z"
+      },
+      {
+        "id": "a6e5e1a0-c19a-4e80-b126-d54de62c0dec",
+        "store_id": "overview-fixture-a",
+        "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "sku_id": "sku_001",
+        "type": "STOCKOUT_RISK",
+        "severity": "WARNING",
+        "status": "RESOLVED",
+        "summary": "预计缺货20件；尚未执行的采购建议未计入库存。",
+        "facts": {
+          "shortage_qty": 20,
+          "cash_floor_minor": 30000,
+          "available_cash_minor": 60000,
+          "data_as_of": "2026-09-07T13:45:03.589270Z"
+        },
+        "state_version": 6,
+        "related_plan_id": "d01a267d-8e82-4ccc-a4fa-b4d7dc4ef09b",
+        "first_seen_at": "2026-09-07T13:45:09.621139Z",
+        "last_seen_at": "2026-09-07T13:45:09.621139Z",
+        "resolved_at": "2026-09-07T13:45:16.639728Z"
+      },
+      {
+        "id": "0c6d4e17-a81d-4bba-9c93-36f49145b55c",
+        "store_id": "overview-fixture-a",
+        "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+        "sku_id": "sku_001",
+        "type": "STOCKOUT_RISK",
+        "severity": "WARNING",
+        "status": "RESOLVED",
+        "summary": "预计缺货40件；尚未执行的采购建议未计入库存。",
+        "facts": {
+          "shortage_qty": 40,
+          "cash_floor_minor": 30000,
+          "available_cash_minor": 100000,
+          "data_as_of": "2026-09-07T13:44:17.525622Z"
+        },
+        "state_version": 1,
+        "related_plan_id": "4103895c-a953-437c-915a-78be56ad273a",
+        "first_seen_at": "2026-09-07T13:44:28.551738Z",
+        "last_seen_at": "2026-09-07T13:44:28.551738Z",
+        "resolved_at": "2026-09-07T13:44:51.577888Z"
+      }
+    ],
+    "next_cursor": null
+  },
+  "sales": {
+    "context": {
+      "store_id": "overview-fixture-a",
+      "currency": "CNY",
+      "state_version": 11,
+      "as_of": "2026-09-07T15:57:15.047675Z",
+      "simulation_time": "2026-09-09T15:44:17.525622Z",
+      "source_sequence": 6,
+      "freshness": {
+        "status": "FRESH",
+        "data_as_of": "2026-09-07T13:45:19.592891Z",
+        "last_sync_at": "2026-09-07T15:57:09.898446Z"
+      }
+    },
+    "items": [
+      {
+        "event_id": "event_0185d60051a140259d0af14e0e0c1b4e",
+        "sequence": 3,
+        "sku_id": "sku_001",
+        "quantity": 10,
+        "unit_price_minor": 2000,
+        "sales_amount_minor": 20000,
+        "occurred_at": "2026-09-07T13:44:52.569365Z",
+        "simulation_time": "2026-09-08T14:44:17.525622Z"
+      }
+    ],
+    "next_cursor": null
+  },
+  "plan": {
+    "id": "6b36f3f5-006a-4b2b-8e8c-f4556b7e2d8a",
+    "mission_id": "2ea1b429-71db-47d7-91c7-fbbbabca9b15",
+    "plan_version": 15,
+    "state_version": 11,
+    "forecast_version": "local-7056938768e7449c9647d222a88101ca",
+    "policy_version": "policy-1",
+    "rule_version": "finite-candidates-v1",
+    "status": "PENDING_APPROVAL",
+    "input_snapshot": {
+      "snapshot_version": "decision-v1",
+      "state": {
+        "store_id": "overview-fixture-a",
+        "state_version": 11,
+        "currency": "CNY",
+        "cash_minor": 40000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 40000,
+        "receivables_minor": 20000,
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 70,
+            "in_transit": 0,
+            "remaining_demand": 70,
+            "forecast_version": "local-7056938768e7449c9647d222a88101ca"
+          }
+        ],
+        "data_as_of": "2026-09-07T13:45:19Z",
+        "simulation_time": "2026-09-09T15:44:17Z"
+      },
+      "mission_version": 3,
+      "policy": {
+        "cash_floor_minor": 30000,
+        "candidate_quantities": [
+          0,
+          20,
+          40,
+          80
+        ],
+        "supplier_id": "supplier_001"
+      },
+      "task_constraints": {},
+      "policy_version": "policy-1",
+      "forecast": {
+        "forecast_id": "forecast-9195df079bcb41bbaee34635622cef1c",
+        "forecast_version": "local-7056938768e7449c9647d222a88101ca",
+        "store_id": "overview-fixture-a",
+        "sku_id": "sku_001",
+        "remaining_demand": 70,
+        "unit": "piece",
+        "data_as_of": "2026-09-07T15:45:50Z",
+        "source_sequence": 6,
+        "horizon_start": "2026-09-08T15:44:17Z",
+        "horizon_end": "2026-09-14T13:44:17Z",
+        "valid_until": "2026-09-07T16:45:53Z",
+        "source": "fixed",
+        "model_name": "fixed-scenario",
+        "model_version": "fixed-b9550c6c6b4a4fdaba892d9ec06a56d0",
+        "assumptions": [
+          "SC01 fixed remaining demand; purchases arrive before remaining sales."
+        ]
+      },
+      "offer": {
+        "supplier_id": "supplier_001",
+        "sku_id": "sku_001",
+        "unit_price_minor": 1000,
+        "minimum_order_quantity": 20,
+        "pack_size": 20,
+        "offer_version": "offer-1",
+        "currency": "CNY",
+        "lead_time_seconds": 86400,
+        "valid_from": "2026-09-07T13:44:17Z",
+        "valid_until": "2026-09-08T13:44:17Z"
+      },
+      "inbound_items": [],
+      "eligible_inbound_qty": 0,
+      "rule_version": "finite-candidates-v1",
+      "evaluated_at": "2026-09-07T15:45:53Z",
+      "last_successful_sync_at": "2026-09-07T15:45:50Z",
+      "source_fresh_until": "2026-09-07T15:46:20Z"
+    },
+    "candidates": [
+      {
+        "id": "candidate_0",
+        "quantity": 0,
+        "spend_minor": 0,
+        "cash_after_minor": 40000,
+        "shortage_qty": 0,
+        "feasible": true,
+        "rejection_reasons": []
+      },
+      {
+        "id": "candidate_20",
+        "quantity": 20,
+        "spend_minor": 20000,
+        "cash_after_minor": 20000,
+        "shortage_qty": 0,
+        "feasible": false,
+        "rejection_reasons": [
+          "CASH_FLOOR_VIOLATION"
+        ]
+      },
+      {
+        "id": "candidate_40",
+        "quantity": 40,
+        "spend_minor": 40000,
+        "cash_after_minor": 0,
+        "shortage_qty": 0,
+        "feasible": false,
+        "rejection_reasons": [
+          "CASH_FLOOR_VIOLATION"
+        ]
+      },
+      {
+        "id": "candidate_80",
+        "quantity": 80,
+        "spend_minor": 80000,
+        "cash_after_minor": -40000,
+        "shortage_qty": 0,
+        "feasible": false,
+        "rejection_reasons": [
+          "CASH_FLOOR_VIOLATION"
+        ]
+      }
+    ],
+    "recommended_candidate_id": "candidate_0",
+    "proposal_hash": "sha256:660e5a49a6db3ac60c7498144b741c35c1fa7135769bf41bb0aa25e5f7fe021b",
+    "explanation": "推荐采购0件；预计支出0分，采购后可用现金40000分，剩余缺口0件。",
+    "created_at": "2026-09-07T15:45:53Z",
+    "expires_at": "2026-09-07T16:00:53Z",
+    "proposed_purchase": null
+  },
+  "timeline": {
+    "items": [],
+    "next_cursor": null
+  }
+}

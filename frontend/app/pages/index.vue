@@ -8,7 +8,7 @@ const { s, mission, stock, product, plan, unresolved, canDecide, hasRole } = sho
 const route = useRoute(),
   router = useRouter()
 const view = computed(() =>
-  ['today', 'following', 'journal'].includes(String(route.query.view))
+  ['today', 'following', 'journal', 'overview', 'documents'].includes(String(route.query.view))
     ? String(route.query.view)
     : 'today',
 )
@@ -115,6 +115,8 @@ const title = computed(
       today: s.storeId ? '今天的经营安排。' : '从示例店铺开始。',
       following: '持续跟进',
       journal: '经营记录',
+      overview: '经营概览',
+      documents: '文档中心',
     })[view.value],
 )
 const issue = computed(() =>
@@ -178,11 +180,10 @@ function briefing() {
 </script>
 <template>
   <div class="app">
-    <aside class="sidebar" aria-label="侧边导航">
+    <header class="app-header">
       <div class="brand">
         <span class="brand-mark"><AppIcon name="layers-2" /></span><span>ShopSteward</span>
       </div>
-      <div class="sidebar-caption">YOUR EVERYDAY ALLY</div>
       <nav class="nav" aria-label="主导航">
         <button
           v-for="(label, id) in { today: '今日', following: '持续跟进', journal: '经营记录' }"
@@ -197,31 +198,7 @@ function briefing() {
           ><span v-if="id === 'today' && decisionCount" class="count">{{ decisionCount }}</span>
         </button>
       </nav>
-      <div class="sidebar-divider" />
-      <div class="sidebar-label">进行中的委托</div>
-      <button v-if="mission" class="goal-link" @click="open('mission')">
-        <span class="goal-dot" /><span>活动备货<small>守住现金，备好商品</small></span>
-      </button>
-      <div class="sidebar-bottom">
-        <div class="agent-status">
-          <div>
-            <span
-              class="goal-dot"
-              :class="{ muted: !s.connected || mission?.status !== 'ACTIVE' }"
-            />{{
-              s.loading
-                ? '正在连接'
-                : !s.connected
-                  ? '连接待确认'
-                  : mission?.status === 'PAUSED'
-                    ? '主动跟进已暂停'
-                    : mission
-                      ? '查看最近检查记录'
-                      : '尚未建立委托'
-            }}
-          </div>
-          <span>进展在应用内查看。</span>
-        </div>
+      <div class="header-store">
         <button class="store-switch" @click="open('controls')">
           <span class="avatar">店</span
           ><span
@@ -232,9 +209,9 @@ function briefing() {
           ><AppIcon name="chevron-down" />
         </button>
       </div>
-    </aside>
+    </header>
     <main class="workspace">
-      <header class="topbar">
+      <header v-if="!['overview', 'documents'].includes(view)" class="topbar">
         <div class="breadcrumb">
           我的经营空间<AppIcon name="chevron-right" /><b>{{
             { today: '今日', following: '持续跟进', journal: '经营记录' }[view]
@@ -251,7 +228,7 @@ function briefing() {
           </button>
         </div>
       </header>
-      <div class="page-head">
+      <div v-if="!['overview', 'documents'].includes(view)" class="page-head">
         <div>
           <div class="eyebrow">{{ s.connected ? '业务接口已连接' : '经营空间' }}</div>
           <h1>{{ title }}</h1>
@@ -274,7 +251,11 @@ function briefing() {
           <AppIcon name="plus" /><span>交给我一件事</span>
         </button>
       </div>
-      <p v-if="s.error && !dialog" class="notice amber" role="alert">
+      <p
+        v-if="s.error && !dialog && !['overview', 'documents'].includes(view)"
+        class="notice amber"
+        role="alert"
+      >
         {{ s.error }}
         <button class="text-link" @click="act(() => shop.refresh(true))">刷新状态</button>
       </p>
@@ -284,6 +265,19 @@ function briefing() {
         <p>使用本机开发环境提供的用户凭证。凭证不会放入浏览器本地存储。</p>
         <button class="primary" @click="open('connection')">连接后端</button>
       </div>
+      <BusinessOverview
+        v-else-if="view === 'overview'"
+        @navigate="navigate"
+        @controls="open('controls')"
+      />
+      <LazyDocumentCenter
+        v-else-if="view === 'documents'"
+        :key="s.storeId + ':' + s.session.principal_id + ':' + s.session.roles.join(',')"
+        :store-id="s.storeId"
+        :session="s.session"
+        :catalog="s.catalog"
+        @navigate="navigate"
+      />
       <div v-else class="content-grid">
         <section class="main-column">
           <div v-if="view === 'today'" id="decision-zone">
@@ -500,6 +494,14 @@ function briefing() {
           </div>
           <div class="section-label">资料与简报<span class="right">按需查看</span></div>
           <div class="materials-grid">
+            <button class="follow-card glass" @click="navigate('documents')">
+              <span class="mini-icon"><AppIcon name="file-check-2" /></span>
+              <span
+                ><h3>文档中心</h3>
+                <p>管理原件、资料信息与历史版本</p></span
+              >
+              <AppIcon name="chevron-right" />
+            </button>
             <button class="follow-card glass" @click="open('quote')">
               <span class="mini-icon"><AppIcon name="file-spreadsheet" /></span
               ><span
@@ -516,12 +518,58 @@ function briefing() {
           </div>
         </section>
         <BusinessFacts
+          @overview="navigate('overview')"
           @details="open('facts')"
           @mission="mission ? open('mission') : (deck = true)"
         />
       </div>
     </main>
   </div>
+  <nav class="workspace-dock" aria-label="经营快捷入口">
+    <div class="dock-status">
+      <div class="agent-status">
+        <div>
+          <span
+            class="goal-dot"
+            :class="{ muted: !s.connected || mission?.status !== 'ACTIVE' }"
+          />{{
+            s.loading
+              ? '正在连接'
+              : !s.connected
+                ? '连接待确认'
+                : mission?.status === 'PAUSED'
+                  ? '主动跟进已暂停'
+                  : mission
+                    ? '查看最近检查记录'
+                    : '尚未建立委托'
+          }}
+        </div>
+        <span>进展在应用内查看。</span>
+      </div>
+    </div>
+    <button :class="{ active: view === 'today' }" @click="navigate('today')">
+      <AppIcon name="panels-top-left" /><span>今日决策</span>
+      <span v-if="decisionCount" class="small-count">{{ decisionCount }}</span>
+    </button>
+    <button :class="{ active: view === 'following' }" @click="navigate('following')">
+      <AppIcon name="orbit" /><span>持续跟进</span>
+    </button>
+    <button :class="{ active: view === 'journal' }" @click="navigate('journal')">
+      <AppIcon name="notebook-pen" /><span>经营记录</span>
+    </button>
+    <span class="dock-divider" aria-hidden="true" />
+    <button
+      class="dock-utility dock-overview"
+      :class="{ active: view === 'overview' }"
+      :aria-current="view === 'overview' ? 'page' : undefined"
+      @click="navigate('overview')"
+    >
+      <AppIcon name="chart-no-axes-combined" /><span>经营概览</span>
+    </button>
+    <button class="dock-utility" aria-label="打开联调控制" @click="open('controls')">
+      <AppIcon name="sliders-horizontal" /><span>联调控制</span>
+    </button>
+  </nav>
   <nav class="mobile-nav" aria-label="移动端导航">
     <button
       v-for="(label, id) in { today: '今日', following: '持续跟进', journal: '经营记录' }"

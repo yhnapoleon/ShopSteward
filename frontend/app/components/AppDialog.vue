@@ -2,13 +2,22 @@
 const props = defineProps<{ open: boolean; title: string; busy?: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLDialogElement>()
+const titleId = useId()
 let origin: HTMLElement | null = null
+// Remember the trigger before an asynchronous action temporarily disables it.
+function rememberFocus(event: FocusEvent) {
+  if (!props.open && event.target instanceof HTMLElement && event.target !== document.body)
+    origin = event.target
+}
+onMounted(() => document.addEventListener('focusin', rememberFocus))
+onUnmounted(() => document.removeEventListener('focusin', rememberFocus))
 watch(
   () => props.open,
   async (open) => {
     await nextTick()
     if (open) {
-      origin = document.activeElement as HTMLElement
+      const active = document.activeElement
+      if (active instanceof HTMLElement && active !== document.body) origin = active
       dialog.value?.showModal()
     } else {
       dialog.value?.close()
@@ -29,9 +38,9 @@ function outside(e: MouseEvent) {
 }
 </script>
 <template>
-  <dialog ref="dialog" aria-labelledby="dialog-title" @cancel.prevent="close" @click="outside">
+  <dialog ref="dialog" :aria-labelledby="titleId" @cancel.prevent="close" @click="outside">
     <header class="modal-head">
-      <h2 id="dialog-title">{{ title }}</h2>
+      <h2 :id="titleId">{{ title }}</h2>
       <button class="icon-btn" aria-label="关闭对话框" :disabled="busy" @click="close">
         <AppIcon name="x" />
       </button>
