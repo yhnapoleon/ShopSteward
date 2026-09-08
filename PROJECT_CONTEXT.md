@@ -1,14 +1,20 @@
 # ShopSteward 项目总说明与对话交接
 
-### 最新实施：知识检索上云前准备（2026-09-08）
+### 最新实施与交付：知识检索及服务器交接（2026-09-08）
 
-用户已授权实施，本轮新增独立 `knowledge` 服务、解析/索引/重试与发布、PG有向关系、可选云embedding与重排接口、Agent只读证据工具及Compose/恢复/验证工具。代码在当前YH工作区，未提交或部署到开发服务。原K0冻结集与K1契约保留；新backend迁移 `0011_knowledge_delivery` 和独立knowledge迁移 `knowledge_0002` 已通过专用PG验收。
+本轮新增独立 `knowledge` 服务、解析/索引/重试与发布、PG有向关系、可选云embedding与重排接口、Agent只读证据工具及Compose/恢复/验证工具。已按用户要求本地提交并推送到YH，创建 [PR #10](https://github.com/yhnapoleon/ShopSteward/pull/10)（YH → main，更新时为OPEN，未合并）。功能提交 `96ee2a0`，同步main提交 `2406371`，完整手册提交 `e65e066`；未部署到开发服务或创建云资源。原K0冻结集与K1契约保留；新backend迁移 `0011_knowledge_delivery` 和独立knowledge迁移 `knowledge_0002` 已通过专用PG验收。
+
+**服务器交接以[单文档完整手册](docs/runbooks/knowledge-server-handoff.md)为首要入口。** 已整合14个主题章节：架构与数据边界、配置、Linux/Windows启动、跨机器连接、本地backend/Agent、语料/关系、验收、备份恢复、排障、选型和交付模板；不再要求先阅读子文档，末尾链接仅供源码与原始证据核对。已检查目录/路径/CLI参数、Compose静态配置，并实际运行200份原件的离线校验（business_writes=0）；这些检查不等于云端部署验收。
 
 语料已实际生成：pilot200份（180合成、20公开）；全量924份逻辑文档、1124版本、300题。还缺76份公开资料才达到1000份目标。最新实际解析1124版本全部COMPLETE、16205块；800条合成关系均匹配到唯一原文块，但尚未经真实服务导入。规模与解析成功不等同于检索质量，人工审阅和真实模型评测仍未完成。
 
-Docker已由用户启动，独立knowledge容器实际构建并就绪，200份pilot已真实上传/索引/发布。现有LangGraph经Luna完成业务查询、条款搜索、提前排队引用展开和混合取证4场景；短查询与补搜索确实取到关键条款，结构化引用持久化。接入位置、执行轨迹和正文引用校验边界见[Agent接入报告](docs/reports/agent-document-langgraph-integration.md)。
+Docker已由用户启动，独立knowledge容器实际构建并就绪，200份pilot已真实上传/索引/发布，PG与OpenSearch均5169块、零不一致。现有LangGraph经Luna完成业务查询、条款搜索、提前排队引用展开和混合取证4场景；短查询与补搜索确实取到关键条款，结构化引用持久化。接入位置、执行轨迹和正文引用校验边界见[Agent接入报告](docs/reports/agent-document-langgraph-integration.md)。
 
-**当前pilot_ready=false。** 空环境恢复、主动故障演练、真实关系路径与系统质量评测尚未完成；本轮为词法检索、embedding/rerank关闭。最新事实与接续入口见[实施与验收状态](docs/reports/knowledge-precloud-readiness.md)。下方“仅计划、尚未实现”的说明是此前快照。
+提交前验证：backend unit/API含语料254 passed，knowledge323 passed/15 skipped，Agent30 passed/3 skipped；同步main后backend非重语料216 passed。批次重叠、跳过不计通过。前端契约检查通过，附加typecheck因本机缺少main新增ECharts依赖未通过，已在PR记录。语料目录通过Git字节保留规则和暂存原件hash核验，Git不包含数据库、卷、私有env及本机发布收据。
+
+**当前pilot_ready=false、MVP_ready=false。** 可以准备服务器并隔离试部署；空环境恢复、主动故障演练、真实关系路径与系统质量评测尚未完成。完整手册明确了三个接续限制：关系/基准/自动Agent验收固定本地8018/8020；bundle工具只支持public应用schema，尚不能直接迁移包含 `agent_data` / `agent_checkpoints` 的完整Agent数据库；语料导入CLI默认lexical且没有profile选项，hybrid需显式请求新索引并验证发布。本轮embedding/rerank关闭，数据库/模型/区域按后续固定输入实测选择。最新证据见[实施与验收状态](docs/reports/knowledge-precloud-readiness.md)，具体操作与新增阻塞以完整手册为准。
+
+下一步由服务器同学按完整手册部署Knowledge API/worker/PG/OpenSearch，项目侧完成本地backend跨机器接入与重新入库；双方补关系、生命周期和恢复验收，再开展模型/区域实验。下方“仅计划、未提交、尚未实现”和旧进程状态是历史快照，不能替代本节最新交付状态。
 
 ### 最新计划：上云前本地准备（2026-09-07）
 

@@ -1,6 +1,21 @@
 # ShopSteward 当前开发交接
 
-服务器同学从GitHub接收本轮PR时，先读[服务器交接与云端试部署](docs/runbooks/knowledge-server-handoff.md)：部署边界、PR文件清单、两端配置、数据重建/搬迁区别、验收分工及后续数据库/embedding实验均已列明。当前可开展环境准备和隔离试部署，完整搬迁验收仍待补。
+**首要交接入口：[Knowledge服务器部署完整手册](docs/runbooks/knowledge-server-handoff.md)。** 已按用户要求整合为单文档14个主题章节，覆盖部署/完整配置/启动/跨机网络/backend与LangGraph接入/语料与关系/验收/备份恢复/排障/选型/回填模板，无需先阅读其他子文档；源码及原始报告在末尾作为参考。当前可开展环境准备和隔离试部署，完整搬迁验收仍待补。
+
+### 最新Git与文档交付（2026-09-08）
+
+- 已本地提交、推送YH并创建 [PR #10](https://github.com/yhnapoleon/ShopSteward/pull/10)（YH → main，更新时OPEN、未合并）。功能 `96ee2a0`；同步main `2406371`，保留同学前端经营概览/文档中心，唯一HANDOVER冲突已保留双方记录；单文档手册 `e65e066`。
+- 本次完善仅同步PROJECT_CONTEXT/HANDOVER。无关的 `docs/proposals/` 聊天体验提案仍留在本地，不随本轮交接提交；私有env、DB/卷、var内映射/发布收据不经Git传输。
+- 完整手册已通过14个目录跳转、引用路径、10个脚本路径及9组CLI示例参数检查；Compose静态配置通过，pilot200离线校验通过且business_writes=0；独立源码审查未发现新的操作阻塞。Linux/云端部署命令尚未在目标主机执行。
+- 提交前backend unit/API含语料254 passed，knowledge323 passed/15 skipped，Agent30 passed/3 skipped；同步main后backend非重语料216 passed。各批次有交集，不累加；前端契约通过，附加typecheck因本机缺少ECharts依赖未通过，已在PR记录。扩展语料已设Git字节保留，1657文件暂存字节及pilot200/full1124原件大小/hash核验通过。
+
+### 接续必须注意的限制
+
+- **先做服务器试部署与跨机接入，仍保留pilot_ready=false、MVP_ready=false。** 服务器负责Knowledge API/worker/PG/OpenSearch及持久存储；现有业务backend/DB/原件发布权威和Agent保持原职责，Agent通过backend获取候选。
+- 普通导入可经本地8018 backend访问18020云API隧道；关系导入、benchmark、C3 verifier和自动Agent脚本固定8018/8020。必须确认8020实际指向目标服务器，避免误测本机旧服务；具体隔离端口步骤见完整手册第6、8、9节。
+- **恢复已知阻塞：** bundle当前仅接受public应用schema，直接导出含 `agent_data` / `agent_checkpoints` 的当前Agent库会被拒绝。需补完整schema枚举/锁定/导出/恢复校验并真实演练，不能删除schema或保护检查来绕过。新服务器正常重新入库与搬迁旧双库是不同流程，见第10节。
+- 当前导入CLI默认lexical-v1且无profile参数；启用embedding后仍需显式hybrid index-job、新generation与正常发布，再切读取profile。数据库/embedding/区域继续按固定输入实测，不把已实现适配或4项路由通过当作选型/质量结论。
+- 后续共同完成真实关系导入、归档/换版/租约/重启、空目标恢复、并发与质量评测；公开资料还缺76份并待人工审阅。后续若更改源码或配置，同步完整手册。下方旧阶段的未提交/未实现/进程描述按历史记录理解。
 
 ### 最新执行检查点：知识检索本地准备（2026-09-08）
 
