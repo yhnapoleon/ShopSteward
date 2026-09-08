@@ -65,3 +65,7 @@
 - [受控任务验收](../../frontend/tests/task-workspace.spec.ts)
 
 上述实施与验证阶段未进行 git commit/push/PR/merge；后续发布单独记录。不包含飞书、后端、数据库结构、真实模型配置或其他机器环境变更。
+
+## 发布前补充复核（2026-09-08）
+
+PR #11复核发现会话列表实际使用 `after` 而非 `cursor` 参数；已修正并新增第二页默认会话的浏览器回归，1项通过（`var/task-workspace-pr-pagination`）。原验证批次保留时点，此修正仅影响多页会话选择；发布后的代码指纹另记于JSON中的publication_fix。

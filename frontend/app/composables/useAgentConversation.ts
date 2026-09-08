@@ -133,7 +133,7 @@ export function useAgentConversation(owner = false) {
       let first: Schema<'ConversationView'> | undefined
       do {
         const list: Schema<'ConversationList'> = await api(
-          `/api/v1/missions/${id}/conversations${query({ limit: 100, cursor })}`,
+          `/api/v1/missions/${id}/conversations${query({ limit: 100, after: cursor })}`,
         )
         if (!current(epoch, key)) return
         first ||= list.items[0]

@@ -85,6 +85,7 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
     failRun: false,
     loseMessage: false,
     messageCount: 0,
+    paginateConversations: false,
   }
   const conversation = () => ({
     id: 'conv-one',
@@ -166,8 +167,16 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
           active_store: { store_id: 'overview-fixture-a' },
         },
       })
-    if (path === `missions/${id}/conversations`)
+    if (path === `missions/${id}/conversations`) {
+      if (control.paginateConversations && !url.searchParams.get('after'))
+        return route.fulfill({
+          json: {
+            items: [{ ...conversation(), id: 'other-conversation', is_default: false }],
+            next_cursor: 'first-page',
+          },
+        })
       return route.fulfill({ json: { items: [conversation()], next_cursor: null } })
+    }
     if (path === 'conversations/conv-one/messages')
       return route.fulfill({
         json: {
@@ -414,5 +423,14 @@ test('事实更新先等待新方案；修订回执来自真实版本，现金�
     quality: 85,
     fullPage: false,
   })
+  expect(c.writes).toHaveLength(0)
+})
+
+test('会话分页使用后端after游标，第二页默认会话不会被第一条替代', async ({ page }) => {
+  const c = await setup(page)
+  c.paginateConversations = true
+  await page.reload()
+  await expect(page.getByRole('log', { name: '任务对话' })).toContainText('解释当前备货方案')
+  await expect(page.locator('.agent-run-status')).toContainText('正在处理你的要求')
   expect(c.writes).toHaveLength(0)
 })

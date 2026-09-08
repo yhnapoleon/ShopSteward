@@ -326,5 +326,12 @@
     "writes": []
   },
   "committed_at_verification": false,
-  "record_phase": "pre-publication verification"
+  "record_phase": "pre-publication verification",
+  "publication_fix": {
+    "description": "Conversation pagination uses after; second-page default conversation regression passed",
+    "file": "frontend/app/composables/useAgentConversation.ts",
+    "sha256": "a2381f6052736966f959cc90f469b870b8f631c65e42db373416062734adbdda",
+    "test": "会话分页使用后端after游标，第二页默认会话不会被第一条替代",
+    "result": "passed"
+  }
 }
