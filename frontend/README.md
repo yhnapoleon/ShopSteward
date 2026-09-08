@@ -35,6 +35,7 @@ PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校�
 6. 联调控制按模拟器规则逐步推进到货、销售、需求修订、追加到货。
 7. 查看警报、标记知晓、账本、历史决定与简报。知晓不等于解除风险。
 8. 资料入口可在本地读取固定格式CSV、显示缺失项、保留原币种、换算和下载结果；不写经营账目。
+9. “资料与简报 → 文档中心”管理当前店铺的原件、资料信息与版本；也可直接打开 `/?view=documents`。使用既有K1接口，不接智能检索或Agent引用。
 
 不要照原型一天的时钟猜测事件顺序。当前模拟器分四步，第一和第四步需要存在可到货采购；其余约束由模拟器/后端决定。
 
@@ -52,6 +53,7 @@ PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校�
 | 开发场景 | POST `/dev/v1/scenarios`、`{run_id}/advance`；GET `job-runs/{id}` | 仅开发控制+后端admin；异步完成后读取真实结果 |
 | Agent会话 | conversations/messages、agent-runs、resume/cancel、followup | 官方Luna真实模型前端验收已通过；启用状态由本机配置决定 |
 | 报价、展示偏好、整理要求 | 本地浏览器工具 | 当前后端没有报价接口；不算真实L-01 |
+| 文档中心 | 既有K1 documents、versions、content、control | 上传/追加为multipart，其余沿用公开接口；已保存原件不等于已索引 |
 
 上表未重复全部路径前缀，完整字段由[实际OpenAPI](../docs/api/backend.runtime.openapi.json)生成到`app/types/backend.d.ts`。`server/utils/backend-routes.ts`也由该契约生成，只允许注册的公开操作；内部事件与Agent租约工具不对浏览器代理。
 
@@ -84,6 +86,8 @@ PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校�
 - `app/components/`：决策、跟进、事实、会话、报价和弹层。
 - `app/utils/`：错误/单位呈现、CSV工具；业务DTO使用生成类型。
 - `server/`：同源代理与身份连接，公开路由白名单自动生成。
+- `DocumentCenter.vue`、`useDocuments.ts`：按需加载的资料列表、筛选分页、信息编辑、原件/版本、权限状态和原提交恢复；独立于经营与报价状态。
+- `server/utils/knowledge-transfer.ts`：只处理白名单中的K1上传和原件下载；按字节限制上传请求并保留下载响应头，其他JSON代理逻辑不变。
 - `tests/`：真实业务E2E与明确标注的受控故障/兼容性/本地资料检查。
 
 ## 验证
@@ -102,6 +106,18 @@ E2E只允许loopback地址，需要已经运行的后端、模拟器、worker和
 后端有新契约时，先在backend运行`.venv`对应Python的`-m app.export_openapi`，再运行`api:generate`和`api:check`。不要手改生成类型。
 
 本轮不是正式部署、真实商家试用、完整可访问性认证或课程效果实验。
+
+## 文档中心（2026-09-08）
+
+支持PDF、DOCX、XLSX、CSV、Markdown和TXT，单文件上限20 MiB。按标题、分类、状态、商品或供应商筛选，资料和历史版本均可分页。可编辑标题、分类、可见范围及实体关联；有效期随原件版本保存。原件仅下载，不直接执行或内嵌预览。后端继续负责文件格式、权限、版本冲突及幂等校验。
+
+operator/admin可上传；私有资料原件只有所有者可读，admin对其他成员私有资料仅能查看元数据。归档保留历史，恢复后才能读取版本和原件。上传成功始终如实显示原件已保存，尚未智能索引，不新增解析、OCR、RAG或Agent调用。
+
+提交前把恢复用的幂等键、操作和文件指纹保存在按身份/店铺隔离的sessionStorage；不保存凭证或原文件正文。丢响应后保留原提交并禁止新写入，刷新后重新选择同名且hash一致的原文件再重试。首次上传或重试在计算文件hash期间离开原场景时，不再发起旧页面的写请求。重试回执可能是旧元数据，成功后总是GET最新详情。浏览器不允许会话存储时保留只读浏览并明确阻止无法恢复的写入。
+
+文档中心复用暖光磨砂、原生dialog和现有图标，无新依赖。新增的dialog实例使用独立标题ID；已有弹层的关闭、焦点和忙碌语义保持。
+
+验证与隔离复现见[文档中心验收记录](../docs/reports/frontend-documents-verification.md)。本次接入保持后端与其他业务模块不变。
 
 
 ## 经营概览（2026-09-08）
