@@ -1,5 +1,9 @@
 # Agent工具生命周期 · 第二阶段
 
+<!-- md-alignment-2026-09-08 -->
+> **后续状态（2026-09-08增补）：** 本报告保留第二阶段形成时的实现、失败/续验与验证数字；“未提交”“下一步证据/试算”等文字是当时状态。第二阶段现已与第三阶段通过[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并为1bbcad5，后续能力与组合验证见[交付说明](agent-workspace-delivery.md)。原64/23/4项及SC01超时后续验仍按原口径保留，不能与后续批次相加或改写为完整自动流程一次通过。
+<!-- /md-alignment-2026-09-08 -->
+
 2026-09-08。第一阶段已通过[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)合并为 `c46e85c`，合并前 `8b9246b` 的[Windows CI](https://github.com/yhnapoleon/ShopSteward/actions/runs/34228884666)通过。第二阶段在该合并基线上独立实现，目前为个人分支的未提交改动；没有并入第一阶段PR。
 
 ## 做了什么，业务上意味着什么

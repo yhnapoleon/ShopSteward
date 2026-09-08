@@ -1,5 +1,15 @@
 # 简化架构与分工
 
+<!-- md-alignment-2026-09-08 -->
+## 当前任务交互链路补充（2026-09-08）
+
+任务工作区三阶段已随[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)和[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并。一个Mission承接用户委托，Plan承接候选/修订，Action与批准承接实际采购；Conversation/Run承接对话和工具过程。前端共用同一任务/会话同步器，不为每张卡片复制任务或账目。
+
+模型选择工具并解释结果；backend业务模块决定真实方案/账目/审批状态，Agent桥接层记录运行与工具生命周期并公开经过筛选的进度、历史证据和成果。结果/完成记录与原业务事务一致；当前Agent没有审批采购工具。第一阶段以已有接口为主，第二/三阶段包含新增桥接接口和0012存储，不应统称纯前端改动。
+
+下方“Agent/RAG后接”的叙述、虚线和职责表保留原先分工阶段。Agent及Knowledge的已有实现见各模块说明；本次没有改动原主图、规划、账本、审批执行、业务调度或独立Knowledge服务架构。[组合交付](reports/agent-workspace-delivery.md)列明本轮已验与未验，不能将UI合并视为完整A-01/L-01或云部署完成。
+<!-- /md-alignment-2026-09-08 -->
+
 按交付模块划分，backend的B0-01至B0-07已完成；Mission、规划、警报、看板、审批采购、持续源同步及周期/事件调度可用。B0-07补齐组合故障与双worker进程验收，并修复两处锁竞争阻塞；范围与边界见[测试报告](reports/b0-07-test-report.md)。实际启动见 [Backend说明](../backend/README.md)。后端内部聚类与开发契约见 [Backend 开发与接口规范](backend-development.md)，接口预览见 [Swagger / OpenAPI](api/README.md)。以下按“先做 backend，Agent/RAG 后接”的最新安排更新职责。
 
 ## 模块职责

@@ -1,5 +1,9 @@
 # 证据与业务成果 · 第三阶段
 
+<!-- md-alignment-2026-09-08 -->
+> **后续状态（2026-09-08增补）：** 本报告保留第三阶段原实现与61/12项验证时点。随后补齐历史版本原件下载、代码块复制，并将第二/三阶段一并通过[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并为1bbcad5；[组合交付](agent-workspace-delivery.md)及其验证JSON承接最终源码。下文“未提交”已由该合并取代；旧结果缺关联、模型关闭、远端检索未验等局限继续成立。原机器可读证据不因本次Markdown增补而重写。
+<!-- /md-alignment-2026-09-08 -->
+
 2026-09-08。基准 `jeffrey / c46e85c`，第二阶段未提交改动继续保留；本阶段也未提交、推送或部署。开工时第二阶段验证JSON的源码指纹全部一致，基线差异和36份文件指纹保存在ignored `var/phase3-baseline/`。旧 `HANDOVER 2.md` 和stash未处理。
 
 ## 用户怎样操作

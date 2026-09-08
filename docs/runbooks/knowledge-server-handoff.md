@@ -1,5 +1,9 @@
 # Knowledge 服务器交接与部署完整手册
 
+<!-- md-alignment-2026-09-08 -->
+> **2026-09-08业务backend版本增补：** 本手册原Knowledge交付、部署步骤、迁移所有权和未验限制全部保留。若使用[PR #12组合代码](../reports/agent-workspace-delivery.md)（`1bbcad5`），业务backend库必须迁移至 `0012_agent_progress`；下文§6中的0011预期及排障表的0011检查是本手册原交付时点。独立Knowledge库仍按本文自己的 `knowledge_0002` 流程核验，不能用它代替业务库迁移。三阶段没有修改Knowledge服务部署或宣称云端已验收；现有`upgrade head`命令继续按所选代码/目标库使用。
+<!-- /md-alignment-2026-09-08 -->
+
 更新：2026-09-08。本文整合部署边界、配置、启动、入库、LangGraph接入、测试、恢复、运维和选型说明。服务器负责人可以按本文完成准备与试部署，无需先阅读其他说明文档；末尾链接仅用于源码、原始证据和进一步审查。实际操作仍需仓库中的代码、Compose、依赖锁和语料文件。
 
 **当前结论：可以开展隔离云端试部署，完整搬迁验收尚未通过。`pilot_ready=false`、`MVP_ready=false`。** 本文中“已验证”指已完成的本地隔离运行；Linux/云端命令是根据当前代码整理的操作步骤，尚未在目标服务器执行。没有选定云厂商、区域、正式机器规格或最终embedding模型。
@@ -310,6 +314,10 @@ backend/publisher/Agent进程要使用相同测试库、key、URL和业务授权
 ```
 
 Windows把 `../.venv/bin/python` 换为 `../.venv/Scripts/python.exe`。这些命令使用 `DATABASE_URL`，务必确认指向shopsteward_test；预期 `0011_knowledge_delivery`。已有 `tests/integration/test_knowledge_runner.py` 会读取本机backend/.env并派生测试库，但它不是新服务器自动配置工具。
+
+<!-- md-alignment-migration-2026-09-08 -->
+> **使用PR #12代码时：** 上句0011仅为原手册预期；当前业务backend应核对 `0012_agent_progress`。命令保持 `upgrade head/current/check`，先确认DATABASE_URL的目标库。独立Knowledge库仍使用自己的迁移版本。
+<!-- /md-alignment-migration-2026-09-08 -->
 
 在backend目录分别启动三个进程，采用上面的同一组私有配置：
 
