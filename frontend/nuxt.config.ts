@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-09-07',
   ssr: false,
   devtools: { enabled: false },
-  css: ['~/assets/css/shop.css'],
+  css: ['~/assets/css/shop.css', '~/assets/css/overview.css'],
   typescript: { strict: true },
   runtimeConfig: {
     backendUrl: 'http://127.0.0.1:8000',

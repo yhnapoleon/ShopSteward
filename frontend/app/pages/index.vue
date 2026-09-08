@@ -8,7 +8,7 @@ const { s, mission, stock, product, plan, unresolved, canDecide, hasRole } = sho
 const route = useRoute(),
   router = useRouter()
 const view = computed(() =>
-  ['today', 'following', 'journal'].includes(String(route.query.view))
+  ['today', 'following', 'journal', 'overview'].includes(String(route.query.view))
     ? String(route.query.view)
     : 'today',
 )
@@ -115,6 +115,7 @@ const title = computed(
       today: s.storeId ? '今天的经营安排。' : '从示例店铺开始。',
       following: '持续跟进',
       journal: '经营记录',
+      overview: '经营概览',
     })[view.value],
 )
 const issue = computed(() =>
@@ -209,7 +210,7 @@ function briefing() {
       </div>
     </header>
     <main class="workspace">
-      <header class="topbar">
+      <header v-if="view !== 'overview'" class="topbar">
         <div class="breadcrumb">
           我的经营空间<AppIcon name="chevron-right" /><b>{{
             { today: '今日', following: '持续跟进', journal: '经营记录' }[view]
@@ -226,7 +227,7 @@ function briefing() {
           </button>
         </div>
       </header>
-      <div class="page-head">
+      <div v-if="view !== 'overview'" class="page-head">
         <div>
           <div class="eyebrow">{{ s.connected ? '业务接口已连接' : '经营空间' }}</div>
           <h1>{{ title }}</h1>
@@ -249,7 +250,7 @@ function briefing() {
           <AppIcon name="plus" /><span>交给我一件事</span>
         </button>
       </div>
-      <p v-if="s.error && !dialog" class="notice amber" role="alert">
+      <p v-if="s.error && !dialog && view !== 'overview'" class="notice amber" role="alert">
         {{ s.error }}
         <button class="text-link" @click="act(() => shop.refresh(true))">刷新状态</button>
       </p>
@@ -259,6 +260,11 @@ function briefing() {
         <p>使用本机开发环境提供的用户凭证。凭证不会放入浏览器本地存储。</p>
         <button class="primary" @click="open('connection')">连接后端</button>
       </div>
+      <BusinessOverview
+        v-else-if="view === 'overview'"
+        @navigate="navigate"
+        @controls="open('controls')"
+      />
       <div v-else class="content-grid">
         <section class="main-column">
           <div v-if="view === 'today'" id="decision-zone">
@@ -491,6 +497,7 @@ function briefing() {
           </div>
         </section>
         <BusinessFacts
+          @overview="navigate('overview')"
           @details="open('facts')"
           @mission="mission ? open('mission') : (deck = true)"
         />
@@ -530,6 +537,14 @@ function briefing() {
       <AppIcon name="notebook-pen" /><span>经营记录</span>
     </button>
     <span class="dock-divider" aria-hidden="true" />
+    <button
+      class="dock-utility dock-overview"
+      :class="{ active: view === 'overview' }"
+      :aria-current="view === 'overview' ? 'page' : undefined"
+      @click="navigate('overview')"
+    >
+      <AppIcon name="chart-no-axes-combined" /><span>经营概览</span>
+    </button>
     <button class="dock-utility" aria-label="打开联调控制" @click="open('controls')">
       <AppIcon name="sliders-horizontal" /><span>联调控制</span>
     </button>
