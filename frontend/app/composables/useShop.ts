@@ -8,6 +8,8 @@ export function useShop() {
     activeStoreId: '',
     discovering: false,
     missionId: '',
+    requestedMissionId: '',
+    planChange: null as { from: Schema<'Plan'>; to: Schema<'Plan'> } | null,
     dashboard: null as Schema<'Dashboard'> | null,
     catalog: null as Schema<'Catalog'> | null,
     missions: [] as Schema<'Mission'>[],
@@ -61,7 +63,7 @@ export function useShop() {
   const notify = (message: string) => {
     s.notice = message
   }
-  async function init() {
+  async function init(preferredStore?: string) {
     s.loading = true
     try {
       s.session = await $fetch<Session>('/api/session')
@@ -78,7 +80,10 @@ export function useShop() {
       } catch {}
       const saved = localStorage.getItem('ss.store')
       await selectStore(
-        s.activeStoreId ||
+        (preferredStore && s.stores.some((st) => st.store_id === preferredStore)
+          ? preferredStore
+          : '') ||
+          s.activeStoreId ||
           (s.stores.some((x) => x.store_id === saved) ? saved! : s.stores[0]?.store_id || ''),
       )
     } catch (e) {
@@ -119,6 +124,8 @@ export function useShop() {
     s.storeVersion++
     s.storeId = id
     s.missionId = ''
+    s.requestedMissionId = ''
+    s.planChange = null
     s.plan = null
     s.actions = []
     s.missions = []
@@ -152,7 +159,15 @@ export function useShop() {
           '/api/v1/ledger-entries' + query({ store_id: id, limit: 30 }),
         ),
       ])
+      if (s.requestedMissionId && !missions.items.some((m) => m.id === s.requestedMissionId)) {
+        const selected = await api<Schema<'Mission'>>(
+          '/api/v1/missions/' + encodeURIComponent(s.requestedMissionId),
+        )
+        if (selected.store_id !== id) throw new Error('这项任务不属于当前店铺。')
+        missions.items.push(selected)
+      }
       const m =
+        missions.items.find((x) => x.id === s.requestedMissionId) ||
         missions.items.find((x) => x.id === s.missionId) ||
         missions.items.find((x) => x.status === 'ACTIVE') ||
         missions.items[0]
@@ -172,6 +187,8 @@ export function useShop() {
             (item, index, items) => items.findIndex((other) => other.id === item.id) === index,
           )
         : timeline.items
+      if (sameMission && s.plan && nextPlan && s.plan.id !== nextPlan.id)
+        s.planChange = { from: s.plan, to: nextPlan }
       if (nextPlan?.id !== s.plan?.id) s.selected = nextPlan?.proposed_purchase?.quantity || 0
       Object.assign(s, {
         dashboard,
@@ -247,7 +264,13 @@ export function useShop() {
   async function startMission() {
     return command('正在建立备货委托', async () => {
       if (!s.storeId || !stock.value || !offer.value) throw new Error('请先选择具有完整资料的店铺')
-      if (mission.value?.status === 'ACTIVE') return
+      const existing = s.missions.find(
+        (m) => m.sku_id === stock.value?.sku_id && ['ACTIVE', 'PAUSED'].includes(m.status),
+      )
+      if (existing) {
+        await selectMission(existing.id)
+        return
+      }
       const body: Schema<'MissionCreate'> = {
         store_id: s.storeId,
         sku_id: stock.value.sku_id,
@@ -260,7 +283,10 @@ export function useShop() {
         check_interval_seconds: 30,
       }
       const m = await api<Schema<'Mission'>>('/api/v1/missions', 'POST', body)
+      s.requestedMissionId = m.id
       s.missionId = m.id
+      s.plan = null
+      s.planChange = null
       await refresh(true)
       notify('委托已建立。')
     })
@@ -277,15 +303,29 @@ export function useShop() {
       await refresh(true)
     })
   }
-  async function control(operation: 'pause' | 'resume') {
-    return command(operation === 'pause' ? '正在暂停' : '正在恢复', async () => {
-      if (!mission.value) return
-      await api<Schema<'Mission'>>('/api/v1/missions/' + mission.value.id + '/control', 'POST', {
-        operation,
-        expected_mission_version: mission.value.mission_version,
-      } satisfies Schema<'MissionControl'>)
-      await refresh(true)
-    })
+  async function selectMission(id: string) {
+    if (s.missionId === id && s.requestedMissionId === id) return
+    s.requestSeq++
+    s.requestedMissionId = id
+    s.missionId = id
+    s.plan = null
+    s.planChange = null
+    s.timeline = []
+    s.timelineCursor = null
+    await refresh(true)
+  }
+  async function control(operation: 'pause' | 'resume' | 'complete') {
+    return command(
+      operation === 'pause' ? '正在暂停' : operation === 'complete' ? '正在结束委托' : '正在恢复',
+      async () => {
+        if (!mission.value) return
+        await api<Schema<'Mission'>>('/api/v1/missions/' + mission.value.id + '/control', 'POST', {
+          operation,
+          expected_mission_version: mission.value.mission_version,
+        } satisfies Schema<'MissionControl'>)
+        await refresh(true)
+      },
+    )
   }
   async function prepareDecision() {
     return command('正在核对方案', async () => {
@@ -417,6 +457,7 @@ export function useShop() {
     startMission,
     requestCheck,
     control,
+    selectMission,
     prepareDecision,
     decide,
     recoverApproval,

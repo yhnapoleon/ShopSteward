@@ -1,0 +1,337 @@
+{
+  "date": "2026-09-08",
+  "phase": 1,
+  "base_commit": "5f57a3b0a3371fa16d6ee7109b3a9385bdd7a999",
+  "branch": "jeffrey",
+  "production_coverage": [
+    {
+      "file": "overview.spec.ts",
+      "title": "默认今日，次级入口与返回保留原工作区；概览不发写请求",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "UTC销售区间、金额切换与现金事件图；仅影响销售区间",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "销售总量不依赖明细第一页，明细可完整翻页",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "刷新失败保留原值并显式标记，区间切换不保留旧总量",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "不同快照、部分到货及未知ETA，不伪装成一致或已收完",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "新环境自动切换，旧场景迟到的销售响应不能污染新页面",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "图表键盘、日期弹层和手机浏览均可操作，无页面溢出",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "可复现S5视觉：桌面、触摸、减少动效与截图",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "时间与现金历史边界：UTC、未知、超过90日、期初缺失及账不平",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "原方案往返后仍可核对，切换环境自动关闭旧确认框",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "生产构建：今日不下载图表引擎，打开概览才加载",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "overview.spec.ts",
+      "title": "初始现金不画假趋势；单独过期的流水在现金区域明确提示",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "task-workspace.spec.ts",
+      "title": "同一任务跨首页/详情/刷新；草稿保留，工具按调用身份去重，历史不冒充当前过程",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "task-workspace.spec.ts",
+      "title": "富文本安全、中文输入法、发送丢响应沿用幂等键",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "task-workspace.spec.ts",
+      "title": "运行连接丢失停止忙碌动效；恢复后终态不掩盖失败子步骤",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "task-workspace.spec.ts",
+      "title": "结束委托绑定原任务，刷新可回看；未知采购阻止结束",
+      "status": "passed",
+      "source": "var/task-workspace-production-final-output.txt"
+    },
+    {
+      "file": "task-workspace.spec.ts",
+      "title": "手机任务工作区、长表格不溢出，减少动效生效",
+      "status": "passed",
+      "source": "var/task-workspace-visual-final-output.txt"
+    },
+    {
+      "file": "task-workspace.spec.ts",
+      "title": "事实更新先等待新方案；修订回执来自真实版本，现金不因方案调整改变",
+      "status": "passed",
+      "source": "var/task-workspace-visual-final-output.txt"
+    },
+    {
+      "file": "business.spec.ts",
+      "title": "真实SC01：40件确认、刷新、暂停中到货、需求变化再20件、最终账目",
+      "status": "passed",
+      "source": "var/task-workspace-sc01-authenticated-output.txt"
+    }
+  ],
+  "production_batches": [
+    {
+      "source": "var/task-workspace-production-final-output.txt",
+      "stats": {
+        "startTime": "2026-09-08T12:26:18.243Z",
+        "duration": 75991.61,
+        "expected": 17,
+        "skipped": 0,
+        "unexpected": 1,
+        "flaky": 0
+      }
+    },
+    {
+      "source": "var/task-workspace-version-proof-output.txt",
+      "stats": {
+        "startTime": "2026-09-08T12:30:08.509Z",
+        "duration": 11130.787,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "source": "var/task-workspace-visual-final-output.txt",
+      "stats": {
+        "startTime": "2026-09-08T12:35:00.816Z",
+        "duration": 16772.86,
+        "expected": 2,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "source": "var/task-workspace-sc01-authenticated-output.txt",
+      "stats": {
+        "startTime": "2026-09-08T12:26:24.006Z",
+        "duration": 292625.41400000005,
+        "expected": 1,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      }
+    },
+    {
+      "source": "var/task-workspace-visual-final-output.txt",
+      "purpose": "Accepted screenshot recapture: wait for task navigation, and show revision in a separate run."
+    }
+  ],
+  "other_regressions": {
+    "agent_scope": 4,
+    "business_other_than_sc01": 8,
+    "note": "Passed across the development regression and targeted recheck batches; see textual report. Do not sum repeated runs."
+  },
+  "sc01": {
+    "storeId": "store_6550c0e41ff7420695bcd78922c99ab2",
+    "dashboard": {
+      "state": {
+        "store_id": "store_6550c0e41ff7420695bcd78922c99ab2",
+        "state_version": 9,
+        "currency": "CNY",
+        "cash_minor": 40000,
+        "reserved_cash_minor": 0,
+        "available_cash_minor": 40000,
+        "receivables_minor": 20000,
+        "stocks": [
+          {
+            "sku_id": "sku_001",
+            "on_hand": 70,
+            "in_transit": 0,
+            "remaining_demand": 70,
+            "forecast_version": "local-14f375140e455a1e5d928facc54b9b8a"
+          }
+        ],
+        "data_as_of": "2026-09-08T12:30:53.755780Z",
+        "simulation_time": "2026-09-10T14:26:43.469010Z"
+      },
+      "freshness": {
+        "status": "FRESH",
+        "data_as_of": "2026-09-08T12:30:53.755780Z",
+        "last_sync_at": "2026-09-08T12:31:13.791396Z"
+      },
+      "active_mission_count": 1,
+      "active_alert_count": 0,
+      "last_check_at": "2026-09-08T12:31:10.794174Z",
+      "next_check_at": "2026-09-08T12:31:13.789280Z"
+    },
+    "actions": [
+      {
+        "id": "34f3eb05-f882-4565-a01b-bb1f32d2be23",
+        "mission_id": "e527c59f-ae6b-4b02-8a2e-df2fa7b5f02a",
+        "plan_id": "3548c95f-076d-4780-8a7f-e7a5956b12a6",
+        "approval_id": "c9dd8334-1c22-43eb-b9cf-de242d3e01b5",
+        "status": "SUCCEEDED",
+        "quantity": 20,
+        "amount_minor": 20000,
+        "currency": "CNY",
+        "external_order_id": "order_4a6af30f18954a339bd3e4a1fb97336e",
+        "receipt": {
+          "action_id": "34f3eb05-f882-4565-a01b-bb1f32d2be23",
+          "status": "ACCEPTED",
+          "external_order_id": "order_4a6af30f18954a339bd3e4a1fb97336e",
+          "quantity": 20,
+          "total_minor": 20000,
+          "currency": "CNY",
+          "recorded_at": "2026-09-08T12:30:32.762249Z",
+          "reason": null
+        },
+        "last_error": null,
+        "created_at": "2026-09-08T12:30:13.624928Z",
+        "updated_at": "2026-09-08T12:30:32.777623Z",
+        "purchase_snapshot": {
+          "store_id": "store_6550c0e41ff7420695bcd78922c99ab2",
+          "sku_id": "sku_001",
+          "supplier_id": "supplier_001",
+          "quantity": 20,
+          "unit_price_minor": 1000,
+          "total_minor": 20000,
+          "currency": "CNY",
+          "expected_arrival_at": "2026-09-10T14:26:43Z"
+        }
+      },
+      {
+        "id": "19f25d71-205c-45ff-83cd-01d1f59b3090",
+        "mission_id": "e527c59f-ae6b-4b02-8a2e-df2fa7b5f02a",
+        "plan_id": "1d06d4a1-334d-4545-9949-d3f9ebd9ed5f",
+        "approval_id": "f44cac29-de54-42aa-ac86-5266f8713d52",
+        "status": "SUCCEEDED",
+        "quantity": 40,
+        "amount_minor": 40000,
+        "currency": "CNY",
+        "external_order_id": "order_8d80de3ed9de412583493cec4518b7c7",
+        "receipt": {
+          "action_id": "19f25d71-205c-45ff-83cd-01d1f59b3090",
+          "status": "ACCEPTED",
+          "external_order_id": "order_8d80de3ed9de412583493cec4518b7c7",
+          "quantity": 40,
+          "total_minor": 40000,
+          "currency": "CNY",
+          "recorded_at": "2026-09-08T12:27:48.614182Z",
+          "reason": null
+        },
+        "last_error": null,
+        "created_at": "2026-09-08T12:27:28.483270Z",
+        "updated_at": "2026-09-08T12:27:48.621676Z",
+        "purchase_snapshot": {
+          "store_id": "store_6550c0e41ff7420695bcd78922c99ab2",
+          "sku_id": "sku_001",
+          "supplier_id": "supplier_001",
+          "quantity": 40,
+          "unit_price_minor": 1000,
+          "total_minor": 40000,
+          "currency": "CNY",
+          "expected_arrival_at": "2026-09-09T12:26:43Z"
+        }
+      }
+    ],
+    "firstAction": "19f25d71-205c-45ff-83cd-01d1f59b3090"
+  },
+  "source_sha256": {
+    "frontend/app/assets/css/tasks.css": "904abad3ca8493d0a4f05c6aac8a04e73340e0def609e527267039039f97670f",
+    "frontend/app/components/AgentConversation.vue": "f8fc873e65762a03fbd79d56c50f9e2f1916dee9fcd36ba78a42549eaac8e1d8",
+    "frontend/app/components/AgentReferences.vue": "d20711df603ffd875a30da58c0e3bb75a7f104da13b7beb1fd0e956e9e6803d3",
+    "frontend/app/components/AgentWorkspace.vue": "f19290252e97ea58514d30f1bb53fc568c54518aa9c14352c89f0a5b469fc92b",
+    "frontend/app/components/DecisionCard.vue": "346b32bcb2035b9255779689cf9b091d1263f9ee3ec67a7dd8b5ba0548c27561",
+    "frontend/app/components/FollowUpCard.vue": "8585f448a85422c8ee869e368d04eab7efbd464efa36b38c1bb71c57f6e73d35",
+    "frontend/app/components/MarkdownMessage.client.vue": "675cfb0b4f96649e940eeb89394c7cb28482e46a77f7138a2e8bce6192b155d1",
+    "frontend/app/components/TaskCard.vue": "b79adb492200814f9225928b5c2d181f31402a8cad0b8e4a59dadc20e52e4233",
+    "frontend/app/components/TaskWorkspace.vue": "052d660f6da9f67cd2391ef002216d9e90153802ebd34cf93ad2c71ec6497cdc",
+    "frontend/app/composables/useAgentConversation.ts": "973fc6c4705c26959b442acc96a0d32f08f0a074ce98e42587ea244c798d4935",
+    "frontend/app/composables/useShop.ts": "48c2c6f9ecd520a9dc370fd3e07a77ce75672f461c26e095acc790e5d17b7c0b",
+    "frontend/app/composables/useTaskPresentation.ts": "72a6fb901fcfd611222226cc5c61fc8734b3d6b44c96bf3c2632b5e9b276735a",
+    "frontend/app/pages/index.vue": "da9310df0426fa9c96af22bbea2dc39ac336e0135b90390ebd3cbd79a2f847f0",
+    "frontend/app/utils/agent.ts": "63f880193b7204ddf8d2d7c8204f0aadcd5d7a33cda3f4c13250f082d84aaed0",
+    "frontend/nuxt.config.ts": "e96f3bec377248c67509acfa62a3486ed8fb3a5319139d300a0183975865fe08",
+    "frontend/package.json": "1cc11721272d64da90f5bec39b0da81dbe0e2c519f4dde07702b65c6491d7ea3",
+    "pnpm-lock.yaml": "92a471794293b94c0827a0be7900261cd6be0b6365a5913036b069354c8eaff1"
+  },
+  "screenshots": {
+    "desktop": "task-workspace-desktop.jpg",
+    "mobile": "task-workspace-mobile.jpg",
+    "data": "controlled API fixture; actual production browser render"
+  },
+  "real_model_enabled": false,
+  "temporary_preview_stopped": true,
+  "checks": {
+    "typecheck": "passed",
+    "api_check": "passed",
+    "production_build": "passed",
+    "diff_check": "passed",
+    "workspace_structure": {
+      "status": "passed",
+      "markdown_html": 109,
+      "local_links": 747,
+      "errors": 0,
+      "warnings": 0
+    }
+  },
+  "live_preview": {
+    "url": "http://127.0.0.1:3000/?view=task&mission=e527c59f-ae6b-4b02-8a2e-df2fa7b5f02a&store=store_6550c0e41ff7420695bcd78922c99ab2&panel=result",
+    "taskId": "e527c59f-ae6b-4b02-8a2e-df2fa7b5f02a",
+    "cash": "¥400",
+    "errors": [],
+    "writes": []
+  },
+  "committed_at_verification": false,
+  "record_phase": "pre-publication verification",
+  "publication_fix": {
+    "description": "Conversation pagination uses after; second-page default conversation regression passed",
+    "file": "frontend/app/composables/useAgentConversation.ts",
+    "sha256": "a2381f6052736966f959cc90f469b870b8f631c65e42db373416062734adbdda",
+    "test": "会话分页使用后端after游标，第二页默认会话不会被第一条替代",
+    "result": "passed"
+  }
+}

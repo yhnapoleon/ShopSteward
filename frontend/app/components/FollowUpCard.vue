@@ -89,6 +89,5 @@ const waiting = computed(() =>
         重新检查
       </button>
     </div>
-    <AgentConversation v-if="conversation" />
   </article>
 </template>

@@ -4,6 +4,12 @@
 
 后续界面迭代先读取[前端视觉规范](style.md)，沿用当前的材质、布局、控件、响应式与验证约定。经营功能与接口边界仍以下文为准。
 
+## 任务工作区 · 2026-09-08
+
+首页现在以任务卡片为入口，进入同一 Mission 的独立详情页；左侧为方案与业务事实，右侧为 Agent 工作过程和对话。工具完成记录、历史 run、引用定位、跨视图草稿、结束委托与失败恢复已接入既有接口。手机切换“方案与进展 / Agent 工作”。当前阶段不展示不存在的工具开始事件，语音与实时工具生命周期属于下一阶段。
+
+实现、生产截图及验证边界见[任务工作区报告](../docs/reports/task-workspace-verification.md)。新功能以该报告为准，下方早期联调记录保留原验证时点。
+
 ## 运行
 
 服务分别是前端3000、API8000、模拟器8001；业务worker和PostgreSQL需要同时运行。Windows 完整启动与模型配置见[全栈联调报告](../docs/reports/frontend-agent-fullstack-test-report.md)。macOS 使用[开发指南](../docs/local-macos-development.md)。Windows 已完成官方 Luna 真实模型联调，是否启用取决于本机配置。
