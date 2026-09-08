@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.core.errors import AppError
 
-SCHEMA_REVISION = "0011_knowledge_delivery"
+SCHEMA_REVISION = "0012_agent_progress"
 
 
 class Database:
@@ -35,6 +35,9 @@ class Database:
                 return False
             await session.execute(text("SELECT id FROM job_runs LIMIT 0"))
             await session.execute(text("SELECT worker_id FROM worker_heartbeats LIMIT 0"))
+            await session.execute(text("SELECT progress_seq FROM agent_runs LIMIT 0"))
+            await session.execute(text("SELECT seq FROM agent_run_events LIMIT 0"))
+            await session.execute(text("SELECT status FROM agent_tool_activity LIMIT 0"))
             await session.execute(text("SELECT id FROM stores LIMIT 0"))
             await session.execute(text("SELECT scenario_run_id FROM source_cursors LIMIT 0"))
             await session.execute(text("SELECT id FROM missions LIMIT 0"))

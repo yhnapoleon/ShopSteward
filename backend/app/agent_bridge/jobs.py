@@ -3,6 +3,7 @@ import secrets
 
 from sqlalchemy import select
 
+from app.agent_bridge import progress
 from app.agent_bridge import repository as repo
 from app.agent_bridge.models import AgentRun, Conversation, Message
 from app.api.dependencies import authorize_store
@@ -61,6 +62,7 @@ def make_handlers(settings, *, executor=None):
                     409, "GRAPH_VERSION_UNAVAILABLE", "Stored graph version is unavailable"
                 )
             current_principal(settings, conversation)
+            await progress.interrupt_open(session, item, "WORKER_RESTARTED")
             item.status = "RUNNING"
             item.token_hash = hashlib.sha256(token.encode()).hexdigest()
             item.token_job_lease = job.lease_token
@@ -106,6 +108,9 @@ def make_handlers(settings, *, executor=None):
                     }
                 )
             await assert_lease(session, job)
+            await progress.append(
+                session, item, "run.started", {"status": "RUNNING", "attempt": job.attempt_count}
+            )
         if executor is not None:
             return await executor(context)
         from app.agent_bridge.composition import execute
@@ -128,6 +133,17 @@ def make_handlers(settings, *, executor=None):
             item.interrupt_id = output["interrupt_id"]
             item.question = output["question"]
             item.token_hash = item.token_job_lease = None
+            await progress.interrupt_open(session, item, "WAITING_INPUT")
+            await progress.append(
+                session,
+                item,
+                "run.waiting_input",
+                {
+                    "status": "WAITING_INPUT",
+                    "question": item.question,
+                    "interrupt_id": item.interrupt_id,
+                },
+            )
         else:
             await repo.append_message(
                 session,
@@ -159,6 +175,7 @@ def make_handlers(settings, *, executor=None):
         if item.status == "CANCELLED":
             return
         if isinstance(error, AppError) and error.retryable and job.attempt_count < 3:
+            await progress.interrupt_open(session, item, "RETRY_PENDING")
             return
         await repo.close_run(
             session, conversation, item, "FAILED", getattr(error, "code", "AGENT_EXECUTION_FAILED")

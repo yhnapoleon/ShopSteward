@@ -3,6 +3,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from app.agent_bridge.outcomes import BusinessOutcome
+
 
 class DTO(BaseModel):
     model_config = ConfigDict(extra="forbid", from_attributes=True)
@@ -92,6 +94,49 @@ class MessageAccepted(DTO):
     conversation_id: str
 
 
+class ToolActivityView(DTO):
+    invocation_id: str
+    tool: str
+    status: Literal["RUNNING", "SUCCEEDED", "FAILED", "INTERRUPTED"]
+    attempt: int
+    started_at: datetime
+    finished_at: datetime | None
+    duration_ms: int | None
+    error_code: str | None
+    references: list[dict] = Field(default_factory=list)
+
+
+class AgentEvent(DTO):
+    schema_version: Literal[1] = 1
+    event_id: str
+    run_id: str
+    seq: int
+    at: datetime
+    type: Literal[
+        "run.queued",
+        "run.started",
+        "run.waiting_input",
+        "run.completed",
+        "run.failed",
+        "run.cancelled",
+        "tool.started",
+        "tool.completed",
+        "tool.failed",
+        "tool.interrupted",
+    ]
+    invocation_id: str | None
+    payload: dict
+
+
+class AgentEventPage(DTO):
+    run_id: str
+    events: list[AgentEvent]
+    latest_seq: int
+    next_after_seq: int
+    has_more: bool
+    run_status: Literal["QUEUED", "RUNNING", "WAITING_INPUT", "SUCCEEDED", "FAILED", "CANCELLED"]
+
+
 class RunView(DTO):
     id: str
     conversation_id: str
@@ -106,6 +151,9 @@ class RunView(DTO):
     created_at: datetime
     finished_at: datetime | None
     tools: list[dict] = Field(default_factory=list)
+    progress_seq: int = 0
+    activity: list[ToolActivityView] = Field(default_factory=list)
+    outcomes: list["BusinessOutcome"] = Field(default_factory=list)
 
 
 class ResumeAccepted(DTO):

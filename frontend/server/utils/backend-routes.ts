@@ -50,6 +50,18 @@ export const backendRoutes = [
   ],
   [
     "GET",
+    "/api/v1/agent-runs/{run_id}/events"
+  ],
+  [
+    "GET",
+    "/api/v1/agent-runs/{run_id}/events/stream"
+  ],
+  [
+    "GET",
+    "/api/v1/agent-runs/{run_id}/evidence"
+  ],
+  [
+    "GET",
     "/api/v1/dashboard"
   ],
   [
@@ -183,6 +195,22 @@ export const backendRoutes = [
   [
     "POST",
     "/api/v1/documents/{document_id}/control"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/versions/{version_id}/index-jobs"
+  ],
+  [
+    "GET",
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}/retry"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/publications"
   ],
   [
     "POST",

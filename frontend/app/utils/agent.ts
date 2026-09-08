@@ -3,6 +3,12 @@ export type ToolRecord = {
   invocation_id: string
   ok: boolean | null
   references: unknown[]
+  status?: 'RUNNING' | 'SUCCEEDED' | 'FAILED' | 'INTERRUPTED'
+  attempt?: number
+  started_at?: string
+  finished_at?: string | null
+  duration_ms?: number | null
+  error_code?: string | null
 }
 type ToolDescription = { title: string; done: string; kind: string; target?: string }
 const catalog: Record<string, ToolDescription> = {

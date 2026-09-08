@@ -10,6 +10,10 @@
 
 实现、生产截图及验证边界见[任务工作区报告](../docs/reports/task-workspace-verification.md)。新功能以该报告为准，下方早期联调记录保留原验证时点。
 
+## 实时工具生命周期 · 第二阶段
+
+在第一阶段PR #11合并后，新增真实工具开始/完成/失败/中断、调用耗时、持久事件回放和同源SSE。界面自动使用新Run快照能力；旧后端仍显示工具完成摘要，事件流失败时使用轮询。后端需要 `0012_agent_progress` 迁移；本机模型开关不因本功能自动开启。实现、业务边界与真实串联证据见[第二阶段报告](../docs/reports/agent-progress-events.md)。
+
 ## 运行
 
 服务分别是前端3000、API8000、模拟器8001；业务worker和PostgreSQL需要同时运行。Windows 完整启动与模型配置见[全栈联调报告](../docs/reports/frontend-agent-fullstack-test-report.md)。macOS 使用[开发指南](../docs/local-macos-development.md)。Windows 已完成官方 Luna 真实模型联调，是否启用取决于本机配置。
@@ -147,3 +151,13 @@ corepack pnpm --filter @shopsteward/frontend exec playwright test tests/overview
 生产验证额外设置 `FRONTEND_URL=http://127.0.0.1:3012 OVERVIEW_PRODUCTION=true`，指向本机已经启动的生产预览，执行相同命令；此模式核对图表懒加载。生产服务器自身不自动使用本机管理员身份，测试会拦截会话和业务查询。正常不带该开关时仅跳过生产资产检查。原test:e2e中的业务用例仍会创建合成数据、模拟采购；本轮没有运行那些写入用例。
 
 验证范围与未测项见[经营概览验证](../docs/reports/frontend-overview-verification.md)。
+
+
+## 证据与业务成果（2026-09-08）
+
+任务Agent区提供持久试算/修订比较，来源可打开准确历史片段；任务页从真实相邻方案读取版本回执，刷新后继续核对。原文/成果、权限与恢复边界、实际验证见[第三阶段报告](../docs/reports/agent-business-outcomes.md)。复用原审批、唯一Run同步器及原生dialog；未新增组件库。模型关闭时仍可读取既有历史，不能创建新模型运行。
+
+
+### 原件下载与代码块复制补齐
+
+历史来源弹窗可下载绑定版本的原件；核对文件大小/hash，下载前后校验权限，关闭或切换时停止旧请求。Markdown每段代码有独立复制按钮，保留原字符/换行并提供失败说明。两阶段合并交付的业务边界、迁移及组合验证见[交付说明](../docs/reports/agent-workspace-delivery.md)。

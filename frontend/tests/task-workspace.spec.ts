@@ -82,6 +82,7 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
     run,
     messages,
     writes: [] as { path: string; key: string | undefined; body: any }[],
+    priorPlans: [] as any[],
     failRun: false,
     loseMessage: false,
     messageCount: 0,
@@ -201,7 +202,7 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
     if (path === `missions/${id}`) return route.fulfill({ json: mission })
     if (path === `missions/${id}/timeline`) return route.fulfill({ json: f.timeline })
     if (path === `missions/${id}/plans`)
-      return route.fulfill({ json: { items: [f.plan], next_cursor: null } })
+      return route.fulfill({ json: { items: [f.plan, ...control.priorPlans], next_cursor: null } })
     if (path === `plans/${f.plan.id}`) return route.fulfill({ json: f.plan })
     if (f[path]) return route.fulfill({ json: f[path] })
     return route.fulfill({
@@ -402,6 +403,29 @@ test('事实更新先等待新方案；修订回执来自真实版本，现金�
   revised.input_snapshot.state.state_version = revised.state_version
   revised.proposed_purchase.quantity = 20
   revised.proposed_purchase.total_minor = 20000
+  const comparison = (p: any, quantity: number) => ({
+    plan_id: p.id,
+    plan_version: p.plan_version,
+    state_version: p.state_version,
+    mission_version: p.input_snapshot.mission_version,
+    currency: 'CNY',
+    cash_floor_minor: 30000,
+    max_purchase_qty: quantity === 20 ? 20 : null,
+    candidates: p.candidates,
+    recommended_candidate_id: p.candidates.find((x: any) => x.quantity === quantity).id,
+    evaluated_at: p.created_at,
+  })
+  c.run.outcomes = [
+    {
+      invocation_id: 'revision-1',
+      kind: 'revision',
+      recorded_at: revised.created_at,
+      availability: 'available',
+      before: comparison(c.f.plan, 40),
+      after: comparison(revised, 20),
+    },
+  ]
+  c.priorPlans = [structuredClone(c.f.plan)]
   c.f.plan = revised
   c.f.missions.items[0].current_plan_id = revised.id
   await expect(page.getByRole('button', { name: '核对 20 件采购', exact: true })).toBeVisible()
@@ -432,5 +456,94 @@ test('会话分页使用后端after游标，第二页默认会话不会被第一
   await page.reload()
   await expect(page.getByRole('log', { name: '任务对话' })).toContainText('解释当前备货方案')
   await expect(page.locator('.agent-run-status')).toContainText('正在处理你的要求')
+  expect(c.writes).toHaveLength(0)
+})
+
+test('历史原文关闭后迟到响应不恢复内容；轮询鉴权失败清除会话', async ({ page }) => {
+  await setup(page, false)
+  let release!: () => void
+  const held = new Promise<void>((resolve) => {
+    release = resolve
+  })
+  let entered!: () => void
+  const requested = new Promise<void>((resolve) => {
+    entered = resolve
+  })
+  await page.route('**/api/backend/api/v1/agent-runs/run-old/evidence?*', async (route) => {
+    entered()
+    await held
+    await route.fulfill({
+      json: {
+        run_id: 'run-old',
+        reference: { locator: { page: 1 } },
+        title: '迟到的历史内容',
+        version_no: 1,
+        text: '不应恢复',
+        truncated: false,
+        recorded_at: '2026-09-08T08:00:00Z',
+        historical: true,
+      },
+    })
+  })
+  const source = page.locator('.agent-message .agent-source').first()
+  await source.locator('summary').first().click()
+  await source.getByRole('button', { name: '打开当时原文片段' }).click()
+  await requested
+  const dialog = page.getByRole('dialog', { name: '历史原文片段' })
+  await page.keyboard.press('Escape')
+  release()
+  await expect(dialog).toBeHidden()
+  await expect(page.getByText('迟到的历史内容')).toHaveCount(0)
+  await page.route('**/api/backend/api/v1/agent-runs/run-current', (route) =>
+    route.fulfill({ status: 403, json: { error: { code: 'FORBIDDEN', message: 'revoked' } } }),
+  )
+  await expect(page.locator('.agent-run-status')).toContainText('访问已失效')
+  await expect(page.locator('.agent-message')).toHaveCount(0)
+})
+
+test('代码块分别复制原始字符，键盘可用，复制失败明确提示', async ({ page }, info) => {
+  const c = await setup(page, false)
+  await page.context().grantPermissions(['clipboard-read', 'clipboard-write'])
+  const first = 'const value = "<script>&中文</script>";\n\nconsole.log(value);\n'
+  const second = 'printf "a < b & c"\n'
+  c.messages.push({
+    id: 'code-message',
+    seq: 4,
+    role: 'assistant',
+    run_id: 'run-current',
+    content:
+      '代码复制验收\n\n```js\n' +
+      first +
+      '```\n\n列表内代码：\n\n- 示例\n\n    ```sh\n    ' +
+      second +
+      '    ```',
+    references: [],
+    created_at: '2026-09-08T08:00:02Z',
+  })
+  const article = page.locator('.agent-message').filter({ hasText: '代码复制验收' })
+  await expect(article.getByRole('button', { name: '复制第 1 段代码', exact: true })).toBeVisible()
+  await article.getByRole('button', { name: '复制第 1 段代码', exact: true }).click()
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(first)
+  const other = article.getByRole('button', { name: '复制第 2 段代码', exact: true })
+  await other.focus()
+  await page.keyboard.press('Enter')
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(second)
+  await expect(article.getByRole('status')).toContainText('第 2 段代码已复制')
+  expect(await article.locator('script').count()).toBe(0)
+  await article.scrollIntoViewIfNeeded()
+  await page.screenshot({ path: info.outputPath('code-copy-desktop.jpg') })
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.getByRole('button', { name: 'Agent 工作', exact: true }).click()
+  await article.scrollIntoViewIfNeeded()
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  await page.screenshot({ path: info.outputPath('code-copy-mobile.jpg') })
+  await page.evaluate(() =>
+    Object.defineProperty(navigator.clipboard, 'writeText', {
+      configurable: true,
+      value: () => Promise.reject(new Error('clipboard denied')),
+    }),
+  )
+  await other.click()
+  await expect(article.getByRole('status')).toContainText('无法复制')
   expect(c.writes).toHaveLength(0)
 })

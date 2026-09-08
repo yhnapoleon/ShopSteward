@@ -105,7 +105,11 @@ onUnmounted(() => clearTimeout(copyTimer))
         </div>
         <p v-if="m.role === 'user'" class="agent-user-text">{{ m.content }}</p>
         <MarkdownMessage v-else :content="m.content" />
-        <AgentReferences v-if="m.role === 'assistant'" :references="m.references || []" />
+        <AgentReferences
+          v-if="m.role === 'assistant'"
+          :references="m.references || []"
+          :run-id="m.run_id || undefined"
+        />
         <div v-if="m.role === 'assistant'" class="agent-message-actions">
           <button class="text-link" @click="copy(m.id, m.content)">
             {{ copied === m.id ? '已复制' : '复制回答' }}</button

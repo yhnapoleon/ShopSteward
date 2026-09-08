@@ -446,4 +446,7 @@ async def call_document_tool(request, name, body, token):
             )
         await session.flush()
         await assert_lease(session, job)
+        from app.agent_bridge.progress import complete_tool
+
+        await complete_tool(session, run, body.invocation_id, result)
         return result

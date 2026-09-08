@@ -29,7 +29,7 @@ def run_dto(row):
     return fields(
         row,
         "id conversation_id status input_through_seq trigger graph_version interrupt_id "
-        "question output error_code created_at finished_at",
+        "question output error_code created_at finished_at progress_seq",
     )
 
 
@@ -115,6 +115,9 @@ async def send_message(session, conversation, content, key):
     session.add(run)
     await session.flush()
     message = await append_message(session, conversation, "user", content, run.id)
+    from app.agent_bridge.progress import append
+
+    await append(session, run, "run.queued", {"status": "QUEUED"})
     await promote(session, conversation)
     result = {"message_id": message.id, "agent_run_id": run.id, "conversation_id": conversation.id}
     receipt(session, owner, key, value, result)
@@ -122,11 +125,22 @@ async def send_message(session, conversation, content, key):
 
 
 async def close_run(session, conversation, run, status, error_code=None):
+    from app.agent_bridge.progress import append, interrupt_open
+
+    await interrupt_open(session, run, "RUN_" + status)
     run.status = status
     run.error_code = error_code
     run.token_hash = run.token_job_lease = None
     run.finished_at = await session.scalar(select(func.clock_timestamp()))
     if conversation.active_run_id == run.id:
         conversation.active_run_id = None
+    await append(
+        session,
+        run,
+        {"SUCCEEDED": "run.completed", "FAILED": "run.failed", "CANCELLED": "run.cancelled"}[
+            status
+        ],
+        {"status": status, "error_code": error_code, "finished_at": run.finished_at.isoformat()},
+    )
     await session.flush()
     await promote(session, conversation)

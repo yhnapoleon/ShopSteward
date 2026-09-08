@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-08",
+  "base_commit": "c46e85ce650d0a1891d99c17e4511997bdc6275e",
+  "phase2_baseline_fingerprints_matched": true,
+  "committed": false,
+  "backend_related": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "61",
+    "time": "22.521",
+    "timestamp": "2026-09-08T23:15:28.506628+08:00",
+    "hostname": "JefMacMinideMac-mini-2.local"
+  },
+  "final_browser_recheck": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "1",
+    "time": "15.532",
+    "timestamp": "2026-09-08T23:17:58.333090+08:00",
+    "hostname": "JefMacMinideMac-mini-2.local"
+  },
+  "frontend": {
+    "startTime": "2026-09-08T15:20:04.058Z",
+    "duration": 50121.176999999996,
+    "expected": 12,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "browser_observations": [
+    "real tool.started reached the browser before the tool was released",
+    "refresh restored the original running invocation",
+    "snapshot polling continued real progress while SSE was unavailable",
+    "archiving the actual document cleared an already-open excerpt on the shared refresh cycle",
+    "persisted evaluation and v1-to-v2 revision survived refresh; no purchase; safe historical excerpt opened with Escape/focus return on desktop and mobile",
+    "real plan revision reached the UI, with no purchase and cash unchanged"
+  ],
+  "checks": [
+    "Ruff",
+    "frontend typecheck",
+    "Nuxt production build",
+    "generated API contract",
+    "design contracts",
+    "git diff --check"
+  ],
+  "model_calls": 0,
+  "evidence_fixture_boundary": "Actual document upload, persisted retrieval fixture, authenticated API and browser. Remote Knowledge retrieval was not rerun. Evaluation and revision use real business tools.",
+  "runtime": {
+    "restarted": [
+      "api"
+    ],
+    "preserved": [
+      "frontend",
+      "simulator",
+      "worker"
+    ],
+    "agent_enabled": false,
+    "readiness": "ok"
+  },
+  "phase3_changed_sha256": {
+    "backend/app/agent_bridge/outcomes.py": "4f79ac85f47c811b1afc5b876dd135e423c95441e1440e4f6ec173b68dfc6d8a",
+    "backend/tests/integration/test_agent_outcomes.py": "850e695f53a4eb765cf136842a2de533a433beca1774ad403c0431130258bab7",
+    "backend/tests/integration/test_agent_outcomes_browser.py": "eb642935fb05e8c613b871bf37584196315cdf254580c32cf406832f208db6f7",
+    "docs/reports/agent-business-outcomes.md": "65818f3386f021177433281510a7f5f7b71180c704dec3bf195de50bd82a5092",
+    "docs/reports/agent-evidence-desktop.jpg": "0b5d3eaae79dd4f1a8335de3476741a68ffe8bfc3727e085d6d40a53cbe8a9c8",
+    "docs/reports/agent-evidence-mobile.jpg": "9f4a5a653bb768a3f077066f29f585d98ff2e94a1735d6a39271fd9cfb45512d",
+    "docs/reports/agent-outcomes-desktop.jpg": "3815627a54af3bffd10ed77856c02047a20239420d515abbc53cd1dbf03ea449",
+    "docs/reports/agent-outcomes-mobile.jpg": "f585635b4c9f674ce041a0bb006e832b468cae0301d893f70bb7adcbc0762b6b",
+    "frontend/app/components/AgentOutcome.vue": "ac04f4144ce5ef6e503f89ed1268f3e30538a8849d916a6830eb14ab24a9cc79",
+    "frontend/tests/support/outcomes_browser.mjs": "f776e6e2b7e635bea7920625840d711c90c1dc3f7d5885075cb3300488345e26",
+    "HANDOVER.md": "493e07c9213e2ac9f62620eaa725f848d3ed32fcfee4869a2cd36d43d93dac33",
+    "backend/app/agent_bridge/router.py": "f01849532f337f9f4aa67cb3af7700e545fdc24a5da88af6d672530e0a07fb20",
+    "backend/app/agent_bridge/schemas.py": "69577e6c1a3f91c9f9e37417381946d7780fdedc73244a7f66aa43056790e378",
+    "backend/app/agent_bridge/tools.py": "ce7de6e998ccbb3482aead519c4b8c4d3aa4fad575b043c1926d398eea2ccacf",
+    "backend/tests/api/test_foundation.py": "9fd6650417dc180b5a96ba80ca4ba159df1f07dbeb789a0abd3aade052b2ccd5",
+    "docs/api/backend.runtime.openapi.json": "2b4032a1708fcec131aaa16b5610a7d122f2117710bc835a995d7e147c240944",
+    "frontend/README.md": "8c5125c7cca1215b4aebf7e16ca68bc55cd077d3a5b17058fef581731932ff37",
+    "frontend/app/assets/css/tasks.css": "7291207044cc67676cbd3a445eed94735534cb10229166cb767697b2145d5d85",
+    "frontend/app/components/AgentConversation.vue": "c59faa61c121994d77a3b67a9be6f86e6812f8a47df649cae5b4d454cb232255",
+    "frontend/app/components/AgentReferences.vue": "cd42d17dd97816e3032eea6bbd86d1c869594e9a53a585fa7c8dcddbe70dcbfe",
+    "frontend/app/components/AgentWorkspace.vue": "399a912b5509b4c11287e172f2649435e16a65236a47d76d63e6ff3644c0eaa4",
+    "frontend/app/components/TaskWorkspace.vue": "e1082b5fa59710e15f5118bf9294b3158de0bd6223118d7f1ed1bb143b3148cd",
+    "frontend/app/composables/useAgentConversation.ts": "11e5e570b62d0c393b4e5d2024e6e50e2fffb6191f20671f1f8dc22382bb7655",
+    "frontend/app/types/backend.d.ts": "b2c24d813699ee6f2c38497f1efca2888624e52e7fa96984132be55e52899cbe",
+    "frontend/server/utils/backend-routes.ts": "390d6b17a5d7b58acf384262955701541004c0f6075f2a3bec5d67e5de72ee7d",
+    "frontend/style.md": "f8e74643eeca790068c1bd9825f9412c0fea3360fbaafeee5584ea3085e08c86",
+    "frontend/tests/task-workspace.spec.ts": "3d996bd68f6234a7cf85b39224d6373427116ed124a308cbcddba959b405c872"
+  },
+  "workspace_check": {
+    "markdown_html_files": 110,
+    "local_links": 756,
+    "errors": 0,
+    "warnings": 0,
+    "boundary": "structure and local links only"
+  }
+}

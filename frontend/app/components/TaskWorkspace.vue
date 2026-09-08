@@ -16,7 +16,34 @@ const { status, actions, pending } = useTaskPresentation()
 const reduce = useReducedMotion()
 const target = ref('')
 let timer: ReturnType<typeof setTimeout> | undefined
-const change = computed(() => (s.planChange?.to.id === plan.value?.id ? s.planChange : null))
+const previousPlan = ref<import('~/types/models').Schema<'Plan'> | null>(null)
+let receiptEpoch = 0
+const receiptError = ref('')
+async function loadReceipt() {
+  const epoch = ++receiptEpoch,
+    id = mission.value?.id,
+    currentPlan = plan.value
+  previousPlan.value = null
+  receiptError.value = ''
+  if (!id || !currentPlan || currentPlan.plan_version <= 1) return
+  try {
+    const page = await api<import('~/types/models').Schema<'PlanList'>>(
+      `/api/v1/missions/${id}/plans?limit=2`,
+    )
+    if (epoch !== receiptEpoch || plan.value?.id !== currentPlan.id) return
+    if (!page.items.some((p) => p.id === currentPlan.id)) return
+    previousPlan.value =
+      page.items.find(
+        (p) => p.mission_id === id && p.plan_version === currentPlan.plan_version - 1,
+      ) || null
+  } catch {
+    if (epoch === receiptEpoch) receiptError.value = '暂未取得前一版方案，可重试核对版本变化。'
+  }
+}
+watch([agent.scope, () => plan.value?.id], loadReceipt, { immediate: true })
+const change = computed(() =>
+  previousPlan.value && plan.value ? { from: previousPlan.value, to: plan.value } : null,
+)
 const ended = computed(() => ['COMPLETED', 'CANCELLED'].includes(mission.value?.status || ''))
 const mobilePanel = ref(props.panel === 'agent' ? 'agent' : 'result')
 watch(
@@ -94,6 +121,7 @@ watch(
 )
 onUnmounted(() => {
   historyEpoch++
+  receiptEpoch++
   clearTimeout(timer)
 })
 async function recover() {
@@ -120,7 +148,7 @@ async function recover() {
     <header
       id="task-mission"
       class="task-page-heading task-target"
-      :class="{ 'target-active': target === 'mission' }"
+      :class="{ 'target-active': target === 'mission' || agent.runningTarget.value === 'mission' }"
     >
       <div>
         <div class="eyebrow">活动备货 · {{ mission.id.slice(-8) }}</div>
@@ -153,11 +181,18 @@ async function recover() {
             查看来源<AppIcon name="info" />
           </button>
         </div>
-        <section id="task-plan" class="task-target" :class="{ 'target-active': target === 'plan' }">
+        <section
+          id="task-plan"
+          class="task-target"
+          :class="{ 'target-active': target === 'plan' || agent.runningTarget.value === 'plan' }"
+        >
           <div class="section-label">
             {{ ended ? '任务结果' : '当前安排'
             }}<span class="right">{{ plan ? `方案 v${plan.plan_version}` : '来自业务记录' }}</span>
           </div>
+          <p v-if="receiptError" class="notice amber" role="status">
+            {{ receiptError }}<button class="text-link" @click="loadReceipt">重试读取</button>
+          </p>
           <Transition name="change-receipt"
             ><div v-if="change" :key="change.to.id" class="plan-change-receipt">
               <AppIcon name="check-check" />
@@ -246,7 +281,7 @@ async function recover() {
         <section
           id="task-facts"
           class="task-facts glass task-target"
-          :class="{ 'target-active': target === 'facts' }"
+          :class="{ 'target-active': target === 'facts' || agent.runningTarget.value === 'facts' }"
           aria-label="任务经营事实"
         >
           <div class="task-section-heading">
@@ -307,7 +342,9 @@ async function recover() {
         <section
           id="task-history"
           class="task-history task-target"
-          :class="{ 'target-active': target === 'history' }"
+          :class="{
+            'target-active': target === 'history' || agent.runningTarget.value === 'history',
+          }"
         >
           <div class="task-section-heading">
             <h2>任务记录</h2>

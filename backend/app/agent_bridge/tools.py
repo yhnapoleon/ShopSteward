@@ -227,6 +227,7 @@ async def execute_tool(
             session, settings, mission, store, args, revise=name == "revise_plan"
         )
         if name == "revise_plan":
+            value["base_plan_id"] = args.plan_id
             references = [
                 {"type": "plan", "id": value["id"], "version": str(value["plan_version"])}
             ]
@@ -297,6 +298,30 @@ async def execute_tool(
     openapi_extra=META,
 )
 async def call(
+    request: Request,
+    tool_name: str,
+    body: ToolCall,
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(agent_bearer)],
+):
+    from app.agent_bridge import progress
+
+    enabled(request)
+    token = credentials.credentials if credentials else ""
+    await progress.start_tool(request, tool_name, body, token)
+    try:
+        return await _call_core(request, tool_name, body, credentials)
+    except Exception:
+        try:
+            await progress.interrupted_tool(request, body, token)
+        except Exception:
+            # Preserve the original failure; no false completion can be committed.
+            import logging
+
+            logging.getLogger(__name__).warning("Unable to persist interrupted tool progress")
+        raise
+
+
+async def _call_core(
     request: Request,
     tool_name: str,
     body: ToolCall,
@@ -379,4 +404,7 @@ async def call(
         )
         await session.flush()
         await assert_lease(session, job)
+        from app.agent_bridge.progress import complete_tool
+
+        await complete_tool(session, run, body.invocation_id, result)
         return result
