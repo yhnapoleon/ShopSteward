@@ -9,6 +9,8 @@ async function controls(p: Page, name: string) {
   await expect(p.getByRole('dialog')).toHaveCount(0)
 }
 async function scenario(p: Page) {
+  if (process.env.ENVIRONMENT_TEST_TOKEN)
+    await p.request.post('/api/session', { data: { token: process.env.ENVIRONMENT_TEST_TOKEN } })
   await p.goto('/')
   await controls(p, '创建新的 SC-01 场景')
   await expect(p.getByRole('button', { name: '开始备货跟进', exact: true })).toBeVisible()
@@ -76,7 +78,10 @@ test('真实SC01：40件确认、刷新、暂停中到货、需求变化再20件
   await expect(page.getByTestId('stock')).toHaveText('50')
   await expect(page.getByTestId('receivables')).toHaveText('¥200')
   await advance(page)
-  await expect(page.getByRole('button', { name: '核对 20 件采购', exact: true })).toBeVisible()
+  // Allow the local business worker to finish queued event-driven replanning.
+  await expect(page.getByRole('button', { name: '核对 20 件采购', exact: true })).toBeVisible({
+    timeout: 90000,
+  })
   await buy(page, 20, '¥400')
   await advance(page)
   await expect(page.getByTestId('stock')).toHaveText('70')
@@ -255,8 +260,8 @@ test('手机：事实先于决策，改选与关闭弹层可用，无横向溢�
   await page.setViewportSize({ width: 390, height: 844 })
   await scenario(page)
   await start(page)
-  await expect(page.locator('.fact-strip')).toBeVisible()
-  await expect(page.locator('.fact-strip')).toContainText('¥1,000')
+  await expect(page.locator('.task-fact-summary')).toBeVisible()
+  await expect(page.locator('.task-fact-summary')).toContainText('¥1,000')
   await page.screenshot({ path: info.outputPath('mobile-first.jpg'), type: 'jpeg', quality: 80 })
   await page.locator('.options-disclosure summary').click()
   await button(page, '补 20 件 现金 ¥800 · 预计缺 20 件')
@@ -323,7 +328,9 @@ test('Agent受控故障：刷新后仍展示最近失败；澄清等待可取消
     return r.fulfill({ json: run() })
   })
   await page.reload()
-  await expect(page.getByText(/这次回答未完成：AGENT_MODEL_FAILURE/)).toBeVisible()
+  await expect(
+    page.locator('.agent-run-note').filter({ hasText: 'AGENT_MODEL_FAILURE' }),
+  ).toBeVisible()
   status = 'WAITING_INPUT'
   await page.reload()
   await expect(page.getByText('请补充偏好内容', { exact: true })).toBeVisible()

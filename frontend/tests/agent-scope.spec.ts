@@ -127,7 +127,7 @@ async function setup(page: Page, action: string) {
       await route.fulfill({ json: { ...conversation(true), followup_enabled: true } })
     },
   )
-  await page.reload()
+  await page.goto('/?view=task')
   await expect(page.getByLabel('追问这项备货任务', { exact: true })).toBeEnabled()
   if (action !== 'create')
     await expect(page.getByRole('log', { name: '任务对话' })).toContainText('旧任务会话')

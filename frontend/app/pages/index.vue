@@ -5,10 +5,15 @@ import { money, number, when, actionLabel, reasonLabel } from '~/utils/presentat
 import { downloadFile } from '~/utils/quotations'
 const shop = useShop()
 const { s, mission, stock, product, plan, unresolved, canDecide, hasRole } = shop
+const agent = useAgentConversation(true)
+const taskRouteError = ref('')
+const viewScroll: Record<string, number> = {}
 const route = useRoute(),
   router = useRouter()
 const view = computed(() =>
-  ['today', 'following', 'journal', 'overview', 'documents'].includes(String(route.query.view))
+  ['today', 'following', 'journal', 'overview', 'documents', 'task'].includes(
+    String(route.query.view),
+  )
     ? String(route.query.view)
     : 'today',
 )
@@ -26,6 +31,8 @@ watch(
     approval.value = null
     dialog.value = ''
     deck.value = false
+    taskRouteError.value = ''
+    if (view.value === 'task') void router.replace({ query: { view: 'today' } })
   },
 )
 let poll: ReturnType<typeof setInterval> | undefined
@@ -41,7 +48,12 @@ watch(
   },
 )
 onMounted(async () => {
-  await shop.init()
+  await shop.init(typeof route.query.store === 'string' ? route.query.store : undefined)
+  if (view.value === 'task' && typeof route.query.mission === 'string') {
+    await shop.selectMission(route.query.mission)
+    if (mission.value?.id !== route.query.mission)
+      taskRouteError.value = '无法读取这项任务，请返回今日选择可见任务。'
+  }
   poll = setInterval(() => void shop.pollEnvironment(), 2500)
 })
 onUnmounted(() => {
@@ -53,11 +65,39 @@ function open(name: string) {
   dialog.value = name
   scheduleSeconds.value = mission.value?.schedule.interval_seconds || 30
 }
-function navigate(next: string) {
+async function navigate(next: string) {
+  viewScroll[view.value] = window.scrollY
   dialog.value = ''
-  router.push({ query: { view: next } })
+  await router.push({ query: { view: next } })
+  await nextTick()
+  window.scrollTo({ top: viewScroll[next] || 0 })
+}
+async function openTask(id = mission.value?.id, panel = 'result') {
+  if (!id) return
+  viewScroll[view.value] = window.scrollY
+  dialog.value = ''
+  taskRouteError.value = ''
+  if (id !== s.missionId) await shop.selectMission(id)
+  await router.push({ query: { view: 'task', mission: id, store: s.storeId, panel } })
+  await nextTick()
   window.scrollTo({ top: 0 })
 }
+watch(
+  () => route.query.mission,
+  async (id) => {
+    if (view.value === 'task' && typeof id === 'string' && s.storeId && id !== s.missionId) {
+      await shop.selectMission(id)
+      taskRouteError.value =
+        mission.value?.id === id ? '' : '无法读取这项任务，请返回今日选择可见任务。'
+    }
+  },
+)
+watch(
+  () => mission.value?.id,
+  (id) => {
+    if (id && id === route.query.mission) taskRouteError.value = ''
+  },
+)
 async function act(fn: () => Promise<unknown>, close = false) {
   modalError.value = ''
   try {
@@ -84,12 +124,12 @@ async function submit() {
   }
 }
 async function start() {
-  if (mission.value) {
-    navigate('today')
+  if (mission.value && ['ACTIVE', 'PAUSED'].includes(mission.value.status)) {
+    void openTask()
     return
   }
   await act(() => shop.startMission())
-  navigate('today')
+  if (mission.value) await openTask()
 }
 async function connect() {
   await act(async () => {
@@ -117,6 +157,7 @@ const title = computed(
       journal: '经营记录',
       overview: '经营概览',
       documents: '文档中心',
+      task: '任务工作区',
     })[view.value],
 )
 const issue = computed(() =>
@@ -130,7 +171,12 @@ const issue = computed(() =>
           ? 'stale'
           : plan.value?.status === 'EXPIRED'
             ? 'expired'
-            : null,
+            : plan.value?.status === 'PENDING_APPROVAL' &&
+                s.dashboard &&
+                plan.value.state_version !== s.dashboard.state.state_version &&
+                !unresolved.value
+              ? 'changed'
+              : null,
 )
 const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
@@ -151,6 +197,7 @@ const labels: Record<string, string> = {
   receipt: '采购与到货记录',
   mission: '这项备货委托',
   pause: '暂停主动跟进？',
+  complete: '结束这项委托？',
   settings: '跟进安排',
   controls: '联调控制 · 合成经营环境',
   facts: '当前账目与来源',
@@ -198,6 +245,18 @@ function briefing() {
           ><span v-if="id === 'today' && decisionCount" class="count">{{ decisionCount }}</span>
         </button>
       </nav>
+      <button
+        v-if="mission"
+        class="global-agent-entry"
+        :class="{ 'is-running': agent.running.value }"
+        aria-label="查看Agent工作区"
+        @click="openTask(undefined, 'agent')"
+      >
+        <span class="agent-live-dot" /><span>{{
+          agent.active.value || agent.s.syncError ? agent.status.value : 'Agent 工作区'
+        }}</span
+        ><AppIcon name="arrow-up-right" />
+      </button>
       <div class="header-store">
         <button class="store-switch" @click="open('controls')">
           <span class="avatar">店</span
@@ -211,10 +270,20 @@ function briefing() {
       </div>
     </header>
     <main class="workspace">
+      <button
+        v-if="mission"
+        class="mobile-agent-entry"
+        aria-label="移动端Agent工作区"
+        @click="openTask(undefined, 'agent')"
+      >
+        <span class="agent-live-dot" :class="{ 'is-running': agent.running.value }" />{{
+          agent.active.value || agent.s.syncError ? agent.status.value : '查看任务与 Agent'
+        }}<AppIcon name="arrow-up-right" />
+      </button>
       <header v-if="!['overview', 'documents'].includes(view)" class="topbar">
         <div class="breadcrumb">
           我的经营空间<AppIcon name="chevron-right" /><b>{{
-            { today: '今日', following: '持续跟进', journal: '经营记录' }[view]
+            { today: '今日', following: '持续跟进', journal: '经营记录', task: '任务工作区' }[view]
           }}</b>
         </div>
         <div class="mobile-header">
@@ -228,7 +297,7 @@ function briefing() {
           </button>
         </div>
       </header>
-      <div v-if="!['overview', 'documents'].includes(view)" class="page-head">
+      <div v-if="!['overview', 'documents', 'task'].includes(view)" class="page-head">
         <div>
           <div class="eyebrow">{{ s.connected ? '业务接口已连接' : '经营空间' }}</div>
           <h1>{{ title }}</h1>
@@ -278,6 +347,32 @@ function briefing() {
         :catalog="s.catalog"
         @navigate="navigate"
       />
+      <TaskWorkspace
+        v-else-if="view === 'task' && mission && !taskRouteError"
+        :issue="issue"
+        :working="Boolean(working)"
+        :panel="String(route.query.panel || 'result')"
+        @open="open"
+        @confirm="prepare"
+        @navigate="navigate"
+        @back="navigate('today')"
+      />
+      <section v-else-if="view === 'task' && s.pending" class="attention-card glass">
+        <h2>确认结果尚未取得</h2>
+        <p>采购请求可能已经受理。查询沿用原确认编号，不创建另一笔采购。</p>
+        <button
+          class="primary"
+          :disabled="Boolean(s.busy)"
+          @click="act(() => shop.recoverApproval())"
+        >
+          查询原确认结果
+        </button>
+      </section>
+      <section v-else-if="view === 'task'" class="task-missing glass">
+        <h1>这项任务暂时不可用</h1>
+        <p>{{ taskRouteError || s.error || '请选择当前身份可以查看的任务。' }}</p>
+        <button class="primary" @click="navigate('today')">返回今日</button>
+      </section>
       <div v-else class="content-grid">
         <section class="main-column">
           <div v-if="view === 'today'" id="decision-zone">
@@ -285,7 +380,8 @@ function briefing() {
               需要你决定<span class="small-count">{{ decisionCount }}</span
               ><span class="right">每笔采购单独确认</span>
             </div>
-            <article v-if="!s.storeId" class="start-card glass">
+            <TaskCard v-if="mission" @open="openTask()" />
+            <article v-else-if="!s.storeId" class="start-card glass">
               <span class="tag">从示例店铺开始</span>
               <h2>先准备这一轮经营资料。</h2>
               <p>创建独立SC-01场景，或选择当前身份可以查看的已有店铺。不重置旧数据。</p>
@@ -363,62 +459,14 @@ function briefing() {
               </button>
               <p class="channel-note">尚未建立委托，也没有采购。</p>
             </article>
-            <DecisionCard
-              v-else-if="canDecide"
-              @confirm="prepare"
-              @evidence="open('evidence')"
-              @compare="open('compare')"
-              @mission="open('mission')"
-            />
-            <div v-else class="empty-decision glass">
-              <AppIcon
-                :name="mission.status === 'PAUSED' ? 'pause' : working ? 'clock' : 'check-check'"
-              />
-              <div>
-                <h2>
-                  {{
-                    working
-                      ? '正在核实采购提交'
-                      : mission.status === 'PAUSED'
-                        ? '当前没有待确认采购'
-                        : !plan
-                          ? '后台正在准备方案'
-                          : '暂时没有新的决定'
-                  }}
-                </h2>
-                <p>
-                  {{
-                    working
-                      ? '确认已经受理，采购结果以回执为准。'
-                      : mission.status === 'PAUSED'
-                        ? '主动检查已暂停；已提交的订单与事实记录保留。'
-                        : plan?.status === 'REJECTED'
-                          ? '本轮取舍已记下，有新情况再回到这里判断。'
-                          : '请查看下方跟进记录。经营条件变化后，后台会重新评估。'
-                  }}
-                </p>
-              </div>
-            </div>
           </div>
-          <template v-if="mission && view !== 'journal'"
+          <template v-if="mission && view === 'following'"
             ><div class="section-label">我在跟进<span class="small-count">1</span></div>
-            <details v-if="view === 'today' && canDecide" class="follow-disclosure glass">
-              <summary>这项备货委托会怎样跟进</summary>
-              <FollowUpCard
-                @pause="open('pause')"
-                @resume="act(() => shop.control('resume'))"
-                @receipt="open('receipt')"
-                @mission="open('mission')"
-                @check="act(() => shop.requestCheck())"
-              />
-            </details>
             <FollowUpCard
-              v-else
-              conversation
               @pause="open('pause')"
               @resume="act(() => shop.control('resume'))"
               @receipt="open('receipt')"
-              @mission="open('mission')"
+              @mission="openTask()"
               @check="act(() => shop.requestCheck())"
           /></template>
           <template v-if="view === 'journal'"
@@ -485,6 +533,33 @@ function briefing() {
               >
             </section></template
           >
+          <details
+            v-if="
+              view === 'today' &&
+              s.missions.some((m) => ['COMPLETED', 'CANCELLED'].includes(m.status))
+            "
+            class="completed-tasks"
+          >
+            <summary>
+              已结束的委托
+              <span>{{
+                s.missions.filter((m) => ['COMPLETED', 'CANCELLED'].includes(m.status)).length
+              }}</span>
+            </summary>
+            <button
+              v-for="m in s.missions.filter((m) => ['COMPLETED', 'CANCELLED'].includes(m.status))"
+              :key="m.id"
+              @click="openTask(m.id)"
+            >
+              <span
+                >{{ m.objective
+                }}<small
+                  >{{ m.id.slice(-8) }} ·
+                  {{ m.status === 'COMPLETED' ? '已完成' : '已取消' }}</small
+                ></span
+              ><AppIcon name="arrow-up-right" />
+            </button>
+          </details>
           <div v-if="s.alerts.some((a) => a.status === 'OPEN')" class="risk-link">
             <button class="text-link" @click="open('alerts')">
               {{ s.alerts.filter((a) => a.status === 'OPEN').length }} 项经营提醒，查看依据<AppIcon
@@ -520,33 +595,22 @@ function briefing() {
         <BusinessFacts
           @overview="navigate('overview')"
           @details="open('facts')"
-          @mission="mission ? open('mission') : (deck = true)"
+          @mission="mission ? openTask() : (deck = true)"
         />
       </div>
     </main>
   </div>
-  <nav class="workspace-dock" aria-label="经营快捷入口">
-    <div class="dock-status">
-      <div class="agent-status">
-        <div>
-          <span
-            class="goal-dot"
-            :class="{ muted: !s.connected || mission?.status !== 'ACTIVE' }"
-          />{{
-            s.loading
-              ? '正在连接'
-              : !s.connected
-                ? '连接待确认'
-                : mission?.status === 'PAUSED'
-                  ? '主动跟进已暂停'
-                  : mission
-                    ? '查看最近检查记录'
-                    : '尚未建立委托'
-          }}
-        </div>
-        <span>进展在应用内查看。</span>
-      </div>
-    </div>
+  <nav v-if="view !== 'task'" class="workspace-dock" aria-label="经营快捷入口">
+    <button
+      v-if="mission"
+      class="dock-agent-entry"
+      aria-label="进入任务工作区"
+      @click="openTask(undefined, 'agent')"
+    >
+      <span class="agent-live-dot" :class="{ 'is-running': agent.running.value }" /><span>{{
+        agent.active.value || agent.s.syncError ? agent.status.value : '查看任务与 Agent'
+      }}</span>
+    </button>
     <button :class="{ active: view === 'today' }" @click="navigate('today')">
       <AppIcon name="panels-top-left" /><span>今日决策</span>
       <span v-if="decisionCount" class="small-count">{{ decisionCount }}</span>
@@ -786,6 +850,30 @@ function briefing() {
       </div>
       <p>每笔采购单独确认，进展保存在应用内。关闭页面不会撤销委托，请以检查记录为准。</p>
       <button class="primary" @click="navigate('following')">查看跟进记录</button></template
+    >
+    <template v-else-if="dialog === 'complete' && mission"
+      ><p>结束「{{ mission.objective }}」的主动跟进。方案、决定和采购记录保留，可随时回看。</p>
+      <p class="notice">
+        结束委托不会取消已采购的订单，也不会退回已支出的资金；到货仍按实际事实记录。
+      </p>
+      <p v-if="mission.current_action_id || agent.active.value" class="notice amber">
+        请先核实未决采购或停止当前 Agent 工作，再结束委托。
+      </p>
+      <div class="modal-actions">
+        <button class="secondary" @click="dialog = ''">继续跟进</button
+        ><button
+          class="primary"
+          :disabled="
+            Boolean(s.busy) ||
+            !!mission.current_action_id ||
+            agent.active.value ||
+            !hasRole('approver')
+          "
+          @click="act(() => shop.control('complete'), true)"
+        >
+          确认结束委托
+        </button>
+      </div></template
     >
     <template v-else-if="dialog === 'pause'"
       ><p>停止新的主动检查与采购；已提交或结果不明的动作仍需核实，已发生的到货仍记录。</p>
