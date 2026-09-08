@@ -1,0 +1,40 @@
+Labelling: date marking, storage conditions and directions for use (https://www.foodauthority.nsw.gov.au/media/2531)
+citeturn96view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":397}); Total lines: 37
+L0@P0: FA582 -2605 1
+L1@P0: Food Authority
+L2@P0: Labelling : date marking, storage conditions
+L3@P0: and directions for use
+L4@P0: Standard 1.2.5 of the Australia New Zealand Food Standards Code (the Code)
+L5@P0: outlines how packaged foods must be marked to indicate their shelf life.
+L6@P0: Packaged food s must be date marked to show their shelf life when stored according to specific
+L7@P0: storage instructions. Manufacturer s are usually responsible for determining date mark s and
+L8@P0: proving they are accurate. They must also list any conditions that need to be follow ed to ensure
+L9@P0: the food will keep for the period indicated, such as ‘refrigerate after opening’.
+L10@P0: Where directions for use are required for health and safety reasons, such as cooking instructions,
+L11@P0: the y must also be included on the label.
+L12@P0: Use by date
+L13@P0: A ‘use by’ is the date after which food in an intact package , stored as specified on the label,
+L14@P0: should not be eaten for health and safety reasons. It is illegal to sell food past its ‘use by’ date.
+L15@P0: Best before date
+L16@P0: Foods marked with a ‘best before’ date may be safe to eat after that date , as long as it is not
+L17@P0: damaged, deteriorated or perished . If stored as directed in an unopened package, the food can be
+L18@P0: expected to retain its colour, taste, texture and flavour up to the best before date .
+L19@P0: Food marked with a ‘best before’ date can be sold after that date if fit for human consumption .
+L20@P0: When a date mark is not required :
+L21@P0: • when the ‘best before’ date is 2 years or more
+L22@P0: • individual portion s of ice cream or ice confection
+L23@P0: • foods contained in a small package ( less than 100 square centimetres), except where the food
+L24@P0: should have a use by date
+L25@P0: • foods exempt from the general labelling provisions of the Code (see factsheet Labelling –
+L26@P0-1: General requirements (PDF, 135 KB)).Labelling: date marking, storage conditions and directions for use
+L27@P1: FA 58 2-2605 2
+L28@P1: More information
+L29@P1: • Visit www.foodauthority.nsw.gov.au
+L30@P1: • Contact the Food Authority helpline :
+L31@P1: — Email food.contact@dpird.nsw.gov.au
+L32@P1: — Phone 1300 55 2 406
+L33@P1: © State of New South Wales through NSW Food Authority 2026. The information contained in this publication is based on knowledge
+L34@P1: and understanding at the time of writing May 2026 . However, because of advances in knowledge, users are reminded of the need to
+L35@P1: ensure that the information upon which they rely is up to date and to check the currency of the information with the appropri ate officer
+L36@P1: of the Food Authority or the user’s independent adviser.
+

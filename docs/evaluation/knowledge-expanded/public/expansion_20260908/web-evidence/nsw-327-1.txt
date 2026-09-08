@@ -1,0 +1,147 @@
+ (https://www.foodauthority.nsw.gov.au/media/2441)
+citeturn100view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":327}); Total lines: 144
+L0@P0: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L1@P0: Key issues
+L2@P0:  Cook chicken properly to kill bacteria and viruses that may cause foodborne illness.
+L3@P0:  Prevent recontamination of cooked foods and contamination of other ready-to-eat foods.
+L4@P0:  Store food properly – either hot or cold – so bacteria will not grow.
+L5@P0: How to meet the food safety requirements
+L6@P0: Tactics Requirements/Suggestions
+L7@P0: Have a good work system for handling
+L8@P0: ready-to-eat foods.
+L9@P0:  Keep raw food, scraps and used utensils separate from cooked food
+L10@P0: and meals.
+L11@P0: Be extra careful when handling raw
+L12@P0: chicken to avoid contamination of readyto-eat foods.
+L13@P0:  Use different colour-coded knives and cutting boards for raw and
+L14@P0: ready-to-eat foods.
+L15@P0:  Clean and sanitise the bench top after chicken preparation.
+L16@P0:  Wash hands thoroughly after handling raw chicken.
+L17@P0:  Store food covered – raw on the lower shelves and ready-to-eat food
+L18@P0: on the upper shelves of the refrigerator or cool room.
+L19@P0: Use a thermometer.  Cook chicken until the deep meat temperature reaches 74°C.
+L20@P0:  Display hot food at 60°C.
+L21@P0:  Cool food in small portions so it cools quickly – within two hours from
+L22@P0: 60°C to 21°C, and then within a further four hours from 21°C to 5°C.
+L23@P0:  Store cold food at 5°C or less.
+L24@P0: Be diligent about staff personal hygiene.  Avoid hand contact with food and don’t cough or sneeze near food.
+L25@P0:  Don’t allow staff with gastroenteritis to handle food.
+L26@P0:  Supply warm water, soap and paper towels at the hand basin.
+L27@P0: Make sure food surfaces, equipment and
+L28@P0: utensils are cleaned and sanitised
+L29@P0: properly.
+L30@P0:  A visual check is essential but a simple and cheap test for residual
+L31@P0: protein is better.
+L32@P0: Train and retrain staff.  Make sure staff members have up-to-date food safety skills.
+L33@P0: FOOD SAFETY FOR
+L34@P0: TAKEAWAY
+L35@P0-1: CHICKEN SHOPSMore resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L36@P1: Contamination
+L37@P1: The sources of bacteria that cause
+L38@P1: food poisoning in takeaway chicken
+L39@P1: shops are:
+L40@P1:  Raw food:
+L41@P1: – Raw chicken – a well-known
+L42@P1: source of food poisoning
+L43@P1: bacteria.
+L44@P1: – Eggs – incorrectly stored raw
+L45@P1: egg products, such as
+L46@P1: mayonnaise or egg butter,
+L47@P1: have caused large outbreaks
+L48@P1: of foodborne illness.
+L49@P1:  Food preparation areas (e.g. the
+L50@P1: kitchen):
+L51@P1: – Slicers and blenders that
+L52@P1: haven’t been cleaned and
+L53@P1: sanitised properly after use.
+L54@P1: – Bench tops, cutting boards,
+L55@P1: knives and cloths that have
+L56@P1: been exposed to raw chicken.
+L57@P1: – Food handlers can spread
+L58@P1: bacterial and viral foodborne
+L59@P1: illness, especially if they have
+L60@P1: gastroenteritis.
+L61@P1: Temperature abuse
+L62@P1: Most bacteria that cause foodborne
+L63@P1: illness grow very quickly in warm
+L64@P1: food. This can be prevented by
+L65@P1: holding hot food at 60°C and cold
+L66@P1: food at 5°C or less.
+L67@P1: Cooking to the correct temperature
+L68@P1: kills most food poisoning bacteria
+L69@P1: and viruses. Some bacteria form a
+L70@P1: spore (like a tough seed) that is not
+L71@P1: killed by normal cooking processes.
+L72@P1: Spores will activate in warm food
+L73@P1: and can grow to very large numbers
+L74@P1: if they have time. Correct storage
+L75@P1: and prompt cooling and reheating of
+L76@P1: food control this risk.
+L77@P1: Contamination plus
+L78@P1: temperature abuse
+L79@P1: Foodborne illness is often
+L80@P1: associated with a ‘string of errors’ in
+L81@P1: the cooking and storage process.
+L82@P1: Contaminated food can cause
+L83@P1: foodborne illness, but contaminated
+L84@P1: food held at incorrect temperatures
+L85@P1: can cause very large outbreaks of
+L86@P1: foodborne illness.
+L87@P1: Survey of takeaway chicken
+L88@P1: shops
+L89@P1: A recent survey of NSW takeaway
+L90@P1: chicken shops by nineteen local
+L91@P1: councils and the NSW Food
+L92@P1: Authority (see
+L93@P1: www.foodauthority.nsw.gov.au/scien
+L94@P1: ce/market-analysis/takeawaychicken) found that:
+L95@P1:  the majority of businesses
+L96@P1: surveyed displayed hot gravy and
+L97@P1: mayonnaise-based salads at
+L98@P1: inappropriate temperatures.
+L99@P1: 40% of businesses held
+L100@P1: shredded or diced chicken for
+L101@P1: use the next day at inappropriate
+L102@P1: temperatures for an extended
+L103@P1: period of time.
+L104@P1: – 40% of businesses cooled
+L105@P1: gravy in large containers.
+L106@P1: – 45% of businesses used
+L107@P1: inappropriate sanitation for
+L108@P1: food preparation surfaces.
+L109@P1: Reference
+L110@P1: David Mossel, Jaap Jensen and
+L111@P1: Corry Struijk. Microbiological safety
+L112@P1: assurance applied to smaller
+L113@P1: catering operations world-wide; from
+L114@P1: angst through ardour to assistance
+L115@P1: and achievement – the facts.
+L116@P1: Food Control 10 (1999) 195–211.
+L117@P1: More information
+L118@P1:  Visit the Food Authority’s
+L119@P1: website at
+L120@P1: www.foodauthority.nsw.gov.au/in
+L121@P1: dustry
+L122@P1:  See industry guides and
+L123@P1: factsheets: Potentially hazardous
+L124@P1: foods; Protecting food from
+L125@P1: contamination; Cleaning and
+L126@P1: sanitising in food businesses;
+L127@P1: Health and hygiene requirements
+L128@P1: of food handlers
+L129@P1:  Phone the helpline on
+L130@P1: 1300 552 406
+L131@P1: About the NSW Food Authority: The NSW Food Authority is the government organisation that helps ensure NSW food is safe
+L132@P1: and correctly labelled. It works with consumers, industry and other government organisations to minimise food poisoning by
+L133@P1: providing information about and regulating the safe production, storage, transport, promotion and preparation of food.
+L134@P1: Note: This information is a general summary and cannot cover all situations. Food businesses are required to comply with all of
+L135@P1: the provisions of the Food Standards Code and the Food Act 2003 (NSW).
+L136@P1: 6 Avenue of the Americas, Newington NSW 2127
+L137@P1: PO Box 6682, Silverwater NSW 1811
+L138@P1: T 1300 552 406
+L139@P1: contact@foodauthority.nsw.gov.au
+L140@P1: ABN 47 080 404 416
+L141@P1: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L142@P1: November 2012
+L143@P1: NSW/FA/FI160/1211
+

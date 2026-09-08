@@ -1,0 +1,411 @@
+Fast Choices Program: nutritional menu labelling guide (https://www.foodauthority.nsw.gov.au/media/9003)
+citeturn94view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 43; Source: click({"ref_id":"turn59view0","id":309}); Total lines: 912
+L0@P0: foodauthority.nsw.gov.au
+L1@P0: Food Authority
+L2@P0: Fast Choices program: n utritional information menu labelling
+L3@P0: User guide for ready -to-eat food outlets
+L4@P0: 2nd edition update
+L5@P0-1: September 202 5Fast Choice s progra m: nutritional information menu labelling
+L6@P1: FA698 /2509 2
+L7@P1: Published by the NSW Food Authority
+L8@P1: Title: Fast Choices program: nutritional information menu labelling
+L9@P1: Subtitle: User guide for ready -to-eat food outlets – 2nd edition
+L10@P1: First published: February 2025 FA664/2410
+L11@P1: Department reference number: FA698/2509
+L12@P1: More information
+L13@P1: NSW Food Authority food.contact@dpird.nsw.gov.au
+L14@P1: © State of New South Wales through NSW Food Authority [2025 ]. You may copy, distribute, display, download and
+L15@P1: otherwise freely deal with this publication for any purpose, provided that you attribute the Food Authority as the owner.
+L16@P1: However, you must obtain permission if you wish to charge others for access to the publication (other than at cost); include
+L17@P1: the publication in advertising or a product for sale; modify the publication; or republish the publication on a webs ite. You
+L18@P1: may freely link to the publication on a departmental website.
+L19@P1: Disclaimer: The information contained in this publication is based on knowledge and understanding at the time of writing
+L20@P1: [September 2025 ] and may not be accurate, current or complete. The State of New South Wales (including the Food
+L21@P1: Authority ), the author and the publisher take no responsibility, a nd will accept no liability, for the accuracy, currency,
+L22@P1: reliability or correctness of any information included in the document (including material provided by third parties).
+L23@P1: Readers should make their own inquiries and rely on their own advice when making decisions related to material contained
+L24@P1-2: in this publication.Fast Choice s progra m: nutritional information menu labelling
+L25@P2: FA698 /2509 3
+L26@P2: Table of Contents
+L27@P2: Introduction ................................ ................................ ................................ ................................ ............. 4
+L28@P2: Legislation ................................ ................................ ................................ ................................ ................................ ................................ .......5
+L29@P2: Key terms ................................ ................................ ................................ ................................ ................................ ................................ .........6
+L30@P2: Overview ................................ ................................ ................................ ................................ ................................ ................................ ...........8
+L31@P2: Standard food items ................................ ................................ ................................ .............................. 11
+L32@P2: Unpackaged food ................................ ................................ ................................ ................................ ................................ ........................ 11
+L33@P2: Prepackaged food ................................ ................................ ................................ ................................ ................................ ...................... 12
+L34@P2: Sizes ................................ ................................ ................................ ................................ ................................ ................................ .................13
+L35@P2: Multi -serve items ................................ ................................ ................................ ................................ ................................ .......................13
+L36@P2: Combination meals ................................ ................................ ................................ ................................ ................................ ....................14
+L37@P2: Categories ................................ ................................ ................................ ................................ ................................ ................................ .....15
+L38@P2: Customisable food ................................ ................................ ................................ ................................ ................................ ..................... 17
+L39@P2: Sale by weight ................................ ................................ ................................ ................................ ................................ ............................. 18
+L40@P2: Trial items ................................ ................................ ................................ ................................ ................................ ................................ ......18
+L41@P2: Standard food outlets ................................ ................................ ................................ .......................... 20
+L42@P2: Dine -in only premises ................................ ................................ ................................ ................................ ................................ ...............20
+L43@P2: Supermarkets ................................ ................................ ................................ ................................ ................................ ............................... 21
+L44@P2: Businesses exempt from Fast Choices ................................ ................................ ................................ ................................ ...........22
+L45@P2: Voluntary display of nutritional information ................................ ................................ ................................ ................................ .22
+L46@P2: Borderline business scenarios ................................ ................................ ................................ ................................ ............................. 22
+L47@P2: What is a menu? ................................ ................................ ................................ ................................ .... 25
+L48@P2: What is excluded? ................................ ................................ ................................ ................................ ................................ ..................... 27
+L49@P2: Digital ordering platforms ................................ ................................ ................................ ................................ ................................ .....27
+L50@P2: Information that needs to be displayed ................................ ................................ ............................. 29
+L51@P2: Meaning of ‘legible’ ................................ ................................ ................................ ................................ ................................ ..................29
+L52@P2: Meaning of ‘adjacent to’ or ‘near’ ................................ ................................ ................................ ................................ ....................... 29
+L53@P2: The reference statement ................................ ................................ ................................ ...................... 31
+L54@P2: How to display the reference statement ................................ ................................ ................................ ................................ .......31
+L55@P2: Locations ................................ ................................ ................................ ................................ ................................ ................................ ........31
+L56@P2: Kilojoule information ................................ ................................ ................................ ............................ 35
+L57@P2: How to display the average kJ content ................................ ................................ ................................ ................................ ..........35
+L58@P2: Calculating the average kJ content ................................ ................................ ................................ ................................ .................35
+L59@P2: Other considerations ................................ ................................ ................................ ................................ ................................ ...............36
+L60@P2: Compliance with the NSW legislation ................................ ................................ ................................ 38
+L61@P2: Approval of menus ................................ ................................ ................................ ................................ ................................ ...................38
+L62@P2: Verification activities ................................ ................................ ................................ ................................ ................................ ..............38
+L63@P2: Non -compliance with the legislation ................................ ................................ ................................ ................................ ..............38
+L64@P2: Appendix 1. Supermarket product decision tree ................................ ................................ .............. 40
+L65@P2: Appendix 2. Business product decision tree ................................ ................................ ...................... 41
+L66@P2: Notes ................................ ................................ ................................ ................................ ....................... 42
+L67@P2-3: More information ................................ ................................ ................................ ................................ ...43Fast Choice s progra m: nutritional information menu labelling
+L68@P3: FA698 /2509 4
+L69@P3: Introduction
+L70@P3: Fast Choices is the NSW Government’s nutritional information menu labelling program for business
+L71@P3: chains and franchises selling takeaway, ready -to-eat (RTE) foods. The program aims to help
+L72@P3: consumers make healthier choices by displaying kilojoule (kJ) values for standard food items.
+L73@P3: In NSW, the Fast Choices program is legislated in the Food Act 2003 and Food Regulation 2025
+L74@P3: (together, the legislation). The legislation defines a ‘standard food outlet ’ as required to display the
+L75@P3: kJ content of ‘standard food items ’ along with a reference statement.
+L76@P3: Standard food outlets typically belong to large chains that are company owned or operate a
+L77@P3: franchise model, or a mixture of both, and shar e a common name, branding scheme and menu. They
+L78@P3: capture a diverse range of businesses, including supermarkets, quick service restaurants, caf és and
+L79@P3: beverage outlets, salad bars and other food court and home delivery businesses.
+L80@P3: Kilojoules provide a consistent baseline for consumers to compare the energy content of potential
+L81@P3: food choices . The reference statement provides a guide for total recommended daily kJ
+L82@P3: consumption from all foods . Together these two elements form the nutritional information
+L83@P3: requirements in the legislation.
+L84@P3: Nutritional information menu labelling by standard food outlets helps consumers make healthier
+L85@P3: food choices and is intended to help address the incidence of overweight and obesity in the NSW
+L86@P3: population. In 2017 -18, it was estimated that obesity costs Australia $11.8 billion annually 1. While
+L87@P3: these costs are dated, the NSW Population Health Survey and the Australian Bureau of Statistics
+L88@P3: National Health Survey show an increasing trend in the number of overweight and obese adults. One
+L89@P3: of the many contributing f actors is the consumption of energy -dense, nutrient -poor foods.
+L90@P3: Australians spend about 42 cents in every food dollar eating out of home, with over a third of that
+L91@P3: spent on fast food. Serving sizes when eating out also tend to be larger and contain more sa turated
+L92@P3: fat and salt than meals prepared at home 2.
+L93@P3: Consumers place a premium on their right to choose what they eat . Industry and government can
+L94@P3: support this expectation with accurate information so consumers can make healthier choices. The
+L95@P3: Fast Choices program is part of NSW Government’s range of programs to promote healthier eating .
+L96@P3: Businesses are required to comply with the legislation if they meet the criteria for a ‘standard food
+L97@P3: outlet’.
+L98@P3: Nutritional information labelling legislation has also been introduced in the Australian Capital
+L99@P3: Territory, Queensland, South Australia, and Victoria. Businesses that meet the criteria in each
+L100@P3: jurisdiction (in NSW 20 outlets) or have more than 50 outlets nationally need to review each
+L101@P3: jurisdiction ’s legislation for minor differences .
+L102@P3: 1 Obesity Collective 2022 , Weighing in: Australia’s growing obesity epidemic .
+L103@P3: 2 Better Regulation Statement Provision of nutritional information at point of sale in standard retail menu food outlets ,
+L104@P3-4: October 2010Fast Choice s progra m: nutritional information menu labelling
+L105@P4: FA698 /2509 5
+L106@P4: Legislation
+L107@P4: Fast Choices legislation is administered by the NSW Food Authority and local government
+L108@P4: authorised officers . Businesses can review the exact wording of the legislation by referring to :
+L109@P4: • Food Act 2003 (NSW) Part 8, Division 4, Sections 106K – 106R, and
+L110@P4: • Food Regulation 2025 Part 3, Sections 23 – 30.
+L111@P4: The legislation sets out the requirements for who is required to display nutritional information, what
+L112@P4: is meant by nutritional information, and how to display the information . This document provides a
+L113@P4-5: plain English guide to meeting the requirements .Fast Choice s progra m: nutritional information menu labelling
+L114@P5: FA698 /2509 6
+L115@P5: Key terms
+L116@P5: Key t erm Description
+L117@P5: The Act The Food Act 2003 (NSW) .
+L118@P5: The Regulation The Food Regulation 2025 (NSW) .
+L119@P5: Food Authority The NSW Food Authority is the enforcement agency for Fast Choices
+L120@P5: legislation . Officers provide advice to industry, respond to queries and
+L121@P5: action complaints from industry and the public.
+L122@P5: Fast Choices The NSW nutritional information menu labelling program.
+L123@P5: Food Standards
+L124@P5: Code
+L125@P5: The Australia New Zealand Food Standards Code.
+L126@P5: Healthy Eating
+L127@P5: Active Living
+L128@P5: A whole -of-Government initiative led by NSW Health to promote healthier
+L129@P5: food and activity choices in the NSW population.
+L130@P5: Combination meal Any offering with multiple standard food items with a single price . It may
+L131@P5: or may not apply a discounted price to the combination.
+L132@P5: Customisable food
+L133@P5: item
+L134@P5: A food item where the customer choose s from a range of displayed
+L135@P5: ingredients.
+L136@P5: Fast food Food sold for immediate consumption. See ready -to-eat (RTE) food .
+L137@P5: Food category A range of products standardised for price and/or serving size but
+L138@P5: otherwise varying in flavours, ingredients and kilojoule content.
+L139@P5: Kilojoule (kJ) A unit of measurement for the energy content in food. For Fast Choices,
+L140@P5: energy content must be displayed in kJ.
+L141@P5: Menu A display that provides information to consumers on products available for
+L142@P5: purchase from a food business.
+L143@P5: Nutritional
+L144@P5: information
+L145@P5: Refers to both the Reference Statement and standard food item kilojoule
+L146@P5: values.
+L147@P5: Nutrition information
+L148@P5: panel (NIP)
+L149@P5: A table on the label that displays the quantities of nutrients including
+L150@P5: energy, protein, fat, carbohydrate, sodium per serve and per 100g.
+L151@P5: Food products sold with a NIP on the label are exempt from Fast Choices
+L152@P5: except in limited circumstances.
+L153@P5: Prepackaged food Food delivered to the outlet and sold without being removed from single -
+L154@P5: serve packaging. Food considered ‘prepackaged’ must have a NIP on its
+L155@P5-6: label.Fast Choice s progra m: nutritional information menu labelling
+L156@P6: FA698 /2509 7
+L157@P6: Key t erm Description
+L158@P6: Ready -to-eat (RTE)
+L159@P6: food
+L160@P6: Food that is served or provided in a state where it may be eaten
+L161@P6: immediately with out any further preparation required ( for example,
+L162@P6: cooking) .
+L163@P6: Reference
+L164@P6: statement
+L165@P6: The statement to help consumers compare kilojoule content against
+L166@P6: average daily consumption :
+L167@P6: ‘The average adult daily energy intake is 8,700 kJ ’ OR
+L168@P6: ‘The average adult daily energy intake is 8700 kJ ’
+L169@P6: Standard food item An unpackaged, RTE food product standardised for portion size and
+L170@P6: content.
+L171@P6: Standard food outlet A business selling standard food items from multiple outlets that uses the
+L172@P6: same branding across those outlets such that consumers expect to be
+L173@P6: able to purchase from a consistent menu across outlets of that business .
+L174@P6: Standardised for
+L175@P6: portion size and
+L176@P6: content
+L177@P6: An item of food that is produced to a recipe such that consumers can
+L178@P6: expect to receive the same ingredients, size, and nutrition of the product
+L179@P6: regardless of where they order it.
+L180@P6: Supermarket A food premises of at least 1,000 m 2
+L181@P6: that sells all the categories of food
+L182@P6: listed in the legislation.
+L183@P6: Takeaway food RTE food sold for immediate consumption away from the premises at
+L184@P6: which it was sold.
+L185@P6: Unpackaged food Food products displayed without a label that includes a NIP or made on -
+L186@P6: site and packaged at the point of purchase. Includes products made in a
+L187@P6: central kitchen and distributed to outlets where it is displayed for sale
+L188@P6-7: unpackaged. Fast Choice s progra m: nutritional information menu labelling
+L189@P7: FA698 /2509 8
+L190@P7: Standard food outlets must display the following nutritional information:
+L191@P7: • the average energy content of each standard food item for sale by the standard food outlet,
+L192@P7: expressed in kilojoules (kJ), and
+L193@P7: • the reference statement: ‘The average adult daily energy intake is 8,700 kJ’
+L194@P7: Overview
+L195@P7: Standard food items
+L196@P7: Standard food items are:
+L197@P7: • controlled for portion size and content, even if offered in different sizes (for example, small or
+L198@P7: large)
+L199@P7: • sold unpackaged
+L200@P7: • made according to a standard recipe at the premises
+L201@P7: • may be combination meals that contain a selection of default standard food items.
+L202@P7: Standard food outlets
+L203@P7: Food businesses that meet the following criteria must comply with nutritional information menu
+L204@P7: labelling:
+L205@P7: • the business operates as part of a chain of food businesses that share the same trading name
+L206@P7: and share a consistent or uniform menu that includes standard food items, and
+L207@P7: • the standard food items include RTE, takeaway products, and
+L208@P7: • trade under a shared trading name and branding with 20 or more outlets in NSW, or 50 or more
+L209@P7: outlets nationally.
+L210@P7: Nutritional information
+L211@P7: Nutritional information must be:
+L212@P7: • displayed for al l standard food items by stand food outlets
+L213@P7: • legible and displayed as ‘kJ’
+L214@P7: • close to , or near the name or price of the item so as to be clearly associated with the item
+L215@P7: • in the same font, and at least the same font size as the price of the standard food item, or the
+L216@P7: same font size as the name of the item if no price is displayed
+L217@P7: • Calculating the average kJ content for each standard food item in line with Standard 1.2.8 and
+L218@P7-8: section S11 -2 of Schedule 11 of the Food Standards Code .Fast Choice s progra m: nutritional information menu labelling
+L219@P8: FA698 /2509 9
+L220@P8: Standard food items sold in :
+L221@P8: • combination meals (for example, a meal deal with a quarter hot chicken and 375mL soft drink)
+L222@P8: are a single standard food item under the legislation, and kJ information is required.
+L223@P8: • nutritional information is not required to be displayed for a food category , where there are
+L224@P8: multiple items that fall within the description (for example, a cake, a muffin or a single scoop ice
+L225@P8: cream).
+L226@P8: Reference statement
+L227@P8: The reference statement must be:
+L228@P8: • legible and displayed close to , or near the item so as to be clearly associated with the item
+L229@P8: • in the same font as the name of the item or, if no name is displayed, the same font as the price of
+L230@P8: the item
+L231@P8: • at least the same font size, as the name of the item or, the same font size as the price of the item
+L232@P8: if no name is displayed. If more than one item is displayed (for example, a bakery cabinet) the
+L233@P8: font size must be at least the same size as the largest fon t displayed.
+L234@P8: Menu
+L235@P8: The menu is a ny display that identifies the available food items for the consumer to choose from
+L236@P8: when purchasing at a point of sale. A menu :
+L237@P8: • may be printed or digital, and includes digital menus accessed through hyperlinks, QR codes,
+L238@P8: self -serve displays, kiosks, apps or webpages
+L239@P8: • includes any display that shows the name or price of a standard food item visible to prospective
+L240@P8: consumers at the point of sale, such as leaflets, posters, item and price tags for products on
+L241@P8-9: display, and mounted boards – whether overhead, on walls, counte rs, or mobile/digital frames.Fast Choice s progra m: nutritional information menu labelling
+L242@P9: FA698 /2509 10
+L243@P9-10: Standard food item sFast Choice s progra m: nutritional information menu labelling
+L244@P10: FA698 /2509 11
+L245@P10: Standard food item s
+L246@P10: The legislation gives a broad definition for what is a standard food item. All standard food items are:
+L247@P10: • controlled for portion size and content , but may be offered in different portion sizes (for
+L248@P10: example, small, medium and large )
+L249@P10: • sold unpackaged
+L250@P10: • made to order according to a standard recipe at the premises
+L251@P10: • listed or shown on a menu, or displayed for sale in a cabinet
+L252@P10: • may be combination meals that contain a selection of default standard food items .
+L253@P10: A standard food item may be modified to accommodate a customer’s allergies or preferences
+L254@P10: without needing to calculate a new kilojoule (kJ) figure for the item sold . This does not avoid the
+L255@P10: need to provide a kJ value for the standard food item made to the standard recipe.
+L256@P10: Unpackaged food
+L257@P10: Unpackaged food is food served to the consumer without a nutrition information panel (NIP) or other
+L258@P10: standard labelling requirements of the Food Standards Code . The term is used within the Fast
+L259@P10: Choices program to help determine which foods are captured under the definition of ‘standard food
+L260@P10: item’.
+L261@P10: The non -exhaustive list of food below gives examples of what is considered ‘unpackaged food ’ when
+L262@P10: displayed without labelling that includes a NIP:
+L263@P10: • Made to order foods
+L264@P10: • Burgers, wraps and sandwiches
+L265@P10: • Fries and hot chips
+L266@P10: • Pizzas
+L267@P10: • Salads displayed in cold -held trays
+L268@P10: • Sushi
+L269@P10: • Sushi boxes
+L270@P10: • Ramen, noodle or rice bowls
+L271@P10: • Ice cream displayed in bulk
+L272@P10: • Fried food displayed uncooked (for
+L273@P10: example , fish, spring rolls, chicken
+L274@P10: nuggets)
+L275@P10: • Whole and portioned cakes
+L276@P10: • Pastries displayed unpackaged
+L277@P10: • Hot -held pies, sausage rolls, pastries
+L278@P10: • Bread rolls
+L279@P10: • Sweet or savoury bakery products
+L280@P10: • Coffee
+L281@P10: • Milkshakes
+L282@P10: • Juices and smoothies
+L283@P10: • Hot -held salads and noodles
+L284@P10: • Whole or portioned rotisserie or roasted
+L285@P10-11: meats .Fast Choice s progra m: nutritional information menu labelling
+L286@P11: FA698 /2509 12
+L287@P11: Figure 1: Example s of unpackaged food
+L288@P11: Unpackaged food is often served to the customer in single -use , unsealed packaging such as
+L289@P11: cardboard plates or cartons, unlabelled plastic containers, disposable cups, foil , plastic or paper
+L290@P11: wrap.
+L291@P11: RTE f ood made on -site to fulfill a customer order is considered unpackaged. Food removed from the
+L292@P11: manufacturers’ packaging and repackaged onsite is also considered unpackaged.
+L293@P11: Products manufactured on -site, packaged and labelled with a NIP are exempt from nutritional
+L294@P11: information labelling. The NIP must conform to the requirements of Standard 1.2.8 of the Food
+L295@P11: Standards Code to be considered ‘packaged’. The packaged food must also comply with other
+L296@P11: mandatory labelling requirements of the Food Standards Code.
+L297@P11: Prepackaged food
+L298@P11: Labelled f oods that include a NIP 3 are considered prepackaged. Prepackaged food is delivered to
+L299@P11: the outlet in individual packaging and is not removed from that packaging before sale. Prepackaged
+L300@P11: food items sold without adjusting the portion size and individually ( that is, not part of a combination
+L301@P11: meal) are exempt from Fast Choices labelling requirements.
+L302@P11: Prepackaged food items that are heated and served from a hot -hold display and kept in the
+L303@P11: manufacturers’ packaging that displays a NIP are also exempt.
+L304@P11: Prepackaged food items (such as pies, bottled drinks or condiment sachets ) that are included in a
+L305@P11: combination meal must have their kJ information added to the total kJ value of the meal.
+L306@P11: Figure 2: Examples of prepackaged food
+L307@P11: 3 Standard 1.2.8 — 5 permits food in a small package with a surface area of less than 100 cm 2
+L308@P11: to be sold without a NIP .
+L309@P11-12: Standard 1.2.8 — 14 contains labelling requirements for food in a small package if a claim is made.Fast Choice s progra m: nutritional information menu labelling
+L310@P12: FA698 /2509 13
+L311@P12: Sizes
+L312@P12: Consumers are often given the option to choose from several sizes of a food with different price s,
+L313@P12: for example small, medium, large . Sizes are still standardised for portion and content, so each size is
+L314@P12: a standard food item. A standard food item that displays size options must include the kJ value for
+L315@P12: each size.
+L316@P12: Examples include servings of fries, salads, or drinks with small, medium and large options; each of
+L317@P12: which need s to display its own nutritional information.
+L318@P12: Figure 3: Example s of kJ labelling with different sizes
+L319@P12: Multi -serve items
+L320@P12: Food sold unpackaged, but intended for multiple portion serves , such as whole cakes, pizzas and
+L321@P12: loaves of fruit bread , are standard food item s for Fast Choices if they are sold by a business that is a
+L322@P12: standard food outlet .
+L323@P12: To reduce the risk of confusion for customers, where a product is offered as a series of sizes ( for
+L324@P12: example, small, medium or large) and some of those sizes may be intended for multiple serves ( for
+L325@P12: example, extra -large chips, whole pizzas or whole cakes), the product should display the total kJ
+L326@P12: value and not include a per -serve calculation. The business may inform customers how many
+L327@P12: serves/slices the entire product provides.
+L328@P12-13: Figure 4: Example of multi -serve food in a display cabinet with appropriate kJ labellingFast Choice s progra m: nutritional information menu labelling
+L329@P13: FA698 /2509 14
+L330@P13: Combination meals
+L331@P13: Many businesses sell standard food items as a grouped selection. These ‘meal deals’ are considered
+L332@P13: standard food items and should be displayed with the total kJ content of all products in the
+L333@P13: combination for the default selection. This includes any prepackaged food item , such as a can or
+L334@P13: bottle of drink.
+L335@P13: For example :
+L336@P13: • a burger meal with a cheeseburger, fries and a milkshake – the total kJ value should be
+L337@P13: calculated and displayed .
+L338@P13: • a salmon bento box with 2 salmon sushi rolls, 5 slices of salmon , a nigiri and a soy sauce sachet –
+L339@P13: the total kJ value of all items should be calculated and displayed.
+L340@P13: A combination add -on is also a standard food item and should display kJ values where the default
+L341@P13: items in the add -on are known.
+L342@P13: A ‘coffee and cake’ deal, where the customer must choose a coffee style and a cake selection is not
+L343@P13: a combination, it is considered a category , as there is no default coffee and cake to calculate the kJ .
+L344@P13-14: Figure 5: Example of menu board with combination meal that includes kJ of the burger, fries and default drinkFast Choice s progra m: nutritional information menu labelling
+L345@P14: FA698 /2509 15
+L346@P14: Categories
+L347@P14: Some businesses display a range of similar standard food items for a single price (for example,
+L348@P14: different flavours of ice cream) .
+L349@P14: These may be items sold per serve, like ice cream or cakes with a variety of flavours, or standard
+L350@P14: food items that are designed by the customer at the point of sale, like burritos or other made -toorder foods.
+L351@P14: The requirement to display nutritional information is dependent on how the category information is
+L352@P14: provided. For example:
+L353@P14: • If the items are listed individually, either on display tags or menu boards, nutritional information
+L354@P14: must be displayed for each flavour or ingredient.
+L355@P14: • If a menu board lists a price for a category ( for example, 1 scoop or 2 scoops of ice cream)
+L356@P14: without listing the flavours or variations, no nutritional information is required on the price board,
+L357@P14: but nutritional information must be displayed with each flavour or variation in the cabinet .
+L358@P14: • For a ‘coffee and cake ’ poster , where the customer must choose a coffee style and a cake from
+L359@P14: the display , nutritional information is not required on the poster, but nutritional information must
+L360@P14: be displayed on the menu boards and display tag s.
+L361@P14: An outlet may have both types of menus, so businesses must display nutritional information on the
+L362@P14: menus that meet the requirements, even though the price board may not need to display nutritional
+L363@P14: information.
+L364@P14: Figure 6: Example of a coffee shop showing kJ labelling for standard food items in the display cabinet and
+L365@P14-15: menu board , but not on the poster showing a categoryFast Choice s progra m: nutritional information menu labelling
+L366@P15: FA698 /2509 16
+L367@P15: Figure 7: Example of an ice cream shop showing kJ labelling on the ice cream flavours in the display cabinet,
+L368@P15-16: but not on the menu board as the prices are displayed for a categoryFast Choice s progra m: nutritional information menu labelling
+L369@P16: FA698 /2509 17
+L370@P16: Customisable food
+L371@P16: Customisable food items are not considered standard food items. These products are displayed with
+L372@P16: the intent that customers will select most , or all , of the ingredients as part of the ordering process.
+L373@P16: Customisable food items include build -your -own pizzas, sandwiches , burritos and wraps made by
+L374@P16: the customer selecting individual ingredients from a display or list of options. These types of food do
+L375@P16: not require nutritional information labelling as there is no ‘standard food item’ to use as the default .
+L376@P16: Th is is different to modification of a ‘standard food item ’ by a customer (for allergen management or
+L377@P16: preference) where an ingredient is added or subtracted from a standard food item sold by a
+L378@P16: standard food outlet. The standard food item requires nutritional information labelling , even though
+L379@P16: it may be sold in a modified form . Nutritional information labelling is not required for the modified
+L380@P16-17: food .Fast Choice s progra m: nutritional information menu labelling
+L381@P17: FA698 /2509 18
+L382@P17: For assistance determining if the food sold by your business is considered customisable or not,
+L383@P17: contact the Food Authority at food.contact@dpird.nsw.gov.au
+L384@P17: Figure 8 : Example menus for a build your own customisable food
+L385@P17: Sale by weight
+L386@P17: Unpackaged products sold by weight (per kilogram, per 100g) are not standardised for portion size
+L387@P17: as the consumer can purchase any quantity of the product . These products are not required to
+L388@P17: display nutritional information .
+L389@P17: Supermarkets are permitted to display nutritional information for standard food items such as RTE
+L390@P17: salads or hot chicken portions in kilojoules per 100g if this is a more suitable method to display
+L391@P17: nutritional information. They may also display kJ for the entire item sold if this is desired.
+L392@P17: Trial items
+L393@P17: The legislation includes an exemption from nutrition al information labelling for ‘trial items’. This
+L394@P17: allows business es to create new products by removing the nutritional information requirement on
+L395@P17: trial items .
+L396@P17: A t rial item is defined as ‘sold in 5 or fewer outlets for no more than 60 days ’ and must be ‘original’ –
+L397@P17: that is, the recipe and item must not have been sold previously.
+L398@P17: Themed or limited -time items that make seasonal appearances in outlets are not trial items – if
+L399@P17-18: standardised for portion and content these items require nutritional information labe lling.Fast Choice s progra m: nutritional information menu labelling
+L400@P18: FA698 /2509 19
+L401@P18-19: Standard food outletsFast Choice s progra m: nutritional information menu labelling
+L402@P19: FA698 /2509 20
+L403@P19: Standard food outlets
+L404@P19: Food businesses that meet the following criteria must comply with nutritional information menu
+L405@P19: labelling:
+L406@P19: • the business operates as part of a chain of food businesses that share a consistent or uniform
+L407@P19: menu that includes standard food items, and
+

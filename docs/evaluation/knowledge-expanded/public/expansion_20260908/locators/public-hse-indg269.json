@@ -1,0 +1,50 @@
+[
+  {
+    "kind": "pdf_page",
+    "page": 1,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=1",
+    "text_characters": 2209
+  },
+  {
+    "kind": "pdf_page",
+    "page": 2,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=2",
+    "text_characters": 2573
+  },
+  {
+    "kind": "pdf_page",
+    "page": 3,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=3",
+    "text_characters": 2392
+  },
+  {
+    "kind": "pdf_page",
+    "page": 4,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=4",
+    "text_characters": 1816
+  },
+  {
+    "kind": "pdf_page",
+    "page": 5,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=5",
+    "text_characters": 1118
+  },
+  {
+    "kind": "pdf_page",
+    "page": 6,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=6",
+    "text_characters": 1549
+  },
+  {
+    "kind": "pdf_page",
+    "page": 7,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=7",
+    "text_characters": 2276
+  },
+  {
+    "kind": "pdf_page",
+    "page": 8,
+    "source_url": "https://www.hse.gov.uk/pubns/indg269.pdf#page=8",
+    "text_characters": 2036
+  }
+]

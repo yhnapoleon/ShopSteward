@@ -1,0 +1,414 @@
+NSW Standard of construction and hygenic operations of retail meat premises (https://www.foodauthority.nsw.gov.au/media/2611)
+citeturn119view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 29; Source: click({"ref_id":"turn59view0","id":421}); Total lines: 929
+L0@P0: foodauthority.nsw.gov.au
+L1@P0: Food Authority
+L2@P0: NSW standard for construction and hygienic operations of
+L3@P0: retail meat premises
+L4@P0-1: September 2025NSW standard for construction and hygienic operations of retail meat premises
+L5@P1: FA451/2509 2
+L6@P1: Table of contents
+L7@P1: Introduction ..........................................................................................................................................................3
+L8@P1: Purpose and scope..............................................................................................................................................4
+L9@P1: Definitions .............................................................................................................................................................5
+L10@P1: 1. Food safety programs.....................................................................................................................................8
+L11@P1: 2. Food safety practices and general requirements...................................................................................9
+L12@P1: 2.1 Skills and knowledge of staff......................................................................................................................................................... 9
+L13@P1: 2.2 Receiving of meat ................................................................................................................................................................................ 9
+L14@P1: 2.3 Storage of meat and meat products .......................................................................................................................................... 9
+L15@P1: 2.4 Processing of meat and meat products ................................................................................................................................... 11
+L16@P1: 2.5 Display of meat and meat products .......................................................................................................................................... 14
+L17@P1: 2.6 Packaging of meat and meat products ................................................................................................................................... 15
+L18@P1: 2.7 Transportation of meat and meat products ...........................................................................................................................16
+L19@P1: 2.8 Disposal....................................................................................................................................................................................................16
+L20@P1: 2.9 Food recall..............................................................................................................................................................................................17
+L21@P1: 2.10 Health and hygiene requirements.............................................................................................................................................17
+L22@P1: 2.11 Cleaning, sanitising and maintenance .................................................................................................................................... 19
+L23@P1: 3. Food premises and equipment .................................................................................................................. 21
+L24@P1: 3.1 Design and construction of retail meat premises ................................................................................................................21
+L25@P1: 3.2 Water supply .........................................................................................................................................................................................21
+L26@P1: 3.3 Solid and liquid waste disposal....................................................................................................................................................21
+L27@P1: 3.4 Storage of garbage and recyclable matter .........................................................................................................................22
+L28@P1: 3.5 Ventilation .............................................................................................................................................................................................22
+L29@P1: 3.6 Lighting...................................................................................................................................................................................................22
+L30@P1: 3.7 Floors, walls and ceiling .................................................................................................................................................................23
+L31@P1: 3.8 Loading areas ....................................................................................................................................................................................24
+L32@P1: 3.9 Fixtures, fittings and equipment ................................................................................................................................................24
+L33@P1: References and further reading ....................................................................................................................28
+L34@P1: Legislation.....................................................................................................................................................................................................28
+L35@P1: Other................................................................................................................................................................................................................28
+L36@P1-2: Notes ....................................................................................................................................................................29NSW standard for construction and hygienic operations of retail meat premises
+L37@P2: FA451/2509 3
+L38@P2: Introduction
+L39@P2: The NSW Food Authority is the government organisation that helps ensure food is safe and correctly
+L40@P2: labelled. It works with consumers, industry, and other government organisations to minimise food
+L41@P2: poisoning by providing information about and regulating the safe production, storage, transport,
+L42@P2: promotion and preparation of food.
+L43@P2: Food Authority food safety officers are authorised officers under the NSW Food Act 2003 (the Act)
+L44@P2: and have wide powers, which include the power to enter and inspect premises and inspect any
+L45@P2: records relating to the sale of food.
+L46@P2: This Standard has been developed by the Food Authority to assist retail meat premises in meeting
+L47@P2: the food safety and labelling requirements outlined in the Australia New Zealand Food Standards
+L48@P2: Code (the Code), which is law in Australia.
+L49@P2: While the Food Authority aims to inform industry and assist businesses with meeting their
+L50@P2: responsibilities, under the Act the Food Authority can take enforcement action against any
+L51@P2: businesses that fail to comply.
+L52@P2: This Standard may not list all the legal requirements that your business needs to comply with.
+L53@P2: Businesses should refer to the Act, Food Regulation 2025, and the Code for details on food safety
+L54@P2: requirements.
+L55@P2: NSW legislation can be found at legislation.nsw.gov.au and the Food Standards Code at
+L56@P2-3: www.foodstandards.gov.au. NSW standard for construction and hygienic operations of retail meat premises
+L57@P3: FA451/2509 4
+L58@P3: Purpose and scope
+L59@P3: The Food Regulation 2025 (the Regulation) defines meat retail premises as:
+L60@P3: • premises where meat (including poultry) is sold by retail and on which raw meat carcases or
+L61@P3: parts of raw meat carcases are processed in some way, including by boning, slicing, or cutting.
+L62@P3: ‘Butcher shop’ is the term commonly used for these premises and may include supermarket
+L63@P3: operations and independent meat and poultry retail premises.
+L64@P3: A retail meat premises does not include premises where:
+L65@P3: a. in any week during the preceding calendar year, more than one tonne of meat was sold by
+L66@P3: wholesale (these premises must be licensed as a meat processor), or
+L67@P3: b. all meat is sold in a form ready to be consumed (such as is sold at a restaurant or take-away food
+L68@P3: shop), or
+L69@P3: c. all meat is sold in a form commonly referred to as cook and chill (that is, cooked packaged meat
+L70@P3: that requires reheating before consumption).
+L71@P3: The NSW Standard for Construction and Hygienic Operations of Retail Meat Premises (the
+L72@P3: Standard) contains the minimum construction requirements and hygienic operation standards for
+L73@P3: retail meat premises and forms part of the minimum standards for retail meat premises, as required
+L74@P3: by the Regulation.
+L75@P3: As part of the Standard, all retail meat premises must operate under an approved food safety
+L76@P3: program based on Hazard Analysis Critical Control Point (HACCP) principles.
+L77@P3: In addition, the requirements of Standard 3.2.1 – Food Safety Programs, Standard 3.2.2 – Food
+L78@P3: Safety Practices and General Requirements and Standard 3.2.3 – Food Premises and Equipment of
+L79@P3: the Food Standards Code have been considered in the Standard. For ease of interpretation, there
+L80@P3: are sections which have been expanded to accommodate the specific requirements for retail meat
+L81@P3: premises.
+L82@P3: Alternative equivalent techniques or procedures to those detailed in the Standard may be used by
+L83@P3: operators of retail meat premises, provided compliance with the overall goal can be verified using a
+L84@P3-4: HACCP-based food safety program.NSW standard for construction and hygienic operations of retail meat premises
+L85@P4: FA451/2509 5
+L86@P4: Definitions
+L87@P4: Term Definition
+L88@P4: Abattoir animal Any bull, ox, steer, cow, heifer, calf, ram, ewe, wether, lamb, goat, kid,
+L89@P4: swine, buffalo, deer, rabbit, or any bird.
+L90@P4: Abattoir meat Meat that is from an abattoir animal and intended for human
+L91@P4: consumption.
+L92@P4: Amenities Includes changing rooms, dining rooms, toilets, hand wash basins and
+L93@P4: showers.
+L94@P4: Appliances Any equipment used in a retail meat processing premises.
+L95@P4: Approved audit An audit approved by the NSW Food Authority.
+L96@P4: Audit A programmed and clearly defined system of verifying that a quality
+L97@P4: system is operating to standards defined in the Food Safety Program.
+L98@P4: Clean In relation to:
+L99@P4: a. carcases or meat - means free from all visible contaminants (such as
+L100@P4: ingesta, dust, rail grease, wool, hair, faecal material, bile, excretions
+L101@P4: and pathological conditions)
+L102@P4: b. equipment and utensils - means free of visible contamination,
+L103@P4: washed, sanitised and free of objectionable odours
+L104@P4: c. premises - means surfaces of floors, walls, ceilings free of visible
+L105@P4: contamination, washed, and free of objectionable odours
+L106@P4: d. clothing, means free of visible contamination.
+L107@P4: Construction The design, construction, equipment and maintenance of retail meat
+L108@P4: premises.
+L109@P4: Contamination The presence of objectionable matter, including substances or
+L110@P4: microorganisms, that makes meat and meat products unsafe or
+L111@P4: unsuitable for human consumption.
+L112@P4: Coving A curved junction at two surfaces (for example floor and wall) to enable
+L113@P4: effective cleaning.
+L114@P4: Cured A product is cured if curing salts have been added at a level which
+L115@P4: preserves the product, being a minimum 2.5% salt on water phase and
+L116@P4: 100 ppm nitrite in-going.
+L117@P4: Edible Safe and suitable for human consumption.
+L118@P4: Food safety program A documented program which identifies any steps in the activities of a
+L119@P4: retail meat business which are critical to ensuring food safety and
+L120@P4: ensures that adequate food safety measures are identified,
+L121@P4-5: implemented, maintained and reviewed.NSW standard for construction and hygienic operations of retail meat premises
+L122@P5: FA451/2509 6
+L123@P5: Term Definition
+L124@P5: Game animal Any vertebrate animal, including a mammal, bird or reptile (excluding
+L125@P5: fish) of a species that can be legally harvested; and has not been
+L126@P5: husbanded in the way of a farmed animal and is killed in the field.
+L127@P5: Game meat The edible part of any game animal that has been dressed or prepared in
+L128@P5: a game-processing establishment and passed by an inspector as fit for
+L129@P5: human consumption.
+L130@P5: HACCP A Hazard Analysis Critical Control Point approach comprising a
+L131@P5: structured system for the analysis of hazards and identification of
+L132@P5: methods for monitoring of hazard and the implementation of control
+L133@P5: measures for each hazard.
+L134@P5: Hazard A biological, physical or chemical agent in, or condition of, food that has
+L135@P5: the potential to cause an adverse heath effect in humans.
+L136@P5: Hazardous substances Any substance which, if it comes into contact with meat, meat products
+L137@P5: or meat contact surfaces, will jeopardise the safety and suitability of
+L138@P5: meat and meat products.
+L139@P5: Inedible Unsafe or unsuitable for human consumption.
+L140@P5: Licensed Premises licensed with the NSW Food Authority (or equivalent
+L141@P5: interstate/overseas jurisdiction).
+L142@P5: Meat The edible part of any abattoir animal or game animal and edible offal
+L143@P5: intended for human consumption.
+L144@P5: Retail meat premises Any premises where meat (including poultry) is sold by retail and on
+L145@P5: which raw meat carcases or parts of raw meat carcases are processed in
+L146@P5: some way including boning, slicing, or cutting.
+L147@P5: A retail meat premises does not include premises where:
+L148@P5: a. in any week during the preceding calendar year, more than one tonne
+L149@P5: of meat was sold by wholesale (must be licensed as a meat
+L150@P5: processor), or
+L151@P5: b. all the meat sold is:
+L152@P5: i. in a form ready to be consumed (such as is sold at a
+L153@P5: restaurant or takeaway food shop), or
+L154@P5: ii. in a form commonly referred to as cook and chill (that is,
+L155@P5: cooked, packaged meat that requires reheating before
+L156@P5: consumption).
+L157@P5: Pathogenic bacteria Bacteria capable of causing disease in humans.
+L158@P5: Potable water Water that is acceptable for human consumption.
+L159@P5: Premises A building or structure, where meat is processed or stored for human
+L160@P5-6: consumption.NSW standard for construction and hygienic operations of retail meat premises
+L161@P6: FA451/2509 7
+L162@P6: Term Definition
+L163@P6: Processed meat Any product of a manufacturing process that contains abattoir meat or
+L164@P6: game meat and that is intended for human consumption.
+L165@P6: Processing Any activity in the storage, production and sale of meat and meat
+L166@P6: products.
+L167@P6: Protective clothing Items of clothing such as aprons, head covering, capes and smocks that
+L168@P6: prevent meat or meat product contact surfaces from ordinarily coming
+L169@P6: into contact with any portion of a person's body or ordinary clothing.
+L170@P6: Ready-to-eat meat Meat products intended to be consumed without further heating or
+L171@P6: cooking, and includes:
+L172@P6: a. cooked or uncooked fermented meat
+L173@P6: b. pâté
+L174@P6: c. dried meat
+L175@P6: d. slow cured meat
+L176@P6: e. luncheon meat
+L177@P6: f. cooked muscle meat including ham and roast beef, and
+L178@P6: g. other ready-to-eat meat that is susceptible to the growth of
+L179@P6: pathogens or the production of toxins.
+L180@P6: Sanitise Apply heat, chemicals, or other processes, to a surface so that the
+L181@P6: number of micro-organisms on the surface is reduced to a level that:
+L182@P6: 1. does not compromise the safety of the food with which it may come
+L183@P6: into contact, and
+L184@P6: 2. does not permit the transmission of infectious disease.
+L185@P6: Shelf stable Processed meat products that do not require chilling or freezing to
+L186@P6: maintain food safety and suitability.
+L187@P6: Site of microbiological
+L188@P6: concern
+L189@P6: When used in relation to meat or a meat product means:
+L190@P6: a. if the site on the meat or meat product where micro-organisms of
+L191@P6: concern are likely to be located is known — that site; and
+L192@P6: b. in any other case — the thermal centre of the meat or meat product.
+L193@P6: Sterilise In relation to equipment or utensils used in the hygienic processing of
+L194@P6: meat, means cleaned and immersed in potable water heated to not less
+L195@P6: than 82C, or treated by other effective means.
+L196@P6: Validate Obtain evidence to demonstrate the effectiveness of a system of
+L197@P6: controls.
+L198@P6: Verify Apply methods, procedures, tests and other evaluations in addition to
+L199@P6: monitoring to determine whether a requirement is complied with or a
+L200@P6-7: matter is met.NSW standard for construction and hygienic operations of retail meat premises
+L201@P7: FA451/2509 8
+L202@P7: 1. Food safety programs
+L203@P7: 1.1 A retail meat premises must use HACCP principles to establish a documented food safety
+L204@P7: program which must:
+L205@P7: 1.2 All retail meat premises must operate in accordance with an approved food safety program
+L206@P7: through all phases of production from the receipt of raw product until delivery of the finished
+L207@P7: product.
+L208@P7: The program must comply with:
+L209@P7: 1.3 To assist businesses to comply, the NSW Retail Meat Food Safety Program has been prepared
+L210@P7: by the Food Authority to provide information and guidance to retail meat businesses on how to meet
+L211@P7: their regulatory requirements.
+L212@P7: The NSW Retail Meat Food Safety Program & Retail Diary – which includes 1 years’ worth of
+L213@P7: dedicated monitoring forms – is available for free download. Alternatively, printed copies can be
+L214@P7: purchased from the Food Authority by using the Order items form on the Food Authority website.
+L215@P7: The NSW Retail Meat Food Safety Program & Retail Diary is available in:
+L216@P7: • English
+L217@P7: • Arabic
+L218@P7: • Chinese Simplified
+L219@P7: • Chinese Traditional
+L220@P7: • Korean
+L221@P7: • Turkish
+L222@P7: • Vietnamese.
+L223@P7: 2 The principles and guidelines as set out in the document entitled Hazard Analysis and Critical Control Pint (HACCP) System and
+L224@P7: Guidelines for its Application published by the Codex Alimentarius Commission.
+L225@P7: a. identify any hazards that could jeopardise product safety and suitability during production
+L226@P7: b. implement good manufacturing practices (GMPs) to control the identified hazards
+L227@P7: c. minimise any risks to safety and suitability
+L228@P7: d. monitor the effectiveness of the GMPs in protecting safety and suitability
+L229@P7: e. implement corrective actions when GMPs are ineffective, and
+L230@P7: f. keep records of monitoring and corrective actions.
+L231@P7: a. the principles and guidelines set out in Hazard Analysis and Critical Control Point (HACCP)
+L232@P7: System and Guidelines for its Application, published by the Codex Alimentarius Commission,
+L233@P7: or
+L234@P7: b. Standard 3.2.1 – Food Safety Programs of the Food Standards Code, and
+L235@P7: c. any other requirements notified in writing by the Food Authority to the applicant for a licence
+L236@P7: or the holder of the licence for the food business concerned (section 38 of the Regulation).
+L237@P7: Outcome required: Retail meat businesses need to develop and implement a documented Food
+L238@P7: Safety Program which complies with this document, the NSW Standard for Construction and
+L239@P7: Hygienic Operation of Retail Meat Premises, addressing relevant food safety issues and
+L240@P7: incorporating the application of HACCP principles
+L241@P7: 2
+L242@P7-8: .NSW standard for construction and hygienic operations of retail meat premises
+L243@P8: FA451/2509 9
+L244@P8: 2. Food safety practices and general requirements
+L245@P8: 2.1 Skills and knowledge of staff
+L246@P8: 2.1.1 General requirement
+L247@P8: A retail meat premises must ensure that all staff undertaking, or supervising food handling
+L248@P8: operations have:
+L249@P8: 2.1.2 Hygiene training course
+L250@P8: It is a requirement of the licence that one staff member has completed a recognised food handling
+L251@P8: hygiene course and is able to produce a certificate proving course completion during audits.
+L252@P8: 2.2 Receiving of meat
+L253@P8: 2.2.1 A retail meat premises must not store or sell meat or processed meat for human consumption,
+L254@P8: or as an ingredient of processed meat, unless:
+L255@P8: 2.2.2 A retail meat premises must not sell meat or processed meat for human consumption if it has
+L256@P8: been condemned as unfit for human consumption.
+L257@P8: 2.3 Storage of meat and meat products
+L258@P8: 2.3.0.1 A retail meat premises must store meat and meat products:
+L259@P8: a. under temperature control, and
+L260@P8: b.ensure that frozen food remains hard frozen during storage (an air temperature of -15°C or
+L261@P8: less is recommended).
+L262@P8: 2.3.1.2 A retail meat premises must store meat and meat products in such a way that:
+L263@P8: a. skills in food safety and food hygiene matters, and
+L264@P8: b. knowledge of food safety and food hygiene matters, commensurate with their work activities.
+L265@P8: a. the meat or carcase has been supplied from a licensed abattoir, meat processing plant or
+L266@P8: game meat processing plant, or
+L267@P8: b. the supplier has indicated, by documentation, packaging or branding of the meat or carcase,
+L268@P8: that it has been passed as being fit for human consumption.
+L269@P8: Outcome required: Staff handling food in a retail meat premises have appropriate skills and
+L270@P8: knowledge.
+L271@P8: Outcome required: Meat and meat products are stored in an appropriate manner which protects
+L272@P8: it from contamination and minimises the growth of pathogenic bacteria.
+L273@P8-9: Outcome required: Retail meat premises only receive meat that is safe and suitable.NSW standard for construction and hygienic operations of retail meat premises
+L274@P9: FA451/2509 10
+L275@P9: 2.3.1 Temperature control
+L276@P9: 2.3.1.1 The surface temperature of carcases (other than poultry carcases) stored in chilling facilities
+L277@P9: must be maintained at not more than 7°C.
+L278@P9: 2.3.1.2 The temperature of lesser portions of meat (smaller than quarter carcases) including poultry
+L279@P9: carcases and meat stored in chilling facilities must be maintained at not more than 5°C where:
+L280@P9: i. Canning, cooking, and subsequent cooling, drying, fermenting or any other validated
+L281@P9: process which has controls in place (time/temperature, preservatives) to prevent the
+L282@P9: growth of microorganisms.
+L283@P9: 2.3.2 Chillers and freezers
+L284@P9: 2.3.2.1 Chiller and freezer capacity must be adequate to accommodate the total quantity of product
+L285@P9: likely to be held on the premises at any one time.
+L286@P9: 2.3.2.2 Facilities for the chilling and storage of carcases (including sides and quarter carcases) must
+L287@P9: be constructed to enable the surface temperature of carcases to be maintained at 7°C or less.
+L288@P9: 2.3.2.3 Facilities for the chilling and storage of meat other than carcases must be constructed to
+L289@P9: enable the temperature of meat to be maintained at 5°C or less.
+L290@P9: 2.3.2.4 Equipment for the accurate monitoring and display of chiller and freezer temperatures
+L291@P9: should be provided and always operate while chillers and freezers are in use.
+L292@P9: 2.3.2.5 Cooling unit discharge must be connected to the drainage system or be collected and
+L293@P9: disposed of in a hygienic manner.
+L294@P9: 2.3.2.6 Chillers must be constructed to ensure ready-to-eat meat is stored separately to raw meat to
+L295@P9: prevent cross contamination.
+L296@P9: 2.3.2.7 Facilities must be provided (such as racks or stands) to store cartons and containers of
+L297@P9: products (tubs, trays, presses etcetera) in such a manner that the cartons and containers and the
+L298@P9: product stored within is protected from contamination through floor contact, splash and drip from
+L299@P9: other products. The design of such facilities must not impede the effective cleaning of the chiller or
+L300@P9: freezer.
+L301@P9: a. it is protected from the likelihood of contamination, and
+L302@P9: b. the environmental conditions under which it is stored will not adversely affect the safety and
+L303@P9: suitability of the food.
+L304@P9: a. meat (including carcases) is removed from a refrigerated facility for processing such as
+L305@P9: boning and slicing, and the surface temperature of the meat rises above 7°C. Such meat
+L306@P9: must be returned to the refrigerated facility without undue delay,
+L307@P9: b. processing of meat above 7°C may be performed in a facility constructed to maintain an air
+L308@P9: temperature of not more than 10°C, and
+L309@P9: c. the temperature requirements in part (a) and (b) do not apply to meat during any of the
+L310@P9: following processes:
+L311@P9: Outcome required: Product temperature is controlled to minimise microbial growth.
+L312@P9: Outcome required: Chillers and freezers are constructed to maintain meat and meat products at
+L313@P9-10: the required temperature and prevent cross contamination.NSW standard for construction and hygienic operations of retail meat premises
+L314@P10: FA451/2509 11
+L315@P10: 2.3.3 Thawing of meat
+L316@P10: 2.3.3.1 Carcase meat and meat products must only be thawed under controlled conditions consistent
+L317@P10: with the temperature control requirements of Clause 2.3 of the Standard.
+L318@P10: 2.3.3.2 Thawed meat and meat products must not be re-frozen unless the temperature has not
+L319@P10: exceeded 5°C at any point during the thawing process.
+L320@P10: 2.3.2 Storage of hazardous substances
+L321@P10: 2.3.4.1 Hazardous substances must be stored in an area designated for that purpose and
+L322@P10: must be handled only by staff authorised under the Food Safety Program.
+L323@P10: 2.3.4.2 Except when necessary for hygienic or processing purposes, no substance which could
+L324@P10: contaminate food must be used or stored in meat handling areas.
+L325@P10: 2.3.4.3 The cleaning or sanitising of rooms, equipment or utensils by water, detergents and
+L326@P10: sanitisers, must be carried out in a manner that does not jeopardise the safety and suitability of
+L327@P10: meat and meat products.
+L328@P10: 2.3.4.4 Detergents and disinfectants must be suitable for use in meat handling areas and must not
+L329@P10: impart any unacceptable flavours or odours or leave any toxic residues.
+L330@P10: 2.3.4.5 Each container of hazardous substances must be appropriately labelled to indicate the
+L331@P10: contents and instructions for use.
+L332@P10: 2.4 Processing of meat and meat products
+L333@P10: 
+L334@P10: 
+L335@P10: 
+L336@P10: 
+L337@P10: 
+L338@P10: 
+L339@P10: 
+L340@P10: Outcome required: Meat and meat products are thawed in a manner that does not jeopardise the
+L341@P10: safety and suitability of the meat.
+L342@P10: Outcome required: Hazardous substances are stored in a manner that does not jeopardise the
+L343@P10: safety and suitability of meat and meat products.
+L344@P10: Outcome required: Procedures are implemented to minimise or eliminate the risk of physical and
+L345@P10: microbiological contamination of meat during processing. The operations of a retail meat
+L346@P10: premises ensures that:
+L347@P10: • only safe and suitable food is processed,
+L348@P10: • food is protected from contamination,
+L349@P10: • if necessary, pathogenic bacteria that may be present in the food are reduced to safe levels,
+L350@P10: and the time that food remains at temperatures that permit the growth of pathogenic bacteria
+L351@P10-11: is minimised.NSW standard for construction and hygienic operations of retail meat premises
+L352@P11: FA451/2509 12
+L353@P11: 2.4.0.1 Processing must be performed in such a manner that the safety and suitability of the meat is
+L354@P11: not jeopardised. Such processing must ensure that:
+L355@P11: i. any other food product by that meat, or
+L356@P11: ii. that meat by vermin, or
+L357@P11: iii. that meat from any other source, or
+L358@P11: iv. ready-to-eat meat by uncooked meat, and
+L359@P11: 2.4.0.2 Breadcrumbs, batters, marinades and the like, once used, must be discarded at the end of
+L360@P11: each day’s operation and must not be reused. Where recommended by the manufacturer, marinades
+L361@P11: and the like must be stored under refrigeration.
+L362@P11: 2.4.0.3 Pickling or corning liquids for injection into meat products must be derived from wholesome
+L363@P11: materials and be injected in a hygienic manner. Where automatic pickle injectors are used all pickle
+L364@P11: remaining in the reservoir at the completion of operations each day must be discarded and not
+L365@P11: reused.
+L366@P11: 2.4.0.4 The retail meat premises must not be used to sell or store for sale any pet food unless the
+L367@P11: pet food is packed in a sealed package. Unpacked meat offered for sale as pet food must have been
+L368@P11: processed and handled in accordance with the Standard and comply with all relevant legislation for
+L369@P11: food for human consumption.
+L370@P11: 2.4.0.5 Inedible meat must be identified, isolated, handled and disposed of in a manner that does not
+L371@P11: jeopardise the safety and suitability of any other meat or food item.
+L372@P11: 2.4.0.6 Ready-to-eat meat and meat products are not contaminated by meat and meat products that
+L373@P11: are not ready-to-eat.
+L374@P11: 2.4.0.7 The storage, handling, processing and packaging of cooked meat takes place in areas that
+L375@P11: are used for cooked meat only and are clearly identified as being for use for cooked meat only.
+L376@P11: 2.4.1 Processing of cured meat products
+L377@P11: 2.4.1.1 The curing of meat and meat products must take place under controlled time and
+L378@P11: temperature conditions, which minimise the potential for growth of pathogenic bacteria to a level
+L379@P11: that does not jeopardise the safety and suitability of the meat or meat products.
+L380@P11: 2.4.1.2 The curing liquid is stored at not more than 5C. Fresh brine solutions should be used for
+L381@P11: every batch.
+L382@P11: a. meat is not contaminated through splashing from a contaminated source
+L383@P11: b. the safety and suitability of meat is protected during loading, unloading and transport
+L384@P11: c. where meat is immersed or washed during processing, such activity is not a source of
+L385@P11: contamination which would jeopardise the safety and suitability of meat
+L386@P11: d. the true nature of safety and suitability of meat is not concealed nor compromised by the use
+L387@P11: of any substance or material (see also 2.4.4 Addition of sulphur dioxide (SO2) below), and
+L388@P11: e. meat is not processed in a manner that could allow cross contamination which jeopardises
+L389@P11: the safety and suitability, either directly or indirectly, of:
+L390@P11: f. smoke or steam used in direct contact with food or food contact surfaces does not
+L391@P11: contaminate the meat.
+L392@P11: Outcome required: Cured meat products are cured in a way that does not jeopardise the safety
+L393@P11-12: and suitability of the meat or meat products.NSW standard for construction and hygienic operations of retail meat premises
+L394@P12: FA451/2509 13
+L395@P12: 2.4.1.3 Brine injector machines should be cleaned and sanitised after each day’s operation and
+L396@P12: needles cleaned regularly between batches. Immersion-curing equipment should be cleaned and
+L397@P12: sanitised between batches.
+L398@P12: 2.4.1.4 Saline, nitrite and nitrate levels are maintained at concentrations that minimise food safety
+L399@P12: hazards and preserve the safety and suitability of the meat and meat products and comply with
+L400@P12: Standard 1.3.1 – Food Additives of the Food Standards Code.
+L401@P12: 2.4.2 Processing of cooked meat products
+L402@P12: 2.4.2.1 A cooked meat product must:
+L403@P12: 2.4.2.2 After cooking, the meat or meat products must be cooled in a manner that prevents or
+L404@P12: reduces the growth of pathogenic bacteria to a level that does not jeopardise the safety and
+L405@P12: suitability of the food:
+L406@P12: i. reduced from 52C to 12C within 7.5 hours, and
+L407@P12: ii. reduced to 5C within 24 hours of completion of cooking, or
+L408@P12: iii. cooled at an alternative time and temperature that is approved by the Food Authority.
+L409@P12: i. reduced from 52°C to 12°C within 6 hours, and
+L410@P12: ii. reduced to 5°C within 24 hours of completion of cooking, or
+

@@ -1,0 +1,1038 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "Summary",
+    "origin_id": "summary",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#summary",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Purpose",
+    "origin_id": "purpose",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#purpose",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Legal status",
+    "origin_id": "legal-status",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#legal-status",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Intended audience",
+    "origin_id": "intended-audience",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#intended-audience",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "UK nations this guidance applies to",
+    "origin_id": "uk-nations-this-guidance-applies-to",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#uk-nations-this-guidance-applies-to",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Introduction",
+    "origin_id": "introduction",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#introduction",
+    "ordinal": 6
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Recommendations and best practice",
+    "origin_id": "recommendations-and-best-practice",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#recommendations-and-best-practice",
+    "ordinal": 7
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Definitions",
+    "origin_id": "definitions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#definitions",
+    "ordinal": 8
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food",
+    "origin_id": "food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#food",
+    "ordinal": 9
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Consumer",
+    "origin_id": "consumer",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#consumer",
+    "ordinal": 10
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Online marketplace",
+    "origin_id": "online-marketplace",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#online-marketplace",
+    "ordinal": 11
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Prepacked food",
+    "origin_id": "prepacked-food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#prepacked-food",
+    "ordinal": 12
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Schedule 1 food",
+    "origin_id": "schedule-1-food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#schedule-1-food",
+    "ordinal": 13
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Specified food",
+    "origin_id": "specified-food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#specified-food",
+    "ordinal": 14
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Qualifying business",
+    "origin_id": "qualifying-business",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#qualifying-business",
+    "ordinal": 15
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The regulations",
+    "origin_id": "the-regulations",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#the-regulations",
+    "ordinal": 16
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Restaurant",
+    "origin_id": "restaurant",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#restaurant",
+    "ordinal": 17
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Which businesses must comply with the promotions restrictions",
+    "origin_id": "which-businesses-must-comply-with-the-promotions-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#which-businesses-must-comply-with-the-promotions-restrictions",
+    "ordinal": 18
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Exempt businesses",
+    "origin_id": "exempt-businesses",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#exempt-businesses",
+    "ordinal": 19
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Businesses exempt from the location and volume price promotions",
+    "origin_id": "businesses-exempt-from-the-location-and-volume-price-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#businesses-exempt-from-the-location-and-volume-price-promotions",
+    "ordinal": 20
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Businesses exempt from the location restrictions",
+    "origin_id": "businesses-exempt-from-the-location-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#businesses-exempt-from-the-location-restrictions",
+    "ordinal": 21
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Employee count",
+    "origin_id": "employee-count",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#employee-count",
+    "ordinal": 22
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Manufacturers",
+    "origin_id": "manufacturers",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#manufacturers",
+    "ordinal": 23
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Franchises",
+    "origin_id": "franchises",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#franchises",
+    "ordinal": 24
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Examples of businesses in scope",
+    "origin_id": "examples-of-businesses-in-scope",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#examples-of-businesses-in-scope",
+    "ordinal": 25
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Restrictions on free refills of sugary soft drinks only",
+    "origin_id": "restrictions-on-free-refills-of-sugary-soft-drinks-only",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#restrictions-on-free-refills-of-sugary-soft-drinks-only",
+    "ordinal": 26
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Out of home sector",
+    "origin_id": "out-of-home-sector",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#out-of-home-sector",
+    "ordinal": 27
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Concessions",
+    "origin_id": "concessions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#concessions",
+    "ordinal": 28
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Examples of concessions",
+    "origin_id": "examples-of-concessions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#examples-of-concessions",
+    "ordinal": 29
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 1 – retail concessions",
+    "origin_id": "example-1--retail-concessions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-1--retail-concessions",
+    "ordinal": 30
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 2 – out of home concessions",
+    "origin_id": "example-2--out-of-home-concessions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-2--out-of-home-concessions",
+    "ordinal": 31
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 3 – vending machines",
+    "origin_id": "example-3--vending-machines",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-3--vending-machines",
+    "ordinal": 32
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 4 – areas within retail stores",
+    "origin_id": "example-4--areas-within-retail-stores",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-4--areas-within-retail-stores",
+    "ordinal": 33
+  },
+  {
+    "kind": "html_heading",
+    "heading": "What food is in scope",
+    "origin_id": "what-food-is-in-scope",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#what-food-is-in-scope",
+    "ordinal": 34
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Product categories in scope",
+    "origin_id": "product-categories-in-scope",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#product-categories-in-scope",
+    "ordinal": 35
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 1",
+    "origin_id": "category-1",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-1",
+    "ordinal": 36
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 2",
+    "origin_id": "category-2",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-2",
+    "ordinal": 37
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 3",
+    "origin_id": "category-3",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-3",
+    "ordinal": 38
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 4",
+    "origin_id": "category-4",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-4",
+    "ordinal": 39
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 5",
+    "origin_id": "category-5",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-5",
+    "ordinal": 40
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 6",
+    "origin_id": "category-6",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-6",
+    "ordinal": 41
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 7",
+    "origin_id": "category-7",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-7",
+    "ordinal": 42
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 8",
+    "origin_id": "category-8",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-8",
+    "ordinal": 43
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 9",
+    "origin_id": "category-9",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-9",
+    "ordinal": 44
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 10",
+    "origin_id": "category-10",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-10",
+    "ordinal": 45
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 11",
+    "origin_id": "category-11",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-11",
+    "ordinal": 46
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 12",
+    "origin_id": "category-12",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-12",
+    "ordinal": 47
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Category 13",
+    "origin_id": "category-13",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#category-13",
+    "ordinal": 48
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Individual products vs composite meals",
+    "origin_id": "individual-products-vs-composite-meals",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#individual-products-vs-composite-meals",
+    "ordinal": 49
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Seasonal products and seasonal promotions",
+    "origin_id": "seasonal-products-and-seasonal-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#seasonal-products-and-seasonal-promotions",
+    "ordinal": 50
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Selections, platters, hampers and gift sets",
+    "origin_id": "selections-platters-hampers-and-gift-sets",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#selections-platters-hampers-and-gift-sets",
+    "ordinal": 51
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food to go",
+    "origin_id": "food-to-go",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#food-to-go",
+    "ordinal": 52
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food and drink items not covered",
+    "origin_id": "food-and-drink-items-not-covered",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#food-and-drink-items-not-covered",
+    "ordinal": 53
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#best-practice",
+    "ordinal": 54
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The 2004 to 2005 nutrient profiling model",
+    "origin_id": "the-2004-to-2005-nutrient-profiling-model",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#the-2004-to-2005-nutrient-profiling-model",
+    "ordinal": 55
+  },
+  {
+    "kind": "html_heading",
+    "heading": "NPM scores for packaged products of multiple items",
+    "origin_id": "npm-scores-for-packaged-products-of-multiple-items",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#npm-scores-for-packaged-products-of-multiple-items",
+    "ordinal": 56
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 1 – specified food + non-specified food packed together as one product intended to be eaten together",
+    "origin_id": "example-1----specified-food--non-specified-food-packed-together-as-one-product-intended-to-be-eaten-together",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-1----specified-food--non-specified-food-packed-together-as-one-product-intended-to-be-eaten-together",
+    "ordinal": 57
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 2 – schedule 1 food + schedule 1 food packed together as one product intended to be eaten together",
+    "origin_id": "example-2----schedule-1-food--schedule-1-food-packed-together-as-one-product-intended-to-be-eaten-together",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-2----schedule-1-food--schedule-1-food-packed-together-as-one-product-intended-to-be-eaten-together",
+    "ordinal": 58
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 3 – hampers and platters containing schedule 1 food + non-schedule 1 food",
+    "origin_id": "example-3----hampers-and-platters-containing-schedule-1-food--non-schedule-1-food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-3----hampers-and-platters-containing-schedule-1-food--non-schedule-1-food",
+    "ordinal": 59
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Volume price promotions",
+    "origin_id": "volume-price-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#volume-price-promotions",
+    "ordinal": 60
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Examples of permitted vs restricted volume price promotions",
+    "origin_id": "examples-of-permitted-vs-restricted-volume-price-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#examples-of-permitted-vs-restricted-volume-price-promotions",
+    "ordinal": 61
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 1 – 2 for 1 on plain water bottles",
+    "origin_id": "example-1----2-for-1-on-plain-water-bottles",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-1----2-for-1-on-plain-water-bottles",
+    "ordinal": 62
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 2 – 2 for 1 on a range of plain water and sugary soft drinks that have an NPM score of ≥1",
+    "origin_id": "example-2----2-for-1-on-a-range-of-plain-water-and-sugary-soft-drinks-that-have-an-npm-score-of-1",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-2----2-for-1-on-a-range-of-plain-water-and-sugary-soft-drinks-that-have-an-npm-score-of-1",
+    "ordinal": 63
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 3 – 2 for 1 offer on only sugary soft drinks that have an NPM score of ≥1",
+    "origin_id": "example-3----2-for-1-offer-on-only-sugary-soft-drinks-that-have-an-npm-score-of-1",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-3----2-for-1-offer-on-only-sugary-soft-drinks-that-have-an-npm-score-of-1",
+    "ordinal": 64
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Relevant special offer exemption",
+    "origin_id": "relevant-special-offer-exemption",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#relevant-special-offer-exemption",
+    "ordinal": 65
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Meal deals online",
+    "origin_id": "meal-deals-online",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#meal-deals-online",
+    "ordinal": 66
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Other means of communicating volume price promotions",
+    "origin_id": "other-means-of-communicating-volume-price-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#other-means-of-communicating-volume-price-promotions",
+    "ordinal": 67
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Transition period for promotions on packaging",
+    "origin_id": "transition-period-for-promotions-on-packaging",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#transition-period-for-promotions-on-packaging",
+    "ordinal": 68
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Price promotions not in scope",
+    "origin_id": "price-promotions-not-in-scope",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#price-promotions-not-in-scope",
+    "ordinal": 69
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Free refills",
+    "origin_id": "free-refills",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#free-refills",
+    "ordinal": 70
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Drinks in scope",
+    "origin_id": "drinks-in-scope",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#drinks-in-scope",
+    "ordinal": 71
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Drinks out of scope",
+    "origin_id": "drinks-out-of-scope",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#drinks-out-of-scope",
+    "ordinal": 72
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Location promotions",
+    "origin_id": "location-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#location-promotions",
+    "ordinal": 73
+  },
+  {
+    "kind": "html_heading",
+    "heading": "In store restrictions on location promotions",
+    "origin_id": "in-store-restrictions-on-location-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#in-store-restrictions-on-location-promotions",
+    "ordinal": 74
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Concessions",
+    "origin_id": "concessions-1",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#concessions-1",
+    "ordinal": 75
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 1 – on-site cafés",
+    "origin_id": "example-1--on-site-cafs",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-1--on-site-cafs",
+    "ordinal": 76
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 2 – retail concession counters",
+    "origin_id": "example-2--retail-concession-counters",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-2--retail-concession-counters",
+    "ordinal": 77
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Restricted areas in store",
+    "origin_id": "restricted-areas-in-store",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#restricted-areas-in-store",
+    "ordinal": 78
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Aisle ends",
+    "origin_id": "aisle-ends",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#aisle-ends",
+    "ordinal": 79
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Store entrances",
+    "origin_id": "store-entrances",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#store-entrances",
+    "ordinal": 80
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Formula – prohibited distance from the store entrance",
+    "origin_id": "formula--prohibited-distance-from-the-store-entrance",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#formula--prohibited-distance-from-the-store-entrance",
+    "ordinal": 81
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Examples of application of the prohibited distance from the store entrance",
+    "origin_id": "examples-of-application-of-the-prohibited-distance-from-the-store-entrance",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#examples-of-application-of-the-prohibited-distance-from-the-store-entrance",
+    "ordinal": 82
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Aisles within a restricted store entrance area",
+    "origin_id": "aisles-within-a-restricted-store-entrance-area",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#aisles-within-a-restricted-store-entrance-area",
+    "ordinal": 83
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Covered external areas",
+    "origin_id": "covered-external-areas",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#covered-external-areas",
+    "ordinal": 84
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 1 – petrol forecourts",
+    "origin_id": "example-1--petrol-forecourts",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-1--petrol-forecourts",
+    "ordinal": 85
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 2 – shop awnings",
+    "origin_id": "example-2--shop-awnings",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-2--shop-awnings",
+    "ordinal": 86
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Internal entrances to food halls within a department store (or similar)",
+    "origin_id": "internal-entrances-to-food-halls-within-a-department-store-or-similar",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#internal-entrances-to-food-halls-within-a-department-store-or-similar",
+    "ordinal": 87
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Multiple store entrances",
+    "origin_id": "multiple-store-entrances",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#multiple-store-entrances",
+    "ordinal": 88
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sampling in store",
+    "origin_id": "sampling-in-store",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#sampling-in-store",
+    "ordinal": 89
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Online restrictions for location promotions",
+    "origin_id": "online-restrictions-for-location-promotions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#online-restrictions-for-location-promotions",
+    "ordinal": 90
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Restricted locations online",
+    "origin_id": "restricted-locations-online",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#restricted-locations-online",
+    "ordinal": 91
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Examples of searching restrictions",
+    "origin_id": "examples-of-searching-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#examples-of-searching-restrictions",
+    "ordinal": 92
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 1 – Searching for a specified food",
+    "origin_id": "example-1--searching-for-a-specified-food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-1--searching-for-a-specified-food",
+    "ordinal": 93
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 2 – Searching for a non-specified food",
+    "origin_id": "example-2--searching-for-a-non-specified-food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-2--searching-for-a-non-specified-food",
+    "ordinal": 94
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 3 – Relevant special offers and exempt categories",
+    "origin_id": "example-3--relevant-special-offers-and-exempt-categories",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-3--relevant-special-offers-and-exempt-categories",
+    "ordinal": 95
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 4 – Hampers",
+    "origin_id": "example-4--hampers",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-4--hampers",
+    "ordinal": 96
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Examples of browsing restrictions",
+    "origin_id": "examples-of-browsing-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#examples-of-browsing-restrictions",
+    "ordinal": 97
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 1 – Browsing for a specified food",
+    "origin_id": "example-1--browsing-for-a-specified-food",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-1--browsing-for-a-specified-food",
+    "ordinal": 98
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 2 – Relevant special offers and exempt taxonomy categories",
+    "origin_id": "example-2----relevant-special-offers-and-exempt-taxonomy-categories",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-2----relevant-special-offers-and-exempt-taxonomy-categories",
+    "ordinal": 99
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example 3 – Hampers",
+    "origin_id": "example-3----hampers",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#example-3----hampers",
+    "ordinal": 100
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Special offers pages",
+    "origin_id": "special-offers-pages",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#special-offers-pages",
+    "ordinal": 101
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Banners or headers",
+    "origin_id": "banners-or-headers",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#banners-or-headers",
+    "ordinal": 102
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Online advertising restrictions",
+    "origin_id": "online-advertising-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#online-advertising-restrictions",
+    "ordinal": 103
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Liability",
+    "origin_id": "liability",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#liability",
+    "ordinal": 104
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Online apps or delivery platforms",
+    "origin_id": "online-apps-or-delivery-platforms",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#online-apps-or-delivery-platforms",
+    "ordinal": 105
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Enforcement",
+    "origin_id": "enforcement",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#enforcement",
+    "ordinal": 106
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Enforcement of the regulations",
+    "origin_id": "enforcement-of-the-regulations",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#enforcement-of-the-regulations",
+    "ordinal": 107
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Penalties for non-compliance",
+    "origin_id": "penalties-for-non-compliance",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#penalties-for-non-compliance",
+    "ordinal": 108
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Online enforcement",
+    "origin_id": "online-enforcement",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#online-enforcement",
+    "ordinal": 109
+  },
+  {
+    "kind": "html_heading",
+    "heading": "ASA’s role in enforcement of online promotions restrictions",
+    "origin_id": "asas-role-in-enforcement-of-online-promotions-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#asas-role-in-enforcement-of-online-promotions-restrictions",
+    "ordinal": 110
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Annex A – enforcement process",
+    "origin_id": "annex-a",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#annex-a",
+    "ordinal": 111
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Improvement notices",
+    "origin_id": "improvement-notices",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#improvement-notices",
+    "ordinal": 112
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Process for issuing fixed monetary penalties",
+    "origin_id": "process-for-issuing-fixed-monetary-penalties",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#process-for-issuing-fixed-monetary-penalties",
+    "ordinal": 113
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Final notice",
+    "origin_id": "final-notice",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#final-notice",
+    "ordinal": 114
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Non-payment after 28 days",
+    "origin_id": "non-payment-after-28-days",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#non-payment-after-28-days",
+    "ordinal": 115
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Criminal proceedings",
+    "origin_id": "criminal-proceedings",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#criminal-proceedings",
+    "ordinal": 116
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Guidance",
+    "origin_id": "guidance",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#guidance",
+    "ordinal": 117
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Publication of enforcement action",
+    "origin_id": "publication-of-enforcement-action",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#publication-of-enforcement-action",
+    "ordinal": 118
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Annex B – enforcement flowchart",
+    "origin_id": "annex-b",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#annex-b",
+    "ordinal": 119
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Text alternative to the flow chart",
+    "origin_id": "text-alternative-to-the-flow-chart",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#text-alternative-to-the-flow-chart",
+    "ordinal": 120
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Enforcement officer finds a business non-compliant with regulations",
+    "origin_id": "enforcement-officer-finds-a-business-non-compliant-with-regulations",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#enforcement-officer-finds-a-business-non-compliant-with-regulations",
+    "ordinal": 121
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Does the business comply after conversation?",
+    "origin_id": "does-the-business-comply-after-conversation",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#does-the-business-comply-after-conversation",
+    "ordinal": 122
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Does the business dispute the improvement notice?",
+    "origin_id": "does-the-business-dispute-the-improvement-notice",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#does-the-business-dispute-the-improvement-notice",
+    "ordinal": 123
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Does the business comply with the improvement notice?",
+    "origin_id": "does-the-business-comply-with-the-improvement-notice",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#does-the-business-comply-with-the-improvement-notice",
+    "ordinal": 124
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Does the business dispute the enforcement authority notice of an intent for a fixed monetary penalty?",
+    "origin_id": "does-the-business-dispute-the-enforcement-authority-notice-of-an-intent-for-a-fixed-monetary-penalty",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#does-the-business-dispute-the-enforcement-authority-notice-of-an-intent-for-a-fixed-monetary-penalty",
+    "ordinal": 125
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Does the business pay the fine within 28 days?",
+    "origin_id": "does-the-business-pay-the-fine-within-28-days",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#does-the-business-pay-the-fine-within-28-days",
+    "ordinal": 126
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Does the business dispute the enforcement authority notice of an intent for a fixed monetary penalty?",
+    "origin_id": "does-the-business-dispute-the-enforcement-authority-notice-of-an-intent-for-a-fixed-monetary-penalty-1",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#does-the-business-dispute-the-enforcement-authority-notice-of-an-intent-for-a-fixed-monetary-penalty-1",
+    "ordinal": 127
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Does the business pay within 28 days?",
+    "origin_id": "does-the-business-pay-within-28-days",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#does-the-business-pay-within-28-days",
+    "ordinal": 128
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Annex C – diagrams of location restrictions",
+    "origin_id": "annex-c",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#annex-c",
+    "ordinal": 129
+  },
+  {
+    "kind": "html_heading",
+    "heading": "In-store restrictions",
+    "origin_id": "in-store-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#in-store-restrictions",
+    "ordinal": 130
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 1 – In-store checkout area",
+    "origin_id": "image-1--in-store-checkout-area",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-1--in-store-checkout-area",
+    "ordinal": 131
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 2 – Designated queuing area",
+    "origin_id": "image-2--designated-queuing-area",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-2--designated-queuing-area",
+    "ordinal": 132
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 3 – Ends of aisles and islands",
+    "origin_id": "image-3--ends-of-aisles-and-islands",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-3--ends-of-aisles-and-islands",
+    "ordinal": 133
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 4 – Single door entrance",
+    "origin_id": "image-4--single-door-entrance",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-4--single-door-entrance",
+    "ordinal": 134
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 5 – Single door entrance on a corner",
+    "origin_id": "image-5--single-door-entrance-on-a-corner",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-5--single-door-entrance-on-a-corner",
+    "ordinal": 135
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 6 – Open plan entrance",
+    "origin_id": "image-6--open-plan-entrance",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-6--open-plan-entrance",
+    "ordinal": 136
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 7 – Single door entrance near an aisle",
+    "origin_id": "image-7--single-door-entrance-near-an-aisle",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-7--single-door-entrance-near-an-aisle",
+    "ordinal": 137
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 8 – Stairs or escalators leading to a single door entrance",
+    "origin_id": "image-8--stairs-or-escalators-leading-to-a-single-door-entrance",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-8--stairs-or-escalators-leading-to-a-single-door-entrance",
+    "ordinal": 138
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 9 – Multiple door entrances",
+    "origin_id": "image-9--multiple-door-entrances",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-9--multiple-door-entrances",
+    "ordinal": 139
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 10 – Entrance in a covered area inside the store",
+    "origin_id": "image-10--entrance-in-a-covered-area-inside-the-store",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-10--entrance-in-a-covered-area-inside-the-store",
+    "ordinal": 140
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 11 – Entrance in a covered area outside the store",
+    "origin_id": "image-11--entrance-in-a-covered-area-outside-the-store",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-11--entrance-in-a-covered-area-outside-the-store",
+    "ordinal": 141
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Online restrictions",
+    "origin_id": "online-restrictions",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#online-restrictions",
+    "ordinal": 142
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 12 – Homepage",
+    "origin_id": "image-12--homepage",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-12--homepage",
+    "ordinal": 143
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 13 – Pop-ups",
+    "origin_id": "image-13--pop-ups",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-13--pop-ups",
+    "ordinal": 144
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 14 – Favourites",
+    "origin_id": "image-14--favourites",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-14--favourites",
+    "ordinal": 145
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 15 – Checkout",
+    "origin_id": "image-15--checkout",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-15--checkout",
+    "ordinal": 146
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 16 – Browsing",
+    "origin_id": "image-16----browsing",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-16----browsing",
+    "ordinal": 147
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Image 17 – Searching",
+    "origin_id": "image-17----searching",
+    "source_url": "https://www.gov.uk/government/publications/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price/restricting-promotions-of-products-high-in-fat-sugar-or-salt-by-location-and-by-volume-price-implementation-guidance#image-17----searching",
+    "ordinal": 148
+  }
+]

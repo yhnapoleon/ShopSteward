@@ -1,0 +1,338 @@
+ (https://www.foodauthority.nsw.gov.au/media/2891)
+citeturn131view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 33; Source: open({"ref_id":"https://www.foodauthority.nsw.gov.au/media/2891","lineno":510}); Total lines: 981
+L378@P12: numerous individual trials. His estimates are science based but more conservative values have routinely been used by
+L379@P12-13: regulatory agencies.14
+L380@P13: Table 2. Approximate time (Hours: Minutes) to heat and cook refrigerated beef
+L381@P13: Thickness
+L382@P13: (mm)
+L383@P13: Water bath temperature °C
+L384@P13: 55 56 57 58 59 60 61 62 63 64 65 66
+L385@P13: 5 1:16 0:54 0:38 0:28 0:21 0:17 0:14 0:12 0:09 0:08 0:07 0:06
+L386@P13: 10 1:24 1:02 0:47 0:38 0:31 0:27 0:23 0:21 0:19 0:18 0:16 0:15
+L387@P13: 15 1:37 1:15 1:00 0:51 0:44 0:39 0:35 0:32 0:30 0:28 0:26 0:25
+L388@P13: 20 1:54 1:32 1:17 1:06 0:59 0:53 0:49 0:45 0:42 0:39 0:37 0:35
+L389@P13: 25 2:08 1:46 1:31 1:20 1:11 1:05 1:00 0:56 0:52 0:49 0:47 0:44
+L390@P13: 30 2:23 2:00 1:44 1:33 1:24 1:17 1:11 1:07 1:03 0:59 0:56 0:54
+L391@P13: 35 2:38 2:15 1:58 1:46 1:36 1:29 1:23 1:18 1:13 1:09 1:06 1:03
+L392@P13: 40 2:53 2:29 2:12 1:59 1:49 1:41 1:34 1:29 1:24 1:20 1:16 1:13
+L393@P13: 45 3:15 2:51 2:32 2:18 2:07 1:58 1:51 1:45 1:39 1:34 1:30 1:27
+L394@P13: 50 3:39 3:13 2:54 2:39 2:27 2:17 2:09 2:02 1:56 1:50 1:46 1:41
+L395@P13: 55 4:04 3:37 3:17 3:01 2:48 2:37 2:28 2:20 2:13 2:07 2:02 1:57
+L396@P13: 60 4:31 4:03 3:42 3:24 3:10 2:58 2:48 2:40 2:32 2:26 2:20 2:14
+L397@P13: 65 4:59 4:30 4:07 3:49 3:34 3:21 3:10 3:00 2:52 2:45 2:38 2:32
+L398@P13: 70 5:30 4:59 4:34 4:14 3:58 3:44 3:32 3:22 3:13 3:05 2:58 2:51
+L399@P13: Table 2, provided by Douglas Baldwin (personal communication, 2012), is based on thermal processing studies for
+L400@P13: meat used by the FSIS (2009) in development of their guidance on cooking times. The FSIS guidance is applicable to
+L401@P13: 1) beef, lamb and veal steaks and roasts, 2) pork chops, ribs and roasts, and 3) fish. Higher temperatures are
+L402@P13: recommended for poultry, eggs and minced meat.
+L403@P13: When water baths are operated at temperatures well above the target temperature for the food or if combination
+L404@P13: steam/forced convection ovens or water cascade systems are used, food temperatures are usually monitored by
+L405@P13: probes placed at the slowest heating point of the food. Table 3 shows times for pasteurisation and FSIS cooking of
+L406@P13-14: meat chops, roasts and steaks. Timing starts when the core temperature has been reached.15
+L407@P14: Table 3. Recommended hold time/temperature combinations for pasteurisation4 and cooking5 of meats
+L408@P14: Core temp °C Pasteurisation time6
+L409@P14: Minutes : Seconds
+L410@P14: Cooking time7
+L411@P14: Minutes : Seconds
+L412@P14: 55 200:00 69:00
+L413@P14: 56 147:00 46:00
+L414@P14: 57 109:00 30:00
+L415@P14: 58 80:00 20:00
+L416@P14: 59 59:00 14:00
+L417@P14: 60 44:00 9:00
+L418@P14: 61 32:00 6:00
+L419@P14: 62 24:00 4:00
+L420@P14: 63 18:00 3:00
+L421@P14: 64 13:00 2:00
+L422@P14: 65 10:00 1:05
+L423@P14: 66 7:00 0:42
+L424@P14: 67 6:00 0:30
+L425@P14: 68 4:00 Less than 20 seconds
+L426@P14: 69 3:00
+L427@P14: 70 2:00
+L428@P14: 71 1:29
+L429@P14: 72 1:05
+L430@P14: 4 Pasteurisation – a 6-log reduction for L. monocytogenes process applicable to all foods
+L431@P14: 5 Cooking – a 6.5 log reduction for Salmonella process for meats excluding poultry
+L432@P14: 6 Adapted from Warne (2011). Seconds are only shown for short processes and other times have been rounded to the
+L433@P14: next minute
+L434@P14-15: 7 Figures have been interpolated from FSIS (2009) guidance and have also been rounded up16
+L435@P15: Core temp °C Pasteurisation time6
+L436@P15: Minutes : Seconds
+L437@P15: Cooking time7
+L438@P15: Minutes : Seconds
+L439@P15: 73 0:48
+L440@P15: 74 0:36
+L441@P15: 75 0:26
+L442@P15: 76+ Less than 20 seconds
+L443@P15: 1.2 Product cooling – bacterial growth
+L444@P15: The potential for bacterial growth during cooling and reheating of sous vide foods is no different from conventional
+L445@P15: processes. The Food Standards Code addresses the issue and guidance is available in Safe Food Australia (2016).
+L446@P15: C. perfringens is the major cause of foodborne illness associated with inadequate cooling and reheating of foods. This
+L447@P15: pathogen has important characteristics that result in it being a regular cause of foodborne illness:
+L448@P15: • It forms a tough heat resistant spore that is not killed during normal cooking. Under suitable conditions the spore
+L449@P15: will germinate to produce actively growing bacteria.
+L450@P15: • It grows in the absence of oxygen and food packed under vacuum in a pouch provides an ideal environment for
+L451@P15: growth.
+L452@P15: • The bacteria can grow exceptionally quickly in warm food, especially meat. They will double in number every ten
+L453@P15: minutes at optimal temperatures and grow quickly in the range of 30 to 50°C.
+L454@P15: • When temperature-abused food is consumed, the bacteria will form spores in the gut and, in the process,
+L455@P15: release a toxin. If large numbers of the bacteria were present in the food, the toxin will result in food poisoning
+L456@P15: with profuse diarrhoea and severe cramping pain.
+L457@P15: Hands-on: sous vide cooling
+L458@P15: Baldwin (2022) provides a very useful guidance on cooling sous vide products in slush ice. This method is commonly
+L459@P15: used in restaurants and homes. Table 4 shows approximate cooling times in slush ice (i.e. ice water bath that is at
+L460@P15: least half ice) for food in a pouch. The times depend on the thickness and shape of the food. Note that as the
+L461@P15: thickness of a food doubles the cooling time triples.
+L462@P15: Large restaurants, caterers and ready meal companies might use blast chillers or water cascade systems for cooling.
+L463@P15: In these systems cooling is usually monitored using in-pack temperature probes. Some businesses with good portion
+L464@P15: control, sufficient historical data and well controlled equipment will be able to validate cooling cycles. In-pack probes or
+L465@P15-16: tip sensitive digital thermometers could then be used to verify internal temperatures at reduced frequency.17
+L466@P16: Table 4. Approximate cooling time (Hours: Minutes) from 55–80°C to 5°C for sous vide food in slush ice
+L467@P16: Food thickness (mm) Food shape
+L468@P16: Slab-like Cylinder-like Sphere-like
+L469@P16: 5 0:05 0:03 0:03
+L470@P16: 10 0:14 0:08 0:06
+L471@P16: 15 0:25 0:14 0:10
+L472@P16: 20 0:35 0:20 0:15
+L473@P16: 25 0:50 0:30 0:20
+L474@P16: 30 1:15 0:40 0:30
+L475@P16: 35 1:30 0:50 0:35
+L476@P16: 40 1:45 1:00 0:45
+L477@P16: 45 2:15 1:15 0:55
+L478@P16: 50 2:45 1:30 1:00
+L479@P16: 55 3:15 1:45 1:15
+L480@P16: 60 3:45 2:00 1:30
+L481@P16: 65 4:15 2:15 1:45
+L482@P16: 70 4:45 2:45 2:00
+L483@P16: 75 5:30 3:00 2:15
+L484@P16: 80 – 3:30 2:30
+L485@P16: 85 – 3:45 2:45
+L486@P16: 90 – 4:15 3:00
+L487@P16: 95 – 4:45 3:30
+L488@P16: 100 – 5:00 3:45
+L489@P16: 105 – 5:30 4:00
+L490@P16: 110 – 6:00 4:30
+L491@P16-17: 115 – – 4:4518
+L492@P17: Standard 3.2.2 of the Food Standards Code requires:
+L493@P17: • A food business must, when cooling cooked potentially hazardous food, cool the food:
+L494@P17: - Within two hours – from 60°C to 21°C; and
+L495@P17: - Within a further four hours – from 21°C to 5°C;
+L496@P17: • unless the food business demonstrates that the cooling process used will not adversely affect the
+L497@P17: microbiological safety of the food.
+L498@P17: Sous vide food of suitable thinness and shape will comfortably meet cooling time targets when cooled in slush ice,
+L499@P17: blast chillers or water cascade systems.
+L500@P17: 1.3 Extended refrigerated storage of food – botulism
+L501@P17: Botulism is a term used to describe an intoxication caused by C. botulinum neurotoxins. From a food safety point of
+L502@P17: view C. botulinum remains one of the most important foodborne bacteria. It is characterised by its:
+L503@P17: • growth in the absence of air,
+L504@P17: • production of a tough spore that survives normal cooking,
+L505@P17: • growth across a wide temperature range, including some strains that grow at refrigeration temperatures, and
+L506@P17: • production of the most potent group of biological neurotoxins known (Szabo and Gibson, 2003).
+L507@P17: A product stored in a sealed pouch, prepared using a delicate cooking cycle and stored refrigerated for lengthy
+L508@P17: periods, presents an environment where non-proteolytic (cold-tolerant) strains of C. botulinum are an undoubted
+L509@P17: hazard. Most of the food safety concerns about these types of products have been focussed on the potential for
+L510@P17: growth and toxin production by these strains.
+L511@P17: In 2008, the UK Food Standards Agency (UKFSA) provided guidance on the safety and shelf life of vacuum packed
+L512@P17: and modified atmosphere packed chilled foods with respect to non-proteolytic C. botulinum. The UKFSA summarised
+L513@P17: the recommendations of their Advisory Committee on the Microbiological Safety of Food (ACMSF, 1992, 2007) on
+L514@P17: vacuum packaging and associated processes. The ACMSF (2007) recommended a maximum of ten day shelf life for
+L515@P17: vacuum and modified atmosphere foods stored between 3°C and 8°C when other controlling factors could not be
+L516@P17: identified. The report noted that at less than 3°C the growth of non-proteolytic C. botulinum does not occur and that
+L517@P17: foods stored at less than 3°C are outside the scope of the guidance.
+L518@P17: The ACMSF recommended that, in addition to chill temperatures which should be maintained throughout the food
+L519@P17: chain, the following control factors should be used singly or in combination to prevent growth and toxin production by
+L520@P17: non-proteolytic C. botulinum in chilled foods with a shelf life of more than ten days:
+L521@P17: • A heat treatment of 90°C for 10 minutes or equivalent lethality.
+L522@P17: • A pH of 5 or less throughout the food and throughout all components of complex foods.
+L523@P17: • A minimum salt level of 3.5% in the aqueous phase throughout the food and throughout all components of
+L524@P17: complex foods.
+L525@P17: • A water activity of 0.97 or less throughout the food and throughout all components of complex foods.
+L526@P17: • A combination of heat and preservative factors which can be shown consistently to prevent growth and toxin
+L527@P17: production by cold tolerant C. botulinum.
+L528@P17-18: A comprehensive Australian hands-on guidance has been prepared by Cox and Bauler (2008).19
+L529@P18: 1.4 Extended refrigerated storage of food – listeriosis
+L530@P18: Foodborne listeriosis is a relatively rare but serious disease with high fatality rates (20–30%) compared with other
+L531@P18: foodborne microbial pathogens, such as Salmonella. The disease largely affects specific segments of the population
+L532@P18: who have increased susceptibilities.
+L533@P18: L. monocytogenes is an opportunistic pathogen that most often affects:
+L534@P18: • people with a severe underlying disease or condition, e.g. immunosuppression, HIV/AIDS and chronic
+L535@P18: conditions such as cirrhosis that impair the immune system,
+L536@P18: • pregnant women,
+L537@P18: • unborn or newly delivered infants, and
+L538@P18: • the elderly.
+L539@P18: L. monocytogenes is widely dispersed in the environment and foods. An important factor in foodborne listeriosis is that
+L540@P18: the pathogen can grow to significant numbers at refrigeration temperatures when given sufficient time. Although
+L541@P18: listeriosis is a relatively rare disease, the severity of the disease and the very frequent involvement of industrially
+L542@P18: processed foods, especially during outbreaks, mean that the social and economic impact of listeriosis is among the
+L543@P18: highest of the foodborne diseases (WHO, 2004).
+L544@P18: Cox and Bauler (2008) provide the following guidance on control of L. monocytogenes in cook chill foods:
+L545@P18: • Because of its sensitivity to heat, cooking will reduce the number of L. monocytogenes by 1,000,000-fold
+L546@P18: provided all parts of the food reach a temperature of, or equivalent to, 75°C. This is known as a 6D process.
+L547@P18: • Although growth does not stop, storage at 5°C or below will substantially slow the growth of L. monocytogenes
+L548@P18: in cook chill foods.
+L549@P18: • Limiting the storage time and/or shelf life are other major controls that can be used.
+L550@P18: Hands-on: refrigerated storage of sous vide foods
+L551@P18: Modern culinary sous vide is less about extended storage and more about taste. For example, Thomas Keller’s book,
+L552@P18: Under Pressure (2008), does not encourage storage for extended periods unless the food is frozen. The book focuses
+L553@P18: on the gastronomic benefits of cooking under vacuum at very controlled temperatures. Food safety is accentuated upfront and if others follow his storage advice C. botulinum will not be a risk. Baldwin (2022) provides sound advice on
+L554@P18: storage temperatures with only brief storage periods recommended at temperatures above 3.3°C.
+L555@P18: The NSW Food Authority’s default guidance for sous vide food and certain other products in sealed packages which
+L556@P18: are protected from contamination after thermal processing, is below:
+L557@P18: • With a 90°C/10 minute equivalent cook and storage at 5°C – shelf life as validated.
+L558@P18: • With a 70°C/2 minute equivalent cook and storage at less than 3°C – shelf life as validated.
+L559@P18: • With a 70°C/2 minute equivalent cook and storage at 5°C – a 10 day shelf life.
+L560@P18: The process controls and support programs required to validate an extended shelf life are generally not plausible in a
+L561@P18: busy restaurant kitchen. Restaurants should limit refrigerated storage of pasteurised sous vide foods to ten days.
+L562@P18: Cooked but not pasteurised foods should only be held refrigerated for brief periods. Kennedy (2004) refers to ‘short
+L563@P18: term cook chill’ and notes that it is often called ‘5-day cook chill’, as that is a common time period used by mass
+L564@P18-19: caterers. Five days at 5°C is the recommended upper limit for storage of cooked but not pasteurised sous vide food.20
+L565@P19: 1.5 Product reheating – bacterial growth
+L566@P19: The potential for bacterial growth during cooling and reheating of sous vide foods is no different to conventional
+L567@P19: processes, and the guidance documents mentioned in section 1.2 are relevant.
+L568@P19: C. perfringens is commonly encountered in food service and home catering settings. Often large portions of food and
+L569@P19: more than one failure to handle food safely are involved. Examples include the following:
+L570@P19: • A restaurant cooks a casserole, curry or chilli in a large stock pot, cools it for two hours on the kitchen bench
+L571@P19: and refrigerates it overnight. The food is ladled into a tray in the hot display to reheat and then served at lunch
+L572@P19: time. The food at the centre of the stock pot never cooled and slowly reheated to only a low temperature while
+L573@P19: on display. C. perfringens grew to very large numbers and many customers developed food poisoning.
+L574@P19: • A large roast, e.g. a turkey, was cooked the day before a large family function. It was cooled on the bench for
+L575@P19: several hours, wrapped in aluminium foil and then refrigerated. It was reheated briefly in an overworked oven
+L576@P19: prior to service. The food was not properly cooled or reheated. C. perfringens grew to large numbers and
+L577@P19: caused illness in many that attended the function.
+L578@P19: Small portions of sous vide food are relatively easy to cool and reheat. With attention to detail, the risk of
+L579@P19: C. perfringens in small pouches of sous vide food can be controlled.
+L580@P19: Hands-on: sous vide reheating
+L581@P19: Baldwin (2022) tabulates heating times for sous vide products in a finely controlled water bath. These times provide
+L582@P19: useful guidance on reheating of foods. Table 5, which derived from the guide in his website, shows approximate
+L583@P19: heating times for refrigerated food in a pouch to a temperature 0.5°C below the temperature of the water bath.
+L584@P19: Baldwin also provides times for heating food from frozen (Table 6). Time limits are extended by three hours to allow
+L585@P19: time for the food to thaw and enter the temperature danger zone.
+L586@P19: Small portions of sous vide foods can be reheated in required time frames. Faster heating times can be achieved by
+L587@P19: using higher water bath temperatures. Sous vide food for larger functions could be reheated using a combination
+L588@P19: steam/forced convection oven. For these methods, reheating is usually monitored using in-pack temperature probes.
+L589@P19: Some businesses with good portion control, sufficient historical data and well controlled equipment will have validated
+L590@P19: reheating cycles. In-pack probes or tip sensitive digital thermometers would be used to verify internal temperatures at
+L591@P19: reduced frequency.
+L592@P19: There may be foods where suggested temperatures are inconsistent with the production of very rare or undercooked
+L593@P19: foods. These foods are best prepared as cook–serve foods.
+L594@P19: Standard 3.2.2 Clause 7(4) of the Food Standards Code requires:
+L595@P19: A food business must, when reheating previously cooked and cooled potentially hazardous food to hold it hot, use
+L596@P19: a heat process that rapidly heats the food to a temperature of 60°C or above, unless the food business
+L597@P19-20: demonstrates that the heating process used will not adversely affect the microbiological safety of the food.21
+L598@P20: The clause is subjective and guidance is provided in Safe Food Australia (FSANZ, 2016):
+L599@P20: This requirement only applies to potentially hazardous food that is to be held hot, for example in a bain marie. It
+L600@P20: does not apply to food that is being heated for immediate consumption. This food can be heated to any
+L601@P20: temperature as it is not being heated for holding hot.
+L602@P20: Potentially hazardous food that has been previously cooked and cooled and is to be held hot must be heated
+L603@P20: rapidly to a temperature of 60°C or above. ‘Rapidly’ has not been defined, but the time taken to heat all the food
+L604@P20: to 60°C should not exceed two hours.
+L605@P20: A food business may use an alternative heating process if the business can demonstrate that the alternative
+L606@P20: process does not compromise the microbiological safety of the food.
+L607@P20: Sous vide enthusiasts prefer not to reheat using a temperature above that used during cooking. Baldwin (2022), for
+L608@P20: example, refers to meat typically being reheated at 55°C since the ideal serving temperature for meat is 50° to 55°C.
+L609@P20: The Food Standards Code does not establish parameters for reheating food for immediate service, except to generally
+L610@P20: require that food is safe. The ‘2-hour/4-hour rule’ provides a general guidance.
+L611@P20: The 2-hour/4-hour rule provides options for what can be done safely with ready-to-eat potentially hazardous food,
+L612@P20: depending on how long it has been at temperatures between 5°C and 60°C.
+L613@P20: The time between 5°C and 60°C is cumulative — that means every time the food has been out of the fridge, including
+L614@P20: during preparation, storage, transport and display, it must be added up.
+L615@P20: If the total time is:
+L616@P20: • Less than 2 hours, the food can be used or put back in the refrigerator for later use,
+L617@P20: • Between 2 and 4 hours, the food can still be used, but can’t be put back in the refrigerator, and
+L618@P20: • 4 hours or longer, the food must be thrown out.
+L619@P20: For compliance with the guidance documents prepared to support the Food Standards Code, Table 5 and Table 6
+L620@P20: should be used as follows:
+L621@P20: • For pasteurised or cooked and properly cooled foods to be reheated for hot holding food: the objective is to heat
+L622@P20: food to 60°C within 2 hours – reheat in a 60.5°C (or higher) water bath for the times shown in the light green
+L623@P20: colour-coded cells of Table 5 or Table 6.
+L624@P20: • For pasteurised or cooked and properly cooled foods to be reheated for immediate service: the Food Standards
+L625@P20: Code does not prescribe a time limit but a reasonable target is 4 hours (the ‘2-hour/4-hour rule’) – reheat in a
+L626@P20: 55°C (or higher) water bath for the times shown in the light green or dark green colour-coded cells of Table 5 or
+L627@P20: Table 6.
+L628@P20: • For larger portions of pasteurised or cooked and properly cooled foods to be reheated for immediate service:
+L629@P20: the Food Standards Code does not prescribe a time limit but a reasonable target is to heat the food to 60°C
+L630@P20: within 4 hours (the ‘2-hour/4-hour rule’) – this can be achieved using higher water bath temperatures and
+L631@P20: checking the temperature at the centre of the food with a tip sensitive digital thermometer. However, the use of
+L632@P20: a 60.5°C water bath for the times shown in the pale orange colour-coded cells in Table 5 or Table 6 will be low
+L633@P20-21: risk.22
+L634@P21: Table 5. Approximate heating time (Hours: Minutes) for refrigerated sous vide food to 0.5°C less than the
+L635@P21: water bath’s temperature
+L636@P21: Food thickness
+L637@P21: (mm)
+L638@P21: Food shape
+L639@P21: Slab-like Cylinder-like Sphere-like
+L640@P21: 5 0:05 0:05 0:04
+L641@P21: 10 0:19 0:11 0:08
+L642@P21: 15 0:35 0:18 0:13
+L643@P21: 20 0:50 0:30 0:20
+L644@P21: 25 1:15 0:40 0:25
+L645@P21: 30 1:30 0:50 0:30
+L646@P21: 35 2:00 1:00 0:45
+L647@P21: 40 2:30 1:15 0:55
+L648@P21: 45 3:00 1:30 1:15
+L649@P21: 50 3:30 2:00 1:30
+L650@P21: 55 4:00 2:15 1:30
+L651@P21: 60 4:45 2:30 2:00
+L652@P21: 65 5:30 3:00 2:15
+L653@P21: 70 – 3:30 2:30
+L654@P21: 75 – 3:45 2:45
+L655@P21: 80 – 4:15 3:00
+L656@P21: 85 – 4:45 3:30
+L657@P21: 90 – 5:15 3:45
+L658@P21: 95 – 6:00 4:15
+L659@P21: 100 – – 4:45
+L660@P21: 105 – – 5:00
+L661@P21: 110 – – 5:50
+L662@P21: 115 – – 6:00
+L663@P21-22: From Baldwin (2022).23
+L664@P22: Table 6. Approximate heating time (Hours: Minutes) for frozen sous vide food to reach 0.5°C less than the
+L665@P22: water bath’s temperature
+L666@P22: Food thickness
+L667@P22: (mm)
+L668@P22: Food shape
+L669@P22: Slab-like Cylinder-like Sphere-like
+L670@P22: 5 0:07 0:07 0:06
+L671@P22: 10 0:30 0:17 0:12
+L672@P22: 15 0:50 0:30 0:20
+L673@P22: 20 1:15 0:40 0:30
+L674@P22: 25 1:45 0:55 0:40
+L675@P22: 30 2:15 1:15 0:55
+L676@P22: 35 3:00 1:30 1:15
+L677@P22: 40 3:30 2:00 1:30
+L678@P22: 45 4:30 2:30 1:45
+L679@P22: 50 5:15 2:45 2:00
+L680@P22: 55 6:15 3:15 2:30
+L681@P22: 60 7:15 4:00 2:45
+L682@P22: 65 8:15 4:15 3:15
+L683@P22: 70 – 5:00 3:45
+L684@P22: 75 – 5:45 4:15
+L685@P22: 80 – 6:30 4:45
+L686@P22: 85 – 7:15 5:15
+L687@P22: 90 – 8:00 5:45
+L688@P22: 95 – 8:45 6:15
+L689@P22: 100 – – 7:00
+L690@P22: 105 – – 7:30
+L691@P22: 110 – – 8:15
+L692@P22: 115 – – 9:00
+L693@P22-23: From Baldwin (2022)24
+L694@P23: 1.6 Serving raw or undercooked foods – infectious bacteria, parasites and viruses
+L695@P23: The US Centers for Disease Control and Prevention nominate a number of simple precautions that consumers can
+L696@P23: use to protect themselves from foodborne diseases (CDC, 2010). The first of these is:
+L697@P23: Cook meat, poultry and eggs thoroughly. Using a thermometer to measure the internal temperature of meat is a
+L698@P23: good way to be sure that it is cooked sufficiently to kill bacteria.
+L699@P23: Many other food agencies make very similar recommendations including the NSW Food Authority (NSWFA, 2011c).
+L700@P23: Despite the advice, people still choose to eat a wide variety of raw or undercooked animal products. For example:
+L701@P23: Carpaccio Yukhoe Rare hamburger Egg nog
+L702@P23: Ceviche Steak tartare Sashimi Kibbeh
+L703@P23: Egg butter Tiramisu Raw Milk Cheese
+L704@P23: The risk with these foods is related to the potential and, in some cases, likely presence of pathogenic bacteria,
+L705@P23: parasites or viruses. The risks can be illustrated by:
+L706@P23: • disease prevalence statistics:
+L707@P23: - Vibrio parahaemolyticus infection accounted for 45–60% of food related infections in Japan (Berger, 2011).
+L708@P23: This organism is associated with seafood and the illness is related to the high consumption of raw seafood
+L709@P23: in Japan.
+L710@P23: - In France, more than 200 cases of hepatitis E are reported each year. It has been shown in developed
+L711@P23: industrialised countries that pigs are reservoirs of the virus. Acute hepatitis E has been linked to persons
+L712@P23: who consumed uncooked pig liver sausages. These sausages are good candidates for the transmission of
+

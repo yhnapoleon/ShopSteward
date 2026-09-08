@@ -1,0 +1,26 @@
+[
+  {
+    "kind": "pdf_page",
+    "page": 1,
+    "source_url": "https://www.hse.gov.uk/pubns/cais26.pdf#page=1",
+    "text_characters": 3929
+  },
+  {
+    "kind": "pdf_page",
+    "page": 2,
+    "source_url": "https://www.hse.gov.uk/pubns/cais26.pdf#page=2",
+    "text_characters": 4843
+  },
+  {
+    "kind": "pdf_page",
+    "page": 3,
+    "source_url": "https://www.hse.gov.uk/pubns/cais26.pdf#page=3",
+    "text_characters": 4267
+  },
+  {
+    "kind": "pdf_page",
+    "page": 4,
+    "source_url": "https://www.hse.gov.uk/pubns/cais26.pdf#page=4",
+    "text_characters": 2515
+  }
+]

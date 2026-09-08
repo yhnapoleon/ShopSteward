@@ -1,0 +1,741 @@
+{
+  "$defs": {
+    "case": {
+      "additionalProperties": true,
+      "properties": {
+        "as_of": {
+          "format": "date",
+          "type": "string"
+        },
+        "business_tools": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "case_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "entry_entities": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "expected_behavior": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "forbidden_claims": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "gold_status": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "group": {
+          "enum": [
+            "exact",
+            "keyword",
+            "semantic",
+            "cross_document",
+            "unanswerable",
+            "hybrid"
+          ]
+        },
+        "missing_conditions": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "query": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "query_constraints": {
+          "type": "object"
+        },
+        "relation_tags": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "required_evidence": {
+          "items": {
+            "items": {
+              "minLength": 1,
+              "type": "string"
+            },
+            "minItems": 1,
+            "type": "array",
+            "uniqueItems": true
+          },
+          "type": "array"
+        },
+        "scenario_family_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scenario_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_family_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "split": {
+          "enum": [
+            "dev",
+            "test"
+          ]
+        },
+        "store_fixture": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "case_id",
+        "split",
+        "scenario_family_id",
+        "group",
+        "query",
+        "store_fixture",
+        "as_of",
+        "required_evidence",
+        "forbidden_claims",
+        "business_tools",
+        "relation_tags"
+      ],
+      "type": "object"
+    },
+    "effective_interval": {
+      "additionalProperties": false,
+      "properties": {
+        "from": {
+          "format": "date",
+          "type": "string"
+        },
+        "until": {
+          "format": "date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from",
+        "until"
+      ],
+      "type": "object"
+    },
+    "fact": {
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "value"
+            ]
+          },
+          "then": {
+            "properties": {
+              "synthetic": {
+                "const": true
+              }
+            },
+            "required": [
+              "unit",
+              "synthetic"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "industry"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "public_source"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "synthetic"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "text": {
+                "pattern": "模拟"
+              }
+            }
+          }
+        }
+      ],
+      "properties": {
+        "fact_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "synthetic",
+            "industry"
+          ]
+        },
+        "public_source": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "synthetic": {
+          "type": "boolean"
+        },
+        "text": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "unit": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "fact_id",
+        "kind",
+        "text"
+      ],
+      "type": "object"
+    },
+    "machine_conditions": {
+      "additionalProperties": {
+        "type": [
+          "string",
+          "boolean",
+          "integer",
+          "number"
+        ]
+      },
+      "maxProperties": 30,
+      "minProperties": 1,
+      "propertyNames": {
+        "maxLength": 128,
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "object"
+    },
+    "relation": {
+      "additionalProperties": true,
+      "properties": {
+        "assertion_status": {
+          "const": "synthetic_verified"
+        },
+        "conditions": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "effective_interval": {
+          "additionalProperties": false,
+          "properties": {
+            "from": {
+              "format": "date",
+              "type": "string"
+            },
+            "until": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          "required": [
+            "from",
+            "until"
+          ],
+          "type": "object"
+        },
+        "evidence_chunk_ids": {
+          "maxItems": 0,
+          "type": "array"
+        },
+        "evidence_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "evidence_quote": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "executable": {
+          "const": false
+        },
+        "execution_status": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "from_entity": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "locator": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "machine_conditions": {
+          "additionalProperties": {
+            "type": [
+              "string",
+              "boolean",
+              "integer",
+              "number"
+            ]
+          },
+          "maxProperties": 30,
+          "minProperties": 1,
+          "propertyNames": {
+            "maxLength": 128,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "relation_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "relation_type": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "retrieval_edges": {
+          "items": {
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "retrieval_orientation": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_version_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "to_entity": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "relation_id",
+        "from_entity",
+        "to_entity",
+        "relation_type",
+        "source_version_id",
+        "locator",
+        "evidence_id",
+        "conditions",
+        "effective_interval",
+        "assertion_status",
+        "machine_conditions",
+        "evidence_quote",
+        "evidence_chunk_ids",
+        "executable",
+        "execution_status",
+        "retrieval_orientation",
+        "retrieval_edges"
+      ],
+      "type": "object"
+    },
+    "scenario": {
+      "additionalProperties": true,
+      "properties": {
+        "author": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "document_kinds": {
+          "items": {
+            "enum": [
+              "supplier",
+              "product",
+              "sop",
+              "campaign",
+              "retro"
+            ]
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "effective_interval": {
+          "additionalProperties": false,
+          "properties": {
+            "from": {
+              "format": "date",
+              "type": "string"
+            },
+            "until": {
+              "format": "date",
+              "type": "string"
+            }
+          },
+          "required": [
+            "from",
+            "until"
+          ],
+          "type": "object"
+        },
+        "entity_refs": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "exceptions": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "facts": {
+          "items": {
+            "additionalProperties": true,
+            "allOf": [
+              {
+                "if": {
+                  "required": [
+                    "value"
+                  ]
+                },
+                "then": {
+                  "properties": {
+                    "synthetic": {
+                      "const": true
+                    }
+                  },
+                  "required": [
+                    "unit",
+                    "synthetic"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "kind": {
+                      "const": "industry"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "public_source"
+                  ]
+                }
+              },
+              {
+                "if": {
+                  "properties": {
+                    "kind": {
+                      "const": "synthetic"
+                    }
+                  }
+                },
+                "then": {
+                  "properties": {
+                    "text": {
+                      "pattern": "模拟"
+                    }
+                  }
+                }
+              }
+            ],
+            "properties": {
+              "fact_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "synthetic",
+                  "industry"
+                ]
+              },
+              "public_source": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "synthetic": {
+                "type": "boolean"
+              },
+              "text": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "unit": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "value": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "fact_id",
+              "kind",
+              "text"
+            ],
+            "type": "object"
+          },
+          "minItems": 1,
+          "type": "array"
+        },
+        "generation_input_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "generation_method": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scenario_family_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "scenario_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sku_fixture_ids": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "store_fixture": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "supplier_fixture_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "synthetic": {
+          "const": true
+        }
+      },
+      "required": [
+        "scenario_family_id",
+        "synthetic",
+        "store_fixture",
+        "entity_refs",
+        "effective_interval",
+        "facts",
+        "exceptions",
+        "document_kinds"
+      ],
+      "type": "object"
+    },
+    "source": {
+      "additionalProperties": true,
+      "allOf": [
+        {
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "original_path"
+                  ]
+                },
+                {
+                  "required": [
+                    "content_sha256"
+                  ]
+                }
+              ]
+            }
+          },
+          "if": {
+            "properties": {
+              "acquisition_status": {
+                "const": "acquired"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "original_path",
+              "content_sha256"
+            ]
+          }
+        }
+      ],
+      "properties": {
+        "acquisition_status": {
+          "enum": [
+            "acquired",
+            "reference_only"
+          ]
+        },
+        "content_sha256": {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        "document_fixture_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "jurisdiction": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "language": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object"
+        },
+        "mime": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "original_path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "publication_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "publisher": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "retrieved_at": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "scenario_family_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "size": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "source_family_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "source_kind": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "synthetic": {
+          "type": "boolean"
+        },
+        "title": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "use_terms_status": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "version_fixture_id": {
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "source_family_id",
+        "title",
+        "publisher",
+        "url",
+        "language",
+        "jurisdiction",
+        "publication_date",
+        "retrieved_at",
+        "acquisition_status",
+        "use_terms_status",
+        "source_kind"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/source"
+    },
+    {
+      "$ref": "#/$defs/scenario"
+    },
+    {
+      "$ref": "#/$defs/case"
+    }
+  ]
+}

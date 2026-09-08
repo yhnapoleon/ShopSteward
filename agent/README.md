@@ -79,7 +79,7 @@ Hermes 采用的是固定源码版本的条目更新语义，经纯函数化并�
 
 金额由后端提供分值和确定性元显示，方案卡片直接来自 Plan。文字中的阿拉伯数字金额会与工具证据核对；不一致时回退到确定性方案说明并标记 `validation_warnings`。这不是对全部自然语言含义的完整证明。
 
-扩展入口位于 `shopsteward_agent.extensions`：`EvidenceProvider`、`SkillProvider`、空默认实现和有来源/工具依赖过滤的 `collect_extensions`。可在装配层的 `load_context` 中接入；当前尚未配置外部 RAG/技能仓库。业务事实始终通过 backend，用模型适配器切换兼容供应商；本次真实服务验证仅覆盖 OpenAI 官方 API。
+扩展入口位于 `shopsteward_agent.extensions`：`EvidenceProvider`、`SkillProvider`、空默认实现和有来源/工具依赖过滤的 `collect_extensions`。另有已接入工具循环的独立knowledge服务：启用 `KNOWLEDGE_SERVICE_ENABLED` 后，模型可调用 `search_documents` / `read_document_evidence`，完整candidate回流到图的工具消息。装配层为明确请求设置取证顺序，最终核对引用当前性。2026-09-08已在隔离服务用200份资料和现有Luna验证真实词法闭环；dense/embedding及外部技能仓库仍未做真实效果验收。见[实际接入图、调用参数与限制](../docs/reports/agent-document-langgraph-integration.md)。业务事实始终通过backend。
 
 ## 验证
 

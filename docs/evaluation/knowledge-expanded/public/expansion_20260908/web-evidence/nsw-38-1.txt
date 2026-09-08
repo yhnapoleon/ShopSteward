@@ -1,0 +1,329 @@
+Food transport vehicles | NSW Food Authority (https://www.foodauthority.nsw.gov.au/industry/food-transport-vehicles)
+citeturn118view0 [wordlim: 200] Crawled: today; Content type: text/html; Source: click({"ref_id":"turn59view0","id":38}); Total lines: 690
+L0: cite0†iframe†www.googletagmanager.com L1: 
+L2:   * cite1†About us L3:   * cite2†Contact us L4:   * cite3†Make a food safety complaint L5: 
+L6: menu Open Menu
+L7: 
+L8: search Show Search
+L9: 
+L10: Search site for: [Input: What are you looking for?] search Search
+L11: 
+L12: close Close search
+L13: 
+L14: cite4†Listen†app-oc.readspeaker.com L15: 
+L16: Main navigation
+L17: 
+L18: close Close Menu
+L19: 
+L20:   * cite5†Home L21:   * cite6†Industry keyboard_arrow_right L22: 
+L23: keyboard_arrow_left Back to previous menu close Close Menu
+L24: 
+L25: cite6†Industry east L26:     * cite7†Allergen rules L27:     * cite8†Audits, compliance & TPAs keyboard_arrow_right L28: 
+L29: keyboard_arrow_left Back to previous menu close Close Menu
+L30: 
+L31: cite8†Audits, compliance & TPAs east L32: 
+L33:       * cite9†Audits in the food industry L34:       * cite10†Compliance keyboard_arrow_right L35: 
+L36: keyboard_arrow_left Back to previous menu close Close Menu
+L37: 
+L38: cite10†Compliance east L39: 
+L40:         * cite11†Alternative Compliance L41:       * cite12†Food safety programs L42:       * cite13†Powers of authorised officers L43:       * cite14†Third party audits (TPAs) keyboard_arrow_right L44: 
+L45: keyboard_arrow_left Back to previous menu close Close Menu
+L46: 
+L47: cite14†Third party audits (TPAs) east L48: 
+L49:         * cite15†Auditor requirements L50:         * cite16†Approved Third Party Auditors (TPAs) L51:         * cite17†Auditor training L52:         * cite18†Facility requirements L53: 
+L54:     * cite19†Cold stores L55:     * cite20†Dairy keyboard_arrow_right L56: keyboard_arrow_left Back to previous menu close Close Menu
+L57: 
+L58: cite20†Dairy east L59: 
+L60:       * cite21†Dairy Industry Consultative Committee L61:       * cite22†Dairy cold stores L62:       * cite23†Dairy collection and transport L63:       * cite24†Dairy food transport vehicles L64:       * cite25†Dairy primary production L65:       * cite26†Dairy processing L66: 
+L67:     * cite27†Eggs keyboard_arrow_right L68: 
+L69: keyboard_arrow_left Back to previous menu close Close Menu
+L70: 
+L71: cite27†Eggs east L72:       * cite28†Egg Industry Consultative Committee L73:       * cite29†Egg graders L74:       * cite30†Egg processors L75:       * cite31†Egg producers L76:       * cite32†Egg stamping L77:       * cite33†Egg storage facilities L78:       * cite34†Egg transporters L79:       * cite35†Small egg farms L80: 
+L81:     * cite36†Export L82:     * cite37†Food Safety Schemes Manual L83:     * cite38†Food transport vehicles L84:     * cite39†Licensing and notifying keyboard_arrow_right L85: 
+L86: keyboard_arrow_left Back to previous menu close Close Menu
+L87: 
+L88: cite39†Licensing and notifying east L89:       * cite40†Applying for a food licence L90: 
+L91:     * cite41†Manufacturers & wholesalers keyboard_arrow_right L92: 
+L93: keyboard_arrow_left Back to previous menu close Close Menu
+L94: 
+L95: cite41†Manufacturers & wholesalers east L96: 
+L97:       * cite42†Emu egg farms L98: 
+L99:     * cite43†Meat keyboard_arrow_right L100: 
+L101: keyboard_arrow_left Back to previous menu close Close Menu
+L102: 
+L103: cite43†Meat east L104:       * cite44†Meat Industry Consultative Council L105:       * cite45†Animal food processing L106:       * cite46†Animal food vehicles L107:       * cite47†Game meat field depots L108:       * cite48†Game meat harvester vehicles L109:       * cite49†Game meat processing plants L110:       * cite50†Home kill L111:       * cite51†Industry levy L112:       * cite52†Knackeries L113:       * cite53†Live poultry transport L114:       * cite54†Meat & poultry processing plants L115:       * cite55†Meat vans L116:       * cite56†Poultry and non-red meat abattoirs L117:       * cite57†Poultry meat producers (farms) L118:       * cite58†Poultry product transport L119:       * cite59†Red meat abattoirs L120:       * cite60†Rendering plants L121:       * cite61†Retail meat premises (butchers) L122:       * cite62†Uncooked Comminuted Fermented Meat (UCFM) Manufacturers L123:     * cite63†Plant products keyboard_arrow_right L124: 
+L125: keyboard_arrow_left Back to previous menu close Close Menu
+L126: 
+L127: cite63†Plant products east L128: 
+L129:       * cite64†Berries, leafy vegetables and melons keyboard_arrow_right L130: 
+L131: keyboard_arrow_left Back to previous menu close Close Menu
+L132: 
+L133: cite64†Berries, leafy vegetables and melons east L134:         * cite65†Quiz: Do I need to notify or get a licence? L135:         * cite66†Small scale leafy vegetable growers L136:         * cite67†Leafy vegetable growers L137:         * cite68†Leafy vegetable processors L138:         * cite69†Berry growers and processors L139:         * cite70†Small scale melon growers L140:         * cite71†Melon growers and processors L141:         * cite72†Frequently asked questions L142: 
+L143:       * cite73†Plant products transport vehicles L144:       * cite74†Preparing or storing plant products L145: 
+L146:     * cite75†Seafood keyboard_arrow_right L147: keyboard_arrow_left Back to previous menu close Close Menu
+L148: 
+L149: cite75†Seafood east L150: 
+L151:       * cite76†Seafood Industry Forum L152:       * cite77†Seafood processing businesses L153:       * cite78†Seafood transport vehicles L154: 
+L155:     * cite79†Shellfish keyboard_arrow_right L156: 
+L157: keyboard_arrow_left Back to previous menu close Close Menu
+L158: 
+L159: cite79†Shellfish east L160: 
+L161:       * cite80†Harvest area status L162:       * cite81†NSW Shellfish Committee L163:       * cite82†Online sampler training course L164:       * cite83†Shellfish cultivation or harvesting L165:     * cite84†Starting a food business keyboard_arrow_right L166: 
+L167: keyboard_arrow_left Back to previous menu close Close Menu
+L168: 
+L169: cite84†Starting a food business east L170: 
+L171:       * cite85†Professional advice L172: 
+L173:     * cite86†Vulnerable persons keyboard_arrow_right L174: 
+L175: keyboard_arrow_left Back to previous menu close Close Menu
+L176: 
+L177: cite86†Vulnerable persons east L178: 
+L179:       * cite87†NSW Vulnerable Persons Food Safety Scheme Consultative Committee L180: 
+L181:   * cite88†Retail keyboard_arrow_right L182: 
+L183: keyboard_arrow_left Back to previous menu close Close Menu
+L184: cite88†Retail east L185: 
+L186:     * cite89†Allergies and intolerances L187:     * cite90†Animals in food premises L188:     * cite91†Cafes, restaurants and retail outlets keyboard_arrow_right L189: 
+L190: keyboard_arrow_left Back to previous menu close Close Menu
+L191: 
+L192: cite91†Cafes, restaurants and retail outlets east L193: 
+L194:       * cite92†Cutting and serving boards L195:       * cite93†Fast Choices program: nutritional information menu labelling L196: 
+L197:     * cite94†Caterers L198:     * cite95†Charities, groups and volunteers keyboard_arrow_right L199: keyboard_arrow_left Back to previous menu close Close Menu
+L200: 
+L201: cite95†Charities, groups and volunteers east L202: 
+L203:       * cite96†Changes for charities, groups and volunteers L204:       * cite97†Charity fish auctions L205: 
+L206:     * cite98†Children’s services L207:     * cite99†Food Regulation Partnership keyboard_arrow_right L208: 
+L209: keyboard_arrow_left Back to previous menu close Close Menu
+L210: 
+L211: cite99†Food Regulation Partnership east L212: 
+L213:       * cite100†Guide for businesses L214: 
+L215:     * cite101†Food Safety Supervisors (FSS) keyboard_arrow_right L216: keyboard_arrow_left Back to previous menu close Close Menu
+L217: 
+L218: cite101†Food Safety Supervisors (FSS) east L219: 
+L220:       * cite102†Approved training providers L221:       * cite103†Information for RTOs L222: 
+L223:     * cite104†Home-based and mixed businesses L224:     * cite105†Importers L225:     * cite106†Inspections keyboard_arrow_right L226: 
+L227: keyboard_arrow_left Back to previous menu close Close Menu
+L228: 
+L229: cite106†Inspections east L230: 
+L231:       * cite107†How to get a better inspection result L232:     * cite39†Licensing and notifying L233:     * cite108†Markets and temporary events L234:     * cite109†Mobile food vendors L235:     * cite110†School canteens L236:     * cite111†Seafood retailers keyboard_arrow_right L237: 
+L238: keyboard_arrow_left Back to previous menu close Close Menu
+L239: 
+L240: cite111†Seafood retailers east L241: 
+L242:       * cite112†Retail handling of live unopened shellfish L243:       * cite113†Seafood substitution in restaurants and takeaways L244: 
+L245:     * cite114†Standard 3.2.2A Food Safety Management Tools keyboard_arrow_right L246: keyboard_arrow_left Back to previous menu close Close Menu
+L247: 
+L248: cite114†Standard 3.2.2A Food Safety Management Tools east L249: 
+L250:       * cite115†Showing food is safe L251:       * cite116†Standard 3.2.2A - ​Frequently asked questions​ L252:       * cite117†Standard 3.2.2A - Food Safety Management Tools quiz for food businesses L253: 
+L254:     * cite118†Water carters L255: 
+L256:   * cite119†Consumer keyboard_arrow_right L257: 
+L258: keyboard_arrow_left Back to previous menu close Close Menu
+L259: 
+L260: cite119†Consumer east L261:     * cite120†Allergy and intolerance L262:     * cite121†Kids corner keyboard_arrow_right L263: 
+L264: keyboard_arrow_left Back to previous menu close Close Menu
+L265: 
+L266: cite121†Kids corner east L267: 
+L268:       * cite122†Food allergy allies L269:       * cite123†Kids in the kitchen L270:       * cite124†Sydney Royal Easter Show L271: 
+L272:     * cite125†Eating out keyboard_arrow_right L273: 
+L274: keyboard_arrow_left Back to previous menu close Close Menu
+L275: 
+L276: cite125†Eating out east L277:       * cite126†Doggy bags L278:       * cite127†Doner kebabs L279:       * cite128†Picnics L280:       * cite129†Restaurants and takeaways L281:       * cite130†Scores on Doors: consumer guide L282: 
+L283:     * cite131†Food at home keyboard_arrow_right L284: 
+L285: keyboard_arrow_left Back to previous menu close Close Menu
+L286: 
+L287: cite131†Food at home east L288:       * cite132†BBQs L289:       * cite133†Cleaning & hygiene L290:       * cite134†Cooking sous vide L291:       * cite135†Cooking temperatures L292:       * cite136†Family feasts L293:       * cite137†Safe food storage L294:       * cite138†Shopping keyboard_arrow_right L295: 
+L296: keyboard_arrow_left Back to previous menu close Close Menu
+L297: 
+L298: cite138†Shopping east L299: 
+L300:         * cite139†Mince meat colour L301:         * cite140†Shopping trolleys, baskets and reusable bags L302: 
+L303:     * cite141†Food labelling L304:     * cite142†Food poisoning keyboard_arrow_right L305: keyboard_arrow_left Back to previous menu close Close Menu
+L306: 
+L307: cite142†Food poisoning east L308: 
+L309:       * cite143†Fact or fiction L310:       * cite144†Foodborne illness pathogens L311:       * cite145†Escolar and oilfish L312:       * cite146†Fish ciguatera poisoning L313:       * cite147†Fish histamine poisoning L314:       * cite148†Raw milk L315: 
+L316:     * cite149†Keeping food safe keyboard_arrow_right L317: 
+L318: keyboard_arrow_left Back to previous menu close Close Menu
+L319: 
+L320: cite149†Keeping food safe east L321:       * cite150†Backyard chickens L322:       * cite151†Charities, groups and volunteers L323:       * cite152†Food safety in emergencies L324:       * cite153†Key tips L325:       * cite154†Other topics keyboard_arrow_right L326: 
+L327: keyboard_arrow_left Back to previous menu close Close Menu
+L328: 
+L329: cite154†Other topics east L330: 
+L331:         * cite155†Avian bird flu L332:         * cite156†Borax and boric acid L333:         * cite157†Fats and trans fats L334:         * cite158†GM food L335:         * cite159†MSG L336:         * cite160†Organic L337: 
+L338:       * cite161†Summer eating keyboard_arrow_right L339: keyboard_arrow_left Back to previous menu close Close Menu
+L340: 
+L341: cite161†Summer eating east L342: 
+L343:         * cite162†Ham hints L344:         * cite163†Seafood safety L345:         * cite164†Special treats L346:         * cite165†Turkey tips L347: 
+L348:     * cite166†Life events and food keyboard_arrow_right L349: 
+L350: keyboard_arrow_left Back to previous menu close Close Menu
+L351: 
+L352: cite166†Life events and food east L353: 
+L354:       * cite167†Infants L355:       * cite168†Kids lunch boxes L356:       * cite169†Low immunity L357:       * cite170†Older age L358:       * cite171†Pregnancy keyboard_arrow_right L359: keyboard_arrow_left Back to previous menu close Close Menu
+L360: 
+L361: cite171†Pregnancy east L362: 
+L363:         * cite172†Foods to eat or avoid when pregnant L364:         * cite173†Mercury and fish L365:         * cite174†Pregnancy and food safety L366:         * cite175†Why avoid certain foods L367: 
+L368:     * cite176†Special care foods keyboard_arrow_right L369: 
+L370: keyboard_arrow_left Back to previous menu close Close Menu
+L371: 
+L372: cite176†Special care foods east L373: 
+L374:       * cite177†Caffeine L375:       * cite178†Edible insects L376:       * cite179†Eggs keyboard_arrow_right L377: keyboard_arrow_left Back to previous menu close Close Menu
+L378: 
+L379: cite179†Eggs east L380: 
+L381:         * cite180†Higher risk dishes L382:         * cite181†Myths and facts L383:         * cite182†Why egg safety L384: 
+L385:       * cite183†Fresh fruit and vegetables keyboard_arrow_right L386: 
+L387: keyboard_arrow_left Back to previous menu close Close Menu
+L388: 
+L389: cite183†Fresh fruit and vegetables east L390: 
+L391:         * cite184†Rockmelons L392: 
+L393:       * cite185†Fresh noodles L394:       * cite186†Leftovers L395:       * cite187†Raw poultry, meat and seafood keyboard_arrow_right L396: keyboard_arrow_left Back to previous menu close Close Menu
+L397: 
+L398: cite187†Raw poultry, meat and seafood east L399: 
+L400:         * cite188†Poultry and raw meat L401:         * cite189†Raw meat safe eating L402:         * cite190†Recreational harvest of seafood L403:         * cite191†Sydney Harbour seafood L404: 
+L405:       * cite192†Roquefort cheese L406:       * cite193†Sprouts L407:       * cite194†Sushi L408: 
+L409:   * cite195†Training keyboard_arrow_right L410: 
+L411: keyboard_arrow_left Back to previous menu close Close Menu
+L412: 
+L413: cite195†Training east L414:     * cite196†Food Handler Basics training keyboard_arrow_right L415: 
+L416: keyboard_arrow_left Back to previous menu close Close Menu
+L417: 
+L418: cite196†Food Handler Basics training east L419:       * cite196†Food Handler Basics training (English) L420:       * cite197†تدريب أساسيات مناولة الطعام (Food Handler Basics training: Arabic) L421:       * cite198†食品处理员基础培训 (Food Handler Basics training: Chinese simplified) L422:       * cite199†食品處理基本培訓 (Food Handler Basics training: Chinese traditional) L423:       * cite200†Đào Tạo Cơ Bản Về Người Xử Lý Thực Phẩm (Food Handler Basics training: Vietnamese) L424: 
+L425:     * cite101†Food Safety Supervisors (FSS) keyboard_arrow_right L426: 
+L427: keyboard_arrow_left Back to previous menu close Close Menu
+L428: cite101†Food Safety Supervisors (FSS) east L429: 
+L430:       * cite201†Verify an FSS certificate L431: 
+L432:     * cite202†Approved registered training providers L433:     * cite103†Information for RTOs L434:     * cite17†Auditor training L435:     * cite82†Shellfish sampler training L436: 
+L437:   * cite141†Food labelling keyboard_arrow_right L438: 
+L439: keyboard_arrow_left Back to previous menu close Close Menu
+L440: 
+L441: cite141†Food labelling east L442: 
+L443:     * cite203†Do I need a food label? L444:     * cite204†Food Labelling Assistant L445:     * cite205†How to read a label keyboard_arrow_right L446: keyboard_arrow_left Back to previous menu close Close Menu
+L447: 
+L448: cite205†How to read a label east L449: 
+L450:       * cite206†Ingredients & Nutrition L451:       * cite207†What's on a food label L452:       * cite208†Country of origin L453:       * cite209†Directions for use L454:       * cite210†Alcohol L455:       * cite211†Fresh or unpackaged food L456: 
+L457:     * cite212†Understanding claims keyboard_arrow_right L458: 
+L459: keyboard_arrow_left Back to previous menu close Close Menu
+L460: 
+L461: cite212†Understanding claims east L462:       * cite213†Health and nutrition claims L463:       * cite214†Marketing L464:       * cite208†Country of origin L465:       * cite215†Free range L466:       * cite216†Personal values & ethics L467: 
+L468:     * cite217†Food production keyboard_arrow_right L469: 
+L470: keyboard_arrow_left Back to previous menu close Close Menu
+L471: 
+L472: cite217†Food production east L473: 
+L474:       * cite218†Additives L475:       * cite208†Country of origin L476:       * cite219†Monosodium glutamate (MSG) L477:       * cite220†Production methods L478: 
+L479:     * cite221†Stay safe keyboard_arrow_right L480: keyboard_arrow_left Back to previous menu close Close Menu
+L481: 
+L482: cite221†Stay safe east L483: 
+L484:       * cite209†Directions for use L485:       * cite222†Date marking & storage advice L486: 
+L487:     * cite223†Labels and the law keyboard_arrow_right L488: 
+L489: keyboard_arrow_left Back to previous menu close Close Menu
+L490: 
+L491: cite223†Labels and the law east L492:       * cite224†Our role - labels L493:       * cite225†Labelling laws L494:       * cite208†Country of origin L495:       * cite226†Warning and advisory statements  L496:       * cite227†Identifying allergens accurately L497:       * cite228†Declaring allergens L498:       * cite229†Date marks and storage L499:       * cite230†Health and nutrition claims L500:       * cite231†Health Star Ratings L501: 
+L502:   * cite232†News keyboard_arrow_right L503: 
+L504: keyboard_arrow_left Back to previous menu close Close Menu
+L505: 
+L506: cite232†News east L507:     * cite233†Departmental media releases L508:     * cite234†General news L509:     * cite235†Ministerial media releases L510:     * cite236†Foodwise newsletters L511:     * cite237†Recalls L512: 
+L513:   * cite238†Resources keyboard_arrow_right L514: 
+L515: keyboard_arrow_left Back to previous menu close Close Menu
+L516: 
+L517: cite238†Resources east L518:     * cite239†Case studies and project outcomes L519:     * cite240†Factsheets, guides and policies L520:     * cite241†Forms L521:     * cite242†Publications L522:     * cite243†Technical reports L523:     * cite244†Templates L524:     * cite245†Translations keyboard_arrow_right L525: 
+L526: keyboard_arrow_left Back to previous menu close Close Menu
+L527: 
+L528: cite245†Translations east L529:       * cite246†Arabic L530:       * cite247†Chinese simplified L531:       * cite248†Chinese traditional L532:       * cite249†Filipino L533:       * cite250†Greek L534:       * cite251†Hindi L535:       * cite252†Italian L536:       * cite253†Japanese L537:       * cite254†Khmer L538:       * cite255†Korean L539:       * cite256†Kurdish L540:       * cite257†Lao L541:       * cite258†Macedonian L542:       * cite259†Nepalese L543:       * cite260†Serbian L544:       * cite261†Spanish L545:       * cite262†Swahili L546:       * cite263†Thai L547:       * cite264†Turkish L548:       * cite265†Vietnamese L549: 
+L550:     * cite266†Videos L551: 
+L552: cite6†Industry L553:   * cite7†Allergen rules L554:   * cite8†Audits, compliance & TPAs L555:   * cite19†Cold stores L556:   * cite20†Dairy L557:   * cite27†Eggs L558:   * cite36†Export L559:   * cite37†Food Safety Schemes Manual L560:   * cite38†Food transport vehicles L561:   * cite39†Licensing and notifying L562:   * cite41†Manufacturers & wholesalers L563:   * cite43†Meat L564:   * cite63†Plant products L565:   * cite75†Seafood L566:   * cite79†Shellfish L567:   * cite84†Starting a food business L568:   * cite86†Vulnerable persons L569: 
+L570:   * print Print this page
+L571:   * download Download as PDF
+L572: If you're a food business that transports food, you need to keep food protected from contamination and at the right temperature so it stays safe to eat.
+L573: 
+L574: Wholesale food transport businesses licensed by the NSW Food Authority include one or more of the below:
+L575:   * cite267†plant products - transporting processed plant products, including leaves, salads, sprouts, unpasteurised juices, fresh cut fruit and vegetables, vegetables in oil
+L576:   * meat products:
+L577:     * cite268†meat transport - transporting carcases, box meat and processed meat (including red meat, poultry, game meat)
+L578:     * cite269†game meat harvesting - game meat rack harvesting animals for human consumption
+L579:     * cite270†animal food harvesting - game meat rack harvesting animals for animal food
+L580:     * cite270†animal food products - transporting animal food
+L581:   * dairy products:
+L582:     * cite271†raw milk collection and transport - tankers or vehicles transporting raw milk from farm or between factories
+L583:     * cite272†processed dairy products - transporting processed dairy products
+L584:   * cite273†egg products - transporting cracked eggs for processing or processed egg products
+L585:   * cite274†seafood products - transporting live or processed shellfish, processed seafood (but not live seafood)
+L586:   * cite275†live poultry transport – transporting live birds between farms and processing facilities.
+L587: ## Retail food delivery services
+L588: 
+L589: If a food business, such as a supermarket or restaurant, handles its own home delivery, those operations are covered by its existing notification or licence.
+L590: 
+L591: Drivers for third party delivery platforms are not considered food businesses as the food is pre-packaged and not handled by the driver.
+L592: ### Licensing
+L593: 
+L594: Food transport businesses must hold a licence with the Food Authority if they distribute and/or transport the following foods for wholesale (business to business):
+L595: 
+L596:   * milk or dairy products
+L597:   * meat or meat products (including animal food or game meat)
+L598:   * plants products
+L599:   * seafood or seafood products
+L600:   * egg or egg products.
+L601: 
+L602: Licensing is used to ensure food is safe before it is supplied to the market. See cite276†Applying for a food licence for more information.
+L603: ### Skills and knowledge
+L604: 
+L605: There are no formal qualifications required for food transport businesses, however each food handler and person in control of a food business is required to have food safety skills and knowledge appropriate to their food handling activities.
+L606: 
+L607: For a guide see FSANZ cite277†Safe Food Australia†www.foodstandards.gov.au Division 2.
+L608: 
+L609: Requirements are set out in the Food Standards Code, cite278†Standard 3.2.2 - Food Safety Practices and General Requirements, clause 3†www.comlaw.gov.au .
+L610: ### Construction and facilities
+L611: 
+L612: Food transport vehicles should:
+L613: 
+L614:   * be designed and constructed to protect food from contamination
+L615:   * be effectively cleaned and sanitised (where necessary) to protect food from contamination
+L616:   * separate raw food from processed and/or ready-to-eat food, and protect food from contamination by covering or sealing appropriately.
+L617: 
+L618: Requirements are set out in Food Standards Code, cite279†Standard 3.2.3 – Food Premises and Equipment†www.legislation.gov.au .
+L619: For specific requirements for each industry, see:
+L620: 
+L621:   * cite267†Plant products transport vehicles L622:   * cite268†Meat vans L623:   * cite272†Dairy food transport vehicles L624:   * cite273†Egg transporters L625:   * cite274†Seafood transport vehicles L626:   * cite270†Animal food vans L627: 
+L628: In addition, the Food Authority recommends that transport businesses should:
+L629:   * if transporting potentially hazardous food that requires temperature control, annually service each vehicle’s refrigeration unit to ensure efficient operation
+L630:   * pre-cool the transport vehicle before transportation.
+L631: ### Hygiene and handling
+L632: 
+L633: A food handler must take all reasonable measures not to handle food or surfaces likely to come into contact with food in a way that is likely to compromise the safety and suitability of food.
+L634: 
+L635: Transporters must exercise personal hygiene and health practices, so the food is suitable for sale by:
+L636:   * wearing clean clothing at the start of each day
+L637:   * not handling food if they know, or suspect, they have an illness, for example vomiting or diarrhoea
+L638:   * covering open wounds with a waterproof bandage
+L639:   * washing hands whenever it is likely their hands could contaminate food, for example after visiting the toilet; after meal breaks
+L640:   * not smoking around food products at any time.
+L641: 
+L642: For more see our factsheets:
+L643:   * cite280†Health and hygiene for food handlers (PDF, 157 KB)
+L644:   * cite281†Cleaning and sanitising in food businesses (PDF, 406 KB)
+L645: 
+L646: Requirements are set out in Food Standards Code, Chapter 3, cite278†Standard 3.2.2, Division 4 - Health and Hygiene†www.comlaw.gov.au .
+L647: ### Food safety controls
+L648: 
+L649: A food business must, when transporting food:
+L650: 
+L651:   * protect all food from the likelihood of contamination
+L652:   * transport potentially hazardous food under temperature control
+L653:   * ensure that potentially hazardous food which is intended to be transported frozen remains frozen during transportation.
+L654: 
+L655: Food transport vehicles are not required to prepare a Food Safety Program.
+L656: 
+L657: For specific requirements for each industry, see:
+L658:   * cite267†Plant products transport vehicles L659:   * cite268†Meat vans L660:   * cite272†Dairy food transport vehicles L661:   * cite273†Egg transporters L662:   * cite274†Seafood transport vehicles L663:   * cite270†Animal food vans L664: ### Inspections and audits
+L665: 
+L666: Food transport vehicles licensed with the Food Authority will be routinely checked for compliance with requirements. There may be fees if ongoing inspections are required. For more, see cite282†audits, inspections and compliance .
+L667: ### Legislation and standards
+L668: 
+L669: Food transport businesses need to meet the requirements set out in:
+L670: 
+L671:   1. cite283†Food Act 2003 (NSW)†www.legislation.nsw.gov.au L672:   2. cite284†Food Regulation 2025 †legislation.nsw.gov.au L673:   3. cite285†Food Standards Code†www.foodstandards.gov.au , including:
+L674:   * cite285†Chapter 1, Part 1.2 - Labelling and other Information Requirements†www.foodstandards.gov.au L675:   * cite286†Standard 3.2.2 - Food Safety Practices & General Requirements†www.foodstandards.gov.au L676:   * cite286†Standard 3.2.3 - Food Premises and Equipment†www.foodstandards.gov.au L677: ### Update vehicle or vessel details
+L678: 
+L679: You can update information about vehicles and vessels on existing food licences through our Apply to vary vehicle and vessel information form. Use the form to:
+L680: 
+L681:   * add, replace and/or cancel a vehicle
+L682:   * change a vehicle registration plate or location
+L683:   * add, replace and/or cancel a vessel.
+L684: You may need to submit digital photographs of the vehicle or vessel as part of your application. Find out more, including what photos are required, in the cite287†Factsheet: The use of artificial intelligence for compliance assessment (PDF, 141 KB).
+L685: 
+L686:   * cite288†Apply to vary vehicle and vessel information online form†formsfa.bfs.dpi.nsw.gov.au L687: 
+L688: If you cannot use the online form, contact our Licensing & Accreditation Services on 1300 552 406 or bfs.admin@dpird.nsw.gov.au.
+L689: Was this page helpful? cite289†Provide feedback 

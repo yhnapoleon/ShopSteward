@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "status": "not_run",
+  "billable_run_enabled": false,
+  "corpus_manifest": "manifests/pilot.json",
+  "dev_queries": "queries-dev.jsonl",
+  "input_hashes": {
+    "manifest_sha256": "28ea82fac8c315a57b38a638f6c4068260dd0db54682dc387097b5fc704f8428",
+    "dev_queries_sha256": "fe43c98c26c7805e5a1866dbf77e0530723d4d5320e74c78f9f854397e4b3723"
+  },
+  "regions": [],
+  "models": [],
+  "limits": {"max_regions": 2, "max_models": 2, "max_attempts_per_request": 1},
+  "budget": {"currency": null, "max_total": null, "max_calls": null,
+             "max_input_tokens": null, "unit_prices": null},
+  "query_embedding_profile": null,
+  "document_embedding_profile": null,
+  "vector_cache": {"reuse": true,
+    "identity_fields": ["original_sha256", "chunk_sha256", "provider", "model", "revision",
+                        "dimensions", "document_instruction", "normalization"]},
+  "local_comparison": {"mode": "lexical", "concurrency": [1, 5, 10]},
+  "cloud_model_quality": "not_run",
+  "cloud_latency": "not_run",
+  "cloud_cost": "not_run",
+  "notes": ["Populate at most two available regions/endpoints and two models after account validation.",
+            "Use the same frozen 200-document manifest and a separate dev-only query file.",
+            "Never include keys, test questions or answer keys in this configuration.",
+            "No region, model, price, resource sizing or paid-run choice has been made.",
+            "The bounded local benchmark never executes billable runs, even with a populated budget."]
+}

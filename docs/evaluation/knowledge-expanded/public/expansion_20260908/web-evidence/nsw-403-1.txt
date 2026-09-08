@@ -1,0 +1,72 @@
+ (https://www.foodauthority.nsw.gov.au/media/8630)
+citeturn98view0 [wordlim: 200] Crawled: 5 days ago; Content type: application/pdf; Number of pages: 1; Source: click({"ref_id":"turn59view0","id":403}); Total lines: 69
+L0@P0: Managing Food
+L1@P0: Allergen Risk
+L2@P0: The NSW Food Authority works with Food Standards Australia New Zealand, NSW Health, Allergy & Anaphylaxis
+L3@P0: Australia, the Allergen Bureau, the National Allergy Council and others to minimise food allergen risk in NSW.
+L4@P0: NSW Food Authority’s Regulatory Role
+L5@P0: *In the NSW retail food service sector, this is done through the Food Regulation Partnership, a surveillance
+L6@P0: partnership model between the state and local governments in NSW.
+L7@P0: • Investigates allergen related incidents
+L8@P0: • Enforces food allergen rules*
+L9@P0: • Conducts allergen surveys and projects
+L10@P0: • Educates and informs industry and consumers
+L11@P0: • Collaborates with all levels of government
+L12@P0: The three essential elements of food allergen risk management
+L13@P0: Food safety culture Systems and process Communication
+L14@P0: Food
+L15@P0: Suppliers
+L16@P0: Food suppliers manage
+L17@P0: food allergen risk by:
+L18@P0: • Implementing an
+L19@P0: effective allergen
+L20@P0: management strategy
+L21@P0: • Minimising the risk of
+L22@P0: unintentional allergen
+L23@P0: contamination
+L24@P0: • Providing clear and accurate
+L25@P0: allergen information
+L26@P0: • Training staff in food
+L27@P0: allergen risk management
+L28@P0: and communication
+L29@P0: • Reading food labels to
+L30@P0: find out what allergens
+L31@P0: are or may be present
+L32@P0: • Clearly asking about and
+L33@P0: communicating allergen
+L34@P0: information
+L35@P0: • Reporting inaccurate
+L36@P0: allergen information
+L37@P0: • Ensuring everyone – from managers
+L38@P0: to food preparation and service staff
+L39@P0: – understands food allergen risk
+L40@P0: management and communication
+L41@P0: • Implementing an effective allergen
+L42@P0: management strategy
+L43@P0: • Being able to check for and identify
+L44@P0: allergens
+L45@P0: • Listening to customers and taking
+L46@P0: their requests seriously
+L47@P0: • Accurately communicating allergen
+L48@P0: requests between front and back of
+L49@P0: house staff
+L50@P0: • Providing clear and accurate
+L51@P0: allergen information to consumers
+L52@P0: Retailers manage food
+L53@P0: allergen risk by:
+L54@P0: People and carers
+L55@P0: dealing with food
+L56@P0: allergies manage food
+L57@P0: allergen risk by:
+L58@P0: Food Service
+L59@P0: and Retail
+L60@P0: Consumers
+L61@P0: Food allergies can be life threatening, which is why systems
+L62@P0: are used to protect allergic consumers from food allergens.
+L63@P0: A strong food safety culture means we all take responsibility
+L64@P0: for managing food allergen risk.
+L65@P0: The NSW Food Authority works with Food Standards Australia New Zealand, NSW Health, Allergy & Anaphylaxis
+L66@P0: Australia, the Allergen Bureau, the National Allergy Council and others to minimise allergen risk in NSW. FA642/2405
+L67@P0: More resources at foodauthority.nsw.gov.au
+L68@P0: 1300 552 406 | food.contact@dpi.nsw.gov.au nswfoodauth nswfoodauthority nswfoodauthority
+

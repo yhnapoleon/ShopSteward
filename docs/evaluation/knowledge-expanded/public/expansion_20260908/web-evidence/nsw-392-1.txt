@@ -1,0 +1,102 @@
+Labelling – general requirements fact sheet (https://www.foodauthority.nsw.gov.au/media/646)
+citeturn124view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 3; Source: click({"ref_id":"turn59view0","id":392}); Total lines: 99
+L0@P0: Food Authority
+L1@P0: Labelling requirements for food sold in Australia and New Zealand are set out in Chapter 1 and
+L2@P0: Chapter 2 of the Food Standards Code (the Code).
+L3@P0: Food labelling provides consumers with important information about the food they are buying and
+L4@P0: consuming. The information on the label must:
+L5@P0: • be visible on the outside of the package
+L6@P0: • be legible and in English
+L7@P0: • be unambiguous
+L8@P0: • not mislead the consumer.
+L9@P0: Exemptions from labelling requirements apply to unpackaged food and some packaged foods – see
+L10@P0: Labelling exemptions below.
+L11@P0: Under food law, advertising information is equivalent to labelling.
+L12@P0: Information a food label must contain
+L13@P0: The food label must identify the following basic information:
+L14@P0: • a name for the food which is prescribed by the Code, or a name/description that describes the
+L15@P0: true nature of the food
+L16@P0: • the production ‘lot’ of the food prepared under the same conditions and during a particular span
+L17@P0: of time (date coding can in some circumstances satisfy the requirement for a lot number)
+L18@P0: • the name and street address in Australia or New Zealand of the supplier, packer, manufacturer,
+L19@P0: vendor or importer of the food
+L20@P0: • warning and advisory statements and declarations of the presence of substances that may
+L21@P0: adversely affect the health of people with allergies and food sensitivities
+L22@P0: • a list of the ingredients
+L23@P0: • a statement of the shelf life of the product as either a ‘use-by’ or a ‘best before’ date if the food
+L24@P0: has a shelf life of less than 2 years (see related factsheet Labelling – Date marking, storage
+L25@P0: conditions and directions for use (PDF, 147 KB))
+L26@P0: • directions for use and storage where these are needed for reasons of health and safety or to
+L27@P0: ensure shelf life is achieved
+L28@P0: • a nutrition information panel (NIP), which shows the quantity of the basic nutrients contained in
+L29@P0: the food, per serving and per 100g of that food. Certain packaged foods are exempt from the
+L30@P0: requirement to carry a NIP, such as alcoholic beverages, water, herbs and spices, and prepared
+L31@P0: sandwiches.
+L32@P0: Additional information such as characterising ingredients may also be required. See
+L33@P0: foodauthority.nsw.gov.au/food-labelling for more information.
+L34@P0-1: Labelling – general requirementsLabelling – general requirements
+L35@P1: FA581/2312 2
+L36@P1: Portion-packed foods
+L37@P1: Retail businesses often purchase bulk-packed foods, such as cheese wheels, smallgoods, nuts and
+L38@P1: pulses, which are then divided into portions and repackaged on their premises. The retailer displays
+L39@P1: these foods in self-service cabinets. Although portion-packed foods require labelling information (as
+L40@P1: listed above), there are some additional options available to retailers to comply with the Code.
+L41@P1: Retailers may be able to choose to:
+L42@P1: • attach a label to each portion-packed food, or
+L43@P1: • display labelling information on a sign/booklet or tearaway pamphlet near the portion-packed food.
+L44@P1: The information must be legible, and the consumer should be able to readily identify the portionpacked food to which the information relates. Information that may change frequently or is essential to
+L45@P1: protect consumer safety (for example, the use-by date, lot code, storage conditions, allergens) should
+L46@P1: be declared on a label that is attached to the portion-packed food.
+L47@P1: Labelling exemptions
+L48@P1: Some food offered for retail sale is exempt from general labelling requirements. Food does not need to
+L49@P1: be labelled if it is:
+L50@P1: • unpackaged
+L51@P1: • in an ‘inner’ package, not designed for sale without the outer package
+L52@P1: • made and packaged on the premises from which it is sold. For a food to be considered ‘made’ as
+L53@P1: well as ‘packaged’ on the premises, it must have been processed on the premises in a way that
+L54@P1: changed the nature of the food, before being packaged on the premises. Merely dividing and
+L55@P1: repackaging portions of food from bulk to individual smaller pieces for sale does not in itself qualify
+L56@P1: the food for a labelling exemption
+L57@P1: • packaged in the presence of the purchaser. A retailer may sell food without a label on the package
+L58@P1: where the customer witnesses the packaging of the food as any questions about the food can be
+L59@P1: put to the person serving the food for sale
+L60@P1: • packaged food displayed in an assisted service cabinet, which requires food to be served on
+L61@P1: request from the purchaser
+L62@P1: • whole or cut vegetables and fruit, in a package that displays the nature and the quality of the food
+L63@P1: (sprouting seeds are excluded from this exemption)
+L64@P1: • delivered packaged and ready for consumption at the order of the consumer
+L65@P1: • sold at a fundraising event (see related factsheet Food safety requirements for charitable and notfor-profit organisations (PDF,158 KB)).
+L66@P1: Even if the food is exempt, the retailer must comply with requirements for certain warning statements
+L67@P1: and details of food that has been genetically modified or irradiated.
+L68@P1: With the exception of the presence of royal jelly, genetically modified foods and irradiated foods
+L69@P1: require the information to be displayed in conjunction with the food or providing the information to the
+L70@P1-2: purchaser on request.Labelling – general requirements
+L71@P2: FA581/2312 3
+L72@P2: Enforcement
+L73@P2: The NSW Food Authority is responsible for administering the labelling and information provisions in
+L74@P2: the Code and Food Act 2003 (NSW).
+L75@P2: The Food Authority is not responsible for:
+L76@P2: • the presence and accuracy of total weights and measures statements, which is the responsibility of
+L77@P2: the National Measurement Institute (however, the Food Authority is responsible for percentage
+L78@P2: ingredient statements)
+L79@P2: • barcodes
+L80@P2: • recycling codes
+L81@P2: • composition and labelling of pet food
+L82@P2: • therapeutic products (including dietary aids and supplements) registered by the Therapeutic
+L83@P2: Goods Administration, which are governed by that agency
+L84@P2: • country of origin labelling
+L85@P2: • compliance with Australian Consumer Law.
+L86@P2: As food labelling is regulated by a wide range of laws it is recommended that food businesses
+L87@P2: consider engaging a labelling consultant if they are uncertain of their obligations.
+L88@P2: More information
+L89@P2: • Visit foodauthority.nsw.gov.au
+L90@P2: • Phone 1300 552 406
+L91@P2: • Email food.contact@dpi.nsw.gov.au
+L92@P2: • See the labelling information detailed in Chapter 1.2 of the Food Standards Code
+L93@P2: • Visit the Therapeutic Goods Administration’s website: tga.gov.au
+L94@P2: • Visit Australian Competition and Consumer Commission accc.gov.au
+L95@P2: © State of New South Wales through Regional NSW 2023. The information contained in this publication is based on knowledge and
+L96@P2: understanding at the time of writing December 2023. However, because of advances in knowledge, users are reminded of the need to
+L97@P2: ensure that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L98@P2: Regional NSW or the user’s independent adviser.
+

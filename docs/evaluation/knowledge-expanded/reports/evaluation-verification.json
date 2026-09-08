@@ -1,0 +1,25 @@
+{
+  "case_count": 300,
+  "dev_request_count": 100,
+  "dev_requests_sha256": "fe43c98c26c7805e5a1866dbf77e0530723d4d5320e74c78f9f854397e4b3723",
+  "errors": [],
+  "evidence_count": 7700,
+  "group_counts": {
+    "cross_document": 60,
+    "exact": 40,
+    "hybrid": 60,
+    "keyword": 40,
+    "semantic": 60,
+    "unanswerable": 40
+  },
+  "human_review": "pending",
+  "model_or_retrieval_scores": null,
+  "relation_case_count": 60,
+  "relation_edge_count": 800,
+  "scenario_count": 150,
+  "scenario_family_count": 30,
+  "split_counts": {
+    "dev": 100,
+    "test": 200
+  }
+}

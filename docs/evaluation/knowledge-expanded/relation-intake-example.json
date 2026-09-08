@@ -1,0 +1,51 @@
+{
+  "assertion_scope": "synthetic_fact_only_not_real_business_verification",
+  "assertion_status": "synthetic_verified",
+  "condition_authoring": "explicit_fixture_policy_v1",
+  "condition_semantics": "all_equal_required_keys_fail_closed",
+  "conditions": [
+    "only declared store, SKU, business purpose and effective interval",
+    "association does not authorize substitution or prove complete impact"
+  ],
+  "effective_interval": {
+    "from": "2026-01-01",
+    "until": "2026-01-16"
+  },
+  "evidence_chunk_ids": [],
+  "evidence_id": "SYN-F01-B1-product-1-v1:E6",
+  "evidence_quote": "模拟供货事实：SUP01为STORE01提供SKU001和SKU002；这只是本场景供货联系。本商品与包装说明适用于这两个商品的预约卸货事项。联系存在不代表允许替代，本记录没有声称列全全部下游门店；实时数量、现价、任务状态须查询业务系统。",
+  "executable": false,
+  "execution_status": "requires_actual_parser_quote_binding",
+  "from_entity": "SYN-F01-B1-product-1-v1",
+  "locator": "section:6",
+  "machine_conditions": {
+    "proof_available": true,
+    "scenario_id": "F01-B1",
+    "store_fixture": "STORE01"
+  },
+  "relation_id": "F01-B1:APPLIES_TO:SKU001",
+  "relation_type": "APPLIES_TO",
+  "retrieval_edges": [
+    {
+      "conditions": {
+        "proof_available": true,
+        "scenario_id": "F01-B1",
+        "store_fixture": "STORE01"
+      },
+      "confirmed": false,
+      "evidence_chunk_ids": [],
+      "evidence_quote": "模拟供货事实：SUP01为STORE01提供SKU001和SKU002；这只是本场景供货联系。本商品与包装说明适用于这两个商品的预约卸货事项。联系存在不代表允许替代，本记录没有声称列全全部下游门店；实时数量、现价、任务状态须查询业务系统。",
+      "id": "F01-B1:APPLIES_TO:SKU001:lookup",
+      "meaning": "evidence discovery only; never substitution permission",
+      "object": "SYN-F01-B1-product-1-v1",
+      "predicate": "HAS_APPLICABLE_DOCUMENT",
+      "retrieval_orientation": "declared_reverse_lookup_not_business_inverse",
+      "semantic_relation_id": "F01-B1:APPLIES_TO:SKU001",
+      "source_version_fixture_id": "SYN-F01-B1-product-1-v1",
+      "subject": "SKU001"
+    }
+  ],
+  "retrieval_orientation": "see_explicit_retrieval_edges",
+  "source_version_id": "SYN-F01-B1-product-1-v1",
+  "to_entity": "SKU001"
+}

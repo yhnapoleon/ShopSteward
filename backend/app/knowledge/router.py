@@ -1,5 +1,6 @@
 from typing import Annotated, Literal
 
+import httpx
 from fastapi import APIRouter, Query, Request
 from fastapi.responses import FileResponse
 from pydantic import ValidationError
@@ -8,18 +9,24 @@ from app.api.dependencies import Cursor, Id, Key, Limit, User, require_role
 from app.api.routing import errors
 from app.api.schemas import Error
 from app.core.errors import AppError
+from app.knowledge import indexing
 from app.knowledge import repository as repo
 from app.knowledge.schemas import (
+    Activation,
     AppendMetadata,
     Control,
     Document,
     DocumentList,
+    IndexProgress,
+    IndexRequest,
     MetadataPatch,
+    PublicationResult,
     Status,
     UploadMetadata,
     Version,
     VersionList,
 )
+from app.knowledge.service_client import connect
 from app.knowledge.storage import original_path, receive_upload
 
 
@@ -123,7 +130,7 @@ async def listing(
 )
 async def detail(request: Request, principal: User, document_id: Id):
     async with request.app.state.db.session() as session:
-        return repo.document(await repo.visible(session, principal, document_id))
+        return await indexing.detail(session, principal, document_id)
 
 
 @router.patch(
@@ -174,8 +181,8 @@ async def versions(
 )
 async def version(request: Request, principal: User, document_id: Id, version_id: Id):
     async with request.app.state.db.session() as session:
-        return Version.model_validate(
-            await repo.version(session, principal, document_id, version_id)
+        return await repo.version_dto(
+            session, await repo.version(session, principal, document_id, version_id)
         )
 
 
@@ -224,3 +231,88 @@ async def control(request: Request, principal: User, document_id: Id, body: Cont
     require_role(principal, "operator")
     async with request.app.state.db.session() as session, session.begin():
         return await repo.control(session, principal, document_id, body, key)
+
+
+K2 = {"x-phase": "K2", "x-implementation-status": "implemented"}
+
+
+@router.post(
+    "/api/v1/documents/{document_id}/versions/{version_id}/index-jobs",
+    status_code=202,
+    operation_id="request_knowledge_index",
+    response_model=IndexProgress,
+    openapi_extra=K2,
+)
+async def request_index(
+    request: Request, principal: User, document_id: Id, version_id: Id, body: IndexRequest, key: Key
+):
+    require_role(principal, "operator")
+    async with request.app.state.db.session() as session, session.begin():
+        # Check the URL binding before accepting an otherwise authorized version.
+        await repo.version(session, principal, document_id, version_id)
+        return await indexing.request_index(session, principal, version_id, body.profile_id, key)
+
+
+@router.get(
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}",
+    operation_id="get_knowledge_index",
+    response_model=IndexProgress,
+    openapi_extra=K2,
+)
+async def index_progress(request: Request, principal: User, document_id: Id, request_id: Id):
+    async with request.app.state.db.session() as session:
+        return indexing.progress(
+            await indexing.get_request(session, principal, document_id, request_id)
+        )
+
+
+@router.post(
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}/retry",
+    status_code=202,
+    operation_id="retry_knowledge_index",
+    response_model=IndexProgress,
+    openapi_extra=K2,
+)
+async def retry_index(request: Request, principal: User, document_id: Id, request_id: Id, key: Key):
+    async with request.app.state.db.session() as session, session.begin():
+        return await indexing.retry_request(session, principal, document_id, request_id, key)
+
+
+@router.post(
+    "/api/v1/documents/{document_id}/publications",
+    operation_id="publish_knowledge_generation",
+    response_model=PublicationResult,
+    openapi_extra=K2,
+)
+async def publish(request: Request, principal: User, document_id: Id, body: Activation, key: Key):
+    require_role(principal, "operator")
+    async with request.app.state.db.session() as session:
+        completed = await indexing.publication_replay(session, principal, document_id, body, key)
+        if completed is not None:
+            return completed
+        row = await indexing.ready_request(
+            session, principal, document_id, body.version_id, body.generation_id, body.manifest_hash
+        )
+    # READY is checked over HTTP only after the authority read session has closed.
+    try:
+        async with connect(request.app.state.settings) as client:
+            proof = await client.job(row.job_id)
+    except (httpx.HTTPError, ValueError) as exc:
+        raise AppError(
+            503, "KNOWLEDGE_UNAVAILABLE", "Cannot verify READY proof", retryable=True
+        ) from exc
+    async with request.app.state.db.session() as session, session.begin():
+        return await indexing.activate_generation(
+            session,
+            principal,
+            body.version_id,
+            body.generation_id,
+            body.manifest_hash,
+            body.expected_publication_revision,
+            proof=proof,
+            request_id=row.id,
+            key=key,
+            replace_version_ids=body.replace_version_ids,
+            valid_from=body.valid_from,
+            valid_until=body.valid_until,
+        )

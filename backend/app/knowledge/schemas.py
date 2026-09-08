@@ -2,6 +2,7 @@ from datetime import datetime
 from typing import Annotated, Literal
 
 from pydantic import AwareDatetime, Field, field_validator, model_validator
+from shopsteward_knowledge.contracts import Provenance
 
 from app.api.schemas import DTO, Identifier
 
@@ -44,11 +45,12 @@ class Validity(DTO):
 
 
 class UploadMetadata(Metadata, Validity):
-    pass
+    provenance: Provenance | None = None
 
 
 class AppendMetadata(Validity):
     expected_metadata_version: int = Field(ge=1)
+    provenance: Provenance | None = None
 
 
 class MetadataPatch(DTO):
@@ -77,15 +79,28 @@ class Document(Metadata):
     store_id: Identifier
     owner_principal_id: Identifier
     metadata_version: int
+    evidence_revision: int = Field(ge=1)
     status: Status
     latest_version_id: Identifier | None
     ingestion_status: Literal["UPLOADED"]
-    indexing_status: Literal["NOT_INDEXED"]
+    indexing_status: Literal["NOT_INDEXED", "QUEUED", "INDEXING", "READY", "PARTIAL", "FAILED"]
+    publication_revision: int = 0
+    requires_republication: bool = False
+    publications: list[dict] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
 
+    @model_validator(mode="before")
+    @classmethod
+    def legacy_receipt_revision(cls, value):
+        # Persisted K1 command receipts predate the separate evidence counter.
+        if isinstance(value, dict) and "evidence_revision" not in value:
+            return {**value, "evidence_revision": value.get("metadata_version")}
+        return value
+
 
 class Version(Validity):
+    provenance: Provenance | None = None
     id: Identifier
     document_id: Identifier
     version_no: int
@@ -107,3 +122,38 @@ class DocumentList(DTO):
 class VersionList(DTO):
     items: list[Version]
     next_cursor: str | None
+
+
+class IndexRequest(DTO):
+    profile_id: Identifier = "lexical-v1"
+
+
+class IndexProgress(DTO):
+    request_id: Identifier
+    document_id: Identifier
+    version_id: Identifier
+    metadata_revision: int = Field(ge=1)
+    state: Literal["PENDING", "RUNNING", "RETRY_WAIT", "SUCCEEDED", "FAILED"]
+    attempt: int = Field(ge=0)
+    job_id: Identifier | None
+    generation_id: Identifier | None
+    manifest_hash: str | None
+    error: str | None
+
+
+class PublicationResult(DTO):
+    document_id: Identifier
+    version_id: Identifier
+    generation_id: Identifier
+    manifest_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    publication_revision: int = Field(ge=1)
+    valid_from: AwareDatetime | None = None
+    valid_until: AwareDatetime | None = None
+
+
+class Activation(Validity):
+    version_id: Identifier
+    generation_id: Identifier
+    manifest_hash: str = Field(pattern=r"^[0-9a-f]{64}$")
+    expected_publication_revision: int = Field(ge=0)
+    replace_version_ids: list[Identifier] = Field(default_factory=list, max_length=100)

@@ -1,0 +1,291 @@
+Guideline to Food Safety Supervisor (FSS) requirements (https://www.foodauthority.nsw.gov.au/media/2466)
+citeturn101view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 10; Source: click({"ref_id":"turn59view0","id":368}); Total lines: 288
+L0@P0: foodauthority.nsw.g ov.au
+L1@P0: Food Authority
+L2@P0: Guideline to Food Safety Supervisor (FSS)
+L3@P0: requirements
+L4@P0-1: March 2026Guideline to Food Safety Supervisor (FSS) requirements
+L5@P1: FA 774 /2603 2
+L6@P1: Table of Contents
+L7@P1: Why is a Food Safety Supervisor (FSS) required? ................................ ................................ ............................. 3
+L8@P1: Which businesses need a Food Safety Supervisor? ................................ ................................ ......................... 3
+L9@P1: What is a Food Safety Supervisor? ................................ ................................ ................................ ........................... 4
+L10@P1: Who can be a Food Safety Supervisor? ................................ ................................ ................................ ..................4
+L11@P1: When do I have to appoint my Food Safety Supervisor? ................................ ................................ ................4
+L12@P1: How many Food Safety Supervisors do I need? ................................ ................................ ................................ .4
+L13@P1: Does the Food Safety Supervisor have to be at the business all the time? ................................ ..........5
+L14@P1: Training and assessment requirements ................................ ................................ ................................ .................5
+L15@P1: Where can the Food Safety Supervisor be trained? ................................ ................................ ......................... 6
+L16@P1: What is an RTO? ................................ ................................ ................................ ................................ ................................ 6
+L17@P1: How is the training delivered and how long will it take? ................................ ................................ ................6
+L18@P1: How much will training cost? ................................ ................................ ................................ ................................ ......6
+L19@P1: Food Safety Supervisor certificate ................................ ................................ ................................ .......................... 7
+L20@P1: Penalties for non -compliance ................................ ................................ ................................ ................................ .....7
+L21@P1: Will previous training be recognised? ................................ ................................ ................................ ..................... 7
+L22@P1: How is Food Safety Supervisor training different to general food safety skills and knowledge
+L23@P1: training? ................................ ................................ ................................ ................................ ................................ ................7
+L24@P1: Is the Food Safety Supervisor solely responsible for food safety in a business? .............................. 8
+L25@P1: Business owners/proprietors must: ................................ ................................ ................................ ................................ ....................8
+L26@P1: Food Safety Supervisors: ................................ ................................ ................................ ................................ ................................ .........8
+L27@P1: Food handlers: ................................ ................................ ................................ ................................ ................................ ............................... 8
+L28@P1: What if a Food Safety Supervisor changes their name, or damages or loses their certificate? ..9
+L29@P1: What if the Food Safety Supervisor leaves the business? ................................ ................................ ............9
+L30@P1: Summary of roles ................................ ................................ ................................ ................................ .............................. 9
+L31@P1: Role of the business ................................ ................................ ................................ ................................ ................................ ...................9
+L32@P1: Role of local councils ................................ ................................ ................................ ................................ ................................ .................9
+L33@P1: Role of RTOs ................................ ................................ ................................ ................................ ................................ ................................ ...9
+L34@P1: Food Safety Supervisor recertification ................................ ................................ ................................ ................10
+L35@P1: Steps for businesses to comply with the Food Safety Supervisor requirements ............................. 10
+L36@P1-2: More information ................................ ................................ ................................ ................................ ............................. 10Guideline to Food Safety Supervisor (FSS) requirements
+L37@P2: FA 774 /2603 3
+L38@P2: Why is a Food Safety Supervisor (FSS) required?
+L39@P2: NSW and Australian food laws require certain businesses in the hospitality and retail food service
+L40@P2: sector to appoint at least one trained FSS per business premises .
+L41@P2: These laws include the NSW Food Act 20 03, NSW Food Regulation 2025 and the Australian New
+L42@P2: Zealand Food Standards Code.
+L43@P2: The aim of the requirement is to prevent individuals from becoming ill from food poisoning as a
+L44@P2: result of incorrect handling and preparation of food.
+L45@P2: Statistics show incorrect food handling practices in hospitality and retail businesses account for
+L46@P2: around 40 -50% of foodborne illness outbreaks in NSW, costing the community hundreds of millions
+L47@P2: of dollars each year in healthcare and lost revenue.
+L48@P2: Appointing an FSS gives food businesses a better level of onsite protection for food safety and
+L49@P2: gives consumers peace of mind when buying food in NSW.
+L50@P2: Which businesses need a Food Safety Supervisor?
+L51@P2: Under Standard 3.2.2A of the Food Standards Code, t he FSS requirement applies to all b usinesses
+L52@P2: that handle food that is potentially hazardous (requires temperature control ), is ready -to-eat and is
+L53@P2: not sold or served in its original packaging. These businesses include:
+L54@P2: • restaurants
+L55@P2: • c afés
+L56@P2: • takeaway outlets
+L57@P2: • c aterers
+L58@P2: • bakeries
+L59@P2: • pubs , c lubs and h otels
+L60@P2: • mobile food vendors and temporary market stalls .
+L61@P2: From 8 December 2024 the FSS requirement also appl ied to:
+L62@P2: • school canteens
+L63@P2: • children’s services that provide meals, including out of school hours care
+L64@P2: • correctional centres
+L65@P2: • delicatessens
+L66@P2: • greengrocers
+L67@P2: • supermarkets
+L68@P2-3: • coffee vendors that sell unpackaged, potentially hazardous, ready -to-eat food Guideline to Food Safety Supervisor (FSS) requirements
+L69@P3: FA 774 /2603 4
+L70@P3: • boarding schools.
+L71@P3: The Standard 3.2.2A Food Safety Tools quiz can help businesses and organisations determine
+L72@P3: whether they require an FSS. See www.foodauthority.nsw.gov.au/safetytools for more information.
+L73@P3: What is a Food Safety Supervisor?
+L74@P3: A Food Safety Supervisor is a person who:
+L75@P3: • is formally trained to recognise and prevent risks associated with food handling in food
+L76@P3: business es
+L77@P3: • holds a current NSW Food Authority FSS certificate (no more than 5 years old) as per the Food
+L78@P3: Act – Section 106B(1a)
+L79@P3: • is not a n FSS for any other food premises or mobile catering business
+L80@P3: • trains and supervises other people in the business about safe food handling practices , and
+L81@P3: • has the authority and ability to manage and give direction on the safe handling of food.
+L82@P3: Who can be a Food Safety Supervisor?
+L83@P3: The FSS is nominated by the owner of a food business and may be the business owner, manager, or
+L84@P3: employee ( for example, the chef) provided they meet the criteria detailed above. For a small
+L85@P3: business, it may be most appropriate for the business owner to be the FSS.
+L86@P3: The FSS must have authority to supervise others in the business to ensure safe food handling occurs
+L87@P3: as per the Food Act – Section 106B(1c).
+L88@P3: When do I have to appoint my Food Safety Supervisor?
+L89@P3: Businesses must appoint an FSS from the time potentially hazardous , ready -to-eat food is first
+L90@P3: handled and sold. Contact your local council for more information on starting a food business.
+L91@P3: How many Food Safety Supervisors do I need?
+L92@P3: Businesses need to appoint at least one FSS per premises as per the Food Ac t – Section 106B(1b) .
+L93@P3: Businesses with several premises cannot use the same FSS for each premises - they must nominate
+L94@P3: a different FSS for each premises.
+L95@P3: Larger businesses , or those that operate longer hours , may choose to nominate several people to be
+L96@P3-4: trained and appointed as an FSS to help cover shift work and annual leave.Guideline to Food Safety Supervisor (FSS) requirements
+L97@P4: FA 774 /2603 5
+L98@P4: Does the Food Safety Supervisor have to be at the business all the time?
+L99@P4: No, although it is best practice that the FSS is on the premises at all times when food handling is
+L100@P4: undertaken. If the FSS is away , for example not on shift, on annual leave, or sick, the business must
+L101@P4: still maintain food safety. The FSS must facilitate this by:
+L102@P4: • sharing food safety knowledge with other staff
+L103@P4: • displaying signage and posters with key food safety messages
+L104@P4: • developing work instructions that staff can follow to continue handling food safely . Examples
+L105@P4: include writing on paper or electronic templates, and written instructions that have been verified,
+L106@P4: such as a validated recipe or standard operating procedure (SOP) such as a cleaning schedule.
+L107@P4: Larger businesses or those that operate longer hours may choose to nominate several people to be
+L108@P4: trained and appointed as an FSS to help cover shift work and leave.
+L109@P4: Training and assessment requirements
+L110@P4: A FSS need s to complete training and assessment in units of competency within the Vocational
+L111@P4: Education and Training (VET) system . The legislation requires recertification training every 5 years –
+L112@P4: for more information see the FSS recertification section below.
+L113@P4: There are 2 pathways to choose from to achieve FSS certification, hospitality or retail, depending on
+L114@P4: the business type :
+L115@P4: Two hospitality units:
+L116@P4: • SITXFSA005 – Use hygiene practices for food safety
+L117@P4: • SITXFSA006 – Participate in safe food handling practices
+L118@P4: OR
+L119@P4: One retail unit:
+L120@P4: • SIRRFSA001 – Handle food safely in a retail environment.
+L121@P4: Businesses should choose the unit s of competenc y that are more relevant to their business type ( for
+L122@P4: example, a fast food chain can be considered as a retail business; a restaurant or café can be
+L123@P4: considered as a hospitality business).
+L124@P4: There is no requirement for the FSS to undertake units beyond the minimum competencies listed
+L125@P4: above.
+L126@P4: The units of competency must incorporate mandatory key focus areas as determined by the Food
+L127@P4: Authority and listed on its website. The current focus areas include allergen management, cleaning
+L128@P4: and sanitising, safe egg handling and Food Act offences. The se key focus areas were developed in
+L129@P4-5: response to common high risk food safety issues in the retail and hospitality sectors.Guideline to Food Safety Supervisor (FSS) requirements
+L130@P5: FA 774 /2603 6
+L131@P5: Where can the F ood Safety Supervisor be trained?
+L132@P5: Training will only be recognised if it is delivered by a Registered Training Organisation (RTO) that
+L133@P5: has been approved by the Food Authority to deliver F SS training and issue NSW FSS certificates .
+L134@P5: Approved RTOs are listed on the Food Authority’s website . Businesses can also contact the ir local
+L135@P5: council to find out where the nearest approved RTO is.
+L136@P5: What is an RTO?
+L137@P5: A Registered Training Organisation (RTO) is registered by national and in some cases state and
+L138@P5: territory training authorities to deliver nationally recognised training and conduct assessments to
+L139@P5: issue nationally recognised qualifications.
+L140@P5: RTOs may include government departments, TAFE colleges, adult and community education
+L141@P5: providers, private providers, community organisations, schools, higher education institutions,
+L142@P5: industry bodies or other organisations meeting the registration requirement s.
+L143@P5: In all instances RTO’s must be approved by the NSW Food Authority to issue NSW FSS certificates.
+L144@P5: How is the training delivered and how long will it take?
+L145@P5: FSS training can generally be completed in one full day ( for example, through face -to-face training
+L146@P5: and assessment ). However, the duration of the course will depend on the type of delivery option
+L147@P5: offered by approved RTOs , which can include:
+L148@P5: • face -to-face
+L149@P5: • online
+L150@P5: • workplace based
+L151@P5: • correspondence
+L152@P5: • a combination of the above.
+L153@P5: RTOs must issue NSW FSS certificates within 10 working days of successfully completing the
+L154@P5: course.
+L155@P5: How much will training cost?
+L156@P5: Training costs are set by individual approved RTOs. RTOs will issue the NSW FSS certificate and
+L157@P5-6: cannot charge more than $30 to issue it. Guideline to Food Safety Supervisor (FSS) requirements
+L158@P6: FA 774 /2603 7
+L159@P6: Food Safety Supervisor certificate
+L160@P6: The NSW FSS certificate is issued by the approved RTO , in addition to a
+L161@P6: Statement of Attainment , after successful completion of the training
+L162@P6: and assessment requirements .
+L163@P6: A FSS certificate states that the person it is issued to is qualified to be
+L164@P6: a FSS . The FSS certificate is valid for 5 years from the date of issue.
+L165@P6: It is a legal requirement that all businesses keep a copy of their FSS
+L166@P6: certificate on the premises and produce it for inspection on request by
+L167@P6: an authorised officer. The Food Authority encourages businesses to
+L168@P6: display their FSS certificate.
+L169@P6: Penalties for non -compliance
+L170@P6: There are 2 offences that carry penalties if a business does not comply :
+L171@P6: • fail to appoint a F SS - business does not appoint at least one FSS per premises (or per business
+L172@P6: for mobile caterers) within 30 days of the original FSS ceasing to act in that role
+L173@P6: • fail to keep a copy of the FSS certificate on the premises and produce it for inspection - business
+L174@P6: does not keep a copy of the certificate on the premises and does not produce it for inspection on
+L175@P6: request by an authorised officer .
+L176@P6: Penalty notice infringements for the above offences can be up to $330 for an individual (for
+L177@P6: example, a sole trader) and $660 for a registered company.
+L178@P6: These offences can also be prosecut ed in serious cases. Refer to the Food Act 2003 for the
+L179@P6: maximum penalties that apply.
+L180@P6: Will previous training be recognised?
+L181@P6: People who have completed all required units of a vocational qualification from a single RTO in
+L182@P6: Australia ( For example, Cert IV in Commercial Cookery) within the past 6 months can apply to the
+L183@P6: Food Authority for an FSS certificate. They will need to complete the FSS certificate request form
+L184@P6: available on the Food Authority website , together with a certified copy of their Qualification and
+L185@P6: Transcript and $30 payment to the Food Authority.
+L186@P6: See www.foodauthority.nsw.gov.au/retail/fss -food -safety -supervisors for more i nformation ,
+L187@P6: including eligibility.
+L188@P6: How is Food Safety Supervisor training different to general food safety skills
+L189@P6: and knowledge training?
+L190@P6: It is mandatory for all food handlers to have general food handling skills and knowledge appropriate
+L191@P6-7: to their role in the business. This is specified in the Food Standards Code.Guideline to Food Safety Supervisor (FSS) requirements
+L192@P7: FA 774 /2603 8
+L193@P7: The FSS training is ‘accredited’ training as it is tied to qualifications within the nationally recognised
+L194@P7: Vocational Education and Training (VET) system.
+L195@P7: FSS training is an additional requirement for at least 1 person in certain hospitality and retail food
+L196@P7: service businesses. It does not replace skills and knowledge requirements for all food handlers.
+L197@P7: The NSW FSS requires the national units of competency and mandatory key focus areas .
+L198@P7: Is the Food Safety Supervisor solely responsible for food safety in a business?
+L199@P7: No. Everyone who works in a food business has a responsibility to handle food safely.
+L200@P7: Business owners/proprietors must:
+L201@P7: • put effective food safety processes in place
+L202@P7: • notify their food business with the relevant authority (usually the local council )
+L203@P7: • ensure their business complies with the Food Standards Code, including 3.2.2A and other food
+L204@P7: safety requirements
+L205@P7: • appoint an FSS
+L206@P7: • ensure a copy of the current FSS certificate is on the premises at all times. The Food Authority
+L207@P7: encourages businesses to display their FSS certificate.
+L208@P7: • ensure staff are trained in the skills and knowledge they require for their role
+L209@P7: • keep food safety risk management records (if required) or be able to demonstrate how the
+L210@P7: business keeps food safe
+L211@P7: • be aware they are liable if a food safety breach does occur .
+L212@P7: Food Safety Supervisor s:
+L213@P7: • are nominated by the business owner and work under the direction of the owner
+L214@P7: • supervise food handling in the business to make sure it is done safely
+L215@P7: • must understand the overall food safety processes of the business as it applies to all staff
+L216@P7: • are subject to individual liability and personal hygiene provisions (under Standard 3.2.2 Div ision 4
+L217@P7: Subdivision 1 - 13,14,15).
+L218@P7: Food handlers:
+L219@P7: • must have skills and knowledge relevant to their food duties to keep and sell safe food . For
+L220@P7: example, a chef need s greater food safety skills and knowledge than a waiter or kitchen hand
+L221@P7: • are subject to individual personal hygiene provisions (under Standard 3.2.2 Div ision 4 Subdivision
+L222@P7-8: 1- 13,14,15).Guideline to Food Safety Supervisor (FSS) requirements
+L223@P8: FA 774 /2603 9
+L224@P8: What if a Food Safety Supervisor changes their name, or damages or loses
+L225@P8: their certificate?
+L226@P8: If a FSS’s personal details change , such as their name , they should first contact the RTO that issued
+L227@P8: the FSS certificate and request a new one . The FSS will need to find out from the RTO what
+L228@P8: documentation must be submitted before a certificate is reissued.
+L229@P8: If an FSS certificate is lost or damaged, the RTO that issued the certificate will be able to issue a
+L230@P8: replacement.
+L231@P8: RTOs may charge a fee for the reissue of an FSS certificate. This cost is set by the RTO and not the
+L232@P8: Food Authority.
+L233@P8: If the RTO that issued the certificate has ceased to operate or is no longer approved under the NSW
+L234@P8: FSS program, the Food Authority can issue a replacement certificate .
+L235@P8: The business and FSS should act as soon as possible to replace an FSS certificate, as it is a legal
+L236@P8: requirement that all businesses that require a FSS keep a copy of the certificate on the premises.
+L237@P8: What if the Food Safety Supervisor leaves the business?
+L238@P8: As the FSS certificate holder must be working in the business, the business owner must appoint a
+L239@P8: new Food Safety Supervisor within 30 operational days ( for example, days that food is processed
+L240@P8: and sold) of that FSS leaving or ceasing to act in that role .
+L241@P8: Summary of roles
+L242@P8: Role of the business
+L243@P8: • Appoint at least one trained FSS per premises (or per business for mobile caterers).
+L244@P8: • Ensure the FSS obtains the FSS certificate by completing FSS training and assessment .
+L245@P8: • Keep a copy of the FSS certificate on the premises at all times. Display is recommended .
+L246@P8: • Ensure the FSS certificate is valid (no t more than 5 years old ).
+L247@P8: Role of local councils
+L248@P8: Upon routine inspections of food businesses , authorised officers can ask to see a copy of the FSS
+L249@P8: certificate. This must be clear and legible.
+L250@P8: Role of RTOs
+L251@P8: • Be approved by the NSW Food Authority to deliver NSW FSS training and assessment in the
+L252@P8: required units of competency as well as the mandatory key focus areas and issue FSS
+L253@P8: certificates .
+L254@P8-9: • Comply with the Food Authority’s conditions of approval and RTO approval criteria.Guideline to Food Safety Supervisor (FSS) requirements
+L255@P9: FA 774 /2603 10
+L256@P9: Food Safety Supervisor recertification
+L257@P9: NSW FSS certificates are valid for 5 years from the date of issue, after which they need to be
+L258@P9: renewed.
+L259@P9: When a NSW FSS holder’s certification expires, the certificate holder has 90 days to replace their
+L260@P9: expired certificate by completing a recertification course through an approved RTO offering that
+L261@P9: course.
+L262@P9: The recertifying RTO may recognise the applicant ’s prior learning (units of competency) as part of
+L263@P9: the recertification course.
+L264@P9: If a certificate holder’s certificate expired more than 90 days ago, they must complete the full
+L265@P9: course again, including the required units of competency and key focus areas.
+L266@P9: This is different to the requirements for a food business where the business must appoint a new FSS
+L267@P9: within 30 days if:
+L268@P9: • the appointed FSS leaves the business, or
+L269@P9: • the appointed FSS certificate expires.
+L270@P9: The new FSS may be a previously appointed FSS who completes recertification.
+L271@P9: Steps for businesses to comply with the Food Safety Supervisor requirements
+L272@P9: 1. Determine whether your business needs an FSS .
+L273@P9: 2. Choose who will be the FSS for your business .
+L274@P9: 3. The chosen FSS comple tes the training and assessment through an approved RTO.
+L275@P9: 4. The FSS receives a Statement of Attainment and a NSW FSS certificate. A copy is kept on the
+L276@P9: premises .
+L277@P9: 5. After 5 years, the FSS completes recertification training and assessment for an updated NSW
+L278@P9: FSS certificate and an updated Statement of Attainment for the required units of competency.
+L279@P9: More information
+L280@P9: • Visit www.foodauthority.nsw.gov.au
+L281@P9: • Contact the Food Authority helpline:
+L282@P9: — Email food.contact@dpird.nsw.gov.au
+L283@P9: — Phone 1300 552 406 .
+L284@P9: © State of New South Wales through NSW Food Authority 2026. The information contained in this publication is based on knowled ge and
+L285@P9: understanding at the time of writing March 2026. However, because of advances in knowledge, users are reminded of the need t o ensure
+L286@P9: that the information upon which they rely is up to date and to check the currency of the information with the appropriate off icer of the
+L287@P9: Food Authority or the user’s independent adviser.
+

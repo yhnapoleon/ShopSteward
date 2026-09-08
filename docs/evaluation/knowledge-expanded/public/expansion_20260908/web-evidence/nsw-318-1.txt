@@ -1,0 +1,70 @@
+Food recalls and withdrawals (https://www.foodauthority.nsw.gov.au/media/741)
+citeturn123view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":318}); Total lines: 67
+L0@P0: Food Authority
+L1@P0: Food suppliers, including manufacturers and importers, must have procedures in
+L2@P0: place for the recall and withdrawal of unsafe or unsuitable food. Retailers must
+L3@P0: remove recalled food from sale.
+L4@P0: What is a food recall?
+L5@P0: A food recall is used to remove from sale a food that poses an immediate risk to public health and
+L6@P0: safety. Food recalls are usually initiated by the manufacturer, distributor or importer and must be
+L7@P0: reported to state and commonwealth government authorities.
+L8@P0: What is a withdrawal?
+L9@P0: A withdrawal is action taken to remove a food product from sale even if there is no public health and
+L10@P0: safety issue. This is usually done for two reasons:
+L11@P0: 1. the product has a quality defect or has a labelling irregularity that is not a public health risk
+L12@P0: 2. as a precaution, pending further investigation of a potential public health risk. If a public health risk
+L13@P0: is established, then the food must be recalled.
+L14@P0: Withdrawals do not need to be notified to authorities.
+L15@P0: Types of food recalls
+L16@P0: A food recall is action taken to remove a food product from sale to minimise or prevent a risk to public
+L17@P0: health and safety. There are three types of recalls:
+L18@P0: Trade level – involves removing the product from distribution centres, wholesalers and retail outlets.
+L19@P0: This type of recall may involve hospitals, restaurants and catering establishments that sell food
+L20@P0: manufactured for immediate consumption or food that is prepared on the premises. This type of recall
+L21@P0: is limited to foods that are sold wholesale or, if sold at retail, sold for immediate consumption.
+L22@P0: Consumer level – involves recovery of the product from all points in the production, distribution and
+L23@P0: retail networks/chains including any affected product in the possession of consumers.
+L24@P0: Mandatory recall – where the CEO of the Food Authority issues an order requiring the supplier to
+L25@P0: recall a food product.
+L26@P0: Conducting food recalls
+L27@P0: Under Standard 3.2.2, Clause 12, Food Safety Practices and General Requirements of the Food
+L28@P0: Standards Code, a manufacturer, wholesaler or importer of food must:
+L29@P0: • have in place a system to ensure the recall of unsafe food
+L30@P0-1: Food recalls and withdrawalsFood recalls and withdrawals
+L31@P1: FA615/2402 2
+L32@P1: • set out this system in a written document which can be shown to an authorised officer upon
+L33@P1: request
+L34@P1: • comply with this system when recalling unsafe food.
+L35@P1: To assist businesses in developing a food recall plan, Food Standards Australia New Zealand
+L36@P1: (FSANZ) has a booklet titled Food Industry Recall Protocol – Information on recalling food in Australia
+L37@P1: and writing a food recall plan.
+L38@P1: A copy of this booklet is available from the FSANZ website at
+L39@P1: foodstandards.gov.au/industry/foodrecalls/firp/pages/default.aspx.
+L40@P1: To further assist businesses the Food Authority has created a food recall action plan available to
+L41@P1: download from https://www.foodauthority.nsw.gov.au/media/691
+L42@P1: Initiating a food recall
+L43@P1: FSANZ coordinates all food recalls on a national level. The NSW Food Authority is responsible for
+L44@P1: monitoring food recalls. and liaising with manufacturers, wholesalers and importers in NSW.
+L45@P1: The majority of food recalls are initiated by businesses when food production monitoring has identified
+L46@P1: a fault, in response to public complaints, or as a result of government testing.
+L47@P1: If a food recall is required the FSANZ and NSW Food Authority Recall Coordinators will work with the
+L48@P1: manufacturer, importer or distributor to ensure the recall is conducted effectively.
+L49@P1: Current list of food recalls
+L50@P1: Details of recent national consumer food recalls can be found at
+L51@P1: http://www.foodstandards.gov.au/industry/foodrecalls/recalls/Pages/default.aspx.
+L52@P1: Food retailers
+L53@P1: It is the responsibility of all food retailers to remove all recalled product from sale. Retailers who
+L54@P1: continue to sell a recalled product are in breach of regulations.
+L55@P1: More information
+L56@P1: If you are considering a possible recall of food produced or distributed by your business in NSW,
+L57@P1: please:
+L58@P1: • Phone the Recall Coordinator, NSW Food Authority, on 1300 552 406
+L59@P1: • Visit the FSANZ website at foodstandards.gov.au/industry/foodrecalls/Pages/default.aspx
+L60@P1: • Standard 3.2.2 Food Safety Practices and General Requirements at:
+L61@P1: comlaw.gov.au/Details/F2012C00767
+L62@P1: • Subscribe to NSW food recall alerts at foodauthority.nsw.gov.au/email-alerts
+L63@P1: © State of New South Wales through Regional NSW 2024. The information contained in this publication is based on knowledge and
+L64@P1: understanding at the time of writing February 2024. However, because of advances in knowledge, users are reminded of the need to ensure
+L65@P1: that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L66@P1: Regional NSW or the user’s independent adviser.
+

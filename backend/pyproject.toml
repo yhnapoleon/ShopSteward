@@ -3,6 +3,7 @@ name = "shopsteward-backend"
 version = "0.1.0"
 requires-python = ">=3.11"
 dependencies = [
+    "shopsteward-knowledge",
     "fastapi>=0.115,<1",
     "uvicorn>=0.34,<1",
     "pydantic-settings>=2.8,<3",
@@ -18,6 +19,7 @@ dependencies = [
 agent = ["shopsteward-agent"]
 
 [tool.uv.sources]
+shopsteward-knowledge = { workspace = true }
 shopsteward-agent = { workspace = true }
 
 [dependency-groups]

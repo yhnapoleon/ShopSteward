@@ -1,0 +1,38 @@
+[
+  {
+    "kind": "pdf_page",
+    "page": 1,
+    "source_url": "https://www.hse.gov.uk/pubns/indg236.pdf#page=1",
+    "text_characters": 2199
+  },
+  {
+    "kind": "pdf_page",
+    "page": 2,
+    "source_url": "https://www.hse.gov.uk/pubns/indg236.pdf#page=2",
+    "text_characters": 3102
+  },
+  {
+    "kind": "pdf_page",
+    "page": 3,
+    "source_url": "https://www.hse.gov.uk/pubns/indg236.pdf#page=3",
+    "text_characters": 1463
+  },
+  {
+    "kind": "pdf_page",
+    "page": 4,
+    "source_url": "https://www.hse.gov.uk/pubns/indg236.pdf#page=4",
+    "text_characters": 3252
+  },
+  {
+    "kind": "pdf_page",
+    "page": 5,
+    "source_url": "https://www.hse.gov.uk/pubns/indg236.pdf#page=5",
+    "text_characters": 2488
+  },
+  {
+    "kind": "pdf_page",
+    "page": 6,
+    "source_url": "https://www.hse.gov.uk/pubns/indg236.pdf#page=6",
+    "text_characters": 1624
+  }
+]

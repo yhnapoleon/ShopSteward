@@ -1,0 +1,100 @@
+ (https://www.foodauthority.nsw.gov.au/media/2361)
+citeturn111view0 [wordlim: 200] Crawled: 3 weeks ago; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":304}); Total lines: 97
+L0@P0: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L1@P0: Why do eggs have to be
+L2@P0: stamped?
+L3@P0: Products containing eggs have been
+L4@P0: responsible for some of the largest
+L5@P0: outbreaks of salmonella food
+L6@P0: poisoning in Australia. Between 2010
+L7@P0: and 2014 in NSW, more than 700
+L8@P0: people were made sick in 40 food
+L9@P0: poisoning outbreaks linked to the
+L10@P0: unsafe use of eggs.
+L11@P0: Egg safety practices are essential to
+L12@P0: reduce the risk of contamination from
+L13@P0: raw eggs. These include buying eggs
+L14@P0: from reputable suppliers and never
+L15@P0: using eggs that are cracked or dirty.
+L16@P0: Contamination is often caused by
+L17@P0: poor handling during food
+L18@P0: preparation however due to the vast
+L19@P0: increase in salmonella incidents over
+L20@P0: recent years the Food Authority is
+L21@P0: targeting the risk from egg-related
+L22@P0: salmonella throughout the food chain
+L23@P0: – on the egg farm, during egg
+L24@P0: grading and processing, through
+L25@P0: labelling and transport, as well as at
+L26@P0: the retail and consumer level. New
+L27@P0: requirements for stamping of eggs to
+L28@P0: identify their source will help
+L29@P0: authorities with tracing back to
+L30@P0: suppliers when food poisoning
+L31@P0: outbreaks occur.
+L32@P0: Being able to quickly trace the egg
+L33@P0: back to a farm is very important
+L34@P0: during an outbreak investigation as it
+L35@P0: helps prevent more people becoming
+L36@P0: ill. Egg stamping is being introduced
+L37@P0: to improve traceability and help
+L38@P0: reduce the numbers of people getting
+L39@P0: sick from outbreaks.
+L40@P0: A national standard for eggs was
+L41@P0: created in 2012 with a requirement to
+L42@P0: uniquely identify (stamp) individual
+L43@P0: eggs and packages of egg pulp for
+L44@P0: sale. NSW delayed this requirement
+L45@P0: to allow all egg producers time to get
+L46@P0: ready.
+L47@P0: Receiving eggs
+L48@P0: After 26 November 2014, unstamped
+L49@P0: eggs should no longer be sold in
+L50@P0: NSW.
+L51@P0: As a food business selling eggs, you
+L52@P0: need to ensure you only buy eggs
+L53@P0: from reputable suppliers and before
+L54@P0: accepting or paying for them, check
+L55@P0: to make sure that all eggs are:
+L56@P0:  stamped with a unique identifier
+L57@P0:  clean, with no soil, faeces,
+L58@P0: feathers or other matter on the
+L59@P0: shell or packaging
+L60@P0:  not cracked or broken
+L61@P0:  You should not sell any
+L62@P0: unstamped, dirty, cracked or
+L63@P0: broken eggs and are advised to
+L64@P0: return them to the supplier.
+L65@P0: Selling unstamped eggs
+L66@P0: If your business is found to be selling
+L67@P0: unstamped eggs after 26 November
+L68@P0: 2014, you may be issued with a
+L69@P0: warning notice. Failure to comply
+L70@P0: with the warning letter can result in
+L71@P0: further enforcement action.
+L72@P0: More information
+L73@P0:  visit the Food Authority website at
+L74@P0: www.foodauthority.nsw.gov.au/
+L75@P0:  phone the helpline on
+L76@P0: 1300 552 406
+L77@P0:  for Egg Food Safety Scheme
+L78@P0: www.foodauthority.nsw.gov.au/in
+L79@P0: dustry/industry-sectorrequirements/eggs/
+L80@P0: EGG STAMPING FOR
+L81@P0: BUTCHERS & GROCERS
+L82@P0: From 26 November 2014, butchers and grocers should no
+L83@P0-1: longer be using unstamped eggs in their kitchens.More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L84@P1: About the NSW Food Authority: The NSW Food Authority is the government organisation that helps ensure NSW food is safe
+L85@P1: and correctly labelled. It works with consumers, industry and other government organisations to minimise food poisoning by
+L86@P1: providing information about and regulating the safe production, storage, transport, promotion and preparation of food.
+L87@P1: Note: This information is a general summary and cannot cover all situations. Food businesses are required to comply with all of
+L88@P1: the provisions of the Food Standards Code and the Food Act 2003 (NSW).
+L89@P1: 6 Avenue of the Americas, Newington NSW 2127
+L90@P1: PO Box 6682, Silverwater NSW 1811
+L91@P1: T 1300 552 406
+L92@P1: contact@foodauthority.nsw.gov.au
+L93@P1: ABN 47 080 404 416
+L94@P1: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L95@P1: August 2014
+L96@P1: NSW/FA/FI207/1408
+

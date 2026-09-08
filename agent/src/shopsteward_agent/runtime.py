@@ -33,6 +33,8 @@ class State(TypedDict, total=False):
     required_tools: list[str]
     protocol_repairs: int
     repair_requested: bool
+    evidence_unavailable: bool
+    stopped_by_user: bool
 
 
 CLARIFY = {
@@ -64,6 +66,7 @@ class Runtime:
         run_timeout=90,
         model_timeout=30,
         required_tools=None,
+        required_read_tools=None,
     ):
         self.model, self.call_tool, self.load_context = model, call_tool, load_context
         self.tools = [*tools, CLARIFY]
@@ -71,6 +74,7 @@ class Runtime:
         self.max_models, self.max_tools = max_model_calls, max_tool_calls
         self.run_timeout, self.model_timeout = run_timeout, model_timeout
         self.required_tools = list(required_tools or [])
+        self.required_read_tools = set(required_read_tools or [])
         if not set(self.required_tools) <= self.names:
             raise RuntimeFailure("required_tool_unavailable")
         graph = StateGraph(State)
@@ -103,7 +107,11 @@ class Runtime:
         for name in ("tool_node", "clarify_node"):
             graph.add_conditional_edges(
                 name,
-                lambda s: "reserve_tool" if s["index"] < len(s["pending"]) else "reserve_model",
+                lambda s: (
+                    END
+                    if s.get("evidence_unavailable") or s.get("stopped_by_user")
+                    else ("reserve_tool" if s["index"] < len(s["pending"]) else "reserve_model")
+                ),
             )
         self.graph = graph.compile(checkpointer=checkpointer)
 
@@ -138,6 +146,7 @@ class Runtime:
             if pending_required
             else self.tools
         )
+        offered_names = {tool["function"]["name"] for tool in offered_tools}
         try:
             async with asyncio.timeout(min(self.model_timeout, self.remaining(state))):
                 context = await self.load_context()
@@ -169,6 +178,8 @@ class Runtime:
                     name = candidate["function"].get("name")
                     if isinstance(name, str) and name not in self.names:
                         raise RuntimeFailure("unknown_tool")
+                    if isinstance(name, str) and name not in offered_names:
+                        raise RuntimeFailure("tool_not_offered")
             ids = set()
             for c in calls:
                 if not isinstance(c["id"], str) or c["id"] in ids:
@@ -290,13 +301,32 @@ class Runtime:
             result = {"ok": False, "error": "tool_deadline"}
         except Exception:
             result = {"ok": False, "error": "tool_failure"}
-        return self.tool_update(state, result)
+        update = self.tool_update(state, result)
+        if (
+            call["function"]["name"] in self.required_read_tools
+            and call["function"]["name"] in state.get("required_tools", [])
+            and call["function"]["name"] not in update["completed_tools"]
+        ):
+            update.update(
+                evidence_unavailable=True,
+                content="Required evidence could not be retrieved; no conclusion is available.",
+            )
+        return update
 
     async def clarify_node(self, state):
         question = json.loads(state["pending"][state["index"]]["function"]["arguments"])["question"]
         answer = interrupt({"question": question})
         update = self.tool_update(state, {"ok": True, "answer": str(answer)})
         update["deadline"] = state["deadline"] + max(0, time.time() - state["waiting_since"])
+        if str(answer).strip().strip("。.!！").lower() in {
+            "取消",
+            "停止",
+            "算了",
+            "不用了",
+            "cancel",
+            "stop",
+        }:
+            update.update(stopped_by_user=True, content="已停止本次请求，不再继续取证。")
         return update
 
     async def execute(self, run_id, messages, *, resume=None, resume_interrupt_id=None):
@@ -335,6 +365,10 @@ class Runtime:
             "model_calls": result["model_calls"],
             "tool_calls": result["tool_calls"],
             "usage": result.get("usage"),
+            "required_tools": result.get("required_tools", []),
+            "completed_tools": result.get("completed_tools", []),
+            "evidence_unavailable": result.get("evidence_unavailable", False),
+            "stopped_by_user": result.get("stopped_by_user", False),
         }
         for task in state.tasks:
             for paused in task.interrupts:

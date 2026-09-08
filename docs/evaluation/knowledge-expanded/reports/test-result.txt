@@ -1,0 +1,22 @@
+2026-09-08 final corpus implementation checks
+
+Command (repository root):
+./.venv/Scripts/python.exe -m pytest -c backend/pyproject.toml backend/tests/unit/test_knowledge_corpus_expanded.py -q
+Result: 26 passed in 59.05s; exit 0.
+
+Command (repository root):
+./.venv/Scripts/python.exe -m ruff check backend/tools/knowledge_corpus backend/tools/build_knowledge_expanded_corpus.py backend/tools/verify_knowledge_expanded_corpus.py backend/tools/verify_knowledge_expanded_eval.py backend/tests/unit/test_knowledge_corpus_expanded.py
+Result: All checks passed; exit 0.
+
+Final actual-data checks:
+Pilot: 200 logical documents, 200 versions, public gap 0, no integrity errors.
+Full: 924 logical documents, 1124 versions, public gap 76, no integrity errors.
+Pilot and full: two isolated builds identical and matching each audited manifest.
+External files unchanged; all 91 K0 files unchanged.
+Evaluation: 300 cases, 100 dev, 200 test, 60 relation-tagged cases.
+Group counts: exact 40, keyword 40, semantic 60, cross_document 60,
+unanswerable 40, hybrid 60.
+800 source-backed synthetic relation edges; 7700 resolving evidence locations.
+No retrieved result file scored. Human review pending.
+
+Test results describe local fixtures/validators only, not cloud model or API ingestion quality.

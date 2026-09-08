@@ -1,0 +1,12 @@
+{
+  "conditions_policy": "explicit all_equal required keys; missing/false block",
+  "executable_count": 0,
+  "parser_bound_count": 0,
+  "predicates": {
+    "HAS_APPLICABLE_DOCUMENT": 300,
+    "SUPERSEDES": 200,
+    "SUPPLIES": 300
+  },
+  "quote_resolved_count": 800,
+  "relation_count": 800
+}

@@ -1,0 +1,37 @@
+Fresh cut fruit and vegetables (https://www.foodauthority.nsw.gov.au/media/1316)
+citeturn113view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 1; Source: click({"ref_id":"turn59view0","id":346}); Total lines: 34
+L0@P0: FA568/2310 foodauthority.nsw.gov.au
+L1@P0: Food Authority
+L2@P0: Whole fruit and vegetables are safe and nutritious. However, when cut there is a
+L3@P0: risk of contamination from harmful bacteria unless handled correctly.
+L4@P0: Fresh fruit and vegetables eaten raw, without any cooking or heating to destroy bacteria, need safe
+L5@P0: handling to minimise contamination and prevent harmful bacteria growing.
+L6@P0: These tips are relevant for many types of cut fruit and vegetables eaten raw, such as fruit platters, fruit
+L7@P0: salad, fruit kebabs, carrot and celery sticks, vegetable platters and salads.
+L8@P0: Preparing
+L9@P0: • Keep fruit and vegetables separate from other raw foods (such as meat,
+L10@P0: chicken, fish, eggs) to avoid cross contamination.
+L11@P0: • Use a clean and sanitised chopping board and knife (a colour-coded
+L12@P0: chopping board may also be appropriate).
+L13@P0: • Wash fruit, vegetables and salad ingredients thoroughly in clean, drinkingquality water just before preparing and serving.
+L14@P0: • Peel, trim or remove the skin or outer leaves (as appropriate).
+L15@P0: • Remove any bruised or damaged parts.
+L16@P0: Serving
+L17@P0: • Use cut fruit and vegetables on the day they are prepared.
+L18@P0: • Serve immediately after preparing or within 2 hours if possible – see the
+L19@P0: ‘2-hour/4-hour’ rule below. If not serving within 2 hours, cover and store in
+L20@P0: the fridge until serving (on the same day of preparation).
+L21@P0: 2-hour/4-hour rule
+L22@P0: The time potentially hazardous food can be safely held between 5°C and
+L23@P0: 60°C is commonly referred to as the 2-hour/4-hour rule and is applied as follows:
+L24@P0: Food businesses using the 2-hour/4-hour rule must demonstrate that the food is safe.
+L25@P0: For more information visit foodauthority.nsw.gov.au
+L26@P0: Fresh cut fruit and vegetables
+L27@P0: 0 to 2 hours
+L28@P0: Eat it, use it, or keep it at or
+L29@P0: below 5°C, or at or above 60°C.
+L30@P0: 2 to 4 hours
+L31@P0: Eat it or use it.
+L32@P0: More than 4 hours
+L33@P0: Throw it away.
+

@@ -1,0 +1,184 @@
+ (https://www.foodauthority.nsw.gov.au/media/2506)
+citeturn82view0 [wordlim: 200] Crawled: 2 days ago; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":374}); Total lines: 181
+L0@P0: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L1@P0: Is it dangerous to eat a raw
+L2@P0: or undercooked burger
+L3@P0: patty?
+L4@P0: Raw and undercooked hamburger
+L5@P0: patties may contain harmful bacteria
+L6@P0: that can produce foodborne illness
+L7@P0: such as pathogenic strains of
+L8@P0: Escherichia coli (E.coli), mostly due
+L9@P0: to improper handling and
+L10@P0: preparation of the meat. This
+L11@P0: specific pathogenic bacteria can
+L12@P0: potentially result in a serious
+L13@P0: condition that affects the blood and
+L14@P0: blood vessels.
+L15@P0: Eating raw or undercooked patties is
+L16@P0: an emerging trend in Australia and
+L17@P0: therefore, no outbreaks of foodborne
+L18@P0: illness due to their consumption
+L19@P0: have yet been recorded.
+L20@P0: However, in the USA it has been a
+L21@P0: common practice for some time and
+L22@P0: has resulted in a number of
+L23@P0: outbreaks of E. coli and a total of
+L24@P0: five deaths since the first outbreak
+L25@P0: was recorded in the USA in 1993
+L26@P0: (Table 1).
+L27@P0: Table 1. Outbreaks in the USA linked
+L28@P0: to hamburgers and ground meat
+L29@P0: Year Sick Hospitalised Deaths
+L30@P0: 2015 37 13 0
+L31@P0: 2014 3 3 1
+L32@P0: 2009 23 6 0
+L33@P0: 2008 79 32 0
+L34@P0: 2007 40 21 0
+L35@P0: 2007 47 0 0
+L36@P0: 2002 28 7 0
+L37@P0: 2000 46 24 0
+L38@P0: 1993 501 151 4
+L39@P0: Source1,2: Marler, 2015
+L40@P0: Why is it ok to eat a rare
+L41@P0: steak and not a rare patty?
+L42@P0: Different meats require different
+L43@P0: cooking temperatures to destroy
+L44@P0: harmful bacteria.
+L45@P0: For example, a steak need only be
+L46@P0: seared on the outside and can be
+L47@P0: rare inside, while minced meat must
+L48@P0: be carefully cooked to destroy
+L49@P0: bacteria.
+L50@P0: That’s because when cooking a
+L51@P0: steak, all areas that have been
+L52@P0: exposed to the elements are
+L53@P0: heated to the point where
+L54@P0: bacteria will be killed. With
+L55@P0: minced meat, the very act of
+L56@P0: mincing meat means the outsides
+L57@P0: end up on the inside and the
+L58@P0: bacteria would be spread
+L59@P0: throughout the entire patty.
+L60@P0: In short, minced meat has far
+L61@P0: greater surface area than steak
+L62@P0: and therefore presents a greater
+L63@P0: risk of bacterial contamination.
+L64@P0: HAMBURGER
+L65@P0: FOOD SAFETY
+L66@P0: Hamburgers are a popular form of ready-to-eat foods;
+L67@P0: however, they can serve as a vehicle for pathogenic bacteria
+L68@P0: and if not cooked, handled or stored properly, can potentially
+L69@P0: lead to food poisoning once consumed.
+L70@P0: Food safety tips
+L71@P0:  Proper cooking of
+L72@P0: hamburger patties
+L73@P0: minimises the risk of food
+L74@P0: poisoning
+L75@P0:  Keeping everything clean
+L76@P0: is critical to improving
+L77@P0: food safety
+L78@P0:  Cool down cooked burger
+L79@P0: patties quickly if intended
+L80@P0: to store
+L81@P0:  Keep raw and cooked
+L82@P0: food separate
+L83@P0:  Do not allow leaking
+L84@P0: juices to drip on other
+L85@P0: foods
+L86@P0:  Refrigerate or freeze
+L87@P0: minced meat as soon as
+L88@P0-1: possible after purchaseMore resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L89@P1: What are the health risks?
+L90@P1: Undercooking meat, poultry and
+L91@P1: other foods can be very dangerous.
+L92@P1: Raw meat and poultry can contain
+L93@P1: harmful bacteria, including
+L94@P1: pathogenic E. coli, Salmonella,
+L95@P1: Campylobacter jejuni, Listeria
+L96@P1: monocytogenes, and
+L97@P1: Staphylococcus aureus. It is
+L98@P1: important to remember that the
+L99@P1: presence of harmful bacteria
+L100@P1: cannot be assessed through sight
+L101@P1: or smell.
+L102@P1: Ensuring food safety of a
+L103@P1: hamburger
+L104@P1: In order to reduce the potential for
+L105@P1: foodborne illness, minced meat
+L106@P1: should be cooked right through to
+L107@P1: the centre. No pink should be
+L108@P1: visible and juices should run clear.
+L109@P1: Some guidelines suggest cooking
+L110@P1: hamburgers until the thermometer
+L111@P1: reads at least 71oC internal
+L112@P1: temperature.
+L113@P1: To ensure your meat is free from
+L114@P1: harmful bacteria, it is important that
+L115@P1: a clean and sanitised thermometer
+L116@P1: is used and placed in the thickest
+L117@P1: portion of the meat to check the
+L118@P1: temperature of the food.
+L119@P1: Reducing the risk of
+L120@P1: contamination
+L121@P1:  Keep raw minced meat cold
+L122@P1: (4oC or lower) and cook within
+L123@P1: no more than two days after
+L124@P1: purchasing.
+L125@P1:  Remember, if raw hamburger
+L126@P1: patties are kept in the
+L127@P1: temperature danger zone which
+L128@P1: is between 5oC and 60oC,
+L129@P1: bacteria will multiply rapidly.
+L130@P1:  Use separate chopping boards
+L131@P1: and utensils for produce and
+L132@P1: raw meat.
+L133@P1:  Always wash hands before and
+L134@P1: after touching raw meat,
+L135@P1: washroom use and handling
+L136@P1: pets.
+L137@P1:  Keep kitchen surfaces clean
+L138@P1: and sanitised, changing
+L139@P1: dishcloths daily and sanitise
+L140@P1: premises before and after
+L141@P1: preparing food.
+L142@P1:  Never allow ready-to-eat foods
+L143@P1: like lettuce, tomatoes or cheese
+L144@P1: to come in contact with raw
+L145@P1: meat or its juices.
+L146@P1:  Throw away left-over marinade
+L147@P1: or sauce. It is advised to
+L148@P1: prepare just enough for single
+L149@P1: usage.
+L150@P1: More information
+L151@P1:  Visit the website at
+L152@P1: www.foodauthority.nsw.gov.au
+L153@P1:  See our Cooking temperatures
+L154@P1: page on the website at
+L155@P1: www.foodauthority.nsw.gov.au/f
+L156@P1: oodsafetyandyou/food-athome/cooking-temperatures
+L157@P1:  Phone the helpline on
+L158@P1: 1300 552 406
+L159@P1: 1CDC. 2015. Multistate outbreak of shiga
+L160@P1: toxin-producing E. coli O26 infections
+L161@P1: linked to Chipotle Mexican Grill in
+L162@P1: Washington and Oregon.
+L163@P1: (http://www.cdc.gov/ecoli/2015/O26-11-
+L164@P1: 15/index.html)
+L165@P1: 2Marler B. 2015. A history of hamburger
+L166@P1: E. coli outbreaks.
+L167@P1: (http://luckypeach.com/a-history-ofhamburger-e-coli-outbreaks/)
+L168@P1: About the NSW Food Authority: The NSW Food Authority is the government organisation that helps ensure NSW food is safe
+L169@P1: and correctly labelled. It works with consumers, industry and other government organisations to minimise food poisoning by
+L170@P1: providing information about and regulating the safe production, storage, transport, promotion and preparation of food.
+L171@P1: Note: This information is a general summary and cannot cover all situations. Food businesses are required to comply with all of
+L172@P1: the provisions of the Food Standards Code and the Food Act 2003 (NSW).
+L173@P1: 6 Avenue of the Americas, Newington NSW 2127
+L174@P1: PO Box 6682, Silverwater NSW 1811
+L175@P1: T 1300 552 406
+L176@P1: contact@foodauthority.nsw.gov.au
+L177@P1: ABN 47 080 404 416
+L178@P1: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L179@P1: February 2016
+L180@P1: NSW/FA/FI258/1602
+

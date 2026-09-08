@@ -1,0 +1,108 @@
+Food safety for caterers (https://www.foodauthority.nsw.gov.au/media/2436)
+citeturn125view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 3; Source: click({"ref_id":"turn59view0","id":322}); Total lines: 105
+L0@P0: Food Authority
+L1@P0: Food safety for caterers
+L2@P0: Handling, cooking and storing food properly is critical to prevent food poisoning
+L3@P0: outbreaks. Facilities that are ill-equipped or unsuitable for the food being
+L4@P0: prepared is a common catering problem that often leads to food poisoning.
+L5@P0: Causes of food poisoning
+L6@P0: The following common catering mistakes can allow the growth of bacteria which causes food
+L7@P0: poisoning:
+L8@P0: • undercooking food such as meat and poultry – bacteria can survive as a result of inadequate
+L9@P0: cooking
+L10@P0: • slow reheating and slow cooking under low heat – provides the ideal temperature (20°C to 50°C)
+L11@P0: for bacteria to grow
+L12@P0: • improper cooling – allows food to stay too long (over two hours) at the ideal temperature for
+L13@P0: bacteria to grow
+L14@P0: • cooking food too far in advance –increases the chance of food becoming contaminated with
+L15@P0: bacteria
+L16@P0: • not storing food properly and using incorrect temperatures for transportation and storage of food –
+L17@P0: allows the growth of bacteria
+L18@P0: • poor personal hygiene from food handlers – can lead to contamination of food through dirty hands,
+L19@P0: coughing, and cross contamination.
+L20@P0: Prevent food poisoning
+L21@P0: All of the elements involved in running a catering operation must be correctly managed to avoid
+L22@P0: causing food poisoning.
+L23@P0: Use adequate catering facilities
+L24@P0: Food preparation areas as well as all cooking and refrigeration facilities must be suitable for the
+L25@P0: volume of food being prepared.
+L26@P0: Catering premises should adhere to the standards for flooring in food preparation and storage areas,
+L27@P0: have adequate hand washing and refrigeration facilities, and must be designed to exclude pests and
+L28@P0-1: vermin.Food safety for caterers
+L29@P1: FA612/2402 2
+L30@P1: Store and transport food safely
+L31@P1: Another common cause of food poisoning is inadequate handling and storage of food that’s been
+L32@P1: prepared at one site and transported and served elsewhere.
+L33@P1: Food must be maintained at the appropriate storage temperature during delivery to another site.
+L34@P1: Transport vehicles should be designed and constructed in accordance with NSW legislation.
+L35@P1: There needs to be adequate hot or cold storage, and display unit capacity, so food can be stored at
+L36@P1: the appropriate temperature – less than 5°C for cold food, above 60°C for hot food.
+L37@P1: All food must be adequately protected (enclosed or covered) when stored or displayed to prevent
+L38@P1: contamination by dust, insects or other sources. This is especially important if catering for outdoor
+L39@P1: events, especially during summer when flies can be a problem. It is important to protect food and
+L40@P1: utensils from contamination.
+L41@P1: Cook food properly
+L42@P1: Food poisoning outbreaks can occur when food is not cooked properly.
+L43@P1: Thaw frozen foods completely before cooking, especially large cuts of meat or poultry which may not
+L44@P1: cook right through if they haven’t been fully thawed. Frozen food should only be thawed in a
+L45@P1: refrigerator or a microwave oven before cooking, and not left on the bench to thaw.
+L46@P1: Food must be cooked to the appropriate internal core temperature to destroy bacteria and make it
+L47@P1: safe. This is extremely important for meat (71°C), poultry (74°C) and seafood (63°C). Different meats
+L48@P1: require different cooking temperatures to destroy harmful bacteria, for example a steak can be just
+L49@P1: seared on the outside and rare inside, whilst minced meat must be carefully cooked to destroy
+L50@P1: bacteria. This is because minced meat has a greater surface area than steak and the inside has been
+L51@P1: exposed to the atmosphere and, therefore, at a greater risk of bacterial contamination. Cook minced
+L52@P1: meat, sausages and poultry right through to the centre. No pink should be visible and juices should
+L53@P1: run clear.
+L54@P1: Once cooked, food should be held at a temperature above 60°C or cooled to below 5°C as quickly as
+L55@P1: possible.
+L56@P1: Partially cooked meat must – for the final cooking stage – reach its appropriate internal core
+L57@P1: temperature before being served.
+L58@P1: Other cooked food must be reheated to these temperatures before being placed in a hot holding
+L59@P1: device (such as a bain marie).
+L60@P1: Caterers should use a calibrated probe thermometer to check that correct cooking temperatures are
+L61@P1: reached. The probe should be disinfected before and after use, and all final cooking temperatures
+L62@P1: recorded.
+L63@P1: The key is to cook food in small enough batches to allow it all to reach a high enough temperature.
+L64@P1: Also, reducing portion size by using shallow dishes instead of large pots allows food to cool or heat
+L65@P1: more rapidly and thoroughly.
+L66@P1: Avoid cross-contamination
+L67@P1: Caterers should handle raw food separately from ready-to-eat food to avoid cross contamination with
+L68@P1: bacteria. Where possible, use separate equipment and utensils (such as knives, tongs and cutting
+L69@P1: boards) for raw and ready-to-eat food, or clean and sanitise thoroughly between each use. Using
+L70@P1: tongs or disposable gloves can reduce the risk of contamination of ready-to-eat food. Disposable
+L71@P1: gloves will only be effective if they are changed regularly, and always after coming into contact with
+L72@P1-2: anything that might be contaminated.Food safety for caterers
+L73@P2: FA612/2402 3
+L74@P2: Cleaning and sanitising
+L75@P2: Food contact surfaces (such as chopping boards) and eating and drinking utensils must be cleaned
+L76@P2: and sanitised before use. This can be done by using a chemical (such as sanitiser) or heat (such as a
+L77@P2: dishwasher).
+L78@P2: Train staff in personal hygiene when handling food
+L79@P2: Basic personal hygiene practices include:
+L80@P2: • thoroughly washing and drying hands before handling food, and after:
+L81@P2: — visiting the toilet
+L82@P2: — blowing your nose, sneezing or coughing
+L83@P2: — smoking
+L84@P2: — handling raw food or waste
+L85@P2: — wearing clean outer clothing when handling food
+L86@P2: — tying back long hair or wearing a cap
+L87@P2: — covering cuts, sores or skin breaks with clean waterproof dressings.
+L88@P2: Food handlers must inform employers if they have any skin, nose, throat or bowel infections. If
+L89@P2: suffering any of these conditions they must not handle food.
+L90@P2: More information
+L91@P2: • Visit foodauthority.nsw.gov.au
+L92@P2: — Factsheet: Cleaning and sanitising (PDF, 407KB)
+L93@P2: — Factsheet: Health and hygiene requirements of food handlers (PDF, 151KB)
+L94@P2: — Factsheet: Potentially hazardous foods (PDF, 352 KB)
+L95@P2: — Poultry and red meat – safe handling
+L96@P2: — Temporary food events and markets
+L97@P2: — Guideline: Food safety guidelines for the preparation and display of sushi (PDF, 523KB)
+L98@P2: — Guidelines for food service to vulnerable persons (PDF, 503KB).
+L99@P2: • Email the Food Authority helpline at food.contact@dpi.nsw.gov.au
+L100@P2: • Phone the Food Authority helpline on 1300 552 406
+L101@P2: © State of New South Wales through Regional NSW 2024. The information contained in this publication is based on knowledge and
+L102@P2: understanding at the time of writing February 2024. However, because of advances in knowledge, users are reminded of the need to ensure
+L103@P2: that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L104@P2: Regional NSW or the user’s independent adviser.
+

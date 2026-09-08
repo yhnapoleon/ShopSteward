@@ -1,0 +1,1751 @@
+{
+  "source_report": "agent-document-integration-20260908-r4.json",
+  "mode": "actual_persisted_graph_checkpoints",
+  "runs": [
+    {
+      "scenario": "business_only",
+      "run_id": "165db748-19d0-4343-aa3e-cc493caaada4",
+      "required_tools": [
+        "get_dashboard"
+      ],
+      "completed_tools": [
+        "get_dashboard"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "calls": [
+        {
+          "call_id": "call_jpvRac86uyYfqRfx1U9u9Y74",
+          "tool": "get_dashboard",
+          "arguments": {}
+        }
+      ],
+      "tool_results": [
+        {
+          "call_id": "call_jpvRac86uyYfqRfx1U9u9Y74",
+          "ok": true,
+          "references": [
+            {
+              "type": "store",
+              "id": "knowledge-test-agent-0908020841-STORE01",
+              "version": "1"
+            }
+          ],
+          "candidate_count": 0,
+          "candidates": [],
+          "timings_ms": null,
+          "degraded": null,
+          "warnings": null
+        }
+      ]
+    },
+    {
+      "scenario": "document_clause",
+      "run_id": "2ac89adc-90de-4185-8380-19efb5ab3546",
+      "required_tools": [
+        "search_documents"
+      ],
+      "completed_tools": [
+        "search_documents",
+        "read_document_evidence"
+      ],
+      "model_calls": 3,
+      "tool_calls": 2,
+      "calls": [
+        {
+          "call_id": "call_LOmUxgO4bBS6NTLjCEYyR6bE",
+          "tool": "search_documents",
+          "arguments": {
+            "query": "请查供应商文档：商品knowledge-test-agent-0908020841-SKU017与knowledge-test-agent-0908020841-SKU018新旧条码并存时，供货映射怎样交代才完整？请提供有效资料，且不要推断采购许可。",
+            "limit": 6,
+            "entity_ids": [
+              "knowledge-test-agent-0908020841-SKU017",
+              "knowledge-test-agent-0908020841-SKU018"
+            ]
+          }
+        },
+        {
+          "call_id": "call_qsQSKt5T6uTrITpYPgznacvj",
+          "tool": "read_document_evidence",
+          "arguments": {
+            "chunk_ids": [
+              "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+              "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec"
+            ]
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "call_id": "call_LOmUxgO4bBS6NTLjCEYyR6bE",
+          "ok": true,
+          "references": [
+            {
+              "type": "document",
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530"
+            },
+            {
+              "type": "document",
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a"
+            },
+            {
+              "type": "document",
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17"
+            },
+            {
+              "type": "document",
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  1,
+                  1
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530"
+            },
+            {
+              "type": "document",
+              "id": "35899d86-d254-49c4-bb40-62619e838992",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a"
+            },
+            {
+              "type": "document",
+              "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee"
+            }
+          ],
+          "candidate_count": 6,
+          "candidates": [
+            {
+              "document_id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为供货附件，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "范围与身份"
+              ],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 1
+              },
+              "scores": {
+                "lexical": 13.507449
+              },
+              "fusion_score": 0.01639344262295082,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "section:1 范围与身份"
+              ],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 2
+              },
+              "scores": {
+                "lexical": 12.864954
+              },
+              "fusion_score": 0.016129032258064516,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 商品与包装说明 主件\t模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。\t\n1\t范围与身份\t模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 3
+              },
+              "scores": {
+                "lexical": 12.076201
+              },
+              "fusion_score": 0.015873015873015872,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "title": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  1,
+                  1
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 4
+              },
+              "scores": {
+                "lexical": 11.486987
+              },
+              "fusion_score": 0.015625,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "35899d86-d254-49c4-bb40-62619e838992",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 异常复盘记录 主件\n模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。\n范围与身份\n模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为异常复盘记录\n，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 异常复盘记录 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 5
+              },
+              "scores": {
+                "lexical": 11.365785
+              },
+              "fusion_score": 0.015384615384615385,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "metadata_revision": 1,
+              "text": "## section:1 范围与身份\n模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为当班操作规程，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 当班操作规程 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 6
+              },
+              "scores": {
+                "lexical": 11.361383
+              },
+              "fusion_score": 0.015151515151515152,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            }
+          ],
+          "timings_ms": {
+            "initial_scope": 20.708,
+            "relations": 6.281,
+            "lexical": 20.978,
+            "parent": 40.699,
+            "final_scope": 19.83,
+            "total": 104.503
+          },
+          "degraded": false,
+          "warnings": [
+            "context_budget_chars_12000_estimate"
+          ]
+        },
+        {
+          "call_id": "call_qsQSKt5T6uTrITpYPgznacvj",
+          "ok": true,
+          "references": [
+            {
+              "type": "document",
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530"
+            },
+            {
+              "type": "document",
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a"
+            },
+            {
+              "type": "document",
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17"
+            },
+            {
+              "type": "document",
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  1,
+                  1
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530"
+            },
+            {
+              "type": "document",
+              "id": "35899d86-d254-49c4-bb40-62619e838992",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a"
+            },
+            {
+              "type": "document",
+              "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee"
+            }
+          ],
+          "candidate_count": 6,
+          "candidates": [
+            {
+              "document_id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为供货附件，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "范围与身份"
+              ],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "section:1 范围与身份"
+              ],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 商品与包装说明 主件\t模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。\t\n1\t范围与身份\t模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "title": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  1,
+                  1
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "35899d86-d254-49c4-bb40-62619e838992",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 异常复盘记录 主件\n模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。\n范围与身份\n模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为异常复盘记录\n，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 异常复盘记录 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "metadata_revision": 1,
+              "text": "## section:1 范围与身份\n模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为当班操作规程，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 当班操作规程 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            }
+          ],
+          "timings_ms": {},
+          "degraded": false,
+          "warnings": []
+        }
+      ]
+    },
+    {
+      "scenario": "expand_evidence",
+      "run_id": "d2c501dd-fe33-4a7f-89c6-d2f90eb634b9",
+      "required_tools": [
+        "read_document_evidence"
+      ],
+      "completed_tools": [
+        "read_document_evidence"
+      ],
+      "model_calls": 2,
+      "tool_calls": 1,
+      "calls": [
+        {
+          "call_id": "call_55sDJhwXUeuX28IxOjvPzk8I",
+          "tool": "read_document_evidence",
+          "arguments": {
+            "chunk_ids": [
+              "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6"
+            ]
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "call_id": "call_55sDJhwXUeuX28IxOjvPzk8I",
+          "ok": true,
+          "references": [
+            {
+              "type": "document",
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530"
+            },
+            {
+              "type": "document",
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a"
+            },
+            {
+              "type": "document",
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17"
+            }
+          ],
+          "candidate_count": 3,
+          "candidates": [
+            {
+              "document_id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为供货附件，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "范围与身份"
+              ],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "section:1 范围与身份"
+              ],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 商品与包装说明 主件\t模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。\t\n1\t范围与身份\t模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [],
+              "ranks": {},
+              "scores": {},
+              "fusion_score": null,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            }
+          ],
+          "timings_ms": {},
+          "degraded": false,
+          "warnings": []
+        }
+      ]
+    },
+    {
+      "scenario": "mixed",
+      "run_id": "2c694be5-4782-4194-b5f5-6194a7dd7b4a",
+      "required_tools": [
+        "get_dashboard",
+        "search_documents"
+      ],
+      "completed_tools": [
+        "get_dashboard",
+        "search_documents"
+      ],
+      "model_calls": 3,
+      "tool_calls": 2,
+      "calls": [
+        {
+          "call_id": "call_3uMTLYgPJJbhcv9O9mNzYayG",
+          "tool": "get_dashboard",
+          "arguments": {}
+        },
+        {
+          "call_id": "call_TUhn79yNMIN6mkxt3EGNWqru",
+          "tool": "search_documents",
+          "arguments": {
+            "query": "供应商文档中，knowledge-test-agent-0908020841-SKU017 与 knowledge-test-agent-0908020841-SKU018 在新旧条码并存时，是否允许直接覆盖或删除旧条码？请查找完整的供货映射、旧码保留/删除条件、切换条件、生效日期及任何未授权边界。",
+            "limit": 6,
+            "entity_ids": [
+              "knowledge-test-agent-0908020841-SKU017",
+              "knowledge-test-agent-0908020841-SKU018"
+            ]
+          }
+        }
+      ],
+      "tool_results": [
+        {
+          "call_id": "call_3uMTLYgPJJbhcv9O9mNzYayG",
+          "ok": true,
+          "references": [
+            {
+              "type": "store",
+              "id": "knowledge-test-agent-0908020841-STORE01",
+              "version": "1"
+            }
+          ],
+          "candidate_count": 0,
+          "candidates": [],
+          "timings_ms": null,
+          "degraded": null,
+          "warnings": null
+        },
+        {
+          "call_id": "call_TUhn79yNMIN6mkxt3EGNWqru",
+          "ok": true,
+          "references": [
+            {
+              "type": "document",
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530"
+            },
+            {
+              "type": "document",
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a"
+            },
+            {
+              "type": "document",
+              "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee"
+            },
+            {
+              "type": "document",
+              "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "chunk_id": "c_3e5da8cfe4e7aedc4a075710011e035271168aab09ed2ee6d7d3bcb9e59df22a",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "CSV",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c62db6b2bae629beb689917f8f5dcf0c6a09d9423e987de3c769760f07d816f2",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0"
+            },
+            {
+              "type": "document",
+              "id": "35899d86-d254-49c4-bb40-62619e838992",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a"
+            },
+            {
+              "type": "document",
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17"
+            }
+          ],
+          "candidate_count": 6,
+          "candidates": [
+            {
+              "document_id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为供货附件，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 供货附件 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "范围与身份"
+              ],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 1
+              },
+              "scores": {
+                "lexical": 21.649323
+              },
+              "fusion_score": 0.01639344262295082,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "metadata_revision": 1,
+              "text": "模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [
+                "section:1 范围与身份"
+              ],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 2
+              },
+              "scores": {
+                "lexical": 19.748144
+              },
+              "fusion_score": 0.016129032258064516,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "metadata_revision": 1,
+              "text": "## section:1 范围与身份\n模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为当班操作规程，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 当班操作规程 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ],
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 3
+              },
+              "scores": {
+                "lexical": 18.868832
+              },
+              "fusion_score": 0.015873015873015872,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "chunk_id": "c_3e5da8cfe4e7aedc4a075710011e035271168aab09ed2ee6d7d3bcb9e59df22a",
+              "metadata_revision": 1,
+              "text": "section\theading\ttext\n1\t范围与身份\t模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为活动执行要求，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 活动执行要求 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "CSV",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c62db6b2bae629beb689917f8f5dcf0c6a09d9423e987de3c769760f07d816f2",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 4
+              },
+              "scores": {
+                "lexical": 18.457897
+              },
+              "fusion_score": 0.015625,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "35899d86-d254-49c4-bb40-62619e838992",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 异常复盘记录 主件\n模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。\n范围与身份\n模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为异常复盘记录\n，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 异常复盘记录 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": null,
+                "cell_range": null
+              },
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 5
+              },
+              "scores": {
+                "lexical": 17.057919
+              },
+              "fusion_score": 0.015384615384615385,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            },
+            {
+              "document_id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "metadata_revision": 1,
+              "text": "模拟 条码迁移 新旧并存 商品与包装说明 主件\t模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。\t\n1\t范围与身份\t模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。",
+              "title": "模拟 条码迁移 新旧并存 商品与包装说明 主件",
+              "store_id": "knowledge-test-agent-0908020841-STORE01",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "section_path": [],
+                "paragraph_range": null,
+                "table": null,
+                "sheet": "条款",
+                "cell_range": "A3:C3"
+              },
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "source_url": null,
+              "source_kind": "synthetic_business_document",
+              "synthetic": true,
+              "jurisdiction": "SIMULATED",
+              "entity_refs": [
+                "knowledge-test-agent-0908020841-SKU017",
+                "knowledge-test-agent-0908020841-SKU018",
+                "knowledge-test-agent-0908020841-SUP09"
+              ],
+              "valid_from": "2026-09-01T00:00:00+00:00",
+              "valid_until": "2026-09-16T00:00:00+00:00",
+              "section_path": [],
+              "retrieval_channels": [
+                "lexical"
+              ],
+              "ranks": {
+                "lexical": 6
+              },
+              "scores": {
+                "lexical": 16.591228
+              },
+              "fusion_score": 0.015151515151515152,
+              "rerank_score": null,
+              "parsing_status": "COMPLETE",
+              "ocr_status": "NOT_REQUIRED",
+              "truncated": false,
+              "conflict_group": null,
+              "relation_paths": [],
+              "context_chunk_ids": []
+            }
+          ],
+          "timings_ms": {
+            "initial_scope": 18.354,
+            "relations": 5.322,
+            "lexical": 18.393,
+            "parent": 43.753,
+            "final_scope": 19.008,
+            "total": 102.121
+          },
+          "degraded": false,
+          "warnings": [
+            "context_budget_chars_12000_estimate"
+          ]
+        }
+      ]
+    }
+  ]
+}

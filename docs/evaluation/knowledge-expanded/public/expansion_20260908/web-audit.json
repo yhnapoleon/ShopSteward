@@ -1,0 +1,423 @@
+[
+  {
+    "key": "nsw-107",
+    "url": "https://www.foodauthority.nsw.gov.au/retail/inspections/how-get-better-inspection-result",
+    "pages": null,
+    "total_lines": 669,
+    "missing": [],
+    "conflicts": [],
+    "words": 2368,
+    "body_start": 574,
+    "body_words": 523
+  },
+  {
+    "key": "nsw-280",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2911",
+    "pages": 4,
+    "total_lines": 113,
+    "missing": [],
+    "conflicts": [],
+    "words": 1165
+  },
+  {
+    "key": "nsw-286",
+    "url": "https://www.foodauthority.nsw.gov.au/media/416",
+    "pages": 5,
+    "total_lines": 161,
+    "missing": [],
+    "conflicts": [],
+    "words": 1420
+  },
+  {
+    "key": "nsw-293",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1226",
+    "pages": 3,
+    "total_lines": 94,
+    "missing": [],
+    "conflicts": [],
+    "words": 1087
+  },
+  {
+    "key": "nsw-296",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1866",
+    "pages": 2,
+    "total_lines": 47,
+    "missing": [],
+    "conflicts": [],
+    "words": 577
+  },
+  {
+    "key": "nsw-297",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2341",
+    "pages": 2,
+    "total_lines": 57,
+    "missing": [],
+    "conflicts": [],
+    "words": 600
+  },
+  {
+    "key": "nsw-304",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2361",
+    "pages": 2,
+    "total_lines": 97,
+    "missing": [],
+    "conflicts": [],
+    "words": 556
+  },
+  {
+    "key": "nsw-309",
+    "url": "https://www.foodauthority.nsw.gov.au/media/9003",
+    "pages": 43,
+    "total_lines": 912,
+    "missing": [],
+    "conflicts": [],
+    "words": 8837
+  },
+  {
+    "key": "nsw-311",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1231",
+    "pages": 3,
+    "total_lines": 93,
+    "missing": [],
+    "conflicts": [],
+    "words": 1047
+  },
+  {
+    "key": "nsw-313",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2536",
+    "pages": 2,
+    "total_lines": 190,
+    "missing": [],
+    "conflicts": [],
+    "words": 1018
+  },
+  {
+    "key": "nsw-318",
+    "url": "https://www.foodauthority.nsw.gov.au/media/741",
+    "pages": 2,
+    "total_lines": 67,
+    "missing": [],
+    "conflicts": [],
+    "words": 723
+  },
+  {
+    "key": "nsw-322",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2436",
+    "pages": 3,
+    "total_lines": 105,
+    "missing": [],
+    "conflicts": [],
+    "words": 1094
+  },
+  {
+    "key": "nsw-327",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2441",
+    "pages": 2,
+    "total_lines": 144,
+    "missing": [],
+    "conflicts": [],
+    "words": 808
+  },
+  {
+    "key": "nsw-331",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1606",
+    "pages": 22,
+    "total_lines": 658,
+    "missing": [],
+    "conflicts": [],
+    "words": 6124
+  },
+  {
+    "key": "nsw-332",
+    "url": "https://www.foodauthority.nsw.gov.au/media/8550",
+    "pages": 1,
+    "total_lines": 73,
+    "missing": [],
+    "conflicts": [],
+    "words": 567
+  },
+  {
+    "key": "nsw-333",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1876",
+    "pages": 3,
+    "total_lines": 254,
+    "missing": [],
+    "conflicts": [],
+    "words": 1293
+  },
+  {
+    "key": "nsw-346",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1316",
+    "pages": 1,
+    "total_lines": 34,
+    "missing": [],
+    "conflicts": [],
+    "words": 294
+  },
+  {
+    "key": "nsw-349",
+    "url": "https://www.foodauthority.nsw.gov.au/media/8973",
+    "pages": 2,
+    "total_lines": 68,
+    "missing": [],
+    "conflicts": [],
+    "words": 736
+  },
+  {
+    "key": "nsw-361",
+    "url": "https://www.foodauthority.nsw.gov.au/media/8631",
+    "pages": 20,
+    "total_lines": 554,
+    "missing": [],
+    "conflicts": [],
+    "words": 4867
+  },
+  {
+    "key": "nsw-365",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1441",
+    "pages": 17,
+    "total_lines": 589,
+    "missing": [],
+    "conflicts": [],
+    "words": 6361
+  },
+  {
+    "key": "nsw-368",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2466",
+    "pages": 10,
+    "total_lines": 288,
+    "missing": [],
+    "conflicts": [],
+    "words": 3127
+  },
+  {
+    "key": "nsw-369",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1401",
+    "pages": 23,
+    "total_lines": 842,
+    "missing": [],
+    "conflicts": [],
+    "words": 8122
+  },
+  {
+    "key": "nsw-371",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1416",
+    "pages": 22,
+    "total_lines": 817,
+    "missing": [],
+    "conflicts": [],
+    "words": 7997
+  },
+  {
+    "key": "nsw-373",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2501",
+    "pages": 7,
+    "total_lines": 279,
+    "missing": [],
+    "conflicts": [],
+    "words": 2159
+  },
+  {
+    "key": "nsw-374",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2506",
+    "pages": 2,
+    "total_lines": 181,
+    "missing": [],
+    "conflicts": [],
+    "words": 868
+  },
+  {
+    "key": "nsw-38",
+    "url": "https://www.foodauthority.nsw.gov.au/industry/food-transport-vehicles",
+    "pages": null,
+    "total_lines": 690,
+    "missing": [],
+    "conflicts": [],
+    "words": 2815,
+    "body_start": 572,
+    "body_words": 999
+  },
+  {
+    "key": "nsw-383",
+    "url": "https://www.foodauthority.nsw.gov.au/media/421",
+    "pages": 2,
+    "total_lines": 67,
+    "missing": [],
+    "conflicts": [],
+    "words": 629
+  },
+  {
+    "key": "nsw-385",
+    "url": "https://www.foodauthority.nsw.gov.au/media/1011",
+    "pages": 4,
+    "total_lines": 112,
+    "missing": [],
+    "conflicts": [],
+    "words": 1134
+  },
+  {
+    "key": "nsw-391",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2526",
+    "pages": 2,
+    "total_lines": 61,
+    "missing": [],
+    "conflicts": [],
+    "words": 341
+  },
+  {
+    "key": "nsw-392",
+    "url": "https://www.foodauthority.nsw.gov.au/media/646",
+    "pages": 3,
+    "total_lines": 99,
+    "missing": [],
+    "conflicts": [],
+    "words": 1063
+  },
+  {
+    "key": "nsw-397",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2531",
+    "pages": 2,
+    "total_lines": 37,
+    "missing": [],
+    "conflicts": [],
+    "words": 427
+  },
+  {
+    "key": "nsw-403",
+    "url": "https://www.foodauthority.nsw.gov.au/media/8630",
+    "pages": 1,
+    "total_lines": 69,
+    "missing": [],
+    "conflicts": [],
+    "words": 351
+  },
+  {
+    "key": "nsw-421",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2611",
+    "pages": 29,
+    "total_lines": 929,
+    "missing": [],
+    "conflicts": [],
+    "words": 9167
+  },
+  {
+    "key": "nsw-423",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2551",
+    "pages": null,
+    "total_lines": 552,
+    "missing": [],
+    "conflicts": [],
+    "words": 1754,
+    "body_start": 552,
+    "body_words": 0
+  },
+  {
+    "key": "nsw-424",
+    "url": "https://www.foodauthority.nsw.gov.au/media/746",
+    "pages": 2,
+    "total_lines": 148,
+    "missing": [],
+    "conflicts": [],
+    "words": 707
+  },
+  {
+    "key": "nsw-428",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2671",
+    "pages": 25,
+    "total_lines": 678,
+    "missing": [],
+    "conflicts": [],
+    "words": 6993
+  },
+  {
+    "key": "nsw-502",
+    "url": "https://www.foodauthority.nsw.gov.au/media/411",
+    "pages": 11,
+    "total_lines": 279,
+    "missing": [],
+    "conflicts": [],
+    "words": 2601
+  },
+  {
+    "key": "nsw-506",
+    "url": "https://www.foodauthority.nsw.gov.au/media/2891",
+    "pages": 33,
+    "total_lines": 981,
+    "missing": [],
+    "conflicts": [],
+    "words": 11140
+  },
+  {
+    "key": "nsw-512",
+    "url": "https://www.foodauthority.nsw.gov.au/media/8825",
+    "pages": 10,
+    "total_lines": 373,
+    "missing": [],
+    "conflicts": [],
+    "words": 3073
+  },
+  {
+    "key": "nsw-89",
+    "url": "https://www.foodauthority.nsw.gov.au/retail/allergies-intolerances",
+    "pages": null,
+    "total_lines": 607,
+    "missing": [],
+    "conflicts": [],
+    "words": 2203,
+    "body_start": 573,
+    "body_words": 366
+  },
+  {
+    "key": "nsw-90",
+    "url": "https://www.foodauthority.nsw.gov.au/retail/animals-food-premises",
+    "pages": null,
+    "total_lines": 636,
+    "missing": [],
+    "conflicts": [],
+    "words": 2505,
+    "body_start": 573,
+    "body_words": 668
+  },
+  {
+    "key": "nsw-92",
+    "url": "https://www.foodauthority.nsw.gov.au/retail/cafes-restaurants-and-retail-outlets/cutting-and-serving-boards",
+    "pages": null,
+    "total_lines": 625,
+    "missing": [],
+    "conflicts": [],
+    "words": 2293,
+    "body_start": 575,
+    "body_words": 443
+  },
+  {
+    "key": "nsw-equipment",
+    "url": "https://www.foodauthority.nsw.gov.au/retail/food-regulation-partnership/eho-resources/food-risks-and-equipment-faqs-authorised-officers",
+    "pages": null,
+    "total_lines": 679,
+    "missing": [],
+    "conflicts": [],
+    "words": 3592,
+    "body_start": 567,
+    "body_words": 1766
+  },
+  {
+    "key": "nsw-sushi",
+    "url": "https://www.foodauthority.nsw.gov.au/sites/default/files/2026-05/Food_safety_guidelines_for_the_preparation_and_display_of_sushi.pdf",
+    "pages": 23,
+    "total_lines": 515,
+    "missing": [],
+    "conflicts": [],
+    "words": 4943
+  },
+  {
+    "key": "nsw-terms",
+    "url": "https://www.foodauthority.nsw.gov.au/copyright",
+    "pages": null,
+    "total_lines": 613,
+    "missing": [],
+    "conflicts": [],
+    "words": 2346,
+    "body_start": 553,
+    "body_words": 582
+  }
+]

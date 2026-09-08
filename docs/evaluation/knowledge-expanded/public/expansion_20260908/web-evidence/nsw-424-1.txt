@@ -1,0 +1,151 @@
+ (https://www.foodauthority.nsw.gov.au/media/746)
+citeturn97view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":424}); Total lines: 148
+L0@P0: Common pests
+L1@P0: Pests that can be present in food
+L2@P0: premises include:
+L3@P0: • rodents (e.g. rats and mice)
+L4@P0: • insects (e.g. cockroaches, flies
+L5@P0: and ants)
+L6@P0: • birds (e.g. pigeons).
+L7@P0: Where do pests hide?
+L8@P0: Pests are generally attracted to food
+L9@P0: premises as they can provide
+L10@P0: shelter, water and a food source.
+L11@P0: Pests are most active at night and
+L12@P0: hide in dark places, including:
+L13@P0: • under and behind electrical,
+L14@P0: heating and cooking appliances
+L15@P0: • under washing and hand
+L16@P0: washing facilities
+L17@P0: • under and in boxes, packaging
+L18@P0: and food storage containers
+L19@P0: • inside wall cavities
+L20@P0: • in cracks and crevices
+L21@P0: • behind equipment
+L22@P0: In disused or ‘mothballed’
+L23@P0: equipment.
+L24@P0: The legal requirements
+L25@P0: The Food Standards Code requires
+L26@P0: food businesses to take all
+L27@P0: practicable measures to:
+L28@P0: • prevent pests entering the food
+L29@P0: premises
+L30@P0: • eradicate and prevent the
+L31@P0: harbourage of pests on the food
+L32@P0: premises.
+L33@P0: Practicable measures to prevent
+L34@P0: entry of pests include:
+L35@P0: • sealing all holes, gaps and
+L36@P0: cracks in walls and ceilings
+L37@P0: • installing and maintaining
+L38@P0: flyscreens to windows and door
+L39@P0: openings
+L40@P0: • keeping doors closed when not
+L41@P0: in use
+L42@P0: • installing weather strips at the
+L43@P0: base of doors.
+L44@P0: Practicable measures to eradicate
+L45@P0: and prevent harbourage of pests
+L46@P0: include:
+L47@P0: • regular checks for signs of pests
+L48@P0: • maintaining the food premises
+L49@P0: and equipment in a clean
+L50@P0: condition (a cleaning schedule
+L51@P0: may assist)
+L52@P0: • keeping food covered in sealed
+L53@P0: containers
+L54@P0: • storing food, equipment and food
+L55@P0: containers above the floor
+L56@P0: • keeping garbage storage areas
+L57@P0: clean and tidy
+L58@P0: • removing rubbish regularly and
+L59@P0: making sure that external areas
+L60@P0: (outside bin areas) are clean and
+L61@P0: well- maintained
+L62@P0: • removing unused equipment and
+L63@P0: fixtures from the premises
+L64@P0: • implementing a suitable pest
+L65@P0: control program which may
+L66@P0: require the services of a licensed
+L67@P0: pest controller.
+L68@P0: Using a licensed pest
+L69@P0: controller
+L70@P0: While using the services of a
+L71@P0: licensed pest controller is not a legal
+L72@P0: requirement, it can help you to
+L73@P0: demonstrate that you are taking all
+L74@P0: practicable measures to eradicate
+L75@P0: and prevent the harbourage of
+L76@P0: pests. However, steps such as
+L77@P0: PEST CONTROL
+L78@P0: IN FOOD BUSINESSES
+L79@P0: Common pests such as rats, mice and cockroaches can carry bacteria and viruses,
+L80@P0: and can contaminate food and food contact surfaces. Pest sightings, and food
+L81@P0-1: contamination due to pests, result in a large number of customer complaints.those listed above must also be
+L82@P1: used to demonstrate and achieve
+L83@P1: compliance.
+L84@P1: A licensed pest controller should
+L85@P1: provide you with:
+L86@P1: • a contract outlining what pests
+L87@P1: and areas are to be treated and
+L88@P1: the required frequency of
+L89@P1: treatments
+L90@P1: • written reports of each treatment,
+L91@P1: including any pest activity and
+L92@P1: chemicals used
+L93@P1: • a map showing the location of all
+L94@P1: bait stations
+L95@P1: • information on the chemicals
+L96@P1: used.
+L97@P1: Licensed pest controllers will
+L98@P1: generally provide written
+L99@P1: recommendations on actions the
+L100@P1: food business can take to prevent
+L101@P1: issues with pests. It is important that
+L102@P1: the food business take these
+L103@P1: recommendations on board.
+L104@P1: If you perform pest control
+L105@P1: treatments yourself, make sure that
+L106@P1: any chemicals or baits used are
+L107@P1: suitable and approved for use in
+L108@P1: food premises and do not
+L109@P1: contaminate food or food contact
+L110@P1: surfaces.
+L111@P1: What happens after an
+L112@P1: inspection?
+L113@P1: If an authorised officer from the
+L114@P1: NSW Food Authority or local council
+L115@P1: identifies a pest control issue that
+L116@P1: needs to be rectified, a variety of
+L117@P1: compliance actions can be initiated.
+L118@P1: For further information on
+L119@P1: compliance action, see the NSW
+L120@P1: Food Authority Compliance and
+L121@P1: Enforcement Policy at
+L122@P1: www.foodauthority.nsw.gov.au/_Doc
+L123@P1: uments/industry_pdf/compliance_en
+L124@P1: forcement_policy.pdf
+L125@P1: More information
+L126@P1: This information is a general
+L127@P1: summary and cannot cover all
+L128@P1: situations. Food businesses are
+L129@P1: required to comply with all of the
+L130@P1: provisions of the Food Standards
+L131@P1: Code and the Food Act 2003
+L132@P1: (NSW).
+L133@P1: • Visit the Food Authority’s
+L134@P1: website at
+L135@P1: www.foodauthority.nsw.gov.au
+L136@P1: • Email the helpline at
+L137@P1: food.contact@dpi.nsw.gov.au
+L138@P1: • Phone the helpline on
+L139@P1: 1300 552 406
+L140@P1: About the NSW Food Authority: The NSW Food Authority is the government organisation that helps ensure NSW food is safe and correctly labelled.
+L141@P1: It works with consumers, industry and other government organisations to minimise food poisoning by providing information about and regulating the
+L142@P1: safe production, storage, transport, promotion and preparation of food.
+L143@P1: Note: This information is a general summary and cannot cover all situations. Food businesses are required to comply with all of the provisions of the
+L144@P1: Food Standards Code and the Food Act 2003 (NSW).
+L145@P1: foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L146@P1: May 2020
+L147@P1: NSWFA/FI119/2005
+

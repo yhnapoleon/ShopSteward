@@ -1,0 +1,393 @@
+Potentially hazardous foods (https://www.foodauthority.nsw.gov.au/media/2671)
+citeturn83view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 25; Source: click({"ref_id":"turn59view0","id":428}); Total lines: 678
+L0@P0: foodauthority.nsw.gov.au
+L1@P0: Food Authority
+L2@P0: Potentially hazardous foods
+L3@P0-1: Foods that require temperature control for safetyPotentially hazardous foods – Foods that require temperature control for safety
+L4@P1: FA529/2307 2
+L5@P1: Table of Contents
+L6@P1: Definitions ..................................................................................................................................3
+L7@P1: Introduction................................................................................................................................5
+L8@P1: What food is potentially hazardous?...................................................................................................6
+L9@P1: What food is not potentially hazardous?............................................................................................7
+L10@P1: Regulations and Guidelines......................................................................................................8
+L11@P1: The Australia New Zealand Food Standards Code ............................................................................8
+L12@P1: The 2-hour/4-hour rule...........................................................................................................................................8
+L13@P1: Institute of Food Technologists/United States Food and Drug Administration suggested
+L14@P1: definition of Potentially Hazardous Food ...........................................................................................8
+L15@P1: How to determine if foods are potentially hazardous.............................................................9
+L16@P1: Water activity (aw) as the control factor for pathogen growth .........................................................9
+L17@P1: pH as the control factor for pathogen growth ....................................................................................9
+L18@P1: Interactions between aw and pH..........................................................................................................9
+L19@P1: Individual product assessment..........................................................................................................12
+L20@P1: Verifying that foods are not potentially hazardous..........................................................................13
+L21@P1: Common issues .......................................................................................................................13
+L22@P1: Warm food (less than 60°C) in a bain marie .....................................................................................13
+L23@P1: Salads and cut meats displayed above 5°C......................................................................................13
+L24@P1: Pre-cut sandwiches and rolls.............................................................................................................13
+L25@P1: Ambient or cool display of sushi.......................................................................................................14
+L26@P1: Ambient display of seemingly perishable Asian foods ...................................................................14
+L27@P1: Chinese-style roast meats (such as roast duck, roast chicken, roast pork, BBQ pork) ......................................14
+L28@P1: Asian cakes and desserts....................................................................................................................................15
+L29@P1: Asian fresh noodles and rice rolls .......................................................................................................................15
+L30@P1: Baked goods........................................................................................................................................15
+L31@P1: Alternative Methods of Compliance .......................................................................................16
+L32@P1: Demonstrating alternative compliance .............................................................................................16
+L33@P1: Conclusion ...............................................................................................................................17
+L34@P1: References and further reading..............................................................................................18
+L35@P1: Appendices...............................................................................................................................19
+L36@P1: Appendix 1. Water activity as the control factor for pathogen growth.................................................................19
+L37@P1: Appendix 2. Estimation of water activity during an inspection ............................................................................20
+L38@P1: Appendix 3. pH as the control factor for pathogen growth ..................................................................................21
+L39@P1: Appendix 4. Estimation of pH during an inspection.............................................................................................22
+L40@P1: Appendix 5. United States Food and Drug Administration definition of Time/Temperature Control for Safety
+L41@P1: Food (formerly “potentially hazardous food” (PHF)) (US FDA, 2017).................................................................23
+L42@P1-2: More information......................................................................................................................25Potentially hazardous foods – Foods that require temperature control for safety
+L43@P2: FA529/2307 3
+L44@P2: Definitions
+L45@P2: Term Definition
+L46@P2: 2-hour/4-hour rule An alternative method of satisfying the temperature control requirements
+L47@P2: specified in the Food Standards Code.
+L48@P2: The principal concepts of the 2-hour/4-hour rule are that when potentially
+L49@P2: hazardous ready-to-eat food has been kept between 5°C and 60°C for:
+L50@P2: • up to 2 hours, it can be refrigerated below 5°C, or kept hot above 60°C,
+L51@P2: or used immediately
+L52@P2: • between 2 and 4 hours, it must be used immediately
+L53@P2: • up to a total of 4 hours or more, it must be thrown out.
+L54@P2: Safe Food Australia – Appendix 2 (2023)
+L55@P2: Authorised Officer A definition of an Authorised Officer is included in the Food Standards Code
+L56@P2: (Standard 1.1.2) and also defined in the NSW Food Act 2003 Part 1.
+L57@P2: The appointment of Authorised Officers and Certificates of Authority are set out
+L58@P2: in NSW Food Act 2003 Part 9 Division 3.
+L59@P2: Demonstrate Means demonstrate to the satisfaction of the NSW Food Authority
+L60@P2: Food Regulation 2015, Part 6, Clause 38
+L61@P2: Pathogenic bacteria Bacteria capable of causing food poisoning. Some examples: Salmonella,
+L62@P2: Listeria monocytogenes, Bacillus cereus, and Staphylococcus aureus.
+L63@P2: Potentially
+L64@P2: hazardous food
+L65@P2: Food that has to be kept at certain temperatures to minimise the growth of any
+L66@P2: pathogenic microorganisms that may be present in the food or to prevent the
+L67@P2: formation of toxins in the food
+L68@P2: Food Standards Code 3.2.2, Division 1, Clause 1
+L69@P2: Process Activity conducted to prepare food for sale including chopping, cooking, drying,
+L70@P2: fermenting, heating, pasteurising, thawing and washing, or a combination of
+L71@P2: these activities
+L72@P2: Food Standards Code 3.2.2, Division 1, Clause 1
+L73@P2: Ready-to-eat food Food that is ordinarily consumed in the same state as that in which it is sold
+L74@P2: and does not include nuts in the shell and whole raw fruits and vegetables that
+L75@P2: are intended for hulling, peeling or washing by the consumer.
+L76@P2-3: Food Standards Code 3.2.2, Division 1, Clause 1Potentially hazardous foods – Foods that require temperature control for safety
+L77@P3: FA529/2307 4
+L78@P3: Term Definition
+L79@P3: Temperature control Maintaining food at a temperature of:
+L80@P3: • 5°C or below if this is necessary to minimise the growth of pathogenic
+L81@P3: microorganisms in the food, so that the microbiological safety of the
+L82@P3: food will not be adversely affected for the time the food is at that
+L83@P3: temperature, or
+L84@P3: • 60°C or above, or
+L85@P3: • another temperature - if the food business demonstrates that
+L86@P3: maintenance of the food at this temperature for the period of time for
+L87@P3: which it will be so maintained, will not adversely affect the
+L88@P3: microbiological safety of the food.
+L89@P3: Food Standards Code 3.2.2, Division 1, Clause 1
+L90@P3: Temperature danger
+L91@P3: zone
+L92@P3-4: Between 5°C and 60°CPotentially hazardous foods – Foods that require temperature control for safety
+L93@P4: FA529/2307 5
+L94@P4: Introduction
+L95@P4: Standard 3.2.2 of the Australia New Zealand Food Standards Code (Food Standards Code) defines
+L96@P4: potentially hazardous food (PHF) as “food that has to be kept at certain temperatures to minimise the
+L97@P4: growth of any pathogenic microorganisms that may be present in the food or to prevent the formation of
+L98@P4: toxins in the food”. Potentially hazardous foods are also referred to as ‘Time/temperature control for
+L99@P4: safety (TCS) foods’ in other reference documents. The phrase does not mean a naturally dangerous
+L100@P4: food such as a poisonous mushroom.
+L101@P4: The need for time/temperature control is primarily determined by the potential for contamination with and
+L102@P4: survival of pathogenic microorganisms of concern and the potential for subsequent growth and/or toxin
+L103@P4: production. Factors affecting microbial growth include moisture content (water activity, aw), acidity (pH),
+L104@P4: nutrient content, antimicrobials, atmosphere of packaging, processing steps and storage conditions. If
+L105@P4: the combination of these factors creates a favourable environment and the food is not kept under
+L106@P4: temperature control, microorganisms can grow, and some may form toxins. If the levels of pathogenic
+L107@P4: microorganisms or toxins reach unsafe levels, foodborne illness may occur.
+L108@P4: Clause 8 of Standard 3.2.2 requires that a food business, when displaying potentially hazardous food,
+L109@P4: display it under temperature control. This clause is simple and logical. However, when it comes to
+L110@P4: inspecting food on display the situation is not always as simple. In some cases, it is not possible to
+L111@P4: determine whether a food is potentially hazardous during an inspection. While the food business has the
+L112@P4: responsibility to demonstrate that it is handling food safely, many small businesses are not equipped to
+L113@P4: do so.
+L114@P4: This document includes information on factors that can be used to assess the hazard, lists of food types
+L115@P4: where the nature of the hazard can be determined and provides information on what laboratory work can
+L116@P4-5: be done to provide clarity when the nature of the hazard is not clear.Potentially hazardous foods – Foods that require temperature control for safety
+L117@P5: FA529/2307 6
+L118@P5: What food is potentially hazardous?
+L119@P5: Potentially hazardous foods are generally moist, nutrient-rich foods with a neutral pH. Examples of foods
+L120@P5: that are normally considered potentially hazardous include:
+L121@P5: Food type1 Examples
+L122@P5: Raw and cooked meat/poultry
+L123@P5: Foods containing raw or cooked meat/poultry Burgers, curries, kebabs, pate, meat pies
+L124@P5: Foods containing eggs (cooked or raw), beans,
+L125@P5: nuts or other protein-rich food
+L126@P5: Batter, mousse, quiche, tofu
+L127@P5: Dairy products and foods containing dairy
+L128@P5: products
+L129@P5: Milk, dairy-based desserts, bakery products filled
+L130@P5: with fresh cream or with fresh custard
+L131@P5: (yoghurt is not included here as it is an acidified
+L132@P5: product)
+L133@P5: Seafood (excluding live seafood) and foods
+L134@P5: containing seafood
+L135@P5: Sushi
+L136@P5: Sprouted seeds Bean sprouts, alfalfa
+L137@P5: Prepared fruits and vegetables Cut melons, salads, unpasteurised juices
+L138@P5: Cooked rice, fresh and cooked pasta
+L139@P5: Foods that contain any of the above foods Sandwiches, pizzas, rice rolls
+L140@P5: Note:
+L141@P5: 1. Some of the types of food listed will not be considered potentially hazardous if they have been
+L142@P5: processed in certain ways, for example, if a food contains certain additives or has been
+L143@P5: commercially sterilised.
+L144@P5: 2. Any food that contains a potentially hazardous ingredient must also be considered a potentially
+L145@P5: hazardous food. For example, sushi rice correctly prepared with vinegar may be acidic enough to
+L146@P5: prevent pathogen growth, but adding fillings such as raw fish, cooked chicken or vegetables
+L147@P5: would make the end product potentially hazardous.
+L148@P5-6: 1 FSANZ Safe Food Australia – Appendix 1: Potentially hazardous food (FSANZ, 2023)Potentially hazardous foods – Foods that require temperature control for safety
+L149@P6: FA529/2307 7
+L150@P6: What food is not potentially hazardous?
+L151@P6: If a food does not support the growth of a pathogen or toxin production, then it is not potentially
+L152@P6: hazardous.
+L153@P6: Some foods in their natural state do not support pathogen growth because their intrinsic properties
+L154@P6: create an unfavourable environment, for example, foods that are naturally acidic. Other foods may have
+L155@P6: been processed in a way that minimises microbial growth (for example, dried, salted, acidified) or has
+L156@P6: eliminated microorganisms in the food (such as commercially sterilised food). In addition, the use of
+L157@P6: certain chemical additives such as nitrites, sulphites or specialised packaging may minimise microbial
+L158@P6: growth in food.
+L159@P6: Examples of food types considered to be not potentially hazardous1
+L160@P6: Biscuits and crackers Fruit cake Plain cakes
+L161@P6: Bottled marinades (before
+L162@P6: opening)
+L163@P6: Fruit juices Raw whole fruit and vegetables
+L164@P6: Bottled pasta sauces (before
+L165@P6: opening)
+L166@P6: Hard cheeses Salad dressings
+L167@P6: Bottled salsas (before opening) Honey and jam Sauces – Asian/soy, ketchup
+L168@P6: style
+L169@P6: Confectionery Nuts in the shell Salted dried meats
+L170@P6: Dried fruit Peanut butter Unopened canned foods
+L171@P6: Dry goods Pickles Yoghurts
+L172@P6: Fermented dried meats Plain breads and bread rolls
+L173@P6: Note:
+L174@P6: Foods in the above list do not support the growth of pathogenic bacteria or the formation of toxins in the
+L175@P6: food. However:
+L176@P6: 1. Many of the products require refrigerated storage to prevent food spoilage or maintain quality to
+L177@P6: achieve the stated shelf-life.
+L178@P6: 2. Some foods might contain certain pathogenic microorganisms but not support their growth.
+L179@P6: Although by definition such foods are not “potentially hazardous”, they can still be a food safety
+L180@P6: hazard. For example, food contaminated with viruses such as hepatitis A or norovirus can cause
+L181@P6: foodborne illness even though the pathogen does not multiply in the food.
+L182@P6: 3. The above foods might become potentially hazardous when the food is opened or altered in
+L183@P6: some ways. For example, opening a can of food, cutting up a whole melon, slicing cured meat,
+L184@P6: cooking vegetables or reconstituting dry foods.
+L185@P6-7: 1 FSANZ Safe Food Australia – Appendix 1: Potentially hazardous food (FSANZ, 2023)Potentially hazardous foods – Foods that require temperature control for safety
+L186@P7: FA529/2307 8
+L187@P7: Regulations and Guidelines
+L188@P7: The Australia New Zealand Food Standards Code
+L189@P7: Standard 3.2.2 – Food Safety Practices and General Requirements defines potentially hazardous food
+L190@P7: (PHF) as “food that has to be kept at certain temperatures to minimise the growth of any pathogenic
+L191@P7: microorganisms that may be present in the food or to prevent the formation of toxins in the food”.
+L192@P7: The associated definition of temperature control is important. Standard 3.2.2 defines temperature control
+L193@P7: as maintaining food as a temperature of –
+L194@P7: a. 5°C, or below if this is necessary to minimise the growth of infectious or toxigenic microorganisms
+L195@P7: in the food so that the microbiological safety of the food will not be adversely affected for the time
+L196@P7: the food is at that temperature; or
+L197@P7: b. 60°C or above; or
+L198@P7: c. Another temperature – if the food business demonstrates that maintenance of the food at this
+L199@P7: temperature for the period of time for which it will be so maintained, will not adversely affect the
+L200@P7: microbiological safety of the food.
+L201@P7: The 2-hour/4-hour rule
+L202@P7: The 2-hour/4-hour rule is an alternative method that has been designed to help businesses deal with
+L203@P7: some of the practicalities of handling refrigerated potentially hazardous ready-to-eat food. Studies have
+L204@P7: been done to show that food can be held out of temperature control for short periods of time without
+L205@P7: significantly increasing the risk of food poisoning.
+L206@P7: The principal concepts of the 2-hour/4-hour rule are that when potentially hazardous ready-to-eat food
+L207@P7: has been kept between 5°C and 60°C for:
+L208@P7: • up to 2 hours, it can be refrigerated below 5°C, or kept hot above 60°C, or used immediately.
+L209@P7: • between 2 and 4 hours, it must be used immediately.
+L210@P7: • up to a total of 4 hours or more, it must be thrown out.
+L211@P7: It is important to note that the time is cumulative; all time periods where the food is at temperatures
+L212@P7: between 5°C and 60°C need to be counted.
+L213@P7: If a food business wishes to maintain potentially hazardous food between the temperatures of 5°C and
+L214@P7: 60°C for time periods longer than the two hours and four hours specified above, the food business must
+L215@P7: demonstrate that the extension of time will not compromise the safety of the food.
+L216@P7: For more information on the use of the 2-hour/4-hour rule, please refer to the ‘Guidance on the 2-hour/4-
+L217@P7: hour rule’ document on the Food Authority’s website foodauthority.nsw.gov.au/resource-centre.
+L218@P7: Institute of Food Technologists/United States Food and Drug Administration
+L219@P7: suggested definition of Potentially Hazardous Food
+L220@P7: The Institute of Food Technologists/US Food and Drug Administration (IFT/FDA) report on Evaluation
+L221@P7: and Definition of Potentially Hazardous Foods suggests adopting the term “temperature controlled for
+L222@P7: safety (TCS)” with the definition “foods that require time/temperature control to limit pathogen growth or
+L223@P7: toxin formation that constitutes a threat to public health”. This definition has similar intent to that used in
+L224@P7: the Standard 3.2.2.
+L225@P7: The report goes on to consider factors that influence microbial growth and provides useful guidance on
+L226@P7: determining whether a product requires TCS. Given the similarities in definitions, the IFT/FDA guidance
+L227@P7: also addresses Australian Code requirements. Much of the analysis that follows is based on the IFT/FDA
+L228@P7-8: model.Potentially hazardous foods – Foods that require temperature control for safety
+L229@P8: FA529/2307 9
+L230@P8: How to determine if foods are potentially hazardous
+L231@P8: Water activity (aw) as the control factor for pathogen growth
+L232@P8: The water activity of a food describes the degree to which water is “bound” in the food, its availability to
+L233@P8: participate in chemical/biochemical reactions and its ability to make possible the growth of
+L234@P8: microorganisms (IFT/FDA, 2001). In foods, it ranges from 0.10 (dry products, like crackers) to 1.00 (very
+L235@P8: moist). Most fresh foods have aw values that are close to the optimum growth level of most
+L236@P8: microorganisms (0.97 to 0.99) (Appendix 1).
+L237@P8: Appendix 2 shows the minimum aw at which foodborne pathogenic bacteria can grow or produce toxin.
+L238@P8: The benchmark organism is Staphylococcus aureus which can grow at aw 0.83 and produce toxin at
+L239@P8: 0.88.
+L240@P8: pH as the control factor for pathogen growth
+L241@P8: The pH of a food relates to its acidity. Most foods such as meat, fish and vegetables are slightly acidic,
+L242@P8: while most fruits are moderately acidic. It is well known that groups of microorganisms have a pH
+L243@P8: optimum, minimum and maximum for growth in foods.
+L244@P8: Appendix 3 shows the minimum pH at which foodborne pathogenic bacteria can grow or produce toxin.
+L245@P8: The benchmark vegetative bacteria are S. aureus which can grow at pH 4.0 and produce toxin at 4.6 and
+L246@P8: Yersinia enterocolitica and Salmonella spp. both of which can grow at pH 4.2. The spore-forming
+L247@P8: bacteria of interest is Clostridium botulinum which can grow and produce toxin down to pH 4.6.
+L248@P8: Interactions between aw and pH
+L249@P8: The tables below (IFT/FDA, 2001) provide a useful advice on some combinations of pH and water
+L250@P8: activity which, taken together, will prevent microbial growth or spore outgrowth. Those combinations that
+L251@P8: lead to “non-TCS” are also not PHF. If the combination is denoted by a “?”, it indicates that the product is
+L252@P8: potentially unsafe without refrigeration. Note that some individual foods have characteristics that prevent
+L253@P8: pathogen growth at conditions of pH and water activity that are less severe than those indicated in the
+L254@P8: tables.
+L255@P8: Care should be taken when analysing multicomponent foods because measurements of aw, pH, or
+L256@P8: antimicrobials of the whole food may not reflect the actual value of the components or at the interface
+L257@P8: among the different components. In these cases, the parameters should be measured at the interface
+L258@P8: areas of the food, as well as in the component itself.
+L259@P8: If the product of interest has been heat treated to destroy vegetative microbial cells and has been
+L260@P8: packaged to avoid recontamination, use Table 1 (IFT/FDA Table A) to ascertain the need for
+L261@P8: temperature control. If the product has not been heat-treated or heat-treated but not packaged, use
+L262@P8-9: Table 2 (IFT/FDA Table B).Potentially hazardous foods – Foods that require temperature control for safety
+L263@P9: FA529/2307 10
+L264@P9: Table 1 IFT/FDA Table A – Product treated to control spores and protected from recontamination.
+L265@P9: <4.2 4.2 - 4.6 >4.6 - 5.0 >5.0 - 5.6 >5.6
+L266@P9: Water activity
+L267@P9: <0.85
+L268@P9: >0.85 - <0.88
+L269@P9: 0.88 - 0.90
+L270@P9: >0.90 - 0.92
+L271@P9: >0.92 - 0.95 ?
+L272@P9: >0.95 ? ? ?
+L273@P9: Table 2 IFT/FDA Table B – Product not treated to control spores or treated but not protected from recontamination.
+L274@P9: <4.2 4.2 - 4.6 >4.6 - 5.0 >5.0 - 5.6 >5.6
+L275@P9: Water activity
+L276@P9: <0.85
+L277@P9: >0.85 - <0.88
+L278@P9: 0.88 - 0.90 ? ?
+L279@P9: >0.90 - 0.92 ? ? ?
+L280@P9: >0.92 - 0.95 ? ? ? ?
+L281@P9: >0.95 ? ? ? ?
+L282@P9: Non-TCS / not PHF
+L283@P9: ? Query area - Possible TCS - Individual
+L284@P9-10: product assessment requiredPotentially hazardous foods – Foods that require temperature control for safety
+L285@P10: FA529/2307 11
+L286@P10: If the food is classified as a non-TCS food, it may be stored and held safely without regard to time or
+L287@P10: temperature.
+L288@P10: However, if the need for time/temperature control is questionable, the food should be held either hot or
+L289@P10: cold for safety, or subjected to a product assessment as outlined in Figure 1 as the next step in
+L290@P10: determining the appropriate classification.
+L291@P10-11: Figure 1 A flowchart to determine whether a product requires time/temperature control for safety (IFT/FDA, 2001)Potentially hazardous foods – Foods that require temperature control for safety
+L292@P11: FA529/2307 12
+L293@P11: Individual product assessment
+L294@P11: The IFT/FDA report includes details of individual product assessment. The steps set out in the report
+L295@P11: should be undertaken under the guidance of a trained food technologist or food scientist. Laboratory
+L296@P11: analysis is required to complete the assessment.
+L297@P11: Step 1
+L298@P11: Conduct a pH and water activity (aw) testing. If the product is not homogeneous, measurements of pH
+L299@P11: and aw are required in triplicate for each component. The assessment of a food that is not homogenous
+L300@P11: will be based on the “weakest link” (i.e. the highest risk).
+L301@P11: Step 2
+L302@P11: Evaluate the results of testing according to the appropriate IFT/FDA table (see page 10).
+L303@P11: • Use Table 1 if the product is processed (e.g. cooked) to control vegetative cells and protected
+L304@P11: from recontamination.
+L305@P11: • Use Table 2 if the product is not treated to control vegetative cells or treated but not protected
+L306@P11: from recontamination.
+L307@P11: If the product is classified as non-TCS the assessment is complete.
+L308@P11: Step 3
+L309@P11: If the product is in the query area, then time or temperature-controlled display is required. Further studies
+L310@P11: can be undertaken, if necessary, but time or temperature controls are often better options. The studies
+L311@P11: are complex and expensive and require input from an experienced food technologist/scientist. Product
+L312@P11: assessment should consider factors such as:
+L313@P11: • Potential pathogens
+L314@P11: • Intrinsic factors such as preservatives, acidulants, nutrients, humectants
+L315@P11: • Extrinsic factors such as packaging, modified atmosphere, shelf life
+L316@P11: • Effectiveness of the processing control of pathogens
+L317@P11: • Possible post-process recontamination
+L318@P11: • Historical information on the safety of similar or related products
+L319@P11: • The consultant could also use microbial growth models to evaluate the likely success of
+L320@P11: challenge studies.
+L321@P11: Step 4
+L322@P11: Microbial challenge studies tests should be undertaken if there is a reasonable likelihood of success.
+L323@P11: ISO 20976-1:2019 specifies protocols for conducting microbiological challenge tests for growth studies
+L324@P11: on vegetative and spore-forming bacteria in raw materials and intermediate or end products. Products
+L325@P11: passing a properly designed challenge test are considered to have demonstrated alternative compliance
+L326@P11: as long as controlled display times and temperatures do not exceed those employed in a successful
+L327@P11: challenge trial.
+L328@P11: Note 1: The results of microbiological testing of the food product are useful for verification of the
+L329@P11: assessment but they do not stand alone. Good results might provide a level of comfort about product
+L330@P11: safety, but they do not necessarily address all the inherent risks.
+L331@P11: Note 2: The history of the product alone does not confirm product safety. The history must be
+L332@P11-12: underpinned by a sound scientific evaluation.Potentially hazardous foods – Foods that require temperature control for safety
+L333@P12: FA529/2307 13
+L334@P12: Verifying that foods are not potentially hazardous
+L335@P12: Food businesses are responsible to determine which foods they serve, or sell are potentially hazardous.
+L336@P12: Authorised officers require evidence of the determination, for example (but not limited to) a validation
+L337@P12: study, analytical testing results or the result of a challenge testing.
+L338@P12: Food businesses are also required to substantiate food safety controls when handling PHF.
+L339@P12: Common issues
+L340@P12: Warm food (less than 60°C) in a bain marie
+L341@P12: A correctly adjusted bain marie can hold food at 60°to 65°C without generating too much steam. If food
+L342@P12: on display is less than 60°C, the unit could be set too low, or the operator might have used the bain
+L343@P12: marie to reheat food. Bain marie is not designed for reheating food. If attempted, the food typically
+L344@P12: spends many hours at a perfect temperature for bacterial growth. Food must be freshly cooked or
+L345@P12: reheated prior to display in a bain marie.
+L346@P12: If the business is worried that food may lose quality at the temperature of greater than 60°C, the
+L347@P12: business must use time as a control (such as the 2-hour/4-hour rule). Records of the times and
+L348@P12: temperatures that food is displayed must be kept to ensure that the food is safe.
+L349@P12: Salads and cut meats displayed above 5°C
+L350@P12: It is common for salad and sandwich bars to display cold food at 5 to 10°C and it can be difficult to rectify
+L351@P12: the issue without significant investment. Brightly lit displays, with “cold plate” refrigeration, stacked high
+L352@P12: with food to be more appetising, are more difficult to manage than compact displays with overhead
+L353@P12: cooling.
+L354@P12: Sometimes the problem can be traced to operator actions, such as placing spacers (cardboard, foam or
+L355@P12: bread) between the cold plate and the food tray to avoid freezing. In this case the use of plastic trays
+L356@P12: might be a better option.
+L357@P12: Often the only solution available to operators is to display suitable quantities of food and to remove food
+L358@P12: from display consistent with the “2-hour/4-hour rule”. Condiments, sauces and other non PHF do not
+L359@P12: have to follow the rule.
+L360@P12: Pre-cut sandwiches and rolls
+L361@P12: Sandwich shops sometimes prepare sandwiches ahead of the lunch rush hour. Sandwiches are a
+L362@P12: potentially hazardous food, and time or temperature control is necessary. If adequate refrigeration is not
+L363@P12-13: available, then sandwiches must be sold within the 4-hour time frame and time control must be evident.Potentially hazardous foods – Foods that require temperature control for safety
+L364@P13: FA529/2307 14
+L365@P13: Ambient or cool display of sushi
+L366@P13: Sushi businesses are reluctant to refrigerate their products because changes to rice starch can result in
+L367@P13: a firmer texture and starchy taste. Even though the rice is acidified, some components of the sushi
+L368@P13: remain potentially hazardous, which causes the RTE sushi to be categorised as PHF.
+L369@P13: The NSW Food Authority permits retail sushi businesses to display sushi at temperatures up to 25°C for
+L370@P13: no more than 4 hours provided:
+L371@P13: • The Food Standards Code’s requirements are followed during the receipt, preparation and storage
+L372@P13: of sushi and raw materials;
+L373@P13: • Proper acidification of the rice (to a pH less than or equal to 4.6) takes place to inhibit the growth of
+L374@P13: food poisoning bacteria. The pH must be recorded; and
+L375@P13: • Sushi businesses implement a system for monitoring the length of time sushi is displayed at 5oC to
+L376@P13: 25oC.
+L377@P13: Further information can be found in the ‘Food safety guidelines for the preparation and display of sushi’
+L378@P13: on the Food Authority’s website www.foodauthority.nsw.gov.au/resource-centre.
+L379@P13: Ambient display of seemingly perishable Asian foods
+L380@P13: Anecdotally, Asian communities have a tradition of “cook–serve” food service and equate refrigerated
+L381@P13: products to old or stale food. However, many Asian specialties “cook–serve” has been replaced by a
+L382@P13: longer supply chain that includes centralised processing, overnight (or early morning) delivery and
+L383@P13: extended display times often with no temperature control. Even when foods are prepared at the retail
+L384@P13: premises, if temperature and time controls are lacking, it is not possible to comply with the Food
+L385@P13: Standards Code requirements for display of potentially hazardous foods.
+L386@P13: The wide variety of often unfamiliar foods might present a challenge for Authorised Officers. Most
+L387@P13: products will be exactly as they seem — potentially hazardous. A small number of foods appear
+L388@P13: potentially hazardous but previous studies have revealed that they are low risk foods.
+L389@P13: Chinese-style roast meats (such as roast duck, roast chicken, roast pork, BBQ
+

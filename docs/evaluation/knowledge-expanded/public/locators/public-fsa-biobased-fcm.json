@@ -1,0 +1,163 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "Summary",
+    "origin_id": "summary",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#summary",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Purpose",
+    "origin_id": "purpose",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#purpose",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Legal status",
+    "origin_id": "legal-status",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#legal-status",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Disclaimer",
+    "origin_id": "disclaimer",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#disclaimer",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Who is this publication for?",
+    "origin_id": "who-is-this-publication-for",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#who-is-this-publication-for",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Which UK Countries does this guide apply to?",
+    "origin_id": "which-uk-countries-does-this-guide-apply-to",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#which-uk-countries-does-this-guide-apply-to",
+    "ordinal": 6
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Introduction",
+    "origin_id": "introduction",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#introduction",
+    "ordinal": 7
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Purpose of this guide and intended audience",
+    "origin_id": "purpose-of-this-guide-and-intended-audience",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#purpose-of-this-guide-and-intended-audience",
+    "ordinal": 8
+  },
+  {
+    "kind": "html_heading",
+    "heading": "What are “biobased materials”?",
+    "origin_id": "what-are-biobased-materials",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#what-are-biobased-materials",
+    "ordinal": 9
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Basic principles",
+    "origin_id": "basic-principles",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#basic-principles",
+    "ordinal": 10
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sourcing the material",
+    "origin_id": "sourcing-the-material",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#sourcing-the-material",
+    "ordinal": 11
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Consistency and reliability",
+    "origin_id": "consistency-and-reliability",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#consistency-and-reliability",
+    "ordinal": 12
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sustainability",
+    "origin_id": "sustainability",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#sustainability",
+    "ordinal": 13
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Economics",
+    "origin_id": "economics",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#economics",
+    "ordinal": 14
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Processing the material",
+    "origin_id": "processing-the-material",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#processing-the-material",
+    "ordinal": 15
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Interactions of the material",
+    "origin_id": "interactions-of-the-material",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#interactions-of-the-material",
+    "ordinal": 16
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Compliance of the material",
+    "origin_id": "compliance-of-the-material",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#compliance-of-the-material",
+    "ordinal": 17
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Hazards and problems",
+    "origin_id": "hazards-and-problems",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#hazards-and-problems",
+    "ordinal": 18
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Remedies",
+    "origin_id": "remedies",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#remedies",
+    "ordinal": 19
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Presentation and packaging",
+    "origin_id": "presentation-and-packaging",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#presentation-and-packaging",
+    "ordinal": 20
+  },
+  {
+    "kind": "html_heading",
+    "heading": "End of life considerations",
+    "origin_id": "end-of-life-considerations",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#end-of-life-considerations",
+    "ordinal": 21
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Advice and guidance available to developers of biobased food contact materials",
+    "origin_id": "advice-and-guidance-available-to-developers-of-biobased-food-contact-materials",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#advice-and-guidance-available-to-developers-of-biobased-food-contact-materials",
+    "ordinal": 22
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Contacting us",
+    "origin_id": "contacting-us",
+    "source_url": "https://www.gov.uk/guidance/biobased-fcm-a-starters-guide-for-the-development-of-new-biobased-food-contact-materials#contacting-us",
+    "ordinal": 23
+  }
+]

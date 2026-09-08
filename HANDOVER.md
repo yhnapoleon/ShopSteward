@@ -1,5 +1,23 @@
 # ShopSteward 当前开发交接
 
+服务器同学从GitHub接收本轮PR时，先读[服务器交接与云端试部署](docs/runbooks/knowledge-server-handoff.md)：部署边界、PR文件清单、两端配置、数据重建/搬迁区别、验收分工及后续数据库/embedding实验均已列明。当前可开展环境准备和隔离试部署，完整搬迁验收仍待补。
+
+### 最新执行检查点：知识检索本地准备（2026-09-08）
+
+- 本地准备已进入实施，独立knowledge包、K2投递/发布、Agent证据工具、迁移、容器/恢复/基准工具已落盘；当前基准HEAD `602a6c6`，YH未提交修改，开发8000/8001及开发库未改动。详情见[验收状态](docs/reports/knowledge-precloud-readiness.md)。
+- 实际语料pilot200、全量924逻辑文档/1124版本、300题；公开来源24份，目标100份仍缺76份。CSV等宽修复后实际解析1124全部COMPLETE，共16205块；800条合成关系通过唯一原文chunk绑定。dev-only查询单独导出，gold不进入检索输入。原K0/旧K1契约hash保持不变。
+- 文档编辑CAS `metadata_version` 与证据修订 `evidence_revision` 分离；追加原件保留旧发布，权限/实体等元数据变更须重新索引发布。失败任务使用新generation，只有READY完整证据可发布；未来/有界发布保留旧版其余有效区间。
+- Docker已由用户启动；独立knowledge API8020/PG55434/OpenSearch19201已实际构建、迁移并就绪，镜像digest已记录。业务测试库0011、knowledge库knowledge_0002已验收；投递35+证据30混合测试通过（25项实际PG、40项非PG）。pilot200已完成真实上传、索引和发布。
+- **Agent接入现有LangGraph完成本轮4场景联调**：库存查询→业务工具；文档查询→搜索并主动补搜；提前排队的引用追问→展开；混合问题→先库存后文档。r5取到映射/生效批次/双码追踪原文。完整结构化引用可持久化，最终权限/关系来源再次复核。正文标识抄错另经确定性校验回放修复，未伪称新模型运行。见[接入图、代码与实际轨迹](docs/reports/agent-document-langgraph-integration.md)。
+- **整体pilot_ready=false、MVP_ready=false。** 还需真实关系导入、生命周期/重启、空环境双库恢复、并发基准及质量评测。embedding/rerank本轮关闭，现有Luna有界生成调用已实际使用，云检索选型/区域尚未决选。
+- 接续保留knowledge容器；验收8018/API/publisher/Agent自建进程已关闭。测试租户 `knowledge-test-agent-0908020841-STORE01` 和 `var/precloud/agent-0908020841` 收据可复用；避免先运行会清理该测试库的integration fixtures。后续按[运行手册](docs/runbooks/knowledge-local-and-cloud.md)导入关系并恢复演练，扩采76份公开来源与人工评测继续。
+
+### 最新计划：上云前本地准备（2026-09-07）
+
+- 用户要求制定本地准备计划；已交付[总计划与L0现场检查](docs/superpowers/plans/2026-09-07-knowledge-precloud.md)、[A语料与评测](docs/superpowers/plans/2026-09-07-knowledge-precloud-data.md)、[B独立检索服务](docs/superpowers/plans/2026-09-07-knowledge-precloud-service.md)、[C集成与恢复演练](docs/superpowers/plans/2026-09-07-knowledge-precloud-readiness.md)。本次仅计划落盘。
+- 下一执行顺序L0→A1/B1并行→A2/B2/B3/B4→C1/C2→C3。首个云pilot需200份真实原件和完整本地链路；A3的1000份/300题可继续并行，不阻塞首个云试验。无模型时验真实词法，协议模拟不计模型效果。独立knowledge包/DB/迁移与backend权威数据分开，个人memory不改作RAG。
+- 计划包含新增来源metadata、outbox、索引状态/发布指针迁移；实施时按实际head生成新迁移，不能仅修改0010固定NOT_INDEXED约束的响应而漏DB变更。开发服务、数据库与云资源本次均未操作。
+
 ### 最新修复：模拟器驱动当前环境（2026-09-07）
 
 console 默认联动创建；成功导入后 backend 返回持久的当前场景，已打开前端每2.5秒自动跟随，资金/库存/事件和新任务 Agent 均使用该场景。保留历史数据，修复跨场景审批、分页及 Agent 异步响应污染。用户原 SANDBOX 已在实际前端显示现金1000、库存20，未改变其数据。

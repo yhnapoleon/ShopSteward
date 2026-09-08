@@ -1,0 +1,406 @@
+Guideline for seafood retailers - Compliance with the Food Standards Code (https://www.foodauthority.nsw.gov.au/media/1441)
+citeturn78view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 17; Source: click({"ref_id":"turn59view0","id":365}); Total lines: 589
+L0@P0: foodauthority.nsw.gov.au
+L1@P0: Food Authority
+L2@P0: Guideline for seafood retailers – Compliance with the Food
+L3@P0: Standards Code
+L4@P0-1: February 2024Guideline for seafood retailers
+L5@P1: FA613/2402 2
+L6@P1: Published by the NSW Food Authority
+L7@P1: Title: Guideline for seafood retailers – Compliance with the Food Standards Code
+L8@P1: First published: 10 April 2007
+L9@P1: Updated: 19 February 2024
+L10@P1: © State of New South Wales through Regional NSW February 2024. You may copy, distribute, display, download and otherwise freely deal with
+L11@P1: this publication for any purpose, provided that you attribute the Regional NSW as the owner. However, you must obtain permission if you wish to
+L12@P1: charge others for access to the publication (other than at cost); include the publication in advertising or a product for sale; modify the publication;
+L13@P1: or republish the publication on a website. You may freely link to the publication on a departmental website.
+L14@P1: Disclaimer: The information contained in this publication is based on knowledge and understanding at the time of writing (February 2024) and
+L15@P1: may not be accurate, current or complete. The State of New South Wales (including the Regional NSW), the author and the publisher take no
+L16@P1: responsibility, and will accept no liability, for the accuracy, currency, reliability or correctness of any information included in the document
+L17@P1: (including material provided by third parties). Readers should make their own inquiries and rely on their own advice when making decisions
+L18@P1-2: related to material contained in this publication.Guideline for seafood retailers
+L19@P2: FA613/2402 3
+L20@P2: Table of Contents
+L21@P2: Introduction.........................................................................................................................................4
+L22@P2: Purpose and scope .............................................................................................................................4
+L23@P2: Use of guidelines ...................................................................................................................................................4
+L24@P2: Definitions ...........................................................................................................................................5
+L25@P2: Notification of your food business ....................................................................................................7
+L26@P2: Design and construction ....................................................................................................................7
+L27@P2: Standard 3.2.2A – Food Safety Management Tools..........................................................................8
+L28@P2: Category one .........................................................................................................................................................8
+L29@P2: Category two .........................................................................................................................................................8
+L30@P2: Food Safety Supervisor......................................................................................................................8
+L31@P2: Food handler training .........................................................................................................................8
+L32@P2: Showing food is safe ..........................................................................................................................9
+L33@P2: Health and hygiene of food handlers.................................................................................................9
+L34@P2: Purchasing and receiving food safely .............................................................................................10
+L35@P2: Safe storage of seafood....................................................................................................................10
+L36@P2: Storage of live seafood........................................................................................................................................11
+L37@P2: Wet storage of shellfish .......................................................................................................................................11
+L38@P2: Use of ice in retail seafood premises ..................................................................................................................11
+L39@P2: Histamine.............................................................................................................................................................11
+L40@P2: Seafood processing..........................................................................................................................12
+L41@P2: Displaying seafood safely ................................................................................................................12
+L42@P2: Cleaning and sanitation....................................................................................................................13
+L43@P2: Labelling of seafood .........................................................................................................................14
+L44@P2: Unpackaged seafood...........................................................................................................................................14
+L45@P2: Packaged food.....................................................................................................................................................14
+L46@P2: Product substitution .............................................................................................................................................14
+L47@P2: Safe processing of oysters...............................................................................................................15
+L48@P2: Receival...............................................................................................................................................................15
+L49@P2: Storage ................................................................................................................................................................15
+L50@P2: Processing...........................................................................................................................................................15
+L51@P2: Display .................................................................................................................................................................16
+L52@P2: Disposal of seafood ..........................................................................................................................16
+L53@P2: Food transportation ..........................................................................................................................16
+L54@P2: Temporary events and mobile vendors...........................................................................................17
+L55@P2: Charity fish auctions.........................................................................................................................17
+L56@P2-3: References and further reading .......................................................................................................17Guideline for seafood retailers
+L57@P3: FA613/2402 4
+L58@P3: Introduction
+L59@P3: The NSW Food Authority (Food Authority) is the state government agency responsible for ensuring food
+L60@P3: in NSW is safe and correctly labelled, and that consumers are able to make informed choices about the
+L61@P3: food they eat.
+L62@P3: Food Authority food safety officers and local government environmental health officers are authorised
+L63@P3: officers under section 37 of the NSW Food Act 2003 and have wide powers, which include the power to
+L64@P3: enter and inspect premises and inspect any records relating to the sale of food.
+L65@P3: While the NSW Food Authority aims to educate industry and assist them with meeting their
+L66@P3: responsibilities, under the Act the Food Authority can, and will, prosecute businesses if they fail to
+L67@P3: comply.
+L68@P3: This Guideline was developed by the Food Authority to assist seafood retailers in meeting the food
+L69@P3: safety and labelling requirements outlined in the Australia New Zealand Food Standards Code (the
+L70@P3: Code), which is law in Australia.
+L71@P3: This document may not list all the requirements your business needs to comply with. Businesses should
+L72@P3: refer to the NSW Food Act 2003, NSW Food Regulation 2015 and the Code for complete requirements.
+L73@P3: NSW legislation can be found at legislation.nsw.gov.au and the Code at foodstandards.gov.au.
+L74@P3: Purpose and scope
+L75@P3: This guideline was designed specifically to assist seafood retailers in understanding the requirements of
+L76@P3: the Code that are relevant to their business. It addresses food safety issues and labelling requirements
+L77@P3: encountered by seafood retailers. It also addresses other issues relevant to seafood retailers, such as
+L78@P3: notification requirements, product substitution, disposal, temporary events and charity fish auctions.
+L79@P3: Certain seafood businesses, such as those involved in the wholesale and transport of seafood, must be
+L80@P3: licensed with the NSW Food Authority under the seafood safety scheme, and must ensure their business
+L81@P3: meets the requirements of the scheme, in addition to those outlined in this document.
+L82@P3: Businesses that perform wet storage operations will be expected to implement controls that achieve the
+L83@P3: requirements of the NSW Shellfish Industry Manual available at foodauthority.nsw.gov.au.
+L84@P3: This guideline does not address occupational health and safety or environmental requirements.
+L85@P3: Use of guidelines
+L86@P3: This guideline should be read in conjunction with other NSW Food Authority guidelines and codes of
+L87@P3-4: practice - refer to the References for the full list of documents.Guideline for seafood retailers
+L88@P4: FA613/2402 5
+L89@P4: Definitions
+L90@P4: Batch
+L91@P4: A quantity of bivalve molluscs which is harvested, depurated or handled from the same lease number
+L92@P4: and with the same harvest date.
+L93@P4: Clean
+L94@P4: Clean to touch and free of extraneous visible matter and objectionable odour.
+L95@P4: Control
+L96@P4: A measure that prevents, eliminates or reduces to an acceptable level, a food safety hazard.
+L97@P4: Depuration
+L98@P4: A process using a controlled environment to reduce the level of certain pathogenic organisms that may
+L99@P4: be present in live shellfish and crustaceans.
+L100@P4: Food business
+L101@P4: A business, enterprise or activity (other than primary food production) that involves:
+L102@P4: a. the handling of food intended for sale; or
+L103@P4: b. the sale of food;
+L104@P4: regardless of whether the business, enterprise or activity concerned is of a commercial, charitable or
+L105@P4: community nature or whether it involves the handling or sale of food on one occasion only.
+L106@P4: Hazard
+L107@P4: A biological, chemical or physical agent in, or condition of, food that has the potential to cause an
+L108@P4: adverse health effect in humans.
+L109@P4: Impervious
+L110@P4: Will not absorb water, moisture or grease.
+L111@P4: Potable water
+L112@P4: Water that is acceptable for human consumption. The Australian Drinking Water Guidelines are used as
+L113@P4: a reference guide for potable water.
+L114@P4: Potentially hazardous food
+L115@P4: Food that has to be kept at certain temperatures to minimise the growth of any pathogenic microorganisms that may be present in the food or to prevent the formation of toxins in the food.
+L116@P4: Ready-to-eat food
+L117@P4: Food that is ordinarily consumed in the same state as that in which it is sold and does not include nuts in
+L118@P4: the shell and whole, raw fruits and vegetables that are intended for hulling, peeling or washing by the
+L119@P4: consumer.
+L120@P4: Sanitise
+L121@P4: To apply heat or chemicals, heat and chemicals, or other processes, to a surface so that the number of
+L122@P4: micro-organisms on the surface is reduced to a level that:
+L123@P4: a. does not compromise the safety of food with which it may
+L124@P4: b. come into contact; and
+L125@P4: c. b. does not permit the transmission of infectious disease.
+L126@P4: Seafood
+L127@P4: All aquatic vertebrates and aquatic invertebrates intended for human consumption, but excludes
+L128@P4: amphibians, mammals, reptiles, and aquatic plants.
+L129@P4: Seafood business (Food Regulation 2015)
+L130@P4: A business involved in the handling of seafood, including (but not limited to) the carrying on of any of the
+L131@P4-5: following activities:Guideline for seafood retailers
+L132@P5: FA613/2402 6
+L133@P5: a. the culture, harvesting and collecting of shellfish and gastropods,
+L134@P5: b. the depuration of shellfish,
+L135@P5: c. aquaculture,
+L136@P5: d. the processing of seafood, including (but not limited to) skinning, gill and gutting, filleting,
+L137@P5: shucking, cooking,
+L138@P5: e. smoking, preserving and canning,
+L139@P5: f. the packaging of seafood,
+L140@P5: g. the storage of seafood,
+L141@P5: h. the transportation of seafood,
+L142@P5: i. the wholesaling of seafood.
+L143@P5: It does not include the retail sale of seafood.
+L144@P5: Shellfish
+L145@P5: All edible species of molluscan bivalves such as oysters, clams, scallops (except when the consumed
+L146@P5: product is only the adductor muscle), pipis and mussels, either shucked or in the shell, fresh or frozen,
+L147@P5: whole or in part or processed.
+L148@P5: Temperature control
+L149@P5: Maintaining seafood at a temperature of:
+L150@P5: a. 5°C or below if this is necessary to minimise the growth of infectious or toxigenic microorganisms
+L151@P5: in the food so that the microbiological safety of the food will not be adversely affected for the time
+L152@P5: the food is at that temperature; or
+L153@P5: b. 60°C or above; or
+L154@P5: c. another temperature – if the food business demonstrates that maintenance of the food at this
+L155@P5: temperature for the period of time for which it will be so maintained, will not adversely affect the
+L156@P5: microbiological safety of the food.
+L157@P5: Wet storage
+L158@P5: The temporary storage of shellfish in tanks containing natural seawater or saline water made from sea
+L159@P5-6: salt and potable water. Wet storage may be used to store, remove sand or to add salt to shellfish.Guideline for seafood retailers
+L160@P6: FA613/2402 7
+L161@P6: Notification of your food business
+L162@P6: Seafood retailers need to notify their local council of their business and food activity details, such as
+L163@P6: trading name, contact details, location(s), owner details and information indicating the nature of the
+L164@P6: business.
+L165@P6: Councils collect this information in different ways. You may need to apply for a service, permit or
+L166@P6: approval, or complete a notification form. A good place to start is your local council’s website. Contact
+L167@P6: them if you are unsure.
+L168@P6: Businesses that wholesale seafood need to be licensed with the Food Authority. For more information on
+L169@P6: licensing, visit foodauthority.nsw.gov.au/industry/seafood
+L170@P6: Design and construction
+L171@P6: Standard 3.2.3 of the Code outlines how your premises must be constructed and maintained. It is an
+L172@P6: outcome-based standard that details requirements for floors, walls, ceilings, fixtures, fittings and
+L173@P6: equipment and hand wash facilities.
+L174@P6: When constructing a new premises you must contact your local council and it is recommended that you
+L175@P6: refer to the document Australian Standard AS 4674-2004 Construction and Fitout of Food Premises.
+L176@P6: This Standard can be purchased from Standards Australia (saiglobal.com/shop).
+L177@P6: To comply with Standard 3.2.3 you will need to demonstrate the following:
+L178@P6: • The layout of the premises should adequately separate food handling areas and equipment from
+L179@P6: possible sources of contamination, for example wash up areas, garbage storage areas, and chemical
+L180@P6: storage.
+L181@P6: • The design and layout of the premises should allow for easy cleaning, that is, minimising cracks and
+L182@P6: crevices and areas in which dirt and debris can accumulate.
+L183@P6: • The construction of the premises should exclude dirt, dust and other contaminants and not harbour
+L184@P6: or permit the entry of pests.
+L185@P6: • Materials used in the construction of food premises should allow for easy cleaning and, if necessary,
+L186@P6: sanitising. Materials used in food premises should be smooth and impervious to moisture, for
+L187@P6: example stainless steel, or tiles. Bare timber items are not permitted as they are not impervious to
+L188@P6: moisture and do not allow for easy cleaning and sanitising. Treated or sealed timber may comply with
+L189@P6: requirements in the Code.
+L190@P6: • Fixtures, fittings and equipment should be able to be easily and effectively cleaned and food contact
+L191@P6: surfaces should be able to be sanitised if necessary.
+L192@P6: • Designated (separate) hand wash facilities need to be located within areas where food handlers work
+L193@P6: and adjacent to any toilets. Hand wash facilities need to be permanent fixtures and connected to a
+L194@P6: supply of warm running potable water and provided with a supply of single-use towels and soap.
+L195@P6: Note: This list is not exhaustive and there are other requirements listed in this Standard, for example
+L196@P6: lighting and ventilation. Refer to SafeFood Australia – A Guide to the Food Safety Standards available at
+L197@P6-7: foodstandards.gov.au/publications/safefoodaustralia. Guideline for seafood retailers
+L198@P7: FA613/2402 8
+L199@P7: Standard 3.2.2A – Food Safety Management Tools
+L200@P7: Seafood retailers that sell or serve ready-to-eat food that requires temperature control must meet
+L201@P7: requirements under Standard 3.2.2A of the Code.
+L202@P7: The Standard classifies businesses into 2 categories, depending on their activities.
+L203@P7: Category one
+L204@P7: Businesses that process unpackaged, potentially hazardous food, into a food that is also potentially
+L205@P7: hazardous and ready-to-eat, are required to:
+L206@P7: • have a qualified Food Safety Supervisor (already a requirement for some businesses),
+L207@P7: • ensure all food handlers have adequate skills and knowledge in food safety and hygiene, and
+L208@P7: • be able to show their food is safe.
+L209@P7: Category two
+L210@P7: Businesses that only slice, weigh, repack, reheat or hot-hold ready-to-eat potentially hazardous food
+L211@P7: they have not made themselves, are required to:
+L212@P7: • have a qualified onsite Food Safety Supervisor
+L213@P7: • ensure all food handlers have adequate skills and knowledge in food safety and hygiene.
+L214@P7: More information on each requirement is outlined below. See also foodauthority.nsw.gov.au/safetytools.
+L215@P7: Food Safety Supervisor
+L216@P7: Seafood retailers will need to appoint a certified Food Safety Supervisor (FSS) in their business if the
+L217@P7: food they prepare and serve is:
+L218@P7: • unpackaged
+L219@P7: • ready-to-eat
+L220@P7: • potentially hazardous (needs temperature control).
+L221@P7: Food Safety Supervisors oversee day-to-day food handling operations and ensure risks are managed.
+L222@P7: They must be certified within the past 5 years and have skills and knowledge in food safety, especially
+L223@P7: around high-risk foods. FSS training is delivered by approved Registered Training Organisations (RTOs).
+L224@P7: See foodauthority.nsw.gov.au/fss for more information.
+L225@P7: Food handler training
+L226@P7: Seafood retailers selling unpackaged, potentially hazardous, ready-to-eat food, must ensure their food
+L227@P7: handlers have skills and knowledge in food safety and food hygiene.
+L228@P7: To meet their obligations, businesses can choose how food handlers are trained, but the training should
+L229@P7: cover:
+L230@P7: • safe handling of food
+L231@P7: • understanding of food contamination
+L232@P7: • cleaning and sanitising of food premises and equipment
+L233@P7-8: • personal hygiene. Guideline for seafood retailers
+L234@P8: FA613/2402 9
+L235@P8: Various online food safety training programs, courses from vocational training providers, past
+L236@P8: experience, or training developed by the business, may be used or recognised.
+L237@P8: Additional training may not be needed if food handlers can already demonstrate adequate skills and
+L238@P8: knowledge in the above areas.
+L239@P8: For more information on the requirements, and to access the Food Authority’s free food handler training
+L240@P8: course, see foodauthority.nsw.gov.au/handlerbasics
+L241@P8: Showing food is safe
+L242@P8: Food businesses that process unpackaged, potentially hazardous food into a food that is ready-to-eat
+L243@P8: and potentially hazardous, must be able to show their food is safe under Standard 3.2.2A of the Code.
+L244@P8: These businesses must be able to demonstrate they are monitoring and managing key food safety risks
+L245@P8: related to receiving, storing, processing, displaying and transporting potentially hazardous food, and
+L246@P8: cleaning and sanitising.
+L247@P8: The requirements can be met by either:
+L248@P8: • demonstrating safe food handling practices, such as having a written instruction sheet or standard
+L249@P8: operating procedure, and/or being able to walk and talk an authorised officer through their food
+L250@P8: handling practices, or
+L251@P8: • keeping records.
+L252@P8: For more information on this requirement, go to Showing food is safe.
+L253@P8: Health and hygiene of food handlers
+L254@P8: Standard 3.2.2 Clauses 13-18 of the Code outline the health and hygiene requirements for food
+L255@P8: handlers. These include food handlers notifying supervisors of any disease or illness they may be
+L256@P8: suffering from as well as hand washing and personal hygiene requirements.
+L257@P8: To comply with this Standard you and your staff will need to demonstrate the following:
+L258@P8: • Staff have the required skills in, and knowledge of food safety and food hygiene relative to their work
+L259@P8: activities. These skills may include good hand washing practices, knowledge of how to safely handle
+L260@P8: food, knowledge of how to avoid the risk of cross contamination and knowledge of temperature
+L261@P8: control.
+L262@P8: • Staff demonstrate good hand washing practices.
+L263@P8: • Staff are not permitted to smoke in food handling areas.
+L264@P8: • Staff with communicable illnesses do not work or are assigned to non-food handling areas and are
+L265@P8: assigned to non-food handling duties.
+L266@P8: • Staff have clean uniforms or clothing.
+L267@P8: • Utensils or other suitable methods are used when handling food to minimise the risk of cross
+L268@P8: contamination.
+L269@P8: • The hand washing facilities have soap, paper towel (or other approved means) and warm running
+L270@P8: potable water.
+L271@P8: • A probe thermometer that can be inserted into the food must be readily available and accurate to +/-
+L272@P8: 1°C. The temperature of potentially hazardous food must be monitored regularly and temperatures
+L273@P8-9: recorded. Guideline for seafood retailers
+L274@P9: FA613/2402 10
+L275@P9: Purchasing and receiving food safely
+L276@P9: Standard 3.2.2 of the Code outlines the measures a business must take to help ensure that food is
+L277@P9: received safely. These requirements include ensuring the food has been protected from likely
+L278@P9: contamination, food is received at the correct temperature and information is available on who has
+L279@P9: supplied or manufactured the food and what the food is.
+L280@P9: The following points will help you demonstrate compliance with this Standard:
+L281@P9: • The temperature of potentially hazardous food, such as seafood, should be checked upon receipt
+L282@P9: and only accepted if the temperature is equal to or below 5°C. This is generally only possible if the
+L283@P9: transport vehicle is refrigerated or sufficient ice has been used.
+L284@P9: • Frozen product deliveries should only be accepted if the product is hard frozen (no thawing).
+L285@P9: • Food should only be accepted if there is no evidence of contamination of the product, for example,
+L286@P9: packaging is undamaged and ready-to-eat seafood has not been in contact with raw seafood.
+L287@P9: • Sufficient information should be supplied with the product to identify who has supplied,
+L288@P9: manufactured, packed or imported it, as well as identifying what the product is.
+L289@P9: • Under the Food Regulation 2015, NSW seafood wholesalers (refer to definition of seafood business
+L290@P9: on page 5-6) are required to be licensed with the Food Authority. You can check that your supplier is
+L291@P9: licensed by requesting a copy of their Food Authority licence. Seafood caught by recreational fishers
+L292@P9: (including fish from charity fish auctions) cannot be sold commercially.
+L293@P9: • You must be able to demonstrate who you purchased food from. You must keep information relating
+L294@P9: to the name and business address of the vendor, manufacturer or packer (or if the food is imported,
+L295@P9: the name and business of the importer) of any food for sale.
+L296@P9: Safe storage of seafood
+L297@P9: Standard 3.2.2 Clause 6 of the Code outlines the requirements for storing food safely. These
+L298@P9: requirements are to protect food from contamination and store the food under temperature control.
+L299@P9: The following practices will help you to demonstrate compliance with this Standard for
+L300@P9: the storage of seafood, other than live seafood:
+L301@P9: • Raw and ready-to-eat food (including oysters) should be stored separately to ensure no contact
+L302@P9: between raw and cooked product. It is best practice to store raw food below ready-to-eat food to
+L303@P9: minimise the risk of cross contamination through dripping blood or juices.
+L304@P9: • Product in storage should be covered to help minimise the risks of cross contamination.
+L305@P9: • Seafood needs to be stored at temperatures equal to or below 5°C. This can be achieved through
+L306@P9: active refrigeration such as a fridge or coolroom and with the assistance of ice.
+L307@P9: • Frozen seafood needs to remain ‘hard frozen’ during storage.
+L308@P9: • Use a clean and sanitised thermometer at least daily to verify that product temperatures are equal to
+L309@P9: or below 5°C.
+L310@P9: • Do not overload coolrooms or fridges, allow for sufficient air flow around the food to cool it down.
+L311@P9: • To assist the cooling process it may be necessary to remove food from foam boxes when stored in
+L312@P9: the coolroom or fridge.
+L313@P9: • Ensure that food and food contact surfaces do not come into contact with the floor of the coolroom,
+L314@P9: for example, store food above the floor on shelving.
+L315@P9-10: • Ensure waste products are stored in clearly labelled bins or tubs and away from edible products. Guideline for seafood retailers
+L316@P10: FA613/2402 11
+L317@P10: Storage of live seafood
+L318@P10: Live seafood must be stored in such a way that the conditions under which it is stored will not adversely
+L319@P10: affect the safety and suitability of the seafood. Potential hazards to live seafood include temperature
+L320@P10: abuse and inappropriate environmental conditions, for example water quality, pH, salinity, humidity,
+L321@P10: overcrowding and packaging conditions.
+L322@P10: Seafood that is stored live includes fish such as Barramundi, Silver Perch, and reef fish; crustaceans
+L323@P10: such as rock lobsters and crabs, and molluscs such as abalone, mussels and oysters.
+L324@P10: Refer to Safe Seafood Australia – A Guide to Standard 4.2.1 Primary Production and Processing
+L325@P10: Standard for Seafood (available at foodstandards.gov.au/publications/safeseafoodaustralia) and Master
+L326@P10: Fish Merchant Association (MFMA) Code of Conduct for the Welfare on Live Seafood (available from
+L327@P10: mfma.com.au/industry-issues/code-for-live-seafood) for specific requirements for storage of live seafood.
+L328@P10: Wet storage of shellfish
+L329@P10: The wet storage of bivalve molluscs is considered a high-risk activity and therefore extra precautions
+L330@P10: should be taken to ensure they are safe to consume. Bivalve molluscs feed by drawing water across the
+L331@P10: gill surface, which traps particles from the water and transports them to the mouth for ingestion. As they
+L332@P10: feed, bacteria, viruses and harmful substances that are in the water will be accumulated in the shellfish.
+L333@P10: See the Food Authority’s Food Safety Guidelines for the wet storage of shellfish at retail (PDF, 53 KB)
+L334@P10: for basic measures to prevent contamination of bivalve molluscs during wet storage.
+L335@P10: Wholesale wet storage of shellfish requires additional measures and more formal requirements. New
+L336@P10: requirements for wholesale wet storage are in development and expected to be published in mid-2024.
+L337@P10: Use of ice in retail seafood premises
+L338@P10: When using ice in retail seafood premises to help maintain temperature control of food, ensure that the
+L339@P10: ice is made from potable water (such as town water).
+L340@P10: If you make your own ice, ensure the ice machine is cleaned out regularly and sanitised. Ensure filters
+L341@P10: are also cleaned regularly.
+L342@P10: If purchasing ice from a supplier ensure that the ice is ‘food grade’.
+L343@P10: As ice comes into contact with the food ensure it is handled hygienically. Ice should not be reused.
+L344@P10: Histamine
+L345@P10: Histamine fish poisoning (or Scromboid poisoning) is a type of food poisoning caused by elevated levels
+L346@P10: of histamine being present in the fish.
+L347@P10: Naturally occurring bacteria in fish produce an enzyme which converts histadine in the fish to histamine.
+L348@P10: Histamine fish poisoning usually occurs in certain species of fish, such as tuna, sardines, mackerel,
+L349@P10: swordfish and marlin.
+L350@P10: Histamine is not destroyed by cooking. Therefore, the best way to keep histamine at a minimum is to
+L351@P10: ensure proper temperature control.
+L352@P10: In some cases, low levels of histamine may already be present in the fish when you receive it. To
+L353@P10: minimise histamine formation, you should always:
+L354@P10: • purchase from reputable suppliers who store the fish on ice or under refrigeration
+L355@P10: • receive product at refrigeration temperatures (equal to or below 5°C)
+L356@P10: • place the fish under refrigeration as soon as it is received
+L357@P10: • keep the fish at refrigerated temperatures when not being used
+L358@P10-11: • if the fish is frozen, thaw the fish under refrigeration.Guideline for seafood retailers
+L359@P11: FA613/2402 12
+L360@P11: When displaying fish for sale, always ensure there is enough ice on the product and refrigeration units
+L361@P11: are set at a temperature equal to or below 5°C.
+L362@P11: For more information on histamine refer to the Controlling Histamine Food Poisoning’ fact sheet (PDF,
+L363@P11: 203 KB).
+L364@P11: Seafood processing
+L365@P11: Standard 3.2.2 Clause 7 of the Code outlines the requirements for handling and processing food safely.
+L366@P11: Processing includes steps such as thawing, filleting, gilling and gutting, cooking and marinading.
+L367@P11: The following practices will help you to demonstrate compliance with this Standard:
+L368@P11: • It is best practice to process ready-to-eat product in a designated area separate from where raw
+L369@P11: product is handled to reduce the risk of cross contamination. Designated knives, chopping boards
+L370@P11: and tongs are advisable for the handling of ready-to-eat product.
+L371@P11: • Ensure all equipment such as benches, knives, chopping boards and display trays, are cleaned and
+L372@P11: sanitised prior to use (particularly if processing ready-to-eat product).
+L373@P11: • If thawing frozen product, ensure that the time the product is out of refrigeration is minimised. It is
+L374@P11: best practice to thaw frozen ready-to-eat products, for example smoked salmon and prawns, in the
+L375@P11: coolroom (see the Safe Food Australia guide for further information on safe methods of thawing).
+L376@P11: • Minimise the time seafood is kept out of refrigeration while being processed. Only bring out of the
+L377@P11: coolroom enough product that can be processed within 2 hours.
+L378@P11: • Ensure chemicals, garbage bins and other contaminants are kept away from seafood being
+L379@P11: processed.
+L380@P11: • When cooking seafood, ensure the product is thoroughly cooked. The flesh should be white and set.
+L381@P11: A clean and sanitised thermometer can be used to confirm that the temperature in the centre of the
+L382@P11: product has reached 65°C.
+L383@P11: • When cooling cooked ready-to-eat product the food needs to be cooled quickly. The food must be
+L384@P11: cooled from its cooking temperature to below 21°C within 2 hrs and from 21°C to equal to or below
+L385@P11: 5°C within a further 4 hours.
+L386@P11: • See the additional section below for safe processing of oysters.
+L387@P11: Chapter 1.3 in the Code, Substances added to food, sets out what substances can be added to food and
+L388@P11: how much can be added.
+L389@P11: The receival, storage and use of these substances, as well as other ingredients, must also comply with
+L390@P11: the requirements of the Code. It is important to note that some ingredients may not be considered
+L391@P11: ‘potentially hazardous’ when first received, for example unopened marinade, but once opened may be
+L392@P11: deemed ‘potentially hazardous’ and therefore must be stored under temperature control.
+L393@P11: Displaying seafood safely
+L394@P11: Standard 3.2.2 Clause 8 of the Code outlines the minimum requirements for the displaying of seafood.
+L395@P11: This clause requires you to take all practicable measures to protect the food from likely contamination
+L396@P11: and to display the food under temperature control.
+L397@P11: The following practices will help you demonstrate compliance with this clause:
+L398@P11: • Seafood must be displayed under temperature control. This means that seafood on display must be
+L399@P11: maintained equal to or below 5°C using refrigeration or sufficient ice. This also means that frozen
+L400@P11-12: product is displayed ‘hard frozen’ with no evidence of thawing. Guideline for seafood retailers
+L401@P12: FA613/2402 13
+L402@P12: • Do not overload display cases.
+

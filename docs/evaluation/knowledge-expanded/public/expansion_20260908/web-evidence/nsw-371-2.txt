@@ -1,0 +1,426 @@
+Guidelines for mobile food vending vehicles (https://www.foodauthority.nsw.gov.au/media/1416)
+citeturn91view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 22; Source: open({"ref_id":"https://www.foodauthority.nsw.gov.au/media/1416","lineno":816}); Total lines: 817
+L387@P9: bench. It should not be obstructed by other equipment and appropriately fixed to the wall. Ideally an
+L395@P10: • Standard 3.2.2A – Food Safety Management Tools, and
+L396@P10: • Standard 3.2.3 – Food Premises and Equipment of the Food Standards Code.
+L397@P10: These are on the Food Standards Australia New Zealand website at www.foodstandards.gov.au.
+L398@P10: Some of these requirements also apply to pre-packaged food and low-risk food. Factsheets and user
+L399@P10: guides (including for charitable and community not-for-profit organisations) are available on the Food
+L400@P10: Authority website at foodauthority.nsw.gov.au/resource-centre.
+L401@P10: When engaged in any food handling operation, a food handler must:
+L402@P10: • not contaminate food or food contact surfaces with their body or clothing,
+L403@P10: • prevent unnecessary contact with ready-to-eat food,
+L404@P10: • wear only clean outer clothing,
+L405@P10: • cover all dressing and bandages on exposed body parts with a waterproof dressing,
+L406@P10: • not eat over uncovered food or food contact surfaces,
+L407@P10: • not sneeze, blow or cough over uncovered food or surfaces likely to come into contact with food,
+L408@P10: • not spit, smoke or use tobacco while working in the food stall, and
+L409@P10: • not urinate or defecate except in a toilet.
+L410@P10: Food suppliers
+L411@P10: Obtain fresh produce and products from reputable suppliers, as generally they operate under strict
+L412@P10: quality guidelines. Keep copies of invoices for trace back if needed in the future.
+L413@P10: Preparing food at home
+L414@P10: Notification of food business details, construction, facilities, labelling and food handling requirements of
+L415@P10: the Food Act 2003 apply equally to home situations as to commercial operations. This also applies to
+L416@P10: pre-packaged and low-risk produce and foods. Approval to use homes for food handling may also be
+L417@P10: required by local councils. The local council should be contacted in these situations. The factsheet Home
+L418@P10: based and mixed food businesses is on the Food Authority’s website.
+L419@P10: Food storage
+L420@P10: • Food businesses must ensure all foods are stored so they are protected from likely contamination
+L421@P10: and that the environmental conditions will not adversely affect the safety or suitability of the food.
+L422@P10: • There must be separately located storage facilities for items such as chemicals, clothing and
+L423@P10: personal belongings that may contaminate food or food contact surfaces.
+L424@P10: • Food should be stored at least 150 mm above the floor or in suitable containers and, where possible,
+L425@P10: kept out of direct sunlight.
+L426@P10: • Ensure that potentially hazardous foods are received under temperature control and within their useby date.
+L427@P10: • Potentially hazardous foods such as poultry, meat, dairy products, seafood and egg-based products
+L428@P10: must be stored under temperature control. If intended to be stored frozen, the food must remain
+L429@P10-11: frozen during storage. Guidelines for mobile food vending vehicles
+L430@P11: FA526/2312 12
+L431@P11: • Refrigeration facilities should be large enough to hold potentially hazardous foods under temperature
+L432@P11: control at all times. This may require the use of portable coolrooms. Do not overstock refrigerators or
+L433@P11: portable coolrooms as the air will not be able to circulate freely around the foods. Perishable cold
+L434@P11: foods should be kept cold.
+L435@P11: Potentially hazardous foods and temperature control
+L436@P11: One of the most common causes of foodborne illness is the storage and display of potentially hazardous
+L437@P11: foods at inadequate temperatures for extended periods. This can lead to the rapid and sustained growth
+L438@P11: of food poisoning bacteria.
+L439@P11: Examples of potentially hazardous foods include:
+L440@P11: • cooked and ready-to-eat meat
+L441@P11: • dairy products
+L442@P11: • seafood
+L443@P11: • prepared salads, raw salad vegetables
+L444@P11: • cooked rice and pasta
+L445@P11: • processed soya bean products
+L446@P11: • other processed foods containing eggs, beans, nuts or other protein-rich foods that contain any of the
+L447@P11: above foods such as sandwiches and quiches.
+L448@P11: A food business must, when storing and displaying potentially hazardous food, store it under
+L449@P11: temperature control. If the food is intended to be stored frozen ensure the food remains frozen during
+L450@P11: storage and display. Temperature control means maintaining cold food at a temperature of 5°C or below,
+L451@P11: or hot food at 60°C or above. Canned and bottled foods, dried or pickled products and some other
+L452@P11: processed foods such as dried pasta, pasteurised juices and dried powder products, are not considered
+L453@P11: to be potentially hazardous unless opened or reconstituted.
+L454@P11: All food businesses that handle potentially hazardous foods are required to have a readily accessible,
+L455@P11: accurate, probe-type thermometer (+/- 1°C accuracy). Ensure the thermometer probe is cleaned and
+L456@P11: sanitised before it is used. It is good practice to monitor the temperature of hot or cold foods under
+L457@P11: operating conditions to ensure adequate temperature control is being maintained.
+L458@P11: Additional information on potentially hazardous food and its management can be found in the Guidance
+L459@P11: on the 4-hour/2-hour rule document at www.foodauthority.nsw.gov.au.
+L460@P11: Cross contamination
+L461@P11: Adequate measures must be taken to prevent cross contamination from raw foods to cooked foods. This
+L462@P11: includes:
+L463@P11: • ensuring there are separate utensils for cooked and raw meats, poultry and seafood,
+L464@P11: • covering all food,
+L465@P11: • keeping cooked meat and salads separate from raw meat, raw poultry, raw seafood and unwashed
+L466@P11: raw vegetables, and
+L467@P11: • washing hands after handling raw meats, raw poultry, raw seafood and raw vegetables.
+L468@P11: Food display
+L469@P11: When displaying food, take all practicable measures to protect the food from likely contamination by
+L470@P11: customers, dust, fumes or pests. This may mean using plastic food wraps, sealed containers, sneeze
+L471@P11-12: barriers, food covers or other effective measures.Guidelines for mobile food vending vehicles
+L472@P12: FA526/2312 13
+L473@P12: Crockery, wrappings and packaging
+L474@P12: • Single-use, disposable eating and drinking utensils may be used but only when these items are
+L475@P12: made of materials permitted by the Plastic Reduction Act 2021. More information is available at
+L476@P12: epa.nsw.gov.au/your-environment/plastics/bans-guidance
+L477@P12: • Machine glasswashers or dishwashers are recommended if reusable dinnerware or tableware is
+L478@P12: used.
+L479@P12: • Crockery or plastic wares that are chipped, cracked, broken or in a state of disrepair must not be
+L480@P12: used in connection with food.
+L481@P12: • Packaging material must be suitable for food packaging and unlikely to cause food contamination.
+L482@P12: Only clean unprinted paper, food wraps or packaging must be used for wrapping or storing
+L483@P12: foodstuffs.
+L484@P12: Single-use items
+L485@P12: The Plastics Reduction Act 2021 bans the supply of single-use plastic straws, cutlery, stirrers, bowls,
+L486@P12: plates and other items.
+L487@P12: Permitted single-use straws, eating utensils and other items that come into contact with food or the
+L488@P12: mouth of a person, must be protected from contamination until use and not re-used.
+L489@P12: Food Safety Supervisor
+L490@P12: A food business needs to appoint a Food Safety Supervisor (FSS) if it is handling and selling food that is:
+L491@P12: • ready-to-eat
+L492@P12: • potentially hazardous (requires temperature control)
+L493@P12: • not sold and served in the supplier’s original package.
+L494@P12: At least 1 FSS needs to be appointed for each food vending vehicle. A copy of the FSS certificate must
+L495@P12: be kept in the vehicle. You do not need to notify the local council of your FSS.
+L496@P12: Mobile food vending vehicles garaged in another state are required to have a NSW FSS certificate if
+L497@P12: operating in NSW. NSW FSS certificates can be obtained from the Food Authority for a small fee upon
+L498@P12: submission of appropriate training documents.
+L499@P12: The FSS should work onsite to oversee food handling but they do not have to be there all the time.
+L500@P12: Charitable and community not-for-profit organisations do not need to appoint a Food Safety Supervisor if
+L501@P12: they are handling or selling food for the purpose of raising funds solely for community or charitable
+L502@P12: causes.
+L503@P12: For more information on Food Safety Supervisor requirements go to foodauthority.nsw.gov.au/fss
+L504@P12: Food handler training requirements
+L505@P12: All food businesses must ensure that their food handlers have skills and knowledge in food safety and
+L506@P12: food hygiene matters appropriate to the type of foods they are preparing/handling and their work
+L507@P12: activities. To meet their obligations, businesses can choose how food handlers are trained, but it should
+L508@P12: cover:
+L509@P12: • safe handling of food
+L510@P12: • understanding of food contamination
+L511@P12: • cleaning and sanitising of food premises and equipment
+L512@P12-13: • personal hygiene.Guidelines for mobile food vending vehicles
+L513@P13: FA526/2312 14
+L514@P13: Various online food safety training programs, courses from vocational training providers, past
+L515@P13: experience, or training developed by the business, may be used or recognised. Additional training is not
+L516@P13: needed if food handlers can already demonstrate adequate skills and knowledge for their duties.
+L517@P13: For more information on food handler training requirements, and to access the Food Authority’s free food
+L518@P13: handler training course, see foodauthority.nsw.gov.au/handlerbasics
+L519@P13: Showing that your food is safe
+L520@P13: Food businesses that process unpackaged, potentially hazardous food into a food that is ready-to-eat
+L521@P13: and potentially hazardous, must be able to show their food is safe under Standard 3.2.2A of the Code.
+L522@P13: These businesses must be able to demonstrate they are monitoring and managing key food safety risks
+L523@P13: related to receiving, storing, processing, displaying and transporting potentially hazardous food, and
+L524@P13: cleaning and sanitising.
+L525@P13: The requirement can be met by either:
+L526@P13: • demonstrating safe food handling practices, such as having a written instruction sheet or standard
+L527@P13: operating procedure, and/or being able to walk and talk an authorised officer through their food
+L528@P13: handling practices, or
+L529@P13: • keeping records.
+L530@P13: For more information on this requirement, go to Showing food is safe.
+L531@P13: Staff illness
+L532@P13: A person who is unwell or suffering from a contagious illness must not handle food for sale. Symptoms
+L533@P13: may include cold or flu symptoms, diarrhoea, vomiting, sore throat with fever, fever or jaundice and
+L534@P13: infectious skin conditions.
+L535@P13: A food handler must notify their supervisor if they know or suspect they may have contaminated food.
+L536@P13: Hand washing
+L537@P13: A food handler must wash his or her hands using soap and warm water, then dry them with single-use
+L538@P13: towels:
+L539@P13: • before commencing or re-commencing handling food,
+L540@P13: • immediately before handling ready-to-eat food after handling raw food,
+L541@P13: • immediately after using the toilet,
+L542@P13: • immediately after smoking, coughing, sneezing, using a handkerchief or tissue, eating, drinking or
+L543@P13: touching his or her hair, scalp or a body opening, and before using disposable gloves for handling
+L544@P13: food. If wearing gloves, you should change them as often as you are required to wash your hands.
+L545@P13: Money handling/touching customers’ hands when serving food
+L546@P13: While the likelihood of contamination from customers’ hands when exchanging money is low,
+L547@P13: consideration should be given to minimising the risk. Examples include using a disposable glove, or
+L548@P13: where sufficient staff is available, nominating one to handle money.
+L549@P13: Cleaning and sanitising
+L550@P13: • The vehicle must be maintained to a standard of cleanliness where there is no accumulation of
+L551@P13: garbage or recycled matter (except in appropriate containers), food waste, dirt, grease or other
+L552@P13: visible matter.
+L553@P13: • All fixtures, fittings and equipment must be maintained and cleaned so there is no accumulation of
+L554@P13: food waste, dirt, grease or other visible matter.
+L555@P13-14: • Eating and drinking utensils must be in a clean and sanitary condition immediately before each use.Guidelines for mobile food vending vehicles
+L556@P14: FA526/2312 15
+L557@P14: • Benchtops, surfaces of equipment in contact with food, and storage appliances, must be kept in a
+L558@P14: clean and sanitary condition to reduce the likelihood of contaminating food. ‘Sanitary’ means cleaning
+L559@P14: first, followed by heat and/or chemical treatment at the right concentration, or some other process to
+L560@P14: reduce the number of bacteria to a level unlikely to compromise the safety of the food. ‘Food-grade’
+L561@P14: chlorine-based sanitisers can be used for this purpose. Sanitisers must be used in accordance with
+L562@P14: instructions.
+L563@P14: • The containers used for chemical storage should be appropriately labelled.
+L564@P14: • Chemicals must not be stored near the food or any packaging likely to come in contact with food to
+L565@P14: avoid the risk of contamination.
+L566@P14: • It is recommended that a documented cleaning schedule is devised and implemented.
+L567@P14: Labelling and declaring allergens
+L568@P14: All food businesses are responsible for managing allergen risk and must follow rules set out in the
+L569@P14: Australia New Zealand Food Standards Code.
+L570@P14: Food businesses must declare allergens on the label if one is required. For more information on food
+L571@P14: labelling, visit foodauthority.nsw.gov.au/food-labelling
+L572@P14: Unpackaged food is exempt from most labelling requirements however, food businesses must either
+L573@P14: display allergen information next to the food or provide allergen information if requested by a customer.
+L574@P14: The following allergens must be declared:
+L575@P14: • wheat
+L576@P14: • gluten*
+L577@P14: • fish
+L578@P14: • crustacean
+L579@P14: • mollusc
+L580@P14: • egg
+L581@P14: • milk
+L582@P14: • soy***
+L583@P14: • sesame
+L584@P14: • peanut
+L585@P14: • almond
+L586@P14: • Brazil nut
+L587@P14: • cashew
+L588@P14: • hazelnut
+L589@P14: • pistachio
+L590@P14: • pine nut
+L591@P14: • walnut
+L592@P14: • macadamia
+L593@P14: • pecan
+L594@P14: • sulphites**
+L595@P14: • lupin.
+L596@P14: The words listed must be used in the allergen list – for example, whey must be listed as ‘milk’, not
+L597@P14: ‘whey’.
+L598@P14: * Gluten need only be declared if it is present in wheat, barley, oats or rye ingredients. Barley, oats
+L599@P14: and rye do not need to be listed as allergens but must be listed as ingredients if present.
+L600@P14: ** Sulphites must be declared when added in amounts equal to or more than 10 milligrams per
+L601@P14: kilogram of food.
+L602@P14: *** Soy, soya, soybean must be described as ‘soy’ in the allergen list.
+L603@P14: The presence of certain other foods, such as bee pollen, propolis, aspartame, guarana and phytosterols,
+L604@P14: trigger requirements for specific advisory statements.
+L605@P14: Food sold to raise money solely for charitable or community causes, and not for personal financial gain,
+L606@P14: are exempt from labelling requirements, except for the need to declare the presence of royal jelly.
+L607@P14: Allergen information and the directions for storage and use, must be provided on request.
+L608@P14-15: For more information, visit the Food Authority’s Food allergen rules webpage.Guidelines for mobile food vending vehicles
+L609@P15: FA526/2312 16
+L610@P15: Checklist for mobile food vendor vehicles
+L611@P15: This checklist is designed as a summary of the key issues for operators of mobile food vending vehicles.
+L612@P15: These requirements are based on the Food Safety Standards.
+L613@P15: Construction and operation 
+L614@P15: The vehicle’s design and layout is appropriate for the intended use
+L615@P15: Driving compartment is separate to food area (recommended)
+L616@P15: Floors are impervious and easy to clean
+L617@P15: Construction and finish of wall and ceiling surfaces are satisfactory
+L618@P15: Cupboards and counter surfaces are satisfactory
+L619@P15: Design of cupboards and counters facilitates easy cleaning underneath and behind
+L620@P15: Openings are protected to minimise entry of dust, pests and other contaminants
+L621@P15: Adequate supply of potable water is available in the vehicle.
+L622@P15: Note: ‘adequate’ means enough potable water to ensure effective hand and utensil washing
+L623@P15: The vehicle has a dedicated hand wash basin that is accessible at all times with liquid soap,
+L624@P15: single-use towels and warm water available
+L625@P15: Ventilation is sufficient to remove fumes, smoke, steam and vapours
+L626@P15: Artificial lighting is adequate
+L627@P15: Waste disposal systems are satisfactory
+L628@P15: The vehicle and equipment are in a good state of repair and working order
+L629@P15: General food safety requirements 
+L630@P15: Food is obtained from reputable suppliers
+L631@P15: Food is protected from contamination during transportation
+L632@P15: Food is packaged in a manner and using materials that protects it from contamination
+L633@P15: Potentially hazardous foods are only received at the correct temperature and within date
+L634@P15: coding
+L635@P15: Raw food is stored separately from prepared or ready-to-eat food
+L636@P15-16: The refrigerator or microwave oven is used when thawing frozen food Guidelines for mobile food vending vehicles
+L637@P16: FA526/2312 17
+L638@P16: Cold, ready-to-eat, potentially hazardous food is stored at or below 5°C
+L639@P16: Hot, ready-to-eat, potentially hazardous food is stored at or above 60°C
+L640@P16: Frozen food to be kept frozen is stored frozen
+L641@P16: Raw food is handled so as not to contaminate ready-to-eat food. Separate utensils are used
+L642@P16: during food processing (the utensils used for preparing raw meat are not used for preparing
+L643@P16: cooked meat or vegetables)
+L644@P16: When cooling cooked, potentially hazardous food, it is cooled:
+L645@P16: • from 60°C to 21°C within 2 hours, and
+L646@P16: from 21°C to 5°C within a further 4 hours.
+L647@P16: When heating potentially hazardous food, it is rapidly heated to 60°C or higher
+L648@P16: Potentially hazardous food is kept under temperature control
+L649@P16: There is a thermometer available where potentially hazardous food is handled (probe type
+L650@P16: accurate to +/- 1°C), and regular temperature checks are made
+L651@P16: Evidence for safely receiving, storing, processing, displaying and transporting potentially
+L652@P16: hazardous food, and for cleaning and sanitising is being maintained and is available upon
+L653@P16: request
+L654@P16: Chemicals are kept away from food handling areas
+L655@P16: Food handling areas are kept free from dirt, dust, flies, pests and other contaminants
+L656@P16: The hand wash facility is only used for hand washing
+L657@P16: Administrative items and personal items are stored away from food
+L658@P16: Food handler hygiene 
+L659@P16: A Food Safety Supervisor has been appointed for the business and a copy of the certificate is
+L660@P16: onsite
+L661@P16: Staff have appropriate food safety skills and knowledge
+L662@P16: Food handlers have completed a food safety training course OR can demonstrate adequate
+L663@P16: skills and knowledge for their duties
+L664@P16-17: Food handlers have been informed of their health and hygiene obligations Guidelines for mobile food vending vehicles
+L665@P17: FA526/2312 18
+L666@P17: Staff who are suffering from foodborne illness are to be excluded from food handling until a
+L667@P17: medical clearance has been obtained
+L668@P17: Staff wear clean clothing and have hygienic habits
+L669@P17: Food handlers wash their hands adequately and at appropriate times
+L670@P17: Food handlers are not contaminating food
+L671@P17: Cleaning and maintenance 
+L672@P17: Floor, walls, ceiling, fixtures, fittings and equipment are maintained in a clean condition
+L673@P17: Re-usable eating and drinking utensils are cleaned and sanitised before each use
+L674@P17: Food contact surfaces of benches and equipment are sanitised before use and as required
+L675@P17: The vehicle and equipment are kept in a good state of repair and working order
+L676@P17: Containers for waste have close fitting lids and are removed at least daily or as required
+L677@P17: The vehicle is free from animals and pests. It is recommended that a regular pest control
+L678@P17: program be used
+L679@P17: Appropriate SafeWork NSW requirements are met (including fire safety, electrical and gas)
+L680@P17: Other necessary information 
+L681@P17: Have you investigated restrictions on street or roadside trading?
+L682@P17: Have you enquired about notification, inspection fees and council approval?
+L683@P17-18: Have you enquired about the appropriate public indemnity insurance? Guidelines for mobile food vending vehicles
+L684@P18: FA526/2312 19
+L685@P18: Contact information
+L686@P18: Please contact your local council in the first instance, or the NSW Food Authority for further information.
+L687@P18: NSW Councils
+L688@P18: Website: olg.nsw.gov.au/public/find-my-council/
+L689@P18: NSW Food Authority
+L690@P18: Phone: 1300 552 406
+L691@P18: Website: www.foodauthority.nsw.gov.au
+L692@P18: Email: food.contact@dpi.nsw.gov.au
+L693@P18: Food Standards Australia New Zealand
+L694@P18: Website: foodstandards.gov.au/
+L695@P18: Food safety fact sheets: foodstandards.gov.au/science-data
+L696@P18: SafeWork NSW
+L697@P18: Tel: 13 10 50
+L698@P18: Email: contact@safework.nsw.gov.au
+L699@P18: Website: safework.nsw.gov.au
+L700@P18: Fire and Rescue NSW
+L701@P18: Tel: 02 9265 2999
+L702@P18: Fax: 02 9265 2988
+L703@P18: Business hours: 9.00am to 5.00pm
+L704@P18-19: Website: fire.nsw.gov.au/Guidelines for mobile food vending vehicles
+L705@P19: FA526/2312 20
+L706@P19: Key definitions
+L707@P19: Adequate supply of water
+L708@P19: Potable water available at a volume, pressure and temperature adequate for the purposes for which the
+L709@P19: water is used.
+L710@P19: Australian/New Zealand Standards
+L711@P19: Australian Standard/New Zealand Standards are documents which are referenced by legislation to
+L712@P19: provide more detail on requirements and technical procedures. These standards can be purchased from
+L713@P19: Standards Australia on 1300 654 646 or by visiting its website at www.standards.com.au.
+L714@P19: Coving
+L715@P19: A curved junction between the floor and the wall.
+L716@P19: Equipment
+L717@P19: A machine, instrument, apparatus, utensil or appliance ‒ other than a single use item ‒ used or intended
+L718@P19: to be used in connection with food handling; includes any equipment used or intended to be used to
+L719@P19: clean the food premises or equipment.
+L720@P19: Food business
+L721@P19: A business, enterprise or activity (other than primary food production) that involves:
+L722@P19: • handling of food intended for sale, or
+L723@P19: • sale of food regardless of whether the business enterprise or activity concerned is of a commercial,
+L724@P19: charitable or community nature or whether it involves the handling or sale of food on one occasion
+L725@P19: only.
+L726@P19: Food handler
+L727@P19: Any person who directly engages in the handling of food, or who handles surfaces likely to come into
+L728@P19: contact with food for a food business.
+L729@P19: Food premises/Vending vehicle
+L730@P19: Any premises including land vehicles, parts of structures, tents stalls and other temporary structures,
+L731@P19: boats, pontoons, including premises used principally as a private dwelling; but not food vending
+L732@P19: machines or vehicles used only to transport food.
+L733@P19: Food Safety Standards
+L734@P19: These are part of the Food Standards Code (under the NSW Food Act 2003 and Food Regulation 2015).
+L735@P19: They define requirements for food premises (which include vehicles), food handling practices, structural
+L736@P19: requirements and labelling.
+L737@P19: Food Safety Supervisor
+L738@P19: A Food Safety Supervisor is a person who:
+L739@P19: • is formally trained to recognise and prevent risks associated with food handling in food businesses
+L740@P19: • holds a current NSW Food Authority FSS certificate (no more than 5 years old) as per the NSW Food
+L741@P19: Act Section 106B(1a)
+L742@P19-20: • is not an FSS for any other food premises or mobile catering businessGuidelines for mobile food vending vehicles
+L743@P20: FA526/2312 21
+L744@P20: • trains and supervises other people in the business about safe food handling practices, and
+L745@P20: • has the authority and ability to manage and give direction on the safe handling of food.
+L746@P20: Handling of food
+L747@P20: Includes the making, manufacturing, producing, collecting, extracting, processing, storing, transporting,
+L748@P20: delivering, preparing, treating, preserving, cooking, thawing, serving or displaying of food.
+L749@P20: Home council
+L750@P20: The home council is the one in which the mobile food vending vehicle is ordinarily garaged. The vehicle
+L751@P20: will probably first be inspected by the home council, provided it trades in that local government area.
+L752@P20: Home jurisdiction rule
+L753@P20: If mobile food vending vehicles trades across council boundaries, including its home council, most
+L754@P20: councils will use a home jurisdiction rule. This means that the home council will be the one to normally
+L755@P20: carry out the first food inspection on a mobile food vending vehicle, and be the one to levy the annual
+L756@P20: administration charge.
+L757@P20: Subsequent council areas where the vehicle operates are recommended by the Food Authority not to
+L758@P20: levy the annual administration charge, and only inspect under conditions described under section 2.5 of
+L759@P20: this document.
+L760@P20: Potable water
+L761@P20: Water suitable (safe) for drinking
+L762@P20: Potentially hazardous food
+L763@P20: Food that has to be kept at certain temperatures to minimise the growth of any pathogenic
+L764@P20: microorganisms that may be present in the food and/or to prevent the formation of toxins. This may
+L765@P20: include meat, seafood, dairy products, orange juice and cooked rice.
+L766@P20: Sanitising
+L767@P20: A process that significantly reduces the number of microorganisms present on a surface. This is usually
+L768@P20: achieved by the use of both heat and water, or by chemicals.
+L769@P20: Sell means:
+L770@P20: • barter, offer or attempt to sell, or
+L771@P20: • receive for sale, or
+L772@P20: • have in possession, display, send, forward or deliver for sale, or
+L773@P20: • dispose of for valuable consideration, or
+L774@P20: • dispose to an agent for sale on consignment, or
+L775@P20: • provide under contract of service, or
+L776@P20: • supply food as a meal or part of a meal to an employee for consumption at work, or
+L777@P20: • dispose of by way of raffle, lottery or other game of chance, or
+L778@P20: • offer as a prize or reward, or
+L779@P20: • give away for the purpose of advertisement or in furtherance of trade, or
+L780@P20: • supply under a contract with accommodation, service or entertainment, or
+L781@P20-21: • give the food away from a food business to a person, or Guidelines for mobile food vending vehicles
+L782@P21: FA526/2312 22
+L783@P21: • sell for the purpose of resale.
+L784@P21: Sewage
+L785@P21: Discharge from toilets, urinals, basins, showers, sinks and dishwashers through a sewer or other means.
+L786@P21: Sinks
+L787@P21: Includes sinks for food preparation, cleaner’s sink, utensil and equipment washing and personal hand
+L788@P21: washing basins.
+L789@P21: Temperature control
+L790@P21: Maintaining food at a temperature of:
+L791@P21: • 5 °C or below if this is necessary to minimise the growth of infectious or toxigenic microorganisms in
+L792@P21: the food so that the microbiological safety of the food will not be adversely affected for the time the
+L793@P21: food is at that temperature, or
+L794@P21: • 60°C or above, or
+L795@P21: • another temperature ‒ if the business demonstrates that maintenance of the food at this temperature
+L796@P21: for the period of time for which it is so maintained will not adversely affect the microbiological safety
+L797@P21: of the food.
+L798@P21: Unsafe and unsuitable food
+L799@P21: Food is considered unsafe if it is likely to cause physical harm to a person who might later consume it,
+L800@P21: assuming they treated the food correctly after purchase.
+L801@P21: Food is considered unsuitable if it is damaged, deteriorated or perished to an extent that affects its
+L802@P21: intended use, for example out of date, poor maintenance or poor storage of chemicals or contains a
+L803@P21: substance that is foreign to the nature of the food, that is, foreign matter or chemicals which may have
+L804@P21: fallen into the food.
+L805@P21: Warm water
+L806@P21: Not hotter than 50°C in order to comply with Australian/New Zealand Standard 3500.4.2021 (Plumbing
+L807@P21: and drainage – heated water services)
+L808@P21: © State of New South Wales through Regional NSW 2023. You may copy, distribute, display, download and otherwise freely deal with this
+L809@P21: publication for any purpose, provided that you attribute the Regional NSW as the owner. However, you must obtain permission if you wish to
+L810@P21: charge others for access to the publication (other than at cost); include the publication in advertising or a product for sale; modify the publication;
+L811@P21: or republish the publication on a website. You may freely link to the publication on a departmental website.
+L812@P21: Disclaimer: The information contained in this publication is based on knowledge and understanding at the time of writing (December, 2023) and
+L813@P21: may not be accurate, current or complete. The State of New South Wales (including the Regional NSW), the author and the publisher take no
+L814@P21: responsibility, and will accept no liability, for the accuracy, currency, reliability or correctness of any information included in the document
+L815@P21: (including material provided by third parties). Readers should make their own inquiries and rely on their own advice when making decisions
+L816@P21: related to material contained in this publication.
+

@@ -1,0 +1,282 @@
+ (https://www.foodauthority.nsw.gov.au/media/411)
+citeturn103view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 11; Source: click({"ref_id":"turn59view0","id":502}); Total lines: 279
+L0@P0: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth FEBRUARY 2010
+L1@P0: SHELF-LIFE
+L2@P0: TESTING
+L3@P0-1: ‘USE-BY’ DATES FOR FOOD SAFETY 2
+L4@P1: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L5@P1: Contents
+L6@P1: Executive summary ....................................................................................................................................................3
+L7@P1: When is date marking required?...............................................................................................................................4
+L8@P1: How is shelf life determined?....................................................................................................................................6
+L9@P1: Product development ................................................................................................................................................6
+L10@P1: Product stability and food safety ...............................................................................................................................6
+L11@P1: Challenge tests..........................................................................................................................................................8
+L12@P1: Expiry testing program ..............................................................................................................................................9
+L13@P1: Use by estimation – an auditable program ...............................................................................................................9
+L14@P1: Determination of best before dates...........................................................................................................................9
+L15@P1-2: References.................................................................................................................................................................103
+L16@P2: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L17@P2: Executive summary
+L18@P2: Date marking of foods is regulated by Standard 1.2.5 – Date Marking of Food of the Australia New Zealand Food
+L19@P2: Standards Code.
+L20@P2: If:
+L21@P2: • nutrient levels decline to unacceptable levels in a food intended by the manufacturer to form the sole source of
+L22@P2: nutrition for a person’s diet for a specified period or
+L23@P2: • the food can become microbiologically unsafe before the food noticeably spoils
+L24@P2: then a use by date is applicable.
+L25@P2: Where deterioration of a food affects consumer acceptance without impacting health and safety a best before date
+L26@P2: is applicable. Foods with a shelf life of at least two years are not required to display a best before date.
+L27@P2: The length of the use by time for foods can be determined by using storage trials to estimate the physical, chemical
+L28@P2: and microbiological stability of the food. Interpretation of results requires technical experience and competence.
+L29@P2: Some products will require additional studies such as computer models of microbial growth or challenge studies.
+L30@P2: It is the manufacturer’s responsibility to determine shelf life. Reliable use by or best before times cannot be
+L31@P2-3: determined by guesswork or by copying the shelf life of a competitor’s product. 4
+L32@P3: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L33@P3: When is date marking required?
+L34@P3: Date marking of foods is regulated by Standard 1.2.5. A fact sheet (FSANZ 2003) and a user guide (ANZFA 2001)
+L35@P3: to this standard are available on the Food Standards Australia New Zealand (FSANZ) website. Standard 1.2.5, the
+L36@P3: guidance materials and other labelling standards should be consulted to understand the specific legal requirements
+L37@P3: relating to date marking.
+L38@P3: If food must be eaten within a certain period for health or safety reasons a use by date is required:
+L39@P3: • The ‘health reason’ is applicable to food that is intended by the manufacturer to form the sole source of nutrition
+L40@P3: for a person’s diet for a specified period. This will apply where storage affects the critical nutrient profile of
+L41@P3: products such as infant formula or special dietary foods manufactured to provide the sole source of nutrition to
+L42@P3: persons who are ill or are unable to eat normal foods.
+L43@P3: • The ‘safety reason’ is applicable to food that can become microbiologically unsafe before the food noticeably
+L44@P3: spoils. This will not apply to shelf stable, frozen or most raw foods but may apply to certain chilled ready-to-eat
+L45@P3: foods, for example chilled meals and salads. Development of use by dates for safety reasons is discussed
+L46@P3: below.
+L47@P3: A best before date is applicable to food where deterioration affects consumer acceptance without impacting on
+L48@P3: health and safety. Many product changes will affect consumer acceptance, including:
+L49@P3: • rancidity
+L50@P3: • texture changes
+L51@P3: • moisture loss
+L52@P3: • moisture gain
+L53@P3: • staling
+L54@P3: • flavour loss
+L55@P3: • light induced changes
+L56@P3: • enzymatic browning
+L57@P3: • chemical browning, and
+L58@P3: • microbial spoilage.
+L59@P3: There is an exemption from best before date marking for products with a shelf life of two years or longer. A scan of
+L60@P3: supermarket shelves identified few products that were not date marked. These included sugar, golden syrup,
+L61@P3: treacle, honey, some soft drinks, canned fruit, canned vegetables, canned soup, vinegar, some canned fish and
+L62@P3: some cook-in sauces. Apart from these products, a shelf life of two years or longer is uncommon. While is it not
+L63@P3: mandatory in Australia some international food regulators recommend that all food be date marked to support ‘first
+L64@P3: in – first out’ food consumption.
+L65@P3: The flow chart (over page), which is adapted from the user guide to Standard 1.2.5, helps with the decision
+L66@P3-4: between best before and use by date marking.5
+L67@P4: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L68@P4: Best before
+L69@P4: date to be
+L70@P4: applied if shelf
+L71@P4: life is less than
+L72@P4: 2 years.
+L73@P4: Yes
+L74@P4: Yes
+L75@P4: Yes
+L76@P4: Yes
+L77@P4: Yes
+L78@P4: Yes
+L79@P4: No
+L80@P4: No
+L81@P4: No
+L82@P4: No
+L83@P4: No
+L84@P4: Use by date to
+L85@P4: be applied
+L86@P4: No
+L87@P4: Is the food shelf stable?
+L88@P4: Is the food frozen?
+L89@P4: Is the food a raw food that requires a
+L90@P4: process such as cooking to reduce foodpoisoning bacteria to make the food safe
+L91@P4: to eat?
+L92@P4: Is the food a chilled ready-to-eat
+L93@P4: product?
+L94@P4: Is there a reasonable likelihood that the
+L95@P4: food could contain one of the following
+L96@P4: food poisoning bacteria: Listeria
+L97@P4: monocytogenes, Yersinia enterocolitica
+L98@P4: or cold tolerant strains of Bacillus cereus
+L99@P4: or Clostridium botulinum?
+L100@P4: Will the food discernibly spoil before
+L101@P4: levels of bacteria would reach
+L102@P4: dangerous levels?
+L103@P4: Food safety date marking decision support
+L104@P4-5: Reference: ANZFA 20016
+L105@P5: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L106@P5: How is shelf life determined?
+L107@P5: There are many answers to this question, depending on the type of deterioration that the product undergoes. The
+L108@P5: NSW Food Authority has food safety as a primary objective and so considers reliable use by dates to be essential.
+L109@P5: If use by or best before dates are overstated there is a substantial risk of damage to a business’s reputation and
+L110@P5: brands. Food businesses must attend to all date marking requirements but this document will focus on the setting
+L111@P5: of reliable use by dates.
+L112@P5: Product development
+L113@P5: Product development must be well advanced before a business can have confidence in shelf life estimates. The
+L114@P5: business must be able to reliably produce homogeneous product with consistency from batch to batch. Physical
+L115@P5: and chemical factors that impact on the capacity of bacteria to grow, such as pH, water activity and evenness of
+L116@P5: mix (distribution of moisture, salt, preservative or food acid) must be well controlled. The physical, chemical and
+L117@P5: microbiological profile of several batches of finished product must be established. The potential for product
+L118@P5: contamination must be evaluated. The packaging materials must be identified.
+L119@P5: Product stability and food safety
+L120@P5: Initial studies are likely to consist of storage trials under the recommended storage conditions. Refrigerated storage
+L121@P5: trials should be run at 5°C and under conditions of mild temperature abuse equal to what might be encountered in
+L122@P5: the commercial cold chain. Products should be inspected at suitable times and samples tested for stability of the
+L123@P5: critical physical and chemical characteristics. These trials also provide an opportunity to commence microbiological
+L124@P5: tests for both spoilage organisms and the cold-tolerant pathogens named in the flow chart above. The trials should
+L125@P5: continue beyond the targeted shelf life unless the product fails earlier.
+L126@P5: Subtle changes during storage can be significant:
+L127@P5: • Does pH change eg due to microbial growth or failing buffering systems?
+L128@P5: • Is water redistributed within the product eg due to syneresis, condensation or a broken emulsion?
+L129@P5: • Is the preservative system stable?
+L130@P5: • Are there any signs of surface growth of microorganisms?
+L131@P5: • Does any modified atmosphere persist for required times?
+L132@P5: • Do chemicals migrate from the food-contact materials into the food?
+L133@P5: • Are there any unforeseen changes to the product?
+L134@P5: The trials should lead to an understanding of target levels and ranges for the critical physical and chemical
+L135@P5: characteristics of the product over the intended shelf life. The worst case or least restrictive values (maximum or
+L136@P5: minimum as the case may be) of the key chemical characteristics can then be compared to published values to
+L137@P5: evaluate the opportunity for microbial growth, particularly for the key cold-tolerant pathogens.
+L138@P5: The user guide to Standard 1.2.5 provides much of the information likely to be required to complete the evaluation.
+L139@P5-6: Critical values for individual factors are shown in Table 1.7
+L140@P6: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L141@P6: Table 1: Limits for growth of cold-tolerant pathogens
+L142@P6: Pathogen Temperature Salt pH aw Comment
+L143@P6: Bacillus cereus <4°C2 >7%1 <4.31 <0.911 Grows in the presence and absence of oxygen
+L144@P6: Clostridium botulinum <3.3°C1 >5%1 <51 <0.971 Require absence of oxygen
+L145@P6: Listeria monocytogenes <-0.4°C2 >10%1 <4.392 <0.922 Grows in the presence and absence of oxygen
+L146@P6: Yersinia enterocolitica <-1.3°C1 >7%1 <4.22 Grows in the presence and absence of oxygen
+L147@P6: Table 1 - References: 1 ANZFA 2001; 2 ICMSF 1996
+L148@P6: If single factors will not prevent the growth of the cold-tolerant pathogens it is still possible that two or more factors
+L149@P6: might combine to inhibit growth. Microbiological growth models can be used to examine that possibility. A number
+L150@P6: of microbial growth modelling programs are available but interpretation of results requires experience and technical
+L151@P6: expertise.
+L152@P6: Figure 1 is the output from a model (ComBase Predictor undated) for growth of Listeria monocytogenes in a
+L153@P6: hypothetical food. The graphic compares three food formulations; one at pH 5; the second with water activity (aw)
+L154@P6: 0.94 and the third with pH 5 and aw 0.94.
+L155@P6: Figure 1: Microbial growth models in shelf life studies
+L156@P6: This combination of reduced pH and aw significantly inhibit the growth of Listeria monocytogenes.
+L157@P6: Affects of nitrite and lactate can be explored in some of the microbial growth models. However, the modelling
+L158@P6: programs do not extend to the impact of preservatives such as sorbates and sulphites and specialised technical
+L159@P6: expertise may be required to evaluate preservative efficacy.
+L160@P6: The use of all food additives must comply with Standard 1.3.1.
+L161@P6: Combining Factors
+L162@P6: 0
+L163@P6: 50
+L164@P6: 100
+L165@P6: 150
+L166@P6: 200
+L167@P6: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+L168@P6: Day
+L169@P6: Listeria Count
+L170@P6: pH 5
+L171@P6: aw 0.94
+L172@P6-7: Both8
+L173@P7: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L174@P7: Microbial growth models, such as ComBase, can also be used to illustrate the importance of using realistic rather
+L175@P7: than ideal temperatures for storage trials. Figure 2 shows the hypothetical growth rate of Listeria monocytogenes in
+L176@P7: food with a pH of 5.5 and salt content of 2%.
+L177@P7: Figure 2: The importance of using realistic temperatures in storage trials
+L178@P7: This figure demonstrates that Listeria monocytogenes, under conditions of mild thermal abuse— temperatures that
+L179@P7: could well be encountered in the Australian cold chain—can grow (hypothetically) from a count of 10/g to about
+L180@P7: 100,000/g within the shelf life of many chilled foods. The use of ideal temperatures in shelf life studies is bad
+L181@P7: practice and likely to be misleading.
+L182@P7: It must be noted that that model predictions are based on observations made in artificial growth media and
+L183@P7: available product studies. To understand how a pathogen will behave in a specific product requires challenge tests.
+L184@P7: Challenge tests
+L185@P7: A challenge test is similar to the microbiological testing used in storage trials mentioned above. The difference is
+L186@P7: that specific cold-tolerant pathogens are added to the product prior to packaging. Storage tests on products where
+L187@P7: pathogenic bacteria are only occasionally present are likely to be misleading. The design and evaluation of
+L188@P7: challenge tests should be done by an expert food microbiologist (NACMCF 2009).
+L189@P7: If ‘growth – no growth’ is not clear from other studies then challenge tests can be very useful. Their use is not
+L190@P7: required where it is obvious that either growth won’t occur or growth will occur. Challenge tests are used to clarify
+L191@P7: areas of uncertainty and verify growth models for products with chemical characteristics near to the growth – no
+L192@P7: growth border.
+L193@P7: Cultures of pathogenic bacteria should never be introduced into a food processing factory. Challenge tests
+L194@P7: should only be done in an off-site laboratory or research facility.
+L195@P7: Realistic or Ideal Temperatures
+L196@P7: 1
+L197@P7: 10
+L198@P7: 100
+L199@P7: 1000
+L200@P7: 10000
+L201@P7: 100000
+L202@P7: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
+L203@P7: Day
+L204@P7: Listeria Count
+L205@P7: 6 C
+L206@P7: 4 C
+L207@P7-8: 2 C9
+L208@P8: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L209@P8: Expiry testing program
+L210@P8: Retained samples from commercial batches of product should be tested for microbiological and chemical quality
+L211@P8: upon expiry of shelf life. Newly launched products should be tested more frequently while proven products should
+L212@P8: be tested occasionally. Samples for testing should be stored under realistic rather than ideal temperature
+L213@P8: conditions. Expiry testing provides further assurance that manufacturing systems are under control.
+L214@P8: Use by estimation – an auditable program
+L215@P8: A series of linked documents can be used to provide objective evidence that use by dates are reliable.
+L216@P8: Product specification: this should list the physical, chemical and microbiological characteristics of the product. In
+L217@P8: some cases the document might specify both release (start of shelf life) and expiry (end of shelf life) criteria. The
+L218@P8: specified criteria should be traceable by formulation / recipe / block code to product development records.
+L219@P8: Even seemingly minor changes to ingredients, manufacturing procedures, packaging or distribution can have
+L220@P8: adverse affects on product safety and use by dates. The shelf life of the revised product should be verified, for
+L221@P8: example, by expiry testing of trial batches.
+L222@P8: For the same reason, similar precautions should be taken when applying the same use by date to a family of
+L223@P8: products with very similar characteristics. The product where growth is least restricted should be used in the shelf
+L224@P8: life study.
+L225@P8: The specification should also correlate with quality assurance test results for manufactured batches. The
+L226@P8: specification should include recommended storage conditions and the shelf life. This should be traceable to the
+L227@P8: shelf life study.
+L228@P8: Shelf life study: this should summarise the storage trial results and any required microbial growth modelling and
+L229@P8: challenge tests. The report should justify the shelf life estimate.
+L230@P8: Expiry testing records: quality assurance test results on retention samples stored for the product’s shelf life at
+L231@P8: realistic temperatures should verify the shelf life claims.
+L232@P8: Determination of best before dates
+L233@P8: There are potentially many questions to be answered about product deterioration and many approaches to getting
+L234@P8: the answers. If products have a long shelf life then real time testing is not likely to fit in with product development
+L235@P8: cycles. In many cases accelerated stability testing can be used to estimate shelf life; but technical expertise is a
+L236@P8: necessity. Real time testing—after the product has been launched if necessary—should be used to verify estimated
+L237@P8: best before dates.
+L238@P8: Accelerated stability testing typically involves storing products at high temperature / humidity / light intensity or
+L239@P8: similar. Products are tested following storage for different times and conditions. For some products, tests other than
+L240@P8: those used for routine quality control might be required. The calculations to convert the results of testing into an
+L241@P8: estimated shelf life are complex. Some businesses will require the services of a consulting chemist to supervise the
+L242@P8-9: studies. 10
+L243@P9: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L244@P9: References
+L245@P9: ANZFA 2001. Date Marking User Guide to Standard 1.2.5 – Date Marking of Packaged Food. Australia New
+L246@P9: Zealand Food Authority. Downloaded 3 November 2009 from
+L247@P9: http://www.foodstandards.gov.au/_srcfiles/date_marking0917.pdf
+L248@P9: ComBase Predictor accessed on-line 3 November 2009 at
+L249@P9: http://ifrsvwwwdev.ifrn.bbsrc.ac.uk/CombasePMP/GP/Login.aspx?ReturnUrl=%2fCombasePMP%2fGP%2fDefault.
+L250@P9: aspx
+L251@P9: FSANZ 2003. Fact Sheet Date Marking. Food Standards Australia New Zealand. Downloaded 3 November 2009
+L252@P9: from
+L253@P9: http://www.foodstandards.gov.au/_srcfiles/Date%20Marking%20Aug%202003.pdf#search=%22date%20marking%
+L254@P9: 22
+L255@P9: FSANZ undated. Standard 1.2.5 – Date Marking of Food. Food Standards Australia New Zealand. Downloaded 3
+L256@P9: November 2009 from http://www.foodstandards.gov.au/thecode/foodstandardscode/index.cfm
+L257@P9: ICMSF 1996. Roberts T., Baird-Parker A. and Tompkin R. (Eds). Micro-organism in Foods 5 – Microbiological
+L258@P9: specifications of food pathogens, First edition 1996. Blackie Academic and Professional.
+L259@P9: NACMCF 2009. Parameters for determining inoculated pack/challenge study protocols. National Advisory
+L260@P9: Committee on Microbiological Criteria for Foods. Downloaded 5 November 2009 from
+L261@P9: http://www.fsis.usda.gov/PDF/NACMCF_Inoculated_Pack_2009F.pdf
+L262@P9: Further reading
+L263@P9: The following documents provide information that might be relevant for some products types.
+L264@P9: New South Wales Food Authority 2009, Microbiological quality guide for ready-to-eat foods. Downloaded 25
+L265@P9: January 2010 from
+L266@P9: http://www.foodauthority.nsw.gov.au/_Documents/science/microbiological_quality_guide_for_RTE_food.pdf
+L267@P9: New South Wales Food Authority 2008, Potentially hazardous foods. Downloaded 25 January 2010 from
+L268@P9: http://www.foodauthority.nsw.gov.au/_Documents/science/potentially-hazardous-foods.pdf
+L269@P9: New South Wales Food Authority undated, Shelf stable acid preserved foods. Downloaded 25 January 2010 from
+L270@P9-10: http://www.foodauthority.nsw.gov.au/_Documents/science/shelf-stable-acid-preserved-foods.pdf11
+L271@P10: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth 2
+L272@P10: 6 Avenue of the Americas, Newington NSW 2127
+L273@P10: PO Box 6682, Silverwater NSW 1811
+L274@P10: T 1300 552 406
+L275@P10: contact@foodauthority.nsw.gov.au
+L276@P10: ABN 47 080 404 416
+L277@P10: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth February 2010
+L278@P10: FI065/1002
+

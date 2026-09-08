@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.core.errors import AppError
 
-SCHEMA_REVISION = "0010_knowledge"
+SCHEMA_REVISION = "0011_knowledge_delivery"
 
 
 class Database:
@@ -42,9 +42,21 @@ class Database:
             await session.execute(text("SELECT id FROM alerts LIMIT 0"))
             await session.execute(text("SELECT id FROM actions LIMIT 0"))
             await session.execute(
-                text("SELECT id, latest_version_id FROM knowledge_documents LIMIT 0")
+                text(
+                    "SELECT id, latest_version_id, evidence_revision "
+                    "FROM knowledge_documents LIMIT 0"
+                )
             )
             await session.execute(text("SELECT id, raw_key FROM knowledge_versions LIMIT 0"))
+            await session.execute(
+                text("SELECT id, lease_token FROM knowledge_delivery_outbox LIMIT 0")
+            )
+            await session.execute(
+                text("SELECT id, generation_id FROM knowledge_publications LIMIT 0")
+            )
+            await session.execute(
+                text("SELECT version_id FROM knowledge_version_provenance LIMIT 0")
+            )
             return True
 
     async def dispose(self):

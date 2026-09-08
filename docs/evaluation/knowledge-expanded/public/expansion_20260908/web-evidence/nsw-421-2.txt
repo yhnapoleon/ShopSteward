@@ -1,0 +1,404 @@
+NSW Standard of construction and hygenic operations of retail meat premises (https://www.foodauthority.nsw.gov.au/media/2611)
+citeturn129view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 29; Source: open({"ref_id":"https://www.foodauthority.nsw.gov.au/media/2611","lineno":928}); Total lines: 929
+L522@P15: c. the trade name or the description of the meat or meat products contained in the package
+L523@P15: d. a nutrition information panel if marinades or other ingredients are used
+L530@P15: a. is subject to recall
+L531@P15: b. has been returned
+L532@P15: c. is not safe or suitable for human consumption, or
+L533@P15: d. is reasonably suspected of not being safe or suitable for human consumption.
+L534@P15: 2.8.2 A retail meat premises must ensure food for disposal is held and kept separate until it is:
+L535@P15: a. destroyed or otherwise used or disposed of so that it cannot be used for human consumption
+L536@P15: b. returned to its supplier
+L537@P15: c. further processed in a way that ensures its safety and suitability, or
+L538@P15: d. ascertained to be safe and suitable.
+L539@P15: Outcome required: The transportation of meat and meat products does not jeopardise the safety
+L540@P15: and suitability of the meat.
+L541@P15-16: Outcome required: Food for disposal does not contaminate food for human consumption. NSW standard for construction and hygienic operations of retail meat premises
+L542@P16: FA451/2509 17
+L543@P16: 2.9 Food recall
+L544@P16: 2.9.1 A retail meat premises that is engaged in the wholesale supply, manufacture or importation of
+L545@P16: meat and meat products must:
+L546@P16: 2.10 Health and hygiene requirements
+L547@P16: 2.10.0.2 The operator must ensure that:
+L548@P16: 2.10.0.3 At the commencement of each day's operation, a person must not begin using the premises,
+L549@P16: vehicles, appliances, protective clothing or equipment for processing unless they are clean.
+L550@P16: 2.10.1 Health and hygiene of food handlers
+L551@P16: 2.10.1.1 Staff handling food will take all reasonable measures not to handle food or surfaces likely to
+L552@P16: come into contact with food in a way that is likely to compromise the safety and suitability of food.
+L553@P16: a. have in place a written system to ensure the recall of unsafe food, and
+L554@P16: b. comply with this system when recalling unsafe food.
+L555@P16: 2.10.0.1 All protective clothing and personal equipment used in a retail meat premises must be:
+L556@P16: a. durable
+L557@P16: b. non-toxic
+L558@P16: c. corrosion resistant
+L559@P16: d. easily cleaned
+L560@P16: e. resistant to flaking or fraying, and
+L561@P16: f. of a finish that makes contamination clearly visible.
+L562@P16: a. premises, vehicles, appliances, clothing, protective clothing and equipment are thoroughly
+L563@P16: cleaned and sanitised at the end of each day's operation. Equipment and parts of premises
+L564@P16: being used for normal continuous processing practices are exempt from this requirement
+L565@P16: provided that they are subject to a regular cleaning and sanitation program as detailed in the
+L566@P16: Food Safety Program (examples are brine tanks, cool rooms and drying rooms)
+L567@P16: b. whenever premises, vehicles, appliances, clothing, protective clothing or equipment become
+L568@P16: contaminated in a way that could jeopardise the safety and suitability of meat during
+L569@P16: processing, they must be immediately cleaned or, where applicable, replaced
+L570@P16: c. cleaning activities do not contaminate meat, meat products or meat product contact
+L571@P16: surfaces, and
+L572@P16: d. animals do not enter premises, other than guide dogs which are permitted in customer areas
+L573@P16: only.
+L574@P16: Outcome required: A system for the recall of unsafe or unsuitable food is in place.
+L575@P16: Outcome required: Hygiene controls are implemented to ensure personnel do not contaminate
+L576@P16: food.
+L577@P16: Outcome required: Hygiene controls are implemented for all operations to effectively prevent
+L578@P16: physical and microbiological contamination of product and risks to health and safety of
+L579@P16-17: personnel.NSW standard for construction and hygienic operations of retail meat premises
+L580@P17: FA451/2509 18
+L581@P17: 2.10.2 Health of staff handling food
+L582@P17: 2.10.2.1 Food handlers who have a symptom that indicates the handler may be suffering from a
+L583@P17: foodborne disease, or knows he or she is suffering from a foodborne disease, or is a carrier of a
+L584@P17: foodborne disease, will, if at work:
+L585@P17: 2.10.2.2 Food handlers who suffer from an infected skin lesion or discharges from the ear, nose or
+L586@P17: eye will, if at work:
+L587@P17: 2.10.2.3 Food handlers will notify the supervisor if the food handler knows or suspects that he or she
+L588@P17: may have contaminated food.
+L589@P17: 2.10.3 Hygiene of food handlers
+L590@P17: 2.10.3.1 Food handlers will, when engaging in any food handling operation:
+L591@P17: 2.10.3.3 Food handlers will, when engaging in a food handling operation that involves unprotected
+L592@P17: food or surfaces likely to come into contact with food, wash their hands:
+L593@P17: a. report that he or she is suffering from the disease, or knows that he or she is carrying the
+L594@P17: disease, to his or her supervisor
+L595@P17: b. not engage in any handling of food where there is a reasonable likelihood of food
+L596@P17: contamination as a result of the disease, and
+L597@P17: c. if continuing to engage in other work on the food premises, take all practicable measures to
+L598@P17: prevent food from being contaminated as a result of the disease.
+L599@P17: a. and if there is a reasonable likelihood of food contamination as a result of suffering the
+L600@P17: condition, report that he or she is suffering from the condition to his or her supervisor, and
+L601@P17: b. if continuing to engage in the handling of food or other work, take all practicable measures
+L602@P17: to prevent food being contaminated as a result of the condition.
+L603@P17: a. take all practicable measures to ensure his or her body, anything from his or her body, and
+L604@P17: anything he or she is wearing does not contaminate food or surfaces likely to come into
+L605@P17: contact with food
+L606@P17: b. take all practicable measures to prevent unnecessary contact with ready-to-eat food
+L607@P17: c. ensure outer clothing is of a level of cleanliness that is appropriate for the handling of food
+L608@P17: that is being conducted
+L609@P17: d. only use on exposed parts of his or her body bandages and dressings that are completely
+L610@P17: covered with a waterproofed covering.
+L611@P17: e. not eat over unprotected food or surfaces likely to come into contact with food
+L612@P17: f. not sneeze, blow or cough over unprotected food or surfaces likely to come into contact with
+L613@P17: food
+L614@P17: g. not spit, smoke or use tobacco or similar substances in areas in which food is handled, and
+L615@P17: h. not urinate or defecate except in a toilet.
+L616@P17: 2.10.3.2 Food handlers will wash their hands:
+L617@P17: a. whenever their hands are likely to be a source of contamination of food
+L618@P17: b. immediately before working with ready-to-eat cooked meat, and
+L619@P17-18: c. immediately after using the toilet. NSW standard for construction and hygienic operations of retail meat premises
+L620@P18: FA451/2509 19
+L621@P18: 2.11 Cleaning, sanitising and maintenance
+L622@P18: 2.11.1 Cleanliness
+L623@P18: 2.11.1.1 A retail meat premises must be maintained to a standard of cleanliness so there is no
+L624@P18: accumulation of:
+L625@P18: 2.11.1.2 A retail meat premises must maintain all fixtures, fittings and equipment, to a standard of
+L626@P18: cleanliness where there is no accumulation of:
+L627@P18: 2.11.2 Maintenance
+L628@P18: 2.11.2.1 The maintenance of premises and equipment must:
+L629@P18: a. before commencing or re-commencing handling food
+L630@P18: b. immediately after smoking, coughing, sneezing, using a handkerchief or disposable tissue,
+L631@P18: eating, drinking or using tobacco or similar substances
+L632@P18: c. after touching their hair, scalp or a body opening
+L633@P18: d. after using devices (such as a mobile phone).
+L634@P18: 2.10.3.4 Food handlers will, whenever washing their hands:
+L635@P18: a. use the hand washing facilities provided
+L636@P18: b. thoroughly clean their hands using soap or other effective means, and warm running water,
+L637@P18: and
+L638@P18: c. thoroughly dry their hands on a single use towel or in another way that is not likely to
+L639@P18: transfer pathogenic micro-organisms to the hands.
+L640@P18: a. garbage, except in garbage containers
+L641@P18: b. recycled matter, except in containers
+L642@P18: c. food waste
+L643@P18: d. dirt
+L644@P18: e. grease, or
+L645@P18: f. other visible matter.
+L646@P18: a. food waste
+L647@P18: b. dirt
+L648@P18: c. grease, or
+L649@P18: d. other visible matter.
+L650@P18: Outcome required: A retail meat premises is kept clean.
+L651@P18: Outcome required: Premises and equipment is maintained to ensure that the hygienic processing
+L652@P18-19: of meat and meat products is not jeopardised.NSW standard for construction and hygienic operations of retail meat premises
+L653@P19: FA451/2509 20
+L654@P19: 2.11.2.2 The food safety program in place at the retail meat premises will include regular
+L655@P19: maintenance reviews and structured programs for correction of identified deficiencies.
+L656@P19: 2.11.3 Pest control
+L657@P19: 2.11.3.1 A retail meat premises must have an insect and vermin control program that:
+L658@P19: a. facilitate hygienic processing
+L659@P19: b. ensure equipment is in a proper state of operational adjustment
+L660@P19: c. ensure that defects or damages are repaired in accordance with good practice, and
+L661@P19: d. ensure repaired items are in good working order.
+L662@P19: a. prevents the entry of insects and vermin
+L663@P19: b. immediately controls any insects and vermin detected within the premises
+L664@P19: c. where necessary, minimises the survival of insects and vermin within the premises, and
+L665@P19: d. ensures that insects and vermin, insect control equipment and any use of pesticides do not
+L666@P19: contaminate meat and meat products, ingredients, packaging materials and product contact
+L667@P19: surfaces.
+L668@P19: Outcome required: The retail meat premises is maintained free of insects and other pests which
+L669@P19-20: may cause contamination of meat and meat products. NSW standard for construction and hygienic operations of retail meat premises
+L670@P20: FA451/2509 21
+L671@P20: 3. Food premises and equipment
+L672@P20: 3.1 Design and construction of retail meat premises
+L673@P20: 3.1.1 The design and layout of the premises and its equipment must facilitate the hygienic
+L674@P20: processing of meat and meat products and any inspection or auditing necessary during or after
+L675@P20: production. (‘Inspection’ includes inspection or monitoring of product by the operator during
+L676@P20: production, ‘auditing’ includes internal audit).
+L677@P20: 3.1.2 Construction must be designed to:
+L678@P20: 3.1.3 Retail meat premises must be constructed so that the hygienic processing and sale of meat
+L679@P20: and meat products is not jeopardised. Construction must:
+L680@P20: 3.2 Water supply
+L681@P20: 3.2.1 Premises must be provided with:
+L682@P20: 3.3 Solid and liquid waste disposal
+L683@P20: a. provide adequate space for food production and the fixtures, fittings and equipment used
+L684@P20: b. prevent access by and harbourage of pests
+L685@P20: c. keep out dust, dirt, fumes, smoke and other contaminants
+L686@P20: d. minimise the accumulation of dust, water, litter or waste materials, and
+L687@P20: e. restrict entry to the processing areas of the premises to authorised staff only.
+L688@P20: a. use materials that will not become a source of contamination, such as toxic materials, flaking
+L689@P20: paint, untreated iron fixtures, porous material which may harbour bacteria, and
+L690@P20: b. not inhibit hygienic processing, for example meat contacting non-product surfaces, such as
+L691@P20: walls, door jambs, etcetera, and
+L692@P20: c. allow effective cleaning, preventing unsealed joints, rough surfaces, angled corners.
+L693@P20: a. hot and cold potable water in quantity and under pressure as necessary to ensure all
+L694@P20: activities involved in the production of wholesome meat and meat products can be conducted
+L695@P20: effectively.
+L696@P20: Outcome required:
+L697@P20: • Construction of retail meat premises does not jeopardise the safety and suitability of meat
+L698@P20: and meat products.
+L699@P20: • Construction facilitates hygienic processing and prevents contamination of meat and meat
+L700@P20: products.
+L701@P20: Outcome required: An adequate supply of potable water is available to facilitate the hygienic
+L702@P20: processing of meat and meat products.
+L703@P20: Outcome required: Solid and liquid waste is effectively stored and removed in a manner which
+L704@P20-21: does not jeopardise the safety and suitability of meat and meat products.NSW standard for construction and hygienic operations of retail meat premises
+L705@P21: FA451/2509 22
+L706@P21: 3.3.1 Liquid and solid waste material must be handled, stored, treated and disposed of in a facility
+L707@P21: and manner that does not jeopardise the water supply or the safety and suitability of meat or that
+L708@P21: such waste material does not become food or a breeding place for insects and vermin or create
+L709@P21: odours.
+L710@P21: 3.3.2 Separate facilities must be provided for the storage of waste (other than edible fat and bone)
+L711@P21: and inedible material prior to removal from the premises.
+L712@P21: 3.3.3 Wherever practicable, facilities must be designed to prevent access to waste or inedible
+L713@P21: material by pests, and to avoid contamination of food, potable water, equipment, buildings or
+L714@P21: roadways on the premises.
+L715@P21: 3.4 Storage of garbage and recyclable matter
+L716@P21: 3.4.1 Retail meat premises must have facilities for the storage of garbage and recyclable matter
+L717@P21: that:
+L718@P21: 3.5 Ventilation
+L719@P21: 3.5.1 Ventilation must maintain product safety and suitability and remove excessive heat, steam and
+L720@P21: condensation and prevent the entry of odours, dust, vapour or smoke.
+L721@P21: 3.5.2 Where smokehouses or cookers are used in premises, heat, steam, smoke and other emissions
+L722@P21: must be vented to the outside of the premises in a manner that does not jeopardise the hygienic
+L723@P21: processing of meat and meat products.
+L724@P21: 3.6 Lighting
+L725@P21: 3.6.1 Lighting must be adequate to enable hygienic processing, inspection and auditing. For
+L726@P21: guidance on sufficient lighting, refer to Australian Standard 1680.1-2006 Interior and workplace
+L727@P21: lighting: General principles and recommendation.
+L728@P21: 3.6.2 Shatterproof protective shields must be provided over exposed lights.
+L729@P21: 3.6.3 Light fittings must be constructed in a way that prevents contamination of meat or product
+L730@P21: contact surfaces by dirt, dust or other matter falling from the light fittings.
+L731@P21: a. adequately contain the volume and type of garbage and recyclable matter
+L732@P21: b. enclose the garbage and recyclable matter so they do not provide a breeding ground for
+L733@P21: pests, and
+L734@P21: c. are designed and constructed so that they may be easily and effectively cleaned.
+L735@P21: Outcome required: Adequate storage facilities are available for garbage and recyclable matter.
+L736@P21: Outcome required: Adequate natural or mechanical ventilation is available to minimise the
+L737@P21: likelihood of airborne contamination of meat.
+L738@P21: Outcome required: Sufficient natural and/or artificial light is available to carry out food handling
+L739@P21-22: operations, cleaning and sanitising and other activities on the premises.NSW standard for construction and hygienic operations of retail meat premises
+L740@P22: FA451/2509 23
+L741@P22: 3.7 Floors, walls and ceiling
+L742@P22: 3.7.1 Floors
+L743@P22: 3.7.1.1 Floors must be constructed so that liquids do not accumulate. They should provide a rate of
+L744@P22: drainage consistent with the operations in the area.
+L745@P22: 3.7.1.2 Where necessary, floor drainage must be directed to an external grease trap or other means
+L746@P22: of removing solids and suspended fats, which has surrounds capable of being easily cleaned.
+L747@P22: 3.7.1.3 A drainage system must prevent odours, vermin, any objectionable material or storm water
+L748@P22: entering the premises through that system and prevent the accumulation of any water or waste
+L749@P22: product.
+L750@P22: 3.7.1.4 Where smokehouses are not drained internally, a suitable drainage system must be provided
+L751@P22: at the smokehouse entrance to ensure liquid and solid waste is controlled to minimise the spread of
+L752@P22: such waste across floors.
+L753@P22: 3.7.1.5 Solid and liquid waste including sewage must be disposed of in the manner required by the
+L754@P22: relevant authorities and in a manner that prevents contamination of potable water supplies and does
+L755@P22: not jeopardise the safety and suitability of meat and meat products.
+L756@P22: 3.7.1.6 Sawdust, shell-grit, or other similar materials must not be used on floors.
+L757@P22: 3.7.2 Walls and ceilings
+L758@P22: 3.7.2.1 Ceilings must be provided in all processing areas of the premises, be easy to clean and be
+L759@P22: constructed to prevent the accumulation of dirt and minimise condensation. Associated
+L760@P22: installations, equipment and fittings must facilitate effective cleaning.
+L761@P22: 3.7.2.2 All the exposed internal surfaces of areas and equipment used for meat processing purposes
+L762@P22: must be:
+L763@P22: Outcome required: Floors are constructed so they can be effectively cleaned, impervious to
+L764@P22: grease, food particles and water and do not provide a harbourage for pests.
+L765@P22: Outcome required:
+L766@P22: • Walls and ceilings are constructed so they are appropriate for the area and are provided as
+L767@P22: necessary to protect food.
+L768@P22: • Walls and ceilings do not provide a harbourage for pests and must be capable of being
+L769@P22: effectively cleaned.
+L770@P22: • Walls and ceilings used to protect food are sealed to prevent dirt, dust and pests getting into
+L771@P22-23: the area and are impervious to grease, food particles and water. NSW standard for construction and hygienic operations of retail meat premises
+L772@P23: FA451/2509 24
+L773@P23: 3.8 Loading areas
+L774@P23: 3.8.1 Access points for load-in and load-out must be constructed to ensure that the safety and
+L775@P23: suitability of meat and meat products is not jeopardised.
+L776@P23: 3.8.2 In common loading areas, meat must be able to pass through without contacting non-meat
+L777@P23: product surfaces.
+L778@P23: 3.8.3 Doors, door jambs and passageways must be constructed to ensure product passing through
+L779@P23: does not become contaminated.
+L780@P23: 3.9 Fixtures, fittings and equipment
+L781@P23: 3.9.1 General requirements
+L782@P23: 3.9.1.1 All fixtures, fittings and equipment used for meat processing purposes must be:
+L783@P23: a. durable
+L784@P23: b. non-toxic
+L785@P23: c. smooth-surfaced (consistent with safety in the case of floors)
+L786@P23: d. corrosion resistant or capable of being maintained free of corrosion, for example meat rails
+L787@P23: where edible oil is regularly applied
+L788@P23: e. impervious (except for wooden chopping blocks maintained for the purpose of chopping only)
+L789@P23: f. resistant to, or protected from, impact
+L790@P23: g. easily cleaned and, where necessary, capable of being dismantled for cleaning
+L791@P23: h. resistant to chipping, flaking or fraying
+L792@P23: i. of a finish that makes contamination clearly visible
+L793@P23: j. constructed such that joints are effectively sealed
+L794@P23: k. constructed to minimise accumulation of dust, water, litter or waste materials on ledges, sills
+L795@P23: etc., and
+L796@P23: l. for wall to floor junctions, coved to enable effective cleaning.
+L797@P23: Outcome required: Loading areas are constructed to minimise contamination of meat.
+L798@P23: Outcome required:
+L799@P23: • Fixtures, fittings and equipment are designed, constructed, installed and used so as to
+L800@P23: preclude the adulteration of product with any contaminants.
+L801@P23: • Fixtures, fittings and equipment are constructed and installed in a way that allows effective
+L802@P23: cleaning of the premises and equipment and does not provide harbourage for pests.
+L803@P23: • Food contact surfaces are made of a material that will not contaminate food, can be easily
+L804@P23-24: and effectively cleaned and sanitised and are impervious to grease, food particles and water.NSW standard for construction and hygienic operations of retail meat premises
+L805@P24: FA451/2509 25
+L806@P24: 3.9.1.2 Equipment not designed for use in food production areas, such as shopping trolleys, are not
+L807@P24: permitted.
+L808@P24: 3.9.2 Carcase rails
+L809@P24: 3.9.2.1 To prevent any cross contamination, carcase rails must be constructed to ensure there is
+L810@P24: adequate carcase clearance over, or from, operational equipment and structures not designed for
+L811@P24: contact with carcases or meat.
+L812@P24: 3.9.2.2 Carcase rails may be constructed of mild steel providing they are maintained in a corrosion
+L813@P24: free state through the frequent application of an edible oil.
+L814@P24: 3.9.3 Butchers blocks
+L815@P24: 3.9.3.1 Wooden chopping blocks must be free of splits, cracks and holes and must be maintained in a
+L816@P24: hygienic condition.
+L817@P24: 3.9.3.2 Wooden chopping blocks must be for the purposes of chopping and flattening only.
+L818@P24: 3.9.4 Hand washing facilities
+L819@P24: 3.9.4.1 A retail meat premises must have hand washing facilities which are:
+L820@P24: a. durable
+L821@P24: b. non-toxic
+L822@P24: c. smooth-surfaced
+L823@P24: d. corrosion resistant
+L824@P24: e. impervious (except for chopping blocks maintained for the purpose of chopping only)
+L825@P24: f. easily cleaned and, where necessary, capable of being dismantled for cleaning
+L826@P24: g. resistant to chipping, flaking or fraying
+L827@P24: h. of a finish that makes contamination clearly visible, and
+L828@P24: i. constructed such that joints are effectively sealed.
+L829@P24: a. provided with warm running water
+L830@P24: b. provided with an effective sanitising agent (such as liquid soap)
+L831@P24: c. equipped with taps which are hands free operated
+L832@P24: d. provided with hand drying facilities that do not contaminate washed hands or the
+L833@P24: surrounding area, and
+L834@P24: e. connected directly to the drainage system.
+L835@P24: Outcome required: Carcase rails are constructed to minimise contamination of meat.
+L836@P24: 
+L837@P24: Outcome required: Wooden chopping blocks are used in a manner that does not contaminate
+L838@P24: meat.
+L839@P24: 
+L840@P24: Outcome required: Designated, appropriate hand washing facilities are available and accessible.
+L841@P24-25:  NSW standard for construction and hygienic operations of retail meat premises
+L842@P25: FA451/2509 26
+L843@P25: 3.9.4.2 Hand washing facilities must be readily accessible, only used for the washing of hands, arms
+L844@P25: and face and at appropriate locations for use during processing to ensure that the safety and
+L845@P25: suitability of meat and meat products is not jeopardised.
+L846@P25: 3.9.4.3 At or near each hand washing facility, a retail meat premises must provide:
+L847@P25: 3.9.5 Ovens and smokehouses
+L848@P25: 3.9.5.1 Retail meat premises that operate an oven or smokehouse must ensure:
+L849@P25: 3.9.6 Storage facilities
+L850@P25: 3.9.6.1 Facilities must be provided for the storage of:
+L851@P25: 3.9.6.2 Storage of material and ingredients must be in a manner to prevent contamination of such
+L852@P25: material which could jeopardise the safety and suitability of meat and meat products.
+L853@P25: 3.9.6.3 Storage for shelf-stable and ready-to-eat meat products must be provided to prevent cross
+L854@P25: contamination.
+L855@P25: 3.9.6.4 Clearly identified facilities must be provided for storing inedible material to prevent
+L856@P25: contamination of edible material.
+L857@P25: a. single use towels or other means of effectively drying hands that are not likely to transfer
+L858@P25: pathogenic microorganisms to the hands, and
+L859@P25: b. a container for used towels if needed.
+L860@P25: a. the oven or smokehouse is located in a building or structure that complies with the
+L861@P25: construction requirements outlined in the Food Standards Code,
+L862@P25: b. the construction and surrounds of the oven or smokehouse comply with the construction
+L863@P25: requirements outlined in the Food Standards Code, and
+L864@P25: c. that all practicable measures are taken to prevent cross contamination between cooked and
+L865@P25: raw products.
+L866@P25: a. all processing and packaging materials
+L867@P25: b. ingredients
+L868@P25: c. laundered protective clothing
+L869@P25: d. personal belongings including clothing not worn during working hours
+L870@P25: e. cleaning and sanitising products
+L871@P25: f. aprons and gear (such as knives, steels, etcetera) when employees are not in the processing
+L872@P25: area, and
+L873@P25: g. cleaned equipment such as product containers, trays, tubs, sausage sticks, presses and
+L874@P25: mobile equipment to protect them from contamination.
+L875@P25: Outcome required: Equipment correctly installed, cleaned and maintained to ensure product is
+L876@P25: cooked correctly and is not a source of contamination.
+L877@P25: Outcome required:
+L878@P25: • Adequate storage facilities are available for items that are likely to be a source of
+L879@P25: contamination.
+L880@P25: • Storage facilities are constructed to ensure that stored items do not become contaminated
+L881@P25: and are not a source of contamination.
+L882@P25-26:  NSW standard for construction and hygienic operations of retail meat premises
+L883@P26: FA451/2509 27
+L884@P26: 3.9.7 Toilet facilities
+L885@P26: 3.9.7.1 A retail meat premises must ensure that adequate toilets are available for the use of staff.
+L886@P26: 3.9.7.2 Toilet facilities must be accessible at all times when staff are working.
+L887@P26: 3.9.7.3 Toilets must have hand wash facilities to ensure that the safety and suitability of meat and
+L888@P26: meat products is not jeopardised.
+L889@P26: 3.9.7.4 Location of amenities, where provided, must be adequate for the purpose and not jeopardise
+L890@P26: hygienic processing.
+L891@P26: 3.9.7.5 Where amenities are provided at a retail meat premises they must be maintained and used by
+L892@P26: personnel in a manner that does not jeopardise the safety and suitability of any meat within the
+L893@P26: premises.
+L894@P26: Outcome required: Toilet facilities are available for the use of food handlers either on the
+L895@P26: premises or readily accessible elsewhere. Toilet facilities are constructed and located so that
+L896@P26-27: their use does not provide a source of contamination. NSW standard for construction and hygienic operations of retail meat premises
+L897@P27: FA451/2509 28
+L898@P27: References and further reading
+L899@P27: Legislation
+L900@P27: • Food Act 2003 (NSW) (available at www.legislation.nsw.gov.au).
+L901@P27: • NSW Food Regulation 2025 (available at www.legislation.nsw.gov.au)
+L902@P27: • Australia New Zealand Food Standards Code (available at www.foodstandards.gov.au), including:
+L903@P27: — Standard 3.2.1 – Food Safety Programs
+L904@P27: — Standard 3.2.2 – Food Safety Practices and General Requirements
+L905@P27: — Standard 3.2.3 – Food Premises and Equipment
+L906@P27: — Standard 4.2.3 – Primary Production and Processing Standard for Meat
+L907@P27: Other
+L908@P27: • Hazard Analysis and Critical Control Point (HACCP) System and Guidelines for its Application
+L909@P27: Codex Alimentarius Commission (2003) (available at www.codexalimentarius.net)
+L910@P27: • Food Industry Recall Protocol - Information on recalling food in Australia and writing a food
+L911@P27: recall plan, Food Standards Australia New Zealand 7th Edition May 2014 (available at
+L912@P27: www.foodstandards.gov.au/food-recalls/firp)
+L913@P27: • Guidelines for the safe manufacture of smallgoods 3rd Edition, Australian Meat Industry Council
+L914@P27: (available at: amic.org.au/ )
+L915@P27: • Australian Drinking Water Guidelines (2011), National Health and Medical Research Council
+L916@P27: (available at www.nhmrc.gov.au)
+L917@P27: • AS4696–2023, Australian Standard for the Hygienic production and transportation of meat and
+L918@P27: meat products for human consumption
+L919@P27: • Building, plumbing and electricity codes (available at www.standards.org.au):
+L920@P27: — AS1680.1–2006, Interior and workplace lighting: General principles and recommendations
+L921@P27: — AS/NZS ISO 9001:2016 – Quality System – Model for quality assurance in design,
+L922@P27-28: development, production, installation and servicingNSW standard for construction and hygienic operations of retail meat premises
+L923@P28: FA451/2509 29
+L924@P28: Notes
+L925@P28: © State of New South Wales through the NSW Food Authority 2025. The information contained in this publication is based on knowledge
+L926@P28: and understanding at the time of writing September 2025. However, because of advances in knowledge, users are reminded of the need
+L927@P28: to ensure that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer
+L928@P28: of the Department or the user’s independent adviser.
+

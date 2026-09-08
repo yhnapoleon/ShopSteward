@@ -1,0 +1,64 @@
+ (https://www.foodauthority.nsw.gov.au/media/2526)
+citeturn84view0 [wordlim: 200] Crawled: 4 days ago; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":391}); Total lines: 61
+L0@P0: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L1@P0: Fresh noodles are
+L2@P0: potentially hazardous
+L3@P0: Fresh noodles have a high water
+L4@P0: activity level and a near neutral pH.
+L5@P0: This allows pathogenic organisms
+L6@P0: to grow, and rapidly reach
+L7@P0: dangerous levels.
+L8@P0: These organisms can cause
+L9@P0: serious illness if they are not
+L10@P0: controlled.
+L11@P0: Food retailers are required
+L12@P0: to only sell food that is safe
+L13@P0: to eat.
+L14@P0: Contaminated or spoiled products
+L15@P0: may not look deteriorated, so they
+L16@P0: must be refrigerated at all times to
+L17@P0: minimise the risk to consumers.
+L18@P0: Bacteria grow fastest between 5°C
+L19@P0: and 60°C, so is it important to keep
+L20@P0: the noodles under 5°C
+L21@P0: (refrigerated) at all times.
+L22@P0: Hardening of fresh noodles
+L23@P0: Typically, fresh noodles harden
+L24@P0: when refrigerated. This may cause
+L25@P0: consumers to think that the
+L26@P0: noodles are not fresh. The ‘use-by’
+L27@P0: date, production date (if one is
+L28@P0: included by the manufacturer) and
+L29@P0: storage and cooking instructions
+L30@P0: on the packaging should reassure
+L31@P0: customers that the products are
+L32@P0: fresh.
+L33@P0: Noodles will soften once they are
+L34@P0: reheated.
+L35@P0: More information
+L36@P0:  contact your local council
+L37@P0:  visit the website at
+L38@P0: www.foodauthority.nsw.gov.au/i
+L39@P0: ndustry
+L40@P0:  phone the helpline on
+L41@P0: 1300 552 406
+L42@P0: KEEPING FRESH,
+L43@P0: ASIAN-STYLE NOODLES
+L44@P0: SAFE TO EAT
+L45@P0: Fresh noodles can cause serious illness if they are not
+L46@P0: kept refrigerated from the time they are manufactured
+L47@P0-1: right through to the time they are sold to the consumer.More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L48@P1: About the NSW Food Authority: The NSW Food Authority is the government organisation that helps ensure NSW food is safe
+L49@P1: and correctly labelled. It works with consumers, industry and other government organisations to minimise food poisoning by
+L50@P1: providing information about and regulating the safe production, storage, transport, promotion and preparation of food.
+L51@P1: Note: This information is a general summary and cannot cover all situations. Food businesses are required to comply with all of
+L52@P1: the provisions of the Food Standards Code and the Food Act 2003 (NSW).
+L53@P1: 6 Avenue of the Americas, Newington NSW 2127
+L54@P1: PO Box 6682, Silverwater NSW 1811
+L55@P1: T 1300 552 406
+L56@P1: contact@foodauthority.nsw.gov.au
+L57@P1: ABN 47 080 404 416
+L58@P1: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L59@P1: January 2013
+L60@P1: NSW/FA/FI164/1301
+
