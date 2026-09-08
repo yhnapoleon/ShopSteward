@@ -1,6 +1,6 @@
 # ShopSteward 前端
 
-按v0.3高仿真原型实现的Nuxt/Vue前端，面向首版接口联调。当前视觉采用暖光磨砂、顶部导航、连续经营工作区、固定快捷浮条、资料入口和确认弹层；经营名称、数值、日期与状态取真实API，不使用原型的模拟账本或文字匹配来驱动采购。
+按v0.3高仿真原型实现的Nuxt/Vue前端，面向首版接口联调。默认三项主视图外，另提供只读的次级经营概览。当前视觉采用暖光磨砂、顶部导航、连续经营工作区、固定快捷浮条、资料入口和确认弹层；经营名称、数值、日期与状态取真实API，不使用原型的模拟账本或文字匹配来驱动采购。
 
 后续界面迭代先读取[前端视觉规范](style.md)，沿用当前的材质、布局、控件、响应式与验证约定。经营功能与接口边界仍以下文为准。
 
@@ -77,7 +77,9 @@ PR 的 Windows compatibility 检查在 Windows runner 安装锁定依赖、校�
 
 ## 代码组织
 
-- `app/pages/index.vue`：三视图与操作编排，确认时冻结方案。
+- `app/pages/index.vue`：三项主视图、经营概览入口与操作编排，确认时冻结方案。
+- `app/components/BusinessOverview.vue`、`app/composables/useOverview.ts`：独立只读概览及查询上下文；不改变Agent/审批状态。
+- `app/components/OverviewChart.client.vue`：只在概览打开后加载的ECharts图表。
 - `app/composables/useShop.ts`：API读取、命令、轮询和持久引用；不复制经营规则。
 - `app/components/`：决策、跟进、事实、会话、报价和弹层。
 - `app/utils/`：错误/单位呈现、CSV工具；业务DTO使用生成类型。
@@ -100,3 +102,26 @@ E2E只允许loopback地址，需要已经运行的后端、模拟器、worker和
 后端有新契约时，先在backend运行`.venv`对应Python的`-m app.export_openapi`，再运行`api:generate`和`api:check`。不要手改生成类型。
 
 本轮不是正式部署、真实商家试用、完整可访问性认证或课程效果实验。
+
+
+## 经营概览（2026-09-08）
+
+默认仍进入今日。点击“店铺此刻”或移动端事实摘要里的“经营概览”，或固定浮条的辅助入口，进入 `/?view=overview`；原有来源查询保留。返回今日继续原方案和会话，概览不提供采购确认动作。
+
+现金/库存读dashboard；销售读sales/summary并用sales分页展开；采购到货读inbounds；完整ledger从期初计算现金余额变更，核对当前余额一致后才画事件顺序图。这不是历史可用现金，也不是等长日期曲线。有采购预留时，不把可用现金底线画到余额历史上。库存实色/斜纹只分别表示在库与在途。
+
+销售默认以已同步模拟经营日期取最近7个UTC日，可选30日或不超过90日自定义区间。包括所选结束日，API查询为[from,to)。统计已记录销量和成交金额，不展示利润、回款或订单数；无记录不解释成真实零销量。销售日期不改变当前现金和库存。
+
+概览独立保留context、分页和错误，12秒可见页面刷新；原有环境轮询与确认保护保持。不同请求不自动构成原子快照；不一致、过期或失败就地提示。不同场景请求通过代次和storeVersion保护。完整列表最多读取20页×100条，达到上限不显示完整总数或现金曲线。明细每页30条，加载更多时核对上下文。
+
+ECharts6.1.0按模块引入Line/Bar、SVG渲染、提示与底线参考；图表引擎在进入概览后才下载，未引入React、整套UI组件库或WebGL特效。保留键盘方向键选择/回车明细、Escape关闭与焦点恢复、降低动效。
+
+受控回归命令（全拦截API，不新建场景或采购）：
+
+```bash
+corepack pnpm --filter @shopsteward/frontend exec playwright test tests/overview.spec.ts
+```
+
+生产验证额外设置 `FRONTEND_URL=http://127.0.0.1:3012 OVERVIEW_PRODUCTION=true`，指向本机已经启动的生产预览，执行相同命令；此模式核对图表懒加载。生产服务器自身不自动使用本机管理员身份，测试会拦截会话和业务查询。正常不带该开关时仅跳过生产资产检查。原test:e2e中的业务用例仍会创建合成数据、模拟采购；本轮没有运行那些写入用例。
+
+验证范围与未测项见[经营概览验证](../docs/reports/frontend-overview-verification.md)。
