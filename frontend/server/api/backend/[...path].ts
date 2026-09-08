@@ -1,5 +1,6 @@
 import { backendRoutes } from '../../utils/backend-routes'
 import { backendSettings, sameOrigin } from '../../utils/backend'
+import { isKnowledgeTransfer, knowledgeTransfer } from '../../utils/knowledge-transfer'
 export default defineEventHandler(async (event) => {
   const config = backendSettings(event)
   const path = '/' + getRouterParam(event, 'path')
@@ -12,6 +13,7 @@ export default defineEventHandler(async (event) => {
   if (!allowed || (path.startsWith('/dev/') && !config.devTools))
     throw createError({ statusCode: 404, statusMessage: 'Unknown operation' })
   if (!config.token) throw createError({ statusCode: 401, statusMessage: '请连接后端用户身份' })
+  if (isKnowledgeTransfer(method, path)) return knowledgeTransfer(event, path)
   const headers: Record<string, string> = { Authorization: 'Bearer ' + config.token }
   let body: string | undefined
   if (method !== 'GET') {
