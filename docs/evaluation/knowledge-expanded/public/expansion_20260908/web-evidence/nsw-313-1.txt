@@ -1,0 +1,193 @@
+ (https://www.foodauthority.nsw.gov.au/media/2536)
+citeturn120view0 [wordlim: 200] Crawled: 2 days ago; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":313}); Total lines: 190
+L0@P0: Having the correct label on food sold
+L1@P0: in Australia and New Zealand
+L2@P0: means food can be recalled if there
+L3@P0: are risks to consumers who eat it.
+L4@P0: For example, if there is an allergen
+L5@P0: in the food that is not listed on the
+L6@P0: label, to warn consumers it is in the
+L7@P0: food.
+L8@P0: Who
+L9@P0: If you import food for retail sale into
+L10@P0: Australia or New Zealand, you are a
+L11@P0: ‘food business’ and legally
+L12@P0: responsible for the safety and
+L13@P0: correct labelling of the food you sell*.
+L14@P0: This includes alcohol.
+L15@P0: * Note: ‘Food for retail sale’ means
+L16@P0: food for sale to the public and
+L17@P0: includes food prior to retail sale.
+L18@P0: This includes food at the time it is
+L19@P0: manufactured or otherwise prepared
+L20@P0: or distributed where it is intended
+L21@P0: that no further processing,
+L22@P0: packaging or labelling will occur
+L23@P0: prior to sale to the public.
+L24@P0: Responsibility for labelling food for
+L25@P0: retail sale lies with the relevant food
+L26@P0: businesses in the food supply chain,
+L27@P0: including the manufacturer or
+L28@P0: importer of the food or the retailer.
+L29@P0: What
+L30@P0: If you import food for retail sale, you
+L31@P0: must make sure that the food meets
+L32@P0: both the compositional and labelling
+L33@P0: requirements of Food Act 2003
+L34@P0: (NSW) and the Australia New
+L35@P0: Zealand Food Standards Code (the
+L36@P0: Code).
+L37@P0: As a food importer, you must not sell
+L38@P0: food that:
+L39@P0: • contains ingredients/additives not
+L40@P0: permitted to be added or which
+L41@P0: have not been assessed for their
+L42@P0: safety as a food in Australia/New
+L43@P0: Zealand (for example some
+L44@P0: medicinal herbs), and/or
+L45@P0: • is not correctly labelled with the
+L46@P0: information required by the Code.
+L47@P0: If you do, you can face penalties
+L48@P0: such as prosecution, fines and/or
+L49@P0: seizure of the food. In some cases,
+L50@P0: your food may be directed to be
+L51@P0: destroyed or re-exported.
+L52@P0: Note: The Australian Customs &
+L53@P0: Border Protection Service also has
+L54@P0: labelling requirements for imported
+L55@P0: food and beverages. Labels for
+L56@P0: these products must contain (i)
+L57@P0: ‘country of origin’ information and (ii)
+L58@P0: a true description of the product.
+L59@P0: When
+L60@P0: As a food importer, you must make
+L61@P0: sure the food you import contains
+L62@P0: ingredients/additives that are
+L63@P0: permitted in Australian/New Zealand
+L64@P0: before the food is available for sale
+L65@P0: to the public.
+L66@P0: You can do this by getting in touch
+L67@P0: with your supplier, who may be
+L68@P0: overseas, and getting ingredient
+L69@P0: information documents, product
+L70@P0: specification sheets and sample
+L71@P0: labels. It is good practice to check
+L72@P0: both the compositional properties
+L73@P0: and labelling information against the
+L74@P0: various requirements with the Code
+L75@P0: to ensure the food can be legally
+L76@P0: sold.
+L77@P0: How
+L78@P0: To check food for retail sale is
+L79@P0: compliant with the Code:
+L80@P0: Review ingredient documents and/or
+L81@P0: a copy of the label from the
+L82@P0: supplier/manufacturer against the
+L83@P0: requirements in the Code.
+L84@P0: To assist in this process, refer to the
+L85@P0: ‘Self-Assessment Check List’ for
+L86@P0: food importers’, which can be
+L87@P0: downloaded from the NSW Food
+L88@P0: Authority website.
+L89@P0: FOOD LABELLING FOR
+L90@P0: FOOD IMPORTERS
+L91@P0: Food may not be safe to eat if it is not labelled in the correct way or has ingredients
+L92@P0-1: that are not allowed in food sold in Australia and New Zealand.If your importing business doesn’t
+L93@P1: have the necessary expertise inhouse, you may require the services
+L94@P1: of a suitably qualified expert (e.g. a
+L95@P1: lawyer, food consultant or
+L96@P1: technologist, consulting laboratory,
+L97@P1: or possibly the supplier or
+L98@P1: manufacturer of the food).
+L99@P1: If the food does not meet the Code’s
+L100@P1: compositional requirements
+L101@P1: ingredients and additives that are
+L102@P1: permitted), you cannot legally sell it
+L103@P1: in Australia & New Zealand unless it
+L104@P1: is reformulated.
+L105@P1: If the food does not meet the Code’s
+L106@P1: labelling requirements, it must be relabelled to cover the incorrect
+L107@P1: information before it can be legally
+L108@P1: sold in Australia and New Zealand.
+L109@P1: Remember, the required information
+L110@P1: must be in English and include your
+L111@P1: business name, and Australian or
+L112@P1: New Zealand business address.
+L113@P1: Why
+L114@P1: Food safety officers will be
+L115@P1: inspecting food businesses and food
+L116@P1: labels – checking that the food is
+L117@P1: allowed to be sold in Australian and
+L118@P1: New Zealand (by looking at the
+L119@P1: ingredients/additives) – as well as
+L120@P1: other labelling requirements listed in
+L121@P1: the Code.
+L122@P1: If food safety officers find food that
+L123@P1: you plan to make available for sale
+L124@P1: to the public is NOT labelled
+L125@P1: correctly, you and/or your business
+L126@P1: may be prosecuted and/or fined.
+L127@P1: Where
+L128@P1: The labelling and composition
+L129@P1: requirements of food sold in
+L130@P1: Australia and New Zealand are set
+L131@P1: out in the Code at:
+L132@P1: http://www.foodstandards.gov.au/foo
+L133@P1: dstandards/foodstandardscode.cfm/.
+L134@P1: In addition, a user guide called
+L135@P1: ‘Overview of Food Labelling’ gives
+L136@P1: you general advice and points you
+L137@P1: to other guides which go into more
+L138@P1: detail about each part of the
+L139@P1: mandatory labelling requirements.
+L140@P1: This user guide can be found at:
+L141@P1: www.foodstandards.gov.au/foodstan
+L142@P1: dards/userguides/
+L143@P1: Country of origin labelling
+L144@P1: As of 1 July 2018, the legislative
+L145@P1: requirements
+L146@P1: for country of origin labelling
+L147@P1: became the responsibility of the
+L148@P1: Australian Competition & Consumer
+L149@P1: Commission (ACCC).
+L150@P1: The Country of Origin Food
+L151@P1: Labelling Information Standard 2016
+L152@P1: (the Standard) commenced under
+L153@P1: Australian Consumer Law on 1 July
+L154@P1: 2016 and regulates
+L155@P1: the country of origin information that
+L156@P1: must be provided for most food
+L157@P1: offered or suitable for retail sale in
+L158@P1: Australia. It’s important that you are
+L159@P1: aware of the obligations imposed by
+L160@P1: the Standard.
+L161@P1: The ACCC has published a range of
+L162@P1: tools to assist the food industry to
+L163@P1: comply with the new labelling
+L164@P1: requirements and these can be
+L165@P1: found on their website.
+L166@P1: All queries relating
+L167@P1: to country of origin labelling,
+L168@P1: including penalties for
+L169@P1: noncompliance should be directed
+L170@P1: to the ACCC
+L171@P1: More information
+L172@P1: • visit the Food Authority website
+L173@P1: at www.foodauthority.nsw.gov.au
+L174@P1: • phone the helpline on
+L175@P1: 1300 552 406
+L176@P1: • your local council can also
+L177@P1: provide advice and guidance.
+L178@P1: • visit Australian Competition and
+L179@P1: Consumer Commission for
+L180@P1: information on country of origin
+L181@P1: labelling accc.gov.au
+L182@P1: About the NSW Food Authority: The NSW Food Authority is the government organisation that helps ensure NSW food is safe and correctly labelled.
+L183@P1: It works with consumers, industry and other government organisations to minimise food poisoning by providing information about and regulating the
+L184@P1: safe production, storage, transport, promotion and preparation of food.
+L185@P1: Note: This information is a general summary and cannot cover all situations. Food businesses are required to comply with all of the provisions of the
+L186@P1: Food Standards Code and the Food Act 2003 (NSW).
+L187@P1: More resources at foodauthority.nsw.gov.au nswfoodauthority nswfoodauth
+L188@P1: July 2018
+L189@P1: NSW/FA/FI168/1807
+

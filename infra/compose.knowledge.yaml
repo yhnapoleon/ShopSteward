@@ -1,0 +1,114 @@
+name: shopsteward-knowledge-precloud
+
+x-knowledge: &knowledge
+  image: ${KNOWLEDGE_IMAGE:-shopsteward-knowledge:precloud}
+  build:
+    context: ..
+    dockerfile: knowledge/Dockerfile
+    args:
+      PYTHON_IMAGE: ${KNOWLEDGE_PYTHON_IMAGE:-python:3.12-slim-trixie}
+      UV_IMAGE: ${KNOWLEDGE_UV_IMAGE:-ghcr.io/astral-sh/uv:0.12.10}
+  environment:
+    KNOWLEDGE_DATABASE_URL: postgresql+asyncpg://knowledge:${KNOWLEDGE_POSTGRES_PASSWORD:?set private password}@postgres:5432/${KNOWLEDGE_POSTGRES_DB:-shopsteward_knowledge_test}
+    KNOWLEDGE_STORAGE_ROOT: /data/knowledge
+    KNOWLEDGE_OPENSEARCH_URL: http://opensearch:9200
+    KNOWLEDGE_INDEX_PREFIX: ${KNOWLEDGE_INDEX_PREFIX:-shopsteward-knowledge-precloud}
+    KNOWLEDGE_SERVICE_KEY: ${KNOWLEDGE_SERVICE_KEY:?set private service key}
+    KNOWLEDGE_EMBEDDING_URL: ${KNOWLEDGE_EMBEDDING_URL:-}
+    KNOWLEDGE_EMBEDDING_API_KEY: ${KNOWLEDGE_EMBEDDING_API_KEY:-}
+    KNOWLEDGE_EMBEDDING_MODEL: ${KNOWLEDGE_EMBEDDING_MODEL:-}
+    KNOWLEDGE_EMBEDDING_DIMENSIONS: ${KNOWLEDGE_EMBEDDING_DIMENSIONS:-}
+    KNOWLEDGE_EMBEDDING_PROVIDER: ${KNOWLEDGE_EMBEDDING_PROVIDER:-http-openai-compatible}
+    KNOWLEDGE_EMBEDDING_REVISION: ${KNOWLEDGE_EMBEDDING_REVISION:-}
+    KNOWLEDGE_EMBEDDING_QUERY_INSTRUCTION: ${KNOWLEDGE_EMBEDDING_QUERY_INSTRUCTION:-}
+    KNOWLEDGE_EMBEDDING_DOCUMENT_INSTRUCTION: ${KNOWLEDGE_EMBEDDING_DOCUMENT_INSTRUCTION:-}
+    KNOWLEDGE_EMBEDDING_NORMALIZE: ${KNOWLEDGE_EMBEDDING_NORMALIZE:-true}
+    KNOWLEDGE_EMBEDDING_MAX_INPUT_CHARS: ${KNOWLEDGE_EMBEDDING_MAX_INPUT_CHARS:-12000}
+    KNOWLEDGE_EMBEDDING_DEADLINE_MS: ${KNOWLEDGE_EMBEDDING_DEADLINE_MS:-8000}
+    KNOWLEDGE_RERANK_URL: ${KNOWLEDGE_RERANK_URL:-}
+    KNOWLEDGE_RERANK_API_KEY: ${KNOWLEDGE_RERANK_API_KEY:-}
+    KNOWLEDGE_RERANK_MODEL: ${KNOWLEDGE_RERANK_MODEL:-}
+  # BaseSettings distinguishes an absent optional field from an empty string.
+  # Drop empty provider values before executing the unchanged API/worker command.
+  # Complete explicit URL/key/model/dimensions configuration is still validated.
+  entrypoint:
+    - python
+    - -c
+    - >-
+      import os, sys;
+      [os.environ.pop(k) for k in list(os.environ)
+      if k.startswith(('KNOWLEDGE_EMBEDDING_', 'KNOWLEDGE_RERANK_'))
+      and not os.environ[k].strip()];
+      os.execvp(sys.argv[1], sys.argv[1:])
+  volumes:
+    - knowledge-data:/data/knowledge
+  security_opt:
+    - no-new-privileges:true
+  cap_drop: [ALL]
+  read_only: true
+  tmpfs: [/tmp]
+
+services:
+  postgres:
+    image: ${KNOWLEDGE_POSTGRES_IMAGE:-postgres:17-bookworm}
+    environment:
+      POSTGRES_USER: knowledge
+      POSTGRES_PASSWORD: ${KNOWLEDGE_POSTGRES_PASSWORD:?set private password}
+      POSTGRES_DB: ${KNOWLEDGE_POSTGRES_DB:-shopsteward_knowledge_test}
+    ports:
+      - "127.0.0.1:${KNOWLEDGE_POSTGRES_PORT:-55434}:5432"
+    volumes:
+      - knowledge-pg:/var/lib/postgresql/data
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U knowledge -d "$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  opensearch:
+    image: ${KNOWLEDGE_OPENSEARCH_IMAGE:-opensearchproject/opensearch:3.8.0}
+    environment:
+      discovery.type: single-node
+      DISABLE_INSTALL_DEMO_CONFIG: "true"
+      DISABLE_SECURITY_PLUGIN: "true"
+      OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+    ports:
+      - "127.0.0.1:${KNOWLEDGE_OPENSEARCH_PORT:-19201}:9200"
+    volumes:
+      - knowledge-search:/usr/share/opensearch/data
+    ulimits:
+      memlock: {soft: -1, hard: -1}
+      nofile: {soft: 65536, hard: 65536}
+    healthcheck:
+      test: [CMD-SHELL, 'curl --fail --silent "http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=3s" | grep -Eq ''"status"[[:space:]]*:[[:space:]]*"(green|yellow)"''']
+      interval: 10s
+      timeout: 5s
+      retries: 30
+  migrate:
+    <<: *knowledge
+    profiles: [maintenance]
+    command: [python, -m, alembic, -c, /app/knowledge/alembic.ini, upgrade, head]
+    depends_on:
+      postgres: {condition: service_healthy}
+  api:
+    <<: *knowledge
+    command: [python, -m, uvicorn, "shopsteward_knowledge.api:create_app", --factory, --host, 0.0.0.0, --port, "8020"]
+    ports:
+      - "127.0.0.1:${KNOWLEDGE_API_PORT:-8020}:8020"
+    depends_on:
+      postgres: {condition: service_healthy}
+      opensearch: {condition: service_healthy}
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8020/health/ready', timeout=3)"]
+      interval: 5s
+      timeout: 4s
+      retries: 30
+  worker:
+    <<: *knowledge
+    command: [python, -m, shopsteward_knowledge.worker]
+    depends_on:
+      api: {condition: service_healthy}
+
+volumes:
+  knowledge-pg:
+  knowledge-search:
+  knowledge-data:

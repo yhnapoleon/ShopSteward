@@ -11,6 +11,29 @@ ADMIN = "test-admin-token-000000000000000001"
 VIEWER = "test-viewer-token-00000000000000001"
 SERVICE = "test-service-token-0000000000000001"
 
+K2_ROUTES = {
+    "/api/v1/documents/{document_id}/versions/{version_id}/index-jobs": (
+        "post",
+        "request_knowledge_index",
+        "202",
+    ),
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}": (
+        "get",
+        "get_knowledge_index",
+        "200",
+    ),
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}/retry": (
+        "post",
+        "retry_knowledge_index",
+        "202",
+    ),
+    "/api/v1/documents/{document_id}/publications": (
+        "post",
+        "publish_knowledge_generation",
+        "200",
+    ),
+}
+
 
 def make_app(**overrides):
     from app.core.config import Settings
@@ -158,8 +181,15 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/documents/{document_id}/versions/{version_id}",
         "/api/v1/documents/{document_id}/versions/{version_id}/content",
         "/api/v1/documents/{document_id}/control",
+        *K2_ROUTES,
     }
     assert schema["paths"]["/api/v1/monitoring/status"]["get"]["security"] == [{"UserBearer": []}]
+    for path, (method, operation_id, success_status) in K2_ROUTES.items():
+        assert set(schema["paths"][path]) == {method}
+        operation = schema["paths"][path][method]
+        assert operation["operationId"] == operation_id
+        assert operation["security"] == [{"UserBearer": []}]
+        assert {s for s in operation["responses"] if s.startswith("2")} == {success_status}
     async with client_for(app) as client:
         assert (await client.get("/docs")).status_code == 200
         assert (await client.get("/api/v1/agent-runs/anything")).status_code == 401
@@ -174,11 +204,16 @@ async def test_production_default_hides_docs():
 async def test_all_runtime_operations_have_phase_and_implementation_metadata():
     for environment in ("development", "production"):
         schema = make_app(app_env=environment).openapi()
+        assert set(K2_ROUTES) <= schema["paths"].keys()
         for path, item in schema["paths"].items():
             for method, operation in item.items():
                 if method not in {"get", "post", "patch"}:
                     continue
-                assert operation.get("x-phase") in {"B0", "B2-A", "K1"}, (method, path)
+                if path in K2_ROUTES:
+                    assert method == K2_ROUTES[path][0], (method, path)
+                    assert operation.get("x-phase") == "K2", (method, path)
+                else:
+                    assert operation.get("x-phase") in {"B0", "B2-A", "K1"}, (method, path)
                 assert operation.get("x-implementation-status") == "implemented", (method, path)
 
 

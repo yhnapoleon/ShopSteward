@@ -1,0 +1,19 @@
+{
+  "started_at": "2026-09-08T02:08:01.820480+00:00",
+  "database": "shopsteward_test",
+  "model": "gpt-5.6-luna",
+  "api_mode": "responses",
+  "real_model": true,
+  "real_http": true,
+  "runs": [],
+  "checks": [],
+  "max_agent_runs": 4,
+  "max_model_calls_per_run": 8,
+  "embedding_calls": 0,
+  "backend_port": 8018,
+  "knowledge_port": 8020,
+  "task_directory": "D:\\HuaweiMoveData\\Users\\13736\\Desktop\\AIS\\Group_Project\\ShopSteward\\var\\precloud\\agent-0908020801",
+  "execution_error_type": "FileNotFoundError",
+  "passed": false,
+  "finished_at": "2026-09-08T02:08:01.942115+00:00"
+}

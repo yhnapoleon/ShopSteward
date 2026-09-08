@@ -1,0 +1,702 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "Important",
+    "origin_id": "important",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#important",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Revision history",
+    "origin_id": "revision-history",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#revision-history",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "March 2025",
+    "origin_id": "march-2025",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#march-2025",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "August 2023",
+    "origin_id": "august-2023",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#august-2023",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "July 2023",
+    "origin_id": "july-2023-",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#july-2023-",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "June 2023",
+    "origin_id": "june-2023-",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#june-2023-",
+    "ordinal": 6
+  },
+  {
+    "kind": "html_heading",
+    "heading": "18 June 2020",
+    "origin_id": "june-2020-",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#june-2020-",
+    "ordinal": 7
+  },
+  {
+    "kind": "html_heading",
+    "heading": "10 April 2015",
+    "origin_id": "april-2015-",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#april-2015-",
+    "ordinal": 8
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Purpose",
+    "origin_id": "purpose",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#purpose",
+    "ordinal": 9
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Legal status",
+    "origin_id": "legal-status",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#legal-status",
+    "ordinal": 10
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Who is this publication for?",
+    "origin_id": "who-is-this-publication-for",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#who-is-this-publication-for",
+    "ordinal": 11
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Which UK countries does this guidance apply to?",
+    "origin_id": "which-uk-countries-does-this-guidance-apply-to",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#which-uk-countries-does-this-guidance-apply-to",
+    "ordinal": 12
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Review date",
+    "origin_id": "review-date",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#review-date",
+    "ordinal": 13
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Key words",
+    "origin_id": "key-words",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#key-words",
+    "ordinal": 14
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Introduction",
+    "origin_id": "introduction",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#introduction",
+    "ordinal": 15
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Intended audience",
+    "origin_id": "intended-audience",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#intended-audience",
+    "ordinal": 16
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Purpose of the guidance",
+    "origin_id": "purpose-of-the-guidance",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#purpose-of-the-guidance",
+    "ordinal": 17
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Legal status of guidance",
+    "origin_id": "legal-status-of-guidance",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#legal-status-of-guidance",
+    "ordinal": 18
+  },
+  {
+    "kind": "html_heading",
+    "heading": "General background on allergens",
+    "origin_id": "general-background-on-allergens",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#general-background-on-allergens",
+    "ordinal": 19
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Information on the 14 allergens and data and statistics relevant to this guidance",
+    "origin_id": "information-on-the-14-allergens-and-data-and-statistics-relevant-to-this-guidance",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#information-on-the-14-allergens-and-data-and-statistics-relevant-to-this-guidance",
+    "ordinal": 20
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Main allergen labelling changes",
+    "origin_id": "main-allergen-labelling-changes",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#main-allergen-labelling-changes",
+    "ordinal": 21
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Mandatory obligations for all FBOs",
+    "origin_id": "mandatory-obligations-for-allfbos",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#mandatory-obligations-for-allfbos",
+    "ordinal": 22
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The fourteen allergens (Annex II allergens)",
+    "origin_id": "the-fourteen-allergens-annex-ii-allergens",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#the-fourteen-allergens-annex-ii-allergens",
+    "ordinal": 23
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Ingredients and processing aids excluded from the 14 allergens in Annex II",
+    "origin_id": "ingredients-and-processing-aids-excluded-from-the-14-allergens-in-annex-ii",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#ingredients-and-processing-aids-excluded-from-the-14-allergens-in-annex-ii",
+    "ordinal": 24
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Voluntary information (Article 36)",
+    "origin_id": "voluntary-information-article-36",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#voluntary-information-article-36",
+    "ordinal": 25
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice",
+    "ordinal": 26
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Part 1: Guidance for businesses providing prepacked food",
+    "origin_id": "part-1-guidance-for-businesses-providing-prepacked-food",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#part-1-guidance-for-businesses-providing-prepacked-food",
+    "ordinal": 27
+  },
+  {
+    "kind": "html_heading",
+    "heading": "List of mandatory particulars (Article 9)",
+    "origin_id": "list-of-mandatory-particulars-article-9",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#list-of-mandatory-particulars-article-9",
+    "ordinal": 28
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Cereals containing gluten",
+    "origin_id": "cereals-containing-gluten",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#cereals-containing-gluten",
+    "ordinal": 29
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-1",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-1",
+    "ordinal": 30
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Crustaceans",
+    "origin_id": "crustaceans",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#crustaceans",
+    "ordinal": 31
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Eggs",
+    "origin_id": "eggs",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#eggs",
+    "ordinal": 32
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fish",
+    "origin_id": "fish",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#fish",
+    "ordinal": 33
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Peanuts",
+    "origin_id": "peanuts",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#peanuts",
+    "ordinal": 34
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-2",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-2",
+    "ordinal": 35
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Soyabeans",
+    "origin_id": "soyabeans",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#soyabeans",
+    "ordinal": 36
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Milk",
+    "origin_id": "milk",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#milk",
+    "ordinal": 37
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-3",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-3",
+    "ordinal": 38
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Nuts",
+    "origin_id": "nuts",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#nuts",
+    "ordinal": 39
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Celery",
+    "origin_id": "celery",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#celery",
+    "ordinal": 40
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Mustard",
+    "origin_id": "mustard",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#mustard",
+    "ordinal": 41
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sesame",
+    "origin_id": "sesame",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#sesame",
+    "ordinal": 42
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sulphur dioxide and / or sulphites at levels above 10 mg/Kg or 10 mg/litre",
+    "origin_id": "sulphur-dioxide-and--or-sulphites-at-levels-above-10-mgkg-or-10-mglitre",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#sulphur-dioxide-and--or-sulphites-at-levels-above-10-mgkg-or-10-mglitre",
+    "ordinal": 43
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example",
+    "ordinal": 44
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Lupin",
+    "origin_id": "lupin",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#lupin",
+    "ordinal": 45
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Molluscs",
+    "origin_id": "molluscs",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#molluscs",
+    "ordinal": 46
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Presentation of mandatory particulars (Article 13)",
+    "origin_id": "presentation-of-mandatory-particulars-article-13",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#presentation-of-mandatory-particulars-article-13",
+    "ordinal": 47
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Omission of the list of ingredients (Article 19)",
+    "origin_id": "omission-of-the-list-of-ingredients-article-19",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#omission-of-the-list-of-ingredients-article-19",
+    "ordinal": 48
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Labelling of certain substances or products causing allergies or intolerances (Article 21)",
+    "origin_id": "labelling-of-certain-substances-or-products-causing-allergies-or-intolerances-article-21",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#labelling-of-certain-substances-or-products-causing-allergies-or-intolerances-article-21",
+    "ordinal": 49
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-1",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-1",
+    "ordinal": 50
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-2",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-2",
+    "ordinal": 51
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Presentation of Voluntary Information on Prepacked Foods",
+    "origin_id": "presentation-of-voluntary-information-on-prepacked-foods",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#presentation-of-voluntary-information-on-prepacked-foods",
+    "ordinal": 52
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-4",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-4",
+    "ordinal": 53
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food products without ingredients lists",
+    "origin_id": "food-products-without-ingredients-lists",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-products-without-ingredients-lists",
+    "ordinal": 54
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-3",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-3",
+    "ordinal": 55
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Applicable requirements – voluntary information (Article 36)",
+    "origin_id": "applicable-requirements--voluntary-information-article-36",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#applicable-requirements--voluntary-information-article-36",
+    "ordinal": 56
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Distance selling (Article 14)",
+    "origin_id": "distance-selling-article-14",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#distance-selling-article-14",
+    "ordinal": 57
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-4",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-4",
+    "ordinal": 58
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Part 2: Guidance for businesses providing non-prepacked food",
+    "origin_id": "part-2-guidance-for-businesses-providing-non-prepacked-food",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#part-2-guidance-for-businesses-providing-non-prepacked-food",
+    "ordinal": 59
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Responsibilities (Article 8)",
+    "origin_id": "responsibilities-article-8",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#responsibilities-article-8",
+    "ordinal": 60
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-5",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-5",
+    "ordinal": 61
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Presentation of mandatory allergen information and National Measures",
+    "origin_id": "presentation-of-mandatory-allergen-information-and-national-measures",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#presentation-of-mandatory-allergen-information-and-national-measures",
+    "ordinal": 62
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-6",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-6",
+    "ordinal": 63
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-5",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-5",
+    "ordinal": 64
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-6",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-6",
+    "ordinal": 65
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-7",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-7",
+    "ordinal": 66
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-8",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-8",
+    "ordinal": 67
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Distance selling (Article 14)",
+    "origin_id": "distance-selling-article-14-1",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#distance-selling-article-14-1",
+    "ordinal": 68
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-9",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-9",
+    "ordinal": 69
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-7",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-7",
+    "ordinal": 70
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Non-Gluten Containing Ingredients",
+    "origin_id": "non-gluten-containing-ingredients",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#non-gluten-containing-ingredients",
+    "ordinal": 71
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Best practice",
+    "origin_id": "best-practice-10",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#best-practice-10",
+    "ordinal": 72
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Part 3: Guidance for businesses providing food prepacked for direct sale",
+    "origin_id": "part-3-guidance-for-businesses-providing-food-prepacked-for-direct-sale",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#part-3-guidance-for-businesses-providing-food-prepacked-for-direct-sale",
+    "ordinal": 73
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example",
+    "origin_id": "example-8",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#example-8",
+    "ordinal": 74
+  },
+  {
+    "kind": "html_heading",
+    "heading": "List of mandatory particulars for PPDS food",
+    "origin_id": "list-of-mandatory-particulars-forppdsfood",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#list-of-mandatory-particulars-forppdsfood",
+    "ordinal": 75
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Distance selling (Article 14)",
+    "origin_id": "distance-selling-article-14-2",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#distance-selling-article-14-2",
+    "ordinal": 76
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Enforcement of the measures",
+    "origin_id": "enforcement-of-the-measures",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#enforcement-of-the-measures",
+    "ordinal": 77
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Local authority responsibilities",
+    "origin_id": "local-authority-responsibilities",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#local-authority-responsibilities",
+    "ordinal": 78
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Penalties and offences",
+    "origin_id": "penalties-and-offences",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#penalties-and-offences",
+    "ordinal": 79
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Glossary of terms used",
+    "origin_id": "glossary-of-terms-used",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#glossary-of-terms-used",
+    "ordinal": 80
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Coeliac Disease",
+    "origin_id": "coeliac-disease",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#coeliac-disease",
+    "ordinal": 81
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Distance selling",
+    "origin_id": "distance-selling",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#distance-selling",
+    "ordinal": 82
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Final consumer",
+    "origin_id": "final-consumer",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#final-consumer",
+    "ordinal": 83
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food allergen",
+    "origin_id": "food-allergen",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-allergen",
+    "ordinal": 84
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food allergy",
+    "origin_id": "food-allergy",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-allergy",
+    "ordinal": 85
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food business operator (FBO)",
+    "origin_id": "food-business-operator-fbo",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-business-operator-fbo",
+    "ordinal": 86
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food business",
+    "origin_id": "food-business",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-business",
+    "ordinal": 87
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food intolerance",
+    "origin_id": "food-intolerance",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-intolerance",
+    "ordinal": 88
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Mass caterer",
+    "origin_id": "mass-caterer",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#mass-caterer",
+    "ordinal": 89
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Non-prepacked food",
+    "origin_id": "non-prepacked-food",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#non-prepacked-food",
+    "ordinal": 90
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Prepacked food",
+    "origin_id": "prepacked-food",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#prepacked-food",
+    "ordinal": 91
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Prepacked for direct sale (PPDS) food",
+    "origin_id": "prepacked-for-direct-sale-ppds-food",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#prepacked-for-direct-sale-ppds-food",
+    "ordinal": 92
+  },
+  {
+    "kind": "html_heading",
+    "heading": "References and resources",
+    "origin_id": "references-and-resources",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#references-and-resources",
+    "ordinal": 93
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Relevant Legislation",
+    "origin_id": "relevant-legislation",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#relevant-legislation",
+    "ordinal": 94
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Review and contacts",
+    "origin_id": "review-and-contacts",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#review-and-contacts",
+    "ordinal": 95
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Review",
+    "origin_id": "review",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#review",
+    "ordinal": 96
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Contacts",
+    "origin_id": "contacts",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#contacts",
+    "ordinal": 97
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food Standards Agency England",
+    "origin_id": "food-standards-agency-england",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-standards-agency-england",
+    "ordinal": 98
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food Standards Agency in Northern Ireland",
+    "origin_id": "food-standards-agency-in-northern-ireland",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-standards-agency-in-northern-ireland",
+    "ordinal": 99
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Food Standards Agency in Wales",
+    "origin_id": "food-standards-agency-in-wales",
+    "source_url": "https://www.gov.uk/government/publications/food-allergen-labelling-and-information-requirements-technical-guidance/food-allergen-labelling-and-information-requirements-technical-guidance#food-standards-agency-in-wales",
+    "ordinal": 100
+  }
+]

@@ -1,0 +1,335 @@
+ (https://www.foodauthority.nsw.gov.au/media/2891)
+citeturn132view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 33; Source: open({"ref_id":"https://www.foodauthority.nsw.gov.au/media/2891","lineno":670}); Total lines: 981
+L556@P18: are protected from contamination after thermal processing, is below:
+L557@P18: • With a 90°C/10 minute equivalent cook and storage at 5°C – shelf life as validated.
+L558@P18: • With a 70°C/2 minute equivalent cook and storage at less than 3°C – shelf life as validated.
+L559@P18: • With a 70°C/2 minute equivalent cook and storage at 5°C – a 10 day shelf life.
+L560@P18: The process controls and support programs required to validate an extended shelf life are generally not plausible in a
+L561@P18: busy restaurant kitchen. Restaurants should limit refrigerated storage of pasteurised sous vide foods to ten days.
+L562@P18: Cooked but not pasteurised foods should only be held refrigerated for brief periods. Kennedy (2004) refers to ‘short
+L563@P18: term cook chill’ and notes that it is often called ‘5-day cook chill’, as that is a common time period used by mass
+L564@P18-19: caterers. Five days at 5°C is the recommended upper limit for storage of cooked but not pasteurised sous vide food.20
+L565@P19: 1.5 Product reheating – bacterial growth
+L566@P19: The potential for bacterial growth during cooling and reheating of sous vide foods is no different to conventional
+L567@P19: processes, and the guidance documents mentioned in section 1.2 are relevant.
+L568@P19: C. perfringens is commonly encountered in food service and home catering settings. Often large portions of food and
+L569@P19: more than one failure to handle food safely are involved. Examples include the following:
+L570@P19: • A restaurant cooks a casserole, curry or chilli in a large stock pot, cools it for two hours on the kitchen bench
+L571@P19: and refrigerates it overnight. The food is ladled into a tray in the hot display to reheat and then served at lunch
+L572@P19: time. The food at the centre of the stock pot never cooled and slowly reheated to only a low temperature while
+L573@P19: on display. C. perfringens grew to very large numbers and many customers developed food poisoning.
+L574@P19: • A large roast, e.g. a turkey, was cooked the day before a large family function. It was cooled on the bench for
+L575@P19: several hours, wrapped in aluminium foil and then refrigerated. It was reheated briefly in an overworked oven
+L576@P19: prior to service. The food was not properly cooled or reheated. C. perfringens grew to large numbers and
+L577@P19: caused illness in many that attended the function.
+L578@P19: Small portions of sous vide food are relatively easy to cool and reheat. With attention to detail, the risk of
+L579@P19: C. perfringens in small pouches of sous vide food can be controlled.
+L580@P19: Hands-on: sous vide reheating
+L581@P19: Baldwin (2022) tabulates heating times for sous vide products in a finely controlled water bath. These times provide
+L582@P19: useful guidance on reheating of foods. Table 5, which derived from the guide in his website, shows approximate
+L583@P19: heating times for refrigerated food in a pouch to a temperature 0.5°C below the temperature of the water bath.
+L584@P19: Baldwin also provides times for heating food from frozen (Table 6). Time limits are extended by three hours to allow
+L585@P19: time for the food to thaw and enter the temperature danger zone.
+L586@P19: Small portions of sous vide foods can be reheated in required time frames. Faster heating times can be achieved by
+L587@P19: using higher water bath temperatures. Sous vide food for larger functions could be reheated using a combination
+L588@P19: steam/forced convection oven. For these methods, reheating is usually monitored using in-pack temperature probes.
+L589@P19: Some businesses with good portion control, sufficient historical data and well controlled equipment will have validated
+L590@P19: reheating cycles. In-pack probes or tip sensitive digital thermometers would be used to verify internal temperatures at
+L591@P19: reduced frequency.
+L592@P19: There may be foods where suggested temperatures are inconsistent with the production of very rare or undercooked
+L593@P19: foods. These foods are best prepared as cook–serve foods.
+L594@P19: Standard 3.2.2 Clause 7(4) of the Food Standards Code requires:
+L595@P19: A food business must, when reheating previously cooked and cooled potentially hazardous food to hold it hot, use
+L596@P19: a heat process that rapidly heats the food to a temperature of 60°C or above, unless the food business
+L597@P19-20: demonstrates that the heating process used will not adversely affect the microbiological safety of the food.21
+L598@P20: The clause is subjective and guidance is provided in Safe Food Australia (FSANZ, 2016):
+L599@P20: This requirement only applies to potentially hazardous food that is to be held hot, for example in a bain marie. It
+L600@P20: does not apply to food that is being heated for immediate consumption. This food can be heated to any
+L601@P20: temperature as it is not being heated for holding hot.
+L602@P20: Potentially hazardous food that has been previously cooked and cooled and is to be held hot must be heated
+L603@P20: rapidly to a temperature of 60°C or above. ‘Rapidly’ has not been defined, but the time taken to heat all the food
+L604@P20: to 60°C should not exceed two hours.
+L605@P20: A food business may use an alternative heating process if the business can demonstrate that the alternative
+L606@P20: process does not compromise the microbiological safety of the food.
+L607@P20: Sous vide enthusiasts prefer not to reheat using a temperature above that used during cooking. Baldwin (2022), for
+L608@P20: example, refers to meat typically being reheated at 55°C since the ideal serving temperature for meat is 50° to 55°C.
+L609@P20: The Food Standards Code does not establish parameters for reheating food for immediate service, except to generally
+L610@P20: require that food is safe. The ‘2-hour/4-hour rule’ provides a general guidance.
+L611@P20: The 2-hour/4-hour rule provides options for what can be done safely with ready-to-eat potentially hazardous food,
+L612@P20: depending on how long it has been at temperatures between 5°C and 60°C.
+L613@P20: The time between 5°C and 60°C is cumulative — that means every time the food has been out of the fridge, including
+L614@P20: during preparation, storage, transport and display, it must be added up.
+L615@P20: If the total time is:
+L616@P20: • Less than 2 hours, the food can be used or put back in the refrigerator for later use,
+L617@P20: • Between 2 and 4 hours, the food can still be used, but can’t be put back in the refrigerator, and
+L618@P20: • 4 hours or longer, the food must be thrown out.
+L619@P20: For compliance with the guidance documents prepared to support the Food Standards Code, Table 5 and Table 6
+L620@P20: should be used as follows:
+L621@P20: • For pasteurised or cooked and properly cooled foods to be reheated for hot holding food: the objective is to heat
+L622@P20: food to 60°C within 2 hours – reheat in a 60.5°C (or higher) water bath for the times shown in the light green
+L623@P20: colour-coded cells of Table 5 or Table 6.
+L624@P20: • For pasteurised or cooked and properly cooled foods to be reheated for immediate service: the Food Standards
+L625@P20: Code does not prescribe a time limit but a reasonable target is 4 hours (the ‘2-hour/4-hour rule’) – reheat in a
+L626@P20: 55°C (or higher) water bath for the times shown in the light green or dark green colour-coded cells of Table 5 or
+L627@P20: Table 6.
+L628@P20: • For larger portions of pasteurised or cooked and properly cooled foods to be reheated for immediate service:
+L629@P20: the Food Standards Code does not prescribe a time limit but a reasonable target is to heat the food to 60°C
+L630@P20: within 4 hours (the ‘2-hour/4-hour rule’) – this can be achieved using higher water bath temperatures and
+L631@P20: checking the temperature at the centre of the food with a tip sensitive digital thermometer. However, the use of
+L632@P20: a 60.5°C water bath for the times shown in the pale orange colour-coded cells in Table 5 or Table 6 will be low
+L633@P20-21: risk.22
+L634@P21: Table 5. Approximate heating time (Hours: Minutes) for refrigerated sous vide food to 0.5°C less than the
+L635@P21: water bath’s temperature
+L636@P21: Food thickness
+L637@P21: (mm)
+L638@P21: Food shape
+L639@P21: Slab-like Cylinder-like Sphere-like
+L640@P21: 5 0:05 0:05 0:04
+L641@P21: 10 0:19 0:11 0:08
+L642@P21: 15 0:35 0:18 0:13
+L643@P21: 20 0:50 0:30 0:20
+L644@P21: 25 1:15 0:40 0:25
+L645@P21: 30 1:30 0:50 0:30
+L646@P21: 35 2:00 1:00 0:45
+L647@P21: 40 2:30 1:15 0:55
+L648@P21: 45 3:00 1:30 1:15
+L649@P21: 50 3:30 2:00 1:30
+L650@P21: 55 4:00 2:15 1:30
+L651@P21: 60 4:45 2:30 2:00
+L652@P21: 65 5:30 3:00 2:15
+L653@P21: 70 – 3:30 2:30
+L654@P21: 75 – 3:45 2:45
+L655@P21: 80 – 4:15 3:00
+L656@P21: 85 – 4:45 3:30
+L657@P21: 90 – 5:15 3:45
+L658@P21: 95 – 6:00 4:15
+L659@P21: 100 – – 4:45
+L660@P21: 105 – – 5:00
+L661@P21: 110 – – 5:50
+L662@P21: 115 – – 6:00
+L663@P21-22: From Baldwin (2022).23
+L664@P22: Table 6. Approximate heating time (Hours: Minutes) for frozen sous vide food to reach 0.5°C less than the
+L665@P22: water bath’s temperature
+L666@P22: Food thickness
+L667@P22: (mm)
+L668@P22: Food shape
+L669@P22: Slab-like Cylinder-like Sphere-like
+L670@P22: 5 0:07 0:07 0:06
+L671@P22: 10 0:30 0:17 0:12
+L672@P22: 15 0:50 0:30 0:20
+L673@P22: 20 1:15 0:40 0:30
+L674@P22: 25 1:45 0:55 0:40
+L675@P22: 30 2:15 1:15 0:55
+L676@P22: 35 3:00 1:30 1:15
+L677@P22: 40 3:30 2:00 1:30
+L678@P22: 45 4:30 2:30 1:45
+L679@P22: 50 5:15 2:45 2:00
+L680@P22: 55 6:15 3:15 2:30
+L681@P22: 60 7:15 4:00 2:45
+L682@P22: 65 8:15 4:15 3:15
+L683@P22: 70 – 5:00 3:45
+L684@P22: 75 – 5:45 4:15
+L685@P22: 80 – 6:30 4:45
+L686@P22: 85 – 7:15 5:15
+L687@P22: 90 – 8:00 5:45
+L688@P22: 95 – 8:45 6:15
+L689@P22: 100 – – 7:00
+L690@P22: 105 – – 7:30
+L691@P22: 110 – – 8:15
+L692@P22: 115 – – 9:00
+L693@P22-23: From Baldwin (2022)24
+L694@P23: 1.6 Serving raw or undercooked foods – infectious bacteria, parasites and viruses
+L695@P23: The US Centers for Disease Control and Prevention nominate a number of simple precautions that consumers can
+L696@P23: use to protect themselves from foodborne diseases (CDC, 2010). The first of these is:
+L697@P23: Cook meat, poultry and eggs thoroughly. Using a thermometer to measure the internal temperature of meat is a
+L698@P23: good way to be sure that it is cooked sufficiently to kill bacteria.
+L699@P23: Many other food agencies make very similar recommendations including the NSW Food Authority (NSWFA, 2011c).
+L700@P23: Despite the advice, people still choose to eat a wide variety of raw or undercooked animal products. For example:
+L701@P23: Carpaccio Yukhoe Rare hamburger Egg nog
+L702@P23: Ceviche Steak tartare Sashimi Kibbeh
+L703@P23: Egg butter Tiramisu Raw Milk Cheese
+L704@P23: The risk with these foods is related to the potential and, in some cases, likely presence of pathogenic bacteria,
+L705@P23: parasites or viruses. The risks can be illustrated by:
+L706@P23: • disease prevalence statistics:
+L707@P23: - Vibrio parahaemolyticus infection accounted for 45–60% of food related infections in Japan (Berger, 2011).
+L708@P23: This organism is associated with seafood and the illness is related to the high consumption of raw seafood
+L709@P23: in Japan.
+L710@P23: - In France, more than 200 cases of hepatitis E are reported each year. It has been shown in developed
+L711@P23: industrialised countries that pigs are reservoirs of the virus. Acute hepatitis E has been linked to persons
+L712@P23: who consumed uncooked pig liver sausages. These sausages are good candidates for the transmission of
+L713@P23: hepatitis E because they are made with pig liver, are not cooked during the manufacturing process, and are
+L714@P23: often eaten uncooked (ProMed Mail, 2011).
+L715@P23: - In April 2014, the first reported HEV outbreak was reported in Australia. Analytical evidence linked the
+L716@P23: outbreak to consumption of pork liver pâté (Communicable Diseases Branch, 2015).
+L717@P23: • outbreak reports:
+L718@P23: - In April and May 2011, there was a food poisoning outbreak in Japan caused by enterohemorrhagic E. coli
+L719@P23: O111:H8 and O157:H7 from raw beef dishes at branches of a barbeque restaurant. The outbreak affected
+L720@P23: 181 people and five people died (Watahiki et al., 2014).
+L721@P23: - Nine cases of paragonimiasis (a parasitic infection) were caused by the consumption of raw or undercooked
+L722@P23: crayfish in Missouri (CDC, 2010).
+L723@P23: - In 2010, a Salmonella outbreak in Albury, Australia affected 179 people. Home-made aioli, a garlic
+L724@P23: mayonnaise that includes raw egg, was the cause (NSWFA, 2011b).
+L725@P23: • other sources:
+L726@P23: - In recent decades, the custom of eating foods raw, or only partially cooked, has grown worldwide and has
+L727@P23: led to the emergence of parasitic diseases in ethnic groups where eating raw or undercooked meat was not
+L728@P23: previously common (Macpherson, 2005).
+L729@P23: - Three large studies in Europe have pinpointed uncooked meat as the most important risk factor for
+L730@P23-24: Toxoplasma gondii infection in pregnant women. Toxoplasmosis is generally considered a serious health 25
+L731@P24: problem in pregnant women, who can pass the infection to the foetus or newborn, and in people who are
+L732@P24: immunocompromised (Kijlstra & Jongert, 2008).
+L733@P24: - The tradition of eating raw fish is becoming increasingly fashionable in many countries. This had led to a
+L734@P24: dramatic rise in the incidence of fish borne parasitic infections in previously unaffected ethnic groups
+L735@P24: (Macpherson, 2005).
+L736@P24: - All wild caught seawater and freshwater fish must be considered at risk of containing viable parasites of
+L737@P24: human health concern if these products are to be eaten raw or almost raw (EFSA, 2010).
+L738@P24: - A range of traditional Japanese dishes utilise the addition of raw egg, for examples tsukimi udon/soba,
+L739@P24: sukiyaki, tamago kake gohan, oyakodon and natto. Eggs have caused a number of food poisoning cases in
+L740@P24: Japan since 1989 (Bureau of Social Welfare and Public Health, Tokyo Metropolitan Government, n.d.).
+L741@P24: Some sous vide recipes call for low temperature short time (LT ST) cooking and in some cases the final food remains
+L742@P24: raw or undercooked. Such foods have a higher risk of causing bacterial, viral or parasitic illness.
+L743@P24: Hands-on: safer alternatives – raw and undercooked animal products
+L744@P24: Businesses must be aware that meat, seafood and eggs that have not been cooked present an increased level of food
+L745@P24: safety risk to consumers. These products should not be used for cook chill food service.
+L746@P24: Vulnerable people such as children, the elderly, immunocompromised people or those with a serious illness are at
+L747@P24: greater risk of suffering from the more severe consequences of foodborne illness. Notifying these members of the
+L748@P24: vulnerable population can be done by written warnings on menus, posting signs and verbal disclosure by staff.
+L749@P24: Table 7. Recommended control measures to improve the safety of raw and undercooked animal products
+L750@P24: Hazard Control measures
+L751@P24: Seafood:
+L752@P24: Parasites
+L753@P24: • Purchase safer fish: marine fish are safer than freshwater fish; farmed (pellet feed) fish are
+L754@P24: safer than wild caught fish; higher value marine fish (tuna, Atlantic salmon) are safer than
+L755@P24: lower value marine fish (mackerel, squid)8.
+L756@P24: • Carefully examine fish during cleaning and filleting. Parasites are small but many can be seen
+L757@P24: with the naked eye or when fillets are ‘candled’ (a strong light is shone through the fillet).
+L758@P24: • Use the freshest, best quality fish that is inspected during processing.
+L759@P24: • Freeze fish prior to preparation. For fish to be consumed without adequate cooking, the
+L760@P24: European Food Safety Agency (EFSA, 2010) requires the following:
+L761@P24: - Freeze at -15°C for at least 96 hours, or
+L762@P24: - Freeze at -20°C for at least 24 hours, or
+L763@P24: - Freeze at -35°C for at least 15 hours.
+L764@P24: • Cook all parts of the fish to 60°C for 1 minute (EFSA, 2010). This mild cooking process will be
+L765@P24: compatible with many fish recipes.
+L766@P24: 8
+L767@P24: Information on parasites that impact the safety of seafood is provided in the Risk Assessment of the Seafood Safety
+L768@P24-25: Scheme on the Food Authority’s website26
+L769@P25: Hazard Control measures
+L770@P25: Seafood:
+L771@P25: Bacteria
+L772@P25: • The main bacterial pathogen of marine origin in Australia (Vibrio parahaemolyticus) dies when
+L773@P25: exposed to refrigeration temperatures (ICMSF, 1996a) and is inactivated by fairly mild cooking
+L774@P25: temperatures (van Asselt & Zwietering, 2006). However, fish contaminated with bacteria from
+L775@P25: the kitchen environment or food handlers might not be made safe after mild cooking
+L776@P25: processes.
+L777@P25: • Do not cook minced or reformed seafood (including fish cakes and products formed using
+L778@P25: transglutaminase or other ‘meat glues’) using low temperature short time (LT ST) processes.
+L779@P25: • The ‘parasite cook’ recommended by EFSA will provide control of V. parahaemolyticus.
+L780@P25: Meat:
+L781@P25: Parasites
+L782@P25: • Purchase through reputable supply chains. Meat inspection prevents meat infected with many,
+L783@P25: but not all, parasites from being marketed.
+L784@P25: • Freeze meat prior to preparation. The EFSA fish freezing requirements above will provide
+L785@P25: useful control.
+L786@P25: Meat: Bacteria • Do not cook mechanically tenderised, minced, pumped, rolled or reformed meats (including
+L787@P25: meats prepared using ‘meat glue’) using low temperature short time (LT ST) processes.
+L788@P25: • Avoid very low temperature cooking. Water bath temperatures above 55°C and, more
+L789@P25: generally, meat surface temperatures above 54.5°C will provide a measure of decontamination
+L790@P25: as cooking proceeds.
+L791@P25: • Sous vide chefs should test recipes to see if slightly higher temperatures can be used. Figure 2
+L792@P25: shows relative thermal inactivation of Salmonella, generated by the ComBase predictive
+L793@P25: microbiology modelling website. The yellow curve shows some reduction at 54.5°C with
+L794@P25: increasing lethality at 55°C (pink), 55.5°C (orange) and 56°C (blue). A small increase in
+L795@P25: temperature above 54.5°C will provide markedly increased destruction of surface bacteria. As
+L796@P25: noted above, bacteria are typically found on the surface of meat providing it has not been
+L797@P25: tenderised, minced, pumped, rolled, reformed or ‘glued’.
+L798@P25: Eggs: Bacteria • Sous vide recipes that result in fully cooked eggs are available and their use is recommended9
+L799@P25: .
+L800@P25: Strict time/temp for fully cooked eggs should be observed as undercooked sous vide eggs
+L801@P25: were one of the implicated sources of a Canadian foodborne illnesses reported in 2014.
+L802@P25: As an alternative to serving raw or undercooked foods, chefs should consider serving cooked food prepared using
+L803@P25: times and temperatures from Table 2 or Table 3.
+L804@P25-26: 9 Refer to the Food Safety Guidelines for the Preparation of Raw Egg Products on the Food Authority’s website27
+L805@P26: Figure 2. Hypothetical thermal destruction of Salmonella at temperatures from 54.5°C to 56°C
+L806@P26: Key: Yellow (top line) 54.5°C; Pink (2nd line) 55°C; Orange (3rd line) 55.5°C; and Blue (bottom line) 56°C.
+L807@P26: Scale: -2 = 99% reduction; -4 = 99.99% reduction; -6 = 99.9999% reduction of Salmonella.
+L808@P26: Source: ComBase (https://www.combase.cc/index.php/en/)
+L809@P26: Additional notes:
+L810@P26: • Equipment (portable circulators in particular). The accuracy of many models is hard to determine, making
+L811@P26: temperature management a concern. Monitoring and maintenance of equipment is extremely important as
+L812@P26: temperature is a key indicator that the food will be safe to consume at the end of the process.
+L813@P26: • All equipment used for sous vide needs must undergo thorough cleaning and sanitising at regular intervals and
+L814@P26: the process must be documented. This should be reflected in the food safety plan for sous vide cooking. Lack of
+L815@P26: cleaning and sanitising may lead to problems such as biofilm build up.
+L816@P26: • Appropriate food-grade bags must be used. Vacuum sealed bags may leak if heated for a very long time. The
+L817@P26: integrity of the bag may also be compromised if inferior quality bags are used.
+L818@P26: • It is important to take temperatures precisely when verifying sous vide protocols. Necessary equipment includes
+L819@P26: a calibrated thermometer (to 0.1 degrees), cell foam tape and a document to record temperatures. Internal
+L820@P26: digital probe tip thermometers must be used to monitor temperatures. Thermometers should be calibrated,
+L821@P26-27: traceable and certified (BCCDC, 2017).28
+L822@P27: Conclusion
+L823@P27: Sous vide seems like a new food service technology but it has a history spanning five decades in France and three
+L824@P27: decades in other countries. It has been found in many markets including extended shelf life ready meals. Today it is
+L825@P27: used by catering companies, restaurants and, increasingly, home cooks.
+L826@P27: There are risks with the sous vide process that must be managed. Leading sous vide chefs are aware of these risks
+L827@P27: and food safety has been a prominent focus in their kitchens and recipe books. As far as can be determined from the
+L828@P27: scientific literature and foodborne illness databases, sous vide chefs have been successful in managing food safety
+L829@P27: and food poisoning attributed to sous vide has rarely been identified.
+L830@P27: The risks associated with sous vide foods can be reduced if:
+L831@P27: • thinner portions of food are prepared so that heating and cooling are rapid.
+L832@P27: • products are not placed in the water bath tightly on top of each other. Overcrowding affects cooking times and
+L833@P27: increases the chance of cold spots occurring.
+L834@P27: • water bath temperatures of at least 55°C are used so that the growth of Clostridium perfringens is first
+L835@P27: prevented and then destruction of the cells commences.
+L836@P27: • the time food is held at temperatures below 54.5°C during cooking is limited to 6 hours.
+L837@P27: • professional equipment with adequate heating capacity and excellent temperature control is used.
+L838@P27: • water and/or food temperatures are checked using a tip sensitive digital thermometer that is accurate to 0.1°C.
+L839@P27: • prepared foods are not stored for extended times unless processes have been validated.
+L840@P27: • risks are not compounded. Cooking large portions of mechanically tenderised meat for extended times at low
+L841@P27: temperatures would be irresponsible.
+L842@P27: If you choose to include on your menu foods that remain essentially raw, you must make clear the health implications
+L843@P27: the food could pose to the consumer.
+L844@P27: New practitioners of sous vide must be aware of the food safety risks and avoid overly experimental applications of the
+L845@P27-28: technology.29
+L846@P28: References
+L847@P28: Advisory Committee on the Microbiological Safety of Food (ACMSF). (1992). Report on vacuum packaging and
+L848@P28: associated processes. London HMSO. Retrieved from
+L849@P28: https://webarchive.nationalarchives.gov.uk/20200401154218/https://acmsf.food.gov.uk/acmsfreps/acmsfreports
+L850@P28: ACMSF. (2007). Annual Report 2006 (see paragraphs 53–56). Retrieved from
+L851@P28: https://webarchive.nationalarchives.gov.uk/20200401160054/https://acmsf.food.gov.uk/acmsfreps/acmsfannualreports
+L852@P28: Baldwin, D. E. (2010). Sous vide for the home cook. Incline Village N.V. Paradox Press.
+L853@P28: Baldwin, D. E. (2012). Sous vide cooking: A review. International Journal of Gastronomy and Food Science, 1(1), 15–
+L854@P28: 30.
+L855@P28: Baldwin, D. E. (2022). A practical guide to sous vide cooking (version 0.4k updated in January 2022). Retrieved from
+L856@P28: https://douglasbaldwin.com/sous-vide.html
+L857@P28: Berger, S. (2011). Infectious diseases of Japan – 2011 edition. Gideon Informatics, Inc. Retrieved from
+L858@P28: http://www.gideononline.com/ebooks/
+L859@P28: British Columbia Centre for Disease Control (BCCDC). (2017). Guidelines for restaurant sous vide cooking safety in
+L860@P28: British Columbia. Retrieved from http://www.bccdc.ca/resourcegallery/Documents/Guidelines%20and%20Forms/Guidelines%20and%20Manuals/EH/FPS/Food/SVGuidelines_Finalf
+L861@P28: orWeb.pdf
+L862@P28: Bureau of Social Welfare and Public Health, Tokyo Metropolitan Government (n.d.). Egg Hygiene Management.
+L863@P28: Retrieved from https://www.fukushihoken.metro.tokyo.lg.jp/shokuhin/eng/rensai/guide37.html
+L864@P28: Centers for Disease Control and Prevention (CDC). (2010). Foodborne illness; frequently asked questions. Retrieved
+L865@P28: from https://www.cdc.gov/foodsafety/ten-dangerous-mistakes.html
+L866@P28: CDC. (2010). Human paragonimiasis after eating raw or undercooked crayfish – Missouri, July 2006−September
+L867@P28: 2010, Retrieved from https://www.cdc.gov/mmwr/preview/mmwrhtml/mm5948a1.htm
+L868@P28: City of New York. (2007). Notice of intention to amend article 81 of the New York City health code. Retrieved from
+L869@P28: https://www.nysadultday.com/assets/docs/Resources/article81-book.pdf
+L870@P28: City of New York (2010). Food protection training manual, revised edition 2010. Retrieved from
+L871@P28: https://www.yumpu.com/en/document/read/6380335/food-protection-course-training-manual-nycgov
+L872@P28: Communicable Diseases Branch. (2015). NSW OzFoodNet Annual Surveillance Report: 2014. Sydney: Health
+L873@P28: Protection NSW Retrieved from https://www.health.nsw.gov.au/Infectious/foodborne/Publications/nsw-ofn-annualreport-2014.pdf
+L874@P28: Cox, B., and Bauler, M. (2008). Cook chill for foodservice and manufacturing: Guidelines for safe production, storage
+L875@P28: and distribution. Alexandria NSW. The Australian Institute of Food Science and Technology Incorporated.
+L876@P28: Creed, P. G. (1998). Sensory and nutritional aspects of sous vide processed foods. In Ghazala, S. (Ed). Sous vide and
+L877@P28: cook chill processing for the food industry (pp 57–88). Maryland, Aspen Publications Inc.
+L878@P28: European Food Safety Authority (EFSA). (2010). Scientific opinion on risk assessment of parasites in fishery products.
+L879@P28: Retrieved from http://www.efsa.europa.eu/en/efsajournal/pub/1543.htm
+L880@P28: Food Safety Authority of Ireland (FSAI) (2006). Guidance Note 15, Cook chill systems in the food service sector
+L881@P28-29: (revision 1). Retrieved from https://studylib.net/doc/8791355/cook-chill-systems-in-the-food-service-sector--revision-1-30
+L882@P29: Food Safety and Inspection Service (FSIS). (1999). Compliance guidelines for meeting lethality performance
+L883@P29: standards for certain meat and poultry products. Retrieved from https://www.fsis.usda.gov/wps/wcm/connect/bf3f01a1-
+L884@P29: a0b7-4902-a2df-a87c73d1b633/Salmonella-Compliance-Guideline-SVSP-RTE-Appendix-A.pdf?MOD=AJPERES
+L885@P29: Food Safety News (FSN). (2021). Four Deaths in E. coli O111 Outbreak in Japan, Retrieved from
+L886@P29: https://www.foodsafetynews.com/2011/05/two-deaths-in-e-coli-o111-outbreak-in-japan/
+L887@P29: FSIS. (2011). Is it done yet? Thermometer placement & temperatures. Retrieved from https://www.fsis.usda.gov/foodsafety/safe-food-handling-and-preparation/food-safety-basics/safe-temperature-chart
+

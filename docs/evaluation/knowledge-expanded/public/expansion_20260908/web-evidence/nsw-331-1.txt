@@ -1,0 +1,412 @@
+Food safety guidelines for the preparation of raw and lightly cooked egg products (https://www.foodauthority.nsw.gov.au/media/1606)
+citeturn77view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 22; Source: click({"ref_id":"turn59view0","id":331}); Total lines: 658
+L0@P0: FI417_2302
+L1@P0: Food Authority
+L2@P0: Food safety guidelines for the preparation
+L3@P0-1: of raw and lightly cooked egg productsFood Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L4@P1: FI417_2302 2
+L5@P1: Table of Contents
+L6@P1: Introduction .........................................................................................................................................3
+L7@P1: Purpose and scope .............................................................................................................................5
+L8@P1: Acknowledgements ...............................................................................................................................................5
+L9@P1: Definitions ...........................................................................................................................................6
+L10@P1: Receiving and storing eggs & other food..........................................................................................9
+L11@P1: Receiving eggs ......................................................................................................................................................9
+L12@P1: Supplier and food information ...............................................................................................................................9
+L13@P1: Storage of whole eggs...........................................................................................................................................9
+L14@P1: Other foods............................................................................................................................................................9
+L15@P1: Egg handling practices – practical steps to control Salmonella ...................................................10
+L16@P1: Premises..............................................................................................................................................................10
+L17@P1: Equipment, utensils, and food contact surfaces..................................................................................................10
+L18@P1: Personal Hygiene ................................................................................................................................................10
+L19@P1: Use of disposable gloves.....................................................................................................................................11
+L20@P1: Temperature control ............................................................................................................................................11
+L21@P1: Temperature measuring device...........................................................................................................................11
+L22@P1: Handling of eggs..................................................................................................................................................11
+L23@P1: Raw or lightly cooked egg products – process controls................................................................12
+L24@P1: Preparation of acidified raw egg products ...........................................................................................................12
+L25@P1: Preparation of desserts .......................................................................................................................................12
+L26@P1: In shell egg pasteurisation using a sous vide method.........................................................................................12
+L27@P1: Pasteurisation of egg products............................................................................................................................13
+L28@P1: Storage and display of raw egg foods .................................................................................................................14
+L29@P1: Documentation ....................................................................................................................................................14
+L30@P1: References.........................................................................................................................................15
+L31@P1: Appendix 1. Acidification of raw egg products...............................................................................16
+L32@P1: Steps for measuring pH.......................................................................................................................................16
+L33@P1: Different pH measuring methods.........................................................................................................................16
+L34@P1: Raw egg product acidification check sheet .........................................................................................................18
+L35@P1: Appendix 2. Egg pasteurisation check sheet..................................................................................19
+L36@P1: Whole egg pasteurisation using a sous vide method..........................................................................................19
+L37@P1: Appendix 3. Applying the 2-hour/4-hour rule..................................................................................20
+L38@P1: The 2-hour/4-hour rule check sheet ....................................................................................................................20
+L39@P1: Appendix 4. Temperature calibration and measurement ...............................................................21
+L40@P1: Calibration procedures ........................................................................................................................................21
+L41@P1-2: More information...............................................................................................................................22Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L42@P2: FI417_2302 3
+L43@P2: Introduction
+L44@P2: In Australia, foodborne illness caused by Salmonella has significantly increased over the past 20 years
+L45@P2: and more than seventy percent of salmonellosis is thought to be due to contaminated food (Davis et al.,
+L46@P2: 2022; Ford et al, 2016). Mishandling of eggs and egg-based products is a significant contributor to
+L47@P2: foodborne illness in Australia, and in NSW.
+L48@P2: Salmonella is known to be present on the surfaces of eggs and improper handling can lead to raw egg
+L49@P2: products becoming contaminated.
+L50@P2: There are a number of factors that contribute to the strong association between foodborne illness
+L51@P2: outbreaks caused by Salmonella and food that is sold which contains raw egg. These include:
+L52@P2: • Contamination of egg contents by Salmonella from the shell,
+L53@P2: • Failure to process raw egg foods sufficiently (through acidification or heat) to remove any Salmonella
+L54@P2: risk,
+L55@P2: • Failure to clean and sanitise equipment and food contact surfaces,
+L56@P2: • Temperature abuse of products (i.e. storage above 5°C), and
+L57@P2: • Keeping raw egg products beyond the recommended storage life (maximum 24 hours) at refrigerated
+L58@P2: temperature.
+L59@P2: The practice of pooling eggs to produce raw egg foods significantly increases the likelihood of
+L60@P2: Salmonella contamination of a product which does not receive any further cooking or treatment to
+L61@P2: eliminate harmful bacteria.
+L62@P2: Many large outbreaks of Salmonella food poisoning linked to raw egg foods have occurred in NSW and
+L63@P2: nationally, particularly where business hygiene and temperature control issues were apparent.
+L64@P2: Raw egg products that are most commonly implicated in Salmonella food poisoning include:
+L65@P2: • Sauces and spreads made with raw egg – for example mayonnaise, aioli, egg butter.
+L66@P2: • Desserts made without an effective cook step – for example tiramisu, mousse, fried ice cream.
+L67@P2: • Drinks containing raw egg – for example egg flip, raw egg high protein smoothies.
+L68@P2: The easiest solution to reduce the risk of a retail food business being implicated in a foodborne illness
+L69@P2: outbreak caused by Salmonella is to avoid selling food containing raw egg. If a food business decides to
+L70@P2: prepare and sell raw egg products, the business chooses to accept the inherent food safety risk and is
+L71@P2: responsible for effectively managing the risk and producing safe food.
+L72@P2: All food business should be able to identify and control food safety risks to ensure that they can meet the
+L73@P2: requirements of the Australia New Zealand Food Standards Code (Food Standards Code). In order to
+L74@P2: protect customers from the risk of foodborne illness, businesses must comply with Standard 3.2.2,
+L75@P2-3: Division 3, Clause 7 (see below) to ensure that only safe and suitable food is processed.Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L76@P3: FI417_2302 4
+L77@P3: 7 Food processing
+L78@P3: 1. A food business must –
+L79@P3: (a) take all practicable measures to process only safe and suitable food; and
+L80@P3: (b) when processing food –
+L81@P3: (i) take all necessary steps to prevent the likelihood of food being contaminated; and
+L82@P3: (ii) where a process step is needed to reduce to safe levels any pathogens that may be
+L83@P3: present in the food – use a process step that is reasonably known to achieve the
+L84@P3: microbiological safety of the food.
+L85@P3: 2. A food business must, when processing potentially hazardous food that is not
+L86@P3: undergoing a pathogen control step, ensure that the time the food remains at
+L87@P3: temperatures that permit the growth of infectious or toxigenic microorganisms in the food
+L88@P3: is minimised.
+L89@P3: This is particularly important for food businesses such as restaurants, cafés, bakeries and caterers that
+L90@P3: prepare and sell food containing raw egg.
+L91@P3: Understanding the risk in the preparation of raw egg products, the NSW Food Authority has developed
+L92@P3: these guidelines to assist businesses to undertake practices that will ensure that they comply with food
+L93@P3: safety requirements when making products with a known history of causing salmonellosis.
+L94@P3: The following guidance is recommended:
+L95@P3: 1. Use safer alternatives to raw eggs in foods which are not cooked. Alternatives include commercially
+L96@P3: produced dressings and sauces, or pasteurised egg products.
+L97@P3: 2. If using a raw egg product is the only option, then all of the following controls must be in place:
+L98@P3: a. Egg receival – only buy eggs from reputable suppliers with appropriate delivery and storage
+L99@P3: conditions. No cracked, dirty or unstamped eggs,
+L100@P3: b. Storage – correct storage and display of ingredients and products, including proper temperature
+L101@P3: control,
+L102@P3: c. Processing – correct handling such as good personal hygiene (including good hand washing
+L103@P3: practices and proper use of gloves if used), use of a sanitised egg separator, and proper
+L104@P3: temperature control,
+L105@P3: d. Premises – clean premises, fixtures, fittings and equipment, compliant hand wash facility,
+L106@P3: sanitised equipment (including egg separator) and food contact surfaces,
+L107@P3: AND for foods containing raw egg, with a history of causing salmonellosis or of a very similar
+L108@P3: nature to those foods, steps e) and f) below:
+L109@P3: e. The product is to be acidified to a pH of 4.2 (or less) or effectively heat treated.
+L110@P3: Foods containing raw eggs must be acidified to a pH of 4.2 (or less) through the addition of acidic
+L111@P3: ingredients such as lemon juice or vinegar
+L112@P3: OR
+L113@P3: Receive effective heat treatment such as sous vide or pasteurisation to eliminate Salmonella, if present.
+L114@P3: f. The treated raw egg product should be stored at or below 5˚C for no longer than 24 hours and
+L115@P3: should be discarded at the end of the day. A fresh batch should be made daily.
+L116@P3: Note:
+L117@P3: Under the Food Standards Code Standard 3.2.2 Division 3, to prevent disease causing bacteria from
+L118@P3: growing or producing toxins, the temperature of products must be either at or below 5˚C during transport,
+L119@P3: storage and display. The Food Standards Code allows for alternative compliance methods provided the
+L120@P3: businesses can demonstrate the product’s safety (Standard 3.2.2, Clause 25).
+L121@P3: The ‘2-hour/4-hour rule’ is used by Food Standards Australia New Zealand (FSANZ) as an example of
+L122@P3: an alternative method for compliance (see page 14). If a business uses the ‘2-hour/4-hour rule’, then a
+L123@P3-4: documented system must be in place to demonstrate evidence that it is being used effectively.Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L124@P4: FI417_2302 5
+L125@P4: Purpose and scope
+L126@P4: The purpose of these guidelines is to give food retail businesses that sell food containing raw egg
+L127@P4: specific safety steps for its preparation and clear guidance and advice on how to meet food safety
+L128@P4: regulations. These businesses are strongly advised to follow this guidance document.
+L129@P4: The document covers areas from receipt of eggs through to preparation of raw egg products. These
+L130@P4: areas can all potentially affect the safety of the product. It also includes an example of a monitoring
+L131@P4: system for use when acidifying raw egg products.
+L132@P4: This document applies to the foods that contain raw or lightly cooked egg known to have caused cases
+L133@P4: of salmonellosis, including:
+L134@P4: • Sauces and spreads such as mayonnaise, aioli and egg butter
+L135@P4: • Desserts such as tiramisu, mousse and fried ice cream
+L136@P4: • Drinks such as shakes and smoothies.
+L137@P4: Recommendations 2(e) and 2(f) (on page 5) as laid out in this guideline do not apply to certain products
+L138@P4: that contain raw or lightly cooked egg but have little or no history of causing salmonellosis due to their
+L139@P4: traditional method of preparation, use or storage including:
+L140@P4: • cooked egg sauces for example hollandaise and béarnaise sauce
+L141@P4: • cooked breakfast style eggs such as scrambled or poached eggs and omelettes
+L142@P4: • cakes and soufflés (baked)
+L143@P4: • meringues (oven baked)
+L144@P4: • icing (high sugar content)
+L145@P4: • marshmallows (boiled during preparation)
+L146@P4: • frozen desserts such as ice cream or frozen mousse (frozen immediately after preparation)
+L147@P4: • traditional dishes that incorporate a raw egg added when serving such as tartare, congee, and
+L148@P4: soups.
+L149@P4: All food businesses must meet the requirements of the Food Standards Code to ensure they follow safe
+L150@P4: food handling practices. This document does not cover all requirements of the Food Standards Code, in
+L151@P4: particular requirements relating to premises and equipment. Business operators must read the Food
+L152@P4: Standards Code and ensure they comply with all aspects of the Food Standards Code as it relates to
+L153@P4: their business.
+L154@P4: Acknowledgements
+L155@P4: This document has been developed with assistance from NSW local council Environmental Health
+L156@P4-5: Officers.Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L157@P5: FI417_2302 6
+L158@P5: Definitions
+L159@P5: Term Definition
+L160@P5: Acidified product Product with vinegar/lemon juice/other acid added to achieve a pH of 4.2 or
+L161@P5: less.
+L162@P5: Authorised Officer A definition of an Authorised Officer is included in the Food Standards Code
+L163@P5: (Standard 1.1.2) and also defined in the NSW Food Act 2003 Part 1.
+L164@P5: The appointment of Authorised Officers and Certificates of Authority are set
+L165@P5: out in NSW Food Act 2003 Part 9 Division 3.
+L166@P5: Cleaning The process of removing food and other types of soils from surfaces,
+L167@P5: equipment and utensils. Detergents are used to assist removal.
+L168@P5: Cracked egg An egg which has a cracked shell which is visible, or visible by candling or
+L169@P5: other equivalent method, and includes a broken egg.
+L170@P5: Food Standards Code 4.2.5, Division 1, Clause 2
+L171@P5: Hairline cracks often escape visual detection and can worsen as eggs move
+L172@P5: through the supply chain.
+L173@P5: Dirty egg An egg that has visible faeces, soil or other matter on it (for example yolk,
+L174@P5: albumen, feathers).
+L175@P5: Food Standards Code 4.2.5, Division 1, Clause 2
+L176@P5: Egg An egg from any avian (bird) species, except ratites
+L177@P5: Food Standards Code 4.2.5, Division 1, Clause 2
+L178@P5: Egg pulp The contents of an egg, which may contain sugar or salt.
+L179@P5: Food Standards Code 4.2.5, Division 1, Clause 2
+L180@P5: Foods sold
+L181@P5: containing raw egg
+L182@P5: Food that is prepared with raw egg and consumed without further processing
+L183@P5: (for example without cooking). Examples include:
+L184@P5: Sauces and spreads made with raw egg – for example mayonnaise, aioli, egg
+L185@P5: butter.
+L186@P5: Desserts made without an effective cook step – for example tiramisu,
+L187@P5: mousse, fried ice cream.
+L188@P5: Drinks containing raw egg – for example egg flip, raw egg high protein
+L189@P5: smoothies.
+L190@P5: Liquid egg white The white of egg separated as effectively as practicable from the yolk in liquid
+L191@P5: form.
+L192@P5: Food Standards Code 4.2.5, Division 1, Clause 2
+L193@P5: Liquid egg yolk Yolk of egg separated as effectively as practicable from the white in liquid
+L194@P5: form.
+L195@P5-6: Food Standards Code 4.2.5, Division 1, Clause 2Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L196@P6: FI417_2302 7
+L197@P6: Term Definition
+L198@P6: Pasteurisation of
+L199@P6: egg product
+L200@P6: A control measure where eggs are subjected to a process, using heat to
+L201@P6: reduce the load of pathogenic microorganisms to an acceptable level to
+L202@P6: ensure safety.
+L203@P6: Pathogenic bacteria Bacteria capable of causing food poisoning for example Salmonella.
+L204@P6: Potentially
+L205@P6: hazardous foods
+L206@P6: Food that has to be kept at a certain temperature to minimise the growth of
+L207@P6: any pathogenic bacteria that may be present in the food or to prevent the
+L208@P6: formation of toxins in the food.
+L209@P6: Food Standards Code 3.2.2, Division 1, Clause 1
+L210@P6: Ready-to-eat foods Food that is ordinarily consumed in the same state as that in which it is sold
+L211@P6: and does not include nuts in the shell and whole, raw fruits and vegetables
+L212@P6: that are intended for hulling, peeling or washing by the consumer.
+L213@P6: Food Standards Code 3.2.2, Division 1, Clause 1
+L214@P6: For retail businesses this would include cooked foods or other foods that
+L215@P6: have various dressings (for example raw egg mayonnaise acidified to pH less
+L216@P6: than or equal to 4.2)
+L217@P6: Sanitising To apply heat or chemicals, or heat and chemicals, or other processes, to a
+L218@P6: surface (for example food contact surfaces of equipment, eating and drinking
+L219@P6: utensils) so that the number of microorganisms on the surface is reduced to a
+L220@P6: level that:
+L221@P6: does not compromise the safety of the food with which it may come into
+L222@P6: contact
+L223@P6: does not permit the transmission of infectious disease
+L224@P6: Food Standards Code 3.2.2, Division 5, Clause 20(2)(b)
+L225@P6: There are two methods available:
+L226@P6: Heat – to sanitise effectively with heat only, temperature of at least 77°C and
+L227@P6: a contact time of greater than 30 seconds is required. Lower temperatures
+L228@P6: will require longer contact times. If using a dishwasher, check the
+L229@P6: manufacturer’s instructions to ensure adequate temperature/time is achieved.
+L230@P6: Chemical sanitiser – generally chlorine or ammonium-based compounds. It is
+L231@P6: important to choose the right product for the food premises and to follow the
+L232@P6: manufacturer’s instruction especially for dilution rate, contact time and safety
+L233@P6: instructions.
+L234@P6: Shelf-stable foods Foods which can be stored unrefrigerated without affecting their safety or
+L235@P6: quality.
+L236@P6: Sous-vide
+L237@P6: pasteurised eggs
+L238@P6: Eggs that have been exposed to a mild heat treatment in a water bath to kill
+L239@P6: Salmonella that may be present, without actually cooking the eggs.
+L240@P6: Temperature control Means maintaining food at a temperature of:
+L241@P6: 5°C or below if this is necessary to minimise the growth of infectious or
+L242@P6: toxigenic microorganisms in the food so that the microbiological safety of the
+L243@P6: food will not be adversely affected for the time the food is at that temperature;
+L244@P6-7: orFood Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L245@P7: FI417_2302 8
+L246@P7: Term Definition
+L247@P7: 60°C or above; or
+L248@P7: another temperature – if the food business demonstrates that maintenance of
+L249@P7: the food at this temperature for the period of time for which it will be so
+L250@P7: maintained, will not adversely affect the microbiological safety of the food.
+L251@P7: Food Standards Code 3.2.2, Division 1, Clause 1
+L252@P7: Validate Validate means:
+L253@P7: Confirming a control measure for a critical control point or process is effective
+L254@P7: to minimise a food safety hazard; and
+L255@P7: Providing objective evidence to confirm paragraph (a)
+L256@P7-8: Food Standards Code 4.2.5, Division 3, Clause 21Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L257@P8: FI417_2302 9
+L258@P8: Receiving and storing eggs & other food
+L259@P8: Food safety begins by ensuring only safe and suitable ingredients are purchased from a supplier and
+L260@P8: that these items are stored correctly. The following information is provided to assist meeting the
+L261@P8: requirements of the Food Standards Code regarding the receipt and storage of food.
+L262@P8: Receiving eggs
+L263@P8: • Only accept eggs that are:
+L264@P8: — clean,
+L265@P8: — free from visible cracks and not leaking,
+L266@P8: — stamped,
+L267@P8: — supplied in clean packaging, and
+L268@P8: — correctly labelled (i.e. with the supplier’s name and address, date marking).
+L269@P8: • Check the eggs when they arrive and always reject eggs that are broken, cracked or dirty, or that are
+L270@P8: supplied in dirty, defective, re-used or improperly labelled packaging. Accepting eggs in poor
+L271@P8: condition places your business at risk.
+L272@P8: Supplier and food information
+L273@P8: • A list of food suppliers should be maintained in case they need to be contacted.
+L274@P8: • For all foods, the label or receipt needs to contain details of suppliers’ names and addresses. Phone
+L275@P8: contact details should also be kept.
+L276@P8: • Items that do not meet the above receiving and information requirements should be returned to the
+L277@P8: supplier.
+L278@P8: Storage of whole eggs
+L279@P8: • Store whole eggs (egg in shell) in a refrigerator or cool room.
+L280@P8: • Avoid temperature fluctuations and only take out what is required for service.
+L281@P8: • Don’t store fresh egg pulp that has been collected (pooled) in a container.
+L282@P8: • Ensure proper stock rotation so that the oldest stock is used first (as long as they are still within the
+L283@P8: best before or use-by-date).
+L284@P8: • Discard any cartons that contain spilt raw egg to avoid contamination.
+L285@P8: • Eggs should not be re-packed into cartons with labels that do not correctly reflect the origin, weight or
+L286@P8: egg type.
+L287@P8: Other foods
+L288@P8: Potentially hazardous foods must be stored under refrigeration at or below 5°C. This includes meat,
+L289@P8: chicken, seafood, dairy products and eggs.
+L290@P8: • Only receive foods that are within their ‘Use-by’ date or ‘Best Before’ date.
+L291@P8: • Only receive potentially hazardous food that has been transported under temperature control.
+L292@P8: • Once received, all potentially hazardous foods must be placed under refrigerated storage at or below
+L293@P8: 5°C.
+L294@P8: • Refrigerated raw ingredients must be stored separately from ready-to-eat foods and ingredients.
+L295@P8: • Raw foods such as uncooked chicken and meat must not be placed above ready-to-eat foods in the
+L296@P8-9: refrigerator to prevent the raw juices from dripping onto the ready-to-eat foods.Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L297@P9: FI417_2302 10
+L298@P9: • Refrigerated unpackaged foods and ingredients must be covered during receipt and storage to
+L299@P9: protect against contamination.
+L300@P9: • Store foods in accordance with the manufacturer’s instructions.
+L301@P9: • Ensure proper stock rotation so that the oldest stock is used first (as long as they are still within
+L302@P9: date).
+L303@P9: Egg handling practices – practical steps to control Salmonella
+L304@P9: Preparing foods can involve a great deal of handling of both raw and cooked foods. Because raw egg
+L305@P9: products are eaten without any further cooking it is important that they are prepared correctly and safely.
+L306@P9: Raw foods can contain bacteria and if the food is not handled correctly, the numbers of bacteria can
+L307@P9: grow. Poor handling of cooked foods can result in cross-contamination from raw foods and if not stored
+L308@P9: correctly, the number of bacteria can also grow.
+L309@P9: Below are some main points to assist in proper preparation of foods, particularly raw egg products, and
+L310@P9: to help avoid cross-contamination. For further information, refer to Standard 3.2.2 of the Food Standards
+L311@P9: Code.
+L312@P9: Premises
+L313@P9: The cleanliness of the premises, fixtures and fittings assist in minimising cross contamination. In
+L314@P9: particular it is important to have an acceptable hand washing facility that includes:
+L315@P9: — warm running water,
+L316@P9: — soap,
+L317@P9: — single-use hand towels, for example paper towels.
+L318@P9: Equipment, utensils, and food contact surfaces
+L319@P9: • All equipment and utensils must be in good condition and able to be easily cleaned and sanitised.
+L320@P9: • Mechanical equipment, such as blenders and food processors, should be able to be easily taken
+L321@P9: apart for cleaning and sanitising. If they cannot be taken apart, equipment like stick blenders may not
+L322@P9: be appropriate for processing raw eggs.
+L323@P9: • Food contact surfaces such as equipment, benches and utensils must be cleaned and sanitised
+L324@P9: before use.
+L325@P9: • Boards and utensils must be cleaned and sanitised between preparing different foods, especially
+L326@P9: when preparing foods that will not be further cooked (for example raw egg products).
+L327@P9: • Use a sanitised egg separator to separate egg yolk from egg whites. Eggs must not be separated
+L328@P9: using their shells as the shells may be contaminated with Salmonella on the outside surface.
+L329@P9: Personal Hygiene
+L330@P9: All food handlers must take all reasonable measures not to handle food or surfaces likely to come into
+L331@P9: contact with food in a way that is likely to compromise the safety and suitability of food.
+L332@P9: Food handlers must ensure they follow good personal hygiene practices:
+L333@P9: • People who are sick with vomiting, diarrhoea or fever must not prepare or serve food.
+L334@P9: • Take all practicable measures to prevent unnecessary contact with ready-to-eat food.
+L335@P9: • Wash hands prior to preparing food and after handling non-food articles, using the toilet, smoking,
+L336@P9: drinking, eating and touching hair, scalp or body.
+L337@P9-10: • Wash hands between handling of raw ingredients and ready-to-eat foods.Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L338@P10: FI417_2302 11
+L339@P10: Use of disposable gloves
+L340@P10: It is not mandatory for food handlers to use disposable gloves, although if used correctly they can assist
+L341@P10: with minimising contamination.
+L342@P10: When using disposable gloves, they must be:
+L343@P10: • Only used for one continuous task and then discarded.
+L344@P10: • Regularly changed to avoid cross-contamination – this is especially the case when changing from
+L345@P10: preparing raw ingredients to handling ready-to-eat foods.
+L346@P10: • Always discarded and not kept for later use once taken off.
+L347@P10: • Removed and discarded before using the toilet, smoking, eating, drinking or touching the hair, scalp
+L348@P10: or body.
+L349@P10: Temperature control
+L350@P10: • Temperature control throughout the operation is critical in minimising microbial growth, for example
+L351@P10: raw egg product must be at or below 5˚C. This includes all operations during receipt, processing,
+L352@P10: storage and display.
+L353@P10: • If a raw egg product is out of temperature control (i.e. not at or below 5˚C), there must be
+L354@P10: documented evidence that the ‘2-hour/4-hour’ rule is being met.
+L355@P10: 2-hour/4-hour rule
+L356@P10: When potentially hazardous ready-to-eat food has been kept between 5˚C and 60˚C for:
+L357@P10: up to 2 hours, it can be refrigerated below 5˚C, or kept hot above 60˚C, or used
+L358@P10: immediately,
+L359@P10: between 2 and 4 hours, it must be used immediately, or
+L360@P10: up to a total of 4 hours or more, it must be thrown out.
+L361@P10: Safe Food Australia – Appendix 2 (2016)
+L362@P10: For a more detailed information on the 2-hour/4-hour rule, refer to the ‘Guidance on the 2-hour/4-hour
+L363@P10: rule’ document on the NSW Food Authority’s website www.foodauthority.nsw.gov.au/resource-centre.
+L364@P10: Temperature measuring device
+L365@P10: • Businesses handling potentially hazardous foods must have a temperature measuring device.
+L366@P10: • Thermometers must be easily accessible and able to accurately measure temperatures to +/- 1°C.
+L367@P10: • Thermometers should be calibrated to ensure accuracy.
+L368@P10: • Appendix 4 provides information on calibrating thermometers.
+L369@P10: Handling of eggs
+L370@P10: Because eggs can be contaminated with Salmonella on the surface, the handling of eggs is critical.
+L371@P10: When handling eggs, follow these guidelines:
+L372@P10: • Do not use dirty, cracked or unstamped eggs.
+L373@P10: • Do not wash eggs. Washing makes them more susceptible to contamination. Discard dirty and
+L374@P10: cracked eggs.
+L375@P10: • Visually inspect eggs before use to ensure there are no hairline cracks.
+L376@P10: • Use raw egg pulp immediately – i.e. do not pool or store raw egg batches.
+L377@P10: • Use a sanitised egg separator.
+L378@P10-11: • Regularly prepare fresh batches of raw egg mixture:Food Safety Guidelines for the Preparation of Raw and Lightly Cooked Egg Products
+L379@P11: FI417_2302 12
+L380@P11: — For acidified egg product: document pH and storage times, store for a maximum of 24 hours at or
+L381@P11: below 5˚C (See Appendix 1).
+L382@P11: — If any raw egg product is out of temperature control (i.e. not at or below 5˚C), then storage times
+L383@P11: and temperatures must be documented to demonstrate evidence of compliance with the ‘2-
+L384@P11: hour/4-hour rule’ (see Appendix 3).
+L385@P11: Raw or lightly cooked egg products – process controls
+L386@P11: If a food business decides to prepare raw egg containing foods that do not undergo a pathogen control
+L387@P11: step, the foods should be prepared in line with safe food handling practices to slow the growth of
+L388@P11: Salmonella and minimise the risk of foodborne illness.
+L389@P11: A pathogen control step is a process such as cooking, pasteurisation or retorting to reduce any
+L390@P11: pathogens that may be present in the food to safe levels.
+L391@P11: Preparation of acidified raw egg products
+L392@P11: Correct preparation of acidified raw egg product (using vinegar, lemon juice or other acids) improves
+L393@P11: product safety:
+L394@P11: — Product acidified to a pH of less than 4.2 inhibits the growth of pathogenic bacteria, including
+L395@P11: Salmonella.
+L396@P11: — Acidification should occur as part of the preparation step and should be checked to ensure proper
+L397@P11: acidification has occurred. An example worksheet is provided in Appendix 1.
+L398@P11: — It is important that the pH is measured and recorded as evidence to show that all practicable
+L399@P11: measures are being taken to process safe and suitable food.
+L400@P11: — Once acidified, the product must be covered when not being used.
+L401@P11: — It is important that the product is kept at or below 5°C or that the ‘2-hour/4-hour’ rule is observed.
+L402@P11: — Acidified product must be discarded at the end of the day and a new batch prepared daily.
+L403@P11: Product must not be stored for longer than 24 hours.
+L404@P11: Preparation of desserts
+L405@P11: Using pH as a means of control may not work with desserts (although some desserts may include the
+L406@P11: use of acids or lemon juice).
+L407@P11: Other ways to help make non-acidified raw or lightly cooked egg desserts safer are to:
+L408@P11: — Use eggs that are commercially pasteurised in shell, liquid, frozen or dried.
+

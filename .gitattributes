@@ -1,1 +1,3 @@
 * text=auto eol=lf
+# Corpus manifests and provenance hash original bytes; preserve them across hosts.
+docs/evaluation/knowledge-expanded/** -text

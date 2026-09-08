@@ -1,0 +1,44 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "1. Registration",
+    "origin_id": "registration",
+    "source_url": "https://www.gov.uk/government/publications/food-safety-for-food-delivery/food-safety-for-food-delivery#registration",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2. Taking an order",
+    "origin_id": "taking-an-order",
+    "source_url": "https://www.gov.uk/government/publications/food-safety-for-food-delivery/food-safety-for-food-delivery#taking-an-order",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3. Hygiene guidance for food delivery",
+    "origin_id": "hygiene-guidance-for-food-delivery",
+    "source_url": "https://www.gov.uk/government/publications/food-safety-for-food-delivery/food-safety-for-food-delivery#hygiene-guidance-for-food-delivery",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4. Allergen guidance for food delivery",
+    "origin_id": "allergen-guidance-for-food-delivery",
+    "source_url": "https://www.gov.uk/government/publications/food-safety-for-food-delivery/food-safety-for-food-delivery#allergen-guidance-for-food-delivery",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "5. Delivering food orders",
+    "origin_id": "delivering-food-orders",
+    "source_url": "https://www.gov.uk/government/publications/food-safety-for-food-delivery/food-safety-for-food-delivery#delivering-food-orders",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "6. Delivery vehicles",
+    "origin_id": "delivery-vehicles",
+    "source_url": "https://www.gov.uk/government/publications/food-safety-for-food-delivery/food-safety-for-food-delivery#delivery-vehicles",
+    "ordinal": 6
+  }
+]

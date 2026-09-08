@@ -1,0 +1,556 @@
+{
+  "counts": {
+    "chunk_count": null,
+    "logical_document_count": 12,
+    "source_family_count": 2,
+    "version_count": 12
+  },
+  "documents": [
+    {
+      "document_fixture_id": "SYN-F09-B1-supplier-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "supplier",
+        "entity_refs": [
+          "SUP09",
+          "SKU017",
+          "SKU018"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F09",
+          "source_family_id": "SYN-F09",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F09-B1",
+        "sku_fixture_ids": [
+          "SKU017",
+          "SKU018"
+        ],
+        "store_fixture": "STORE01",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP09"
+        ],
+        "title": "模拟 条码迁移 新旧并存 供货附件 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "original_path": "originals/supplier/SYN-F09-B1-supplier-1-v1.docx",
+      "scenario_family_id": "F09",
+      "sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+      "size": 37743,
+      "source_family_id": "SYN-F09",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F09-B1-supplier-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F09-B1-product-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "product",
+        "entity_refs": [
+          "SUP09",
+          "SKU017",
+          "SKU018"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F09",
+          "source_family_id": "SYN-F09",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F09-B1",
+        "sku_fixture_ids": [
+          "SKU017",
+          "SKU018"
+        ],
+        "store_fixture": "STORE01",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP09"
+        ],
+        "title": "模拟 条码迁移 新旧并存 商品与包装说明 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "original_path": "originals/product/SYN-F09-B1-product-1-v1.xlsx",
+      "scenario_family_id": "F09",
+      "sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+      "size": 6540,
+      "source_family_id": "SYN-F09",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F09-B1-product-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F09-B1-product-2",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "product",
+        "entity_refs": [
+          "SUP09",
+          "SKU017",
+          "SKU018"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F09",
+          "source_family_id": "SYN-F09",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F09-B1",
+        "sku_fixture_ids": [
+          "SKU017",
+          "SKU018"
+        ],
+        "store_fixture": "STORE01",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP09"
+        ],
+        "title": "模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "text/markdown",
+      "original_path": "originals/product/SYN-F09-B1-product-2-v1.md",
+      "scenario_family_id": "F09",
+      "sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+      "size": 2054,
+      "source_family_id": "SYN-F09",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F09-B1-product-2-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F09-B1-sop-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "sop",
+        "entity_refs": [
+          "SUP09",
+          "SKU017",
+          "SKU018"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F09",
+          "source_family_id": "SYN-F09",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F09-B1",
+        "sku_fixture_ids": [
+          "SKU017",
+          "SKU018"
+        ],
+        "store_fixture": "STORE01",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP09"
+        ],
+        "title": "模拟 条码迁移 新旧并存 当班操作规程 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "text/plain",
+      "original_path": "originals/sop/SYN-F09-B1-sop-1-v1.txt",
+      "scenario_family_id": "F09",
+      "sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+      "size": 1814,
+      "source_family_id": "SYN-F09",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F09-B1-sop-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F09-B1-campaign-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "campaign",
+        "entity_refs": [
+          "SUP09",
+          "SKU017",
+          "SKU018"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F09",
+          "source_family_id": "SYN-F09",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F09-B1",
+        "sku_fixture_ids": [
+          "SKU017",
+          "SKU018"
+        ],
+        "store_fixture": "STORE01",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP09"
+        ],
+        "title": "模拟 条码迁移 新旧并存 活动执行要求 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "text/csv",
+      "original_path": "originals/campaign/SYN-F09-B1-campaign-1-v1.csv",
+      "scenario_family_id": "F09",
+      "sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+      "size": 1777,
+      "source_family_id": "SYN-F09",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F09-B1-campaign-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F09-B1-retro-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "retro",
+        "entity_refs": [
+          "SUP09",
+          "SKU017",
+          "SKU018"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F09",
+          "source_family_id": "SYN-F09",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F09-B1",
+        "sku_fixture_ids": [
+          "SKU017",
+          "SKU018"
+        ],
+        "store_fixture": "STORE01",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP09"
+        ],
+        "title": "模拟 条码迁移 新旧并存 异常复盘记录 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "application/pdf",
+      "original_path": "originals/retro/SYN-F09-B1-retro-1-v1.pdf",
+      "scenario_family_id": "F09",
+      "sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+      "size": 8420,
+      "source_family_id": "SYN-F09",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F09-B1-retro-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F21-B1-supplier-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "supplier",
+        "entity_refs": [
+          "SUP21",
+          "SKU041",
+          "SKU042"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F21",
+          "source_family_id": "SYN-F21",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F21-B1",
+        "sku_fixture_ids": [
+          "SKU041",
+          "SKU042"
+        ],
+        "store_fixture": "STORE05",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP21"
+        ],
+        "title": "模拟 发票对账 箱件错价 供货附件 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "original_path": "originals/supplier/SYN-F21-B1-supplier-1-v1.docx",
+      "scenario_family_id": "F21",
+      "sha256": "1757a98cbd55ce7c603ff004d5ad7b3e0ad5c68c382859dee6bb50c3cb0f6e77",
+      "size": 37774,
+      "source_family_id": "SYN-F21",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F21-B1-supplier-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F21-B1-product-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "product",
+        "entity_refs": [
+          "SUP21",
+          "SKU041",
+          "SKU042"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F21",
+          "source_family_id": "SYN-F21",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F21-B1",
+        "sku_fixture_ids": [
+          "SKU041",
+          "SKU042"
+        ],
+        "store_fixture": "STORE05",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP21"
+        ],
+        "title": "模拟 发票对账 箱件错价 商品与包装说明 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "original_path": "originals/product/SYN-F21-B1-product-1-v1.xlsx",
+      "scenario_family_id": "F21",
+      "sha256": "52132799f5135bb89f62a2682f41a2dd87e5e2cb3809598b6a2d80ae6d0e60c1",
+      "size": 6528,
+      "source_family_id": "SYN-F21",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F21-B1-product-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F21-B1-product-2",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "product",
+        "entity_refs": [
+          "SUP21",
+          "SKU041",
+          "SKU042"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F21",
+          "source_family_id": "SYN-F21",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F21-B1",
+        "sku_fixture_ids": [
+          "SKU041",
+          "SKU042"
+        ],
+        "store_fixture": "STORE05",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP21"
+        ],
+        "title": "模拟 发票对账 箱件错价 商品与包装说明 识别交接补充",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "text/markdown",
+      "original_path": "originals/product/SYN-F21-B1-product-2-v1.md",
+      "scenario_family_id": "F21",
+      "sha256": "e981e2f51a79cb4645802a246f7b8e0d484c8761330864a62579e26d75190b77",
+      "size": 2039,
+      "source_family_id": "SYN-F21",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F21-B1-product-2-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F21-B1-sop-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "sop",
+        "entity_refs": [
+          "SUP21",
+          "SKU041",
+          "SKU042"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F21",
+          "source_family_id": "SYN-F21",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F21-B1",
+        "sku_fixture_ids": [
+          "SKU041",
+          "SKU042"
+        ],
+        "store_fixture": "STORE05",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP21"
+        ],
+        "title": "模拟 发票对账 箱件错价 当班操作规程 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "text/plain",
+      "original_path": "originals/sop/SYN-F21-B1-sop-1-v1.txt",
+      "scenario_family_id": "F21",
+      "sha256": "9b4f92e60a5d95a4801c3fe77c83dff48afcd6bee7f6ce2a927999dd0ba0a564",
+      "size": 1808,
+      "source_family_id": "SYN-F21",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F21-B1-sop-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F21-B1-campaign-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "campaign",
+        "entity_refs": [
+          "SUP21",
+          "SKU041",
+          "SKU042"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F21",
+          "source_family_id": "SYN-F21",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F21-B1",
+        "sku_fixture_ids": [
+          "SKU041",
+          "SKU042"
+        ],
+        "store_fixture": "STORE05",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP21"
+        ],
+        "title": "模拟 发票对账 箱件错价 活动执行要求 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "text/csv",
+      "original_path": "originals/campaign/SYN-F21-B1-campaign-1-v1.csv",
+      "scenario_family_id": "F21",
+      "sha256": "32571ac063aad36fa8e558748bef937c25f45f48aa9b883238359efe2d0aa8fe",
+      "size": 1759,
+      "source_family_id": "SYN-F21",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F21-B1-campaign-1-v1"
+    },
+    {
+      "document_fixture_id": "SYN-F21-B1-retro-1",
+      "metadata": {
+        "author": "Codex assistant",
+        "category": "retro",
+        "entity_refs": [
+          "SUP21",
+          "SKU041",
+          "SKU042"
+        ],
+        "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+        "generation_method": "authored scenario composition",
+        "provenance": {
+          "jurisdiction": "SIMULATED",
+          "publisher": "ShopSteward synthetic corpus",
+          "scenario_family_id": "F21",
+          "source_family_id": "SYN-F21",
+          "source_kind": "synthetic_business_document",
+          "source_url": null,
+          "synthetic": true
+        },
+        "revision_number": 1,
+        "scenario_id": "F21-B1",
+        "sku_fixture_ids": [
+          "SKU041",
+          "SKU042"
+        ],
+        "store_fixture": "STORE05",
+        "supersedes": null,
+        "supplier_fixture_ids": [
+          "SUP21"
+        ],
+        "title": "模拟 发票对账 箱件错价 异常复盘记录 主件",
+        "valid_from": "2026-09-01T00:00:00Z",
+        "valid_until": "2026-09-16T00:00:00Z"
+      },
+      "mime": "application/pdf",
+      "original_path": "originals/retro/SYN-F21-B1-retro-1-v1.pdf",
+      "scenario_family_id": "F21",
+      "sha256": "d428f59a06b1931b4da84052d74819a11583f7df3d949b49ed521044fc1f61a7",
+      "size": 8434,
+      "source_family_id": "SYN-F21",
+      "synthetic": true,
+      "version_fixture_id": "SYN-F21-B1-retro-1-v1"
+    }
+  ],
+  "historical_agent_evaluation": false,
+  "quality_counts_excluded": true,
+  "schema_version": "expanded-v1",
+  "scope": "only currently effective synthetic pilot documents; no redating",
+  "snapshot_as_of": "2026-09-08T00:00:00+08:00",
+  "source_manifest": "pilot.json"
+}

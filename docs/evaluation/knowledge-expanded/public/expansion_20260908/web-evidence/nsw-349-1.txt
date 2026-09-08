@@ -1,0 +1,71 @@
+Frozen acai: Guidance for food businesses (https://www.foodauthority.nsw.gov.au/media/8973)
+citeturn85view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":349}); Total lines: 68
+L0@P0: FA665/2410 1
+L1@P0: Food Authority
+L2@P0: Frozen acai has been linked to cases of foodborne illness in NSW. It is a readyto-eat, potentially hazardous food that must be kept cold to remain safe to eat.
+L3@P0: What is acai?
+L4@P0: Acai is the fruit from the Açaizeiros palm, native to the Amazon region in South America. Frozen acai
+L5@P0: has gained popularity as a snack food in recent years and is sold through cafés and specialty acai
+L6@P0: outlets. It is served in a cone or bowl, like a soft serve, with toppings and sauces.
+L7@P0: 85% of the world’s Acai comes from northern Brazil, where it is pulped and made into a frozen fruit
+L8@P0: mix, similar to a sorbet. It comes in 2 formats – powdered, which can be reconstituted before being
+L9@P0: frozen into a soft serve, or frozen bulk tubs, where the product can be scooped or thawed and added
+L10@P0: to a soft serve machine.
+L11@P0: How to reduce the food safety risk
+L12@P0: Temperature control
+L13@P0: A common cause of foodborne illness is storing and displaying potentially hazardous foods at incorrect
+L14@P0: temperatures for long periods. This can lead to the rapid and sustained growth of food poisoning
+L15@P0: bacteria, some of which can produce toxins. These bacteria grow best between 5°C and 60°C.
+L16@P0: Retailers must store and display frozen acai at a temperature of 5°C or below – even during thawing.
+L17@P0: The business must also ensure there is sufficient freezer, cool room and/or refrigerator space to store
+L18@P0: frozen, chilled and thawed food products at all times. If frozen acai has been left out of temperature
+L19@P0: control for more than 4 hours it must be thrown out, in accordance with the 2-hour/4-hour rule.
+L20@P0: The 2-hour/4-hour rule
+L21@P0: The time food can be safely held between 5°C and 60°C (outside of temperature control) is commonly
+L22@P0: referred to as the ‘2-hour/4-hour rule’. If food has been left out of temperature control for:
+L23@P0: It is okay to use or refrigerate
+L24@P0: for later use.
+L25@P0: It is okay to use now (can’t be
+L26@P0: put back into cold storage).
+L27@P0: Do not use.
+L28@P0: Must be thrown out.
+L29@P0: For more information, see 2-hour/4-hour rule for businesses (PDF, 260 KB).
+L30@P0-1: Frozen acai: Guidance for food businessesFrozen acai: Guidance for food businesses
+L31@P1: FA665/2410 2
+L32@P1: Cleaning and sanitising
+L33@P1: All food contact equipment and tools, such as benches, knives, chopping boards, blenders, scoops
+L34@P1: and spatulas, specialist equipment like soft serve machines, and eating and drinking utensils, such as
+L35@P1: bowls, spoons and cups, must be kept in a clean and sanitary condition.
+L36@P1: In the food industry, cleaning and sanitising is a 2-step process. A surface needs to be thoroughly
+L37@P1: cleaned before it is sanitised.
+L38@P1: • Step 1: Cleaning uses warm to hot water, detergent and physical action to remove visible food,
+L39@P1: grease and dirt.
+L40@P1: • Step 2: Sanitising is the process of applying heat (usually very hot water), chemicals or both, to
+L41@P1: an already clean surface to reduce the number of bacteria and other organisms to a safe level.
+L42@P1: Effective cleaning removes most, but not all, bacteria. The job of the sanitiser is to kill any remaining
+L43@P1: bacteria.
+L44@P1: For more information, see:
+L45@P1: • Cleaning and sanitising in retail food businesses (PDF, 339 KB)
+L46@P1: • Chemical sanitisers – advice for food businesses (PDF, 231 KB)
+L47@P1: Food handler skills and knowledge
+L48@P1: All food handlers at the business must be trained in, and be able to demonstrate, appropriate skills
+L49@P1: and knowledge in food safety, including temperature control, cleaning and sanitising, as well as
+L50@P1: personal hygiene.
+L51@P1: Food handlers must also take all reasonable measures not to handle food or food surfaces in a way
+L52@P1: that is likely to compromise the safety and suitability of food. This includes:
+L53@P1: • not handling food when they are ill
+L54@P1: • taking all practicable measures to prevent unnecessary contact with ready-to-eat food
+L55@P1: • washing their hands with hot, soapy water, and drying them thoroughly with single-use paper
+L56@P1: towels:
+L57@P1: ⭕ whenever they are likely to be a source of contamination, for example after using the toilet,
+L58@P1: smoking, coughing, sneezing, blowing their nose, eating, drinking or touching the hair, scalp or
+L59@P1: body
+L60@P1: ⭕ before handling ready-to-eat food and after handling raw food.
+L61@P1: See Health and hygiene requirements of food handlers (PDF, 157 KB) for the full requirements.
+L62@P1: The NSW Food Authority’s free online Food Handler Basics training course is available in 3 languages
+L63@P1: to help retailers meet their food handler training obligations.
+L64@P1: More information
+L65@P1: • Visit foodauthority.nsw.gov.au
+L66@P1: • Email food.contact@dpird.nsw.gov.au
+L67@P1: • Phone the Food Authority helpline on 1300 552 406
+

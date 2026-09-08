@@ -1,0 +1,354 @@
+Potentially hazardous foods (https://www.foodauthority.nsw.gov.au/media/2671)
+citeturn90view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 25; Source: open({"ref_id":"https://www.foodauthority.nsw.gov.au/media/2671","lineno":677}); Total lines: 678
+L323@P11: ISO 20976-1:2019 specifies protocols for conducting microbiological challenge tests for growth studies
+L328@P11: Note 1: The results of microbiological testing of the food product are useful for verification of the
+L329@P11: assessment but they do not stand alone. Good results might provide a level of comfort about product
+L330@P11: safety, but they do not necessarily address all the inherent risks.
+L331@P11: Note 2: The history of the product alone does not confirm product safety. The history must be
+L332@P11-12: underpinned by a sound scientific evaluation.Potentially hazardous foods – Foods that require temperature control for safety
+L333@P12: FA529/2307 13
+L334@P12: Verifying that foods are not potentially hazardous
+L335@P12: Food businesses are responsible to determine which foods they serve, or sell are potentially hazardous.
+L336@P12: Authorised officers require evidence of the determination, for example (but not limited to) a validation
+L337@P12: study, analytical testing results or the result of a challenge testing.
+L338@P12: Food businesses are also required to substantiate food safety controls when handling PHF.
+L339@P12: Common issues
+L340@P12: Warm food (less than 60°C) in a bain marie
+L341@P12: A correctly adjusted bain marie can hold food at 60°to 65°C without generating too much steam. If food
+L342@P12: on display is less than 60°C, the unit could be set too low, or the operator might have used the bain
+L343@P12: marie to reheat food. Bain marie is not designed for reheating food. If attempted, the food typically
+L344@P12: spends many hours at a perfect temperature for bacterial growth. Food must be freshly cooked or
+L345@P12: reheated prior to display in a bain marie.
+L346@P12: If the business is worried that food may lose quality at the temperature of greater than 60°C, the
+L347@P12: business must use time as a control (such as the 2-hour/4-hour rule). Records of the times and
+L348@P12: temperatures that food is displayed must be kept to ensure that the food is safe.
+L349@P12: Salads and cut meats displayed above 5°C
+L350@P12: It is common for salad and sandwich bars to display cold food at 5 to 10°C and it can be difficult to rectify
+L351@P12: the issue without significant investment. Brightly lit displays, with “cold plate” refrigeration, stacked high
+L352@P12: with food to be more appetising, are more difficult to manage than compact displays with overhead
+L353@P12: cooling.
+L354@P12: Sometimes the problem can be traced to operator actions, such as placing spacers (cardboard, foam or
+L355@P12: bread) between the cold plate and the food tray to avoid freezing. In this case the use of plastic trays
+L356@P12: might be a better option.
+L357@P12: Often the only solution available to operators is to display suitable quantities of food and to remove food
+L358@P12: from display consistent with the “2-hour/4-hour rule”. Condiments, sauces and other non PHF do not
+L359@P12: have to follow the rule.
+L360@P12: Pre-cut sandwiches and rolls
+L361@P12: Sandwich shops sometimes prepare sandwiches ahead of the lunch rush hour. Sandwiches are a
+L362@P12: potentially hazardous food, and time or temperature control is necessary. If adequate refrigeration is not
+L363@P12-13: available, then sandwiches must be sold within the 4-hour time frame and time control must be evident.Potentially hazardous foods – Foods that require temperature control for safety
+L364@P13: FA529/2307 14
+L365@P13: Ambient or cool display of sushi
+L366@P13: Sushi businesses are reluctant to refrigerate their products because changes to rice starch can result in
+L367@P13: a firmer texture and starchy taste. Even though the rice is acidified, some components of the sushi
+L368@P13: remain potentially hazardous, which causes the RTE sushi to be categorised as PHF.
+L369@P13: The NSW Food Authority permits retail sushi businesses to display sushi at temperatures up to 25°C for
+L370@P13: no more than 4 hours provided:
+L371@P13: • The Food Standards Code’s requirements are followed during the receipt, preparation and storage
+L372@P13: of sushi and raw materials;
+L373@P13: • Proper acidification of the rice (to a pH less than or equal to 4.6) takes place to inhibit the growth of
+L374@P13: food poisoning bacteria. The pH must be recorded; and
+L375@P13: • Sushi businesses implement a system for monitoring the length of time sushi is displayed at 5oC to
+L376@P13: 25oC.
+L377@P13: Further information can be found in the ‘Food safety guidelines for the preparation and display of sushi’
+L378@P13: on the Food Authority’s website www.foodauthority.nsw.gov.au/resource-centre.
+L379@P13: Ambient display of seemingly perishable Asian foods
+L380@P13: Anecdotally, Asian communities have a tradition of “cook–serve” food service and equate refrigerated
+L381@P13: products to old or stale food. However, many Asian specialties “cook–serve” has been replaced by a
+L382@P13: longer supply chain that includes centralised processing, overnight (or early morning) delivery and
+L383@P13: extended display times often with no temperature control. Even when foods are prepared at the retail
+L384@P13: premises, if temperature and time controls are lacking, it is not possible to comply with the Food
+L385@P13: Standards Code requirements for display of potentially hazardous foods.
+L386@P13: The wide variety of often unfamiliar foods might present a challenge for Authorised Officers. Most
+L387@P13: products will be exactly as they seem — potentially hazardous. A small number of foods appear
+L388@P13: potentially hazardous but previous studies have revealed that they are low risk foods.
+L389@P13: Chinese-style roast meats (such as roast duck, roast chicken, roast pork, BBQ
+L390@P13: pork)
+L391@P13: Despite the concerns about lack of temperature control, Chinese-style roast meats have rarely been
+L392@P13: implicated in foodborne illness incidents. The conventional cooking method for these products produce
+L393@P13: internal temperatures high enough to destroy all vegetative pathogens resulting in the absence or very
+L394@P13: low levels of microbial load on the products immediately after cooking. The products are then promptly
+L395@P13: moved to the display cabinet, away from the main kitchen, which is vital in avoiding cross-contamination
+L396@P13: between the cooked and raw meat (Ying, 2000).
+L397@P13: NSW Health previously reviewed these products and established a tolerance for BBQ shop practices.
+L398@P13: The Department of Health Victoria also studied Chinese roast meats and established specific food safety
+L399@P13: plans for the products. A study in Canada (Lao, Sidhu & Shaw, 2014) also found roast pork to have
+L400@P13: water activity much lower than 0.85 (0.7 for the skin and 0.81 for the cavity).
+L401@P13: The NSW Food Authority’s position is that traditionally prepared BBQ pork, duck and chicken on the day
+L402@P13: of preparation are low risk products until they are cut up for sale. After cutting, the protection provided by
+L403@P13: scalding, surface drying and roasting in a salty-sugary glaze is lost and the products become perishable
+L404@P13: and potentially hazardous. The products then must follow the “2-hour/4-hour rule”.
+L405@P13: The Department of Health Victoria’s document includes additional information on other BBQ shop
+L406@P13: products. It is important to note that the “low risk” status does not extend to the miscellaneous products
+L407@P13-14: sold by the BBQ shops such as gizzard, squid and tongue.Potentially hazardous foods – Foods that require temperature control for safety
+L408@P14: FA529/2307 15
+L409@P14: Some BBQ shops prepare large batches of roast meats early in the day and sell them until the shop
+L410@P14: closes. Other shops prepare smaller batches several times throughout the day. The latter practice is
+L411@P14: recommended by the NSW Food Authority.
+L412@P14: Asian cakes and desserts
+L413@P14: A number of products look potentially hazardous and like many other cakes, under the IFT/FDA model
+L414@P14: they are in the query zone. However, the high sugar content and the processing steps may make them
+L415@P14: not potentially hazardous.
+L416@P14: The Department of Health Victoria published FoodAtlas (www.foodatlas.health.vic.gov.au) which
+L417@P14: provides information about the physical, chemical and compositional properties, their associated food
+L418@P14: safety risk and the processes they undergo for culturally diverse foods.
+L419@P14: In 2017, the NSW Food Authority conducted a survey of rice-based desserts, commonly known as rice
+L420@P14: cakes and found that steam cooking was effective in destroying any vegetative microorganisms and
+L421@P14: these products should be safe to be stored at room temperature until the end of the next day (day of
+L422@P14: manufacturing +1). These products are more likely to spoil before they become unsafe. Further
+L423@P14: information can be found in ‘Rice based desserts’ document on the Food Authority’s website
+L424@P14: www.foodauthority.nsw.gov.au/resource-centre.
+L425@P14: Asian fresh noodles and rice rolls
+L426@P14: Some types of fresh, Asian-style noodles are potentially hazardous because they have a high-water
+L427@P14: activity level and a near neutral pH. Contaminated or spoiled products may not look deteriorated, so they
+L428@P14: must be refrigerated at all times to minimise the risk to consumers.
+L429@P14: Retailers sometimes reluctant to put these products in the refrigerator because they harden when
+L430@P14: refrigerated and some customers may think that the noodles are not fresh. The ‘use-by’ or ‘best-before’
+L431@P14: date, production date (if it is included), and storage and cooking instructions on the packaging should
+L432@P14: reassure consumers that the products are fresh. Noodles will soften once they are reheated. The
+L433@P14: packaging should provide instructions on how to do this.
+L434@P14: Note that some types of fresh noodles have been specifically treated and vacuum packaged so they can
+L435@P14: be stored on the shelf.
+L436@P14: Baked goods
+L437@P14: Products with fresh cream or custard filled bakery products generally have pH and aw which causes
+L438@P14: them to be categorised as potentially hazardous. As a result, they need the temperature or time control
+L439@P14: for safety. This is supported by a history of food poisoning (caused primarily by Salmonella and less
+L440@P14: frequently S. aureus and Bacillus cereus) attributed to these products.
+L441@P14: Mock cream filled products, tarts, cookies, plain cakes, and muffins are typically stored at ambient
+L442@P14: temperature on the day for which they are manufactured. The products have a relatively low aw, a much
+L443@P14: drier protective crust and a long-established history of safe ambient storage.
+L444@P14: The pH or aw of bread products are generally not low enough to classify the products as not potentially
+L445@P14: hazardous. However, other characteristics such as the dry protective crust mean that plain bread does
+L446@P14: not require refrigeration for food safety reasons. The same reason applies to bread rolls with baked-on
+L447@P14: toppings. However, products that have recently been introduced to the market with readily perishable
+L448@P14: fillings or fillings/toppings added after baking have been classified as potentially hazardous. They are
+L449@P14-15: generally displayed in display cases under time control (the 2-hour/4-hour rule).Potentially hazardous foods – Foods that require temperature control for safety
+L450@P15: FA529/2307 16
+L451@P15: Alternative Methods of Compliance
+L452@P15: Clause 25 of Food Standard 3.2.2 outlines how food businesses can demonstrate that an alternative
+L453@P15: system of time or temperature control will not adversely affect the microbiological safety of the food.
+L454@P15: Food Regulation 2015 establishes how the use of the word “demonstrate” in the Food Standards Code is
+L455@P15: to be interpreted:
+L456@P15: Part 6 Clause 38 (1) (d) ‘to demonstrate is to be read as a reference to demonstrate to the
+L457@P15: satisfaction of the Food Authority’.
+L458@P15: Demonstrating alternative compliance
+L459@P15: Companies may demonstrate alternative compliance by having validated food safety plans. However,
+L460@P15: food safety plans are not routinely used in the food sectors where the common issues (identified above)
+L461@P15: are encountered. If a food safety program is used to demonstrate compliance it must identify the risks
+L462@P15: inherent in food display. If the food is potentially hazardous then the controls employed for safe display
+L463@P15: must be validated and systematically monitored. This approach has been used by the Victorian
+L464@P15: Department of Health for Chinese roast meats.
+L465@P15: Companies may also demonstrate compliance based on sound scientific evidence or written guidelines
+L466@P15: published by the relevant food industry. In both cases there must be documented evidence of the
+L467@P15: completion of a suitable study. This will often be a challenge study, which is discussed in the previous
+L468@P15: section, but could also be based on microbiological growth models or an expert report.
+L469@P15: For more information on alternative compliance, please refer to the ‘Developing Innovative Food Safety
+L470@P15-16: Control Measures’ document on the Food Authority’s website.Potentially hazardous foods – Foods that require temperature control for safety
+L471@P16: FA529/2307 17
+L472@P16: Conclusion
+L473@P16: There are a number of important questions that a business must answer when deciding if temperature or
+L474@P16: time control is required for food on display:
+L475@P16: 1. Could the food contain a pathogen that can cause foodborne illness if it multiplies? With a few
+L476@P16: exceptions, such as commercially canned foods, the answer to this question is “yes”. Cooked
+L477@P16: foods can have residual contamination in the form of heat resistant spores. Foods handled after
+L478@P16: cooking are exposed to further contamination by pathogenic bacteria.
+L479@P16: 2. Will the food support the growth of pathogenic bacteria? The tables and charts on page 11 and in
+L480@P16: the Appendices provide guidance on this question. All or parts of most meals will readily support
+L481@P16: pathogen growth and their safety is dependent on temperature or time-controlled display.
+L482@P16: 3. Is the food too dry to support pathogen growth? The answer is “yes” for a few ready-to-eat foods
+L483@P16: such as jerky and fruit cake. For most foods the answer is “no”, and pathogen growth can occur.
+L484@P16: A laboratory test for water activity can provide an answer but the most perishable components of
+L485@P16: the food must be tested.
+L486@P16: 4. Is the food too acidic to support pathogen growth? For some products such as pickles, some
+L487@P16: sauces and fruit juices the answer is “yes”. For most ready-to-eat foods the answer is “no”. A
+L488@P16: laboratory test for pH can provide an answer but again the most perishable components must be
+L489@P16: tested.
+L490@P16: 5. Are there other factors that might make the food safe?
+L491@P16: The final question leads businesses into food technology, expert advice and laboratory testing. If there
+L492@P16: are sound technical reasons that make temperature or time control unworkable, then the business might
+L493@P16: have no choice other than to seek an answer to this question.
+L494@P16: This protocol is a guide and does not replace good science or good judgment applied by the business to
+L495@P16: their product and process. Furthermore, this protocol does not limit the ability of the business to develop
+L496@P16: additional data beyond those described in this protocol to demonstrate the safety of their food product.
+L497@P16: The NSW Food Authority considers that any food product that fails to meet the definition of “not
+L498@P16-17: potentially hazardous” is subject to the temperature control requirements of the Food Standards Code.Potentially hazardous foods – Foods that require temperature control for safety
+L499@P17: FA529/2307 18
+L500@P17: References and further reading
+L501@P17: Department of Health Victoria. (2022). FoodAtlas. Retrieved 21 April 2023 from
+L502@P17: https://www.foodatlas.health.vic.gov.au/
+L503@P17: Department of Health and Human Services Tasmania. (n.d.). Food safety program template
+L504@P17: supplementary practices section for retail and food service businesses – Safe water and food, Sushi,
+L505@P17: Chinese-style roast meats. Retrieved 21 April 2023 from
+L506@P17: https://www.health.tas.gov.au/sites/default/files/2021-
+L507@P17: 12/Food_Safety_Program_Template_Supplementary_Practices_Section_DoHTasmania2014.pdf
+L508@P17: Food Standards Australia New Zealand. (FSANZ). (2023). Safe Food Australia – A guide to the Food
+L509@P17: Safety Standards. Retrieved 21 April 2023 from
+L510@P17: https://www.foodstandards.gov.au/publications/pages/safefoodaustralia3rd16.aspx
+L511@P17: Institute of Food Technologists for the Food and Drug Administration of the United States Department of
+L512@P17: Health and Human Services (IFT/FDA). (2001) Evaluation and Definition of Potentially Hazardous
+L513@P17: Foods. Comprehensive Reviews in Food Science and Food Safety, April 2003 - Vol. 2 Issue s2 Page 3-
+L514@P17: 109. Retrieved 21 April 2023 from https://www.fda.gov/files/food/published/Evaluation-and-Definition-ofPotentially-Hazardous-Foods.pdf
+L515@P17: Lao, W., Sidhu, B. & Shaw, F. (2014). Safety of Chinese roast pork as determined by the water activity of
+L516@P17: the skin and cavity. BCIT Environmental Public Health Journal. https://doi.org/10.47339/ephj.2014.159
+L517@P17: NSW Food Authority. (2017). Rice based desserts. Retrieved 21 April 2023 from
+L518@P17: https://www.foodauthority.nsw.gov.au/sites/default/files/_Documents/scienceandtechnical/rice_based_de
+L519@P17: sserts_survey.pdf
+L520@P17: NSW Food Authority. (2020). Food safety guidelines for the preparation and display of sushi. Retrieved
+L521@P17: 21 April 2023 from https://www.foodauthority.nsw.gov.au/sites/default/files/2021-
+L522@P17: 01/FI366%202011_%20Food%20Safety%20Guidelines%20for%20the%20Preparation%20and%20Displ
+L523@P17: ay%20of%20Sushi.pdf
+L524@P17: NSW Food Authority. (2022). Developing innovative food safety control measures. Retrieved 21 April
+L525@P17: 2023 from https://www.foodauthority.nsw.gov.au/sites/default/files/2022-06/developing-innovative-fscontrol-measures.pdf
+L526@P17: NSW Food Authority. (2023). Guidance on the 2-hour/4-hour rule. Retrieved 21 April 2023 from
+L527@P17: https://www.foodauthority.nsw.gov.au/sites/default/files/2023-02/guidance-2-4-hour-rule.pdf
+L528@P17: United States Food & Drug Administration (FDA). (2017). Food Code. Retrieved 21 April 2023 from
+L529@P17: https://www.fda.gov/food/fda-food-code/food-code-2017
+L530@P17: Ying, J. (2000). Chinese-style barbecued meats: A public health challenge. Canadian Journal of Public
+L531@P17-18: Health, 91(5), 386 – 389. Potentially hazardous foods – Foods that require temperature control for safety
+L532@P18: FA529/2307 19
+L533@P18: Appendices
+L534@P18: Appendix 1. Water activity as the control factor for pathogen growth
+L535@P18: Approximate water activity (aw) values for growth of selected pathogens in food (adapted from IFT/FDA,
+L536@P18: 2001).
+L537@P18: Organism Minimum aw for growth
+L538@P18: Campylobacter spp. 0.98
+L539@P18: Clostridium botulinum type E 0.97
+L540@P18: Shigella spp. 0.97
+L541@P18: Yersinia enterocolitica 0.97
+L542@P18: Vibrio vulnificus 0.96
+L543@P18: Enterohaemorrhagic Escherichia coli 0.95
+L544@P18: Salmonella spp. 0.94
+L545@P18: Vibrio parahaemolyticus 0.94
+L546@P18: Bacillus cereus 0.93
+L547@P18: Clostridium botulinum types A and B 0.93
+L548@P18: Clostridium perfringens 0.943
+L549@P18: Listeria monocytogenes 0.92
+L550@P18: Staphylococcus aureus
+L551@P18:  toxin production 0.88
+L552@P18-19:  growth 0.83Potentially hazardous foods – Foods that require temperature control for safety
+L553@P19: FA529/2307 20
+L554@P19: Appendix 2. Estimation of water activity during an inspection
+L555@P19: Battery powered instruments are available for aw estimation. The instruments can cost several thousand
+L556@P19: dollars. They are good for screening products, but borderline results should be confirmed by a NATA
+L557@P19: accredited laboratory.
+L558@P19: With mixed foods it is important to test the most perishable component. This is usually the moist
+L559@P19: component such as cream or custard fillings rather than the cake or pastry case.
+L560@P19: Calibration is important and the manufacturer’s instructions must be followed.
+L561@P19: Product aw Product aw
+L562@P19: Fresh meat, poultry fish 0.99 to 1.00 Honey 0.75
+L563@P19: Fresh fruit, vegetable 0.97 to 1.00 Fruit cake 0.73 to 0.83
+L564@P19: Pudding 0.97 to 0.99 Parmesan cheese 0.68 to 0.76
+L565@P19: Cured meat 0.97 to 0.95 Flour 0.67 to 0.87
+L566@P19: Eggs 0.97 Dried fruit 0.55 to 0.80
+L567@P19: Natural cheese 0.95 to 1.00 Dried whole egg 0.40
+L568@P19: Bread – white 0.94 to 0.97 Bread – crust 0.30
+L569@P19: Baked cake 0.90 to 0.94 Dried whole milk 0.20
+L570@P19: Sweetened condensed milk 0.83 Sugar 0.19
+L571@P19: Uncooked rice 0.80 to 0.87 Cereal 0.10 to 0.20
+L572@P19: Cake icing 0.76 to 0.84 Crackers 0.10
+L573@P19-20: Jam 0.75 to 0.80Potentially hazardous foods – Foods that require temperature control for safety
+L574@P20: FA529/2307 21
+L575@P20: Appendix 3. pH as the control factor for pathogen growth
+L576@P20: Approximate pH values for growth of selected pathogens in food (adapted from IFT/FDA, 2001).
+L577@P20: Organism Minimum pH for growth
+L578@P20: Clostridium perfringens 5.5 – 5.8
+L579@P20: Vibrio vulnificus 5.0
+L580@P20: Campylobacter spp. 4.9
+L581@P20: Shigella spp. 4.9
+L582@P20: Bacillus cereus 4.9
+L583@P20: Vibrio parahaemolyticus 4.8
+L584@P20: Clostridium botulinum
+L585@P20:  toxin production 4.6
+L586@P20:  growth 4.6
+L587@P20: Staphylococcus aureus
+L588@P20:  toxin production 4.6
+L589@P20:  growth 4.0
+L590@P20: Enterohaemorrhagic Escherichia coli 4.4
+L591@P20: Listeria monocytogenes 4.39
+L592@P20: Yersinia enterocolitica 4.2
+L593@P20-21: Salmonella spp. 4.2Potentially hazardous foods – Foods that require temperature control for safety
+L594@P21: FA529/2307 22
+L595@P21: Appendix 4. Estimation of pH during an inspection
+L596@P21: Battery powered instruments are available for pH estimation. Unlike aw instruments they are relatively
+L597@P21: inexpensive. The most economical instruments use a glass electrode and these are not suitable for use
+L598@P21: adjacent to exposed food. Non-glass probes are available and these are clearly preferable in food
+L599@P21: service areas. pH meters must be calibrated. Borderline results should be verified by a NATA accredited
+L600@P21: laboratory.
+L601@P21: pH paper or strips can also be used with caution in foods. Narrow range strips that cover about pH 3 to
+L602@P21: pH 7 are preferred. Results in the critical range between pH 4 and pH 5 should be confirmed by a NATA
+L603@P21: accredited laboratory.
+L604@P21: Product pH Product pH
+L605@P21: Camembert cheese 7.4 Peas 5.8 to 7.0
+L606@P21: Cake chocolate 7.2 to 7.6 Lamb 5.4 to 6.7
+L607@P21: Egg white 7.0 to 9.0 Bread 5.3 to 5.8
+L608@P21: Fish fresh (most) 6.6 to 6.8 Papaya 5.2 to 5.7
+L609@P21: Chicken 6.5 to 6.7 Beef minced 5.1 to 6.2
+L610@P21: Egg yolk 6.4 Cottage cheese 5.0
+L611@P21: Potatoes 6.1 Carrots 4.9 to 5.2
+L612@P21: Corn 6.0 to 7.5 Mayonnaise 4.2 to 4.5
+L613@P21: Rice cooked 6.0 to 6.7 Oranges 3.1 to 4.1
+L614@P21: Ham 5.9 to 6.1 Jam 3.1 to 3.5
+L615@P21-22: Cheddar cheese 5.9Potentially hazardous foods – Foods that require temperature control for safety
+L616@P22: FA529/2307 23
+L617@P22: Appendix 5. United States Food and Drug Administration definition of
+L618@P22: Time/Temperature Control for Safety Food (formerly “potentially hazardous food”
+L619@P22: (PHF)) (US FDA, 2017)
+L620@P22: 1. "Time/temperature control for safety food" means a food that requires time/temperature control
+L621@P22: for safety (TCS) to limit pathogenic microorganism growth or toxin formation.
+L622@P22: 2. "Time/temperature control for safety food" includes:
+L623@P22: a. An animal food that is raw or heat-treated; a plant food that is heat-treated or consists
+L624@P22: of raw seed sprouts, cut melons, cut leafy greens, cut tomatoes or mixtures of cut
+L625@P22: tomatoes that are not modified in a way so that they are unable to support pathogenic
+L626@P22: microorganism growth or toxin formation, or garlic-in-oil mixtures that are not modified
+L627@P22: in a way so that they are unable to support pathogenic microorganism growth or toxin
+L628@P22: formation;
+L629@P22: and
+L630@P22: b. Except as specified in Subparagraph (3)(d) of this definition, a food that because of
+L631@P22: the interaction of its aw and pH values is designated as Product Assessment Required
+L632@P22: (PA) in Table A or B of this definition:
+L633@P22: Table 3 Interaction of pH and aw for control of spores in food heat-treated to destroy vegetative cells and subsequently
+L634@P22: packaged.
+L635@P22: Aw values pH: 4.6 or less pH: > 4.6 – 5.6 pH: > 5.6
+L636@P22: ≤ 0.92 non-TCS food* non-TCS food non-TCS food
+L637@P22: > 0.92 – 0.95 non-TCS food non-TCS food PA**
+L638@P22: > 0.95 non-TCS food PA PA
+L639@P22:  * TCS food means Time/Temperature Control for Safety Food
+L640@P22: ** PA means Product Assessment required
+L641@P22: Table 4 Interaction of pH and aw for control of vegetative cells and spores in food not heat-treated or heat-treated but not
+L642@P22: packaged.
+L643@P22: Aw values pH: < 4.2 pH: 4.2 – 4.6 pH: > 4.6 – 5.0 pH: > 5.0
+L644@P22: < 0.88 non-TCS food non-TCS food non-TCS food non-TCS food
+L645@P22: 0.88 – 0.90 non-TCS food non-TCS food non-TCS food PA
+L646@P22: > 0.90 – 0.92 non-TCS food non-TCS food PA PA
+L647@P22-23: > 0.92 non-TCS food PA PA PA Potentially hazardous foods – Foods that require temperature control for safety
+L648@P23: FA529/2307 24
+L649@P23: 3. “Time/temperature control for safety food” does not include:
+L650@P23: (a) An air-cooled hard-boiled egg with shell intact, or an egg with shell intact that is not hard-boiled,
+L651@P23: but has been pasteurized to destroy all viable salmonellae;
+L652@P23: (b) A food in an unopened hermetically sealed container that is commercially processed to achieve
+L653@P23: and maintain commercial sterility under conditions of non-refrigerated storage and distribution;
+L654@P23: (c) A food that because of its pH or aw value, or interaction of aw and pH values, is designated as
+L655@P23: a non-TCS food in Table A or B of this definition;
+L656@P23: (d) A food that is designated as Product Assessment Required (PA) in Table A or B of this
+L657@P23: definition and has undergone a Product Assessment showing that the growth or toxin formation of
+L658@P23: pathogenic microorganisms that are reasonably likely to occur in that food is precluded due to:
+L659@P23: (i) Intrinsic factors including added or natural characteristics of the food such as
+L660@P23: preservatives, antimicrobials, humectants, acidulants, or nutrients,
+L661@P23: (ii) Extrinsic factors including environmental or operational factors that affect the food
+L662@P23: such as packaging, modified atmosphere such as reduced oxygen packaging, shelf life
+L663@P23: and use, or temperature range of storage and use, or
+L664@P23: (iii) A combination of intrinsic and extrinsic factors; or
+L665@P23: (e) A food that does not support the growth or toxin formation of pathogenic microorganisms in
+L666@P23: accordance with one of the Subparagraphs (3)(a) - (3)(d) of this definition even though the food
+L667@P23: may contain a pathogenic microorganism or chemical or physical contaminant at a level sufficient
+L668@P23-24: to cause illness or injury.Potentially hazardous foods – Foods that require temperature control for safety
+L669@P24: FA529/2307 25
+L670@P24: More information
+L671@P24: • Visit the Food Authority’s website at www.foodauthority.nsw.gov.au
+L672@P24: • Email the Helpline at food.contact@dpi.nsw.gov.au
+L673@P24: • Phone the Helpline on 1300 552 406.
+L674@P24: © State of New South Wales through Regional NSW 2023. The information contained in this publication is based on knowledge and
+L675@P24: understanding at the time of writing July, 2023. However, because of advances in knowledge, users are reminded of the need to ensure that the
+L676@P24: information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the Regional NSW or
+L677@P24: the user’s independent adviser.
+

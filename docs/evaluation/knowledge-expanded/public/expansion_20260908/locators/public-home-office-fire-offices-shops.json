@@ -1,0 +1,1780 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "How to use this guide",
+    "origin_id": "how-to-use-this-guide",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#how-to-use-this-guide",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Preface",
+    "origin_id": "preface",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#preface",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Introduction",
+    "origin_id": "introduction",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#introduction",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Who should use this guide?",
+    "origin_id": "who-should-use-this-guide",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#who-should-use-this-guide",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The Fire Safety Order",
+    "origin_id": "the-fire-safety-order",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#the-fire-safety-order",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Previous general fire safety legislation",
+    "origin_id": "previous-general-fire-safety-legislation",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#previous-general-fire-safety-legislation",
+    "ordinal": 6
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Background",
+    "origin_id": "background",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#background",
+    "ordinal": 7
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Who enforces the Fire Safety Order?",
+    "origin_id": "who-enforces-the-fire-safety-order",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#who-enforces-the-fire-safety-order",
+    "ordinal": 8
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Part 1: fire risk assessment",
+    "origin_id": "part-1-fire-risk-assessment",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#part-1-fire-risk-assessment",
+    "ordinal": 9
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Managing fire safety",
+    "origin_id": "managing-fire-safety",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#managing-fire-safety",
+    "ordinal": 10
+  },
+  {
+    "kind": "html_heading",
+    "heading": "What is a fire risk assessment?",
+    "origin_id": "what-is-a-fire-risk-assessment",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#what-is-a-fire-risk-assessment",
+    "ordinal": 11
+  },
+  {
+    "kind": "html_heading",
+    "heading": "How do you carry out a fire risk assessment?",
+    "origin_id": "how-do-you-carry-out-a-fire-risk-assessment",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#how-do-you-carry-out-a-fire-risk-assessment",
+    "ordinal": 12
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Figure 1: the five steps of a fire risk assessment",
+    "origin_id": "figure-1-the-five-steps-of-a-fire-risk-assessment",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#figure-1-the-five-steps-of-a-fire-risk-assessment",
+    "ordinal": 13
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1. Identify fire hazards",
+    "origin_id": "identify-fire-hazards",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#identify-fire-hazards",
+    "ordinal": 14
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2. Identify people at risk",
+    "origin_id": "identify-people-at-risk",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#identify-people-at-risk",
+    "ordinal": 15
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3. Evaluate, remove, reduce and protect from risk",
+    "origin_id": "evaluate-remove-reduce-and-protect-from-risk",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#evaluate-remove-reduce-and-protect-from-risk",
+    "ordinal": 16
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4. Record, plan, inform, instruct and train",
+    "origin_id": "record-plan-inform-instruct-and-train",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#record-plan-inform-instruct-and-train",
+    "ordinal": 17
+  },
+  {
+    "kind": "html_heading",
+    "heading": "5. Review",
+    "origin_id": "review",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#review",
+    "ordinal": 18
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 1: Identifying Fire Hazards",
+    "origin_id": "step-1-identifying-fire-hazards",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-1-identifying-fire-hazards",
+    "ordinal": 19
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.1 Identify sources of ignition",
+    "origin_id": "identify-sources-of-ignition",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#identify-sources-of-ignition",
+    "ordinal": 20
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.2 Identify sources of fuel",
+    "origin_id": "identify-sources-of-fuel",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#identify-sources-of-fuel",
+    "ordinal": 21
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.3 Identify Sources of Oxygen",
+    "origin_id": "identify-sources-of-oxygen",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#identify-sources-of-oxygen",
+    "ordinal": 22
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 2: identifying people at risk",
+    "origin_id": "step-2-identifying-people-at-risk",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-2-identifying-people-at-risk",
+    "ordinal": 23
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 3: evaluate, remove, reduce and protect from risk",
+    "origin_id": "step-3-evaluate-remove-reduce-and-protect-from-risk",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-3-evaluate-remove-reduce-and-protect-from-risk",
+    "ordinal": 24
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.1 Evaluate the Risk of a Fire Occurring",
+    "origin_id": "evaluate-the-risk-of-a-fire-occurring",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#evaluate-the-risk-of-a-fire-occurring",
+    "ordinal": 25
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.2 Evaluate the Risk to People",
+    "origin_id": "evaluate-the-risk-to-people",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#evaluate-the-risk-to-people",
+    "ordinal": 26
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Convection",
+    "origin_id": "convection",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#convection",
+    "ordinal": 27
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Conduction",
+    "origin_id": "conduction",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#conduction",
+    "ordinal": 28
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Radiation",
+    "origin_id": "radiation",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#radiation",
+    "ordinal": 29
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.3 Remove or reduce the hazards",
+    "origin_id": "remove-or-reduce-the-hazards",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#remove-or-reduce-the-hazards",
+    "ordinal": 30
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Remove or reduce sources of ignition",
+    "origin_id": "remove-or-reduce-sources-of-ignition",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#remove-or-reduce-sources-of-ignition",
+    "ordinal": 31
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Remove or reduce sources of fuel",
+    "origin_id": "remove-or-reduce-sources-of-fuel",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#remove-or-reduce-sources-of-fuel",
+    "ordinal": 32
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Remove or reduce sources of oxygen",
+    "origin_id": "remove-or-reduce-sources-of-oxygen",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#remove-or-reduce-sources-of-oxygen",
+    "ordinal": 33
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.4 Remove or reduce the risks to people",
+    "origin_id": "remove-or-reduce-the-risks-to-people",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#remove-or-reduce-the-risks-to-people",
+    "ordinal": 34
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Flexibility of fire protection measures",
+    "origin_id": "flexibility-of-fire-protection-measures",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#flexibility-of-fire-protection-measures",
+    "ordinal": 35
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.4.1 Fire-detection and warning systems",
+    "origin_id": "fire-detection-and-warning-systems",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-detection-and-warning-systems",
+    "ordinal": 36
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.4.2 Firefighting equipment and facilities",
+    "origin_id": "firefighting-equipment-and-facilities",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#firefighting-equipment-and-facilities",
+    "ordinal": 37
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.4.3 Escape routes",
+    "origin_id": "escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#escape-routes",
+    "ordinal": 38
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The type and number of people using the premises",
+    "origin_id": "the-type-and-number-of-people-using-the-premises",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#the-type-and-number-of-people-using-the-premises",
+    "ordinal": 39
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Escape time",
+    "origin_id": "escape-time",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#escape-time",
+    "ordinal": 40
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The age and construction of the premises",
+    "origin_id": "the-age-and-construction-of-the-premises",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#the-age-and-construction-of-the-premises",
+    "ordinal": 41
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The number of escape routes and exits",
+    "origin_id": "the-number-of-escape-routes-and-exits",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#the-number-of-escape-routes-and-exits",
+    "ordinal": 42
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Management of escape routes",
+    "origin_id": "management-of-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#management-of-escape-routes",
+    "ordinal": 43
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Emergency evacuation of persons with mobility impairment",
+    "origin_id": "emergency-evacuation-of-persons-with-mobility-impairment",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#emergency-evacuation-of-persons-with-mobility-impairment",
+    "ordinal": 44
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.4.4 Emergency escape lighting",
+    "origin_id": "emergency-escape-lighting",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#emergency-escape-lighting",
+    "ordinal": 45
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.4.5 Signs and notices",
+    "origin_id": "signs-and-notices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#signs-and-notices",
+    "ordinal": 46
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Signs",
+    "origin_id": "signs",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#signs",
+    "ordinal": 47
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Notices",
+    "origin_id": "notices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#notices",
+    "ordinal": 48
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.4.6 Installation, testing and maintenance",
+    "origin_id": "installation-testing-and-maintenance",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#installation-testing-and-maintenance",
+    "ordinal": 49
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Daily checks",
+    "origin_id": "daily-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#daily-checks",
+    "ordinal": 50
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Weekly tests and checks",
+    "origin_id": "weekly-tests-and-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#weekly-tests-and-checks",
+    "ordinal": 51
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Monthly tests and checks",
+    "origin_id": "monthly-tests-and-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#monthly-tests-and-checks",
+    "ordinal": 52
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Six-monthly tests and checks",
+    "origin_id": "six-monthly-tests-and-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#six-monthly-tests-and-checks",
+    "ordinal": 53
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Annual tests and checks",
+    "origin_id": "annual-tests-and-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#annual-tests-and-checks",
+    "ordinal": 54
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 3 Checklist",
+    "origin_id": "step-3-checklist",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-3-checklist",
+    "ordinal": 55
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 4: record, plan, inform, instruct and train",
+    "origin_id": "step-4-record-plan-inform-instruct-and-train",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-4-record-plan-inform-instruct-and-train",
+    "ordinal": 56
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4.1 Record the significant findings and action taken",
+    "origin_id": "record-the-significant-findings-and-action-taken",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#record-the-significant-findings-and-action-taken",
+    "ordinal": 57
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Checklist",
+    "origin_id": "checklist",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#checklist",
+    "ordinal": 58
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4.2 Emergency plans",
+    "origin_id": "emergency-plans",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#emergency-plans",
+    "ordinal": 59
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Checklist",
+    "origin_id": "checklist-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#checklist-1",
+    "ordinal": 60
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4.3 Inform, instruct, co-operate and co-ordinate",
+    "origin_id": "inform-instruct-co-operate-and-co-ordinate",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#inform-instruct-co-operate-and-co-ordinate",
+    "ordinal": 61
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Information and instruction",
+    "origin_id": "information-and-instruction",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#information-and-instruction",
+    "ordinal": 62
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Co-operation and co-ordination",
+    "origin_id": "co-operation-and-co-ordination",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#co-operation-and-co-ordination",
+    "ordinal": 63
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Checklist",
+    "origin_id": "checklist-2",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#checklist-2",
+    "ordinal": 64
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4.4 Fire safety training",
+    "origin_id": "fire-safety-training",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-safety-training",
+    "ordinal": 65
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Checklist",
+    "origin_id": "checklist-3",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#checklist-3",
+    "ordinal": 66
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 5: review",
+    "origin_id": "step-5-review",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-5-review",
+    "ordinal": 67
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Alterations notices",
+    "origin_id": "alterations-notices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#alterations-notices",
+    "ordinal": 68
+  },
+  {
+    "kind": "html_heading",
+    "heading": "End of part 1",
+    "origin_id": "end-of-part-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#end-of-part-1",
+    "ordinal": 69
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Part 2: Further guidance on fire risk assessment and fire precautions",
+    "origin_id": "part-2-further-guidance-on-fire-risk-assessment-and-fire-precautions",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#part-2-further-guidance-on-fire-risk-assessment-and-fire-precautions",
+    "ordinal": 70
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Managing fire safety",
+    "origin_id": "managing-fire-safety-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#managing-fire-safety-1",
+    "ordinal": 71
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 1: Further guidance on fire risks and preventative measures",
+    "origin_id": "section-1-further-guidance-on-fire-risks-and-preventative-measures",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-1-further-guidance-on-fire-risks-and-preventative-measures",
+    "ordinal": 72
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.1 Housekeeping",
+    "origin_id": "housekeeping",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#housekeeping",
+    "ordinal": 73
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.2 Storage",
+    "origin_id": "storage",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#storage",
+    "ordinal": 74
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Voids",
+    "origin_id": "voids",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#voids",
+    "ordinal": 75
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Combustible waste and packaging",
+    "origin_id": "combustible-waste-and-packaging",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#combustible-waste-and-packaging",
+    "ordinal": 76
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.3 Dangerous substances: storage, display and use",
+    "origin_id": "dangerous-substances-storage-display-and-use",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#dangerous-substances-storage-display-and-use",
+    "ordinal": 77
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Flammable liquids",
+    "origin_id": "flammable-liquids",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#flammable-liquids",
+    "ordinal": 78
+  },
+  {
+    "kind": "html_heading",
+    "heading": "LPG storage",
+    "origin_id": "lpg-storage",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#lpg-storage",
+    "ordinal": 79
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fireworks",
+    "origin_id": "fireworks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fireworks",
+    "ordinal": 80
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Aerosols",
+    "origin_id": "aerosols",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#aerosols",
+    "ordinal": 81
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.4 Equipment and machinery",
+    "origin_id": "equipment-and-machinery",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#equipment-and-machinery",
+    "ordinal": 82
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Heating",
+    "origin_id": "heating",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#heating",
+    "ordinal": 83
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.5 Electrical safety",
+    "origin_id": "electrical-safety",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#electrical-safety",
+    "ordinal": 84
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.6 Smoking",
+    "origin_id": "smoking",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#smoking",
+    "ordinal": 85
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.7 Managing building work and alterations",
+    "origin_id": "managing-building-work-and-alterations",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#managing-building-work-and-alterations",
+    "ordinal": 86
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.8 Existing layout and construction",
+    "origin_id": "existing-layout-and-construction",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#existing-layout-and-construction",
+    "ordinal": 87
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.9 Particular hazards in corridors and stairways used as escape routes",
+    "origin_id": "particular-hazards-in-corridors-and-stairways-used-as-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#particular-hazards-in-corridors-and-stairways-used-as-escape-routes",
+    "ordinal": 88
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.10 Insulated core panels",
+    "origin_id": "insulated-core-panels",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#insulated-core-panels",
+    "ordinal": 89
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.11 Restricting the spread of fire and smoke",
+    "origin_id": "restricting-the-spread-of-fire-and-smoke",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#restricting-the-spread-of-fire-and-smoke",
+    "ordinal": 90
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Display materials and decorations",
+    "origin_id": "display-materials-and-decorations",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#display-materials-and-decorations",
+    "ordinal": 91
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Catering facilities",
+    "origin_id": "catering-facilities",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#catering-facilities",
+    "ordinal": 92
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire-resisting structures",
+    "origin_id": "fire-resisting-structures",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-resisting-structures",
+    "ordinal": 93
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Smoke control",
+    "origin_id": "smoke-control",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#smoke-control",
+    "ordinal": 94
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.12 Arson",
+    "origin_id": "arson",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#arson",
+    "ordinal": 95
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.13 Help for people with special needs",
+    "origin_id": "help-for-people-with-special-needs",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#help-for-people-with-special-needs",
+    "ordinal": 96
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 2 Further guidance on fire detection and warning systems",
+    "origin_id": "section-2-further-guidance-on-fire-detection-and-warning-systems",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-2-further-guidance-on-fire-detection-and-warning-systems",
+    "ordinal": 97
+  },
+  {
+    "kind": "html_heading",
+    "heading": "People with hearing difficulties",
+    "origin_id": "people-with-hearing-difficulties",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#people-with-hearing-difficulties",
+    "ordinal": 98
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Voice alarms",
+    "origin_id": "voice-alarms",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#voice-alarms",
+    "ordinal": 99
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Schematic plan",
+    "origin_id": "schematic-plan",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#schematic-plan",
+    "ordinal": 100
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2.1 Manual call points",
+    "origin_id": "manual-call-points",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#manual-call-points",
+    "ordinal": 101
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2.2 Automatic fire detection",
+    "origin_id": "automatic-fire-detection",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#automatic-fire-detection",
+    "ordinal": 102
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2.3 Reducing false alarms",
+    "origin_id": "reducing-false-alarms",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#reducing-false-alarms",
+    "ordinal": 103
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2.4 Staged fire alarms",
+    "origin_id": "staged-fire-alarms",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#staged-fire-alarms",
+    "ordinal": 104
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2.5 Testing and maintenance",
+    "origin_id": "testing-and-maintenance",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#testing-and-maintenance",
+    "ordinal": 105
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2.6 Guaranteed power supply",
+    "origin_id": "guaranteed-power-supply",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#guaranteed-power-supply",
+    "ordinal": 106
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2.7 New and altered systems",
+    "origin_id": "new-and-altered-systems",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#new-and-altered-systems",
+    "ordinal": 107
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 3 Further guidance on firefighting equipment and facilities",
+    "origin_id": "section-3-further-guidance-on-firefighting-equipment-and-facilities",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-3-further-guidance-on-firefighting-equipment-and-facilities",
+    "ordinal": 108
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.1 Portable firefighting equipment",
+    "origin_id": "portable-firefighting-equipment",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#portable-firefighting-equipment",
+    "ordinal": 109
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Number and type of extinguishers",
+    "origin_id": "number-and-type-of-extinguishers",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#number-and-type-of-extinguishers",
+    "ordinal": 110
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Water extinguishers (red)",
+    "origin_id": "water-extinguishers-red",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#water-extinguishers-red",
+    "ordinal": 111
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Water extinguishers with additives (red)",
+    "origin_id": "water-extinguishers-with-additives-red",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#water-extinguishers-with-additives-red",
+    "ordinal": 112
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Foam extinguishers (cream)",
+    "origin_id": "foam-extinguishers-cream",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#foam-extinguishers-cream",
+    "ordinal": 113
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Powder extinguishers (blue)",
+    "origin_id": "powder-extinguishers-blue",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#powder-extinguishers-blue",
+    "ordinal": 114
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Carbon dioxide extinguishers (black)",
+    "origin_id": "carbon-dioxide-extinguishers-black",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#carbon-dioxide-extinguishers-black",
+    "ordinal": 115
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Class ‘F’ extinguishers",
+    "origin_id": "class-f-extinguishers",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#class-f-extinguishers",
+    "ordinal": 116
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Selection, installation and maintenance of portable fire extinguishers",
+    "origin_id": "selection-installation-and-maintenance-of-portable-fire-extinguishers",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#selection-installation-and-maintenance-of-portable-fire-extinguishers",
+    "ordinal": 117
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire blankets",
+    "origin_id": "fire-blankets",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-blankets",
+    "ordinal": 118
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.2 Fixed firefighting installations",
+    "origin_id": "fixed-firefighting-installations",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fixed-firefighting-installations",
+    "ordinal": 119
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Hose reels",
+    "origin_id": "hose-reels",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#hose-reels",
+    "ordinal": 120
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sprinkler systems",
+    "origin_id": "sprinkler-systems",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#sprinkler-systems",
+    "ordinal": 121
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Other fixed installations",
+    "origin_id": "other-fixed-installations",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#other-fixed-installations",
+    "ordinal": 122
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3.3 Other facilities (including those for firefighters)",
+    "origin_id": "other-facilities-including-those-for-firefighters",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#other-facilities-including-those-for-firefighters",
+    "ordinal": 123
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Firefighting shafts and lifts",
+    "origin_id": "firefighting-shafts-and-lifts",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#firefighting-shafts-and-lifts",
+    "ordinal": 124
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Suppression systems",
+    "origin_id": "suppression-systems",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#suppression-systems",
+    "ordinal": 125
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Smoke control systems",
+    "origin_id": "smoke-control-systems",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#smoke-control-systems",
+    "ordinal": 126
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Dry and wet rising fire mains",
+    "origin_id": "dry-and-wet-rising-fire-mains",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#dry-and-wet-rising-fire-mains",
+    "ordinal": 127
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Foam inlets",
+    "origin_id": "foam-inlets",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#foam-inlets",
+    "ordinal": 128
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Maintenance of rising mains and foam inlets",
+    "origin_id": "maintenance-of-rising-mains-and-foam-inlets",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#maintenance-of-rising-mains-and-foam-inlets",
+    "ordinal": 129
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Firefighters’ switches",
+    "origin_id": "firefighters-switches",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#firefighters-switches",
+    "ordinal": 130
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Other firefighting facilities",
+    "origin_id": "other-firefighting-facilities",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#other-firefighting-facilities",
+    "ordinal": 131
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 4 Further guidance on escape routes",
+    "origin_id": "section-4-further-guidance-on-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-4-further-guidance-on-escape-routes",
+    "ordinal": 132
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Introduction",
+    "origin_id": "introduction-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#introduction-1",
+    "ordinal": 133
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Levels of risk",
+    "origin_id": "levels-of-risk",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#levels-of-risk",
+    "ordinal": 134
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4.1 General principles",
+    "origin_id": "general-principles",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#general-principles",
+    "ordinal": 135
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Suitability of escape routes",
+    "origin_id": "suitability-of-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#suitability-of-escape-routes",
+    "ordinal": 136
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire-resisting construction",
+    "origin_id": "fire-resisting-construction",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-resisting-construction",
+    "ordinal": 137
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Number of people using the premises",
+    "origin_id": "number-of-people-using-the-premises",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#number-of-people-using-the-premises",
+    "ordinal": 138
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Mobility impairment",
+    "origin_id": "mobility-impairment",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#mobility-impairment",
+    "ordinal": 139
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Widths and capacity of escape routes and stairways",
+    "origin_id": "widths-and-capacity-of-escape-routes-and-stairways",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#widths-and-capacity-of-escape-routes-and-stairways",
+    "ordinal": 140
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Travel distance",
+    "origin_id": "travel-distance",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#travel-distance",
+    "ordinal": 141
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Measuring travel distance",
+    "origin_id": "measuring-travel-distance",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#measuring-travel-distance",
+    "ordinal": 142
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Inner rooms",
+    "origin_id": "inner-rooms",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#inner-rooms",
+    "ordinal": 143
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Alternative exits",
+    "origin_id": "alternative-exits",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#alternative-exits",
+    "ordinal": 144
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Measuring travel distances for initial dead-end travel",
+    "origin_id": "measuring-travel-distances-for-initial-dead-end-travel",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#measuring-travel-distances-for-initial-dead-end-travel",
+    "ordinal": 145
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Escape routes with dead-end conditions",
+    "origin_id": "escape-routes-with-dead-end-conditions",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#escape-routes-with-dead-end-conditions",
+    "ordinal": 146
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Basement, escape and protection",
+    "origin_id": "basement-escape-and-protection",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#basement-escape-and-protection",
+    "ordinal": 147
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Subdivision of corridors",
+    "origin_id": "subdivision-of-corridors",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#subdivision-of-corridors",
+    "ordinal": 148
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Stairway enclosures",
+    "origin_id": "stairway-enclosures",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#stairway-enclosures",
+    "ordinal": 149
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Separation of protected stairways",
+    "origin_id": "separation-of-protected-stairways",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#separation-of-protected-stairways",
+    "ordinal": 150
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Creating a stairway bypass route",
+    "origin_id": "creating-a-stairway-bypass-route",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#creating-a-stairway-bypass-route",
+    "ordinal": 151
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Reception areas",
+    "origin_id": "reception-areas",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#reception-areas",
+    "ordinal": 152
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Accommodation stairways",
+    "origin_id": "accommodation-stairways",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#accommodation-stairways",
+    "ordinal": 153
+  },
+  {
+    "kind": "html_heading",
+    "heading": "External stairways",
+    "origin_id": "external-stairways",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#external-stairways",
+    "ordinal": 154
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Spiral and helical stairways",
+    "origin_id": "spiral-and-helical-stairways",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#spiral-and-helical-stairways",
+    "ordinal": 155
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Lifts",
+    "origin_id": "lifts",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#lifts",
+    "ordinal": 156
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Roof exits",
+    "origin_id": "roof-exits",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#roof-exits",
+    "ordinal": 157
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Revolving doors, wicket doors, sliding doors and roller shutters",
+    "origin_id": "revolving-doors-wicket-doors-sliding-doors-and-roller-shutters",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#revolving-doors-wicket-doors-sliding-doors-and-roller-shutters",
+    "ordinal": 158
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Final exit doors and escape away from the premises",
+    "origin_id": "final-exit-doors-and-escape-away-from-the-premises",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#final-exit-doors-and-escape-away-from-the-premises",
+    "ordinal": 159
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4.2 Escape route layout",
+    "origin_id": "escape-route-layout",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#escape-route-layout",
+    "ordinal": 160
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Single-storey buildings (or the ground floor of a larger building)",
+    "origin_id": "single-storey-buildings-or-the-ground-floor-of-a-larger-building",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#single-storey-buildings-or-the-ground-floor-of-a-larger-building",
+    "ordinal": 161
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Ground floor premises with more than one exit",
+    "origin_id": "ground-floor-premises-with-more-than-one-exit",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#ground-floor-premises-with-more-than-one-exit",
+    "ordinal": 162
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Multi-storey buildings with a single stairway",
+    "origin_id": "multi-storey-buildings-with-a-single-stairway",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#multi-storey-buildings-with-a-single-stairway",
+    "ordinal": 163
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Two-storey premises",
+    "origin_id": "two-storey-premises",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#two-storey-premises",
+    "ordinal": 164
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Two-storey premises, including basement",
+    "origin_id": "two-storey-premises-including-basement",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#two-storey-premises-including-basement",
+    "ordinal": 165
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Three-storey premises, including basement",
+    "origin_id": "three-storey-premises-including-basement",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#three-storey-premises-including-basement",
+    "ordinal": 166
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Larger three-storey premises, including basement",
+    "origin_id": "larger-three-storey-premises-including-basement",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#larger-three-storey-premises-including-basement",
+    "ordinal": 167
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Office premises, ground and up to three upper storeys",
+    "origin_id": "office-premises-ground-and-up-to-three-upper-storeys",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#office-premises-ground-and-up-to-three-upper-storeys",
+    "ordinal": 168
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Shop premises, ground and up to three upper storeys",
+    "origin_id": "shop-premises-ground-and-up-to-three-upper-storeys",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#shop-premises-ground-and-up-to-three-upper-storeys",
+    "ordinal": 169
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Multi-storey buildings with more than one stairway",
+    "origin_id": "multi-storey-buildings-with-more-than-one-stairway",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#multi-storey-buildings-with-more-than-one-stairway",
+    "ordinal": 170
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Example of a multi-storey building",
+    "origin_id": "example-of-a-multi-storey-building",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#example-of-a-multi-storey-building",
+    "ordinal": 171
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Tall building with a firefighting shaft",
+    "origin_id": "tall-building-with-a-firefighting-shaft",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#tall-building-with-a-firefighting-shaft",
+    "ordinal": 172
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 5: Further guidance on emergency escape lighting",
+    "origin_id": "section-5-further-guidance-on-emergency-escape-lighting",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-5-further-guidance-on-emergency-escape-lighting",
+    "ordinal": 173
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Maintenance and testing of emergency escape lighting",
+    "origin_id": "maintenance-and-testing-of-emergency-escape-lighting",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#maintenance-and-testing-of-emergency-escape-lighting",
+    "ordinal": 174
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 6: Further guidance on signs and notices",
+    "origin_id": "section-6-further-guidance-on-signs-and-notices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-6-further-guidance-on-signs-and-notices",
+    "ordinal": 175
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Escape signs",
+    "origin_id": "escape-signs",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#escape-signs",
+    "ordinal": 176
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Positioning of escape signs",
+    "origin_id": "positioning-of-escape-signs",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#positioning-of-escape-signs",
+    "ordinal": 177
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Escape sign design",
+    "origin_id": "escape-sign-design",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#escape-sign-design",
+    "ordinal": 178
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Other safety signs and notices",
+    "origin_id": "other-safety-signs-and-notices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#other-safety-signs-and-notices",
+    "ordinal": 179
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Staff notices",
+    "origin_id": "staff-notices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#staff-notices",
+    "ordinal": 180
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Illumination",
+    "origin_id": "illumination",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#illumination",
+    "ordinal": 181
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Further guidance",
+    "origin_id": "further-guidance",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#further-guidance",
+    "ordinal": 182
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 7: Further guidance on recording, planning, informing, instructing and training",
+    "origin_id": "section-7-further-guidance-on-recording-planning-informing-instructing-and-training",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-7-further-guidance-on-recording-planning-informing-instructing-and-training",
+    "ordinal": 183
+  },
+  {
+    "kind": "html_heading",
+    "heading": "7.1 Fire safety records",
+    "origin_id": "fire-safety-records",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-safety-records",
+    "ordinal": 184
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 1 – Identify fire hazards",
+    "origin_id": "step-1--identify-fire-hazards",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-1--identify-fire-hazards",
+    "ordinal": 185
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire safety audit",
+    "origin_id": "fire-safety-audit",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-safety-audit",
+    "ordinal": 186
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Plans and specifications",
+    "origin_id": "plans-and-specifications",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#plans-and-specifications",
+    "ordinal": 187
+  },
+  {
+    "kind": "html_heading",
+    "heading": "7.2. Emergency plans",
+    "origin_id": "emergency-plans-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#emergency-plans-1",
+    "ordinal": 188
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Emergency plan and contingency plans",
+    "origin_id": "emergency-plan-and-contingency-plans",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#emergency-plan-and-contingency-plans",
+    "ordinal": 189
+  },
+  {
+    "kind": "html_heading",
+    "heading": "7.3 Information, instruction, co-operation and co-ordination",
+    "origin_id": "information-instruction-co-operation-and-co-ordination",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#information-instruction-co-operation-and-co-ordination",
+    "ordinal": 190
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Supplying information",
+    "origin_id": "supplying-information",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#supplying-information",
+    "ordinal": 191
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Dangerous substances",
+    "origin_id": "dangerous-substances",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#dangerous-substances",
+    "ordinal": 192
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Information to the fire and rescue services",
+    "origin_id": "information-to-the-fire-and-rescue-services",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#information-to-the-fire-and-rescue-services",
+    "ordinal": 193
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Instruction",
+    "origin_id": "instruction",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#instruction",
+    "ordinal": 194
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Co-operation and co-ordination",
+    "origin_id": "co-operation-and-co-ordination-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#co-operation-and-co-ordination-1",
+    "ordinal": 195
+  },
+  {
+    "kind": "html_heading",
+    "heading": "7.4 Fire safety training",
+    "origin_id": "fire-safety-training-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-safety-training-1",
+    "ordinal": 196
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Staff training",
+    "origin_id": "staff-training",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#staff-training",
+    "ordinal": 197
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire marshals",
+    "origin_id": "fire-marshals",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-marshals",
+    "ordinal": 198
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire drills",
+    "origin_id": "fire-drills",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-drills",
+    "ordinal": 199
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Who should take part?",
+    "origin_id": "who-should-take-part",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#who-should-take-part",
+    "ordinal": 200
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Carrying out the drill",
+    "origin_id": "carrying-out-the-drill",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#carrying-out-the-drill",
+    "ordinal": 201
+  },
+  {
+    "kind": "html_heading",
+    "heading": "The roll call/checking the premises have been evacuated",
+    "origin_id": "the-roll-callchecking-the-premises-have-been-evacuated",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#the-roll-callchecking-the-premises-have-been-evacuated",
+    "ordinal": 202
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Monitoring and debrief",
+    "origin_id": "monitoring-and-debrief",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#monitoring-and-debrief",
+    "ordinal": 203
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Section 8: Quality assurance of fire protection equipment and installation",
+    "origin_id": "section-8-quality-assurance-of-fire-protection-equipment-and-installation",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#section-8-quality-assurance-of-fire-protection-equipment-and-installation",
+    "ordinal": 204
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Appendix A",
+    "origin_id": "appendix-a",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#appendix-a",
+    "ordinal": 205
+  },
+  {
+    "kind": "html_heading",
+    "heading": "A1: Example fire safety maintenance checklist",
+    "origin_id": "a1-example-fire-safety-maintenance-checklist",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#a1-example-fire-safety-maintenance-checklist",
+    "ordinal": 206
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Daily checks",
+    "origin_id": "daily-checks-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#daily-checks-1",
+    "ordinal": 207
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Weekly checks",
+    "origin_id": "weekly-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#weekly-checks",
+    "ordinal": 208
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Monthly checks",
+    "origin_id": "monthly-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#monthly-checks",
+    "ordinal": 209
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Three-monthly checks",
+    "origin_id": "three-monthly-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#three-monthly-checks",
+    "ordinal": 210
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Six-monthly checks",
+    "origin_id": "six-monthly-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#six-monthly-checks",
+    "ordinal": 211
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Annual checks",
+    "origin_id": "annual-checks",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#annual-checks",
+    "ordinal": 212
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Miscellaneous",
+    "origin_id": "miscellaneous",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#miscellaneous",
+    "ordinal": 213
+  },
+  {
+    "kind": "html_heading",
+    "heading": "A2: Example form for recording significant findings",
+    "origin_id": "a2-example-form-for-recording-significant-findings",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#a2-example-form-for-recording-significant-findings",
+    "ordinal": 214
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Risk Assessment – Record of significant findings",
+    "origin_id": "risk-assessment--record-of-significant-findings",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#risk-assessment--record-of-significant-findings",
+    "ordinal": 215
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 1 – Identify fire hazards",
+    "origin_id": "step-1--identify-fire-hazards-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-1--identify-fire-hazards-1",
+    "ordinal": 216
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 2 – People at risk",
+    "origin_id": "step-2--people-at-risk",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-2--people-at-risk",
+    "ordinal": 217
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Step 3 – Evaluate, remove, reduce and protect from risk",
+    "origin_id": "step-3--evaluate-remove-reduce-and-protect-from-risk",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#step-3--evaluate-remove-reduce-and-protect-from-risk",
+    "ordinal": 218
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Assessment review",
+    "origin_id": "assessment-review",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#assessment-review",
+    "ordinal": 219
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Review outcome (where substantial changes have occurred a new record sheet should be used)",
+    "origin_id": "review-outcome-where-substantial-changes-have-occurred-a-new-record-sheet-should-be-used",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#review-outcome-where-substantial-changes-have-occurred-a-new-record-sheet-should-be-used",
+    "ordinal": 220
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Appendix B: technical information on fire-resisting separation, fire doors and door fastenings",
+    "origin_id": "appendix-b-technical-information-on-fire-resisting-separation-fire-doors-and-door-fastenings",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#appendix-b-technical-information-on-fire-resisting-separation-fire-doors-and-door-fastenings",
+    "ordinal": 221
+  },
+  {
+    "kind": "html_heading",
+    "heading": "B1 Fire-resisting separation",
+    "origin_id": "b1-fire-resisting-separation",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#b1-fire-resisting-separation",
+    "ordinal": 222
+  },
+  {
+    "kind": "html_heading",
+    "heading": "General",
+    "origin_id": "general",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#general",
+    "ordinal": 223
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire-resisting construction",
+    "origin_id": "fire-resisting-construction-1",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-resisting-construction-1",
+    "ordinal": 224
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire-resisting floors",
+    "origin_id": "fire-resisting-floors",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-resisting-floors",
+    "ordinal": 225
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire-resisting glazing",
+    "origin_id": "fire-resisting-glazing",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-resisting-glazing",
+    "ordinal": 226
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire separation of voids",
+    "origin_id": "fire-separation-of-voids",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-separation-of-voids",
+    "ordinal": 227
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Breaching fire separation",
+    "origin_id": "breaching-fire-separation",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#breaching-fire-separation",
+    "ordinal": 228
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Décor and surface finishes of walls, ceilings and escape routes",
+    "origin_id": "dcor-and-surface-finishes-of-walls-ceilings-and-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#dcor-and-surface-finishes-of-walls-ceilings-and-escape-routes",
+    "ordinal": 229
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Class 0: Materials suitable for circulation spaces and escape routes",
+    "origin_id": "class-0-materials-suitable-for-circulation-spaces-and-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#class-0-materials-suitable-for-circulation-spaces-and-escape-routes",
+    "ordinal": 230
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Class 1: Materials suitable for use in all rooms but not on escape routes",
+    "origin_id": "class-1-materials-suitable-for-use-in-all-rooms-but-not-on-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#class-1-materials-suitable-for-use-in-all-rooms-but-not-on-escape-routes",
+    "ordinal": 231
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Class 3: Materials suitable for use in rooms of less than 30m2",
+    "origin_id": "class-3-materials-suitable-for-use-in-rooms-of-less-than-30m2",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#class-3-materials-suitable-for-use-in-rooms-of-less-than-30m2",
+    "ordinal": 232
+  },
+  {
+    "kind": "html_heading",
+    "heading": "B2: Fire-resisting doors",
+    "origin_id": "b2-fire-resisting-doors",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#b2-fire-resisting-doors",
+    "ordinal": 233
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Requirements of a fire-resisting door",
+    "origin_id": "requirements-of-a-fire-resisting-door",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#requirements-of-a-fire-resisting-door",
+    "ordinal": 234
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Metal fire-resisting doors",
+    "origin_id": "metal-fire-resisting-doors",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#metal-fire-resisting-doors",
+    "ordinal": 235
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Glazing in fire-resisting doors",
+    "origin_id": "glazing-in-fire-resisting-doors",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#glazing-in-fire-resisting-doors",
+    "ordinal": 236
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fire-resisting door furniture",
+    "origin_id": "fire-resisting-door-furniture",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#fire-resisting-door-furniture",
+    "ordinal": 237
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Hinges",
+    "origin_id": "hinges",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#hinges",
+    "ordinal": 238
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Alternative door mountings",
+    "origin_id": "alternative-door-mountings",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#alternative-door-mountings",
+    "ordinal": 239
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Self-closing devices",
+    "origin_id": "self-closing-devices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#self-closing-devices",
+    "ordinal": 240
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Automatic door hold-open/release devices for self-closing fire doors",
+    "origin_id": "automatic-door-hold-openrelease-devices-for-self-closing-fire-doors",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#automatic-door-hold-openrelease-devices-for-self-closing-fire-doors",
+    "ordinal": 241
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Door co-ordinators",
+    "origin_id": "door-co-ordinators",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#door-co-ordinators",
+    "ordinal": 242
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Installation and workmanship",
+    "origin_id": "installation-and-workmanship",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#installation-and-workmanship",
+    "ordinal": 243
+  },
+  {
+    "kind": "html_heading",
+    "heading": "B3 Door-fastening devices",
+    "origin_id": "b3-door-fastening-devices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#b3-door-fastening-devices",
+    "ordinal": 244
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Electrical locking devices",
+    "origin_id": "electrical-locking-devices",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#electrical-locking-devices",
+    "ordinal": 245
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Time-delay devices on escape routes",
+    "origin_id": "time-delay-devices-on-escape-routes",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#time-delay-devices-on-escape-routes",
+    "ordinal": 246
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Management of electronic door-control devices including time delays",
+    "origin_id": "management-of-electronic-door-control-devices-including-time-delays",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#management-of-electronic-door-control-devices-including-time-delays",
+    "ordinal": 247
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Appendix C: Historic buildings",
+    "origin_id": "appendix-c-historic-buildings",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#appendix-c-historic-buildings",
+    "ordinal": 248
+  },
+  {
+    "kind": "html_heading",
+    "heading": "General considerations",
+    "origin_id": "general-considerations",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#general-considerations",
+    "ordinal": 249
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Liaison with the fire and rescue service",
+    "origin_id": "liaison-with-the-fire-and-rescue-service",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#liaison-with-the-fire-and-rescue-service",
+    "ordinal": 250
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Emergency planning",
+    "origin_id": "emergency-planning",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#emergency-planning",
+    "ordinal": 251
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Appendix D: glossary",
+    "origin_id": "appendix-d-glossary",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#appendix-d-glossary",
+    "ordinal": 252
+  },
+  {
+    "kind": "html_heading",
+    "heading": "References",
+    "origin_id": "references",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#references",
+    "ordinal": 253
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Further reading",
+    "origin_id": "further-reading",
+    "source_url": "https://www.gov.uk/government/publications/fire-safety-risk-assessment-offices-and-shops/fire-safety-risk-assessment-offices-and-shops-accessible#further-reading",
+    "ordinal": 254
+  }
+]

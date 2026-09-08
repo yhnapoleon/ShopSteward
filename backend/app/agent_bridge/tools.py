@@ -10,6 +10,8 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy import func, select
 
 from app.agent_bridge import knowledge
+from app.agent_bridge.document_evidence import DEFINITIONS as DOCUMENT_TOOLS
+from app.agent_bridge.document_evidence import call_document_tool
 from app.agent_bridge.jobs import assert_lease, current_principal
 from app.agent_bridge.models import AgentRun, Conversation, Message, ToolInvocation
 from app.agent_bridge.presentation import explicit_memory_intent, memory_write_denied, money_facts
@@ -94,16 +96,19 @@ DEFINITIONS = {
 }
 
 
-def catalog(principal):
-    names = set(DEFINITIONS)
+def catalog(principal, settings=None):
+    definitions = dict(DEFINITIONS)
+    if settings is not None and settings.knowledge_service_enabled:
+        definitions.update(DOCUMENT_TOOLS)
+    names = set(definitions)
     if not {"operator", "admin"} & set(principal.roles):
         names -= {"request_check", "revise_plan"}
-    return {name: DEFINITIONS[name] for name in sorted(names)}
+    return {name: definitions[name] for name in sorted(names)}
 
 
-def tool_schemas(principal):
+def tool_schemas(principal, settings=None):
     result = []
-    for name, (schema, description) in catalog(principal).items():
+    for name, (schema, description) in catalog(principal, settings).items():
         parameters = schema.model_json_schema()
         # Provenance is the current authenticated user message, injected by backend.
         # Models should choose the intended edit, not manufacture message IDs.
@@ -300,6 +305,8 @@ async def call(
     enabled(request)
     settings = request.app.state.settings
     token = credentials.credentials if credentials else ""
+    if tool_name in DOCUMENT_TOOLS:
+        return await call_document_tool(request, tool_name, body, token)
     async with request.app.state.db.session() as session, session.begin():
         run = await session.get(AgentRun, body.run_id)
         if (

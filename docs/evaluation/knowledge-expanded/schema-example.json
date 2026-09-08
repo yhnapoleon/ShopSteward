@@ -1,0 +1,103 @@
+{
+  "document_record": {
+    "document_fixture_id": "SYN-F01-B1-supplier-1",
+    "metadata": {
+      "author": "Codex assistant",
+      "category": "supplier",
+      "entity_refs": [
+        "SUP01",
+        "SKU001",
+        "SKU002"
+      ],
+      "generation_input_sha256": "a8baacd466c5edee6b77be6024a1990f8fa511e3c52e73262a4fd3fb9deaa96d",
+      "generation_method": "authored scenario composition",
+      "provenance": {
+        "jurisdiction": "SIMULATED",
+        "publisher": "ShopSteward synthetic corpus",
+        "scenario_family_id": "F01",
+        "source_family_id": "SYN-F01",
+        "source_kind": "synthetic_business_document",
+        "source_url": null,
+        "synthetic": true
+      },
+      "revision_number": 1,
+      "scenario_id": "F01-B1",
+      "sku_fixture_ids": [
+        "SKU001",
+        "SKU002"
+      ],
+      "store_fixture": "STORE01",
+      "supersedes": null,
+      "supplier_fixture_ids": [
+        "SUP01"
+      ],
+      "title": "模拟 预约卸货 商场封路 供货附件 主件",
+      "valid_from": "2026-01-01T00:00:00Z",
+      "valid_until": "2026-01-16T00:00:00Z"
+    },
+    "mime": "text/markdown",
+    "original_path": "originals/supplier/SYN-F01-B1-supplier-1-v1.md",
+    "scenario_family_id": "F01",
+    "sha256": "4cd8b5c27ed458e1358c23825ddd920e8ce6f166f726b52abf34ee42bd32da1d",
+    "size": 1816,
+    "source_family_id": "SYN-F01",
+    "synthetic": true,
+    "version_fixture_id": "SYN-F01-B1-supplier-1-v1"
+  },
+  "entities": {
+    "skus": [
+      {
+        "fixture_id": "SKU001",
+        "name": "模拟商品001",
+        "store_fixture_ids": [
+          "STORE01"
+        ],
+        "supplier_fixture_id": "SUP01",
+        "synthetic": true
+      }
+    ],
+    "stores": [
+      {
+        "fixture_id": "STORE01",
+        "name": "模拟门店01",
+        "synthetic": true
+      }
+    ],
+    "suppliers": [
+      {
+        "fixture_id": "SUP01",
+        "name": "模拟供应商01",
+        "synthetic": true
+      }
+    ]
+  },
+  "importer_record": {
+    "category": "supplier",
+    "document_fixture_id": "SYN-F01-B1-supplier-1",
+    "mime": "text/markdown",
+    "path": "originals/supplier/SYN-F01-B1-supplier-1-v1.md",
+    "provenance": {
+      "jurisdiction": "SIMULATED",
+      "publisher": "ShopSteward synthetic corpus",
+      "scenario_family_id": "F01",
+      "source_family_id": "SYN-F01",
+      "source_kind": "synthetic_business_document",
+      "source_url": null,
+      "synthetic": true
+    },
+    "sha256": "4cd8b5c27ed458e1358c23825ddd920e8ce6f166f726b52abf34ee42bd32da1d",
+    "size_bytes": 1816,
+    "sku_fixture_ids": [
+      "SKU001",
+      "SKU002"
+    ],
+    "store_fixture_id": "STORE01",
+    "supplier_fixture_ids": [
+      "SUP01"
+    ],
+    "title": "模拟 预约卸货 商场封路 供货附件 主件",
+    "valid_from": "2026-01-01T00:00:00Z",
+    "valid_until": "2026-01-16T00:00:00Z",
+    "version_fixture_id": "SYN-F01-B1-supplier-1-v1"
+  }
+}

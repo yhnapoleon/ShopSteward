@@ -1,0 +1,367 @@
+ (https://www.foodauthority.nsw.gov.au/media/2891)
+citeturn86view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 33; Source: click({"ref_id":"turn59view0","id":506}); Total lines: 981
+L0@P0: More resources at foodauthority.nsw.gov.au nswfoodauthorrity nswfoodauth MAY 2022
+L1@P0:  F1384/2205
+L2@P0: SOUS VIDE
+L3@P0: FOOD SAFETY PRECAUTIONS FOR
+L4@P0-1: RESTAURANTS2
+L5@P1: Contents
+L6@P1: Foreword ..................................................................................................................................................................... 3
+L7@P1: Executive summary.................................................................................................................................................... 4
+L8@P1: Definition..................................................................................................................................................................... 5
+L9@P1: Introduction................................................................................................................................................................. 8
+L10@P1: Sous vide processing................................................................................................................................................ 9
+L11@P1: Concerns about food safety.................................................................................................................................... 10
+L12@P1: Food safety hazards................................................................................................................................................. 11
+L13@P1: 1.1 Low temperature cooking – bacterial growth ............................................................................................. 11
+L14@P1: 1.2 Product cooling – bacterial growth ............................................................................................................. 16
+L15@P1: 1.3 Extended refrigerated storage of food – botulism ...................................................................................... 18
+L16@P1: 1.4 Extended refrigerated storage of food – listeriosis ..................................................................................... 19
+L17@P1: 1.5 Product reheating – bacterial growth.......................................................................................................... 20
+L18@P1: 1.6 Serving raw or undercooked foods – infectious bacteria, parasites and viruses ....................................... 24
+L19@P1: Conclusion................................................................................................................................................................ 28
+L20@P1: References ................................................................................................................................................................ 29
+L21@P1-2: Appendix – Variation to the 2-hour/4-hour rule..................................................................................................... 323
+L22@P2: Foreword
+L23@P2: Sous vide translates from the French as ‘under vacuum’. In culinary terms it has come to mean a process of cooking
+L24@P2: under vacuum in sealed pouches (oxygen barrier bags), at precise (and sometimes low) temperatures and often for
+L25@P2: long times. Sous vide can be used to prepare foods with an extended shelf life for retail sale or use in food service.
+L26@P2: However, sous vide can also be used to prepare foods with qualities that cannot be achieved when using traditional
+L27@P2: cooking techniques. Some sous vide recipes result in food that remains raw or undercooked.
+L28@P2: This document includes information on the service of raw and undercooked foods. This information is provided in
+L29@P2: response to a growing trend for sous vide use by restaurants and to encourage the use of safer choices for this type of
+L30@P2: product: it is not an endorsement of the service of raw or undercooked foods. The onus of delivering a safe product to
+L31@P2: the consumer resides with the business.
+L32@P2: Standard 3.2.2 of the Australia New Zealand Food Standards Code (Food Standards Code) states that when
+L33@P2: processing food, a food business must:
+L34@P2: where a process step is needed to reduce to safe levels any pathogens that may be present in the food, use a
+L35@P2: process step that is reasonably known to achieve the microbiological safety of the food.
+L36@P2: Cooking is a process known to achieve the microbiological safety of food and by choosing to serve raw or
+L37@P2: undercooked animal foods, restaurateurs must acknowledge that there will be a residual public health and business
+L38@P2: risk.
+L39@P2: Section 1.6 of this document provides details on the public health risks of raw and undercooked foods. As an
+L40@P2: alternative to the service of raw or undercooked foods, chefs should first consider the service of cooked food prepared
+L41@P2-3: using times and temperatures outlined in Table 2 or Table 3.4
+L42@P3: Executive summary
+L43@P3: There are several types of sous vide foods. This document is about food safety hazards of cook serve and short term
+L44@P3: cook chill sous vide foods. Some issues are common to the extended shelf life sous vide foods but guidance on the
+L45@P3: preparation of these foods is readily available.
+L46@P3: Sous vide seems like a new food service technology but it has a history spanning nearly five decades in France and
+L47@P3: nearly three decades in other international marketplaces. It finds application in many market segments including
+L48@P3: extended shelf life ready meals. It is also found in catering companies, restaurants and, increasingly, sous vide has
+L49@P3: been embraced by home cooks.
+L50@P3: While there is little evidence of sous vide food causing outbreaks of foodborne illness1, there is a reason why sous
+L51@P3: vide causes concern to regulators. There are foreseeable hazards in three broad areas that must be managed:
+L52@P3: 1. Foods held in the temperature danger zone, defined as between 5°C and 60°C by the Food Standards Code, for
+L53@P3: extended periods are potentially subject to bacterial growth. For example, during low temperature long time (LT
+L54@P3: LT) cooking processes, product cooling or product reheating.
+L55@P3: 2. Foods stored under refrigeration for extended periods are potentially subject to growth by cold tolerant pathogens.
+L56@P3: The growth of Listeria monocytogenes is a risk as is growth and toxin production by non-proteolytic Clostridium
+L57@P3: botulinum.
+L58@P3: 3. Food cooked at low temperatures for short periods will, in essence, remain raw and pathogenic bacteria, parasites
+L59@P3: and viruses, if present, might survive.
+L60@P3: If you choose to include on your menu foods that remain essentially raw, you must make clear the health implications
+L61@P3: the food could pose to the consumer. New practitioners of sous vide must be aware of the food safety risks and avoid
+L62@P3: overly experimental applications of the technology. Today’s leaders in sous vide produce quality food without losing
+L63@P3: sight of food safety.
+L64@P3: 1 There were 3 foodborne illness cases reported in 2014
+L65@P3: The risks associated with sous vide foods can be reduced if:
+L66@P3: • thinner portions of food are prepared so that heating and cooling are rapid.
+L67@P3: • overcrowding of product in the water bath is avoided. Overcrowding can affect cooking times and increase
+L68@P3: the chance of cold spots occurring. The time of cooking will need to be increased to compensate.
+L69@P3: • water bath temperatures of at least 55°C are used so that the growth of Clostridium perfringens is first
+L70@P3: prevented and then destruction of the cells commences.
+L71@P3: • the time food is held below 54.5°C during cooking is limited to six hours.
+L72@P3: • commercial equipment with adequate heating capacity and excellent temperature control is used.
+L73@P3: • water and/or food temperatures are checked using a tip sensitive digital thermometer that is accurate to
+L74@P3: 0.1°C.
+L75@P3: • prepared foods are not stored for extended times unless processes have been validated.
+L76@P3: • risks are not compounded. Cooking large portions of mechanically tenderised meat for extended times at low
+L77@P3-4: temperatures would be irresponsible.5
+L78@P4: Definition
+L79@P4: 2-hour/4-hour rule The rule provides options for what can be done safely with ready-to-eat potentially
+L80@P4: hazardous food, depending on how long it has been at temperatures between 5°C and
+L81@P4: 60°C.
+L82@P4: The time between 5°C and 60°C is cumulative — that means you need to add up every
+L83@P4: time the food has been out of the fridge, including during preparation, storage, transport
+L84@P4: and display.
+L85@P4: If the total time is:
+L86@P4: Less than 2 hours, the food may be used immediately or refrigerated for later use,
+L87@P4: Between 2 and 4 hours, the food must be used immediately (can’t be put back in the
+L88@P4: fridge), and
+L89@P4: 4 hours or longer, the food must be thrown out.
+L90@P4: It provides an alternative to temperature control specified in Standard 3.2.2 of the Food
+L91@P4: Standards Code (i.e. food must be kept at or below 5°C, or at or above 60°C).
+L92@P4: Safe Food Australia – Appendix 2 (2016)
+L93@P4: Cleaning A process that removes visible contamination such as food waste, dirt and grease from a
+L94@P4: surface, equipment and utensil. This process usually achieved by the use of water and
+L95@P4: detergent. During the cleaning process, microorganisms will be removed, but the
+L96@P4: cleaning process is not designed to destroy microorganisms.
+L97@P4: Safe Food Australia – Appendix 6 (2016)
+L98@P4: Cook chill –
+L99@P4: Extended Shelf Life
+L100@P4: (ESL)
+L101@P4: A food that is given a cooking process of 90°C for 10 minutes or equivalent and has a
+L102@P4: refrigerated shelf life of more than 10 days.
+L103@P4: This process delivers a 6-log reduction of non-proteolytic Clostridium botulinum.
+L104@P4: Cook chill for foodservice and manufacturing. Cox & Bauler (2008)
+L105@P4: Cook chill – Short
+L106@P4: Shelf Life (SSL)
+L107@P4: A food that is given a cooking process of 70°C for 2 minutes or equivalent and has a
+L108@P4: refrigerated shelf life of no more than 10 days at or below 5°C (including the days of
+L109@P4: production and consumption).
+L110@P4: This process delivers a 6-log reduction in Listeria monocytogenes.
+L111@P4: Cook chill for foodservice and manufacturing. Cox & Bauler (2008)
+L112@P4: Cooling cooked
+L113@P4: potentially hazardous
+L114@P4: food
+L115@P4: A food business must, when cooling cooked potentially hazardous food, cool the food –
+L116@P4: Within two hours – from 60°C to 21°C; and
+L117@P4: Within a further four hours – from 21°C to 5°C.
+L118@P4-5: Standard 3.2.2 of the Food Standards Code6
+L119@P5: Food Standards
+L120@P5: Code
+L121@P5: It refers to the Australian New Zealand Food Standards Code. It includes standards for
+L122@P5: food composition, level of contaminants and labelling of the food supply in Australia and
+L123@P5: New Zealand. These standards are adopted by the States, Territories and New Zealand
+L124@P5: to form the local food regulations and they are enforced on a local level.
+L125@P5: Hazard A biological, chemical or physical agent in, or condition of, food that has the potential to
+L126@P5: cause an adverse health effect in humans.
+L127@P5: Standard 3.1.1 of the Food Standards Code
+L128@P5: Potentially
+L129@P5: hazardous food
+L130@P5: Food that has to be kept at certain temperatures to minimise the growth of any
+L131@P5: pathogenic microorganisms that may be present in the food or to prevent the formation
+L132@P5: of toxins in the food.
+L133@P5: Examples of potentially hazardous foods:
+L134@P5: • raw and cooked meat/poultry or foods containing raw or cooked meat/poultry (e.g.
+L135@P5: burgers, curries, kebabs, pate and meat pies),
+L136@P5: • foods containing eggs (cooked or raw), beans, nuts or other protein-rich food (e.g.
+L137@P5: batter, mousse, quiche and tofu),
+L138@P5: • dairy products and foods containing dairy products (e.g. milk, dairy-based desserts,
+L139@P5: bakery products filled with fresh cream or with fresh custard),
+L140@P5: • seafood (excluding live seafood) and foods containing seafood (e.g. sushi),
+L141@P5: • sprouted seeds (e.g. bean sprouts and alfalfa),
+L142@P5: • prepared fruits and vegetables (e.g. cut melons, salads and unpasteurised juices),
+L143@P5: • cooked rice and both fresh and cooked pasta, and
+L144@P5: • foods that contain any of the above foods (e.g. sandwiches, pizzas and rice rolls).
+L145@P5: Standard 3.2.2 of the Food Standards Code & Safe Food Australia – Appendix 1 (2016)
+L146@P5: Sanitising A process that destroys microorganisms, reducing the numbers present on a surface to
+L147@P5: a safe level. This is usually achieved by the use of both heat and water, or by specific
+L148@P5: sanitising chemicals.
+L149@P5: [Note: detergents are generally not sanitisers].
+L150@P5: Safe Food Australia – Appendix 6 (2016)
+L151@P5: Sous vide An interrupted2 catering system in which raw or par-cooked food is sealed in a
+L152@P5: vacuumed laminated plastic pouch or container, heat treated by controlled cooking,
+L153@P5: rapidly cooled, and then reheated for service after a period of chilled storage.
+L154@P5: 2
+L155@P5-6: Interrupted – implies a holding step, as in cook chill as opposed to cook serve for immediate use.7
+L156@P6: Temperature control Maintaining food at a temperature of –
+L157@P6: (a) 5°C, or below if this is necessary to minimise the growth of infectious or toxigenic
+L158@P6: microorganisms in the food so that the microbiological safety of the food will not be
+L159@P6: adversely affected for the time the food is at that temperature; or
+L160@P6: (b) 60°C or above; or
+L161@P6: (c) Another temperature – if the food business demonstrates that maintenance of the
+L162@P6: food at this temperature for the period of time for which it will be so maintained, will not
+L163@P6: adversely affect the microbiological safety of the food.
+L164@P6-7: Standard 3.2.2 of the Food Standards Code8
+L165@P7: Introduction
+L166@P7: This chart illustrates the variety of processes used to prepare sous vide foods. The blocks with bold font and pinkstriped fill relate to extended shelf life products such as ready meals or foods produced by some large caterers.
+L167@P7: Further explanation of the sous vide processing options detailed in the chart can be found in the pages following
+L168@P7: Figure 1. The guidance in this document does not address specific issues relating to extended shelf life sous vide
+L169@P7: products, for example those with a shelf life greater than ten days.
+L170@P7: The Wide Spectrum of Sous Vide
+L171@P7: Prepare
+L172@P7: Cook
+L173@P7: Chill
+L174@P7: Store
+L175@P7: Re-heat
+L176@P7: Serve
+L177@P7: * ESL Extended shelf life
+L178@P7: SSL Short shelf life
+L179@P7: Figure 1. Sous vide processing
+L180@P7: Heat without
+L181@P7: cooking
+L182@P7: 70° / 2min
+L183@P7: Equivalent
+L184@P7: Small portions of food in
+L185@P7: vacuum pouches
+L186@P7: Rapid reheat
+L187@P7: <5° ESL* if
+L188@P7: validated
+L189@P7: Rapid chill
+L190@P7: 90° / 10min
+L191@P7: Equivalent
+L192@P7: Cook chill or
+L193@P7: cook serve
+L194@P7: Rapid reheat Rapid reheat
+L195@P7: <5° SSL* <3° ESL if
+L196@P7: validated
+L197@P7: Cook chill or
+L198@P7: cook serve Cook chill
+L199@P7: Rapid chill
+L200@P7: Rapid reheat
+L201@P7: <5° only short
+L202@P7: term storage
+L203@P7: recommended
+L204@P7: Rapid chill
+L205@P7: Cook
+L206@P7: Cook chill or
+L207@P7-8: cook serve Cook serve9
+L208@P8: Sous vide processing
+L209@P8: Sous vide translates from the French as ‘under vacuum’. In culinary terms it has come to mean a process of cooking
+L210@P8: under vacuum in sealed pouches (oxygen barrier bags), at precise (and sometimes low) temperatures and often for
+L211@P8: long times. Creed (1998) quotes the widely accepted definition developed by the Sous Vide Advisory Committee
+L212@P8: (SVAC):
+L213@P8: Sous vide (also known as Cuisine en Papillote Sous Vide) is an interrupted3 catering system in which raw or parcooked food is sealed in a vacuumed laminated plastic pouch or container, heat treated by controlled cooking,
+L214@P8: rapidly cooled, and then reheated for service after a period of chilled storage.
+L215@P8: Sous vide can be used to prepare foods with an extended shelf life for retail sale or use in food service. In these
+L216@P8: examples the ‘interrupted catering system’ is the relevant characteristic. However, sous vide can also be used to
+L217@P8: prepare foods with qualities that cannot be achieved when using traditional cooking techniques. In this instance ‘inpouch’ cooking under precise and often sensitive conditions provides the sought-after characteristics and refrigerated
+L218@P8: or frozen storage might not be part of the process.
+L219@P8: The wide range of products known as sous vide can be divided into four broad categories.
+L220@P8: • Processed 90/10. Heated to reduce the numbers of non-proteolytic Clostridium botulinum by 99.9999%. This
+L221@P8: more robust process is likely to be used for retail ready meals or extended shelf life cook chill foods. One
+L222@P8: conventional process calls for the slowest heating part of the food to be exposed to a combination of
+L223@P8: temperature and time equivalent to 90°C for 10 minutes. Lower temperatures can be used but exposure times
+L224@P8: increase significantly.
+L225@P8: • Processed 70/2. Heated to reduce the numbers of Listeria monocytogenes by 99.9999%. This is commonly
+L226@P8: known as food pasteurisation and it could be used by restaurants, caterers and some manufacturers of
+L227@P8: extended shelf life foods. One conventional process calls for the slowest heating part of the food to be exposed
+L228@P8: to a combination of temperature and time equivalent to 70°C for 2 minutes. Lower temperatures can be used but
+L229@P8: exposure times increase significantly.
+L230@P8: • Cooked. This term mainly refers to taste, texture and appearance but it has also become associated with
+L231@P8: certain minimum heating processes for meats. Cooked but not necessarily pasteurised foods will be
+L232@P8: encountered in restaurants and home sous vide. One process specified by the US Food Safety Inspection
+L233@P8: Service (FSIS, 2011) calls for the slowest heating part of the food to be heated to 63°C followed by a 3- minute
+L234@P8: rest time. Lower temperatures can be used to prepare rare meats but exposure times increase significantly.
+L235@P8: Higher temperatures are specified for poultry and mechanically tenderised, injected, comminuted or stuffed
+L236@P8: meats. Extended times can be used to tenderise cheaper cuts of meat.
+L237@P8: • Lightly processed. Some sous vide recipes do not result in cooked food. Any contaminant and pathogenic
+L238@P8: bacteria, parasites or viruses that might be present are likely to survive.
+L239@P8: In food service operations sous vide foods will generally be cooked in a finely controlled circulating water bath or a
+L240@P8: combination steam/forced convection oven. Larger catering companies or manufacturers preparing ready meals might
+L241@P8: use an enclosed vessel (sometimes called a retort) with a water cascade system to first heat and then cool the
+L242@P8: pouches of food.
+L243@P8: 3
+L244@P8-9: Interrupted – implies a holding step, as in cook chill as opposed to cook serve for immediate use.10
+L245@P9: Concerns about food safety
+L246@P9: Sous vide has been embraced by a number of celebrity chefs and the use of the technique is spreading in culinary
+L247@P9: circles. A similar surge in popularity of sous vide in New York CBD restaurants, in part, resulted in an effective ban on
+L248@P9: ‘reduced oxygen packaging’ (ROP) pending individual approval from the city’s Department of Health and Mental
+L249@P9: Hygiene (NY Times, 2006). One concern was that chefs trained in sous vide, aware of the hazards, had been joined
+L250@P9: by those who were not aware. The Department was concerned that ROP suppressed the growth of spoilage bacteria
+L251@P9: while providing a suitable environment for pathogens such as L. monocytogenes and C. botulinum. To gain approval to
+L252@P9: use ROP, food establishments were required to have a food safety plan for each food item and multiple barriers
+L253@P9: against the growth of Listeria and Clostridium were required (e.g. pH, water activity).
+L254@P9: Retail sous vide foods such as ready meals and, more generally, vacuum packed and modified atmosphere chilled
+L255@P9: foods, have a good record of food safety. The Institute of Food Research (Peck et al, 2006) found no cases of
+L256@P9: foodborne botulism could be attributed to correctly stored commercial chilled foods in the UK or overseas. Guidance
+L257@P9: on the preparation of sous vide ready meals and cook chill foods generally is readily available—see Cox and Bauler
+L258@P9: (2008), UKFSA (2008) and FSAI (2006). These documents do not address food safety risks for ready meals and other
+L259@P9: extended shelf life foods, although many of the issues of restaurant sous vide overlap with those for extended shelf life
+L260@P9: foods.
+L261@P9: The extent of foodborne illness attributable to restaurant prepared sous vide is not as clear, but reports of foodborne
+L262@P9: illness are at least rare, although some reports of illness explicitly naming sous vide foods have been found in the
+L263@P9: scientific literature. In 2014, Salmonella Enteritidis and sous vide were implicated in complaints against two
+L264@P9: restaurants in Canada. Two of the three cases were from one restaurant and sous vide eggs were determined to be
+L265@P9: the cause, while sous vide duck breast was determined to be the likely cause for the other case from the second
+L266@P9: restaurant. Investigations at both restaurants revealed inadequate sous vide cooking practices that did not fully cook
+L267@P9: the food (McIntyre et al, 2017).
+L268@P9: There are many hazards that must be managed with sous vide food. Sous vide literature has focussed on botulism,
+L269@P9: but there are other potential hazards that have received less attention. Sous vide hazards fall into three areas:
+L270@P9: • Foods held in the temperature danger zone (between 5°C and 60°C) for extended periods are potentially
+L271@P9: subject to bacterial growth, for example, during
+L272@P9: - low temperature long time (LT LT) cooking processes,
+L273@P9: - product cooling, or
+L274@P9: - product reheating.
+L275@P9: • Foods stored under refrigeration for extended periods are potentially subject to growth by cold tolerant
+L276@P9: pathogens. The growth of L. monocytogenes is a risk, as is growth and toxin production by non-proteolytic
+L277@P9: C. botulinum.
+L278@P9: • Food cooked at low temperatures for short periods will, in essence, remain raw and pathogenic bacteria, viruses
+L279@P9: and parasites, if present, might survive.
+L280@P9: The established knowledge relating to food safety should not be ignored by experimental chefs. This knowledge has
+L281@P9: mainly been acquired—the hard way—through food poisoning incidents. Today’s leaders in sous vide produce new
+L282@P9-10: and interesting food without losing sight of food safety.11
+L283@P10: A food safety issue that may be overlooked in sous vide is the proper cleaning of all sous vide equipment (circulators,
+L284@P10: immersions baths, etc). The frequency and step by step instructions for cleaning should be part of the food safety
+L285@P10: manual and all staff should be trained.
+L286@P10: New technologies such as sous vide apps on smart phones are now widely available. These should be used with
+L287@P10: caution and the user should still fully understand the food safety implications of using the sous vide method. A few
+L288@P10: things to remember when using an app for sous vide:
+L289@P10: • make sure that you have the latest version (apps are updated frequently and cooking time and temperatures
+L290@P10: may also be updated),
+L291@P10: • ensure you are using an app that is compatible with the type of immersion circulator you are using (some
+L292@P10: brands have apps for their specific products), and
+L293@P10: • ensure the recipe you are following is a sous vide recipe, as some apps offer other types of recipe instructions.
+L294@P10: Food safety hazards
+L295@P10: 1.1 Low temperature cooking – bacterial growth
+L296@P10: Scientific literature on bacterial growth in low temperature cooking processes is quite limited. The Food Safety and
+L297@P10: Inspection Service of the United States Department of Agriculture (FSIS, 1999) mentions the risk of ‘slow come up
+L298@P10: time’ for certain meat and poultry products. The guideline states that ‘dwell times of greater than 6 hours in the 50°F
+L299@P10: (10°C) to 130°F (54.4°C) range should be viewed as especially hazardous, as this temperature range can foster the
+L300@P10: growth of many pathogens of concern’. Food can dwell in this temperature range due to ‘slow come up time’, or by
+L301@P10: being held for an inordinate amount of time in that range. The guideline notes that the multiplication of pathogens can
+L302@P10: be so great then even recooking may be ineffective in making the product safe. Toxigenic bacteria can release toxins
+L303@P10: into the products. Some of the toxins, such as those of Staphylococcus aureus, are extremely heat stable and are not
+L304@P10: inactivated by normal recooking temperatures.
+L305@P10: The Food Code (US Food and Drug Administration, 2009) includes several clauses on time as a public health control.
+L306@P10: Clause 3–501.19 (1) (B), is similar in intent to the ‘2-hour/4-hour rule’ for temperature control outlined in Food
+L307@P10: Standards Australia New Zealand website (FSANZ, n.d). The US Food Code allows for a maximum of four hours
+L308@P10: between 5°C and 57°C, whereas the comparable Australian guideline temperatures are 5°C and 60°C.
+L309@P10: Low temperature long time (LT LT) cooking is not new. Braising and crockpot are familiar examples used by some
+L310@P10: steak houses to prepare prime roasts. The main benefit is tenderisation of cheaper meat cuts. Care must be taken if
+L311@P10: unusually low temperatures are used to achieve an undercooked or rare product.
+L312@P10: The main food safety risks of LT LT cooking are Clostridium perfringens and bacteria that form potentially hazardous
+L313@P10: heat stable toxins in food such as Bacillus cereus and S. aureus. C. perfringens appears to be the pathogen best
+L314@P10: adapted to growth during processing of sous vide meats (Willardsen et al, 1978) and if this organism is effectively
+L315@P10: controlled, the risks from the other bacteria will be minimal.
+L316@P10: The emergence of LT LT cooking can result in some foods being held at temperatures for periods of time that do not
+L317@P10: comply with Australian or US guidelines. For example, mathematician and published author on sous vide, Douglas
+L318@P10: Baldwin (2011, 2012, 2022), includes some recipes (tables of cooking times) where the combination of temperature
+L319@P10-11: and time is outside the guidelines.12
+L320@P11: Baldwin only tabulates times that comply with the US Food Code four hour limit for foods that are served
+L321@P11: unpasteurised. However, for foods that are pasteurised during cooking, he allows up to six hours to reach 54.5°C. This
+L322@P11: combination of time and temperature challenges two familiar concepts—the ‘temperature danger zone’ and the ‘2-
+L323@P11: hour/4-hour rule’.
+L324@P11: However, based on the comments of The Food Safety and Inspection Service of the United States Department of
+L325@P11: Agriculture (FSIS, 1999) and the studies by Willardsen et al (1978), the NSW Food Authority accepts that any risk to
+L326@P11: food safety is low.
+L327@P11: Hands-on: Sous vide low temperature long time (LT LT) cooking
+L328@P11: This section is about LT LT production of cooked foods. Table 1 and Table 2 have been prepared by Baldwin
+L329@P11: (personal communications, 2011, 2012). The times shown allow for product heating followed by pasteurisation (Table
+L330@P11: 1) or cooking (Table 2). The times are estimates and they are prepared using information about heat transfer through
+L331@P11: foods and the lethal impacts of cooking temperatures on bacteria that are significant causes of foodborne illness.
+L332@P11: Where water baths are used it is important that they return to the set temperature quickly after the addition of food.
+L333@P11: Temperature recovery will be faster if a commercial water bath heater/stirrer with a high power heating element is
+L334@P11: used. Precise temperature control is important and high technology controllers (often labelled or described as PID
+L335@P11: controllers) are specified. Operating temperatures should be checked with an accurate, calibrated thermometer.
+L336@P11: Table 3 records the holding time required to pasteurise the food after the target temperature has been achieved. It can
+L337@P11: be used when pouches have in-pack thermometers, for example, in combination steamer/forced convection ovens,
+L338@P11: high temperature water baths or water cascade systems.
+L339@P11: The estimates calculated by Baldwin can be used for cook serve food or food stored for a few days. Extended shelf life
+L340@P11: cook chill foods or foods with unusual recipes require expert and tailored thermal process development. Estimates of
+L341@P11: lethality vary depending on the characteristics of food used in the trial. Baldwin’s guidance on his website (2022)
+L342@P11: provides a good example. Baldwin presents calculations for lean fish based on observations made on cod, and for
+L343@P11: fatty fish based on observations made on salmon. Process times for salmon are longer than for cod. It is important to
+L344@P11: note that food composition affects pasteurisation time.
+L345@P11: Many factors can affect lethality of pathogens, for example:
+L346@P11: • Cox and Bauler (2008) note that the presence of lysozyme and other related enzymes might influence the
+L347@P11: lethality rate.
+L348@P11: • Pasteurisation of cream requires a more severe process than pasteurisation of milk (because the higher fat
+L349@P11: content protects the bacteria).
+L350@P11: • Chocolate requires a severe process to ensure the elimination of Salmonella.
+L351@P11: • Heavily salted food protects Listeria and more severe pasteurisation processes are required.
+L352@P11: For a discussion about the variation in published estimates of thermal lethality (D and z– values) see Warne (2011)
+L353@P11-12: and van Asselt and Zwietering (2006).13
+L354@P12: Table 1. Approximate time (Hours: Minutes) to heat and pasteurise refrigerated beef
+L355@P12: Thickness
+L356@P12: (mm)
+L357@P12: Water bath temperature °C
+L358@P12: 55 56 57 58 59 60 61 62 63 64 65 66
+L359@P12: 5 3:33 2:41 2:00 1:30 1:08 0:51 0:40 0:31 0:25 0:20 0:17 0:14
+L360@P12: 10 3:35 2:43 2:04 1:36 1:15 1:00 0:49 0:41 0:35 0:30 0:27 0:24
+L361@P12: 15 3:46 2:55 2:16 1:48 1:28 1:13 1:02 0:53 0:47 0:42 0:38 0:35
+L362@P12: 20 4:03 3:11 2:32 2:04 1:44 1:28 1:17 1:08 1:01 0:56 0:52 0:48
+L363@P12: 25 4:17 3:25 2:46 2:18 1:57 1:41 1:30 1:21 1:13 1:08 1:03 0:59
+

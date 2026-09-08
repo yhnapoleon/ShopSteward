@@ -1,0 +1,70 @@
+Health and hygiene requirements of food handlers (https://www.foodauthority.nsw.gov.au/media/421)
+citeturn106view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":383}); Total lines: 67
+L0@P0: Food Authority
+L1@P0: A food handler is anyone who works in a food business and handles food, or
+L2@P0: surfaces that are likely to come into contact with food, such as cutlery and
+L3@P0: plates.
+L4@P0: A food handler may be involved in food preparation, production, cooking,
+L5@P0: display, packing, storage or service.
+L6@P0: Responsibilities of food handlers
+L7@P0: Under the Food Standards Code, a food handler must take all reasonable measures not to handle
+L8@P0: food or food surfaces in a way that is likely to compromise the safety and suitability of food.
+L9@P0: Food handlers also have specific responsibilities relating to health and hygiene.
+L10@P0: Health requirements
+L11@P0: Any food handler with symptoms or a diagnosis of an illness (such as vomiting, diarrhoea or fever)
+L12@P0: must:
+L13@P0: • report that they are ill to their employer or supervisor
+L14@P0: • not handle food if there is a reasonable likelihood of food contamination as a result of the illness
+L15@P0: • if continuing to engage in other work on the food premises, take all practicable measures to
+L16@P0: prevent food from being contaminated
+L17@P0: • notify a supervisor if they know or suspect they may have contaminated food.
+L18@P0: Effective hand washing
+L19@P0: Hand washing is one of the most important actions you can take to prevent foodborne illness.
+L20@P0: Food handlers must:
+L21@P0: • wash their hands using hot, soapy water and dry them thoroughly with single-use paper towels
+L22@P0: • wash their hands whenever they are likely to be a source of contamination (after using the toilet,
+L23@P0: smoking, coughing, sneezing, using a handkerchief, eating, drinking or touching the hair, scalp or
+L24@P0: body)
+L25@P0: • wash their hands before handling ready-to-eat food and after handling raw food.
+L26@P0: Hygiene requirements
+L27@P0: Food handlers must:
+L28@P0: • not eat, sneeze, blow, cough, spit or smoke around food or food surfaces
+L29@P0: • take all practicable measures to prevent unnecessary contact with ready-to-eat food
+L30@P0-1: Health and hygiene requirements of food handlersHealth and hygiene requirements of food handlers
+L31@P1: FA641/2404 2
+L32@P1: • tie back long hair, and take all practical measures to prevent hair contaminating food
+L33@P1: • ensure clothing is clean
+L34@P1: • cover bandages and dressings on exposed parts of the body with a waterproof covering
+L35@P1: • remove loose jewellery
+L36@P1: • avoid wearing jewellery and decorations, including nail polish and false nails, on the hands and
+L37@P1: wrists.
+L38@P1: Use of gloves
+L39@P1: The Food Standards Code does not require food handlers to use gloves. Even when wearing gloves,
+L40@P1: in many situations it may be preferable to use utensils such as tongs or spoons.
+L41@P1: Gloves must be removed, discarded and replaced with a new pair in the below circumstances:
+L42@P1: • before handling food
+L43@P1: • before handling ready-to-eat food and after handling raw food
+L44@P1: • after using the toilet, smoking, coughing, sneezing, using a handkerchief, eating, drinking or
+L45@P1: touching the hair, scalp or body.
+L46@P1: Employer responsibilities
+L47@P1: A food business must:
+L48@P1: • ensure food handlers do not handle food if there is a possibility of contamination
+L49@P1: • maintain easily accessible handwashing facilities and supplies of hot running water, soap and
+L50@P1: single-use paper towels
+L51@P1: • ensure all food handlers have appropriate skills and knowledge in food safety and food hygiene.
+L52@P1: This can be done by either completing a food handler training course, or being able to clearly
+L53@P1: demonstrate their skills and knowledge.
+L54@P1: Food Safety Supervisor
+L55@P1: Under the Food Standards Code (Standard 3.2.2) all food handlers must have general skills and
+L56@P1: knowledge in food safety and hygiene. The Code also requires that certain businesses in the
+L57@P1: hospitality and retail food service sector appoint at least one trained Food Safety Supervisor (FSS)
+L58@P1: who can advise and supervise food handlers.
+L59@P1: FSS training is tied to nationally recognised units of competency in the Vocational Education and
+L60@P1: Training (VET) System.
+L61@P1: For more information how to become a Food Safety Supervisor, including training requirements, visit
+L62@P1: foodauthority.nsw.gov.au/fss
+L63@P1: More information
+L64@P1: • Visit foodauthority.nsw.gov.au
+L65@P1: • Email food.contact@dpi.nsw.gov.au
+L66@P1: • Phone 1300 552 406
+

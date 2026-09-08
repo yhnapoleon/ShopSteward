@@ -1,5 +1,38 @@
 # ShopSteward 当前开发交接
 
+**首要交接入口：[Knowledge服务器部署完整手册](docs/runbooks/knowledge-server-handoff.md)。** 已按用户要求整合为单文档14个主题章节，覆盖部署/完整配置/启动/跨机网络/backend与LangGraph接入/语料与关系/验收/备份恢复/排障/选型/回填模板，无需先阅读其他子文档；源码及原始报告在末尾作为参考。当前可开展环境准备和隔离试部署，完整搬迁验收仍待补。
+
+### 最新Git与文档交付（2026-09-08）
+
+- 已本地提交、推送YH并创建 [PR #10](https://github.com/yhnapoleon/ShopSteward/pull/10)（YH → main，更新时OPEN、未合并）。功能 `96ee2a0`；同步main `2406371`，保留同学前端经营概览/文档中心，唯一HANDOVER冲突已保留双方记录；单文档手册 `e65e066`。
+- 本次完善仅同步PROJECT_CONTEXT/HANDOVER。无关的 `docs/proposals/` 聊天体验提案仍留在本地，不随本轮交接提交；私有env、DB/卷、var内映射/发布收据不经Git传输。
+- 完整手册已通过14个目录跳转、引用路径、10个脚本路径及9组CLI示例参数检查；Compose静态配置通过，pilot200离线校验通过且business_writes=0；独立源码审查未发现新的操作阻塞。Linux/云端部署命令尚未在目标主机执行。
+- 提交前backend unit/API含语料254 passed，knowledge323 passed/15 skipped，Agent30 passed/3 skipped；同步main后backend非重语料216 passed。各批次有交集，不累加；前端契约通过，附加typecheck因本机缺少ECharts依赖未通过，已在PR记录。扩展语料已设Git字节保留，1657文件暂存字节及pilot200/full1124原件大小/hash核验通过。
+
+### 接续必须注意的限制
+
+- **先做服务器试部署与跨机接入，仍保留pilot_ready=false、MVP_ready=false。** 服务器负责Knowledge API/worker/PG/OpenSearch及持久存储；现有业务backend/DB/原件发布权威和Agent保持原职责，Agent通过backend获取候选。
+- 普通导入可经本地8018 backend访问18020云API隧道；关系导入、benchmark、C3 verifier和自动Agent脚本固定8018/8020。必须确认8020实际指向目标服务器，避免误测本机旧服务；具体隔离端口步骤见完整手册第6、8、9节。
+- **恢复已知阻塞：** bundle当前仅接受public应用schema，直接导出含 `agent_data` / `agent_checkpoints` 的当前Agent库会被拒绝。需补完整schema枚举/锁定/导出/恢复校验并真实演练，不能删除schema或保护检查来绕过。新服务器正常重新入库与搬迁旧双库是不同流程，见第10节。
+- 当前导入CLI默认lexical-v1且无profile参数；启用embedding后仍需显式hybrid index-job、新generation与正常发布，再切读取profile。数据库/embedding/区域继续按固定输入实测，不把已实现适配或4项路由通过当作选型/质量结论。
+- 后续共同完成真实关系导入、归档/换版/租约/重启、空目标恢复、并发与质量评测；公开资料还缺76份并待人工审阅。后续若更改源码或配置，同步完整手册。下方旧阶段的未提交/未实现/进程描述按历史记录理解。
+
+### 最新执行检查点：知识检索本地准备（2026-09-08）
+
+- 本地准备已进入实施，独立knowledge包、K2投递/发布、Agent证据工具、迁移、容器/恢复/基准工具已落盘；实施起点HEAD `602a6c6`，功能提交 `96ee2a0` 已在YH创建，开发8000/8001及开发库未改动。详情见[验收状态](docs/reports/knowledge-precloud-readiness.md)。
+- 实际语料pilot200、全量924逻辑文档/1124版本、300题；公开来源24份，目标100份仍缺76份。CSV等宽修复后实际解析1124全部COMPLETE，共16205块；800条合成关系通过唯一原文chunk绑定。dev-only查询单独导出，gold不进入检索输入。原K0/旧K1契约hash保持不变。
+- 文档编辑CAS `metadata_version` 与证据修订 `evidence_revision` 分离；追加原件保留旧发布，权限/实体等元数据变更须重新索引发布。失败任务使用新generation，只有READY完整证据可发布；未来/有界发布保留旧版其余有效区间。
+- Docker已由用户启动；独立knowledge API8020/PG55434/OpenSearch19201已实际构建、迁移并就绪，镜像digest已记录。业务测试库0011、knowledge库knowledge_0002已验收；投递35+证据30混合测试通过（25项实际PG、40项非PG）。pilot200已完成真实上传、索引和发布。
+- **Agent接入现有LangGraph完成本轮4场景联调**：库存查询→业务工具；文档查询→搜索并主动补搜；提前排队的引用追问→展开；混合问题→先库存后文档。r5取到映射/生效批次/双码追踪原文。完整结构化引用可持久化，最终权限/关系来源再次复核。正文标识抄错另经确定性校验回放修复，未伪称新模型运行。见[接入图、代码与实际轨迹](docs/reports/agent-document-langgraph-integration.md)。
+- **整体pilot_ready=false、MVP_ready=false。** 还需真实关系导入、生命周期/重启、空环境双库恢复、并发基准及质量评测。embedding/rerank本轮关闭，现有Luna有界生成调用已实际使用，云检索选型/区域尚未决选。
+- 接续保留knowledge容器；验收8018/API/publisher/Agent自建进程已关闭。测试租户 `knowledge-test-agent-0908020841-STORE01` 和 `var/precloud/agent-0908020841` 收据可复用；避免先运行会清理该测试库的integration fixtures。后续按[运行手册](docs/runbooks/knowledge-local-and-cloud.md)导入关系并恢复演练，扩采76份公开来源与人工评测继续。
+
+### 最新计划：上云前本地准备（2026-09-07）
+
+- 用户要求制定本地准备计划；已交付[总计划与L0现场检查](docs/superpowers/plans/2026-09-07-knowledge-precloud.md)、[A语料与评测](docs/superpowers/plans/2026-09-07-knowledge-precloud-data.md)、[B独立检索服务](docs/superpowers/plans/2026-09-07-knowledge-precloud-service.md)、[C集成与恢复演练](docs/superpowers/plans/2026-09-07-knowledge-precloud-readiness.md)。本次仅计划落盘。
+- 下一执行顺序L0→A1/B1并行→A2/B2/B3/B4→C1/C2→C3。首个云pilot需200份真实原件和完整本地链路；A3的1000份/300题可继续并行，不阻塞首个云试验。无模型时验真实词法，协议模拟不计模型效果。独立knowledge包/DB/迁移与backend权威数据分开，个人memory不改作RAG。
+- 计划包含新增来源metadata、outbox、索引状态/发布指针迁移；实施时按实际head生成新迁移，不能仅修改0010固定NOT_INDEXED约束的响应而漏DB变更。开发服务、数据库与云资源本次均未操作。
+
 ## 文档中心前端接入（2026-09-08）
 
 接入既有K1接口：文档中心提供上传、标题/分类/状态/实体筛选、资料编辑、版本分页、原件下载、归档恢复、权限状态和原提交恢复。入口在“资料与简报”，直达 `/?view=documents`；不解析、索引或调用Agent。

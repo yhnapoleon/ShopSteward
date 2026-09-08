@@ -28,17 +28,23 @@ class KnowledgeDocument(Base):
     visibility: Mapped[str] = mapped_column(String(16))
     status: Mapped[str] = mapped_column(String(16))
     metadata_version: Mapped[int] = mapped_column(BigInteger)
+    evidence_revision: Mapped[int] = mapped_column(BigInteger, default=1, server_default="1")
     latest_version_id: Mapped[str | None] = mapped_column(String(128))
     ingestion_status: Mapped[str] = mapped_column(String(16))
     indexing_status: Mapped[str] = mapped_column(String(16))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    publication_revision: Mapped[int] = mapped_column(BigInteger, default=0, server_default="0")
     __table_args__ = (
         CheckConstraint("visibility IN ('store','private')", name="visibility"),
         CheckConstraint("status IN ('active','archived')", name="status"),
         CheckConstraint("metadata_version >= 1", name="metadata_version"),
+        CheckConstraint("evidence_revision >= 1", name="evidence_revision"),
         CheckConstraint("ingestion_status = 'UPLOADED'", name="ingestion_status"),
-        CheckConstraint("indexing_status = 'NOT_INDEXED'", name="indexing_status"),
+        CheckConstraint(
+            "indexing_status IN ('NOT_INDEXED','QUEUED','INDEXING','READY','PARTIAL','FAILED')",
+            name="indexing_status",
+        ),
         ForeignKeyConstraint(
             ["id", "latest_version_id"],
             ["knowledge_versions.document_id", "knowledge_versions.id"],

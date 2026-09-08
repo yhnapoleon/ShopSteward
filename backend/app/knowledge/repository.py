@@ -98,13 +98,28 @@ def replay_or_set(row, replay, content):
 
 
 def upload_fingerprint(upload, body):
+    # K1 receipts predate provenance. Both omission and null mean no supplied
+    # provenance; keep all other defaults (including validity nulls) unchanged.
+    metadata = body.model_dump(mode="json")
+    if metadata.get("provenance") is None:
+        metadata.pop("provenance", None)
     return {
-        "metadata": body.model_dump(mode="json"),
+        "metadata": metadata,
         "original_name": upload.original_name,
         "content_sha256": upload.content_sha256,
         "size_bytes": upload.size_bytes,
         "mime_type": upload.mime_type,
     }
+
+
+def replay_upload_or_set(row, replay, content):
+    # Also recognize receipts written after provenance was added but before null
+    # was omitted from the fingerprint. Explicit provenance never uses this alias.
+    if replay and "provenance" not in content["metadata"]:
+        with_null = {**content, "metadata": {**content["metadata"], "provenance": None}}
+        if row.content_hash == digest(with_null):
+            return replay_or_set(row, replay, with_null)
+    return replay_or_set(row, replay, content)
 
 
 async def add_version(session, row, body, upload, principal):
@@ -127,13 +142,25 @@ async def add_version(session, row, body, upload, principal):
     )
     session.add(version)
     await session.flush()
+    from shopsteward_knowledge.contracts import Provenance
+
+    from app.knowledge.index_models import VersionProvenance
+
+    session.add(
+        VersionProvenance(
+            version_id=version.id,
+            original_sha256=version.content_sha256,
+            **(body.provenance or Provenance()).model_dump(),
+        )
+    )
+    await session.flush()
     row.latest_version_id = version.id
 
 
 async def create(session, principal, store_id, body, upload, key):
     await store_scope(session, principal, store_id)
     saved, replay = await receipt(session, principal, "create", key)
-    previous = replay_or_set(
+    previous = replay_upload_or_set(
         saved, replay, {"store_id": store_id, **upload_fingerprint(upload, body)}
     )
     if previous:
@@ -144,9 +171,10 @@ async def create(session, principal, store_id, body, upload, key):
         id=str(uuid4()),
         store_id=store_id,
         owner_principal_id=principal.principal_id,
-        **body.model_dump(exclude={"valid_from", "valid_until"}),
+        **body.model_dump(exclude={"valid_from", "valid_until", "provenance"}),
         status="active",
         metadata_version=1,
+        evidence_revision=1,
         latest_version_id=None,
         ingestion_status="UPLOADED",
         indexing_status="NOT_INDEXED",
@@ -164,7 +192,7 @@ async def append(session, principal, document_id, body, upload, key):
     # All idempotent mutations acquire receipt then document locks, in that order.
     saved, replay = await receipt(session, principal, ["append", document_id], key)
     row = await visible(session, principal, document_id, lock=True, write=True)
-    previous = replay_or_set(saved, replay, upload_fingerprint(upload, body))
+    previous = replay_upload_or_set(saved, replay, upload_fingerprint(upload, body))
     if previous:
         return previous
     cas(row, body.expected_metadata_version)
@@ -173,6 +201,9 @@ async def append(session, principal, document_id, body, upload, key):
     await add_version(session, row, body, upload, principal)
     row.metadata_version += 1
     row.updated_at = datetime.now(UTC)
+    from app.knowledge.indexing import enqueue_projections
+
+    await enqueue_projections(session, row, version_id=row.latest_version_id)
     saved.response = document(row).model_dump(mode="json")
     return document(row)
 
@@ -195,7 +226,11 @@ async def patch(session, principal, document_id, body, key):
     for field, value in metadata.model_dump().items():
         setattr(row, field, value)
     row.metadata_version += 1
+    row.evidence_revision += 1
     row.updated_at = datetime.now(UTC)
+    from app.knowledge.indexing import enqueue_projections
+
+    await enqueue_projections(session, row)
     saved.response = document(row).model_dump(mode="json")
     return document(row)
 
@@ -212,7 +247,11 @@ async def control(session, principal, document_id, body, key):
         raise AppError(409, "INVALID_DOCUMENT_STATE", "Document already has the requested status")
     row.status = target
     row.metadata_version += 1
+    row.evidence_revision += 1
     row.updated_at = datetime.now(UTC)
+    from app.knowledge.indexing import enqueue_projections
+
+    await enqueue_projections(session, row)
     saved.response = document(row).model_dump(mode="json")
     return document(row)
 
@@ -283,7 +322,7 @@ async def versions(session, principal, document_id, cursor, limit):
             json.dumps({"scope": scope, "version_no": rows[limit - 1].version_no}).encode()
         ).decode()
     return {
-        "items": [Version.model_validate(row) for row in rows[:limit]],
+        "items": [await version_dto(session, row) for row in rows[:limit]],
         "next_cursor": following,
     }
 
@@ -296,3 +335,11 @@ async def version(session, principal, document_id, version_id):
     if row is None:
         raise missing()
     return row
+
+
+async def version_dto(session, row):
+    from app.knowledge.indexing import provenance
+
+    dto = Version.model_validate(row)
+    dto.provenance = await provenance(session, row)
+    return dto

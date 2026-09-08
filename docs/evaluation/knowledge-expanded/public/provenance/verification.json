@@ -1,0 +1,408 @@
+{
+  "verified_at": "2026-09-07T16:38:56.451456+00:00",
+  "status": "pass",
+  "manifest_sha256": "47249ca2e2808dff18094ea71a3cdaf55f680527ab404ede2b7a7ee1f3a6f4ce",
+  "documents": 24,
+  "batch_counts": {
+    "pilot20": 20,
+    "expansion04": 4
+  },
+  "original_bytes": 12684550,
+  "normalized_bytes": 941572,
+  "source_word_count_whitespace_approximate": 117107,
+  "mime_counts": {
+    "application/pdf": 10,
+    "text/html": 14
+  },
+  "pdf_pages": 193,
+  "exact_hash_duplicates": 0,
+  "pairs_compared": 276,
+  "similarity_method": "Jaccard and containment of lowercase Unicode word 5-gram sets on source body text; not semantic duplicate proof. Manual family review also required.",
+  "highest_similarity_pairs": [
+    {
+      "left": "HSE-CAIS10",
+      "right": "HSE-CAIS26",
+      "word_5gram_jaccard": 0.072523,
+      "shorter_document_containment": 0.143059
+    },
+    {
+      "left": "HSE-CAIS17",
+      "right": "HSE-CAIS12",
+      "word_5gram_jaccard": 0.062157,
+      "shorter_document_containment": 0.117647
+    },
+    {
+      "left": "HSE-CAIS12",
+      "right": "HSE-CAIS22",
+      "word_5gram_jaccard": 0.060337,
+      "shorter_document_containment": 0.120434
+    },
+    {
+      "left": "HSE-CAIS22",
+      "right": "HSE-CAIS24",
+      "word_5gram_jaccard": 0.059579,
+      "shorter_document_containment": 0.137526
+    },
+    {
+      "left": "HSE-CAIS17",
+      "right": "HSE-CAIS6",
+      "word_5gram_jaccard": 0.058224,
+      "shorter_document_containment": 0.125144
+    },
+    {
+      "left": "HSE-CAIS17",
+      "right": "HSE-CAIS22",
+      "word_5gram_jaccard": 0.058216,
+      "shorter_document_containment": 0.11707
+    },
+    {
+      "left": "HSE-CAIS17",
+      "right": "HSE-CAIS10",
+      "word_5gram_jaccard": 0.05679,
+      "shorter_document_containment": 0.119377
+    },
+    {
+      "left": "HSE-CAIS6",
+      "right": "HSE-CAIS12",
+      "word_5gram_jaccard": 0.055689,
+      "shorter_document_containment": 0.119292
+    },
+    {
+      "left": "HSE-CAIS10",
+      "right": "HSE-CAIS12",
+      "word_5gram_jaccard": 0.053922,
+      "shorter_document_containment": 0.113014
+    },
+    {
+      "left": "HSE-CAIS6",
+      "right": "HSE-CAIS10",
+      "word_5gram_jaccard": 0.051506,
+      "shorter_document_containment": 0.100094
+    }
+  ],
+  "failures": [],
+  "documents_detail": [
+    {
+      "source_family_id": "HSE-CAIS17",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 4,
+      "pdf_pages_checked": 4,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "HSE-CAIS6",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 4,
+      "pdf_pages_checked": 4,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "HSE-CAIS10",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 4,
+      "pdf_pages_checked": 4,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "HSE-CAIS12",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 5,
+      "pdf_pages_checked": 5,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "HSE-CAIS22",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 4,
+      "pdf_pages_checked": 4,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "HSE-CAIS23",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 6,
+      "pdf_pages_checked": 6,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "HSE-CAIS24",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 6,
+      "pdf_pages_checked": 6,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "HSE-CAIS26",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 4,
+      "pdf_pages_checked": 4,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": []
+    },
+    {
+      "source_family_id": "FSA-BULK-FREEZING",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 5,
+      "source_text_fragments_checked": 65,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "FSA-FOOD-DELIVERY",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 6,
+      "source_text_fragments_checked": 57,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "FSA-ALLERGEN-TECHNICAL",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 100,
+      "source_text_fragments_checked": 479,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "FSA-FOOD-CONTACT-REGULATIONS",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 4,
+      "source_text_fragments_checked": 12,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "FSA-BIOBASED-FCM",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 23,
+      "source_text_fragments_checked": 139,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "DEFRA-FOOD-INFORMATION",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 28,
+      "source_text_fragments_checked": 206,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 1
+    },
+    {
+      "source_family_id": "FSA-ACRYLAMIDE",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 5,
+      "source_text_fragments_checked": 42,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "DEFRA-SINGLE-USE-PLASTICS",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 26,
+      "source_text_fragments_checked": 111,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "DEFRA-FOOD-WASTE-HIERARCHY",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 21,
+      "source_text_fragments_checked": 168,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "DHSC-CALORIE-LABELLING",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 65,
+      "source_text_fragments_checked": 220,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "DHSC-HFSS-PROMOTIONS",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 148,
+      "source_text_fragments_checked": 978,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 1,
+      "linked_images_not_acquired": 19
+    },
+    {
+      "source_family_id": "FSA-TRACEABILITY-RECALLS",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 56,
+      "pdf_pages_checked": 56,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": [
+        1,
+        2,
+        40,
+        53,
+        54,
+        56
+      ]
+    },
+    {
+      "source_family_id": "DBT-PRICE-MARKING",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 43,
+      "source_text_fragments_checked": 237,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 0,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "OPSS-PACKAGED-GOODS",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 13,
+      "source_text_fragments_checked": 58,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 1,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "FSA-ADDITIVES",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 13,
+      "source_text_fragments_checked": 264,
+      "missing_source_fragments": 0,
+      "html_tables_preserved": 6,
+      "linked_images_not_acquired": 0
+    },
+    {
+      "source_family_id": "FSA-SFBB-CATERERS",
+      "original_hash_and_size": "pass",
+      "normalized_hash_and_size": "pass",
+      "terms_hashes": "pass",
+      "locator_count": 100,
+      "pdf_pages_checked": 100,
+      "embedded_text_preserved": true,
+      "ocr_run": false,
+      "sparse_text_pages": [
+        1,
+        11,
+        27,
+        28,
+        38,
+        39,
+        48,
+        64,
+        80,
+        92
+      ]
+    }
+  ],
+  "visual_review": {
+    "scope": "sampled; not exhaustive",
+    "samples": [
+      {
+        "file": "hse-cais12.pdf",
+        "pdf_pages": [
+          2
+        ]
+      },
+      {
+        "file": "hse-cais24.pdf",
+        "pdf_pages": [
+          6
+        ]
+      },
+      {
+        "file": "fsa-recalls.pdf",
+        "pdf_pages": [
+          1,
+          53,
+          54
+        ]
+      },
+      {
+        "file": "fsa-sfbb.pdf",
+        "pdf_pages": [
+          1,
+          2,
+          5,
+          92
+        ]
+      }
+    ],
+    "findings": [
+      "CAIS12 contains tables whose layout is authoritative only in PDF.",
+      "CAIS24 last-page publication footer uses CAIS23; preserved as source anomaly.",
+      "Recall pages 53/54 are image-only example posters apart from headings; missing image text explicitly flagged.",
+      "SFBB includes blank forms, diagram layouts and photos; normalization preserves embedded text, not filled-in business records."
+    ]
+  }
+}

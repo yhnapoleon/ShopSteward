@@ -1,0 +1,406 @@
+Food safety guidelines: preparation (https://www.foodauthority.nsw.gov.au/sites/default/files/2026-05/Food_safety_guidelines_for_the_preparation_and_display_of_sushi.pdf)
+citeturn76view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 23; Source: open({"ref_id":"https://www.foodauthority.nsw.gov.au/sites/default/files/2026-05/Food_safety_guidelines_for_the_preparation_and_display_of_sushi.pdf","lineno":null}); Total lines: 515
+L0@P0: foodauthority.nsw.gov.au
+L1@P0: Food Authority
+L2@P0: Food safety g uidelines for the preparation and display
+L3@P0: of sushi
+L4@P0-1: June 2025Food safety g uideline s for the preparation and display of sushi
+L5@P1: FA 689 /2506 2
+L6@P1: Published by the NSW Food Authority
+L7@P1: Title: Food safety g uidelines for the preparation and display of sushi
+L8@P1: First published: May 2007 [Replaces F I366/2011 ]
+L9@P1: Acknowledgements
+L10@P1: This document has been developed with assistance from NSW local council environmental health officers .
+L11@P1: © State of New South Wales through NSW Food A uthority 2025 . You may copy, distribute, display, download and otherwise freely deal
+L12@P1: with this publication for any purpose, provided that you attribute the NSW Food Authority as the owner. However, you must obtain
+L13@P1: permission if you wish to charge others for access to the publication (other than at cost); include the publication in advert ising or a
+L14@P1: product for sale; modify the publication; or republish the publication on a webs ite. You may freely link to the publication on a
+L15@P1: departmental website.
+L16@P1: Disclaimer: The information contained in this publication is based on knowledge and understanding at the time of writing ( June 2025 ) and
+L17@P1: may not be accurate, current or complete. The S tate of New South Wales (including the Food Authority ), the author and the publisher
+L18@P1: take no responsibility, a nd will accept no liability, for the accuracy, currency, reliability or correctness of any information included in the
+L19@P1: document (including material provided by third parties). Readers should make their own inquiries and rely on their own advice when
+L20@P1-2: making decisions related to material contained in this publication.Food safety g uideline s for the preparation and display of sushi
+L21@P2: FA 689 /2506 3
+L22@P2: Table of Contents
+L23@P2: Introduction .........................................................................................................................................4
+L24@P2: Purpose and scope ..............................................................................................................................5
+L25@P2: Definitions ...........................................................................................................................................5
+L26@P2: Receiving and storing foods ...............................................................................................................8
+L27@P2: Supplier and food information .............................................................................................................................8
+L28@P2: Ready -made sushi ................................................................................................................................................8
+L29@P2: Acidified rice .........................................................................................................................................................8
+L30@P2: Potentially hazardous raw ingredients ................................................................................................................9
+L31@P2: Frozen foods .........................................................................................................................................................9
+L32@P2: Shelf stable foods ................................................................................................................................................9
+L33@P2: Preparing sushi .................................................................................................................................10
+L34@P2: Equipment and utensils ......................................................................................................................................10
+L35@P2: Personal hygiene ................................................................................................................................................10
+L36@P2: Use of disposable gloves ...................................................................................................................................10
+L37@P2: Preparation of acidified rice ..............................................................................................................................11
+L38@P2: Preparation of fillings and sushi ........................................................................................................................11
+L39@P2: Defrosting frozen fish ........................................................................................................................................12
+L40@P2: Retail display of sushi .......................................................................................................................12
+L41@P2: Sushi Bars ...........................................................................................................................................................12
+L42@P2: Sushi conveyor system ......................................................................................................................................13
+L43@P2: Record system ....................................................................................................................................................13
+L44@P2: References and further reading .......................................................................................................14
+L45@P2: More information ...............................................................................................................................14
+L46@P2: Appendix 1. Rice acidification ...........................................................................................................15
+L47@P2: Acidification procedure ......................................................................................................................................15
+L48@P2: Appendix 2. Measuring pH ...............................................................................................................16
+L49@P2: pH measuring devices ........................................................................................................................................16
+L50@P2: Pros and cons of each method ..........................................................................................................................16
+L51@P2: Measuring pH .....................................................................................................................................................17
+L52@P2: References ..........................................................................................................................................................17
+L53@P2: Appendix 3. Temperature calibration and measurement ..............................................................18
+L54@P2: Calibration procedures .......................................................................................................................................18
+L55@P2: Appendix 4. Example Worksheets ...................................................................................................19
+L56@P2: Supplier list .........................................................................................................................................................20
+L57@P2-3: Sushi display record sheet .................................................................................................................................22Food safety g uideline s for the preparation and display of sushi
+L58@P3: FA 689 /2506 4
+L59@P3: Introduction
+L60@P3: Ready -to-eat sushi is regarded as a potentially hazardous food. As such, the Australia New Zealand
+L61@P3: Food Standards Code (the Code) Division 3, Standard 3.2.2 requires food businesses to maintain the
+L62@P3: temperature of sushi either at 5°C or below or above 60 °C during transport, storage and display.
+L63@P3: However, the Code allows for an alternative compliance method provided the businesses can
+L64@P3: demonstrate the product’s safety (Clause 25 of Standard 3.2.2). The ‘2-hour/4 -hour rule ’ is used by
+L65@P3: Food Standards Australia New Zealand (FSANZ) as an example of an alternative method for
+L66@P3: compliance.
+L67@P3: The 2 -hour/4 -hour rule
+L68@P3: Any ready -to-eat potentially hazardous food, if it has been at temperatures between 5˚C and 60˚C:
+L69@P3: • For a total of less than 2 hours, must be refrigerated or used immediately; or
+L70@P3: • For a total of longer than 2 hours but less than 4 hours, must be used immediately; or
+L71@P3: • For a total of 4 hours or longer, must be thrown out.
+L72@P3: To assess the applicability of utilising the “2 -hour/4 -hour” rule during the display of sushi, the NSW
+L73@P3: Food Authority conducted modelling of bacteria that cause food poisoning to assess the potential
+L74@P3: impact unrefrigerated display of sushi has on the safety of the product. This study concluded that
+L75@P3: the product would need to be displayed fo r longer than 4 hours at 25°C or higher for pathogenic
+L76@P3: bacteria to reach dangerous levels.
+L77@P3: Based on this, the NSW Food Authority permits retail sushi businesses to display sushi at
+L78@P3: temperatures up to 25°C for no more than 4 hours, provided that :
+L79@P3: • The Code’s requirements are followed during the receipt, preparation and storage of sushi and
+L80@P3: raw materials ,
+L81@P3: • The rice is properly acidifi ed to a pH of 4.6 or below to inhibit the growth of food poisoning
+L82@P3: bacteria. The pH must be recorded , and
+L83@P3: • Sushi businesses implement a system for monitoring the length of time sushi is displayed at
+L84@P3-4: temperatures between 5°C and 25 °C.Food safety g uideline s for the preparation and display of sushi
+L85@P4: FA 689 /2506 5
+L86@P4: Purpose and s cope
+L87@P4: This document aims to provide retail and food service businesses with information on the safe
+L88@P4: preparation and display of sushi. The document covers areas that can affect the safety of sushi
+L89@P4: when consumed, such as:
+L90@P4: • receipt and storage of raw materials/ sushi,
+L91@P4: • preparation of sushi , and
+L92@P4: • display of sushi.
+L93@P4: It also includes an example of a monitoring system for use when displaying sushi unrefrigerated.
+L94@P4: This document does not cover all requirements of the Food Standards Code, in particular
+L95@P4: requirements relating to premises and equipment. Businesses must read the Code and ensure they
+L96@P4: comply with all aspects of the Code as it relates to their business.
+L97@P4: Definitions
+L98@P4: Term Definition
+L99@P4: Acidified rice C ooked rice with vinegar added to achieve a pH of 4.6 or below
+L100@P4: Cleaning The process of removing food and other types of soils from surfaces,
+L101@P4: equipment and utensils. Detergents are used to assist removal.
+L102@P4: Cross -contamination The transfer of harmful bacteria from other foods (especially raw
+L103@P4: food), food handlers or the environment (cutting boards, utensils etc)
+L104@P4: to ready -to-eat food.
+L105@P4: E xample for sushi businesses : avoid allowing raw meat/poultry to
+L106@P4: come into contact with ready -to-eat sushi , use a separate cutting
+L107@P4: board and knife for raw meat/poultry and ready -to-eat food.
+L108@P4: Pathogenic bacteria Bacteria capable of causing food poisoning. For examples: Listeria
+L109@P4: monocytogenes, Salmonella, Bacillus cereus, Staphylococcus aureus
+L110@P4: and some types of Vibrio species.
+L111@P4: Potentially hazardous
+L112@P4: food
+L113@P4: Food that has to be kept at a certain temperature to minimise the
+L114@P4: growth of any pathogenic bacteria that may be present in the food or
+L115@P4: to prevent the formation of toxins in the food.
+L116@P4: Food Standards Code 3.2.2, Division 1, Clause 1
+L117@P4: Ready -to-eat food Food that is ordinarily consumed in the same state as that in which it
+L118@P4: is sold and does not include nuts in the shell and whole, raw fruits and
+L119@P4: vegetables that are intended for hulling, peeling or washing by the
+L120@P4-5: consumer.Food safety g uideline s for the preparation and display of sushi
+L121@P5: FA 689 /2506 6
+L122@P5: Term Definition
+L123@P5: Food Standards Code 3.2.2, Division 1, Clause 1
+L124@P5: For sushi businesses this would include cooked foods such as teriyaki
+L125@P5: chicken or cooked prawns, or foods/products consumed raw such as
+L126@P5: tuna, salmon, other fish and some vegetables.
+L127@P5: Sanitising The process of removing microorganisms from a surface, equipment
+L128@P5: and utensils.
+L129@P5: There are two methods available:
+L130@P5: a. Heat – to sanitise effectively with heat only, temperature of at
+L131@P5: least 77°C and a contact time of greater than 30 seconds is
+L132@P5: required. Lower temperatures will require longer contact times.
+L133@P5: If using a dishwasher, check the manufacturer’s instructions to
+L134@P5: ensu re adequate temperature/time is achieved.
+L135@P5: b. Chemical sanitiser – generally chlorine or ammonium -based
+L136@P5: compounds. It is important to choose the right product for the
+L137@P5: food premises and to follow the manufacturer’s instruction
+L138@P5: especially for dilution rate, contact time and safety
+L139@P5: instructions.
+L140@P5: Sashimi Thin slices of raw fish that are ready -to-eat.
+L141@P5: S ashimi must be kept at 5°C or below at all times.
+L142@P5: Shelf -stable food Foods which can be stored unrefrigerated without affecting their
+L143@P5: safety or quality.
+L144@P5: For sushi businesses this would include uncooked rice , unopened
+L145@P5: package s of pickle and nori sheets.
+L146@P5: Sushi Ready -to-eat cooked rice that has been acidified with a vinegar
+L147@P5: solution and formed with a variety of ingredients including raw or
+L148@P5: cooked seafood, fresh chopped vegetables, cooked egg etc.
+L149@P5: Product forms can include:
+L150@P5: • nigiri – small balls of rice with ingredients on top,
+L151@P5: • gunkan – an oval, ship -like sushi roll, comprising a nori seaweed
+L152@P5: sheet wrapped around a ball of rice with space left at the very top
+L153@P5: for other ingredients,
+L154@P5: • maki rolls – layers of rice and nori sheets rolled with a bamboo mat
+L155@P5: to form cylinders that contain various fillings, and
+L156@P5: • hand rolls – cone shaped rolls formed by a sheet of nori filled with
+L157@P5-6: various ingredients.Food safety g uideline s for the preparation and display of sushi
+L158@P6: FA 689 /2506 7
+L159@P6: Term Definition
+L160@P6: Sushi rice C ooked short grain rice mixed with vinegar and other ingredients such
+L161@P6: as sugar and/or salt.
+L162@P6: Tamago Japanese omelette made with egg, sugar, soy sauce and mirin. It is
+L163@P6: commonly used in nigiri sushi.
+L164@P6: Temperature control Means maintaining food at a temperature of:
+L165@P6: a. 5°C, or below if this is necessary to minimise the growth of
+L166@P6: infectious or toxigenic microorganisms in the food so that the
+L167@P6: microbiological safety of the food will not be adversely
+L168@P6: affected for the time the food is at that temperature; or
+L169@P6: b. 60°C or above; or
+L170@P6: c. another temperature – if the food business demonstrates that
+L171@P6: maintenance of the food at this temperature for the period of
+L172@P6: time for which it will be so maintained, will not adversely affect
+L173@P6: the microbiological safety of the food.
+L174@P6-7: Food Standards Code 3.2.2, Division 1, Clause 1Food safety g uideline s for the preparation and display of sushi
+L175@P7: FA 689 /2506 8
+L176@P7: Receiving and storing foods
+L177@P7: The safety of food begins by ensuring only safe and suitable ingredients are purchased from
+L178@P7: suppliers and are stored correctly. Below is some information to assist in complying with the
+L179@P7: requirements of the Code relating to the receipt and storage of foods.
+L180@P7: Supplier and food information
+L181@P7: • Source all ingredients from reputable suppliers.
+L182@P7: • Maintain a list of food suppliers in case they need to be contacted. An example of a record sheet
+L183@P7: for listing suppliers is provided in Appendix 4.
+L184@P7: • For all foods, the label or receipt must contain details of suppliers’ names and addresses. Phone
+L185@P7: contact details should also be kept.
+L186@P7: • Only receive foods that are within their use -by date or best -before date.
+L187@P7: • Inspect the delivery – any items that do not meet receipt requirements should be returned to
+L188@P7: supplier.
+L189@P7: • Check the stock regularly for date markings, rotate and prioritise stock for sale or disposal
+L190@P7: ensuring older food is used first and food is not used /sold beyond its use -by date.
+L191@P7: Ready -made sushi
+L192@P7: • Only receive sushi that has been transported in refrigerated vehicles.
+L193@P7: • Always check the temperature of sushi for each batch received. The temperature must be at 5°C
+L194@P7: or below .
+L195@P7: • Check the label or paperwork for time and date when sushi was made.
+L196@P7: • Once received, sushi must be:
+L197@P7: — Kept refrigerated at 5°C or below , or
+L198@P7: — Placed on retail display immediately.
+L199@P7: • Sushi must be covered during receipt and storage to protect against contamination.
+L200@P7: Acidified rice
+L201@P7: • Only receive acidified rice that is labelled with the date and time it was made.
+L202@P7: • Check the pH of the rice to ensure it has been properly acidified. pH of acidified rice must be at
+L203@P7: 4.6 or below (see Appendix 1 and 2).
+L204@P7: • Reject the rice if the pH is higher than 4.6 or it was made more than 8 hours ago.
+L205@P7: • Record the pH result and the date and time the rice was made on a record sheet. An example of
+L206@P7: a record sheet for acidified rice is provided in Appendix 4.
+L207@P7: • Only acidified rice can be stored at room temperature . It must be used on the day it was made –
+L208@P7: after this, it must be discarded.
+L209@P7-8: • Cover acidified rice when not in use to protect against contamination.Food safety g uideline s for the preparation and display of sushi
+L210@P8: FA 689 /2506 9
+L211@P8: Potentially hazardous raw ingredients
+L212@P8: Potentially hazardous foods and raw ingredients must be stored refrigerated. This includes meat,
+L213@P8: chicken, seafood, non -acidified cooked rice and dairy products.
+L214@P8: • Only receive potentially hazardous food that have been transported under temperature control.
+L215@P8: • Once received, refrigerate all potentially hazardous foods immediately (at 5°C or below ).
+L216@P8: • Do not overfill the refrigerator .
+L217@P8: • Allow chilled air to circulate around all food items.
+L218@P8: • Only use the freshest, suitable to be eaten raw fish in raw fish sushi.
+L219@P8: • Store refrigerated raw ingredients separately from sushi and other ready -to-eat foods and
+L220@P8: ingredients such as tuna or salmon to be eaten raw.
+L221@P8: • Do not store raw foods such as uncooked chicken and meat above ready -to-eat foods in the
+L222@P8: refrigerator. This is to prevent the raw juices from dripping onto foods below .
+L223@P8: • Cover refrigerated ingredients during receipt and storage to protect against contamination.
+L224@P8: Frozen foods
+L225@P8: • Only receive frozen food that is in a frozen state.
+L226@P8: • If foods are to be kept frozen, place them in a freezer immediately.
+L227@P8: • Ensure that frozen food is adequately covered, and the package is intact.
+L228@P8: • Label foods stored in freezers with the ‘date of freezing’ using food grade labels that will not
+L229@P8: come off in the freezer.
+L230@P8: Shelf stable foods
+L231@P8: • Shelf -stable foods include uncooked rice, seaweed (nori) sheets, wasabi powder and unopened
+L232@P8: pack of pickles.
+L233@P8: • Ensure that the packaging of shelf stable food is intact.
+L234@P8-9: • Cover shelf -stable foods during storage to protect against contamination.Food safety g uideline s for the preparation and display of sushi
+L235@P9: FA 689 /2506 10
+L236@P9: Preparing sushi
+L237@P9: Preparing sushi involves a great deal of handling of both raw and cooked foods. Because sushi is
+L238@P9: eaten without any further cooking it is important that it is prepared correctly and safely.
+L239@P9: Raw foods can contain bacteria and, if not handled correctly, the numbers of bacteria can grow.
+L240@P9: Poor handling of cooked foods can result in them becoming cross -contaminated from raw foods,
+L241@P9: and if not stored correctly, the number of bacteria can also grow.
+L242@P9: Generally, the food processing area must be kept clean, well maintained and free of pests to avoid
+L243@P9: contamination. Below are some main points to assist in proper preparation of sushi and to assist in
+L244@P9: avoiding cross -contamination.
+L245@P9: Equipment and utensils
+L246@P9: • With the exception of bamboo mats, do not use wooden utensils. All utensils must be able to be
+L247@P9: easily cleaned and sanitised.
+L248@P9: • Clean and sanitise all benches, utensils and equipment before preparing sushi.
+L249@P9: • Sushi rolling machines must be cleaned and sanitised regularly during the day to remove the
+L250@P9: build -up of rice and destroy pathogenic bacteria. Other utensils and equipment also need to be
+L251@P9: cleaned regularly to remove build -up of rice and other ingredients.
+L252@P9: • Clean and sanitise chopping boards and utensils in between preparing different foods, especially
+L253@P9: when preparing foods that will not be cooked further ( for example, raw fish and cooked teriyaki
+L254@P9: chicken).
+L255@P9: • Clean and sanitise bamboo and plastic mats daily. If bamboo mats are used , it is recommended
+L256@P9: that they are covered with clean cling wrap and the cling wrap is changed regularly.
+L257@P9: Personal hygiene
+L258@P9: Staff must have the appropriate skills and knowledge for any food handling activities they do. All
+L259@P9: food handlers preparing and handling sushi must also ensure they follow good personal hygiene
+L260@P9: practices.
+L261@P9: • Do not prepare food when sick with vomiting, diarrhoea or fever.
+L262@P9: • Take all practicable measures to prevent unnecessary contact with ready -to-eat food.
+L263@P9: • Wash hands prior to preparing sushi and after handling non -food articles, using the toilet,
+L264@P9: smoking, drinking, eating and touching hair, scalp or body.
+L265@P9: • Wash hands between handling of raw ingredients and ready -to-eat foods.
+L266@P9: Use of disposable gloves
+L267@P9: It is not mandatory for food handlers to use disposable gloves, although if used correctly they can
+L268@P9: assist with minimising contamination. When using disposable gloves they must be:
+L269@P9-10: • Only used for one continuous task and then discarded.Food safety g uideline s for the preparation and display of sushi
+L270@P10: FA 689 /2506 11
+L271@P10: • Regularly changed to avoid cross -contamination – this is especially the case when changing
+L272@P10: from preparing raw ingredients to handling ready -to-eat foods.
+L273@P10: • When taken off they must always be discarded and not kept for use later.
+L274@P10: • Removed and discarded before using the toilet, smoking, eating, drinking, or touching the hair,
+L275@P10: scalp or body.
+L276@P10: Preparation of acidified rice
+L277@P10: Proper preparation of acidified rice is important to ensure the rice is safe to use. Rice acidified to a
+L278@P10: pH of 4.6 or below will inhibit the growth of pathogenic bacteria.
+L279@P10: Appendix 1 lists some sushi rice recipes that if followed should result in proper acidification of the
+L280@P10: rice.
+L281@P10: • Use a tested, standard recipe for sushi rice to ensure that the target pH is achieved every time.
+L282@P10: • Acidify rice as soon as possible after cooking is finished. Mixing the vinegar solution whilst the
+L283@P10: rice is still warm also helps the rice to absorb the vinegar/salt solution.
+L284@P10: • Mix sushi rice thoroughly and uniformly with the vinegar solution.
+L285@P10: • Check the pH of the rice to ensure proper acidification has occurred. An example of a record
+L286@P10: sheet for rice acidification is provided in Appendix 4.
+L287@P10: • Label the rice container with the time of acidification.
+L288@P10: • Once acidified, store and cover the rice when not being used.
+L289@P10: • Acidified rice can be stored up to 8 hours at room temperature. At the end of the day, the
+L290@P10: remaining rice must be discarded.
+L291@P10: Note: If cooked rice is not acidified, it must be stored under refrigeration at 5°C or below at all times.
+L292@P10: Preparation of fillings and sushi
+L293@P10: • Keep all potentially hazardous raw materials under refrigeration until used – this is especially
+L294@P10: the case for raw fish.
+L295@P10: • Acidified rice should be at room temperature prior to being used in making the sushi products.
+L296@P10: • Thaw frozen foods under refrigeration or use a microwave oven.
+L297@P10: • Wash vegetables before use.
+L298@P10: • Cook meat and chicken thoroughly. Use a probe thermometer to confirm that the meat is
+L299@P10: completely cooked (the core temperature must be 75°C or above).
+L300@P10: • Cooked product must be cooled safely . The Code states that when cooling cooked potentially
+L301@P10: hazardous food, cool the food :
+L302@P10: — From 60°C to 21°C within 2 hours; and
+L303@P10: — From 21°C to 5°C within a further 4 hours .
+L304@P10: • Store prepared potentially hazardous ingredients ( for example, cooked chicken, tamago) under
+L305@P10-11: refrigeration after cooking and when not being used.Food safety g uideline s for the preparation and display of sushi
+L306@P11: FA 689 /2506 12
+L307@P11: • Once prepared, store sushi under refrigeration (at 5°C or below ) unless it is being displayed for
+L308@P11: sale immediately.
+L309@P11: • If cooked ingredients are not tempered ( for example, cooked meat and tamago at 5°C or below
+L310@P11: and acidified rice at room temperature) prior to making sushi, the sushi must be placed under
+L311@P11: refrigeration prior to display to effectively decrease temperature to 25°C or below .
+L312@P11: Note: Display cabinets will not effectively reduce the temperature of prepared sushi.
+L313@P11: • Only make an amount of sushi that can be properly placed within the storage or display section.
+L314@P11: Sushi must not be left unrefrigerated unless on display. This is important especially for
+L315@P11: businesses with limited storage and display space.
+L316@P11: Defrosting frozen fish
+L317@P11: • Only defrost fish in small amounts, as needed.
+L318@P11: • Defrost frozen fish overnight in a refrigerator or cool room at 5°C or below.
+L319@P11: • Label fish with the ‘date of defrosting’.
+L320@P11: • Have correct stock rotation i.e. defrost ‘oldest’ stored fish first.
+L321@P11: • Defrosted fish must be used on the day of defrosting. Discard unused defrosted fish.
+L322@P11: • Do not defrost fish under running water or in a water bath or at room temperature.
+L323@P11: • Do not re -freeze defrosted fish.
+L324@P11: • Do not freeze fish at the end of its shelf life.
+L325@P11: Retail display of sushi
+L326@P11: • Providing the previous requirements have been met, sushi can be displayed at temperatures up
+L327@P11: to 25°C for no longer than 4 hours.
+L328@P11: • Records must be kept demonstrating adherence to the time temperature requirements.
+L329@P11: • Sushi must be kept out of direct sunlight during display.
+L330@P11: • Sushi must be discarded at the end of the trading day.
+L331@P11: Sushi Bars
+L332@P11: • Display cabinets must include doors to protect food from the likelihood of contamination and
+L333@P11: maintain the temperature control inside the cabinet.
+L334@P11: • Close the doors on the display cabinet when not in use.
+L335@P11: • Have a system to ensure ‘first -in-first -served’ for prepared sushi (i.e. the earlier made sushi is
+L336@P11: sold first to reduce time at display).
+L337@P11: • Either each roll or a batch must be able to be identified. This can be achieved by:
+L338@P11: — Colour -coded stickers on roll packaging,
+L339@P11-12: — Colour -coded containers,Food safety g uideline s for the preparation and display of sushi
+L340@P12: FA 689 /2506 13
+L341@P12: — Time stamp of each roll/container – this is only applicable to sushi bars preparing their own
+L342@P12: sushi.
+L343@P12: • Clean and sanitise display cabinets at the end of the day.
+L344@P12: • Keep all equipment ( for example, containers or utensils) used for handling sushi clean at all
+L345@P12: times and sanitise them at the end of the day.
+L346@P12: Sushi conveyor system
+L347@P12: • Cover all plates on conveyer to protect from contamination.
+L348@P12: • All plates must be able to be traced to a batch and time of display. Suggested systems include:
+L349@P12: — Colour coded plates,
+L350@P12: — Patterns on plates, or
+L351@P12: — Colour -coded stickers.
+L352@P12: • Do not use garnishes as time of display indicator.
+L353@P12: • Clean and sanitise all plates and lids after they have been used.
+L354@P12: • Provide individually packaged wasabi and pickled ginger to prevent cross contamination.
+L355@P12: Record system
+L356@P12: • Records must be kept that indicate:
+L357@P12: — Time the sushi was placed on display,
+L358@P12: — If sushi is made and displayed immediately ( for example, conveyor system), the time it was
+L359@P12: made must be recorded,
+L360@P12: — Corresponding colour, patterns, etc.
+L361@P12-13: • Example of a record sheet is provided in Appendix 4.Food safety g uideline s for the preparation and display of sushi
+L362@P13: FA 689 /2506 14
+L363@P13: References and further reading
+L364@P13: ACT Health Protection Services (2011). Microbiological quality of sushi.
+L365@P13: www.act.gov.au/__data/assets/pdf_file/0007/2285026/c1da1536efbfef81833b51d1ca0efe1de357a0
+L366@P13: 4e.pdf (PDF, 211 KB)
+L367@P13: Anon (1995). The Food Safety (Temperature Control) Regulation 1995.
+L368@P13: www.legislation.gov.uk/uksi/1995/2200/contents/made
+L369@P13: UKHospitality (2022 ). Industry Guide to Good Hygiene Practice: Catering Guide.
+L370@P13: www.ukhospitality.org.uk/guidance/industry -guide -to-good -hygiene -practice/
+L371@P13: Department of Health Victoria (2025) Food S mart: Food Safety Program template .
+L372@P13: www.health.vic.gov.au/food -safety/foodsmart
+L373@P13: Food and Environmental Hygiene Department (2000). Risk Assessment Studies Report No. 2:
+L374@P13: Microbiological Hazards Evaluation. Sushi and Sashimi in Hong Kong.
+L375@P13: www.cfs.gov.hk/english/programme/programme_haccp/programme_haccp_ss_ras2.html
+L376@P13: Food Safety Authority of Ireland (2019). Safe Production of Sushi.
+L377@P13: www.fsai.ie/business -advice/running -a-food -business/food -safety -and -hygiene/microbiological -
+L378@P13: hazards/safe -production -of-sushi
+L379@P13: Food Standards Australia New Zealand ( 2023 ). Safe Food Australia: A Guide to the Food Safety
+L380@P13: Standards.
+L381@P13: www.foodstandards.gov.au/publications/Pages/safefoodaustralia3rd16.aspx
+L382@P13: NSW Food Authority (2008). Report on food handling practices and microbiological quality of sushi
+L383@P13: in Australia.
+L384@P13: www.foodauthority.nsw.gov.au/sites/default/files/_Documents/scienceandtechnical/report_quality_
+L385@P13: sushi_australia.pdf (PDF, 175 KB)
+L386@P13: NSW Food Authority (2009). Microbiological quality of sushi – 2009.
+L387@P13: www.foodauthority.nsw.gov.au/sites/default/files/_Documents/scienceandtechnical/sushi_survey_2
+L388@P13: 009_report.pdf (PDF, 142 KB)
+L389@P13: University of Florida IFAS Extension (2004). Guidance for Processing Sushi in Retail Operations.
+L390@P13: journals.flvc.org/edis/article/view/114331
+L391@P13: U.S. Food & Drug Administration (20 22 ). Food Code 20 22 .
+L392@P13: www.fda.gov/food/fda -food -code/food -code -2022
+L393@P13: More information
+L394@P13: Visit www.foodauthority.nsw.gov.au
+L395@P13: Contact the Food Authority helpline:
+L396@P13: • Email food.contact@dpird.nsw.gov.au
+L397@P13-14: • Phone 1300 552 406Food safety g uideline s for the preparation and display of sushi
+L398@P14: FA 689 /2506 15
+L399@P14: Appendix 1. Rice acidification
+L400@P14: At pH values of 4.6 or below, most pathogenic bacteria do not grow, sporulate or produce toxins
+L401@P14: (Hocking, 2003). There are a few exceptions to this, Salmonella spp and enteropathogenic
+L402@P14: Escherichia coli , although when the pH of the growth medium or food is adjusted using acetic acid,
+

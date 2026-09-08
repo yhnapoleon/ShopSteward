@@ -1,0 +1,282 @@
+Guidelines for the use of non-potable water in food businesses (https://www.foodauthority.nsw.gov.au/media/2501)
+citeturn102view0 [wordlim: 200] Crawled: last week; Content type: application/pdf; Number of pages: 7; Source: click({"ref_id":"turn59view0","id":373}); Total lines: 279
+L0@P0: Food Authority
+L1@P0: Guidelines for the use of non-potable water in
+L2@P0: food businesses
+L3@P0: These guidelines are designed to help food businesses ensure water used for food preparation and
+L4@P0: human consumption is safe in the event of a microbiologically unsafe water supply.
+L5@P0: A water supply may not be safe due to inadequate treatment or an interruption to treatment.
+L6@P0: Concerns and issues about the chemical safety of the water supply should be raised with the
+L7@P0: environmental health officers from your local council or Public Health Unit.
+L8@P0: Potable water in food businesses
+L9@P0: Food laws require food businesses to use ‘potable water’ for all activities that use water on the
+L10@P0: premises, unless the use of ‘non-potable water’ will not affect the safety of the food.
+L11@P0: Potable water means it is acceptable and safe for human consumption, and must be used in a food
+L12@P0: business for:
+L13@P0: • washing food and/or food ingredients
+L14@P0: • cooking
+L15@P0: • adding to food and drinks
+L16@P0: • making ice
+L17@P0: • cleaning food contact surfaces
+L18@P0: • cleaning food containers and utensils
+L19@P0: • personal hygiene.
+L20@P0: Non-potable water
+L21@P0: Non-potable water can be used only when it will not affect food safety, such as the flushing of toilets
+L22@P0: and cleaning non-food contact surfaces such as floors, or if it is treated to be safe for human
+L23@P0: consumption. If in doubt, please consult the environmental health officers from your local council or
+L24@P0: Public Health Unit.
+L25@P0: A water supply is not guaranteed to be safe when:
+L26@P0: a. the reticulated drinking water supply to a food business has a temporary interruption to the
+L27@P0: treatment of that supply, maybe because of water treatment plant breakdown, fire or flooding
+L28@P0: b. a reticulated water supply does not meet drinking water standards
+L29@P0: c. it is a private supply, such as:
+L30@P0: • rainwater tanks
+L31@P0: • groundwater, such as bores
+L32@P0-1: • surface water sources, such as a river or lake.Guidelines for the use of non-potable water in food businesses
+L33@P1: FA604/2412 2
+L34@P1: Food laws and potable water
+L35@P1: Standard 3.2.3 clause 4 of the Australian New Zealand Food Standards Code (the Code) requires a
+L36@P1: food business to use potable water for all activities that use water on the food premises, unless the
+L37@P1: business demonstrates the use of non-potable water will not adversely affect the safety of the food
+L38@P1: handled by the food business.
+L39@P1: In addition, Standard 3.2.3, clause 14 (2) of the Code requires hand washing facilities to be connected
+L40@P1: to, or otherwise provided with, a supply of warm, running potable water.
+L41@P1: Figure 1 When water is safe to use in a food business
+L42@P1: 
+L43@P1: 
+L44@P1: 
+L45@P1: 
+L46@P1: 
+L47@P1: 
+L48@P1: 
+L49@P1: 
+L50@P1: 
+L51@P1: 
+L52@P1: 
+L53@P1: 
+L54@P1: 
+L55@P1: 
+L56@P1: 
+L57@P1: 
+L58@P1: 
+L59@P1: 
+L60@P1: 
+L61@P1: 
+L62@P1: 
+L63@P1: 
+L64@P1: 
+L65@P1: 
+L66@P1: 
+L67@P1: 
+L68@P1: 
+L69@P1: 
+L70@P1: Reticulated water
+L71@P1: meets drinking
+L72@P1: water standards
+L73@P1: Temporary
+L74@P1: interruption to
+L75@P1: safety of supply
+L76@P1: Water from reticulated supply that
+L77@P1: does not meet drinking water
+L78@P1: standards or is a private water supply
+L79@P1: Possible
+L80@P1: chemical
+L81@P1: contamination
+L82@P1: Temporary treatment
+L83@P1: • Use commercially-bottled water
+L84@P1: • Boiling
+L85@P1: • Disinfection by chlorine
+L86@P1: Permanent treatment Contact
+L87@P1: local council or
+L88@P1: Public Health Unit
+L89@P1: Disinfection
+L90@P1: by chlorine
+L91@P1: in water
+L92@P1: storage
+L93@P1: vessels
+L94@P1: Safe water for use by the food business
+L95@P1: safe
+L96@P1: safe
+L97@P1: Ultraviolet
+L98@P1: sterilisation
+L99@P1: or Ozone
+L100@P1: treatment
+L101@P1: safe
+L102@P1: unsafe
+L103@P1: safe
+L104@P1: unsafe
+L105@P1-2: unsafeGuidelines for the use of non-potable water in food businesses
+L106@P2: FA604/2412 3
+L107@P2: Possible health risks from non-potable water
+L108@P2: Microbiological contamination
+L109@P2: Contaminated water may contain harmful microorganisms, such as viruses, bacteria such as
+L110@P2: Salmonella, Campylobacter or E. coli, and gastro-intestinal parasites such as Giardia or
+L111@P2: Cryptosporidium. These harmful microorganisms, known as pathogens, are invisible to the naked eye
+L112@P2: and may be present in clear water.
+L113@P2: Drinking water containing these microorganisms can cause severe gastroenteritis, possibly lasting for
+L114@P2: several weeks. Infants, the elderly and people with suppressed immune systems are more likely to be
+L115@P2: affected.
+L116@P2: Chemical contamination
+L117@P2: Chemical contaminants are less common than microbiological contaminants but can still be present in
+L118@P2: the environment.
+L119@P2: Soil from old industrial, mining or agricultural areas may contain arsenic, heavy metals, pesticide
+L120@P2: residues or other chemicals. If dust is blown onto roofs and is washed into rainwater tanks, chemical
+L121@P2: residues may build up in the water. Runoff from roofs in urban or industrial areas may also contain
+L122@P2: chemical pollutants from the air.
+L123@P2: Lead-based paints or flashing used on some older roofs may also flake off and be washed into
+L124@P2: rainwater tanks. Tar-based coatings can bind other harmful organic chemicals such as pesticides to
+L125@P2: the roof surface and also make it difficult to clean.
+L126@P2: Harmful smoky residues from solid wood heaters can also condense near flues on roofs. These
+L127@P2: chemicals may leach from the roof surface over time and may be washed into rainwater tanks.
+L128@P2: Aerial application of fertilisers and pesticides such as 'crop dusting' can sometimes result in these
+L129@P2: agricultural chemicals entering rainwater tanks. Agricultural chemicals may also drift or be washed into
+L130@P2: drains, irrigation channels, local streams and dams.
+L131@P2: The below treatment methods outline how to make the water supply safe if there is the possibility that
+L132@P2: the water supply is microbiologically unsafe. If you suspect that your water supply could be chemically
+L133@P2: unsafe, consult with your local council or Public Health Unit.
+L134@P2: Whatever the water source, it is the responsibility of the food business to check what possible
+L135@P2-3: chemical contaminants can get into the water supply.Guidelines for the use of non-potable water in food businesses
+L136@P3: FA604/2412 4
+L137@P3: Water treatment methods
+L138@P3: Temporary treatment
+L139@P3: There can be times when a water supplier may notify that its normally potable water supply will either
+L140@P3: be shut off for maintenance or has been temporarily contaminated, which is usually microbiological but
+L141@P3: may be accompanied by dirty water. They may advise to boiI the water for a short time or to treat
+L142@P3: possible contamination in the water supply.
+L143@P3: There are things a food business can do to ensure the safety of their water supply during a short-term
+L144@P3: interruption.
+L145@P3: Table 1 Temporary treatment
+L146@P3: Water used for Action or treatment
+L147@P3: Drinking Use either commercially bottled water or water that has been brought to a
+L148@P3: rolling boil, that is, the water is boiling vigorously for at least one (1)
+L149@P3: minute.
+L150@P3: Ice making If you need to make ice during this time, only make it from water that is
+L151@P3: suitable for drinking.
+L152@P3: Washing hands Use a water container with a tap that contains either bottled water or
+L153@P3: water brought to a rolling boil for at least one (1) minute, or that has been
+L154@P3: disinfected with chlorine (see chlorination guide below).
+L155@P3: Cleaning equipment For cleaning equipment, such as pots, pans, cutting boards, dishes and
+L156@P3: cutlery, the following options can be considered:
+L157@P3: • sanitise by immersing the utensils in hot water at or hotter than 77°C
+L158@P3: for at least 30 seconds. As it is unlikely a hot water system will deliver
+L159@P3: water at a minimum of 77°C at the sink, it may be necessary to use a
+L160@P3: water heater in the sink to maintain the temperature to at least 77°C
+L161@P3: or an urn to feed water to the sink. A rinsing basket to submerge the
+L162@P3: utensils in the water is desirable for safety reasons
+L163@P3: • use a commercial dishwasher capable of sanitising
+L164@P3: • use disposable cups, plates and other utensils
+L165@P3: • use a chemical sanitiser for cleaning eating and drinking utensils and
+L166@P3: for other utensils that require sanitising, such as large mixing bowls
+L167@P3: and chopping boards that will not fit in the commercial dishwasher.
+L168@P3: Cleaning floors and
+L169@P3: non-food contact
+L170@P3: surfaces
+L171@P3: If you want to sanitise these surfaces, washing in water with a
+L172@P3: concentration of chlorine 100-200 mg/L is adequate.
+L173@P3: Note: In sewered areas, the responsible authority should be consulted as to whether
+L174@P3: discharge of effluent containing these concentrations of chlorine is permitted. Also, care
+L175@P3: should be taken if you have a septic tank as this may compromise the septic system.
+L176@P3-4: Please consult your local council or Public Health Unit.Guidelines for the use of non-potable water in food businesses
+L177@P4: FA604/2412 5
+L178@P4: Permanent treatment
+L179@P4: Food businesses can either follow the advice in the previous section on a more permanent basis or
+L180@P4: seek a longer-term solution to managing the safety of their water supply.
+L181@P4: Treating water in a water storage vessel – such as a water tank
+L182@P4: If the water source is from a non-potable water supply, groundwater or surface water, a practical way
+L183@P4: to ensure the water supply is safe is to periodically fill a water storage vessel from the water supply
+L184@P4: and treat the water in the vessel with chlorine.
+L185@P4: Storage vessels for treated water should:
+L186@P4: • be clean
+L187@P4: • have covers
+L188@P4: • be above ground level
+L189@P4: • be in a cool position
+L190@P4: • be cleaned periodically
+L191@P4: • be mosquito proof
+L192@P4: • be unlikely to taint the water (seek advice
+L193@P4: from manufacturer).
+L194@P4: Chlorination guide
+L195@P4: • The initial dose should give a free chlorine residual of 5.0 mg/L.
+L196@P4: • There should be enough chlorine to give a free chlorine residual of 1.0 mg/L after 30 minutes
+L197@P4: contact time.
+L198@P4: • Check after 30 minutes using a colour comparator, like the ones used for swimming pools.
+L199@P4: • If necessary, add more chlorine to ensure that the required minimum of 1.0 mg/L maintained for 30
+L200@P4: minutes, is achieved.
+L201@P4: • Each time the storage vessel is running low, refill it and re-treat with chlorine.
+L202@P4: • Chlorinate each time the storage vessel is filled with water from a non-potable source.
+L203@P4: • Tables 2, 3, and 4 outline how much available chlorine is required to achieve the free chlorine
+L204@P4: residual target.
+L205@P4: • Some household bleach contains alkalis and other chemicals such as perfumes. The alkalis in
+L206@P4: these products will increase the pH of the water, often above pH 9 which is not satisfactory. Make
+L207@P4: sure to source a suitable chlorine product.
+L208@P4: Table 2 Volume of household bleach (4% available chlorine) required to achieve the free chlorine residual target
+L209@P4: Water volume to be
+L210@P4: treated
+L211@P4: To achieve a concentration of
+L212@P4: 5mg/L 100mg/L1 200mg/L1
+L213@P4: 5 litres 0.63 ml 12.5 ml 25 ml
+L214@P4: 1,000 litres 125 ml N/A N/A
+L215@P4: 5,000 litres 625 ml N/A N/A
+L216@P4-5: 1 Only for cleaning of floors and non-food contact surfaces.Guidelines for the use of non-potable water in food businesses
+L217@P5: FA604/2412 6
+L218@P5: Table 3 Volume of liquid sodium hypochlorite (12.5% available chlorine) required to achieve the free chlorine residual target
+L219@P5: Water volume to be
+L220@P5: treated
+L221@P5: To achieve a concentration of
+L222@P5: 5mg/L 100mg/L1 200mg/L1
+L223@P5: 5 litres 0.2 ml 4 ml 8 ml
+L224@P5: 1,000 litres 40 ml N/A N/A
+L225@P5: 5,000 litres 200 ml N/A N/A
+L226@P5: Table 4 Amount of swimming pool chlorine (HTH) (65% available chlorine) required to achieve the free chlorine residual
+L227@P5: target
+L228@P5: Water volume to be
+L229@P5: treated
+L230@P5: To achieve a
+L231@P5: concentration of
+L232@P5: 5mg/L
+L233@P5: 1,000 litres 8 gm
+L234@P5: 5,000 litres 40 gm
+L235@P5: Alternative permanent water sterilisation methods
+L236@P5: There are many methods that can be used to treat the water supply for microbiological safety. Two
+L237@P5: such treatment methods that are chemical free are ultraviolet sterilisation and ozone treatment.
+L238@P5: Search online for 'water treatment or equipment' for alternative water sterilisation methods.
+L239@P5: If you have any doubts as to what to do, employ the services of a water treatment expert to advise the
+L240@P5: best solution to meet your business needs, or contact your local council or Public Health Unit.
+L241@P5: Table 5 Alternative permanent water sterilisation methods
+L242@P5: Method Details
+L243@P5: Ultraviolet (UV)
+L244@P5: steriliser
+L245@P5: UV sterilisers can be installed at point of entry of water to the business to
+L246@P5: destroy pathogenic organisms.
+L247@P5: UV disinfection is less effective in dirty or cloudy water as the light cannot
+L248@P5: penetrate the water. Filtration may be necessary to remove suspended
+L249@P5: particles before UV disinfection.
+L250@P5: Ozone treatment Uses ozone gas to treat the water. Consult a water treatment expert for
+L251@P5: advice.
+L252@P5-6: Other methods Consult a water treatment expert or the local council or Public Health Unit.Guidelines for the use of non-potable water in food businesses
+L253@P6: FA604/2412 7
+L254@P6: Regular microbiological and chemical testing
+L255@P6: Verify that the water treatment methods are working by arranging periodic samples for microbiological
+L256@P6: analysis.
+L257@P6: Chemical analysis of the water is also advisable, particularly when a new bore is used or to test
+L258@P6: rainwater tanks following bushfires. Consult your local council or Public Health Unit about what to
+L259@P6: sample and how often.
+L260@P6: Water testing
+L261@P6: Many analytical laboratories in NSW can advise on chemical, microbiological and algal testing of
+L262@P6: water. Search for ‘water testing’ online to find a local laboratory.
+L263@P6: Acknowledgements
+L264@P6: This document was originally reproduced with permission from the Food Safety Unit, Victorian
+L265@P6: Government Department of Health and Human Services, Melbourne, Victoria. The content has been
+L266@P6: updated and adapted to include other references.
+L267@P6: More information
+L268@P6: • NSW Health advice on water quality, available via health.nsw.gov.au/environment/water
+L269@P6: • NSW Private Water Supply Guidelines (PDF, 874 KB), available via health.nsw.gov.au
+L270@P6: • Australian Government Department of Health Guidance on use of rainwater tanks (PDF,
+L271@P6: • 565 KB), available via health.gov.au
+L272@P6: • Visit foodauthority.nsw.gov.au
+L273@P6: • Email food.contact@dpird.nsw.gov.au
+L274@P6: • Phone 1300 552 406
+L275@P6: © State of New South Wales through the NSW Department of Primary Industries and Regional Development 2024. The information
+L276@P6: contained in this publication is based on knowledge and understanding at the time of writing December 2024. However, because of
+L277@P6: advances in knowledge, users are reminded of the need to ensure that the information upon which they rely is up to date and to check the
+L278@P6: currency of the information with the appropriate officer of the Regional NSW or the user’s independent adviser.
+

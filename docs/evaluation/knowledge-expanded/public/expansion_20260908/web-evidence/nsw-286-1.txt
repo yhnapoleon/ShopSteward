@@ -1,0 +1,164 @@
+Cleaning and sanitising in retail food businesses (https://www.foodauthority.nsw.gov.au/media/416)
+citeturn107view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 5; Source: click({"ref_id":"turn59view0","id":286}); Total lines: 161
+L0@P0: Food Authority
+L1@P0: Cleaning and sanitising in retail food
+L2@P0: businesses
+L3@P0: Why do I need to clean and sanitise?
+L4@P0: Effective cleaning and sanitising in your food business helps protect you and your customers against
+L5@P0: the spread of bacteria and other organisms that cause foodborne illness. It also helps to reduce the
+L6@P0: activity of pests in a food premises by eliminating food sources.
+L7@P0: The Food Standards Code requires:
+L8@P0: • a food premises, including all its equipment, to be maintained to an acceptable standard of
+L9@P0: cleanliness, [Std. 3.2.2-19] and
+L10@P0: • food contact equipment, such as kitchen benches, knives, chopping boards, pots, and meat slicers
+L11@P0: etc., as well as eating and drinking utensils, to be in a clean and sanitary condition.
+L12@P0: Difference between cleaning and sanitising
+L13@P0: In the food industry, cleaning and sanitising is a two-step process. A surface needs to be thoroughly
+L14@P0: cleaned before it is sanitised:
+L15@P0: 1. Cleaning requires the use of warm to hot water, detergent and physical action to remove food
+L16@P0: debris and dissolve grease and dirt to ensure the surfaces are clean to touch and free of visible
+L17@P0: matter and odours.
+L18@P0: 2. Sanitising is the process of applying heat (usually very hot water) or chemicals or a combination of
+L19@P0: both heat and chemicals, to an already clean surface to reduce the number of bacteria and other
+L20@P0: organisms to a safe level.
+L21@P0: During the cleaning stage detergents ensure
+L22@P0: food particles are broken down and
+L23@P0: prevented from depositing back onto the
+L24@P0: items being washed.
+L25@P0: Effective cleaning is 90% of the overall
+L26@P0: sanitation effort as cleaning removes most
+L27@P0: of the bacteria present. The job of the
+L28@P0: sanitiser is to kill the remaining bacteria
+L29@P0: during the sanitising stage.
+L30@P0: Cleaning and sanitising can be done
+L31@P0: mechanically using dishwashers or manually
+L32@P0-1: using wash up sinks and spray bottles. Figure 1. Benchtop cleaning.Cleaning and sanitising in retail food businesses
+L33@P1: FA450/2306 2
+L34@P1: Cleaning and sanitising using dishwashers
+L35@P1: All commercial dishwashers operate differently. High temperature
+L36@P1: dishwashers sanitise using heat (hot water) while low temperature
+L37@P1: dishwashers are complemented with chemical sanitisers. This is a very
+L38@P1: technical process and food businesses should use the program that the
+L39@P1: manufacturer has specified for sanitising. The manufacturer's instructions
+L40@P1: should always be followed.
+L41@P1: To sanitise with a dishwasher:
+L42@P1: 1. make sure you have a suitable dishwasher that can clean and sanitise
+L43@P1: quickly and effectively. Domestic dishwashers are generally not
+L44@P1: suitable and are impractical for busy retail or hospitality food
+L45@P1: businesses due to the very long cycles required to compensate for the
+L46@P1: lower appliance temperatures
+L47@P1: 2. use the correct type of detergent or sanitiser as outlined in the
+L48@P1: manufacturer’s instructions
+L49@P1: 3. use the hottest rinse cycle possible as per the manufacturer's
+L50@P1: instructions
+L51@P1: 4. look over equipment and utensils when removing them from the
+L52@P1: dishwasher to check they are clean
+L53@P1: 5. clean the dishwasher so there is no build-up of food residues
+L54@P1: 6. regularly maintain and service the dishwasher according to the
+L55@P1: manufacturer’s specifications.
+L56@P1: Cleaning and sanitising using sinks or spray bottles
+L57@P1: Clear and detailed instructions on how to correctly make up and use chemical sanitisers must be
+L58@P1: either on the label of the sanitiser or provided by the supplier in a product information sheet.
+L59@P1: Always make up and use chemical sanitisers by strictly following the manufacturer’s instructions.
+L60@P1: There are many different types of sanitiser and each will vary greatly in how they should be used. If
+L61@P1: clear instructions are not provided with the product, such as dilution rates and contact time, seek
+L62@P1: advice from the supplier or manufacturer and source an alternative product if necessary.
+L63@P1: Note: contact time means the amount of time a sanitiser must be in contact with an item, for it to work.
+L64@P1: The six recommended steps for effective cleaning and sanitising using sinks are:
+L65@P1: 1. Scrape or wipe away
+L66@P1: food scraps
+L67@P1: 2. Rinse with water
+L68@P1: 3. Wash using warm to hot
+L69@P1: water and detergent to
+L70@P1: remove grease and dirt.
+L71@P1: Soak if needed.
+L72@P1: 4. Rinse off any loose dirt
+L73@P1: or detergent residue
+L74@P1: (sanitisers will not work
+L75@P1: well in the presence of
+L76@P1: food or detergent
+L77@P1: residues). Figure 3. Cleaning and sanitising using a double bowl sink
+L78@P1-2: Figure 2. Commercial dishwasher.Cleaning and sanitising in retail food businesses
+L79@P2: FA450/2306 3
+L80@P2: 5. Sanitise with a chemical sanitiser:
+L81@P2: • Make up the sanitising solution as per manufacturer’s instructions
+L82@P2: • Dip equipment into the sanitising solution following manufacturer’s instructions making sure you
+L83@P2: allow the appropriate contact time for the sanitiser to work
+L84@P2: • For larger items that won’t fit in the sink use spray bottles to apply the sanitising solution to
+L85@P2: equipment
+L86@P2: • Wash off the sanitiser if necessary, as per manufacturer’s instructions
+L87@P2: 6. Air dry or use single use towels.
+L88@P2: Making up a sanitiser solution in a sink
+L89@P2: To dilute your sanitiser of choice to the correct concentration in a sink, follow the steps below. This
+L90@P2: calculation only needs to be done once for each sanitiser.
+L91@P2: 1. Calculate the working volume of the sink by either:
+L92@P2: a. Filling a container of known quantity (for example, a 10 litre bucket) with water, pouring it into a
+L93@P2: sink the desired number of times and mark the sink at the right level.
+L94@P2: Example: 6 times to make up 60 litres sink volume.
+L95@P2: OR
+L96@P2: b. Calculating the capacity of a square or rectangular sink by measuring the length, width and
+L97@P2: depth of the sink (how high you fill the sink up to) in centimetres.
+L98@P2: i. Multiply these three measurements to get the volume in cubic centimetres.
+L99@P2: ii. Divide your answer by 1000 to determine the number of litres the sink will hold.
+L100@P2: Example: a rectangular sink 40 cm wide, 50 cm long and filled to a height of 30 cm.
+L101@P2: Figure 4. Measuring the sink to calculate volume.
+L102@P2: Example:
+L103@P2: 40 x 50 x 30
+L104@P2: = 60,000cm3
+L105@P2: 60,000 / 1000
+L106@P2: = 60 litres
+L107@P2-3: SINK VOLUME = 60LCleaning and sanitising in retail food businesses
+L108@P3: FA450/2306 4
+L109@P3: 2. Calculate how much sanitiser to add to your sink
+L110@P3: a. Check the dilution rate on the sanitiser label or in
+L111@P3: the product information sheet for the required
+L112@P3: purpose, for example, for use as a no rinse
+L113@P3: sanitiser.
+L114@P3: b. The dilution rate is the amount of sanitiser to water.
+L115@P3: Example: 1:250 means 1 part of sanitiser to 250
+L116@P3: parts of water or 1 ml sanitiser to 250 ml water.
+L117@P3: 3. Divide the volume of the sink (as calculated in step 1)
+L118@P3: by the sanitiser dilution rate. Mix the sanitiser to the
+L119@P3: water in the sink.
+L120@P3: Note: if you change sanitisers or vary the volume of water in the sink the calculation will not be correct
+L121@P3: and your sanitising step may be ineffective. In this case you will need to recalculate the correct dilution
+L122@P3: as above.
+L123@P3: Diluting a sanitiser to the correct concentration is critical in preventing the spread of harmful bacteria
+L124@P3: that cause foodborne illness.
+L125@P3: Businesses using store-bought bleach as a sanitiser should refer to the dilution instructions outlined in
+L126@P3: Chemical sanitisers: advice for food businesses (PDF, 231KB).
+L127@P3:  How much water? How much bleach?
+L128@P3: Household
+L129@P3: (4% chlorine)
+L130@P3: Strong domestic
+L131@P3: (6% chlorine)
+L132@P3: Commercial
+L133@P3: (10% chlorine)
+L134@P3: Concentration
+L135@P3: required (ppm) 50ppm 100ppm 50ppm 100ppm 50ppm 100ppm
+L136@P3: Water temp Warm Cold Warm Cold Warm Cold
+L137@P3: 1 litre 1.25ml 2.5ml 0.85ml 1.7ml 0.5ml 1ml
+L138@P3: Table 1. Bleach dilution instructions
+L139@P3: To calculate the amount of bleach required for other sized containers, simply multiply the appropriate
+L140@P3: bleach amount above by the number of litres in any given container. For example:
+L141@P3: How much 4% chlorine bleach do I need to add to a 500ml bottle of cold water?
+L142@P3: • If 1 litre of cold water requires 2.5 ml of bleach (at 4% chlorine)
+L143@P3: • 500ml = 0.5L
+L144@P3: • Therefore 2.5ml x 0.5 = 1.25ml
+L145@P3: OR
+L146@P3: How much 4% chlorine bleach do I need to add to a 7-litre bucket of cold water?
+L147@P3: • If 1 litre of cold water requires 2.5 ml of bleach (at 4% chlorine)
+L148@P3: • Therefore 2.5ml x 7 = 17.5ml
+L149@P3-4: Figure 5. Example sanitiser directions for use.Cleaning and sanitising in retail food businesses
+L150@P4: FA450/2306 5
+L151@P4: More information
+L152@P4: • Visit foodauthority.nsw.gov.au
+L153@P4: — Factsheet: Chemical sanitisers: advice for food businesses (PDF, 231KB)
+L154@P4: — Factsheet: Campylobacter – advice for food businesses (PDF, 218 KB)
+L155@P4: • Email food.contact@dpird.nsw.gov.au
+L156@P4: • Phone 1300 552 406
+L157@P4: © State of New South Wales through DPIRD 2024. The information contained in this publication is based on knowledge and understanding
+L158@P4: at the time of writing September, 2024. However, because of advances in knowledge, users are reminded of the need to ensure that the
+L159@P4: information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the DPIRD or the
+L160@P4: user’s independent adviser.
+

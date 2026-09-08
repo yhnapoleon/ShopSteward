@@ -1,0 +1,60 @@
+Doner kebabs (https://www.foodauthority.nsw.gov.au/media/2341)
+citeturn109view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":297}); Total lines: 57
+L0@P0: Food Authority
+L1@P0: If not made hygienically, doner kebabs can pose a food safety risk for customers
+L2@P0: because some of the ingredients can allow the rapid growth of disease-causing
+L3@P0: bacteria. Food businesses must ensure the food they sell is safe and properly
+L4@P0: handled.
+L5@P0: Making kebabs safely
+L6@P0: Keep everything clean
+L7@P0: • Wash hands in a proper hand washing facility whenever they are a likely source of contamination
+L8@P0: (such as after hanging a kebab block, after using the toilet.).
+L9@P0: • Cover food in the refrigerator.
+L10@P0: Control temperature
+L11@P0: • It is easy to contaminate kebab ingredients such as hummus, tabouli and cheese. Only use such
+L12@P0: ingredients if they are properly refrigerated (at or below 5°C), packaged and labelled with date
+L13@P0: marks.
+L14@P0: • If you thaw frozen kebab meat before cooking, thaw it under refrigeration.
+L15@P0: • Keep fresh minced meat for making kebabs under refrigeration until ready for use. Refrigerate
+L16@P0: freshly made kebab meat while it is setting.
+L17@P0: • Store potentially hazardous food, including dairy-based sauces, at or below 5°C. Check the
+L18@P0: temperature using a thermometer.
+L19@P0: • The bacteria that cause food poisoning grow between 5°C and 60°C – the temperature danger
+L20@P0: zone. Potentially hazardous foods that have been in the temperature danger zone for more than
+L21@P0: four hours must be thrown out. Keep cold food in the fridge until you are ready to cook or serve it,
+L22@P0: and serve hot food steaming hot.
+L23@P0: • Do not overload refrigerators as this reduces their cooling efficiency.
+L24@P0: Cook thoroughly
+L25@P0: • Start cooking the kebab immediately after removing it from cold storage.
+L26@P0: • Ensure meat sliced from the kebab is properly cooked. Once cooked, keep above 60°C until
+L27@P0: served. Use a thermometer to check temperatures.
+L28@P0: • Best practice is to use a second cook step by heating the cooked, kebab block. Any leftover kebab
+L29@P0: meat that has been fully cooked may be used the next day provided it is cooled to less than 21°C
+L30@P0: within two hours from when cooking stops, and then to 5°C or less within the next four hours.
+L31@P0-1: Doner kebabsDoner kebabs
+L32@P1: FA611/2402 2
+L33@P1: • Monitor temperatures with a probe thermometer. A quick way to bring the temperature down is to
+L34@P1: put the meat in the freezer.
+L35@P1: • Before serving the meat, reheat it until it is above 60°C.
+L36@P1: Prevent contamination
+L37@P1: • Keep raw and cooked food separate.
+L38@P1: • Remember to wash your hands thoroughly in hot soapy water and dry them before preparing food
+L39@P1: and after touching raw meat, especially chicken, and other raw foods.
+L40@P1: • Thoroughly clean all utensils, equipment and surfaces after preparing raw food and before contact
+L41@P1: with other food.
+L42@P1: • Store raw meat, chicken and seafood at the bottom of the fridge so it can’t drip onto other foods.
+L43@P1: • Keep pets and animals out of the kitchen.
+L44@P1: • Do not handle food if you have symptoms of a foodborne illness (see related factsheet Health and
+L45@P1: hygiene requirements of food handlers).
+L46@P1: More information
+L47@P1: • Food Standards Australia New Zealand’s Safe Food Australia – A guide to the Food Safety
+L48@P1: Standards
+L49@P1: • Listeria in food
+L50@P1: • Visit foodauthority.nsw.gov.au
+L51@P1: • Email the Food Authority helpline at food.contact@dpi.nsw.gov.au
+L52@P1: • Phone the Food Authority helpline on 1300 552 406
+L53@P1: © State of New South Wales through Regional NSW 2024. The information contained in this publication is based on knowledge and
+L54@P1: understanding at the time of writing February 2024. However, because of advances in knowledge, users are reminded of the need to ensure
+L55@P1: that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L56@P1: Regional NSW or the user’s independent adviser.
+

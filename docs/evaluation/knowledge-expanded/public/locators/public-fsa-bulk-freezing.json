@@ -1,0 +1,37 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "1. Bulk freezing food",
+    "origin_id": "bulk-freezing-food",
+    "source_url": "https://www.gov.uk/government/publications/bulk-freezing-of-ambient-and-chilled-foods/bulk-freezing-of-ambient-and-chilled-foods#bulk-freezing-food",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "2. Labelling changes",
+    "origin_id": "labelling-changes",
+    "source_url": "https://www.gov.uk/government/publications/bulk-freezing-of-ambient-and-chilled-foods/bulk-freezing-of-ambient-and-chilled-foods#labelling-changes",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "3. Traceability records",
+    "origin_id": "traceability-records",
+    "source_url": "https://www.gov.uk/government/publications/bulk-freezing-of-ambient-and-chilled-foods/bulk-freezing-of-ambient-and-chilled-foods#traceability-records",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "4. Freezing requirements",
+    "origin_id": "freezing-requirements",
+    "source_url": "https://www.gov.uk/government/publications/bulk-freezing-of-ambient-and-chilled-foods/bulk-freezing-of-ambient-and-chilled-foods#freezing-requirements",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "5. Legislative requirements",
+    "origin_id": "legislative-requirements",
+    "source_url": "https://www.gov.uk/government/publications/bulk-freezing-of-ambient-and-chilled-foods/bulk-freezing-of-ambient-and-chilled-foods#legislative-requirements",
+    "ordinal": 5
+  }
+]

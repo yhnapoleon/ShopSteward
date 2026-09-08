@@ -1,0 +1,97 @@
+Cooling potentially hazardous food (https://www.foodauthority.nsw.gov.au/media/1226)
+citeturn110view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 3; Source: click({"ref_id":"turn59view0","id":293}); Total lines: 94
+L0@P0: Food Authority
+L1@P0: Cooling potentially hazardous food
+L2@P0: A common contributing factor to food poisoning in food businesses is incorrect temperature control.
+L3@P0: This is when food is held for too long at temperatures where harmful food poisoning bacteria can
+L4@P0: grow. The time food takes to cool (or reheat) is sometimes overlooked in food businesses and this is
+L5@P0: when problems occur.
+L6@P0: It is important that food businesses make sure cooked potentially hazardous food (PHF) has been
+L7@P0: cooled in accordance with Standard 3.2.2, Clause 7(3) of the Food Standards Code (the Code).
+L8@P0: Standard 3.2.2, Clause 7(3), Food Standards Code
+L9@P0: A food business must, when cooling cooked potentially hazardous food, cool the food:
+L10@P0: • within two hours – from 60°C to 21°C, and
+L11@P0: • within a further four hours – from 21°C to 5°C,
+L12@P0: unless the food business demonstrates that the cooling process used will not adversely affect the
+L13@P0: microbiological safety of the food.
+L14@P0: The correct cooling process
+L15@P0: The cooling of cooked PHF needs to be as quick as possible to prevent the growth of pathogenic
+L16@P0: bacteria to unsafe levels. The less time that cooked PHF remains at temperatures between 5°C and
+L17@P0: 60°C during the cooling process, the less opportunity there will be for foodborne pathogens to grow.
+L18@P0: It is possible that foodborne pathogens may be present in cooked food from spores that have survived
+L19@P0: the cooking process. Cooking can activate the spores to become vegetative (live) cells, which then
+L20@P0: grow.
+L21@P0: If cooked PHF is left to cool too slowly, for example at room temperature or in large volumes in a cool
+L22@P0: room, the vegetative cells can grow to dangerous levels. Re-heating the food may not reduce the
+L23@P0: number of bacteria and may not destroy any bacterial toxins that may be produced.
+L24@P0: Factors affecting cooling
+L25@P0: The procedure used to cool PHF will depend on:
+L26@P0: • • The size or amount of the food to be cooled – large amounts will cool slower than small amounts,
+L27@P0: and cooling will be fastest on the food's surface and progressively slower towards its centre. Large
+L28@P0: volumes of food may not sufficiently cool all the way through within the times and temperatures
+L29@P0: specified, so it is important to portion food into smaller amounts.
+L30@P0-1: • The density of the food (how solid/ liquid a food is) – the denser the food, the slower it will cool. Cooling potentially hazardous food
+L31@P1: FA522/2307 2
+L32@P1: • The cooling capacity of the equipment – blast chillers will cool food much faster than refrigerators,
+L33@P1: and over-stocking a refrigerator or placing large amounts of hot food into a refrigerator will reduce
+L34@P1: its overall cooling capacity.
+L35@P1: The cooling process
+L36@P1: Note: The total cooling time of 6 hours only applies once the temperature of cooked potentially
+L37@P1: hazardous food has dropped to 60°C after cooking.
+L38@P1: Cooling times can be reduced by:
+L39@P1: • cooking and cooling smaller amounts or portions placing food into large shallow containers to cool
+L40@P1: (for example, 5 cm deep)
+L41@P1: • using rapid-cooling equipment for example, a blast chiller)
+L42@P1: • stirring liquid foods frequently (ensuring the stirring utensil has been cleaned and sanitised)
+L43@P1: • using water or ice water baths
+L44@P1: • allowing cool air to circulate around the container of food to be cooled – PHF should be cooled on
+L45@P1: racks and not on the floor of a cool room
+L46@P1: • adding ice as an ingredient.
+L47@P1: Monitoring the cooling process
+L48@P1: It is important that the temperature of food is monitored during cooling to ensure the procedure used is
+L49@P1: effective. Food temperatures should be checked with a clean, sanitised thermometer in the part of the
+L50@P1: food that will take the longest to cool, usually the centre. It is good practice to record both the
+L51@P1: temperature and the time the temperature was taken to make sure the cooling process meets food
+L52@P1: safety requirements.
+L53@P1: The growth of pathogen bacteria is
+L54@P1: greatest at 21°C - 60°C. 60°
+L55@P1: Cooling food rapidly (within 2 hrs) to 21°C 21°
+L56@P1: will minimise potentially harmful growth.
+L57@P1: 5° Growth slows as temperature decreases. Further
+L58@P1: cooling to 5°C must be achieved within 4 hours.
+L59@P1: 2 hrs
+L60@P1-2: 6 hrsCooling potentially hazardous food
+L61@P2: FA522/2307 3
+L62@P2: Alternative cooling processes
+L63@P2: Extended cooling times may be necessary when large cooked meats or other products need to be
+L64@P2: cooled. Large volumes of food will not cool to below 5°C within the 6-hour requirement unless the
+L65@P2: mass and volume of the food can be decreased. If this option is not available, food businesses will
+L66@P2: need to demonstrate an alternative cooling process that will not adversely affect the microbiological
+L67@P2: safety of the food.
+L68@P2: Examples of cooling food safely
+L69@P2: Example 1 – Rice
+L70@P2: A restaurant's usual practice is to cook 12 cups of rice (the capacity of a rice cooker) daily and cool the
+L71@P2: rice in a container in the cool room overnight for use the next day. However, when checking the
+L72@P2: temperature at the centre of the cooked rice as it is cooling, it is discovered the rice is not actually
+L73@P2: being cooled to 21°C in the first 2 hours and then to 5°C over the next 4 hours, as required.
+L74@P2: The food business needs to work out a faster cooling method to ensure the rice is safe to eat. A
+L75@P2: decision is made to divide the cooked rice in half and spread it on two separate, shallow trays for
+L76@P2: cooling so that the rice can be correctly cooled all the way through within the 6-hour cooling
+L77@P2: requirement. The business documents this process in its operating procedure and consistently uses
+L78@P2: this new cooling method for rice.
+L79@P2: Example 2 – Gravy
+L80@P2: A food business prepares a large batch of gravy in the morning to use later that day. The pan of gravy
+L81@P2: is placed in an ice slurry and then stirred regularly. The temperature is checked several times over the
+L82@P2: next few hours to ensure cooling is within the required timeframe.
+L83@P2: More information
+L84@P2: • Visit the Food Authority’s website at www.foodauthority.nsw.gov.au
+L85@P2: o Guideline: Potentially Hazardous Food
+L86@P2: • Email the Helpline at food.contact@dpi.nsw.gov.au
+L87@P2: • Phone the Helpline on 1300 552 406
+L88@P2: • Refer to Safe Food Australia – A guide to the Food Safety Standards on the FSANZ website at
+L89@P2: www.foodstandards.gov.au
+L90@P2: © State of New South Wales through Regional NSW 2023. The information contained in this publication is based on knowledge and
+L91@P2: understanding at the time of writing June, 2023. However, because of advances in knowledge, users are reminded of the need to ensure that
+L92@P2: the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the Regional
+L93@P2: NSW or the user’s independent adviser.
+

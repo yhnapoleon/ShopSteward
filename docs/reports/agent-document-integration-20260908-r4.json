@@ -1,0 +1,1108 @@
+{
+  "started_at": "2026-09-08T02:26:52.849118+00:00",
+  "database": "shopsteward_test",
+  "model": "gpt-5.6-luna",
+  "api_mode": "responses",
+  "real_model": true,
+  "real_http": true,
+  "runs": [
+    {
+      "scenario": "business_only",
+      "prompt": "不用查文档，只查询当前库存和现金；请用业务工具给出数值。",
+      "expected_tools": [
+        "get_dashboard"
+      ],
+      "passed": true,
+      "run": {
+        "id": "165db748-19d0-4343-aa3e-cc493caaada4",
+        "conversation_id": "40853c51-7812-4d30-812f-752fce4801dd",
+        "status": "SUCCEEDED",
+        "input_through_seq": 1,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 5161,
+            "total_tokens": 5314,
+            "output_tokens": 153
+          },
+          "status": "SUCCEEDED",
+          "content": "当前库存与现金如下（数据截至 **2026-09-06 00:00:00 UTC**，状态：新鲜）：\n\n- **现金余额**：¥1000.00\n- **已预留现金**：¥0.00\n- **可用现金**：¥1000.00\n- **应收款**：¥0.00\n- **在途库存**：所有 SKU 均为 0\n\n库存方面，共 **38 个 SKU**，每个 SKU 当前：\n\n- **现有库存**：20 件\n- **剩余需求**：60 件\n\n当前无业务警报。",
+          "references": [
+            {
+              "id": "knowledge-test-agent-0908020841-STORE01",
+              "type": "store",
+              "version": "1"
+            }
+          ],
+          "tool_calls": 1,
+          "model_calls": 2,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "get_dashboard"
+          ],
+          "completed_tools": [
+            "get_dashboard"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "current_business_state"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "get_dashboard"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:27:02.527838Z",
+        "finished_at": "2026-09-08T02:27:12.149662Z",
+        "tools": [
+          {
+            "tool": "get_dashboard",
+            "invocation_id": "165db748-19d0-4343-aa3e-cc493caaada4:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "knowledge-test-agent-0908020841-STORE01",
+                "type": "store",
+                "version": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "document_clause",
+      "prompt": "请查供应商文档：商品knowledge-test-agent-0908020841-SKU017与knowledge-test-agent-0908020841-SKU018新旧条码并存，供货映射怎样交代才完整？请引用有效资料，勿推断采购许可。",
+      "expected_tools": [
+        "search_documents"
+      ],
+      "passed": true,
+      "run": {
+        "id": "2ac89adc-90de-4185-8380-19efb5ab3546",
+        "conversation_id": "40853c51-7812-4d30-812f-752fce4801dd",
+        "status": "SUCCEEDED",
+        "input_through_seq": 3,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 23818,
+            "total_tokens": 25015,
+            "output_tokens": 1197
+          },
+          "status": "SUCCEEDED",
+          "content": "已查到有效文档，但当前返回的证据**不足以完整交代 SKU017 与 SKU018 的新旧条码供货映射**。现有证据仅确认：\n\n- 范围涉及门店 `knowledge-test-agent-0908020841-STORE01`、供应商 `SUP09`、商品 `SKU017` 与 `SKU018`；\n- 场景为“条码迁移 / 新旧并存”；\n- 文档用途包含明确商业决定、证据与未授权边界；\n- 资料属于模拟商业流程夹具，并非真实门店政策。\n\n因此，不能据此补写或推断具体的“旧条码 → 新条码”、供应商供货时应使用的条码、切换日期、包装/订单字段或映射生效规则。当前检索结果中没有出现这些具体映射内容。\n\n**有效资料引用：**\n\n1. 《模拟 条码迁移 新旧并存 供货附件 主件》  \n   - 版本：`086d332c-690a-4185-8577-77a1a992170d`  \n   - 块：`c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c`  \n   - 定位：`范围与身份`，第 4 段  \n   - 内容仅确认适用对象、迁移场景及“未授权边界”。\n\n2. 《模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充》  \n   - 版本：`f12fb600-c55a-4408-8573-77a1a992170d`  \n   - 块：`c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e`  \n   - 定位：`section:1 范围与身份`，第 3 段  \n   - 内容仅确认商品与包装说明的文件范围，未提供具体条码对照表。\n\n3. 《模拟 条码迁移 新旧并存 商品与包装说明 主件》  \n   - 版本：`affae3bb-f472-4293-9ef0-a73a8568b6b7`  \n   - 块：`c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6`  \n   - 定位：工作表“条款”，单元格 `A3:C3`  \n   - 内容同样只说明文件范围，没有具体供货映射。\n\n**结论：**目前无法基于有效资料完整交代新旧条码供货映射；需要检索到包含条码对照、供货字段和生效规则的具体条款后才能整理。上述文档也**不构成采购许可或采购授权**，本次未作任何采购判断或操作。",
+          "references": [
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ]
+              },
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ]
+              },
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "条款",
+                "table": null,
+                "cell_range": "A3:C3",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "metadata_revision": 1
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": [
+                  1,
+                  1
+                ]
+              },
+              "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "35899d86-d254-49c4-bb40-62619e838992",
+              "type": "document",
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ]
+              },
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+              "metadata_revision": 1
+            }
+          ],
+          "tool_calls": 2,
+          "model_calls": 3,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "search_documents"
+          ],
+          "completed_tools": [
+            "search_documents",
+            "read_document_evidence"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "explicit_document_question"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "search_documents"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:27:12.678238Z",
+        "finished_at": "2026-09-08T02:27:28.812005Z",
+        "tools": [
+          {
+            "tool": "search_documents",
+            "invocation_id": "2ac89adc-90de-4185-8380-19efb5ab3546:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "范围与身份"
+                  ],
+                  "paragraph_range": [
+                    4,
+                    4
+                  ]
+                },
+                "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "section:1 范围与身份"
+                  ],
+                  "paragraph_range": [
+                    3,
+                    3
+                  ]
+                },
+                "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+                "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+                "generation_id": "c98f54b854804029a424a305e44dd127",
+                "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+                "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "条款",
+                  "table": null,
+                  "cell_range": "A3:C3",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+                "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+                "generation_id": "850c76961a9c4e8d92498dc61e214260",
+                "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+                "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": [
+                    1,
+                    1
+                  ]
+                },
+                "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "35899d86-d254-49c4-bb40-62619e838992",
+                "type": "document",
+                "locator": {
+                  "kind": "page",
+                  "page": 1,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+                "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+                "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+                "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+                "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": [
+                    2,
+                    2
+                  ]
+                },
+                "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+                "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+                "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+                "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+                "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+                "metadata_revision": 1
+              }
+            ]
+          },
+          {
+            "tool": "read_document_evidence",
+            "invocation_id": "2ac89adc-90de-4185-8380-19efb5ab3546:2:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "范围与身份"
+                  ],
+                  "paragraph_range": [
+                    4,
+                    4
+                  ]
+                },
+                "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "section:1 范围与身份"
+                  ],
+                  "paragraph_range": [
+                    3,
+                    3
+                  ]
+                },
+                "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+                "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+                "generation_id": "c98f54b854804029a424a305e44dd127",
+                "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+                "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "条款",
+                  "table": null,
+                  "cell_range": "A3:C3",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+                "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+                "generation_id": "850c76961a9c4e8d92498dc61e214260",
+                "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+                "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": [
+                    1,
+                    1
+                  ]
+                },
+                "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "35899d86-d254-49c4-bb40-62619e838992",
+                "type": "document",
+                "locator": {
+                  "kind": "page",
+                  "page": 1,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+                "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+                "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+                "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+                "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": [
+                    2,
+                    2
+                  ]
+                },
+                "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+                "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+                "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+                "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+                "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+                "metadata_revision": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "expand_evidence",
+      "prompt": "请展开上一条引用，核对其原文条件。",
+      "expected_tools": [
+        "read_document_evidence"
+      ],
+      "passed": true,
+      "run": {
+        "id": "d2c501dd-fe33-4a7f-89c6-d2f90eb634b9",
+        "conversation_id": "40853c51-7812-4d30-812f-752fce4801dd",
+        "status": "SUCCEEDED",
+        "input_through_seq": 4,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 10906,
+            "total_tokens": 11942,
+            "output_tokens": 1036
+          },
+          "status": "SUCCEEDED",
+          "content": "已展开并核对原文。上一条引用的原文条件如下：\n\n1. **供货附件主件**\n   - 原文：“模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为供货附件，用途是明确本次商业决定、证据与未授权边界。”\n   - 仅确认适用门店、供应商、两个 SKU，以及“条码迁移 / 新旧并存”场景；**未列出任何新条码、旧条码或二者对应关系**。\n   - 有效期：`2026-09-01T00:00:00+00:00` 至 `2026-09-16T00:00:00+00:00`。\n\n2. **商品与包装说明**\n   - 原文：“模拟 STORE01，SUP09，SKU017、SKU018。场景：条码迁移 / 新旧并存。本件为商品与包装说明，用途是明确本次商业决定、证据与未授权边界。”\n   - 同样只界定文件范围和用途，**没有供货映射、条码字段、生效日期或切换规则**。\n   - 有效期：`2026-09-01T00:00:00+00:00` 至 `2026-09-16T00:00:00+00:00`。\n\n3. **商品与包装说明主件**\n   - 原文包含：“模拟 SYNTHETIC 商业流程夹具；非真实门店政策；不提供食品安全或法律数值。”\n   - 其范围行再次确认：`STORE01`、`SUP09`、`SKU017`、`SKU018`，场景为“条码迁移 / 新旧并存”，用途为明确商业决定、证据与未授权边界。\n   - **该资料明确不是真实门店政策**，也没有具体条码对照表。\n\n**核对结论：**原文没有支持以下任何具体结论：\n\n- SKU017 的旧条码及新条码；\n- SKU018 的旧条码及新条码；\n- 旧条码与新条码的一对一映射；\n- 供应商订单、送货单或包装上应填写哪个条码；\n- 新旧条码并存的截止日期或切换条件。\n\n因此，完整的供货映射目前仍无法从这些引用中交代；不能补写或推断缺失内容。上述资料也仅是证据材料，**不构成采购许可或采购授权**。\n\n**有效资料引用：**\n\n- 版本 `086d332c-690a-4180-90f2-6c8251fd4d08`，块 `c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c`，定位“范围与身份”第 4 段。\n- 版本 `f12fb600-c55a-4408-8573-77a1a992170d`，块 `c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e`，定位“section:1 范围与身份”第 3 段。\n- 版本 `affae3bb-f472-4293-9ef0-a73a8568b6b7`，块 `c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6`，工作表“条款”`A3:C3`。",
+          "references": [
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ]
+              },
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ]
+              },
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "条款",
+                "table": null,
+                "cell_range": "A3:C3",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "metadata_revision": 1
+            }
+          ],
+          "tool_calls": 1,
+          "model_calls": 2,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "read_document_evidence"
+          ],
+          "completed_tools": [
+            "read_document_evidence"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "explicit_evidence_expansion"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "read_document_evidence"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:27:12.730993Z",
+        "finished_at": "2026-09-08T02:27:40.865763Z",
+        "tools": [
+          {
+            "tool": "read_document_evidence",
+            "invocation_id": "d2c501dd-fe33-4a7f-89c6-d2f90eb634b9:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "范围与身份"
+                  ],
+                  "paragraph_range": [
+                    4,
+                    4
+                  ]
+                },
+                "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "section:1 范围与身份"
+                  ],
+                  "paragraph_range": [
+                    3,
+                    3
+                  ]
+                },
+                "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+                "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+                "generation_id": "c98f54b854804029a424a305e44dd127",
+                "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+                "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "条款",
+                  "table": null,
+                  "cell_range": "A3:C3",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+                "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+                "generation_id": "850c76961a9c4e8d92498dc61e214260",
+                "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+                "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+                "metadata_revision": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "mixed",
+      "prompt": "结合当前库存与供应商文档：商品knowledge-test-agent-0908020841-SKU017与knowledge-test-agent-0908020841-SKU018新旧条码并存时，能否直接覆盖删除旧码？分别说明业务事实与条款依据。",
+      "expected_tools": [
+        "get_dashboard",
+        "search_documents"
+      ],
+      "passed": true,
+      "run": {
+        "id": "2c694be5-4782-4194-b5f5-6194a7dd7b4a",
+        "conversation_id": "40853c51-7812-4d30-812f-752fce4801dd",
+        "status": "SUCCEEDED",
+        "input_through_seq": 7,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 27782,
+            "total_tokens": 29131,
+            "output_tokens": 1349
+          },
+          "status": "SUCCEEDED",
+          "content": "结论：**不能依据当前业务数据和供应商文档认定可以直接覆盖并删除旧码。**这不是在判断采购许可；本次也未执行任何采购或条码变更。\n\n### 一、业务事实\n\n当前门店 `knowledge-test-agent-0908020841-STORE01` 的实时业务状态：\n\n| 商品 | 现有库存 | 在途库存 | 剩余需求 |\n|---|---:|---:|---:|\n| SKU017 | 20 件 | 0 件 | 60 件 |\n| SKU018 | 20 件 | 0 件 | 60 件 |\n\n库存系统返回的是 SKU 层面的库存，没有返回新旧条码字段、条码映射关系、批次、包装状态或旧码停用状态。因此，业务数据只能确认两商品当前各有 20 件库存，**不能证明旧码已无库存、无在途货、无待处理订单，也不能支持直接删除旧码**。\n\n当前现金：\n\n- 现金余额：¥1000.00\n- 已预留现金：¥0.00\n- 可用现金：¥1000.00\n\n现金信息与条码覆盖/删除权限无直接关系。\n\n### 二、条款依据\n\n检索到的供应商相关文档只确认：\n\n- 适用门店：`STORE01`\n- 供应商：`SUP09`\n- 商品：`SKU017`、`SKU018`\n- 场景：**条码迁移 / 新旧并存**\n- 文档用途包含明确商业决定、证据和未授权边界\n\n但当前证据**没有提供**：\n\n- SKU017 或 SKU018 的新旧条码具体值；\n- 新旧条码的一对一映射；\n- 旧码删除、停用或覆盖的条件；\n- 供应商确认、库存清零、订单结清或生效日期要求；\n- 允许直接删除旧码的授权表述。\n\n此外，相关资料明确标注为“模拟商业流程夹具、非真实门店政策”，不能单独作为真实业务授权依据。\n\n### 三、有效资料引用\n\n1. **《模拟 条码迁移 新旧并存 供货附件 主件》**  \n   - 版本：`086d332c-690a-4180-90f2-6c8251fd4d08`  \n   - 块：`c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c`  \n   - 定位：`范围与身份`，第 4 段  \n   - 依据：确认 `STORE01`、`SUP09`、`SKU017`、`SKU018` 及“条码迁移 / 新旧并存”场景，但未给出删除旧码规则。\n\n2. **《模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充》**  \n   - 版本：`f12fb600-c55a-4408-8573-77a1a992170d`  \n   - 块：`c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e`  \n   - 定位：`section:1 范围与身份`，第 3 段  \n   - 依据：确认商品与包装说明的适用范围，但未列出条码映射或旧码处置条件。\n\n3. **《模拟 条码迁移 新旧并存 商品与包装说明 主件》**  \n   - 版本：`affae3bb-f472-4293-9ef0-a73a8568b6b7`  \n   - 块：`c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6`  \n   - 定位：工作表“条款”，`A3:C3`  \n   - 依据：仅确认范围与场景；不能推出直接覆盖或删除旧码的许可。\n\n**最终判断：**现有库存事实显示 SKU017、SKU018 仍各有 20 件库存；现有文档没有直接覆盖删除旧码的条款依据。因此应视为“是否允许删除旧码：证据不足，不能直接操作”，而不是“允许”。",
+          "references": [
+            {
+              "id": "knowledge-test-agent-0908020841-STORE01",
+              "type": "store",
+              "version": "1"
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ]
+              },
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "section:1 范围与身份"
+                ],
+                "paragraph_range": [
+                  3,
+                  3
+                ]
+              },
+              "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": [
+                  2,
+                  2
+                ]
+              },
+              "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+              "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+              "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+              "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+              "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+              "metadata_revision": 1
+            },
+            {
+              "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "CSV",
+                "table": null,
+                "cell_range": "A3:C3",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_3e5da8cfe4e7aedc4a075710011e035271168aab09ed2ee6d7d3bcb9e59df22a",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "content_sha256": "c62db6b2bae629beb689917f8f5dcf0c6a09d9423e987de3c769760f07d816f2",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+              "metadata_revision": 1
+            },
+            {
+              "id": "35899d86-d254-49c4-bb40-62619e838992",
+              "type": "document",
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "条款",
+                "table": null,
+                "cell_range": "A3:C3",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "metadata_revision": 1
+            }
+          ],
+          "tool_calls": 2,
+          "model_calls": 3,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "get_dashboard",
+            "search_documents"
+          ],
+          "completed_tools": [
+            "get_dashboard",
+            "search_documents"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "current_business_state",
+              "explicit_document_question"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "get_dashboard",
+              "search_documents"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:27:41.227027Z",
+        "finished_at": "2026-09-08T02:27:56.425270Z",
+        "tools": [
+          {
+            "tool": "get_dashboard",
+            "invocation_id": "2c694be5-4782-4194-b5f5-6194a7dd7b4a:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "knowledge-test-agent-0908020841-STORE01",
+                "type": "store",
+                "version": "1"
+              }
+            ]
+          },
+          {
+            "tool": "search_documents",
+            "invocation_id": "2c694be5-4782-4194-b5f5-6194a7dd7b4a:2:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "范围与身份"
+                  ],
+                  "paragraph_range": [
+                    4,
+                    4
+                  ]
+                },
+                "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "section:1 范围与身份"
+                  ],
+                  "paragraph_range": [
+                    3,
+                    3
+                  ]
+                },
+                "chunk_id": "c_791fa0239b76b24c7850f4438037cb428148257d339b744d72a369236b53ba4e",
+                "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+                "generation_id": "c98f54b854804029a424a305e44dd127",
+                "content_sha256": "aec85e07f7c5f6c41db1dfdbd7d6db282222ce3db9fffe4ba9e5b2663569720d",
+                "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "4ffb2d18-f602-4b1a-94bf-ff8d8adcc3af",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": [
+                    2,
+                    2
+                  ]
+                },
+                "chunk_id": "c_4ee1f7c550bcd9b5a39ce523a750fe734d7a0452b7086bc3b676c9a49b43ecec",
+                "version_id": "c1a05e24-7664-4779-b2da-6bf37804222b",
+                "generation_id": "c43c028605a14f41973216b84a4fdbc9",
+                "content_sha256": "93aed9806c3f4f9fa05b7557e68959b3b4d19acf24a2b60a25ead02a54bcc562",
+                "original_sha256": "6ab91dbf6730be919a087a13e04535d4b73d5a4020fd3543ae99b69e87c789ee",
+                "metadata_revision": 1
+              },
+              {
+                "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "CSV",
+                  "table": null,
+                  "cell_range": "A3:C3",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_3e5da8cfe4e7aedc4a075710011e035271168aab09ed2ee6d7d3bcb9e59df22a",
+                "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+                "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+                "content_sha256": "c62db6b2bae629beb689917f8f5dcf0c6a09d9423e987de3c769760f07d816f2",
+                "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+                "metadata_revision": 1
+              },
+              {
+                "id": "35899d86-d254-49c4-bb40-62619e838992",
+                "type": "document",
+                "locator": {
+                  "kind": "page",
+                  "page": 1,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+                "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+                "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+                "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+                "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "条款",
+                  "table": null,
+                  "cell_range": "A3:C3",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_a889005bd6d1b042aa01ec95f4bf98a07d3a04e436fd8b05d4eecfe8fc321ce6",
+                "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+                "generation_id": "850c76961a9c4e8d92498dc61e214260",
+                "content_sha256": "c0fafb828fdfa3a240ab882adf3928a0c82ec9c220a9cc8b52b2b5a3ffadb8b7",
+                "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+                "metadata_revision": 1
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "checks": [],
+  "max_agent_runs": 4,
+  "max_model_calls_per_run": 8,
+  "embedding_calls": 0,
+  "backend_port": 8018,
+  "knowledge_port": 8020,
+  "task_directory": "D:\\HuaweiMoveData\\Users\\13736\\Desktop\\AIS\\Group_Project\\ShopSteward\\var\\precloud\\agent-0908020841",
+  "import": {
+    "uploaded_versions": 200,
+    "failures": []
+  },
+  "mission_id": "d5fa61bc-0e74-4c3b-a140-e0a2b4f78dd2",
+  "store_id": "knowledge-test-agent-0908020841-STORE01",
+  "expansion_queued_before_previous_answer": true,
+  "passed": true,
+  "finished_at": "2026-09-08T02:27:56.548123+00:00"
+}

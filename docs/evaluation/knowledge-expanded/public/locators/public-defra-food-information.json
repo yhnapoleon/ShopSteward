@@ -1,0 +1,198 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "Labelling pre-packed food",
+    "origin_id": "labelling-pre-packed-food",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#labelling-pre-packed-food",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Information to display on labels or packaging",
+    "origin_id": "information-to-display-on-labels-or-packaging",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#information-to-display-on-labels-or-packaging",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "How to display information on labels or packaging",
+    "origin_id": "how-to-display-information-on-labels-or-packaging",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#how-to-display-information-on-labels-or-packaging",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Add information about country of origin and special storage conditions",
+    "origin_id": "add-information-about-country-of-origin-and-special-storage-conditions",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#add-information-about-country-of-origin-and-special-storage-conditions",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Label allergens",
+    "origin_id": "label-allergens",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#label-allergens",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "List the ingredients",
+    "origin_id": "list-the-ingredients",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#list-the-ingredients",
+    "ordinal": 6
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Other information in the ingredients list",
+    "origin_id": "other-information-in-the-ingredients-list",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#other-information-in-the-ingredients-list",
+    "ordinal": 7
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Give a quantitative ingredients declaration (QUID)",
+    "origin_id": "give-a-quantitative-ingredients-declaration-quid",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#give-a-quantitative-ingredients-declaration-quid",
+    "ordinal": 8
+  },
+  {
+    "kind": "html_heading",
+    "heading": "When to display the QUID",
+    "origin_id": "when-to-display-the-quid",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#when-to-display-the-quid",
+    "ordinal": 9
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Show the ‘best before’ or ‘use by’ date",
+    "origin_id": "show-the-best-before-or-use-by-date",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#show-the-best-before-or-use-by-date",
+    "ordinal": 10
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Show the name and address of the food business operator",
+    "origin_id": "show-the-name-and-address-of-the-food-business-operator",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#show-the-name-and-address-of-the-food-business-operator",
+    "ordinal": 11
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Give nutritional information",
+    "origin_id": "give-nutritional-information",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#give-nutritional-information",
+    "ordinal": 12
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Tell the consumer about certain ingredients",
+    "origin_id": "tell-the-consumer-about-certain-ingredients",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#tell-the-consumer-about-certain-ingredients",
+    "ordinal": 13
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sweeteners and sugars",
+    "origin_id": "sweeteners-and-sugars",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#sweeteners-and-sugars",
+    "ordinal": 14
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Aspartame and colourings",
+    "origin_id": "aspartame-and-colourings",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#aspartame-and-colourings",
+    "ordinal": 15
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Liquorice",
+    "origin_id": "liquorice",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#liquorice",
+    "ordinal": 16
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Caffeine",
+    "origin_id": "caffeine",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#caffeine",
+    "ordinal": 17
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Polyols",
+    "origin_id": "polyols",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#polyols",
+    "ordinal": 18
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Plant sterols and stanols",
+    "origin_id": "plant-sterols-and-stanols",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#plant-sterols-and-stanols",
+    "ordinal": 19
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Distance selling",
+    "origin_id": "distance-selling",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#distance-selling",
+    "ordinal": 20
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Selling food products to other businesses",
+    "origin_id": "selling-food-products-to-other-businesses",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#selling-food-products-to-other-businesses",
+    "ordinal": 21
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Information you must give",
+    "origin_id": "information-you-must-give",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#information-you-must-give",
+    "ordinal": 22
+  },
+  {
+    "kind": "html_heading",
+    "heading": "How to give the information",
+    "origin_id": "how-to-give-the-information",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#how-to-give-the-information",
+    "ordinal": 23
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Label external packaging",
+    "origin_id": "label-external-packaging",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#label-external-packaging",
+    "ordinal": 24
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Voluntary information",
+    "origin_id": "voluntary-information",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#voluntary-information",
+    "ordinal": 25
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Enforcement for Brexit label changes",
+    "origin_id": "enforcement-for-brexit-label-changes",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#enforcement-for-brexit-label-changes",
+    "ordinal": 26
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Improvement notices",
+    "origin_id": "improvement-notices",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#improvement-notices",
+    "ordinal": 27
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Get labelling advice",
+    "origin_id": "get-labelling-advice",
+    "source_url": "https://www.gov.uk/guidance/food-labelling-giving-food-information-to-consumers#get-labelling-advice",
+    "ordinal": 28
+  }
+]

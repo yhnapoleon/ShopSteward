@@ -1,0 +1,30 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "1. National 2012 regulations",
+    "origin_id": "national-2012-regulations",
+    "source_url": "https://www.gov.uk/government/publications/food-contact-materials-regulations/food-contact-materials-regulations#national-2012-regulations",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.1 England",
+    "origin_id": "england",
+    "source_url": "https://www.gov.uk/government/publications/food-contact-materials-regulations/food-contact-materials-regulations#england",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.2 Wales",
+    "origin_id": "wales",
+    "source_url": "https://www.gov.uk/government/publications/food-contact-materials-regulations/food-contact-materials-regulations#wales",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "1.3 Northern Ireland",
+    "origin_id": "northern-ireland",
+    "source_url": "https://www.gov.uk/government/publications/food-contact-materials-regulations/food-contact-materials-regulations#northern-ireland",
+    "ordinal": 4
+  }
+]

@@ -1,0 +1,50 @@
+Donating food to charities and not-for-profit organisations (https://www.foodauthority.nsw.gov.au/media/1866)
+citeturn108view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 2; Source: click({"ref_id":"turn59view0","id":296}); Total lines: 47
+L0@P0: Food Authority
+L1@P0: Anyone can donate food in NSW; however, the food must be safe to eat.
+L2@P0: Law on donating food
+L3@P0: Before you donate food to a charitable or not-for-profit organisation you should contact them to find
+L4@P0: out what they can or cannot accept. Follow food safety standards to ensure the food provided is safe.
+L5@P0: The Civil Liability Act 2002 limits the liability of individuals and businesses that donate food, providing
+L6@P0: certain food safety conditions have been met:
+L7@P0: • Food is donated in good faith for a charitable or benevolent purpose.
+L8@P0: • Food is donated with the intention that the receiver of the food does not have to pay for the food.
+L9@P0: • Food is safe to eat when it leaves the possession or control of the donor.
+L10@P0: • The donor gives the recipient any information it needs to ensure the ongoing safety of the food,
+L11@P0: regarding both food handling and time limits for safe consumption.
+L12@P0: ‘Use by’ and ‘best before’ dates
+L13@P0: Food should not be donated or eaten after its ‘use by’ date because it may be unsafe to eat, even
+L14@P0: though spoilage may not be visible.
+L15@P0: Charities that receive food that will pass its use by date before distribution should throw the food away.
+L16@P0: Food marked as ‘best before’ can be given away after the best before date has passed, provided the
+L17@P0: food is not damaged, deteriorated or perished.
+L18@P0: There may be some loss of quality in food after its best before date but as long as it is otherwise fit for
+L19@P0: human consumption, it is not illegal to sell or distribute this food, nor should there be any safety risk
+L20@P0: from eating the food.
+L21@P0: Keeping donated food safe
+L22@P0: Whether you are a business donating food to a charity or a charity distributing food to individuals,
+L23@P0: always follow standard food safety when transporting food:
+L24@P0: • Check the food for spoilage to ensure it is safe and fit for human consumption.
+L25@P0: • Check the date marking on food packaging and throw away any food that is past its use by date.
+L26@P0: • Observe temperature control requirements of potentially hazardous food. If the food must be kept
+L27@P0: below 5°C or above 60°C, tell the recipient of the required temperature.
+L28@P0: • If the food will only be safe to eat for a limited time, tell the recipient of that time period.
+L29@P0: • Cook food thoroughly.
+L30@P0-1: Donating food to charities and not-for-profit organisationsDonating food to charities and not-for-profit organisations
+L31@P1: FA593/2401 2
+L32@P1: • Store food in clean, covered, food-grade containers.
+L33@P1: • Separate raw and cooked food and don’t use the same utensils for both.
+L34@P1: • Keep utensils and kitchen areas clean.
+L35@P1: More information
+L36@P1: • Visit foodauthority.nsw.gov.au
+L37@P1: ⭕ Food safety requirements for charitable and not-for-profit organisations (PDF, 158 KB)
+L38@P1: ⭕ Labelling - date marking, storage conditions and directions for use (PDF, 125 KB)
+L39@P1: • Download the Environment Protection Authority’s Love Food Hate Waste Food Donation Tool Kit
+L40@P1: (PDF, 3MB)
+L41@P1: • Email the Food Authority helpline at food.contact@dpi.nsw.gov.au
+L42@P1: • Phone the Food Authority helpline on 1300 552 406.
+L43@P1: © State of New South Wales through Regional NSW 2024. The information contained in this publication is based on knowledge and
+L44@P1: understanding at the time of writing January 2024. However, because of advances in knowledge, users are reminded of the need to ensure
+L45@P1: that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L46@P1: Regional NSW or the user’s independent adviser.
+

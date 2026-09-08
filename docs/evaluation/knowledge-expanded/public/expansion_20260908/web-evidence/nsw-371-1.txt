@@ -1,0 +1,426 @@
+Guidelines for mobile food vending vehicles (https://www.foodauthority.nsw.gov.au/media/1416)
+citeturn80view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 22; Source: click({"ref_id":"turn59view0","id":371}); Total lines: 817
+L0@P0: foodauthority.nsw.gov.au
+L1@P0: Food Authority
+L2@P0: Guidelines for mobile food vending vehicles
+L3@P0-1: December 2023Guidelines for mobile food vending vehicles
+L4@P1: FA526/2312 2
+L5@P1: Table of Contents
+L6@P1: Introduction.........................................................................................................................................3
+L7@P1: What are mobile food vending vehicles?...............................................................................................................3
+L8@P1: Obligations on selling food ....................................................................................................................................3
+L9@P1: Which agencies enforce the Act and Code? .........................................................................................................4
+L10@P1: Charities and community groups...........................................................................................................................4
+L11@P1: Administration.....................................................................................................................................5
+L12@P1: Notification.............................................................................................................................................................5
+L13@P1: Licensing................................................................................................................................................................5
+L14@P1: Council approvals ..................................................................................................................................................5
+L15@P1: Training requirements............................................................................................................................................6
+L16@P1: Inspections ............................................................................................................................................................6
+L17@P1: Fees and charges..................................................................................................................................................6
+L18@P1: Conditions of operation......................................................................................................................7
+L19@P1: Maintenance ..........................................................................................................................................................7
+L20@P1: Garbage and recyclable matter .............................................................................................................................7
+L21@P1: Animals and pests .................................................................................................................................................7
+L22@P1: Children in food preparation areas ........................................................................................................................7
+L23@P1: Water and ice ........................................................................................................................................................7
+L24@P1: Waste disposal ......................................................................................................................................................7
+L25@P1: Electricity, gas supplies, fire extinguishers and work safety .................................................................................8
+L26@P1: Pollution prevention ...............................................................................................................................................8
+L27@P1: Facilities...............................................................................................................................................8
+L28@P1: Construction of vehicle ..........................................................................................................................................8
+L29@P1: Floors.....................................................................................................................................................................9
+L30@P1: Walls ......................................................................................................................................................................9
+L31@P1: Ceilings ..................................................................................................................................................................9
+L32@P1: Door and serving openings..................................................................................................................................10
+L33@P1: Pipes, conduits and wiring...................................................................................................................................10
+L34@P1: Equipment and appliances ..................................................................................................................................10
+L35@P1: Lighting ................................................................................................................................................................10
+L36@P1: Ventilation............................................................................................................................................................10
+L37@P1: Hand washing facilities ........................................................................................................................................10
+L38@P1: Food handling ...................................................................................................................................11
+L39@P1: Food suppliers .....................................................................................................................................................11
+L40@P1: Preparing food at home.......................................................................................................................................11
+L41@P1: Food storage .......................................................................................................................................................11
+L42@P1: Potentially hazardous foods and temperature control.........................................................................................12
+L43@P1: Cross contamination............................................................................................................................................12
+L44@P1: Food display ........................................................................................................................................................12
+L45@P1: Crockery, wrappings and packaging ...................................................................................................................13
+L46@P1: Single-use items ..................................................................................................................................................13
+L47@P1: Food Safety Supervisor.......................................................................................................................................13
+L48@P1: Food handler training requirements ....................................................................................................................13
+L49@P1: Showing that your food is safe ............................................................................................................................14
+L50@P1: Staff illness ..........................................................................................................................................................14
+L51@P1: Hand washing......................................................................................................................................................14
+L52@P1: Money handling/touching customers’ hands when serving food.........................................................................14
+L53@P1: Cleaning and sanitising .......................................................................................................................................14
+L54@P1: Labelling and declaring allergens........................................................................................................................15
+L55@P1: Checklist for mobile food vendor vehicles......................................................................................16
+L56@P1: Contact information ..........................................................................................................................19
+L57@P1-2: Key definitions ..................................................................................................................................20Guidelines for mobile food vending vehicles
+L58@P2: FA526/2312 3
+L59@P2: Introduction
+L60@P2: These guidelines inform businesses selling food from a mobile vending vehicle in NSW of their legal
+L61@P2: requirements in relation to the NSW Food Act 2003 (the Act) and the Food Standards Code (the Code).
+L62@P2: They provide information on basic requirements such as power supply and waste disposal and suggest
+L63@P2: ways to maintain food safety.
+L64@P2: Businesses and enforcement agencies, in most cases local council environmental health officers
+L65@P2: (EHOs), can use this guide to assess compliance with the Act and the Code.
+L66@P2: The primary aim of these guidelines is to make food businesses aware of their legal requirements and to
+L67@P2: suggest ways to assure food safety when selling food.
+L68@P2: This guideline also provides businesses with a guide to applicable fees and charges that councils may
+L69@P2: levy.
+L70@P2: Potential mobile food vendors should contact their local council before operating to check if a permit is
+L71@P2: needed by the council, if an inspection must be completed, if there are any applicable fees and/or if there
+L72@P2: any other restrictions which may be relevant.
+L73@P2: What are mobile food vending vehicles?
+L74@P2: A mobile food vending vehicle is any means of transport, whether self-propelled or not, which is moved
+L75@P2: from place to place and used for selling food, whether on land, water or air.
+L76@P2: It includes vehicles used for on-site food preparation (for example hamburgers, hot dogs and kebabs),
+L77@P2: one-step food preparation (such as popcorn, fairy floss, coffee and squeezing juices), and the sale of
+L78@P2: any type of food including pre-packaged food.
+L79@P2: It does not include food vending machines or food transport vehicles. A shipping container is considered
+L80@P2: a ‘building’ and therefore is unlikely to be a mobile food vending vehicle.
+L81@P2: These guidelines cover all types of mobile food vending vehicles. They are comprehensive and the
+L82@P2: checklist provided within the document can be used to double check compliance with council
+L83@P2: requirements.
+L84@P2: There are minimal requirements for mobile food vending vehicles selling only packaged, low risk food.
+L85@P2: Obligations on selling food
+L86@P2: A person using a mobile food vending vehicle to store, prepare or sell food for human consumption, is
+L87@P2: deemed to be a ‘food business’. This includes not-for-profit operations.
+L88@P2: The Code defines a food business as any business or activity that involves the sale of food or the
+L89@P2: handling of any type of food for sale in Australia, with the exception of some primary food production
+L90@P2: activities.
+L91@P2: A food business is required to sell safe and suitable food in accordance with the provisions of the NSW
+L92@P2: Food Act 2003, Food Regulation 2015 and Food Standards Code.
+L93@P2: Note that ‘food premises’ includes ‘vehicles’. Copies of the Food Standards Code (particularly 3.2.2 Food
+L94@P2: Safety Practices and General Requirements and 3.2.3. Food Premises and Equipment) are available on
+L95@P2: the Food Standards Australia New Zealand website at www.foodstandards.gov.au.
+L96@P2: Failure to comply with the requirements may lead to enforcement action. Depending on the food safety
+L97@P2: risk identified, this action may include a warning letter, improvement notice, penalty notice, seizure,
+L98@P2: prohibition or prosecution. The NSW Food Authority and councils generally follow an escalating
+L99@P2-3: enforcement policy. For more information see foodauthority.nsw.gov.au/ip/audits-andcompliance/complianceGuidelines for mobile food vending vehicles
+L100@P3: FA526/2312 4
+L101@P3: Which agencies enforce the Act and Code?
+L102@P3: In most cases, local councils are responsible for the food surveillance of the retail sector and enforce the
+L103@P3: requirements of the Act and Code; this includes food for retail sale from mobile food vending vehicles.
+L104@P3: The Food Authority is only responsible for surveillance or waterborne food businesses or if there is
+L105@P3: processing of products that require a licence at that premises; such as:
+L106@P3: • businesses that conduct food service to vulnerable persons
+L107@P3: • high risk plant product businesses
+L108@P3: • businesses that handle or process meat
+L109@P3: • businesses that further process seafood
+L110@P3: • businesses that handle shellfish
+L111@P3: • dairy producers, factories and vendors
+L112@P3: • businesses that produce or process eggs and egg related products.
+L113@P3: Charities and community groups
+L114@P3: Charities and community groups are those which do not derive funds for personal financial gain but
+L115@P3: direct any profits back to the community (such as local sports clubs, and Lions and Rotary clubs).
+L116@P3: The NSW Food Act 2003 and Food Standards Code apply to all food businesses including those selling
+L117@P3: food for charity or community purposes. It is always an offence to sell food that is unsafe or unsuitable.
+L118@P3: Charities and community groups are exempt from some requirements:
+L119@P3: • Notification of the business is not required if the food sold is not potentially hazardous, for example,
+L120@P3: scones, or is to be consumed immediately after thorough cooking, such as a sausage sizzle.
+L121@P3: • Food Safety Supervisor, food handler training and being able to show food is safe, under Standard
+L122@P3: 3.2.2A of the Code, do not apply to charities if the food is handled or sold for the purpose of raising
+L123@P3: funds solely for community or charitable causes.
+L124@P3: • Some labelling requirements do not apply; however, it is a requirement to provide information to
+L125@P3: customers on request about the presence of the following food allergens in any ingredients:
+L126@P3: — cereals containing gluten (barley, oats,
+L127@P3: rye, wheat)
+L128@P3: — wheat (even if no gluten is present)
+L129@P3: — crustacean
+L130@P3: — mollusc
+L131@P3: — fish
+L132@P3: — egg
+L133@P3: — milk (all animal milk)
+L134@P3: — peanut
+L135@P3: — sesame
+L136@P3: — soy, soya or soybean
+L137@P3: — almond
+L138@P3: — Brazil nut
+L139@P3: — cashew
+L140@P3: — hazelnut
+L141@P3: — macadamia
+L142@P3: — pecan
+L143@P3: — pine nut
+L144@P3: — pistachio
+L145@P3: — walnut
+L146@P3: — lupin
+L147@P3: — added sulphites in concentrations of 10
+L148@P3: mg/kg or more.
+L149@P3-4: For more information visit foodauthority.nsw.gov.au or contact your local council.Guidelines for mobile food vending vehicles
+L150@P4: FA526/2312 5
+L151@P4: Administration
+L152@P4: Notification
+L153@P4: Food businesses must be notified to the appropriate enforcement agency. Notification is important as it
+L154@P4: assists the Food Authority and councils in the case of food recalls and complaints and enables them to
+L155@P4: contact businesses quickly if needed. Notification means advising the local council of your business
+L156@P4: details, including trading name, contact details, location(s), owner details and information indicating the
+L157@P4: nature of your food business.
+L158@P4: All food businesses in NSW must either:
+L159@P4: • hold a current Food Authority licence (this applies only to specific food businesses in sectors covered
+L160@P4: by a Regulation under the NSW Food Act 2003), or
+L161@P4: • notify the appropriate enforcement agency, usually their local council, of their food activity details.
+L162@P4: This applies to almost all other food businesses and includes those involved in mobile food vending
+L163@P4: and businesses which sell any sort of food or food ingredient as any part of their business. It is
+L164@P4: required by the Code (Food Safety Standard 3.2.2) and s100 of the NSW Food Act 2003.
+L165@P4: The only exception to the above is not-for-profit fundraising events if there is sale of non-potentially
+L166@P4: hazardous food, or food that is thoroughly cooked immediately before consumption (such as a sausage
+L167@P4: sizzle). (See Charities and community groups on page 4.)
+L168@P4: Mobile food businesses (except waterborne food businesses) need to notify the local council of their
+L169@P4: business and food activity details. Notification is satisfied by notifying councils via applications for
+L170@P4: services, permits and approvals, and through rates notice registrations.
+L171@P4: Information should also be sought from Transport for NSW regarding approval to sell on, or at the side
+L172@P4: of, roads.
+L173@P4: Waterborne food businesses
+L174@P4: Businesses based in NSW that sell or serve food on local waterways, such as in coastal waters,
+L175@P4: harbours, rivers and lakes, must notify the NSW Food Authority of their business details. They will need
+L176@P4: to provide their trading name, contact details, location(s), owner details, information indicating the nature
+L177@P4: of the business, a head office address and the location of where the vessel is berthed. See
+L178@P4: foodauthority.nsw.gov.au/help/licensing for details on how to notify.
+L179@P4: Licensing
+L180@P4: Mobile food vending vehicles do not require a Food Authority licence, unless undertaking the activities
+L181@P4: listed on page 4 of this document.
+L182@P4: Council approvals
+L183@P4: Local councils are generally responsible for the approval of mobile food vending vehicles on land. There
+L184@P4: may be costs associated with these approvals. Contact your local council for details.
+L185@P4: The prior consent of every local council in whose area the vehicle will be used for storing, preparing or
+L186@P4: selling food, may be required. This includes street trading or operating on private land or public roads.
+L187@P4: It is important to check the requirements with every local council you propose to work in prior to
+L188@P4: operation, as penalties may apply for not having the appropriate approvals.
+L189@P4: Council approval may also be required for garaging or maintaining the mobile food vending vehicle at
+L190@P4: particular premises, especially where the premises are used for storing food supplies and equipment
+L191@P4-5: used in connection with the vehicle’s food business operation.Guidelines for mobile food vending vehicles
+L192@P5: FA526/2312 6
+L193@P5: Training requirements
+L194@P5: Food businesses selling unpackaged, potentially hazardous, ready-to-eat food will need to appoint a
+L195@P5: Food Safety Supervisor (FSS). Ensure an FSS is appointed and the FSS certificate is available in the
+L196@P5: vehicle before commencing operations (refer to page 13 for details). In addition, all food handlers must
+L197@P5: have skills and knowledge in food safety and hygiene appropriate for their duties (see page 13 for
+L198@P5: details).
+L199@P5: Inspections
+L200@P5: Inspections of mobile food vending vehicles are conducted by the local council’s environmental health
+L201@P5: officers (EHOs) who are authorised officers under the Food Act 2003. The frequency of inspection is at
+L202@P5: least once per year. They check that good food safety practices are in place, such as temperature
+L203@P5: control, cleanliness, hand washing and labelling (refer to checklist at end of this document).
+L204@P5: If mobile food vending vehicles operate across council boundaries, most councils will use a home
+L205@P5: jurisdiction rule. This means the vehicle will probably first be inspected by the council in which the
+L206@P5: vehicle is ordinarily garaged, provided it also trades in that local government area. That council is known
+L207@P5: as the ‘home council’.
+L208@P5: If the vehicle does not trade in the local council area in which it is garaged, then it can be inspected by
+L209@P5: another council in which it first trades.
+L210@P5: Other councils in which the vehicle trades are entitled to request to see a copy of the most recent
+L211@P5: inspection report (less than 12 months old) from the vehicle operator. If the report is satisfactory and only
+L212@P5: minor issues are identified the council EHO should not conduct a further inspection, unless there is a
+L213@P5: perceived risk to food safety and public health.
+L214@P5: If a recent inspection report is not provided by the operator, is over 12 months old, or has a major noncompliance issue outstanding, then the council EHO has the discretion to carry out an inspection and
+L215@P5: charge an inspection fee.
+L216@P5: Mobile food vending vehicle operators/proprietors are responsible for organising to have an inspection
+L217@P5: when they begin to trade and providing a current inspection report to officers from another council in
+L218@P5: whose area they trade.
+L219@P5: Carry your most recent inspection report with you whenever you are trading
+L220@P5: from your mobile food vending vehicle.
+L221@P5: Waterborne food business vessels based in NSW are inspected by officers from the NSW Food
+L222@P5: Authority.
+L223@P5: Fees and charges
+L224@P5: The local council may charge fees for inspecting your food handling activities under the Local
+L225@P5: Government Act 1993. The fee amount can vary between councils.
+L226@P5: Councils can levy an annual administration charge under the Food Act 2003. Only a council that carries
+L227@P5: out an inspection is allowed to levy the annual administration charge. Non-home councils are
+L228@P5: recommended not to levy the annual administration charge.
+L229@P5: There may be other fees and charges levied by councils for vehicle approval to trade under other
+L230@P5: legislation. Check with the local council/s in which you trade to find out what fees and charges apply to
+L231@P5-6: you.Guidelines for mobile food vending vehicles
+L232@P6: FA526/2312 7
+L233@P6: Conditions of operation
+L234@P6: Maintenance
+L235@P6: The vehicle and its associated fixtures, fittings and equipment must be kept clean and in a good state of
+L236@P6: repair and working order - free from dirt, fumes, smoke, foul odours and other contaminants.
+L237@P6: Garbage and recyclable matter
+L238@P6: Food business operators must ensure that:
+L239@P6: • suitable and adequate garbage receptacles with close fitting lids are provided. When directed, a
+L240@P6: suitable receptacle shall be provided outside the vehicle for depositing take-away food containers
+L241@P6: and other litter
+L242@P6: • arrangements are made to dispose of garbage content each day or more frequently when the need
+L243@P6: arises
+L244@P6: • recyclable, re-useable or compostable products are used wherever possible.
+L245@P6: Animals and pests
+L246@P6: Take all practicable measures to prevent pests (including birds, spiders and flying insects) from entering
+L247@P6: the food stall or coming into contact with any fixtures, equipment or parts of vehicles used to transport
+L248@P6: food. It is recommended that a regular pest control program be used.
+L249@P6: Animals are not permitted to enter a food stall at any time. ‘Assistance animals’, as defined in section 9
+L250@P6: of the Disability Discrimination Act 1992, are permitted in public dining and drinking areas. Assistance
+L251@P6: animals include guide dogs trained to help people with disabilities.
+L252@P6: Children in food preparation areas
+L253@P6: For health and safety reasons, children should not be permitted to enter a mobile food vehicle.
+L254@P6: Water and ice
+L255@P6: • Potable water (safe for human consumption) must be used for washing or preparing food or as an
+L256@P6: ingredient in food. Town water supplies are considered potable. Using water from other sources may
+L257@P6: be suitable, but this should be checked with the local council.
+L258@P6: • Only materials of food-grade rating should be used to store water.
+L259@P6: • Ice used to keep food cool or to add to food or drink must be potable.
+L260@P6: • All hot water for washing purposes should be supplied from a suitable hot water system and should
+L261@P6: be piped so it can be mixed with cold water.
+L262@P6: Waste disposal
+L263@P6: The vehicle should be equipped with a wastewater tank external to the vehicle, with a capacity of at least
+L264@P6: 50 litres, and have an outlet of sufficient diameter to facilitate easy flushing and cleaning.
+L265@P6: Wastewater must be disposed of lawfully. Please contact your local water authority prior to the event for
+L266@P6: advice.
+L267@P6: Under no circumstances is liquid waste to be discharged on the ground or to a stormwater drainage
+L268@P6: system.
+L269@P6-7: All sinks and wash hand basins should be provided with sanitary traps.Guidelines for mobile food vending vehicles
+L270@P7: FA526/2312 8
+L271@P7: Electricity, gas supplies, fire extinguishers and work safety
+L272@P7: • Food business operators should ensure there is sufficient supply of electricity for food handling
+L273@P7: operations, particularly hot and cold food holding and water heating.
+L274@P7: • SafeWork NSW requires electrical appliances and leads to be tested at least annually and
+L275@P7: identification tags to be attached.
+L276@P7: • All electrical work should be carried out by a licensed electrician and conform to Australian
+L277@P7: Standards.
+L278@P7: • Gas should be installed by a licensed gasfitter and comply with the appropriate provisions of the
+L279@P7: Australian Standards.
+L280@P7: • A current compliance plate should be fixed to the vehicle for new installations or for any changes
+L281@P7: made to the existing gas appliances.
+L282@P7: • Gas-fired appliances used in the open should not have a gas bottle greater than 9 kg capacity and
+L283@P7: the bottle should be secured so that it cannot be tipped over. Gas bottles need to be pressure
+L284@P7: checked.
+L285@P7: • A fire extinguisher and fire blanket should be supplied in every vehicle where cooking or heating
+L286@P7: processes are undertaken. Even if you are not responsible for starting a fire, you should be able to
+L287@P7: extinguish small fires.
+L288@P7: • Fire safety equipment should be easily accessible in the event of a fire. The extinguisher should be
+L289@P7: suitable for dealing with the type of combustible materials present.
+L290@P7: • Fire safety equipment should be tested annually and have current tagging in accordance with
+L291@P7: Australian Standards. Contact Fire and Rescue NSW for more information.
+L292@P7: • All measures should be taken to satisfy required SafeWork NSW conditions to protect the health,
+L293@P7: safety and welfare of employees and patrons. Contact SafeWork NSW for more information.
+L294@P7: Pollution prevention
+L295@P7: Operations should not cause any harm to the environment (air, water, noise and surrounding land
+L296@P7: environments). This is a requirement under the Protection of the Environment Operations Act 1997. For
+L297@P7: example, wastewater should be discharged into the sewer system not onto the ground. Contact the local
+L298@P7: council for more information.
+L299@P7: Facilities
+L300@P7: Construction of vehicle
+L301@P7: The design and construction of a mobile food vending vehicle must:
+L302@P7: • be appropriate for the types of food stored, prepared and sold
+L303@P7: • have adequate space for all activities and for all equipment to be used or stored
+L304@P7: • allow easy cleaning and sanitising procedures of all structures and equipment
+L305@P7: • prevent the entry of pests, dust, fumes, smoke and other contaminants where practicable
+L306@P7: • exclude favourable sites for pests to harbour (live and breed).
+L307@P7: The design and layout of a mobile food vending vehicle should be well planned and should take into
+L308@P7: consideration a range of key issues including but not limited to: maximising space without compromising
+L309@P7: food safety, using effective and durable construction materials, providing preparation and storage areas,
+L310@P7: hygiene requirements such as hand washing, and compliance with food safety standards to ensure
+L311@P7-8: effective and acceptable operation.Guidelines for mobile food vending vehicles
+L312@P8: FA526/2312 9
+L313@P8: Design principles should accommodate food safety flow of product and waste to minimise risks of food
+L314@P8: and equipment contamination. Separating particular processes must be considered including:
+L315@P8: • raw and cooked foods
+L316@P8: • hand washing facilities and utensil wash up areas
+L317@P8: • storage facilities
+L318@P8: • waste disposal areas.
+L319@P8: Separation of the driving compartment from food storage, handling and serving sections should be
+L320@P8: considered.
+L321@P8: The constructional standards required are dependent on the type, extent and frequency of food handling
+L322@P8: operations. As these standards can vary widely, it is recommended that before constructing or using a
+L323@P8: vehicle to sell food, the local council be approached and a clear agreement reached.
+L324@P8: Floors
+L325@P8: Floors are to be constructed of materials which are impervious and durable.
+L326@P8: The intersections of walls to floors should be without corners (coved): tight jointed, sealed and dust
+L327@P8: proof.
+L328@P8: Floors should be graded to the doorsill or, alternatively, a floor waste with a screwed removable plug is
+L329@P8: to be provided.
+L330@P8: Floors that are unlikely to pose any risk of contamination of food handled in the vehicle may be
+L331@P8: exempted from the constructional requirements of these guidelines provided the food business has
+L332@P8: obtained council approval.
+L333@P8: Walls
+L334@P8: Walls are to be provided where they are necessary to protect food from contamination.
+L335@P8: Walls must be finished with materials suitable for activities conducted in the vehicle, and be easy to
+L336@P8: clean. Light coloured, high gloss, impervious surfaces are recommended.
+L337@P8: Suitable wall materials in food preparation areas are stainless steel, aluminium sheeting, acrylic or
+L338@P8: laminated plastic sheeting or polyvinyl sheeting with welded seams.
+L339@P8: Architraves, skirting boards, picture rails or similar protrusions should not be used on the walls.
+L340@P8: Walls at the rear of cooking appliances should be surfaced with a material such as stainless steel, which
+L341@P8: extends from the canopy to the floor. Where a cooking appliance is sealed to the wall, the material
+L342@P8: should be lapped over the top edge of the appliance to provide a grease and vermin-proof seal. Cooking
+L343@P8: appliances should only be sealed to walls made of a non-combustible material.
+L344@P8: A splashback should be installed to a minimum height of 300 mm above any bench, sink or hand basin
+L345@P8: and should be constructed using an impervious waterproof material.
+L346@P8: Ceilings
+L347@P8: Ceilings are to be provided where they are necessary to protect food from contamination.
+L348@P8: Ceilings must be finished with impervious materials suitable for activities conducted in the vehicle, and
+L349@P8: be easy to clean. A light colour is recommended.
+L350@P8: Where applicable, the ceiling height should be adequate to effectively conduct food handling activities.
+L351@P8: Ceilings should be free of open joints, cracks and crevices.
+L352@P8-9: The intersection of walls and ceilings should be tight jointed, sealed and dust proof.Guidelines for mobile food vending vehicles
+L353@P9: FA526/2312 10
+L354@P9: Door and serving openings
+L355@P9: All openings are to be fitted with close fitting doors and shutters where practicable to exclude dust, pests
+L356@P9: and other contaminants. These should be closed during transport.
+L357@P9: Door and serving hatches should be finished internally with the same standard of material as the walls.
+L358@P9: Pipes, conduits and wiring
+L359@P9: Pipes, conduits and wiring should be concealed in or behind floors, walls and ceilings, or fixed on
+L360@P9: brackets providing at least 25 mm clearance between the pipe and adjacent surfaces, and 150 mm
+L361@P9: between the pipe or conduit and adjacent horizontal surfaces.
+L362@P9: Service pipes, conduits and wiring should not be placed in the recessed toe space of plinths or
+L363@P9: equipment.
+L364@P9: Equipment and appliances
+L365@P9: Equipment should be either built in with no cavities or mounted on castors capable of being easily moved
+L366@P9: to facilitate cleaning.
+L367@P9: Cooking equipment should not be placed beneath windows, wall cupboards, serving openings, shelving
+L368@P9: or roof vents.
+L369@P9: Lighting
+L370@P9: Adequate lighting in accordance with Australian Standards is to be provided to ensure safe food
+L371@P9: handling.
+L372@P9: In areas where exposed food is handled or stored, light fittings should be shatter-proof or fitted with
+L373@P9: suitable light diffusers (covers) to prevent contamination of food by broken light globe/tube glass.
+L374@P9: Ventilation
+L375@P9: There must be sufficient natural or mechanical ventilation to effectively remove fumes, smoke, steam
+L376@P9: and vapours.
+L377@P9: Mechanical ventilation must comply with Australian Standards.
+L378@P9: Storage racks should not be fitted above cooking and heating equipment as they can obstruct the
+L379@P9: airflow.
+L380@P9: Hand washing facilities
+L381@P9: A dedicated hand washing basin, separate from other facilities and used only for that purpose, must be
+L382@P9: provided.
+L383@P9: Warm water is needed for effective hand washing. Hot and cold water must be delivered through a single
+L384@P9: outlet to a dedicated hand basin.
+L385@P9: Liquid soap and single-use paper towels must be provided at, or near, the hand washing facility.
+L386@P9: To allow easy cleaning of hands and arms the basin should be installed at bench height, not under a
+L387@P9: bench. It should not be obstructed by other equipment and appropriately fixed to the wall. Ideally an
+L388@P9: impervious splashback should be installed behind the basin.
+L389@P9: An additional dedicated sink is required for washing of reusable eating and drinking dinnerware and
+L390@P9-10: tableware.Guidelines for mobile food vending vehicles
+L391@P10: FA526/2312 11
+L392@P10: Food handling
+L393@P10: The requirements for handling food for sale for human consumption are outlined in:
+L394@P10: • Standard 3.2.2 – Food Safety Practices and General Requirements
+L395@P10: • Standard 3.2.2A – Food Safety Management Tools, and
+L396@P10: • Standard 3.2.3 – Food Premises and Equipment of the Food Standards Code.
+L397@P10: These are on the Food Standards Australia New Zealand website at www.foodstandards.gov.au.
+L398@P10: Some of these requirements also apply to pre-packaged food and low-risk food. Factsheets and user
+L399@P10: guides (including for charitable and community not-for-profit organisations) are available on the Food
+L400@P10: Authority website at foodauthority.nsw.gov.au/resource-centre.
+L401@P10: When engaged in any food handling operation, a food handler must:
+L402@P10: • not contaminate food or food contact surfaces with their body or clothing,
+L403@P10: • prevent unnecessary contact with ready-to-eat food,
+L404@P10: • wear only clean outer clothing,
+L405@P10: • cover all dressing and bandages on exposed body parts with a waterproof dressing,
+L406@P10: • not eat over uncovered food or food contact surfaces,
+L407@P10: • not sneeze, blow or cough over uncovered food or surfaces likely to come into contact with food,
+L408@P10: • not spit, smoke or use tobacco while working in the food stall, and
+L409@P10: • not urinate or defecate except in a toilet.
+L410@P10: Food suppliers
+L411@P10: Obtain fresh produce and products from reputable suppliers, as generally they operate under strict
+L412@P10: quality guidelines. Keep copies of invoices for trace back if needed in the future.
+L413@P10: Preparing food at home
+L414@P10: Notification of food business details, construction, facilities, labelling and food handling requirements of
+L415@P10: the Food Act 2003 apply equally to home situations as to commercial operations. This also applies to
+L416@P10: pre-packaged and low-risk produce and foods. Approval to use homes for food handling may also be
+L417@P10: required by local councils. The local council should be contacted in these situations. The factsheet Home
+L418@P10: based and mixed food businesses is on the Food Authority’s website.
+L419@P10: Food storage
+L420@P10: • Food businesses must ensure all foods are stored so they are protected from likely contamination
+L421@P10: and that the environmental conditions will not adversely affect the safety or suitability of the food.
+L422@P10: • There must be separately located storage facilities for items such as chemicals, clothing and
+

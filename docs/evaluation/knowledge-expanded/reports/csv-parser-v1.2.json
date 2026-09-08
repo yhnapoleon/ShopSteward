@@ -1,0 +1,9 @@
+{
+  "csv_version_count": 183,
+  "manifest_sha256": "34b717e436b8613d2d1624f1e6fc36ae3c38dc280dcdc28e61408c437587b0fd",
+  "scope": "actual service parser, CSV only; full reprofile is controller-owned",
+  "status_counts": {
+    "COMPLETE": 183
+  },
+  "warning_count": 0
+}

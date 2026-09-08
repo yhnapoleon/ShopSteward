@@ -13,4 +13,5 @@ members = [
     "agent",
     "ml",
     "simulation",
+    "knowledge",
 ]

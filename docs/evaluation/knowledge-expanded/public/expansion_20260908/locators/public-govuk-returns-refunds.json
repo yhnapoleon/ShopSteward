@@ -1,0 +1,51 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "Items bought in person",
+    "origin_id": "items-bought-in-person",
+    "source_url": "https://www.gov.uk/accepting-returns-and-giving-refunds#items-bought-in-person",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Items bought online, by mail or phone",
+    "origin_id": "items-bought-online-by-mail-or-phone",
+    "source_url": "https://www.gov.uk/accepting-returns-and-giving-refunds#items-bought-online-by-mail-or-phone",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "When you do not have to offer a refund",
+    "origin_id": "when-you-do-not-have-to-offer-a-refund",
+    "source_url": "https://www.gov.uk/accepting-returns-and-giving-refunds#when-you-do-not-have-to-offer-a-refund",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Repairs and replacements",
+    "origin_id": "repairs-and-replacements",
+    "source_url": "https://www.gov.uk/accepting-returns-and-giving-refunds#repairs-and-replacements",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Warranties and guarantees",
+    "origin_id": "warranties-and-guarantees",
+    "source_url": "https://www.gov.uk/accepting-returns-and-giving-refunds#warranties-and-guarantees",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Proof of purchase",
+    "origin_id": "proof-of-purchase",
+    "source_url": "https://www.gov.uk/accepting-returns-and-giving-refunds#proof-of-purchase",
+    "ordinal": 6
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Items returned by someone other than the buyer",
+    "origin_id": "items-returned-by-someone-other-than-the-buyer",
+    "source_url": "https://www.gov.uk/accepting-returns-and-giving-refunds#items-returned-by-someone-other-than-the-buyer",
+    "ordinal": 7
+  }
+]

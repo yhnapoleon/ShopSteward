@@ -1,0 +1,2950 @@
+{
+  "identity_scope": "fixtures_require_test_tenant_mapping",
+  "schema_version": "expanded-v1",
+  "skus": [
+    {
+      "fixture_id": "SKU001",
+      "name": "模拟商品001",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU002",
+      "name": "模拟商品002",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU003",
+      "name": "模拟商品003",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU004",
+      "name": "模拟商品004",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU005",
+      "name": "模拟商品005",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU006",
+      "name": "模拟商品006",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU007",
+      "name": "模拟商品007",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU008",
+      "name": "模拟商品008",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU009",
+      "name": "模拟商品009",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU010",
+      "name": "模拟商品010",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU011",
+      "name": "模拟商品011",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU012",
+      "name": "模拟商品012",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU013",
+      "name": "模拟商品013",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU014",
+      "name": "模拟商品014",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU015",
+      "name": "模拟商品015",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU016",
+      "name": "模拟商品016",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU017",
+      "name": "模拟商品017",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU018",
+      "name": "模拟商品018",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU019",
+      "name": "模拟商品019",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU020",
+      "name": "模拟商品020",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU021",
+      "name": "模拟商品021",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU022",
+      "name": "模拟商品022",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU023",
+      "name": "模拟商品023",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU024",
+      "name": "模拟商品024",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU025",
+      "name": "模拟商品025",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU026",
+      "name": "模拟商品026",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU027",
+      "name": "模拟商品027",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU028",
+      "name": "模拟商品028",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU029",
+      "name": "模拟商品029",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU030",
+      "name": "模拟商品030",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU031",
+      "name": "模拟商品031",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU032",
+      "name": "模拟商品032",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU033",
+      "name": "模拟商品033",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU034",
+      "name": "模拟商品034",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU035",
+      "name": "模拟商品035",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU036",
+      "name": "模拟商品036",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU037",
+      "name": "模拟商品037",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU038",
+      "name": "模拟商品038",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU039",
+      "name": "模拟商品039",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU040",
+      "name": "模拟商品040",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU041",
+      "name": "模拟商品041",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU042",
+      "name": "模拟商品042",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU043",
+      "name": "模拟商品043",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU044",
+      "name": "模拟商品044",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU045",
+      "name": "模拟商品045",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU046",
+      "name": "模拟商品046",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU047",
+      "name": "模拟商品047",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU048",
+      "name": "模拟商品048",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU049",
+      "name": "模拟商品049",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU050",
+      "name": "模拟商品050",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU051",
+      "name": "模拟商品051",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU052",
+      "name": "模拟商品052",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU053",
+      "name": "模拟商品053",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU054",
+      "name": "模拟商品054",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU055",
+      "name": "模拟商品055",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU056",
+      "name": "模拟商品056",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU057",
+      "name": "模拟商品057",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU058",
+      "name": "模拟商品058",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU059",
+      "name": "模拟商品059",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU060",
+      "name": "模拟商品060",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU061",
+      "name": "模拟商品061",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP31",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU062",
+      "name": "模拟商品062",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP31",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU063",
+      "name": "模拟商品063",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP32",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU064",
+      "name": "模拟商品064",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP32",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU065",
+      "name": "模拟商品065",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP33",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU066",
+      "name": "模拟商品066",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP33",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU067",
+      "name": "模拟商品067",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP34",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU068",
+      "name": "模拟商品068",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP34",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU069",
+      "name": "模拟商品069",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP35",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU070",
+      "name": "模拟商品070",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP35",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU071",
+      "name": "模拟商品071",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP36",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU072",
+      "name": "模拟商品072",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP36",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU073",
+      "name": "模拟商品073",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP37",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU074",
+      "name": "模拟商品074",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP37",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU075",
+      "name": "模拟商品075",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP38",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU076",
+      "name": "模拟商品076",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP38",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU077",
+      "name": "模拟商品077",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP39",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU078",
+      "name": "模拟商品078",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP39",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU079",
+      "name": "模拟商品079",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP40",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU080",
+      "name": "模拟商品080",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP40",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU081",
+      "name": "模拟商品081",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU082",
+      "name": "模拟商品082",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU083",
+      "name": "模拟商品083",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU084",
+      "name": "模拟商品084",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU085",
+      "name": "模拟商品085",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU086",
+      "name": "模拟商品086",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU087",
+      "name": "模拟商品087",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU088",
+      "name": "模拟商品088",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU089",
+      "name": "模拟商品089",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU090",
+      "name": "模拟商品090",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU091",
+      "name": "模拟商品091",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU092",
+      "name": "模拟商品092",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU093",
+      "name": "模拟商品093",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU094",
+      "name": "模拟商品094",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU095",
+      "name": "模拟商品095",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU096",
+      "name": "模拟商品096",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU097",
+      "name": "模拟商品097",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU098",
+      "name": "模拟商品098",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU099",
+      "name": "模拟商品099",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU100",
+      "name": "模拟商品100",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU101",
+      "name": "模拟商品101",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU102",
+      "name": "模拟商品102",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU103",
+      "name": "模拟商品103",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU104",
+      "name": "模拟商品104",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU105",
+      "name": "模拟商品105",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU106",
+      "name": "模拟商品106",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU107",
+      "name": "模拟商品107",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU108",
+      "name": "模拟商品108",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU109",
+      "name": "模拟商品109",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU110",
+      "name": "模拟商品110",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU111",
+      "name": "模拟商品111",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU112",
+      "name": "模拟商品112",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU113",
+      "name": "模拟商品113",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU114",
+      "name": "模拟商品114",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU115",
+      "name": "模拟商品115",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU116",
+      "name": "模拟商品116",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU117",
+      "name": "模拟商品117",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU118",
+      "name": "模拟商品118",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU119",
+      "name": "模拟商品119",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU120",
+      "name": "模拟商品120",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU121",
+      "name": "模拟商品121",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU122",
+      "name": "模拟商品122",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU123",
+      "name": "模拟商品123",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU124",
+      "name": "模拟商品124",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU125",
+      "name": "模拟商品125",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU126",
+      "name": "模拟商品126",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU127",
+      "name": "模拟商品127",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU128",
+      "name": "模拟商品128",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU129",
+      "name": "模拟商品129",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU130",
+      "name": "模拟商品130",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU131",
+      "name": "模拟商品131",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU132",
+      "name": "模拟商品132",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU133",
+      "name": "模拟商品133",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU134",
+      "name": "模拟商品134",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU135",
+      "name": "模拟商品135",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU136",
+      "name": "模拟商品136",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU137",
+      "name": "模拟商品137",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU138",
+      "name": "模拟商品138",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU139",
+      "name": "模拟商品139",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU140",
+      "name": "模拟商品140",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU141",
+      "name": "模拟商品141",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP31",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU142",
+      "name": "模拟商品142",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP31",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU143",
+      "name": "模拟商品143",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP32",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU144",
+      "name": "模拟商品144",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP32",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU145",
+      "name": "模拟商品145",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP33",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU146",
+      "name": "模拟商品146",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP33",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU147",
+      "name": "模拟商品147",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP34",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU148",
+      "name": "模拟商品148",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP34",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU149",
+      "name": "模拟商品149",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP35",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU150",
+      "name": "模拟商品150",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP35",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU151",
+      "name": "模拟商品151",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP36",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU152",
+      "name": "模拟商品152",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP36",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU153",
+      "name": "模拟商品153",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP37",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU154",
+      "name": "模拟商品154",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP37",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU155",
+      "name": "模拟商品155",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP38",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU156",
+      "name": "模拟商品156",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP38",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU157",
+      "name": "模拟商品157",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP39",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU158",
+      "name": "模拟商品158",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP39",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU159",
+      "name": "模拟商品159",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP40",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU160",
+      "name": "模拟商品160",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP40",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU161",
+      "name": "模拟商品161",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU162",
+      "name": "模拟商品162",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU163",
+      "name": "模拟商品163",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU164",
+      "name": "模拟商品164",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU165",
+      "name": "模拟商品165",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU166",
+      "name": "模拟商品166",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU167",
+      "name": "模拟商品167",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU168",
+      "name": "模拟商品168",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU169",
+      "name": "模拟商品169",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU170",
+      "name": "模拟商品170",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU171",
+      "name": "模拟商品171",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU172",
+      "name": "模拟商品172",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU173",
+      "name": "模拟商品173",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU174",
+      "name": "模拟商品174",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU175",
+      "name": "模拟商品175",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU176",
+      "name": "模拟商品176",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU177",
+      "name": "模拟商品177",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU178",
+      "name": "模拟商品178",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU179",
+      "name": "模拟商品179",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU180",
+      "name": "模拟商品180",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU181",
+      "name": "模拟商品181",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU182",
+      "name": "模拟商品182",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU183",
+      "name": "模拟商品183",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU184",
+      "name": "模拟商品184",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU185",
+      "name": "模拟商品185",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU186",
+      "name": "模拟商品186",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU187",
+      "name": "模拟商品187",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU188",
+      "name": "模拟商品188",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU189",
+      "name": "模拟商品189",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU190",
+      "name": "模拟商品190",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU191",
+      "name": "模拟商品191",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU192",
+      "name": "模拟商品192",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU193",
+      "name": "模拟商品193",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU194",
+      "name": "模拟商品194",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU195",
+      "name": "模拟商品195",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU196",
+      "name": "模拟商品196",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU197",
+      "name": "模拟商品197",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU198",
+      "name": "模拟商品198",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU199",
+      "name": "模拟商品199",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU200",
+      "name": "模拟商品200",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU201",
+      "name": "模拟商品201",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU202",
+      "name": "模拟商品202",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU203",
+      "name": "模拟商品203",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU204",
+      "name": "模拟商品204",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU205",
+      "name": "模拟商品205",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU206",
+      "name": "模拟商品206",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU207",
+      "name": "模拟商品207",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU208",
+      "name": "模拟商品208",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU209",
+      "name": "模拟商品209",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU210",
+      "name": "模拟商品210",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU211",
+      "name": "模拟商品211",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU212",
+      "name": "模拟商品212",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU213",
+      "name": "模拟商品213",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU214",
+      "name": "模拟商品214",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU215",
+      "name": "模拟商品215",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU216",
+      "name": "模拟商品216",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU217",
+      "name": "模拟商品217",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU218",
+      "name": "模拟商品218",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU219",
+      "name": "模拟商品219",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU220",
+      "name": "模拟商品220",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU221",
+      "name": "模拟商品221",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP31",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU222",
+      "name": "模拟商品222",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP31",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU223",
+      "name": "模拟商品223",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP32",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU224",
+      "name": "模拟商品224",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP32",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU225",
+      "name": "模拟商品225",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP33",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU226",
+      "name": "模拟商品226",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP33",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU227",
+      "name": "模拟商品227",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP34",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU228",
+      "name": "模拟商品228",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP34",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU229",
+      "name": "模拟商品229",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP35",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU230",
+      "name": "模拟商品230",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP35",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU231",
+      "name": "模拟商品231",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP36",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU232",
+      "name": "模拟商品232",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP36",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU233",
+      "name": "模拟商品233",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP37",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU234",
+      "name": "模拟商品234",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP37",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU235",
+      "name": "模拟商品235",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP38",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU236",
+      "name": "模拟商品236",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP38",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU237",
+      "name": "模拟商品237",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP39",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU238",
+      "name": "模拟商品238",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP39",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU239",
+      "name": "模拟商品239",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP40",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU240",
+      "name": "模拟商品240",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP40",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU241",
+      "name": "模拟商品241",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU242",
+      "name": "模拟商品242",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU243",
+      "name": "模拟商品243",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU244",
+      "name": "模拟商品244",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU245",
+      "name": "模拟商品245",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU246",
+      "name": "模拟商品246",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU247",
+      "name": "模拟商品247",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU248",
+      "name": "模拟商品248",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU249",
+      "name": "模拟商品249",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU250",
+      "name": "模拟商品250",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU251",
+      "name": "模拟商品251",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU252",
+      "name": "模拟商品252",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU253",
+      "name": "模拟商品253",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU254",
+      "name": "模拟商品254",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU255",
+      "name": "模拟商品255",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU256",
+      "name": "模拟商品256",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU257",
+      "name": "模拟商品257",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU258",
+      "name": "模拟商品258",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU259",
+      "name": "模拟商品259",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU260",
+      "name": "模拟商品260",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU261",
+      "name": "模拟商品261",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU262",
+      "name": "模拟商品262",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU263",
+      "name": "模拟商品263",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU264",
+      "name": "模拟商品264",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU265",
+      "name": "模拟商品265",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU266",
+      "name": "模拟商品266",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU267",
+      "name": "模拟商品267",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU268",
+      "name": "模拟商品268",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU269",
+      "name": "模拟商品269",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU270",
+      "name": "模拟商品270",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU271",
+      "name": "模拟商品271",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU272",
+      "name": "模拟商品272",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU273",
+      "name": "模拟商品273",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU274",
+      "name": "模拟商品274",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU275",
+      "name": "模拟商品275",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU276",
+      "name": "模拟商品276",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU277",
+      "name": "模拟商品277",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU278",
+      "name": "模拟商品278",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU279",
+      "name": "模拟商品279",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU280",
+      "name": "模拟商品280",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU281",
+      "name": "模拟商品281",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU282",
+      "name": "模拟商品282",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU283",
+      "name": "模拟商品283",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU284",
+      "name": "模拟商品284",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU285",
+      "name": "模拟商品285",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU286",
+      "name": "模拟商品286",
+      "store_fixture_ids": [
+        "STORE07"
+      ],
+      "supplier_fixture_id": "SUP23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU287",
+      "name": "模拟商品287",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU288",
+      "name": "模拟商品288",
+      "store_fixture_ids": [
+        "STORE08"
+      ],
+      "supplier_fixture_id": "SUP24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU289",
+      "name": "模拟商品289",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU290",
+      "name": "模拟商品290",
+      "store_fixture_ids": [
+        "STORE01"
+      ],
+      "supplier_fixture_id": "SUP25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU291",
+      "name": "模拟商品291",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU292",
+      "name": "模拟商品292",
+      "store_fixture_ids": [
+        "STORE02"
+      ],
+      "supplier_fixture_id": "SUP26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU293",
+      "name": "模拟商品293",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU294",
+      "name": "模拟商品294",
+      "store_fixture_ids": [
+        "STORE03"
+      ],
+      "supplier_fixture_id": "SUP27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU295",
+      "name": "模拟商品295",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU296",
+      "name": "模拟商品296",
+      "store_fixture_ids": [
+        "STORE04"
+      ],
+      "supplier_fixture_id": "SUP28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU297",
+      "name": "模拟商品297",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU298",
+      "name": "模拟商品298",
+      "store_fixture_ids": [
+        "STORE05"
+      ],
+      "supplier_fixture_id": "SUP29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU299",
+      "name": "模拟商品299",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SKU300",
+      "name": "模拟商品300",
+      "store_fixture_ids": [
+        "STORE06"
+      ],
+      "supplier_fixture_id": "SUP30",
+      "synthetic": true
+    }
+  ],
+  "stores": [
+    {
+      "fixture_id": "STORE01",
+      "name": "模拟门店01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "STORE02",
+      "name": "模拟门店02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "STORE03",
+      "name": "模拟门店03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "STORE04",
+      "name": "模拟门店04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "STORE05",
+      "name": "模拟门店05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "STORE06",
+      "name": "模拟门店06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "STORE07",
+      "name": "模拟门店07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "STORE08",
+      "name": "模拟门店08",
+      "synthetic": true
+    }
+  ],
+  "suppliers": [
+    {
+      "fixture_id": "SUP01",
+      "name": "模拟供应商01",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP02",
+      "name": "模拟供应商02",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP03",
+      "name": "模拟供应商03",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP04",
+      "name": "模拟供应商04",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP05",
+      "name": "模拟供应商05",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP06",
+      "name": "模拟供应商06",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP07",
+      "name": "模拟供应商07",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP08",
+      "name": "模拟供应商08",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP09",
+      "name": "模拟供应商09",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP10",
+      "name": "模拟供应商10",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP11",
+      "name": "模拟供应商11",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP12",
+      "name": "模拟供应商12",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP13",
+      "name": "模拟供应商13",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP14",
+      "name": "模拟供应商14",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP15",
+      "name": "模拟供应商15",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP16",
+      "name": "模拟供应商16",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP17",
+      "name": "模拟供应商17",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP18",
+      "name": "模拟供应商18",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP19",
+      "name": "模拟供应商19",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP20",
+      "name": "模拟供应商20",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP21",
+      "name": "模拟供应商21",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP22",
+      "name": "模拟供应商22",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP23",
+      "name": "模拟供应商23",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP24",
+      "name": "模拟供应商24",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP25",
+      "name": "模拟供应商25",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP26",
+      "name": "模拟供应商26",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP27",
+      "name": "模拟供应商27",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP28",
+      "name": "模拟供应商28",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP29",
+      "name": "模拟供应商29",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP30",
+      "name": "模拟供应商30",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP31",
+      "name": "模拟供应商31",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP32",
+      "name": "模拟供应商32",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP33",
+      "name": "模拟供应商33",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP34",
+      "name": "模拟供应商34",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP35",
+      "name": "模拟供应商35",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP36",
+      "name": "模拟供应商36",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP37",
+      "name": "模拟供应商37",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP38",
+      "name": "模拟供应商38",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP39",
+      "name": "模拟供应商39",
+      "synthetic": true
+    },
+    {
+      "fixture_id": "SUP40",
+      "name": "模拟供应商40",
+      "synthetic": true
+    }
+  ]
+}

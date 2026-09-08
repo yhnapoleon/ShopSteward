@@ -1,0 +1,96 @@
+Food grade packaging (https://www.foodauthority.nsw.gov.au/media/1231)
+citeturn79view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 3; Source: click({"ref_id":"turn59view0","id":311}); Total lines: 93
+L0@P0: Food Authority
+L1@P0: Food grade packaging
+L2@P0: As packaging and containers used to store food are in direct contact with the
+L3@P0: food, they need to be suitable and ‘food grade’. If the packaging is made from
+L4@P0: inappropriate materials, it could make the food unsafe.
+L5@P0: Packaging must be suitable for its intended use
+L6@P0: The Food Standards Code details specific requirements for surfaces in contact with foods, including
+L7@P0: containers and packaging in which food is processed or stored. They must be:
+L8@P0: • adequate for the production of safe and suitable food
+L9@P0: • fit for their intended use.
+L10@P0: For a food contact surface to be considered food grade it must be able to be effectively cleaned, and
+L11@P0: must be made from a material that will not migrate into, contaminate or taint the food. The
+L12@P0: requirements for a plastic to be considered food grade are listed in the Australian Standard for Plastics
+L13@P0: materials for food contact use (AS 2070-1999).
+L14@P0: This Standard applies to manufacturers of plastics materials for food contact and specifies procedures
+L15@P0: to be used during the various stages of production. The requirements apply to such items as
+L16@P0: packages, domestic containers, wrapping materials, utensils or any other plastics items intended to
+L17@P0: come into contact with food.
+L18@P0: The Food Standards Code also specifies the maximum allowable levels in foods for certain
+L19@P0: compounds commonly used in making food packaging (such as tin in canned foods, acrylonitrile and
+L20@P0: vinyl chloride – used in the production of plastics – in any food).
+L21@P0: The US Food & Drug Administration (FDA)
+L22@P0: maintains a database listing the approved food
+L23@P0: contact substances that have been demonstrated to
+L24@P0: be safe for their intended use.
+L25@P0: Most containers will outline on the label whether or
+L26@P0: not it is food grade and what it is suitable for (such
+L27@P0: as the labels below). If no such indication is made
+L28@P0: on the label or you are unsure whether or not the
+L29@P0: container is food grade, either contact the
+L30@P0: manufacturer or assume the container is not food
+L31@P0-1: grade. Figure 1 The meaning of label images.Food grade packaging
+L32@P1: FA614/2402 2
+L33@P1: Cleaning
+L34@P1: Any surface that comes into contact with food must be able to be easily and effectively cleaned and,
+L35@P1: where necessary, sanitised.
+L36@P1: Any container or packaging used to store food should be smooth, and free of cracks, chips, crevices,
+L37@P1: ridges or grooves that could harbour bacteria and hinder attempts to easily and effectively clean it.
+L38@P1: Any defects in a food contact surface can allow the build-up of food scraps, and harbour bacteria
+L39@P1: which can contaminate the food.
+L40@P1: Suitable packaging materials
+L41@P1: Food contact surfaces must be made of material that will not contaminate food and are impervious to
+L42@P1: grease, food particles and water.
+L43@P1: Containers and packaging must be made from materials that will not contaminate food by allowing
+L44@P1: chemicals to migrate from the packaging into the food, or by giving the food an unacceptable taste or
+L45@P1: odour.
+L46@P1: Some materials are not suitable for use with acidic foods. Examples include:
+L47@P1: • lead in ceramic, china and crystal utensils, solders/flux (flowing agents) and pewter
+L48@P1: • galvanised metal
+L49@P1: • copper and copper alloys
+L50@P1: • unglazed earthenware is unsuitable for eating and drinking utensils.
+L51@P1: The material used in food packaging must be able to withstand the uses it would normally be exposed
+L52@P1: to, such as microwaving, or storing hot food or frozen food.
+L53@P1: Containers and packaging made specifically for food contact use are recommended because they are
+L54@P1: made from suitable materials tested for contact with food, and are usually designed for easier cleaning
+L55@P1: and sanitising.
+L56@P1: Reuse of containers
+L57@P1: Containers that have been used as packaging for food must not be reused unless they can be
+L58@P1: properly cleaned and, if necessary, sanitised to prevent cross contamination.
+L59@P1: Some food grade containers, such as ice cream containers, may be suitable for reuse on a short-term
+L60@P1: basis, but they are not ideal. The number of times these containers can be safely reused is limited by
+L61@P1: how well they retain their properties after being washed in hot water and detergent. With constant
+L62@P1: reuse the containers may become brittle and crack. This increases the risk of the container breaking
+L63@P1: and contaminating the food. Brittle containers are not considered suitable and should be discarded.
+L64@P1: Where jars and lids are reused, they should be:
+L65@P1: • inspected prior to use (and reuse) and discarded if they have damaged seals, or are cracked or
+L66@P1: soiled with anything likely to taint or contaminate food (such as any non-food chemicals)
+L67@P1: • thoroughly cleaned so that no residue is left on the jars and lids (a dedicated automatic glassware
+L68@P1: washer would be ideal, but careful washing by hand may also be effective).
+L69@P1: • thoroughly sanitised (this might not be required if the food products are to be hot-filled at or above
+L70@P1-2: 85°C).Food grade packaging
+L71@P2: FA614/2402 3
+L72@P2: Single use items are not to be reused
+L73@P2: The Food Standards Code specifically prohibits the reuse of single use items in contact with food.
+L74@P2: Single use items are generally defined as those where the manufacturer of the item intends for it to be
+L75@P2: only used once in connection with food handling (such as plastic takeaway containers). There may be
+L76@P2: other non-food contact uses where these containers can be reused.
+L77@P2: Outer containers
+L78@P2: Outer containers are sometimes used to exclude pests from an opened package of food, such as bags
+L79@P2: of flour. These outer containers need to protect the food from contamination and include a tight-fitting
+L80@P2: lid. Although outer containers may not directly be in contact with food, they still must be suitable for
+L81@P2: their intended use and able to be easily cleaned. A rubbish bin would not be considered suitable for
+L82@P2: this purpose.
+L83@P2: More information
+L84@P2: • Visit foodauthority.nsw.gov.au
+L85@P2: • Email the Food Authority helpline at food.contact@dpi.nsw.gov.au
+L86@P2: • Phone the Food Authority helpline on 1300 552 406
+L87@P2: • Refer to Safe Food Australia – A guide to the Food Safety Standards on the FSANZ website at
+L88@P2: foodstandards.gov.au
+L89@P2: © State of New South Wales through Regional NSW 2024. The information contained in this publication is based on knowledge and
+L90@P2: understanding at the time of writing February 2024. However, because of advances in knowledge, users are reminded of the need to ensure
+L91@P2: that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L92@P2: Regional NSW or the user’s independent adviser.
+

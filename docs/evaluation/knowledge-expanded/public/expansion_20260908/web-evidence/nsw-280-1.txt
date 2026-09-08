@@ -1,0 +1,116 @@
+Chemical sanitisers – advice for food businesses (https://www.foodauthority.nsw.gov.au/media/2911)
+citeturn105view0 [wordlim: 200] Crawled: yesterday; Content type: application/pdf; Number of pages: 4; Source: click({"ref_id":"turn59view0","id":280}); Total lines: 113
+L0@P0: Food Authority
+L1@P0: Chemical sanitisers – advice for food
+L2@P0: businesses
+L3@P0: Why do I need a sanitiser?
+L4@P0: Bacteria that cause illness (Salmonella for example) are commonly found on raw foods such as raw
+L5@P0: meat. The bacteria on these foods can be transferred to surfaces and equipment that comes into
+L6@P0: contact with them. Effective cleaning and sanitising in your food business helps protect you and your
+L7@P0: customers against the spread of bacteria and can stop your customers from getting sick.
+L8@P0: Chemical sanitisers are applied to food contact equipment after cleaning to kill bacteria that survive
+L9@P0: the cleaning process. A surface needs to be thoroughly cleaned before it is sanitised, see Cleaning
+L10@P0: and sanitising in retail food businesses for more information.
+L11@P0: It is a requirement that any equipment that comes into contact with food, such as kitchen benches,
+L12@P0: knives, chopping boards, eating and drinking utensils, pots, and meat slicers must be in a clean and
+L13@P0: sanitary condition¹.
+L14@P0: To be effective in a food premises, a sanitiser should kill 99.99% to 99.999% of bacteria. There are
+L15@P0: many different types of sanitisers. The most common chemical sanitisers are chlorine-based products,
+L16@P0: such as hypochlorite (also known as bleach), and quaternary ammonium products. Other chemicals
+L17@P0: may be effective if correctly prepared and used. If bleach is used as a chemical sanitiser only plain
+L18@P0: unscented bleach should be used.
+L19@P0: Figure 1. Person cleaning a work bench. Figure 2. Person washing the floor.
+L20@P0-1: ¹ FSANZ Food Standards Code, Standard 3.2.2-Clause 20Chemical sanitisers – advice for food businesses
+L21@P1: FA521/2307 2
+L22@P1: Where can I get a chemical sanitiser?
+L23@P1: Chemical sanitisers are available from many different commercial suppliers, for example chemical,
+L24@P1: catering and cleaning suppliers, and are usually quaternary ammonium products. Bleach is widely
+L25@P1: available in retail supermarkets.
+L26@P1: How do I use a sanitiser?
+L27@P1: Different brands of sanitiser vary greatly in their instructions for use. The manufacturer’s instructions
+L28@P1: should always be followed. Clear instructions must be provided either on the product label (see
+L29@P1: example in Figure 3) or a product information sheet. If instructions are not clearly provided with the
+L30@P1: product, advice should be sought from the supplier or manufacturer and an alternate product sourced
+L31@P1: if necessary.
+L32@P1: Figure 3. Example of a sanitiser label.
+L33@P1: The user must always READ THE LABEL (and/or the product information sheet and Safety Data
+L34@P1: Sheet) and understand the following about the sanitiser:
+L35@P1: • Is it safe to use on food contact equipment?
+L36@P1: • Is it a ready-to-use product and doesn’t require diluting?
+L37@P1: • What are the dilution rates if it needs to be diluted?
+L38@P1: • What is the ‘contact time’ (i.e., the amount of time a sanitiser must be in contact with an item for it
+L39@P1: to work)?
+L40@P1: • Is rinsing required?
+L41@P1-2: • What is the shelf life of the concentrated and diluted products? Chemical sanitisers – advice for food businesses
+L42@P2: FA521/2307 3
+L43@P2: Some sanitisers can be used as received and are suitable for spray and wipe activities without
+L44@P2: dilution. These ready-to-use sanitisers are generally unsuitable for equipment that requires immersion
+L45@P2: (dipping) in a sink as they cannot be diluted.
+L46@P2: Food businesses that use bleach as a sanitiser must follow the dilution instructions in Table 1 below.
+L47@P2: The contact time for bleach varies depending upon the product, concentration, water temperature and
+L48@P2: other factors (such as pH). The manufacturer’s instructions should always be followed in this regard.
+L49@P2: As a guide, to be effective, bleach requires up to 30 seconds before the food contact equipment is
+L50@P2: ready for use. Bleach is not required to be rinsed off, as long as the dilution instructions have been
+L51@P2: followed.
+L52@P2: Applying a chemical sanitiser to a food contact surface
+L53@P2: • Only use products with clear and informative labels or product information sheets so the
+L54@P2: instructions can be easily checked
+L55@P2: • All surfaces to be sanitised must be clean and rinsed first as sanitisers do not work well in the
+L56@P2: presence of food residues or other detergents
+L57@P2: • Sanitisers should be made to the correct dilution rate (too low or too high is ineffective) and used
+L58@P2: with the correct water temperature and for the correct contact time, as specified in the
+L59@P2: manufacturer’s instructions
+L60@P2: • Because the active chemical loses strength over time, a fresh batch of sanitiser should be made
+L61@P2: every 24 hours, or as specified in the manufacturer's instructions
+L62@P2: • Ensure that sanitising spray bottles are labelled correctly for example the name of the product,
+L63@P2: when it was made up, et cet era
+L64@P2: • All surfaces to be sanitised should be completely covered with the sanitising solution using
+L65@P2: immersion (dipping) in a sink or using a spray
+L66@P2: • Special attention should be given to equipment with surfaces that are difficult to get to, such as
+L67@P2: stab mixers, blenders, meat slicers and can openers
+L68@P2: • Equipment may need to be dismantled, per manufacturer’s instructions, to access the parts
+L69@P2: that need to be sanitised
+L70@P2: • Equipment that cannot be effectively cleaned and sanitised should not be used in a food
+L71@P2: business
+L72@P2: • After sanitising, utensils and food surfaces should be thoroughly dried:
+L73@P2: • Wet surfaces pick up dirt or other contaminants more easily than dry surfaces.
+L74@P2: • Air drying is preferable otherwise use clean, dry, single-use towels
+L75@P2: • Care should be taken not to re-contaminate sanitised utensils and equipment, e.g. by
+L76@P2-3: ensuring they are stored using clean hands and in a clean and sanitary place.Chemical sanitisers – advice for food businesses
+L77@P3: FA521/2307 4
+L78@P3: Bleach dilution instructions
+L79@P3: How much water? How much bleach?
+L80@P3: Household (4%
+L81@P3: chlorine)
+L82@P3: Strong domestic (6%
+L83@P3: chlorine)
+L84@P3: Commercial (10%
+L85@P3: chlorine)
+L86@P3: Concentration
+L87@P3: required (ppm)
+L88@P3: 50 ppm 100ppm 50ppm 100ppm 50ppm 100ppm
+L89@P3: Water temp Warm Cold Warm Cold Warm Cold
+L90@P3: 1 litre 1.25ml 2.5ml 0.85ml 1.7ml 0.5ml 1ml
+L91@P3: Table 1. Bleach dilution instructions
+L92@P3: To calculate the amount of bleach required for other sized containers, simply multiply the appropriate
+L93@P3: bleach amount above by the number of litres in any given container.
+L94@P3: For example:
+L95@P3: How much 4% chlorine bleach do I need to add to a 500ml bottle of cold water?
+L96@P3: • If 1 litre of cold water requires 2.5 ml of bleach (at 4% chlorine)
+L97@P3: • 500ml = 0.5L
+L98@P3: • Therefore 2.5ml x 0.5 = 1.25ml
+L99@P3: OR
+L100@P3: How much 4% chlorine bleach do I need to add to a 7-litre bucket of cold water?
+L101@P3: • If 1 litre of cold water requires 2.5 ml of bleach (at 4% chlorine)
+L102@P3: • Therefore 2.5ml x 7 = 17.5ml
+L103@P3: More information
+L104@P3: • Visit the Food Authority’s website at www.foodauthority.nsw.gov.au
+L105@P3: • Factsheet: Cleaning and sanitising in retail food businesses
+L106@P3: • Factsheet: Campylobacter – advice for food businesses
+L107@P3: • Email the Helpline at food.contact@dpi.nsw.gov.au
+L108@P3: • Phone the Helpline on 1300 552 406.
+L109@P3: © State of New South Wales through Regional NSW 2023. The information contained in this publication is based on knowledge and
+L110@P3: understanding at the time of writing June 2023. However, because of advances in knowledge, users are reminded of the need to ensure that
+L111@P3: the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the Regional
+L112@P3: NSW or the user’s independent adviser.
+

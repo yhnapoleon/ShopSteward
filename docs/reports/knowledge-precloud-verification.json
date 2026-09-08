@@ -1,0 +1,152 @@
+{
+  "recorded_on": "2026-09-08",
+  "status": "implementation_in_progress_real_agent_and_index_verified",
+  "pilot_ready": false,
+  "MVP_ready": false,
+  "checks": {
+    "corpus_200": "passed",
+    "real_http": "passed",
+    "restore": "not_run",
+    "versioning": "not_run",
+    "agent_tools": "passed",
+    "build": "passed"
+  },
+  "scope_note": "200 actual HTTP uploads/publications, actual lexical candidates and four real Luna LangGraph runs verified; active lifecycle versioning and empty-target restore remain not_run. Routing acceptance is not semantic benchmark.",
+  "preserved_baselines": {
+    "docs/evaluation/knowledge/corpus-manifest.json": true,
+    "docs/evaluation/knowledge/freeze-evidence.json": true,
+    "docs/api/knowledge-v1.openapi.json": true
+  },
+  "actual_parse": {
+    "peak_process_working_set_bytes": 123805696,
+    "memory_scope": "entire parser process, excludes DB/index/worker containers",
+    "mode": "actual_local_parse_no_index_no_model",
+    "python": "3.12.13",
+    "platform": "Windows",
+    "manifest_sha256": "34b717e436b8613d2d1624f1e6fc36ae3c38dc280dcdc28e61408c437587b0fd",
+    "manifest_unchanged": true,
+    "versions": 1124,
+    "statuses": {
+      "COMPLETE": 1124
+    },
+    "chunks": 16205,
+    "chars": 1878743,
+    "wall_seconds": 18.71,
+    "cpu_seconds": 18.219,
+    "rss_sampled_after_each_document_max_bytes": null,
+    "rss_limitations": "sampling can miss within-document peaks"
+  },
+  "actual_relation_quote_binding": {
+    "mode": "offline_quote_binding",
+    "manifest_sha256": "34b717e436b8613d2d1624f1e6fc36ae3c38dc280dcdc28e61408c437587b0fd",
+    "selected_relations": 800,
+    "bound": 800,
+    "imported": 0,
+    "failures": [],
+    "business_permission_granted": false,
+    "receipts": []
+  },
+  "verification_batches": [
+    {
+      "cwd": "knowledge",
+      "command": "../.venv/Scripts/python.exe -m pytest tests -q",
+      "passed": 322,
+      "skipped": 15,
+      "seconds": 8.42
+    },
+    {
+      "cwd": "backend",
+      "command": "../.venv/Scripts/python.exe -m pytest tests/unit tests/api --ignore=tests/unit/test_knowledge_corpus_expanded.py -q",
+      "passed": 187,
+      "seconds": 9.53
+    },
+    {
+      "cwd": "backend",
+      "command": "../.venv/Scripts/python.exe -m pytest tests/integration/test_knowledge_delivery.py tests/integration/test_agent_document_evidence.py -m \"not integration\" -q",
+      "passed": 40,
+      "deselected": 25,
+      "seconds": 3.68
+    },
+    {
+      "cwd": "agent",
+      "command": "../.venv/Scripts/python.exe -m pytest tests -q",
+      "passed": 26,
+      "skipped": 3,
+      "seconds": 3.31
+    }
+  ],
+  "batch_note": "Independent batches can overlap. Prior concurrent backend run had two test-double failures; final non-corpus rerun passed after fix. Corpus finalization records its own 45 passing checks.",
+  "blocked_runtime": [
+    "Docker daemon unavailable (docker_engine pipe missing)",
+    "pg_dump and pg_restore not available on PATH"
+  ],
+  "not_run": [
+    "dedicated PostgreSQL migrations/concurrency",
+    "real OpenSearch indexing",
+    "200-document HTTP upload/publication",
+    "live relation intake",
+    "Agent HTTP lifecycle",
+    "worker process restart",
+    "container build and image digests",
+    "empty-environment restore",
+    "real embeddings/rerank",
+    "cloud latency/cost/quality"
+  ],
+  "remaining_corpus": {
+    "public_sources": 24,
+    "public_target": 100,
+    "public_shortfall": 76,
+    "human_review": "pending"
+  },
+  "cloud_resources_created": false,
+  "billable_model_calls": 0,
+  "prior_checkpoints": [
+    {
+      "status": "implementation_in_progress_runtime_pending",
+      "checks": {
+        "corpus_200": "passed",
+        "real_http": "passed",
+        "restore": "not_run",
+        "versioning": "not_run",
+        "agent_tools": "passed",
+        "build": "passed"
+      },
+      "scope_note": "corpus_200 gate includes actual HTTP import; offline source bytes already verified"
+    }
+  ],
+  "recorded_at": "2026-09-08T02:41:50.677395+00:00",
+  "docker_agent_checkpoint": {
+    "infra_snapshot": "var/knowledge-precloud/infra-final.json",
+    "ready_generations": 200,
+    "chunks_in_pg_and_index": 5169,
+    "chunk_count_mismatches": 0,
+    "agent_report": "agent-document-integration-20260908-r5.json",
+    "checkpoint_trace": "agent-document-trace-20260908-r5.json",
+    "postprocessing_replay": "agent-document-output-validation-20260908.json",
+    "model": "gpt-5.6-luna",
+    "agent_runs": 4,
+    "logical_model_calls": 10,
+    "tool_calls": 6,
+    "embedding_calls": 0,
+    "live_relation_imported": 0,
+    "dedicated_backend_migration": "0011_knowledge_delivery",
+    "knowledge_migration": "knowledge_0002",
+    "pg_tests": 25,
+    "non_pg_delivery_evidence_tests": 40,
+    "backend_unit_api": {
+      "passed": 216,
+      "seconds": 9.51
+    },
+    "agent_tests": {
+      "passed": 30,
+      "skipped": 3,
+      "seconds": 2.94
+    },
+    "scoped_identifier_job_tests": {
+      "passed": 26,
+      "seconds": 0.91
+    },
+    "test_batches_overlap": true,
+    "final_relation_scope_review": "aggregate paths >20 fixed;22 valid accepted;stale last rejected;infra source review no actionable blocker;live restore/lifecycle not run"
+  }
+}

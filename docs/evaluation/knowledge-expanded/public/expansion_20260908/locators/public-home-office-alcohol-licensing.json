@@ -1,0 +1,226 @@
+[
+  {
+    "kind": "html_heading",
+    "heading": "Overview",
+    "origin_id": "overview",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#overview",
+    "ordinal": 1
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Responsible authorities",
+    "origin_id": "responsible-authorities",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#responsible-authorities",
+    "ordinal": 2
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Fees under the Licensing Act 2003",
+    "origin_id": "fees-under-the-licensing-act-2003",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#fees-under-the-licensing-act-2003",
+    "ordinal": 3
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Determining a licence application",
+    "origin_id": "determining-a-licence-application",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#determining-a-licence-application",
+    "ordinal": 4
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Premises licence",
+    "origin_id": "premises-licence",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#premises-licence",
+    "ordinal": 5
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Personal licence",
+    "origin_id": "personal-licence",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#personal-licence",
+    "ordinal": 6
+  },
+  {
+    "kind": "html_heading",
+    "heading": "About the licence",
+    "origin_id": "about-the-licence",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#about-the-licence",
+    "ordinal": 7
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Who can apply",
+    "origin_id": "who-can-apply",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#who-can-apply",
+    "ordinal": 8
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Businesses buying alcohol from wholesalers",
+    "origin_id": "businesses-buying-alcohol-from-wholesalers",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#businesses-buying-alcohol-from-wholesalers",
+    "ordinal": 9
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Designated premises supervisors",
+    "origin_id": "designated-premises-supervisors",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#designated-premises-supervisors",
+    "ordinal": 10
+  },
+  {
+    "kind": "html_heading",
+    "heading": "What the DPS does",
+    "origin_id": "what-the-dps-does",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#what-the-dps-does",
+    "ordinal": 11
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Taking responsibility",
+    "origin_id": "taking-responsibility",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#taking-responsibility",
+    "ordinal": 12
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Becoming a DPS",
+    "origin_id": "becoming-a-dps",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#becoming-a-dps",
+    "ordinal": 13
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Changing a DPS",
+    "origin_id": "changing-a-dps",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#changing-a-dps",
+    "ordinal": 14
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Community premises",
+    "origin_id": "community-premises",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#community-premises",
+    "ordinal": 15
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Club premises certificates",
+    "origin_id": "club-premises-certificates",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#club-premises-certificates",
+    "ordinal": 16
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Qualifying clubs",
+    "origin_id": "qualifying-clubs",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#qualifying-clubs",
+    "ordinal": 17
+  },
+  {
+    "kind": "html_heading",
+    "heading": "How do I change my licence or club certificate?",
+    "origin_id": "how-do-i-change-my-licence-or-club-certificate",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#how-do-i-change-my-licence-or-club-certificate",
+    "ordinal": 18
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Full variations",
+    "origin_id": "full-variations",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#full-variations",
+    "ordinal": 19
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Minor variations",
+    "origin_id": "minor-variations",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#minor-variations",
+    "ordinal": 20
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Temporary events",
+    "origin_id": "temporary-events",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#temporary-events",
+    "ordinal": 21
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Community involvement in licensing",
+    "origin_id": "community-involvement-in-licensing",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#community-involvement-in-licensing",
+    "ordinal": 22
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Making representations",
+    "origin_id": "making-representations",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#making-representations",
+    "ordinal": 23
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Requesting a review of a licence",
+    "origin_id": "requesting-a-review-of-a-licence",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#requesting-a-review-of-a-licence",
+    "ordinal": 24
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Hearings",
+    "origin_id": "hearings",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#hearings",
+    "ordinal": 25
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Licensable activities",
+    "origin_id": "licensable-activities",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#licensable-activities",
+    "ordinal": 26
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Sale or supply of alcohol",
+    "origin_id": "sale-or-supply-of-alcohol",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#sale-or-supply-of-alcohol",
+    "ordinal": 27
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Regulated entertainment",
+    "origin_id": "regulated-entertainment",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#regulated-entertainment",
+    "ordinal": 28
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Late night refreshment",
+    "origin_id": "late-night-refreshment",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#late-night-refreshment",
+    "ordinal": 29
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Mandatory licensing conditions",
+    "origin_id": "mandatory-licensing-conditions",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#mandatory-licensing-conditions",
+    "ordinal": 30
+  },
+  {
+    "kind": "html_heading",
+    "heading": "Early morning restriction orders",
+    "origin_id": "early-morning-restriction-orders",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#early-morning-restriction-orders",
+    "ordinal": 31
+  },
+  {
+    "kind": "html_heading",
+    "heading": "UK GDPR",
+    "origin_id": "uk-gdpr",
+    "source_url": "https://www.gov.uk/guidance/alcohol-licensing#uk-gdpr",
+    "ordinal": 32
+  }
+]

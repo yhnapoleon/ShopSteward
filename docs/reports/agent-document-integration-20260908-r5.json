@@ -1,0 +1,1241 @@
+{
+  "started_at": "2026-09-08T02:33:29.345072+00:00",
+  "database": "shopsteward_test",
+  "model": "gpt-5.6-luna",
+  "api_mode": "responses",
+  "real_model": true,
+  "real_http": true,
+  "runs": [
+    {
+      "scenario": "business_only",
+      "prompt": "不用查文档，只查询当前库存和现金；请用业务工具给出数值。",
+      "expected_tools": [
+        "get_dashboard"
+      ],
+      "passed": true,
+      "run": {
+        "id": "c1320101-138a-4da8-93c5-57cf38bc8a46",
+        "conversation_id": "f0617c89-22d0-48a7-9342-1bb68f7c9f06",
+        "status": "SUCCEEDED",
+        "input_through_seq": 1,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 5363,
+            "total_tokens": 5515,
+            "output_tokens": 152
+          },
+          "status": "SUCCEEDED",
+          "content": "当前库存和现金如下（数据截至 **2026-09-06 00:00:00**，状态：新鲜）：\n\n- **现金余额**：1000.00 元\n- **已预留现金**：0.00 元\n- **可用现金**：1000.00 元\n- **应收款**：0.00 元\n- **在途库存**：所有商品均为 0\n\n库存方面，共有 **38 个 SKU**，每个 SKU 当前：\n\n- **现有库存**：20 件\n- **剩余需求**：60 件\n\n当前无业务警报。",
+          "references": [
+            {
+              "id": "knowledge-test-agent-0908020841-STORE01",
+              "type": "store",
+              "version": "1"
+            }
+          ],
+          "tool_calls": 1,
+          "model_calls": 2,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "get_dashboard"
+          ],
+          "completed_tools": [
+            "get_dashboard"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "current_business_state"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "get_dashboard"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:33:39.718555Z",
+        "finished_at": "2026-09-08T02:33:48.657058Z",
+        "tools": [
+          {
+            "tool": "get_dashboard",
+            "invocation_id": "c1320101-138a-4da8-93c5-57cf38bc8a46:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "knowledge-test-agent-0908020841-STORE01",
+                "type": "store",
+                "version": "1"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "document_clause",
+      "prompt": "请查供应商文档：商品knowledge-test-agent-0908020841-SKU017与knowledge-test-agent-0908020841-SKU018新旧条码并存，供货映射怎样交代才完整？请引用有效资料，勿推断采购许可。",
+      "expected_tools": [
+        "search_documents"
+      ],
+      "passed": true,
+      "run": {
+        "id": "35d3ea88-2817-4071-b3e2-a6e3ceb8ab64",
+        "conversation_id": "f0617c89-22d0-48a7-9342-1bb68f7c9f06",
+        "status": "SUCCEEDED",
+        "input_through_seq": 3,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 24566,
+            "total_tokens": 25823,
+            "output_tokens": 1257
+          },
+          "status": "SUCCEEDED",
+          "content": "根据已发布供应商资料，针对 **SKU017 与 SKU018 新旧条码并存**，供货映射应至少完整交代以下内容：\n\n1. **逐项列明新旧条码的对应关系**  \n   明确哪个旧码对应哪个新码，不能只写“条码已切换”或“新旧码并存”。\n\n2. **注明生效批次**  \n   供方应同时说明该映射从哪个批次开始生效。资料原文要求：“改码供货必须附新旧码映射与生效批次。”\n\n3. **保留双码映射并按批次追踪**  \n   在旧码和新码库存同时存在时，不能删除或覆盖旧码，应保留双码映射，并按批次追踪库存和供货记录。\n\n4. **限定适用范围**  \n   仅适用于已核实的 SKU017、SKU018 及对应批次，不应推及相似外观商品或相邻批次。\n\n5. **未核实的映射行单独标注为待协商**  \n   未完成范围确认的项目应保持“待协商”，不能因为门店急需用货就标记为已履约。\n\n**建议供货回执格式：**\n\n| 商品 | 旧条码 | 新条码 | 生效批次 | 适用范围 | 当前状态 |\n|---|---|---|---|---|---|\n| SKU017 | 供方填写 | 供方填写 | 供方填写 | 已核实范围 | 已确认/待协商 |\n| SKU018 | 供方填写 | 供方填写 | 供方填写 | 已核实范围 | 已确认/待协商 |\n\n**资料依据：**\n\n- 《模拟 条码迁移 新旧并存 供货附件 主件》：版本 `086d332c-690a-4185-9584-2417b8012097`，**角色条款**第 6 段，原文要求改码供货附“新旧码映射与生效批次”；**适用条件与处置**第 8 段，要求供方回执明确“保留双码映射且按批次追踪”。  \n- 《模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充》：版本 `f12fb600-c55a-4408-8573-77a1a992170d`，**section:3 适用条件与处置**第 7 段，要求将用途限定在已核实范围，并按批次追踪。  \n- 《模拟 条码迁移 新旧并存 活动执行要求 主件》：版本 `0b0cab13-ee4d-4b83-bff2-7784af521d80`，**CSV A5:C5**，要求新旧并存时保留双码映射、按批次追踪，未核实部分暂停新增宣传并复核对客说明。\n\n以上资料只说明**供货映射和交接记录应如何填写**，没有据此推断或授权采购许可。",
+          "references": [
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": [
+                  1,
+                  1
+                ]
+              },
+              "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "范围与身份"
+                ],
+                "paragraph_range": [
+                  4,
+                  4
+                ]
+              },
+              "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "角色条款"
+                ],
+                "paragraph_range": [
+                  6,
+                  6
+                ]
+              },
+              "chunk_id": "c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "fb0009b26e3feea07702c7f8b1d27aa7df2b994abadf1dc385f2fa15d18a4863",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "CSV",
+                "table": null,
+                "cell_range": "A2:C2",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_be4fd090bdf0a2782ee390cfe46c600acab7ae4925a184db464ddaf139fd7fc7",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "content_sha256": "6984cd7188e278cda0734d31778076407c9b31e848189503e33dc32f3a6f87a7",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+              "metadata_revision": 1
+            },
+            {
+              "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "CSV",
+                "table": null,
+                "cell_range": "A3:C3",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_3e5da8cfe4e7aedc4a075710011e035271168aab09ed2ee6d7d3bcb9e59df22a",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "content_sha256": "c62db6b2bae629beb689917f8f5dcf0c6a09d9423e987de3c769760f07d816f2",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+              "metadata_revision": 1
+            },
+            {
+              "id": "35899d86-d254-49c4-bb40-62619e838992",
+              "type": "document",
+              "locator": {
+                "kind": "page",
+                "page": 1,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "section:3 适用条件与处置"
+                ],
+                "paragraph_range": [
+                  7,
+                  7
+                ]
+              },
+              "chunk_id": "c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d9",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "content_sha256": "dd5a6ad8c237bef30f5190acc6f87f00fb4c99b9bd7bea2626430fa33926ac71",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "CSV",
+                "table": null,
+                "cell_range": "A5:C5",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_cf1869ae39b5324832f2b250d742048657c25a94c586dfff8cb2214eac3a2105",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "content_sha256": "fae345789b53bd4b9ad5b0f720138298157e607070643302e3b7d0d4c85e9681",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+              "metadata_revision": 1
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "适用条件与处置"
+                ],
+                "paragraph_range": [
+                  8,
+                  8
+                ]
+              },
+              "chunk_id": "c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "56ab8c13b941f25977b20bb30c0b02d7cceae68e8f2083a74dc0a4af15bed4f7",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "条款",
+                "table": null,
+                "cell_range": "A5:C5",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_7cf521c2872dc44c075559ad773b8638727ac55987c46c52955e334e47971125",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "content_sha256": "95a765ab187f76bfbb02a3615ceafc890e6a47cdae6a02b94cea8db2d8120644",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "metadata_revision": 1
+            }
+          ],
+          "tool_calls": 2,
+          "model_calls": 3,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "search_documents"
+          ],
+          "completed_tools": [
+            "search_documents"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "explicit_document_question"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "search_documents"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:33:48.776183Z",
+        "finished_at": "2026-09-08T02:34:07.407791Z",
+        "tools": [
+          {
+            "tool": "search_documents",
+            "invocation_id": "35d3ea88-2817-4071-b3e2-a6e3ceb8ab64:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": [
+                    1,
+                    1
+                  ]
+                },
+                "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "范围与身份"
+                  ],
+                  "paragraph_range": [
+                    4,
+                    4
+                  ]
+                },
+                "chunk_id": "c_0fd7d3cdb0714789928f17422631b862b2830597dd46fe9584a4e996826f917c",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "8c6c23bebd4234ea3cce17cd8d02a87e6810111e27bc89b2f9ea817935683e90",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "角色条款"
+                  ],
+                  "paragraph_range": [
+                    6,
+                    6
+                  ]
+                },
+                "chunk_id": "c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "fb0009b26e3feea07702c7f8b1d27aa7df2b994abadf1dc385f2fa15d18a4863",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "CSV",
+                  "table": null,
+                  "cell_range": "A2:C2",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_be4fd090bdf0a2782ee390cfe46c600acab7ae4925a184db464ddaf139fd7fc7",
+                "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+                "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+                "content_sha256": "6984cd7188e278cda0734d31778076407c9b31e848189503e33dc32f3a6f87a7",
+                "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+                "metadata_revision": 1
+              },
+              {
+                "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "CSV",
+                  "table": null,
+                  "cell_range": "A3:C3",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_3e5da8cfe4e7aedc4a075710011e035271168aab09ed2ee6d7d3bcb9e59df22a",
+                "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+                "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+                "content_sha256": "c62db6b2bae629beb689917f8f5dcf0c6a09d9423e987de3c769760f07d816f2",
+                "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+                "metadata_revision": 1
+              },
+              {
+                "id": "35899d86-d254-49c4-bb40-62619e838992",
+                "type": "document",
+                "locator": {
+                  "kind": "page",
+                  "page": 1,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_0de9b266bce7248d54e8b16298d627cb153350aabd4b17029d7ef0e504b62f3a",
+                "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+                "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+                "content_sha256": "26e0fc3800d248b569a2c405d565ee35190bd9bc4b40f14b7346d1b09f956254",
+                "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+                "metadata_revision": 1
+              }
+            ]
+          },
+          {
+            "tool": "search_documents",
+            "invocation_id": "35d3ea88-2817-4071-b3e2-a6e3ceb8ab64:2:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "角色条款"
+                  ],
+                  "paragraph_range": [
+                    6,
+                    6
+                  ]
+                },
+                "chunk_id": "c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "fb0009b26e3feea07702c7f8b1d27aa7df2b994abadf1dc385f2fa15d18a4863",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": [
+                    1,
+                    1
+                  ]
+                },
+                "chunk_id": "c_b864b76cdaec8d8c509a994af1581e657c0a36cdb24d845b2d5b294a28c1acf3",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "d5d3a1f346704bb2fd733f07a3403eaee381a76cf4b9221d810b115fdebd2c36",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "section:3 适用条件与处置"
+                  ],
+                  "paragraph_range": [
+                    7,
+                    7
+                  ]
+                },
+                "chunk_id": "c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d9",
+                "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+                "generation_id": "c98f54b854804029a424a305e44dd127",
+                "content_sha256": "dd5a6ad8c237bef30f5190acc6f87f00fb4c99b9bd7bea2626430fa33926ac71",
+                "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "CSV",
+                  "table": null,
+                  "cell_range": "A5:C5",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_cf1869ae39b5324832f2b250d742048657c25a94c586dfff8cb2214eac3a2105",
+                "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+                "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+                "content_sha256": "fae345789b53bd4b9ad5b0f720138298157e607070643302e3b7d0d4c85e9681",
+                "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "适用条件与处置"
+                  ],
+                  "paragraph_range": [
+                    8,
+                    8
+                  ]
+                },
+                "chunk_id": "c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "56ab8c13b941f25977b20bb30c0b02d7cceae68e8f2083a74dc0a4af15bed4f7",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "条款",
+                  "table": null,
+                  "cell_range": "A5:C5",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_7cf521c2872dc44c075559ad773b8638727ac55987c46c52955e334e47971125",
+                "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+                "generation_id": "850c76961a9c4e8d92498dc61e214260",
+                "content_sha256": "95a765ab187f76bfbb02a3615ceafc890e6a47cdae6a02b94cea8db2d8120644",
+                "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+                "metadata_revision": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "expand_evidence",
+      "prompt": "请展开上一条引用，核对其原文条件。",
+      "expected_tools": [
+        "read_document_evidence"
+      ],
+      "passed": true,
+      "run": {
+        "id": "ccd20b66-7858-4c56-8a0d-69024302df39",
+        "conversation_id": "f0617c89-22d0-48a7-9342-1bb68f7c9f06",
+        "status": "SUCCEEDED",
+        "input_through_seq": 4,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 14210,
+            "total_tokens": 15410,
+            "output_tokens": 1200
+          },
+          "status": "SUCCEEDED",
+          "content": "已展开并核对原文。有效资料中的条件如下：\n\n1. **改码供货附件要求**  \n   原文：“模拟：改码供货必须附新旧码映射与生效批次。”  \n   - 资料：《模拟 条码迁移 新旧并存 供货附件 主件》\n   - 版本：`086d332c-690a-4180-90f2-6c8251fd4d08`\n   - 定位：**角色条款**，第 6 段\n   - 引用块：`c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6`\n\n2. **新旧库存同时存在时的回执条件**  \n   原文：“模拟：当同货同时存在旧码与新码库存时，采购要求供方在回执中明确：保留双码映射且按批次追踪。未得到范围确认的行仍是待协商，不因门店已经着急用货就改成已履约。”  \n   - 资料：《模拟 条码迁移 新旧并存 供货附件 主件》\n   - 版本：`086d332c-690a-4180-90f2-6c8251fd4d08`\n   - 定位：**适用条件与处置**，第 8 段\n   - 引用块：`c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913`\n\n3. **适用范围限制**  \n   原文：“模拟：当同货同时存在旧码与新码库存时，使用者面对新旧并存时，须将商品用途限定为已核实范围：保留双码映射且按批次追踪。本说明的判断仅针对列出的商品组合，不向相似外观或相邻批次外推。”  \n   - 资料：《模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充》\n   - 版本：`f12fb600-c55a-4408-8573-77a1a992170d`\n   - 定位：**section:3 适用条件与处置**，第 7 段\n   - 引用块：`c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d9`\n\n4. **未核实部分的处置**  \n   原文：“模拟：当同货同时存在旧码与新码库存时，活动负责人遇到新旧并存时采用：保留双码映射且按批次追踪。已作出的用户承诺另核原版本，未核实部分暂停新增宣传，恢复前要更新并复核对客说明。”  \n   - 资料：《模拟 条码迁移 新旧并存 活动执行要求 主件》\n   - 版本：`0b0cab13-ee4d-4b83-bff2-7784af521d80`\n   - 定位：**CSV，A5:C5**\n   - 引用块：`c_cf1869ae39b5324832f2b250d742048657c25a94c586dfff8cb2214eac3a2105`\n\n**据此，SKU017 与 SKU018 的供货映射要完整记录：**\n\n- 每个商品的新条码与旧条码逐项对应；\n- 标明生效批次；\n- 明确保留双码映射；\n- 按批次追踪；\n- 将用途限定在已核实的商品组合和范围内；\n- 未经范围确认的映射行保持待协商，不得改标为已履约。\n\n以上原文只规定映射、回执和范围核验条件，**没有构成采购许可，也没有授权执行采购**。",
+          "references": [
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "角色条款"
+                ],
+                "paragraph_range": [
+                  6,
+                  6
+                ]
+              },
+              "chunk_id": "c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "fb0009b26e3feea07702c7f8b1d27aa7df2b994abadf1dc385f2fa15d18a4863",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "适用条件与处置"
+                ],
+                "paragraph_range": [
+                  8,
+                  8
+                ]
+              },
+              "chunk_id": "c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "56ab8c13b941f25977b20bb30c0b02d7cceae68e8f2083a74dc0a4af15bed4f7",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "CSV",
+                "table": null,
+                "cell_range": "A5:C5",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_cf1869ae39b5324832f2b250d742048657c25a94c586dfff8cb2214eac3a2105",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "content_sha256": "fae345789b53bd4b9ad5b0f720138298157e607070643302e3b7d0d4c85e9681",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+              "metadata_revision": 1
+            },
+            {
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "section:3 适用条件与处置"
+                ],
+                "paragraph_range": [
+                  7,
+                  7
+                ]
+              },
+              "chunk_id": "c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d9",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "content_sha256": "dd5a6ad8c237bef30f5190acc6f87f00fb4c99b9bd7bea2626430fa33926ac71",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "metadata_revision": 1
+            }
+          ],
+          "tool_calls": 1,
+          "model_calls": 2,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "read_document_evidence"
+          ],
+          "completed_tools": [
+            "read_document_evidence"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "explicit_evidence_expansion"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "read_document_evidence"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:33:48.815578Z",
+        "finished_at": "2026-09-08T02:34:21.910140Z",
+        "tools": [
+          {
+            "tool": "read_document_evidence",
+            "invocation_id": "ccd20b66-7858-4c56-8a0d-69024302df39:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "角色条款"
+                  ],
+                  "paragraph_range": [
+                    6,
+                    6
+                  ]
+                },
+                "chunk_id": "c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "fb0009b26e3feea07702c7f8b1d27aa7df2b994abadf1dc385f2fa15d18a4863",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "适用条件与处置"
+                  ],
+                  "paragraph_range": [
+                    8,
+                    8
+                  ]
+                },
+                "chunk_id": "c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "56ab8c13b941f25977b20bb30c0b02d7cceae68e8f2083a74dc0a4af15bed4f7",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "CSV",
+                  "table": null,
+                  "cell_range": "A5:C5",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_cf1869ae39b5324832f2b250d742048657c25a94c586dfff8cb2214eac3a2105",
+                "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+                "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+                "content_sha256": "fae345789b53bd4b9ad5b0f720138298157e607070643302e3b7d0d4c85e9681",
+                "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+                "metadata_revision": 1
+              },
+              {
+                "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "section:3 适用条件与处置"
+                  ],
+                  "paragraph_range": [
+                    7,
+                    7
+                  ]
+                },
+                "chunk_id": "c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d9",
+                "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+                "generation_id": "c98f54b854804029a424a305e44dd127",
+                "content_sha256": "dd5a6ad8c237bef30f5190acc6f87f00fb4c99b9bd7bea2626430fa33926ac71",
+                "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+                "metadata_revision": 1
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "mixed",
+      "prompt": "结合当前库存与供应商文档：商品knowledge-test-agent-0908020841-SKU017与knowledge-test-agent-0908020841-SKU018新旧条码并存时，能否直接覆盖删除旧码？分别说明业务事实与条款依据。",
+      "expected_tools": [
+        "get_dashboard",
+        "search_documents"
+      ],
+      "passed": true,
+      "run": {
+        "id": "9cca4554-feb0-4553-8139-58d5ece503f9",
+        "conversation_id": "f0617c89-22d0-48a7-9342-1bb68f7c9f06",
+        "status": "SUCCEEDED",
+        "input_through_seq": 7,
+        "trigger": "USER",
+        "graph_version": "agent-v1",
+        "interrupt_id": null,
+        "question": null,
+        "output": {
+          "cards": [],
+          "model": "gpt-5.6-luna",
+          "usage": {
+            "input_tokens": 32480,
+            "total_tokens": 33598,
+            "output_tokens": 1118
+          },
+          "status": "SUCCEEDED",
+          "content": "**结论：不能直接覆盖并删除旧码。**\n\n### 一、业务事实\n\n当前业务数据（截至 **2026-09-06 00:00:00**）显示：\n\n- **SKU017**：现有库存 **20 件**，在途 **0 件**，剩余需求 **60 件**。\n- **SKU018**：现有库存 **20 件**，在途 **0 件**，剩余需求 **60 件**。\n- 当前现金余额：**1000.00 元**；可用现金：**1000.00 元**。\n- 当前库存工具按 **SKU** 记录，未提供 SKU017、SKU018 各自旧码与新码的条码级库存拆分或映射明细。\n\n因此，业务数据只能确认这两个 SKU 各有库存，**不能证明旧码库存已经清零，也不能据此支持删除旧码**。本次查询也没有执行任何库存或条码变更。\n\n### 二、条款依据\n\n供应商文档针对 SKU017、SKU018 的新旧条码并存情形明确要求：\n\n1. **保留双码映射并按批次追踪**  \n   原文要求：“须将商品用途限定为已核实范围：保留双码映射且按批次追踪。”  \n   - 资料：《模拟 条码迁移 新旧并存 商品与包装说明 识别交接补充》\n   - 版本：`f12fb600-c55a-4408-8573-77a1a992170d`\n   - 定位：`section:3 适用条件与处置`，第 7 段\n   - 引用块：`c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d`\n\n2. **供货回执必须保留双码映射**  \n   原文要求：“保留双码映射且按批次追踪。”未得到范围确认的行仍为“待协商”，不能改成已履约。  \n   - 资料：《模拟 条码迁移 新旧并存 供货附件 主件》\n   - 版本：`086d332c-690a-4180-90f2-6c8251fd4d08`\n   - 定位：`适用条件与处置`，第 8 段\n   - 引用块：`c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913`\n\n3. **改码供货还必须附新旧码映射和生效批次**  \n   - 同一资料版本：`086d332c-690a-4180-90f2-6c8251fd4d08`\n   - 定位：`角色条款`，第 6 段\n   - 引用块：`c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6`\n\n### 三、分别判断\n\n- **SKU017：不能直接覆盖删除旧码。** 当前有 20 件库存，但没有条码级库存清零或范围确认事实；条款要求保留双码映射、按批次追踪。\n- **SKU018：不能直接覆盖删除旧码。** 情况相同，当前有 20 件库存，且无证据证明旧码已无库存或已完成迁移确认。\n\n以上是对库存事实和文档条款的核对，**不构成采购许可，也不授权删除、覆盖或修改条码数据**。",
+          "references": [
+            {
+              "id": "knowledge-test-agent-0908020841-STORE01",
+              "type": "store",
+              "version": "1"
+            },
+            {
+              "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "section:3 适用条件与处置"
+                ],
+                "paragraph_range": [
+                  7,
+                  7
+                ]
+              },
+              "chunk_id": "c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d9",
+              "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+              "generation_id": "c98f54b854804029a424a305e44dd127",
+              "content_sha256": "dd5a6ad8c237bef30f5190acc6f87f00fb4c99b9bd7bea2626430fa33926ac71",
+              "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+              "metadata_revision": 1
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "角色条款"
+                ],
+                "paragraph_range": [
+                  6,
+                  6
+                ]
+              },
+              "chunk_id": "c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "fb0009b26e3feea07702c7f8b1d27aa7df2b994abadf1dc385f2fa15d18a4863",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "CSV",
+                "table": null,
+                "cell_range": "A5:C5",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_cf1869ae39b5324832f2b250d742048657c25a94c586dfff8cb2214eac3a2105",
+              "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+              "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+              "content_sha256": "fae345789b53bd4b9ad5b0f720138298157e607070643302e3b7d0d4c85e9681",
+              "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+              "metadata_revision": 1
+            },
+            {
+              "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+              "type": "document",
+              "locator": {
+                "kind": "cells",
+                "page": null,
+                "sheet": "条款",
+                "table": null,
+                "cell_range": "A5:C5",
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_7cf521c2872dc44c075559ad773b8638727ac55987c46c52955e334e47971125",
+              "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+              "generation_id": "850c76961a9c4e8d92498dc61e214260",
+              "content_sha256": "95a765ab187f76bfbb02a3615ceafc890e6a47cdae6a02b94cea8db2d8120644",
+              "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+              "metadata_revision": 1
+            },
+            {
+              "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+              "type": "document",
+              "locator": {
+                "kind": "paragraph",
+                "page": null,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [
+                  "适用条件与处置"
+                ],
+                "paragraph_range": [
+                  8,
+                  8
+                ]
+              },
+              "chunk_id": "c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913",
+              "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+              "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+              "content_sha256": "56ab8c13b941f25977b20bb30c0b02d7cceae68e8f2083a74dc0a4af15bed4f7",
+              "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+              "metadata_revision": 1
+            },
+            {
+              "id": "35899d86-d254-49c4-bb40-62619e838992",
+              "type": "document",
+              "locator": {
+                "kind": "page",
+                "page": 3,
+                "sheet": null,
+                "table": null,
+                "cell_range": null,
+                "section_path": [],
+                "paragraph_range": null
+              },
+              "chunk_id": "c_cc8cec0f46030583ee9c2c4de18363f3be09a69622ab6d0ce6e09792ee564131",
+              "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+              "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+              "content_sha256": "bd253e12ed2365d0af118cc708f1d278ecf93fd8d21af489f66c042ea813d0aa",
+              "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+              "metadata_revision": 1
+            }
+          ],
+          "tool_calls": 2,
+          "model_calls": 3,
+          "graph_version": "agent-v1",
+          "required_tools": [
+            "get_dashboard",
+            "search_documents"
+          ],
+          "completed_tools": [
+            "get_dashboard",
+            "search_documents"
+          ],
+          "evidence_policy": {
+            "reasons": [
+              "current_business_state",
+              "explicit_document_question"
+            ],
+            "version": "explicit-evidence-v1",
+            "coverage": "explicit_request_patterns_only_model_handles_other_wording",
+            "required_tools": [
+              "get_dashboard",
+              "search_documents"
+            ],
+            "document_evidence_unavailable": false
+          },
+          "stopped_by_user": false,
+          "evidence_unavailable": false,
+          "tool_catalog_version": "agent-tools-v1"
+        },
+        "error_code": null,
+        "created_at": "2026-09-08T02:34:22.227417Z",
+        "finished_at": "2026-09-08T02:34:36.249899Z",
+        "tools": [
+          {
+            "tool": "get_dashboard",
+            "invocation_id": "9cca4554-feb0-4553-8139-58d5ece503f9:1:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "knowledge-test-agent-0908020841-STORE01",
+                "type": "store",
+                "version": "1"
+              }
+            ]
+          },
+          {
+            "tool": "search_documents",
+            "invocation_id": "9cca4554-feb0-4553-8139-58d5ece503f9:2:0",
+            "ok": true,
+            "references": [
+              {
+                "id": "717ccdc1-9e2b-4d47-b3fd-9748761cff51",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "section:3 适用条件与处置"
+                  ],
+                  "paragraph_range": [
+                    7,
+                    7
+                  ]
+                },
+                "chunk_id": "c_7eb2d4a927b9307ce7f2f00157cb88115113a6eaafa107f1312ca2891d3230d9",
+                "version_id": "f12fb600-c55a-4408-8573-77a1a992170d",
+                "generation_id": "c98f54b854804029a424a305e44dd127",
+                "content_sha256": "dd5a6ad8c237bef30f5190acc6f87f00fb4c99b9bd7bea2626430fa33926ac71",
+                "original_sha256": "6405f89e1405e28935c8e38f35723e7b11e39c295cf22c98fd289df909c55a7a",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "角色条款"
+                  ],
+                  "paragraph_range": [
+                    6,
+                    6
+                  ]
+                },
+                "chunk_id": "c_e338683db3d94be01555de35da012474b9430710cb3aa706cee2f3cbd64fc2b6",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "fb0009b26e3feea07702c7f8b1d27aa7df2b994abadf1dc385f2fa15d18a4863",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "a97ac964-4088-40d9-baad-a3a3418e8c45",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "CSV",
+                  "table": null,
+                  "cell_range": "A5:C5",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_cf1869ae39b5324832f2b250d742048657c25a94c586dfff8cb2214eac3a2105",
+                "version_id": "0b0cab13-ee4d-4b83-bff2-7784af521d80",
+                "generation_id": "ef2313832f554f758b551ef8c3782ae8",
+                "content_sha256": "fae345789b53bd4b9ad5b0f720138298157e607070643302e3b7d0d4c85e9681",
+                "original_sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0",
+                "metadata_revision": 1
+              },
+              {
+                "id": "11ad784e-9f3e-4f97-b07f-cddcd090afcd",
+                "type": "document",
+                "locator": {
+                  "kind": "cells",
+                  "page": null,
+                  "sheet": "条款",
+                  "table": null,
+                  "cell_range": "A5:C5",
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_7cf521c2872dc44c075559ad773b8638727ac55987c46c52955e334e47971125",
+                "version_id": "affae3bb-f472-4293-9ef0-a73a8568b6b7",
+                "generation_id": "850c76961a9c4e8d92498dc61e214260",
+                "content_sha256": "95a765ab187f76bfbb02a3615ceafc890e6a47cdae6a02b94cea8db2d8120644",
+                "original_sha256": "47cea55e645cb42f70fdd0efcf025076966780115a11c99b9c3d39094cbe4c17",
+                "metadata_revision": 1
+              },
+              {
+                "id": "75fb47f1-1228-47a8-9b01-41ff1e60a3f6",
+                "type": "document",
+                "locator": {
+                  "kind": "paragraph",
+                  "page": null,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [
+                    "适用条件与处置"
+                  ],
+                  "paragraph_range": [
+                    8,
+                    8
+                  ]
+                },
+                "chunk_id": "c_186bd40b51d2631ea6e5839eec04a6c55fb61d95c1408694564a9e79feff6913",
+                "version_id": "086d332c-690a-4180-90f2-6c8251fd4d08",
+                "generation_id": "90da4912e5c34a2683c30168a9ec2469",
+                "content_sha256": "56ab8c13b941f25977b20bb30c0b02d7cceae68e8f2083a74dc0a4af15bed4f7",
+                "original_sha256": "41f129b721d5dfe0d6c4f8f52eca6647451a2c316b527dffd32ccf158aa50530",
+                "metadata_revision": 1
+              },
+              {
+                "id": "35899d86-d254-49c4-bb40-62619e838992",
+                "type": "document",
+                "locator": {
+                  "kind": "page",
+                  "page": 3,
+                  "sheet": null,
+                  "table": null,
+                  "cell_range": null,
+                  "section_path": [],
+                  "paragraph_range": null
+                },
+                "chunk_id": "c_cc8cec0f46030583ee9c2c4de18363f3be09a69622ab6d0ce6e09792ee564131",
+                "version_id": "4a7d4b35-30b4-4cf5-b920-6d8a1b553251",
+                "generation_id": "3de5bc911da44ea7b395bff7c0ee0ec6",
+                "content_sha256": "bd253e12ed2365d0af118cc708f1d278ecf93fd8d21af489f66c042ea813d0aa",
+                "original_sha256": "df76e2ce3dfa9a9ca4be9adbe3b38ffc1ae4c119ac7661566db9005b7670305a",
+                "metadata_revision": 1
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "checks": [],
+  "max_agent_runs": 4,
+  "max_model_calls_per_run": 8,
+  "embedding_calls": 0,
+  "backend_port": 8018,
+  "knowledge_port": 8020,
+  "task_directory": "D:\\HuaweiMoveData\\Users\\13736\\Desktop\\AIS\\Group_Project\\ShopSteward\\var\\precloud\\agent-0908020841",
+  "import": {
+    "uploaded_versions": 200,
+    "failures": []
+  },
+  "mission_id": "d5fa61bc-0e74-4c3b-a140-e0a2b4f78dd2",
+  "store_id": "knowledge-test-agent-0908020841-STORE01",
+  "expansion_queued_before_previous_answer": true,
+  "passed": true,
+  "finished_at": "2026-09-08T02:34:36.537798+00:00"
+}

@@ -35,6 +35,16 @@ async def assert_lease(session, job):
         raise AppError(409, "AGENT_LEASE_LOST", "Agent no longer owns this execution")
 
 
+def scheduler_references(references):
+    """JobResult has generic pointers; full evidence remains in AgentRun/Message."""
+    return [
+        {"type": "artifact", "id": ref["id"], "version": ref["version_id"]}
+        if ref.get("type") == "document"
+        else ref
+        for ref in references
+    ]
+
+
 def make_handlers(settings, *, executor=None):
     async def run(db, job):
         token = secrets.token_urlsafe(32)
@@ -137,7 +147,7 @@ def make_handlers(settings, *, executor=None):
             "summary": "Agent paused for input"
             if item.status == "WAITING_INPUT"
             else "Agent response saved",
-            "references": output.get("references", []),
+            "references": scheduler_references(output.get("references", [])),
         }
 
     async def on_error(session, job, error):

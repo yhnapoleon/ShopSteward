@@ -1,0 +1,1474 @@
+{
+  "cases_sha256_unchanged": true,
+  "changed_original_count": 183,
+  "changes": [
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F01-B1-product-2-v1.csv",
+      "previous_sha256": "02d60eb7ab82ae27ecd2cafa994ec975841a56fdf24e13d90184838502114509",
+      "sha256": "7b4a093990766b76a7d706c2a3def8a597e318a982c0033f99afe0a68b979cb9"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F01-B1-product-2-v2.csv",
+      "previous_sha256": "af1848e0be1a845185b8757c9f445ebef4d6c73fc41fec7486d1ce29b99ed694",
+      "sha256": "ac68c32f493e451d7dd96746926518c8d4c230d6e5ddca932c0c5ce40fc9521a"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F02-B1-campaign-1-v1.csv",
+      "previous_sha256": "4ff664af65225d92b2bb7dbac0a99c79264e74cd4fecb0a4b297573dbe9363a0",
+      "sha256": "0d8d24220ee7251eddc848536928724766f7a5619953582766089ecffca51960"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F02-B1-campaign-1-v2.csv",
+      "previous_sha256": "b30a50aa0a618876ad0a1fbd622bb8541008c9e9f0f23cd224b512b09dd7a8d8",
+      "sha256": "48525ce85c44f69e4ee778a7056b432921bcce6ddc9d3898374b3c2bdbf48889"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F03-B1-campaign-1-v1.csv",
+      "previous_sha256": "5fb1dda2755400ceeb519bebe87190e8951b77aeeb5e27e3c92df53c54900139",
+      "sha256": "ef95d8a3d1edfbfb5af06fd8c07bc2f17738ab01ab5b0f7a2b580c4a6379d30c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F03-B1-campaign-1-v2.csv",
+      "previous_sha256": "515e2a3fbecca20ccc1ebb5f744790d0e9192dd259a1d37e5cc0d1f9d89cf228",
+      "sha256": "24a22d9cab4ba8284a82bbdddc711e9a87c7958049f24746a5233057171da96c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F04-B1-retro-1-v1.csv",
+      "previous_sha256": "455b8f0389114f82a9a9fc109c8d94fe4c3ff644b5b787f81b9387d64adc6008",
+      "sha256": "048d2201b6e0e8253a8113bb521d5398df73c46410ee07933bc701db4aa7552e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F04-B1-retro-1-v2.csv",
+      "previous_sha256": "a75bbc9a22ed10f9da984775af478e829bedab4afa268fc1e46b094470304ff8",
+      "sha256": "efebb985c8c425aff3aa04fab3d2dfe4a853c60627aa1e3241bf73f99fc6e6fa"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F05-B1-campaign-1-v1.csv",
+      "previous_sha256": "6fe2d103e15d9573fe0f1a7e2038f81c73df19a743878607407af7ef973bd290",
+      "sha256": "ad579f7fb854b352b8c373d45631899997a684f6345a1d5d5fcc818397a3cd9d"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F05-B1-campaign-1-v2.csv",
+      "previous_sha256": "92bd0a69afd2051cd4d4bc0f1112ea1118618dbdc9914ec407cbb095f6601edf",
+      "sha256": "d9fe97283a48d2ffdf69276e67538874416d71d549c5502956fc99ddb00772ab"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F06-B1-campaign-1-v1.csv",
+      "previous_sha256": "0842b6409e9d2bd2f2799fca8353920f83f77b7f15be9b9d1c5f805c945fb652",
+      "sha256": "a5ec3993785d4ab5b7eceb43c125dcea72316d71c88a797e5510d8e3ab2cd088"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F06-B1-campaign-1-v2.csv",
+      "previous_sha256": "b2c2d0f971e52d35f8d7e3a1af798dd4ad66154ed017d2ce1fa994ce33b95ee9",
+      "sha256": "870e4de6d123386de64b7bc982f4e4bfe08188897e4e6ae7346b71dd65a20206"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F07-B1-retro-1-v1.csv",
+      "previous_sha256": "49127c4a40fcfcc15d3ee2166541f9ca1300555a3bb732e53a4e283aba8751a7",
+      "sha256": "9ba623b5569103d541d90752ab65428219b35a886ce99aba68d52f4c87963799"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F07-B1-retro-1-v2.csv",
+      "previous_sha256": "cb15dd008f84d9d0efcae6378eb04a33e214fac5a6802ca8dd245ef811de8242",
+      "sha256": "892ffedae638368784dec9ba1c35c13eec8dc187bb6de598666f479a067f439f"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F08-B1-campaign-1-v1.csv",
+      "previous_sha256": "1a626e61d1b251771486bb4f2b1134428153366ca64c77a029a50aad999f8ecf",
+      "sha256": "bd14dac0af0dd1be336d74193e0f35dd2a39a2f47bcc3ed3c748124b10333037"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F08-B1-campaign-1-v2.csv",
+      "previous_sha256": "2ec95d4ef5fda6304124634f98a4daed32c0219a7dd40096e47022f420525c1d",
+      "sha256": "7cf62f3509542c442bc16151e256609df111eb70be46fed27ca555a3666b49cb"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F09-B1-campaign-1-v1.csv",
+      "previous_sha256": "28c18eb100dc2ee348bec0dbff0d01ea8e1bf2644455c0327f5b45d6ab92a29a",
+      "sha256": "18f1220ecb9c907765d1bb65584750389765ae2f35644d2f47fa92fb7e7c69f0"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F09-B1-campaign-1-v2.csv",
+      "previous_sha256": "d1e31964a2ab2a8661ba7e613cd998e0228be212b9be3134c7800ef4faef6096",
+      "sha256": "8e4886f4014fc16623ad93132844b851c2738de7968b70fa83e9e2cd36e00260"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F10-B1-sop-1-v1.csv",
+      "previous_sha256": "72be22e48225c2c8f07c286708e1fb059a7b3cb13b13b987db01dcabc8a0b567",
+      "sha256": "4db78c454a99953c33d135415b0e4ccb77e9482ca432cd97af0fbe2479d94d39"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F10-B1-sop-1-v2.csv",
+      "previous_sha256": "e8e1fddababd7d34f2b4c09d62a9dad2d1c2736c4684675fe49bacdd9bae2b57",
+      "sha256": "64672c0a3d6dba73919de8a1be1632ffa2f7b287902d4f4e1f8fb90cf60fec2b"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F11-B1-campaign-1-v1.csv",
+      "previous_sha256": "4618d9ac23c8e1cc9ef8ab4c9067d3050fac7dcb305888b0d105ecf135b47466",
+      "sha256": "2203e5e73c91beff52c714128291243badde78d682e1aa3a39fc631e59d3d2be"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F11-B1-campaign-1-v2.csv",
+      "previous_sha256": "f4db847835c73a357f75fec6432b99407f8a7a09a012e816ad64b9cc487e21be",
+      "sha256": "2d2a28bbdb477393e0de98a2557577e8ce672150d39244345911b6c2d8f17a2b"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F12-B1-campaign-1-v1.csv",
+      "previous_sha256": "edcf8bd11e1a26e28234059115efcd368494ab3a7320df4211235c6d513d0d3b",
+      "sha256": "2cb5c7f54425cc30172c23cdf36c2d0f8fbb18e1b89c204e3cd71ae560d55af6"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F12-B1-campaign-1-v2.csv",
+      "previous_sha256": "476269a855817b79b93beef6d65e570ffb768dc8896a9ddfca2b1512083b8702",
+      "sha256": "f296d959c37973f452464b0b25fcac503d800c96d485957a77ae78aa884856c1"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F13-B1-retro-1-v1.csv",
+      "previous_sha256": "89ac1614c1a28aea07e6466a814a1c03a06a0087a7b2bcda4a00c0dc36bbb1cf",
+      "sha256": "56365fe5da88d9888533593686d24f655f9b77eaee45002d2cc423f3db60ec54"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F13-B1-retro-1-v2.csv",
+      "previous_sha256": "f419f61bfa5c71a5ae61ae3ea93dc15f10c2f30fdf89d4cd567b5f83004912df",
+      "sha256": "09981ff996a452a1934683a402afb8361e89bbb0417e6beb5d7e51632cee053d"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F14-B1-retro-1-v1.csv",
+      "previous_sha256": "56abba958e41ec81b2606a7cfeab9092a46640e56c1731422094e9884785a55d",
+      "sha256": "64987937219bec52ef3cbb0c10ed1e0bab784d394af30e54055b5a6da05a9776"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F14-B1-retro-1-v2.csv",
+      "previous_sha256": "625e8481c4cda2671cbbccbc1fbd2438892971ba597dad7849f14953c8acaae9",
+      "sha256": "ce369a36d1982d9385b5f4cbc830b38691151410cbed4dba1abebf798d6baf56"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F15-B1-sop-1-v1.csv",
+      "previous_sha256": "371bf5ccc626ad2e3974fe63baafd4847d51f4d21bdb7529cf2ab4f9eb33d896",
+      "sha256": "ec6706902a5038bba11794917b6f83cf78bf768a2f972ccf8978eb0b9010932e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F15-B1-sop-1-v2.csv",
+      "previous_sha256": "428046ed988213a604457caae9dfb337fd44596b5bdc0ff17ce4bf55aa4c7a4e",
+      "sha256": "d634fca9046dbbbf520600cd6aa2ed8438a5820afe85b13cfd55cbc401abb619"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F16-B1-product-2-v1.csv",
+      "previous_sha256": "01b48538d5ca08b1a3c50f1bd7127e8b633427cf456356ad8c2b81d4f1d870d7",
+      "sha256": "40ab96e3bd460507d017a223485f7a65fbb1741bd6d2ef89953738dd4469d748"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F16-B1-product-2-v2.csv",
+      "previous_sha256": "5d91a420a9b5746544ff9925e1fa869cabb10b4f7e75ea9afddef0284c6b99eb",
+      "sha256": "b24202376facbc624c219f00bd378fcfa4eaa75817f29f236bb32cbec6b43a11"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F17-B1-campaign-1-v1.csv",
+      "previous_sha256": "7c48df668d138ce8781e63193832550b9efe4dd53c6519ee6ce42bcc5df18cf9",
+      "sha256": "0aa3192d7820085f82d122782d16dfc34b6fff530eb8f0b94c87e4665fea8e39"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F17-B1-campaign-1-v2.csv",
+      "previous_sha256": "1854800c6dbfbc2a2c7a59b9e96e3957122a4749e37dc2b04ee00fd80093e269",
+      "sha256": "107245ffa951400dccd0a3484363a0a296c91d36b17bcfaaee799b9ee11e752e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F18-B1-campaign-1-v1.csv",
+      "previous_sha256": "6999e54be1a12740088a952ad496ea99868c8dfaec823d550b2d0c7203522107",
+      "sha256": "001969e61acb0ff7539ccbc35107e6c8697ec55f2e002edb60dc4800788ce94c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F18-B1-campaign-1-v2.csv",
+      "previous_sha256": "4d334b72061657b0f1b9635f72ae818e0e37e2dac41a65699921558ab055827a",
+      "sha256": "029693042a1ab295a97271941db602521af59e20f4b00932fcf7e34547e6e33e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F19-B1-retro-1-v1.csv",
+      "previous_sha256": "fe3a0dc5141200945cae9de88f85295dcc195416590bea39701d0d2b7215c11d",
+      "sha256": "ea584aa1de78f368f1c1ea7d536075d9dd35ecb2513f2777582211089cc0ebc5"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F19-B1-retro-1-v2.csv",
+      "previous_sha256": "f0c97c62aa1ccf64396a2a7530095b8c8147e4919e4d7fc4a7433cac79ecf3fe",
+      "sha256": "a4b64b9c1e0bb09ceb0c93779f006be4bbcbafc06ba4cf158c6edf4302eeae33"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F20-B1-campaign-1-v1.csv",
+      "previous_sha256": "6d70f244017f5a2b0ab9416db324ee1c8caabc7f408f4fab713602fcf6f7ab65",
+      "sha256": "4d2be79c2c478e01400245d9ea404d0cc16df5fd6a971b5d52dde814a2a416f6"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F20-B1-campaign-1-v2.csv",
+      "previous_sha256": "20b691f615d6bd4f28cdb279875c61b2c7b648b5deb8d822c9ea394c62f90c3d",
+      "sha256": "9aedc1bfa0724d4531c1e46f42eea91722362e645cefa3ba237b77104092aa2a"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F21-B1-campaign-1-v1.csv",
+      "previous_sha256": "7d3d150b2c185cd72381049f98405ad5ea2757113481e4b09ac80080c620aea3",
+      "sha256": "32571ac063aad36fa8e558748bef937c25f45f48aa9b883238359efe2d0aa8fe"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F21-B1-campaign-1-v2.csv",
+      "previous_sha256": "9ea86ad94c6747de6a8989e200dd474e6d1310e7e5029d8ca5866310c2537ae1",
+      "sha256": "c811a3557a0e7404db6a11e1be633b53aaf9a6f12b82e83621a6b4d51f288e51"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F22-B1-retro-1-v1.csv",
+      "previous_sha256": "66deeb630d2981a851d04a096dab1a01edec48351cdf7efc4ef70af6b3a98664",
+      "sha256": "376c2ef140631d72ba962288d24d93439a4158376dbd1d7ba05824cd44f68db6"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F22-B1-retro-1-v2.csv",
+      "previous_sha256": "9879a7f6c14857d2a9875d2224c1bb9fa081a75206766db861ac53393bafe5e6",
+      "sha256": "2fa671ad3cd4aef03334f15b30635ab556fc9404e24e38639565bca3192d5df2"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F23-B1-campaign-1-v1.csv",
+      "previous_sha256": "ca8cf0bcf61fcf192a5ebe0eb902366aadab3d3e09c450fc749ec1d5c07d7768",
+      "sha256": "217c3c4aa1b4ce76ad0b3e7272e7287fee185f1b4f0be7cac51c792143dcc9bd"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F23-B1-campaign-1-v2.csv",
+      "previous_sha256": "328ae049d39f44e2657b8afb5458a11a46ccf8d7229abcb442454f58763432eb",
+      "sha256": "9eb934c55f73f8f678d8749c1f3e5d2439f7607b11ad40d180602339b369a619"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F24-B1-campaign-1-v1.csv",
+      "previous_sha256": "78d614fccec239f2a01bd4060ac9c2ca13c6c848122bb78f3077f52e3308baaf",
+      "sha256": "98905a21264186019f0d9872c1fd9e8e586010887bad81a7c48225f41f0b7873"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F24-B1-campaign-1-v2.csv",
+      "previous_sha256": "feb10429919ec241f049924027184347b403fc1ff90b48206f2c0a3290e1efcd",
+      "sha256": "464d3ab623af41423cd70a5430e5f65990a079697279dcd8eadcba88b45ba048"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F25-B1-sop-1-v1.csv",
+      "previous_sha256": "33b56b0781f2caefa8c5a923f3d4e0195e5650075bb0d5ce88266897314b8268",
+      "sha256": "69fb845ecf5f028958c04b4c1ab3f0a890e5a861aa21cc1bc5330962212948de"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F25-B1-sop-1-v2.csv",
+      "previous_sha256": "5fd04ce18bc4f76ea34196bd7c2986acdfc76ab9dba23ecb62cdbd1bdd853a9d",
+      "sha256": "127a5ecb6c799d59567dcbf3968f7269397c7515333206e334fd435e3e949aa6"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F26-B1-campaign-1-v1.csv",
+      "previous_sha256": "26bb1b3e532ad5e42567ee7718cf343426d6161eaf9a06035c4c522720a12338",
+      "sha256": "026e55bf4a8d386e223d118cd47e6c98fee214b0f35333b75f7f015a0ebefd6b"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F26-B1-campaign-1-v2.csv",
+      "previous_sha256": "ea071aae87cb0b86a2526ba47218aa4c2785af1a704685883e08d1254ef87a85",
+      "sha256": "f135746c74e8c379d2028bb12b968af8f70788dfe8a4d32c9ad8221fd45cdbca"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F27-B1-campaign-1-v1.csv",
+      "previous_sha256": "4b9217aee82027c14a8ff1465bce506bb49a7f542144bf7ab166974b00e1bd2a",
+      "sha256": "8eac6d9f22f62d7e80210eb6d98829c991b8a0e82ae99620464735d03b2459bd"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F27-B1-campaign-1-v2.csv",
+      "previous_sha256": "add698afb12b4e639f1bd9203aa78d0f358260c68726c3df7fbc2665dcaecb45",
+      "sha256": "81163c73ab2feae7463708a1480c12098ddaa2cbac874287d1ba165b4c8f601f"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F28-B1-retro-1-v1.csv",
+      "previous_sha256": "abcf120f20ac8a465d62c6d609822076430927c02e1fea13d17934a4776c440c",
+      "sha256": "0b6a013ca5f9a5e6bc4c9f4dbb722c731921bfa6625d8158b16cd7df3c172ef1"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F28-B1-retro-1-v2.csv",
+      "previous_sha256": "2050fb8ac7d5a393fffc511f934acba58ab265ee136bc97e1cdf3814c2cd3a6a",
+      "sha256": "cfeb2b33e93e6d9abc0b17394ff6ae6829cacd523e5993bec1c5bd891d7b74f8"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F29-B1-retro-1-v1.csv",
+      "previous_sha256": "7d91945cf3280c6bf757dea22b7f698d952b20a275b6bd4a15fcbb3a211778ea",
+      "sha256": "3d2be67dafb7620e2f4dfbce9b9d7989fc1ffd0869ab0e80c07de733fa8bb5b5"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F29-B1-retro-1-v2.csv",
+      "previous_sha256": "89401e3fc7f5a5210585332b1ed05a17a2923e573270bf8ab5722530d05a06d0",
+      "sha256": "1ea131074d5a55b7b12501c3040b4f065cb6dfecf0b5cca72de33b5fcacbd61e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F30-B1-sop-1-v1.csv",
+      "previous_sha256": "d56dbddc86f0a6f4a9fa42bd8e6a414d21a515f817ef95880c97ad40045b95ca",
+      "sha256": "cd94bfdfad2c55fec058306f4b676bb6e9905c5ad521e060f2d1d7c2d3855ea3"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F30-B1-sop-1-v2.csv",
+      "previous_sha256": "316ba54396682188043144553b32470900b87814d66307611ebb87781f47558f",
+      "sha256": "8ff811eb377ec6eb7cbeff990fb5e56a1d197719c911b583489ab45ce6783a38"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F01-B2-product-2-v1.csv",
+      "previous_sha256": "8063a678c1268537d8e4f9f279d1263372cbdc42f47e30b285743b655ff0f8c5",
+      "sha256": "7d8e42b92ca79cc098aad7eea25e7c48443b89e82fa24091bd2ec1841786fd32"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F01-B2-product-2-v2.csv",
+      "previous_sha256": "ae71113ea85e2350cbf9ae51efa627da47e0d4ef7aa85d700be09115914d930e",
+      "sha256": "81868fff9523b45645bfd2676d6e52e50d3bda63ba89527644ee4769e70a8072"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F02-B2-campaign-1-v1.csv",
+      "previous_sha256": "daf29a114b30fb47779a153133689f8a2c8587d1effa32c7a2bc50aab826e6ae",
+      "sha256": "43d8b420d201e13949bb46a2fa4f9ea000a20676a52a8c12820412c961b2978b"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F02-B2-campaign-1-v2.csv",
+      "previous_sha256": "e06f14f436fea72f1b242e2ab3f0c781b7c5cf033642927b5268c46567d825e6",
+      "sha256": "3daaf6de580b14f082621fd60e17951c3cb08a00075a29e19684ffaa4361722d"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F03-B2-campaign-1-v1.csv",
+      "previous_sha256": "910055f56777749191a8311c3865acfdc19e08164bf408a583d0c617f38c8f29",
+      "sha256": "a09255d60e211306cf49a0a73d1394bc7abb84d7f464b9f4ba77203b48ba94d8"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F03-B2-campaign-1-v2.csv",
+      "previous_sha256": "7caeaf0b1ea609ffa8238d910885e561ba8b1dea2ed5c71be73943c049124b21",
+      "sha256": "1c36535ba5e60cd83501ec341b9f40b9a5917865fb1beff64398331246b8e51e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F04-B2-retro-1-v1.csv",
+      "previous_sha256": "54a6d212cb15442fcc1c310311a45559e2f39f3bb3bbc3a84e3d16a3e57fc55c",
+      "sha256": "865c4898d2c871e64058b5e58e7f65a6183635692d87efc4176bd96e2e450f83"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F05-B2-campaign-1-v1.csv",
+      "previous_sha256": "4ebfd45a702010ed36d54e57d4a0bbac6f8bb9671851782fab26c1dcc2eb3721",
+      "sha256": "801066214cf296d636a5aedd71a32eee03a53e8a4f598ea145092cdfd13891c0"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F06-B2-campaign-1-v1.csv",
+      "previous_sha256": "cd0e2ac5e49260369dbb1fe71162550f9db0ea12070c92bc8837c4740777c855",
+      "sha256": "e20db41e00b47c308211c4ffe4b83353a0214d2c3a9437793a7dada949f70511"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F07-B2-retro-1-v1.csv",
+      "previous_sha256": "1b3fbef5bdc4c8943ae236fc0213c62894ac14e4e4d0b7266e4e13daafeb0298",
+      "sha256": "6702509c2e1ef38c27a0b72e330bd6c3e92fa59bc82181bb55e34a71f17bbdb6"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F08-B2-campaign-1-v1.csv",
+      "previous_sha256": "e01c3ed7cad51847c23581e3b833a7aee5eb73f6e4b6a1d70b89f1a0c4655d69",
+      "sha256": "fe1e329032b329025d5b42d9103bdf5372d5bbbea89e9bc1ce57c07c7b87bcc6"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F09-B2-campaign-1-v1.csv",
+      "previous_sha256": "03312d7f3c737d77060b34be4311b23e23acdaa2f00adf45bdb224dc61013614",
+      "sha256": "7a47121aa395d888c54aca328ec046b1eb1a17b2eabb9c6751b1e96a97f1f7c5"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F10-B2-sop-1-v1.csv",
+      "previous_sha256": "7f5f05c138bd9cf99b6a44b86acf4c66e6432af998c362b031a3a35bc6a6780a",
+      "sha256": "a51b5c48231c14f001395f7a12f19dad85a70d53dc070e79c4dd8d7ae16dfa64"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F11-B2-campaign-1-v1.csv",
+      "previous_sha256": "9cfebaa2d13afa79391be842b9474070fb03b19dad820895817fb762238b6fb7",
+      "sha256": "5268e743a4fa474447297bfb6474f4cbd1ef196ff5de1d5250ccabffac0b7f91"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F12-B2-campaign-1-v1.csv",
+      "previous_sha256": "c81269aa063aa90af9ae8b4394c9dd1666171147156b556c13d45029fb7ec70f",
+      "sha256": "34538bbd5923dfd97d8b4bf5faf854c31b88d13726f5f6f4e97f2153f29888a8"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F13-B2-retro-1-v1.csv",
+      "previous_sha256": "0398b4210d72bd56ec262d3bba10fd6f1fc7075649451bfa2d92bf59fa862f7b",
+      "sha256": "c12078cfdf009df4dcc6c6096eda82848867238af821bd8fc2353771bfbdd763"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F14-B2-retro-1-v1.csv",
+      "previous_sha256": "99e487c2e118ab7211070c94007b36c1e5bb081d107f5e57e3c4b44ca5384737",
+      "sha256": "d7828d474d48b3c5a6a7035139b38a5341ce81f06b7ba15b9edf7602486005fe"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F15-B2-sop-1-v1.csv",
+      "previous_sha256": "e59cca39def4b05296b871ec1ba7813f4e8f6f13dc566e54fac1c2994dc308a9",
+      "sha256": "32f10c00e4b1e7d57b226361267fde2f6765ea0f6b14694c45ae752d91b2d83a"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F16-B2-product-2-v1.csv",
+      "previous_sha256": "06f49c0db9f51ed48a05f51999edce6e9168b8a5acf62302e44291342eafe164",
+      "sha256": "90c875a96d5085d674ef88dc81a10982128aa0e8597d7002ae35a5aa4a16dc54"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F17-B2-campaign-1-v1.csv",
+      "previous_sha256": "f1893e00a9316cd780b3a7fb45a92ffd036723ff4d8dc52be7cb78c840a57498",
+      "sha256": "a39985b47fbd1d78fe8ae14eca52e9aebc4af79762752b3ba5fd9bcf116413fa"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F18-B2-campaign-1-v1.csv",
+      "previous_sha256": "a774f32e79bee290973e8f6a43c18a86a99fe8bdf4bf97dfa3a23c64ef1d3827",
+      "sha256": "8776f4a12ab1f626db1d8e553e1d33a4d21852890f55baa6e7444c57f5cf152a"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F19-B2-retro-1-v1.csv",
+      "previous_sha256": "fd3299ce27e74cf4b9db06478b5b51b006693a855232a3a2ff734b01983d0979",
+      "sha256": "f6f9ecca2a6578c7aea9f7728573baaacaf379b2712e6a80f167bb39180c25ef"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F20-B2-campaign-1-v1.csv",
+      "previous_sha256": "8fcde87c6d7157cad62388c6d835d7e4e3b1680e6ceeb9b5d01de0b10a1e1ee7",
+      "sha256": "af61fb811013f5aa33be1b9cea01ed9350eed77e385ebc0fd14217609e4a6539"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F21-B2-campaign-1-v1.csv",
+      "previous_sha256": "0da0d47a817c211778ffde0d94839b4e5524d7a5d1b863d94d97baab2ee28db2",
+      "sha256": "6120b8b415fe2df7679668e233d9c7bfbdc8b3fb3e1b2c98eccca669e45350d2"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F22-B2-retro-1-v1.csv",
+      "previous_sha256": "c024404ff715f8bb4cec8d2ae4ed4cf7bc3d920e80d79e15502900dcfc5f2147",
+      "sha256": "93944d02e30657ccf6dc6a073582e502191b11166ff9139b8cb250a846915e5f"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F23-B2-campaign-1-v1.csv",
+      "previous_sha256": "1203724179e28580b0c5a2575d51e76d7cb5f271c6e6d17c5509a8f90a4e1951",
+      "sha256": "a93b7679de8e53242e16f758194a11b6fa92a43147f6a1fa6eaf824f39b713d0"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F24-B2-campaign-1-v1.csv",
+      "previous_sha256": "f76f322b2b93024f979981cb384700f1f810ac664753836e2a0999adfaa82dd0",
+      "sha256": "3976ccaf09b71c65d28b36dfc4771f5378dad52fd2702cef4dcd6ab50eaf5539"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F25-B2-sop-1-v1.csv",
+      "previous_sha256": "83f0abc1ff69311d5780cb15ae57c99d4a11bdcbf09d613c1b32be753d41f56c",
+      "sha256": "6ead1ca01f298c712f70d235975d7cd755d9da5b96869ae79898be9e883d6c34"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F26-B2-campaign-1-v1.csv",
+      "previous_sha256": "1e16cae6045cf0a0c577b378f86990447c15b867737822db91d87dc28981d89c",
+      "sha256": "9e350f6ed871a2b8a25a7728134d5d219ef2cca3ecfbce7be229cee28c0da570"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F27-B2-campaign-1-v1.csv",
+      "previous_sha256": "2070070ade8031c5c36712206da6f659cf87cfa3e565cfbbd656839b2ac46546",
+      "sha256": "ae1fb894480c83e36c71c593c8a524bd0c26f7c83362e3b484a23d9350e5fa71"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F28-B2-retro-1-v1.csv",
+      "previous_sha256": "c5999fd106a84d160d7ce1abd62fbffe430722b3e507ce8f6d30dde0a3fd9e9a",
+      "sha256": "aaad18e03dc5a89e7fa352812b1fc72ccd5aa64f27a54a0a9ce1f27d90ebb3a4"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F29-B2-retro-1-v1.csv",
+      "previous_sha256": "54d5f03628d71c6bd93853f906e33decf1e33b98dd18813860cda717869abae2",
+      "sha256": "fdb681e8a4c69f7d29134ff4da6570577ef075ad556cbbffee2258b6045ec4e0"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F30-B2-sop-1-v1.csv",
+      "previous_sha256": "67c5fd998a04ab8a13b753dfd87d8309e782ebf3047bdf68c5d47001dce6f418",
+      "sha256": "05f75696756fb29ee749ccfebdc19c79bbfeac98da79087a61b1f329811e8748"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F01-B3-product-2-v1.csv",
+      "previous_sha256": "0eae3bb9083203957a0c1c5402046191aed70d51a696ce01082c377dba605e4c",
+      "sha256": "9221e9bfb9f9a1f04ae29936ed1c33cf70c1aedb296933407cb374c7de477e13"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F02-B3-campaign-1-v1.csv",
+      "previous_sha256": "2788f2b1caa13241ea775385263651613a1ace436d40d4ab700afee66aa2fd06",
+      "sha256": "bb5d0eb78a677cd94367d2d2de219c1ae14835b7d6def247dcb135fc9a1bc826"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F03-B3-campaign-1-v1.csv",
+      "previous_sha256": "87a91b3b8fbe69a3957fdb1719d3519457dae4207dec4bd42e41119ed6814fe9",
+      "sha256": "32e61d160399f3a61060772ce016407145b132fab150f7c3ced322cc9d28d02e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F04-B3-retro-1-v1.csv",
+      "previous_sha256": "956f96a04f4d73a2ba743d9d3397b74242cb9760f67c364e4330ec4c7415648e",
+      "sha256": "d8943617d993e702abcd9f2798b2f4e0712d12e9d9a176dca606a6b884ac0ee4"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F05-B3-campaign-1-v1.csv",
+      "previous_sha256": "65c2df2cf2b5f2b40713d0d600a5fe474312da0f016392b05f0522c0b8c9bd2e",
+      "sha256": "52b7cb6c131135be73305f3d4158f06dd07fcf72a4500b55c3ce9e6bc3218f5b"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F06-B3-campaign-1-v1.csv",
+      "previous_sha256": "abebebe33e263a4ad9951146bed4d223c526748edb26a14434adae9de198c384",
+      "sha256": "3baf755ea1bd3a1116d15ca65983ade66ce73b31b29fd764a3e82db252a58be1"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F07-B3-retro-1-v1.csv",
+      "previous_sha256": "d4455a134865679eb8ce3636f2fbf0c001741f063a291ebadb2b91ee4694662d",
+      "sha256": "678d605fdca67d4abac9bfa5868e7a3ea13a27b7b35f83a71317a08f0ff0682b"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F08-B3-campaign-1-v1.csv",
+      "previous_sha256": "ca5df44b8a43d7a545a8012d28993d9cd97602f82d5a6ec300932df687f44fe2",
+      "sha256": "148a070738f17111b9d7991e1b9e9cd67c9ca282b5a4f0b8b6ff5116c7136fc9"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F09-B3-campaign-1-v1.csv",
+      "previous_sha256": "e1d98fc13a80d3a8ee6605b776fe9a59274cd160537f4aef9791811219e31d27",
+      "sha256": "9da776d2e34fc191783a4e5363ffd2d8da98328b8fa225bec7fdfb49af5877c9"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F10-B3-sop-1-v1.csv",
+      "previous_sha256": "d1f6124d2b08a10f338df373b49c94c9b0c105e8167cdc7971aa7a26accde885",
+      "sha256": "ceaa591ea908953b60803e3a1561b5adf0016419103833aae37e167f6ad3c365"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F11-B3-campaign-1-v1.csv",
+      "previous_sha256": "4229bd50286072f4781e94a1c37f4c7356b2c844610f89fce07340e3d846cf10",
+      "sha256": "c139d7b990f84c34567b48a8988d010afd8728f6f3b93dbb701c60c5bcb125f0"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F12-B3-campaign-1-v1.csv",
+      "previous_sha256": "5977fa0d8c3a9b2101a6754497178c5b2c9fb7e22c2faa985f1c0f9957354d70",
+      "sha256": "6d1c3d1e62726748b8a8e7680cec6702190aae5d3bb6a4ca643c00356e3606cc"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F13-B3-retro-1-v1.csv",
+      "previous_sha256": "73d9e63d5472464cdd56f89f2a1fe1fc7801f7c0937f561543cc21ec8b55ea51",
+      "sha256": "93cb784640a2b7c1e50275f3a765937cc390ba0a1127f0524de395d61a213b92"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F14-B3-retro-1-v1.csv",
+      "previous_sha256": "4d401678bab5f0b5122409bfe854c09ec4cb77cb10b44fe9838a83648aaa6c7d",
+      "sha256": "40347d69d89774c35b93006a9d82aa99b78bddf8aa13dce3daafdf7c1fe44eaa"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F15-B3-sop-1-v1.csv",
+      "previous_sha256": "b1224efb9e490c3c605342381c76a12cdf7f423ad1ad75de0ec24370f23def26",
+      "sha256": "ced66a6669118baa34eca57eb85cf6ed4e8399d597bcc777f3c2cb884e4e8892"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F16-B3-product-2-v1.csv",
+      "previous_sha256": "8ba0e9d0556db4c599a467af01e7e43ab0dc0cc242db0eaa21a6c586dfd85135",
+      "sha256": "deffe2a55041c8d0aaa91695a92a29eab51ebe8395ca1a157d5d214de402ae06"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F17-B3-campaign-1-v1.csv",
+      "previous_sha256": "7f78dc215c8c1dd11f8f0f1b50d05c13be3ac3151dd0ee9219524eed1202d8e9",
+      "sha256": "6f70fef1b1554f23db822552c3579874c141d01bf34f5a923e032e02cdcb6e74"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F18-B3-campaign-1-v1.csv",
+      "previous_sha256": "bd9291e6dad3f797944aee83b50bebbd6864f38ef1b29fb51045db8ebd9cd6a7",
+      "sha256": "b69b535ce0235d238f09b24d7f6325735a1c172158e4e5e27c457be16d440516"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F19-B3-retro-1-v1.csv",
+      "previous_sha256": "812caf3029a2e9061a5d693b7c634fec736357295cf24ad9ab90e9653eb7dc44",
+      "sha256": "b15afbb41da41beb2e805fcb9a8cc3f883d5b5683290a019a28ce97b40aa00cb"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F20-B3-campaign-1-v1.csv",
+      "previous_sha256": "a7828d1c8c2704231d89658dff121d4d592aee7a97be4fffbe6aa78e9bbb59d5",
+      "sha256": "b9adbbb306261ebc4e169dad0c7330a3e72cb76c30a7c0228f2281b19cdd304c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F21-B3-campaign-1-v1.csv",
+      "previous_sha256": "557e8c7e890b52506be16184e5b3582ccd459ae5cdadfab455cc24e9f5e0612d",
+      "sha256": "f7548108b1c2165fa4aa47e9e0489cd75fcb3a2cb3956ad53812ee09037f8cda"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F22-B3-retro-1-v1.csv",
+      "previous_sha256": "ff6ff134826d1b602ca710f2b9221a5e8001910eab4eafff83af2bea98022904",
+      "sha256": "b4dc883ac91fa628ed3585c20daa32cef3f9457aeba5abe58ffbf4d55c535a58"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F23-B3-campaign-1-v1.csv",
+      "previous_sha256": "a48099318980e5377fe107a971536bf0f0ac9413ffe1c081be2f77d94ee02023",
+      "sha256": "f747630d7b037568eb32dd4b28374cfe168bd15081bfc6c6d33f3e73c1eec236"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F24-B3-campaign-1-v1.csv",
+      "previous_sha256": "4849bf5b807a9cee5f414176518ac20e65c884a463772805e1cce57cbcebf3f1",
+      "sha256": "4a01cbbada926cea70417ded2ad128c5b135e567a071c9274e95743cd71c6029"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F25-B3-sop-1-v1.csv",
+      "previous_sha256": "0153560c01e24a3e4bce9ebf69b0eb9a45ad2f9cc2d2f36fd212501cfd156ea7",
+      "sha256": "4326bc5b837764ff56c078b99854760fb03a5ce10b2a253bc0abdfed0d6e328c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F26-B3-campaign-1-v1.csv",
+      "previous_sha256": "8c19d2c3b1d3c7b19cceacc48e445a0cdeda05dbab29a5659e617a05f2713643",
+      "sha256": "3b3dbcd1917061f97629f3e3ac16fdad6c53a004ea2af34fa8abe954ec1db1fe"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F27-B3-campaign-1-v1.csv",
+      "previous_sha256": "2045950d2ec7e7f6aae7f7955703cd8fc7ce7dd59cd4956a18d375783bed16c5",
+      "sha256": "26793b0dc2ca0d4a3fc393a7cb96926137c792e1568eb09eeb024e45a3f87b65"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F28-B3-retro-1-v1.csv",
+      "previous_sha256": "5d737c5b525c57fd39ccae75e6fa2f05c492bb9902b60afafab42a52bd0348b9",
+      "sha256": "296bd017e41edfe0d1457aeb8d1d7e095d930d89e3025f62004c05c88ad4c5d1"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F29-B3-retro-1-v1.csv",
+      "previous_sha256": "8435a5fda6926e67c0654f2fd318041f4896e1a7556440a3faec9c8424fff6f2",
+      "sha256": "73c08423c2d0938854dccb1b7c9f4e145bf4e3c8ac35c47a04a8d6dca1cd679b"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F30-B3-sop-1-v1.csv",
+      "previous_sha256": "79cee9e3b6f1b1ee4f9af87b63f51658a07433a1c6c221162b4a4c160ce03820",
+      "sha256": "a5ae90fcc745507c5f61adf4d7eee97e25d8cb74e490f483282406729bf6f386"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F01-B4-product-2-v1.csv",
+      "previous_sha256": "d7ab39301d6f9aa8fb7481f15b01faa07c88f24da898a4854ede41c41204e8c5",
+      "sha256": "f08cae7d41c3f4550cf565d95b0fb38433c80c913ff07786f4f59341cad549b6"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F02-B4-campaign-1-v1.csv",
+      "previous_sha256": "862fa371bf64e48be86f11ff174992080763855b160d1c7e3483aea551131e7f",
+      "sha256": "cd1790e2521170199619dc5f43a739f69e9ba70a11d78050fad49fcff1bcaaf2"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F03-B4-campaign-1-v1.csv",
+      "previous_sha256": "1a1094613525eaeb4eac40c6b0dc0467a9d94909f313cf531d80439788531d1e",
+      "sha256": "bb3a83d5b2b6d3d8f1454ca8e55b713049f85c83e1189404f68b9f88f3f31ef5"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F04-B4-retro-1-v1.csv",
+      "previous_sha256": "069e13e4a0a00597a96d2f6f88a7c2c5080cf60370add32c9eabe4dc34ad40c5",
+      "sha256": "76aae043c0029322effe9c283f7e3cf3e51ef941c88082f91f42abf9ec919dab"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F05-B4-campaign-1-v1.csv",
+      "previous_sha256": "947c5c92ed6ebcd7503572de4704643647fb643e94f290dfdb31af48ebfe3dd8",
+      "sha256": "246f5579cdde705afb567fdc6b1eb13ad121c430b422a24b45ea01e87ab48b6f"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F06-B4-campaign-1-v1.csv",
+      "previous_sha256": "225e08852b138c8726dc330494538e7206024520e18ebe1042c6dcf396bda360",
+      "sha256": "73d8296dcbc062158ff79aaa491cdde501ba88f9da44e5c1d8c61df7752bf97d"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F07-B4-retro-1-v1.csv",
+      "previous_sha256": "62df37c71690ddd45b2bcf3362df5679ec1b88b79ecd1f433843d9d76c75e61d",
+      "sha256": "f3b405d6b9a2e9a808bf307530228a29e9e4a4a4c5b74db9121131e36b8ced3f"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F08-B4-campaign-1-v1.csv",
+      "previous_sha256": "b7072506c13659ae180dfe5d34659374fd30f13a44828e7e2e2db8cdf8374090",
+      "sha256": "38a3afe568bc186a18a744e0c1466f463587b4149d2c186a96e66602e131414c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F09-B4-campaign-1-v1.csv",
+      "previous_sha256": "ad1911777365edd51f0cb5a67f724e692769773fafec4e18f673544d920b0f3b",
+      "sha256": "8ea7c481f24e7aa1ef21986591a00c8dff39911232a2668b5707797110583e6c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F10-B4-sop-1-v1.csv",
+      "previous_sha256": "128e055499eff155d0bcfd44258d4422d05bd6f47b87c1f9cb9bcc34630e5b2a",
+      "sha256": "2b6e018c17d666f52f6874a1e8f68da50877b9f2c3898381fb620709b1ed99bf"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F11-B4-campaign-1-v1.csv",
+      "previous_sha256": "4dbcb3993a6ffbc55fc4b8d3a3ac0780e7029b0def55779034adbd6cf29ca959",
+      "sha256": "5645dd80ca0bda0178da7ec9da2b5fd19dc3ef050f020ee828c3c06d9c2161be"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F12-B4-campaign-1-v1.csv",
+      "previous_sha256": "ab3842fb36a0f37e5099fb414e00de73f4224bec4ac4a2b8f397c8625dcc02b5",
+      "sha256": "8587d5e7c06b3e119a41fd936da28469ffdcfd07139604eaf0135946999c7b78"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F13-B4-retro-1-v1.csv",
+      "previous_sha256": "ac7bbd031ebe8def09343d9adf99a049cc61ff52f8107ad78005b8802c69df39",
+      "sha256": "e30678ffc092a23de6cb8a1c0096a7ca5b89d4534ef9b14434f54d75c5cf7e27"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F14-B4-retro-1-v1.csv",
+      "previous_sha256": "4165fea4b3aef07931d06769d55563ddf4225f6f87aae30738c36f8b04c835f3",
+      "sha256": "c742e39bbc61f99777ea3bab7b6650f67e4addf983b78e9326508ef662a1835a"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F15-B4-sop-1-v1.csv",
+      "previous_sha256": "85af4f0ededd5839d8b14dcd38cce6efecc60e42336bc4f0a553f07b708ed6cd",
+      "sha256": "b0706a452ca1bbb5c44a9b6fc30345be3605a85502a816465dd9e31472739bc7"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F16-B4-product-2-v1.csv",
+      "previous_sha256": "b7613ad51f02a6bc0b7113a8d357143fc473f5a7af44d937de67dd41b305c52a",
+      "sha256": "89f15b10c6f59ab152cba2d5ea001dfc2ff7e3cacad360fb3315c13d1520e432"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F17-B4-campaign-1-v1.csv",
+      "previous_sha256": "f213e1e079753813a07d77cf0352564909f74443bf05171bf3fe7c951afa3658",
+      "sha256": "99bd3d6a09e79f9cf0d39252c92650f4eac2d1a2d480244466db97bc870226cd"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F18-B4-campaign-1-v1.csv",
+      "previous_sha256": "48375225d56a459b7bbff1631ad8d44b4e8a2beed790987b9840c1c062284502",
+      "sha256": "f26d6609159eeb046218d895a69f9d0cb3183442fc15278e95feffdf508b9b74"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F19-B4-retro-1-v1.csv",
+      "previous_sha256": "ce831641712083676e0afa7cbe70720676f56788e76bdc36ee1eee4f952d35c6",
+      "sha256": "4f7fb012e8880648418f8d07ab0554f8c7643d0dd63fd8dee50caacdacdcce59"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F20-B4-campaign-1-v1.csv",
+      "previous_sha256": "ad1f1be29535288e2b053bf81f48d6c1d0e34e5b90df68b061b3e8362c45ae8f",
+      "sha256": "be58fdc776abbae73f2b7a35802b967a235c900228e38f3e9f3df5dec4642314"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F21-B4-campaign-1-v1.csv",
+      "previous_sha256": "696d7fb720bfc7b2a9485bb5917deeb2e7afa7b20a1b4becc1e3f05733feed0e",
+      "sha256": "3db48b3d9212afd953b05a6c0c8756fdd776e6164a1b6d1c4faa56fe8235a00f"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F22-B4-retro-1-v1.csv",
+      "previous_sha256": "c568554043c0b021b74f72d1814e3da1ecaacdd3f2ff95b576fead2684afd4af",
+      "sha256": "1eca77455f7868f032ad893a1238286aff282d9dedaeedf205e2b7d63cfc37ee"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F23-B4-campaign-1-v1.csv",
+      "previous_sha256": "c199ae7c780d6f3fa2e2fe557ebacd8447701c448136a46f1e02311c8b10759a",
+      "sha256": "472b6a6b9c929daa38be0234b985fea78ffd056327a21c81a7740e5bbb889cf4"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F24-B4-campaign-1-v1.csv",
+      "previous_sha256": "48bbecd93d8a430e10ea04e76a96df212b1a0c745da2784682f8b7f28ee17449",
+      "sha256": "d6e88a7d1387cce5603749c198f22274c563f118b822c547e08375b4a5385126"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F25-B4-sop-1-v1.csv",
+      "previous_sha256": "2a6aafa4e550cdff19c7ff3dfbed76bd8a9a57e02a88bd5f595b2bc08c8a77ba",
+      "sha256": "e5bb415a688ba07b1c15318b6d7ae6835f80cea95055f575aebcfaa5e23d5a3d"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F26-B4-campaign-1-v1.csv",
+      "previous_sha256": "b0c3425656039d6c807c2fe2488abe69b1b6869f1bc98a093748cd408dafa4c7",
+      "sha256": "79331720ebda87b32e5b04e70d1bee33e58680d8cc4471bb36062bbe612ca543"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F27-B4-campaign-1-v1.csv",
+      "previous_sha256": "46ad0e007739273a3df08fb7ef0a0b3c92a05ab8f7112362ea928a068bc26ebe",
+      "sha256": "5dcb046f26ae8d7891501829136f3e1d2bd85da8cf6a3de9a29fef0f27dc8921"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F28-B4-retro-1-v1.csv",
+      "previous_sha256": "6cdbb68cb4d2492d438ffa5c1af2b73eace846deb8563ad6c8ec4d07522cd8e7",
+      "sha256": "63b20e705afdec4e45a82b2d9fdbd951eeff784cac959f2c77688195a3a50e80"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F29-B4-retro-1-v1.csv",
+      "previous_sha256": "510bd60f7aa357cc5e304d2150564eaeca038f1352ac3ebb0e3ca5facce4aae8",
+      "sha256": "9252b87143fbadc1e2269c148fae31ca54cc6444b8599a61c8bce44b8576902e"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F30-B4-sop-1-v1.csv",
+      "previous_sha256": "2a6354f5a33d9d4867073fad7df5ded89a80bf00c62ca2f5fa74c10d17d586c5",
+      "sha256": "1a8633e294b8ac8a7af9db3af2f87db92ec12837dfbe807c8f9c611a8967ec6a"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F01-B5-product-2-v1.csv",
+      "previous_sha256": "96c06bd63e16e6c1b00c9c74f69f8bee3ccf5118df0d0adfa9a9f1f657222d5d",
+      "sha256": "7347238e51a9eb0a7bc84c51975ca00ae417f5aaac68838386651a06e368ffd2"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F02-B5-campaign-1-v1.csv",
+      "previous_sha256": "1ef361d0f51e7a95c6b30da42fa8670adbb5633d70ce39fccd15013e026cf100",
+      "sha256": "6108237d329006af5f669e17eea82f6319a11d25b1c0d97e902e8e2d77f3a609"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F03-B5-campaign-1-v1.csv",
+      "previous_sha256": "bc1e3292bbb4c1e0c0c18f512e94c4e7eb19ed0a34c1d907493e0c09c5c86e32",
+      "sha256": "1747392c761e0b8755eaa853b87841c7d7563db95b6113a09ff79f6a6625a2a7"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F04-B5-retro-1-v1.csv",
+      "previous_sha256": "07d28be4c468106347f716a9ec4fbfa76f1d37684e3f0564a14e7386076255e9",
+      "sha256": "404eef69e1f11f26a1c9eeedf561c988f0c5b8f74174c4d41655ad76aea69bd8"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F05-B5-campaign-1-v1.csv",
+      "previous_sha256": "758c5826d5f483e9b6b41d19ee2992cbf85438c60697409807fbdd6abd8e6b82",
+      "sha256": "38342c8b0753cda35c8763d34749bbfd30ce204c086eb9672cc4806c63f84fb9"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F06-B5-campaign-1-v1.csv",
+      "previous_sha256": "a3492cfa222a572e90d497350743744a75437e09d4fef03df1c556e0f1509985",
+      "sha256": "089e745fdddb8c195a9cc0d28281d121a0db12115a1a97032ee61a214164f6a8"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F07-B5-retro-1-v1.csv",
+      "previous_sha256": "b1645b1fe004a93ff82991c894127aae16ae2f2b214724443e25a378fd33ec8f",
+      "sha256": "ea7e7eb036e5d4c16398687cc7ed2351da1a29395df9d2144d3c1d919d8e3e57"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F08-B5-campaign-1-v1.csv",
+      "previous_sha256": "41ad20eb74f5e67f03d840a4f8c9289dbe6292564ee344091a0369e43bba0345",
+      "sha256": "a30a9bfce7eefde63e821171065ade851481e24d1c193740c699626a5760100c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F09-B5-campaign-1-v1.csv",
+      "previous_sha256": "70c3fca68afec0f65d14d4380b6a5e6c20206e4acf0d0daad012b3bb018bdea5",
+      "sha256": "455d12e9a0ee9e4b8eca1b28b079286a5e2b73460dd8667416039322bf5735e1"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F10-B5-sop-1-v1.csv",
+      "previous_sha256": "44ca9365ebb8fdef7dd875417b0d66910dd77dd18e3d6ee725119e3ef68b8d7e",
+      "sha256": "836593801f11833e90dc349d89565a8c0c58603415dc1fb8a71af8079105e27d"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F11-B5-campaign-1-v1.csv",
+      "previous_sha256": "1a107565471941d1746c05201f99adf034b195d1a60968df79f234b7420719e5",
+      "sha256": "0452bce8cff1e1dceee81cec8e8ec551ae236516072779884533409228840781"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F12-B5-campaign-1-v1.csv",
+      "previous_sha256": "7b940857cf69a1eade8c73d3b0f6c2e1b8f62e146c26f65e4df8de666b610a8d",
+      "sha256": "cf40b9f657e3f3f9332ecda5d011227f25f983ff38a7e98ccd3431a21528fbef"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F13-B5-retro-1-v1.csv",
+      "previous_sha256": "62e793a0f958079078014f24f72cb1adf97b084aef416a59abe57babc056f5aa",
+      "sha256": "f9d56585914bb73170ef68f8309f9bd268a867a08a56c7f7e1047173b65f06e5"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F14-B5-retro-1-v1.csv",
+      "previous_sha256": "b569897e6835e27bd0ee9e6ec938bab610adfc27946554da7c75ba1071af402e",
+      "sha256": "de984a758fa279bbfea8e1c8701ee3eca0e67eed94d0f4af6a6d094413c59cfe"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F15-B5-sop-1-v1.csv",
+      "previous_sha256": "c647a3b9b74208604cca42730793b3b220c01ffc999d256b89565ad79206419c",
+      "sha256": "866a6c481eb567d597ff226bb7d570523fe1ca192e3f5cb106d6673bb3984640"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/product/SYN-F16-B5-product-2-v1.csv",
+      "previous_sha256": "79e7c6553f0ae3d152cb2b6b93d3f23f46710bef49e6b75dbbedef96e3de48b0",
+      "sha256": "38733353c75448f78fa57962f574fd4a945d0c0d86a5246d53b5eddc7215b0e8"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F17-B5-campaign-1-v1.csv",
+      "previous_sha256": "efb161056bbcfc8f78f66141a882cbed18da896a2f7b1090926d4f75fada1b78",
+      "sha256": "897b7409c45227f1f59229dcc8db05183d9c0e0bca6330da93a6dc5ff03ad8d5"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F18-B5-campaign-1-v1.csv",
+      "previous_sha256": "2ee359d120ede228ddb99753af27f9bfe129b256742b49868eee28ac142d8d79",
+      "sha256": "1ec112282f252932613334966f5fb2cb1a94d135248fc3a9298540f04ab441c9"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F19-B5-retro-1-v1.csv",
+      "previous_sha256": "2a0640eb56ae797f3271d9cfc82f136fa24288c5b46912fdab938f85a7b19c90",
+      "sha256": "f4327c6812e4db92e018b8b78fbbc3703025b30275469bc919207b2fbab7d1ef"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F20-B5-campaign-1-v1.csv",
+      "previous_sha256": "aefd259bd7dfd73827b640bb6e6bd78d44f3378bdedbeed064aa1fb9b35785aa",
+      "sha256": "16460d15fbc280ec4231df60cac18339708b2db34e522cb00c5130e06bc7fcde"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F21-B5-campaign-1-v1.csv",
+      "previous_sha256": "6e6daaeb6c1b0355da93a81a70c8fe9991142cc7d67ec956cfc5a945a985a605",
+      "sha256": "3f802da3ee6b686f341b7aa782e20a78ee589b05ea3caa8c62936d39ae7090c3"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F22-B5-retro-1-v1.csv",
+      "previous_sha256": "926fe77092ec2914c0caeb84ed0ad8db836d49cfd994c131de6715c24259765e",
+      "sha256": "1dde9cdb201ac47d0ff5b7c51f503f168cc58eb5c26859b3d6e702ed8c58a1b7"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F23-B5-campaign-1-v1.csv",
+      "previous_sha256": "8b04465f2bab1dacc88ceee08c299964247a7b88ea0045744dcbd9cd5c1bb37b",
+      "sha256": "4b6de7546516bb9b629132ebb0ed3322b07c979a9d1ea7fe7c4862efe0829d8c"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F24-B5-campaign-1-v1.csv",
+      "previous_sha256": "3c1f35a7a7291c684a79e66b48435c8ef7220c48d80b24b0f7ddea3246f9173c",
+      "sha256": "ec1ca2a14dec7d274e770d3f86f41c0aee05049e2b7c485c55500c2b50fc16f8"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F25-B5-sop-1-v1.csv",
+      "previous_sha256": "da6de5ca9f6513a766b66618d89479c0bac6876c52b53b180cc8c4c7407515a8",
+      "sha256": "4444012f738f69903abfcbfced3bd988f9026ea2f116e9bca1988738e5f12577"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F26-B5-campaign-1-v1.csv",
+      "previous_sha256": "958054824beefd13d7894c911401e0e291cb621767f77a6983c4bab9ba76630a",
+      "sha256": "f83abc92e96a1b9ac211ddf7f30ab80784f6a3991e703797bded76fcd9063a22"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/campaign/SYN-F27-B5-campaign-1-v1.csv",
+      "previous_sha256": "6aae65edda16d60cd55f47e82ecd28a8fa56167683e927010e84ca4d2f8fb07e",
+      "sha256": "2f4a42fb18654d343a937366b919805119774953aa5c843fc17e586028b03f38"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F28-B5-retro-1-v1.csv",
+      "previous_sha256": "a257a838738bd93eb8e8850f96292d68f14b654ad904ac178abd9b6595b2557a",
+      "sha256": "55d86af4b2bb94afcbc127a00edd3388025bb421fe535e9cb6b44558b4081b00"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/retro/SYN-F29-B5-retro-1-v1.csv",
+      "previous_sha256": "33f7fcd652cfef6ab0bcd3d9301440764a440ea5694f5423afb096787ebfdbdf",
+      "sha256": "69e7d9347e4a530bfcf57da70cf5fca390d11551fcc7768c42b8c2ff0fa5920f"
+    },
+    {
+      "business_rows_unchanged": true,
+      "byte_delta": 9,
+      "locators_unchanged": true,
+      "path": "originals/sop/SYN-F30-B5-sop-1-v1.csv",
+      "previous_sha256": "f853a0144a848fd0f2a558f6645b3d7f4033219d1aefca29bf370172012fd83b",
+      "sha256": "b470726af46189d69dc1c845eb1473983c606499c9a0507301d0a396a5fb09a3"
+    }
+  ],
+  "evaluation_version": "expanded-v1.2",
+  "non_csv_originals_unchanged": true,
+  "previous_evaluation_version": "expanded-v1.1",
+  "reason": "Repair CSV header/metadata rectangularity only; business rows, locators, queries, dates and public data unchanged. Explicit relation intake metadata retained from v1.1."
+}

@@ -1,0 +1,115 @@
+Home-based food business fact sheet (https://www.foodauthority.nsw.gov.au/media/1011)
+citeturn126view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 4; Source: click({"ref_id":"turn59view0","id":385}); Total lines: 112
+L0@P0: Food Authority
+L1@P0: Handling food for sale at an address which is also a domestic premises means
+L2@P0: there are special food safety issues to consider.
+L3@P0: Examples of home-based food businesses include:
+L4@P0: • preparing food for sale at markets or school canteens in a domestic kitchen
+L5@P0: • bed and breakfast accommodation
+L6@P0: • home-based childcare for a fee involving the provision of food
+L7@P0: • home-based catering businesses
+L8@P0: • restaurants with accommodation for the restaurant owner, family or staff.
+L9@P0: Notification
+L10@P0: When a food business sells directly to consumers
+L11@P0: Local councils regulate all domestic kitchens preparing food sold directly to the final consumer, either
+L12@P0: from the premises or elsewhere - such as at a market or school canteen.
+L13@P0: These businesses need to notify their details, including trading name, contact details, location(s),
+L14@P0: business owner details and the nature of the food business.
+L15@P0: Councils collect this information in different ways – a good place to start is your local council’s website.
+L16@P0: • Find your local council.
+L17@P0: When businesses do not sell food directly to consumers
+L18@P0: The NSW Food Authority regulates domestic kitchens that only sell food to other businesses, such as
+L19@P0: cafes, restaurants and supermarkets.
+L20@P0: These businesses need to notify the NSW Food Authority of their business and food activity details.
+L21@P0: • Food Authority notification portal
+L22@P0: Obligations for food businesses
+L23@P0: Like all food businesses, those based at home must comply with the relevant parts of the Food
+L24@P0: Standards Code, including:
+L25@P0: • Standard 3.2.2 Food Safety Practices and General Requirements
+L26@P0: • Standard 3.2.2A – Food Safety Management Tools
+L27@P0: • Standard 3.2.3 Food Premises and Equipment
+L28@P0: • Part 1.2 Labelling and other information requirements.
+L29@P0-1: Home-based food businessHome-based food business
+L30@P1: FA588/2312 2
+L31@P1: Before a food business can start operating, owners need to make sure the proposed activities are
+L32@P1: approved by their local council. Some councils may not approve operations involving high risk foods.
+L33@P1: Standard 3.2.2A – Food Safety Management Tools
+L34@P1: Home-based businesses that sell or serve food that is unpackaged, potentially hazardous and readyto-eat, directly to consumers, need to implement 2 or 3 food safety management tools, depending on
+L35@P1: their activities. These tools are:
+L36@P1: • have a qualified Food Safety Supervisor
+L37@P1: • ensure all food handlers are trained
+L38@P1: • be able to show food is safe.
+L39@P1: Some businesses, including school canteens and home-based children’s services, have until 8
+L40@P1: December 2024 to comply with Standard 3.2.2A.
+L41@P1: For more information see Standard 3.2.2A - Food Safety Management Tools.
+L42@P1: Issues to consider
+L43@P1: Anyone in charge of a food business needs to identify food safety issues and implement measures to
+L44@P1: control risks.
+L45@P1: Premises design and construction
+L46@P1: Standards for flooring in kitchens and storerooms, and requirements for personal hygiene areas, such
+L47@P1: as adequate hand washing facilities, need to be met. Check with the local council about what is
+L48@P1: acceptable. They can also advise on zoning restrictions, development planning, construction and fitout standards, waste disposal, environmental controls and any other local regulations.
+L49@P1: Keep cold foods properly refrigerated
+L50@P1: Adequate refrigeration capacity is essential to ensure cold food remains safe. It is important to keep
+L51@P1: certain food such as meat, eggs and dairy under 5°C at all times, including during transport.
+L52@P1: Overloading domestic refrigerators and constantly opening the door means food takes longer to cool
+L53@P1: or does not stay cold enough, meaning harmful microorganisms have more chance to grow. Always
+L54@P1: use a fridge thermometer to check your fridge is cold enough.
+L55@P1: Cook food thoroughly
+L56@P1: Cook food thoroughly without overloading the oven. Cool down cooked food as quickly as possible –
+L57@P1: for example refrigerate in small portions to allow proper cooling. Use a food thermometer to make sure
+L58@P1: what you are cooking reaches the required temperature.
+L59@P1: Handle food hygienically
+L60@P1: It is very important to keep ready-to-eat food and raw food or ingredients separate. This means that
+L61@P1: food contact surfaces, utensils, containers, tea towels and the like should not be used for both raw and
+L62@P1: ready-to-eat foods without being thoroughly cleaned in between.
+L63@P1: Everyone who handles food for sale must have food safety skills and knowledge appropriate to their
+L64@P1: activities. Top of the list is proper hand washing, especially after using the toilet. Single-use towels are
+L65@P1: the safest way to dry hands, as tea towels can transfer dangerous organisms between hands and
+L66@P1-2: food.Home-based food business
+L67@P2: FA588/2312 3
+L68@P2: Young children, pets, and people who are sick should stay out of food preparation areas. Food must
+L69@P2: be protected from pests and vermin at all times, including raw ingredients.
+L70@P2: Cleaning and sanitising
+L71@P2: Food premises, including fixtures, fittings and equipment must be maintained in a clean condition and
+L72@P2: all food contact surfaces be cleaned and sanitised.
+L73@P2: Cleaning and sanitising are 2 separate and important tasks. These critical processes help prevent the
+L74@P2: growth and spread of organisms that cause food poisoning and help reduce the activity of pests.
+L75@P2: A food business must also ensure that eating and drinking utensils, and food contact surfaces of
+L76@P2: equipment, are clean and sanitised. Garbage and recycled matter needs to be stored in appropriate
+L77@P2: containers.
+L78@P2: The factsheet Cleaning and sanitising in food businesses outlines requirements.
+L79@P2: Store food safely
+L80@P2: Food containers and other containers should not be re-used if they are not rated for multiple use by
+L81@P2: the manufacturer. Some food containers can transfer harmful chemicals to food if not used correctly.
+L82@P2: Product labelling
+L83@P2: Labels of packaged foods must show:
+L84@P2: • name and/or description of the food
+L85@P2: • identification of the ‘lot’ number
+L86@P2: • name and Australian street address of the manufacturer or supplier
+L87@P2: • the list of ingredients
+L88@P2: • ‘best before’ or ‘use-by’ date, as appropriate
+L89@P2: • batch numbering for traceability
+L90@P2: • a Nutrition Information Panel (unless exempt)
+L91@P2: • the country of origin of the product and its ingredients
+L92@P2: • warning and advisory statements and declarations
+L93@P2: • any other requirements of the Food Standards Code.
+L94@P2: Our Labelling fact sheet outlines the requirements.
+L95@P2: There are also labelling restrictions to comply with, such as declaring ‘characterising ingredients’,
+L96@P2: making health claims in product marketing and other prohibitions.
+L97@P2: Keep records
+L98@P2: Keep batch records of ingredients so these can be traced if an ingredient is recalled by another
+L99@P2: producer.
+L100@P2: Inspections
+L101@P2: Food safety officers from the NSW Food Authority and Environmental Health Officers (EHOs) from the
+L102@P2-3: local council are entitled to visit and inspect domestic premises involved in a food business.Home-based food business
+L103@P3: FA588/2312 4
+L104@P3: More information
+L105@P3: • visit the Food Authority’s website at foodauthority.nsw.gov.au
+L106@P3: • phone the helpline on 1300 552 406
+L107@P3: • visit the Food Standards Australia New Zealand (FSANZ) website at www.foodstandards.gov.au
+L108@P3: © State of New South Wales through Regional NSW 2023. The information contained in this publication is based on knowledge and
+L109@P3: understanding at the time of writing December 2023. However, because of advances in knowledge, users are reminded of the need to
+L110@P3: ensure that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L111@P3: Regional NSW or the user’s independent adviser.
+

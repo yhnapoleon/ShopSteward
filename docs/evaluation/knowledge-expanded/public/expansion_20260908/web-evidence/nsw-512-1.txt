@@ -1,0 +1,376 @@
+Standard 3.2.2A guideline for food retailers (https://www.foodauthority.nsw.gov.au/media/8825)
+citeturn114view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 10; Source: click({"ref_id":"turn59view0","id":512}); Total lines: 373
+L0@P0: Food Authority
+L1@P0: Recent changes to the Food Standards Code introduced new food safety
+L2@P0: requirements for food retailers, including supermarkets, delis, greengrocers,
+L3@P0: service stations and convenience stores.
+L4@P0: In NSW, the changes apply from 8 December 2024 and affect businesses that sell unpackaged,
+L5@P0: ready-to-eat food that requires temperature control.
+L6@P0: The requirements
+L7@P0: Standard 3.2.2A introduces 3 mandatory food safety management tools for food businesses,
+L8@P0: depending on their food handling activities:
+L9@P0: 1. Food Safety Supervisor
+L10@P0: A business must have a Food
+L11@P0: Safety Supervisor who:
+L12@P0: • is qualified, and
+L13@P0: • can give advice to
+L14@P0: employees who handle
+L15@P0: food.
+L16@P0: 2. Food handler training
+L17@P0: All staff who handle food must
+L18@P0: have appropriate skills and
+L19@P0: knowledge of food safety and
+L20@P0: hygiene.
+L21@P0: 3. Showing food is safe
+L22@P0: A business must be able to
+L23@P0: show they are managing key
+L24@P0: food safety risks by either:
+L25@P0: • demonstrating safe food
+L26@P0: handling practices, or
+L27@P0: • keeping records.
+L28@P0: In NSW, local councils inspect most retail food businesses, including food retailers, under the Food
+L29@P0: Regulation Partnership with the NSW Food Authority.
+L30@P0: The Food Authority is encouraging councils to initially take an educative approach while businesses
+L31@P0: adjust to the new requirements.
+L32@P0-1: Standard 3.2.2A guideline for food retailersStandard 3.2.2A guideline for food retailers
+L33@P1: FA560/2311 2
+L34@P1: Who the requirements apply to
+L35@P1: The Standard applies to all food services and businesses that sell or serve food that is:
+L36@P1: • potentially hazardous (requires temperature control)
+L37@P1: • ready-to-eat, and
+L38@P1: • not in its original package.
+L39@P1: Affected food retailers include:
+L40@P1: Delicatessens Greengrocers Service stations and
+L41@P1: convenience stores
+L42@P1: Supermarkets and
+L43@P1: market stalls
+L44@P1: Potentially hazardous foods
+L45@P1: Potentially hazardous foods have certain characteristics that support the growth of bacteria, or the
+L46@P1: production of toxins, and must be kept at 5°C or colder, or 60°C or hotter, to stay safe to eat.
+L47@P1: Examples of potentially hazardous food include:
+L48@P1: Raw and cooked
+L49@P1: meat and poultry
+L50@P1: Deli meat, burgers,
+L51@P1: curries, kebabs, pâté,
+L52@P1: meat pies
+L53@P1: Foods with eggs,
+L54@P1: beans and nuts
+L55@P1: Quiche, aioli,
+L56@P1: mayonnaise,
+L57@P1: mousses, tofu
+L58@P1: Dairy and foods
+L59@P1: containing dairy
+L60@P1: Milk, dairy desserts,
+L61@P1: fresh cream, custard,
+L62@P1: cheese
+L63@P1: Cooked rice and
+L64@P1: pasta
+L65@P1: Fried rice, plain rice,
+L66@P1: spaghetti,
+L67@P1: carbonara, lasagne
+L68@P1: Seafood
+L69@P1: Sushi, prawns, fish,
+L70@P1: mussels, oysters,
+L71@P1: shellfish
+L72@P1: Sprouted seeds
+L73@P1: Alfalfa sprouts, clover
+L74@P1: sprouts, chickpea
+L75@P1: sprouts
+L76@P1: Cut fruits and
+L77@P1: vegetables
+L78@P1: Cut melon, salads,
+L79@P1: pre-cut fruit trays,
+L80@P1: vegetable sticks
+L81@P1: Foods containing
+L82@P1: any of these foods
+L83@P1: Sandwiches, pizzas,
+L84@P1: rice rolls.
+L85@P1: Foods not considered potentially hazardous include raw whole fruit and vegetables, bread, biscuits,
+L86@P1: crackers and crispbreads and plain cakes.
+L87@P1: For more information, see:
+L88@P1: • Managing potentially hazardous foods
+L89@P1-2: • Potentially hazardous foods: Foods that require temperature control for safety (pdf 404 KB).Standard 3.2.2A guideline for food retailers
+L90@P2: FA560/2311 3
+L91@P2: Categories under the Standard
+L92@P2: Standard 3.2.2A classifies businesses into 2 categories, depending on their activities.
+L93@P2: If a business engages in the activities of both category one and category two, it is deemed a category
+L94@P2: one business. The requirements are based on the highest-risk activities, and are designed to
+L95@P2: strengthen the business’s food safety management.
+L96@P2: Category one businesses
+L97@P2: Category one businesses process potentially hazardous food into a food that is ready-to-eat and
+L98@P2: potentially hazardous and serve it to consumers. Processing means chopping, cooking, drying,
+L99@P2: fermenting, heating, thawing and washing, or a combination of these.
+L100@P2: Category one businesses must implement all 3 tools:
+L101@P2: • have a qualified onsite Food Safety Supervisor
+L102@P2: • ensure all food handlers have appropriate skills and knowledge of food safety and hygiene
+L103@P2: • be able to show their food is safe.
+L104@P2: Examples of category one food retailers
+L105@P2: • A supermarket cooks roast chickens onsite for sale. In this example, potentially hazardous food is
+L106@P2: processed (cooked) into a food that is potentially hazardous and sold ready-to-eat.
+L107@P2: • A supermarket or deli makes and/or cooks food onsite that is sold as ready-to-eat food, such as
+L108@P2: sushi, quiches, potato bakes, pasta salads, chopped salads and/or fried chicken. The food is held
+L109@P2: on display (either refrigerated, or hot) and the products are packaged by staff for each customer.
+L110@P2: • A supermarket seafood section thaws frozen cooked seafood, such as prawns, for sale. In this
+L111@P2: example, the potentially hazardous food is processed (thawed) and served ready-to-eat.
+L112@P2: • A supermarket bakery makes and sells custard tarts, quiches and fresh cream buns.
+L113@P2: Category two businesses
+L114@P2: Category two businesses sell or serve unpackaged, potentially hazardous, ready-to-eat food they
+L115@P2: have not made themselves. The business might remove packaging before serving, or receive the food
+L116@P2: unpackaged (for example, from a manufacturer). These businesses only slice, weigh, repack, reheat
+L117@P2: or hot-hold the food, but do not process it in any other way.
+L118@P2: Category two businesses must implement tools 1 and 2 in the Standard:
+L119@P2: • have a qualified onsite Food Safety Supervisor
+L120@P2: • ensure all food handlers have appropriate skills and knowledge of food safety and hygiene.
+L121@P2: Examples of category two food retailers
+L122@P2: • A supermarket receives bulk deli meats from a manufacturer and slices them on site. The sliced
+L123@P2: meat is held in a refrigerated display unit and placed in a bag and weighed for each customer.
+L124@P2: • A supermarket deli receives ready-to-eat salads in a bulk bag to portion and serve. The bag is
+L125@P2: opened and the salad placed into a container in a refrigerated display unit, where customers can
+L126@P2-3: pick an amount to be weighed and packaged for them by staff. Standard 3.2.2A guideline for food retailers
+L127@P3: FA560/2311 4
+L128@P3: • A convenience store receives packaged pies, pasties and sausage rolls from a local caterer. The
+L129@P3: business unpackages these products, reheats them and then hot holds them in a display oven.
+L130@P3: The products are placed in a bag for sale to the consumer.
+L131@P3: • A greengrocer receives whole fruit and vegetables and slices it into individual portions that are sold
+L132@P3: as ready-to-eat, for fruit salad and snack packs of carrots and celery.
+L133@P3: • A greengrocer selling unpackaged, ready-to-eat sprouts.
+L134@P3: • A greengrocer offers a fresh juice service, where fruit is cut and fed into a juicer. Juices may be
+L135@P3: made to order and/or bottled onsite for sale but are not wholesaled.
+L136@P3: Exclusions
+L137@P3: In NSW, Standard 3.2.2A does not apply to the following:
+L138@P3: • the handling or sale of food for the purpose of raising funds solely for community or charitable
+L139@P3: causes, and providing food for free
+L140@P3: • food businesses licensed with the NSW Food Authority
+L141@P3: • businesses that only manufacture or wholesale food with no direct sale to consumers
+L142@P3: • businesses that do not serve or sell unpackaged food that is potentially hazardous and ready-toeat
+L143@P3: • greengrocers that sell only whole fruit and vegetables.
+L144@P3: If you are still unsure whether the Standard applies to your circumstances, try our quiz for businesses,
+L145@P3-4: or phone the Food Authority helpline on 1300 552 406.Standard 3.2.2A guideline for food retailers
+L146@P4: FA560/2311 5
+L147@P4: Tool 1 - Food Safety Supervisor (FSS)
+L148@P4: The Food Safety Supervisor (FSS) requirement is not new in NSW – many businesses are already
+L149@P4: required to appoint at least one per premises. Prior to the introduction of Standard 3.2.2A,
+L150@P4: supermarkets, delicatessens and greengrocers were exempt from the FSS requirement – they now
+L151@P4: have until 8 December 2024 to comply.
+L152@P4: Food businesses in NSW must appoint a certified Food Safety Supervisor if they prepare and serve
+L153@P4: food that is:
+L154@P4: • unpackaged
+L155@P4: • potentially hazardous (requires temperature control)
+L156@P4: • ready-to-eat.
+L157@P4: An FSS is someone associated with the business who is certified to have skills and knowledge in food
+L158@P4: safety, especially around high-risk foods.
+L159@P4: Food Safety Supervisors give businesses a better level of protection. They:
+L160@P4: Oversee day-to-day
+L161@P4: food handling
+L162@P4: Ensure food safety
+L163@P4: risks are managed
+L164@P4: Share skills and
+L165@P4: knowledge
+L166@P4: Promote positive
+L167@P4: food safety
+L168@P4: practices
+L169@P4: How to become a Food Safety Supervisor
+L170@P4: Food Safety Supervisor training is delivered by approved Registered Training Organisations
+L171@P4: (RTOs). Training is delivered online, face-to-face, in the workplace, or a combination, and can
+L172@P4: generally be completed in one full day. Course costs, set by the RTOs, range from $99 to $200.
+L173@P4: There are 2 learning pathways in NSW to achieve FSS certification – hospitality and retail. Food
+L174@P4: retailers can use either pathway to qualify. In NSW the course must include either:
+L175@P4: Two hospitality units:
+L176@P4: • SITXFSA005 – Use hygiene practices for food safety
+L177@P4: • SITXFSA006 – Participate in safe food handling practices
+L178@P4: OR
+L179@P4: One retail unit: SIRRFSA001 – Handle food safely in a retail environment.
+L180@P4: Certification is valid for 5 years, after which the business has 30 working days to ensure their
+L181@P4: appointed FSS completes recertification training with an approved RTO.
+L182@P4: Nominating a Food Safety Supervisor
+L183@P4: The business nominates their own Food Safety Supervisor. They must have the authority and ability to
+L184@P4: give direction on the safe handling of food. It may be the owner, manager or other paid staff.
+L185@P4: The FSS should work onsite to oversee food handling but they do not have to be there all the time.
+L186@P4-5: Larger retailers may choose to certify more than one FSS to cover shift work and leave. Standard 3.2.2A guideline for food retailers
+L187@P5: FA560/2311 6
+L188@P5: A copy of the FSS certificate must remain on the premises.
+L189@P5: Steps to complying with the Food Safety Supervisor requirement
+L190@P5: 1. Choose who will be the FSS.
+L191@P5: 2. The chosen staff member completes the training and assessment through an approved RTO.
+L192@P5: 3. The FSS receives a Statement of Attainment and a NSW FSS certificate. A copy of the certificate
+L193@P5: must be kept on the business premises.
+L194@P5: 4. After 5 years, the FSS completes recertification training and assessment for an updated NSW FSS
+L195@P5: certificate and an updated Statement of Attainment for the required units of competency.
+L196@P5: 5. More information is available on the Food Authority website:
+L197@P5: • Food Safety Supervisors
+L198@P5: • Approved training providers
+L199@P5-6: • Guideline to Food Safety Supervisor requirements (pdf 555KB) Standard 3.2.2A guideline for food retailers
+L200@P6: FA560/2311 7
+L201@P6: Tool 2 – Food handler training
+L202@P6: Food businesses handling and serving unpackaged, potentially hazardous food, must ensure their
+L203@P6: food handlers have appropriate skills and knowledge in food safety and hygiene. This is different to
+L204@P6: the Food Safety Supervisor requirement. Supermarkets, delis and greengrocers have until 8
+L205@P6: December 2024 to comply with this requirement.
+L206@P6: Businesses can choose how food handlers are trained. They may use or recognise free online food
+L207@P6: safety training programs, past experience, internal training tailored to suit their own procedures, or
+L208@P6: courses from vocational training providers.
+L209@P6: Additional training is not needed if food handlers can already demonstrate adequate skills and
+L210@P6: knowledge for their duties.
+L211@P6: If opting for food handlers to undertake a food handler training course, it must cover:
+L212@P6: Safe handling of
+L213@P6: food
+L214@P6: Temperature control for
+L215@P6: potentially hazardous
+L216@P6: food, understanding the
+L217@P6: temperature danger zone
+L218@P6: Food contamination
+L219@P6: Strategies to separate raw
+L220@P6: and cooked food, allergen
+L221@P6: management, food
+L222@P6: storage, and use of
+L223@P6: separate utensils and
+L224@P6: chopping boards
+L225@P6: Cleaning and
+L226@P6: sanitising
+L227@P6: Correct procedures for
+L228@P6: cleaning then sanitising,
+L229@P6: using food-safe
+L230@P6: chemicals and/or heat
+L231@P6: as a sanitiser
+L232@P6: Personal hygiene
+L233@P6: Obligations for sick
+L234@P6: employees,
+L235@P6: handwashing, uniforms
+L236@P6: and grooming of hair,
+L237@P6: nails and skin.
+L238@P6: Free training available
+L239@P6: The NSW Food Authority’s free online Food Handler Basics training course can help retailers meet
+L240@P6: food handler training obligations under the Food Standards Code.
+L241@P6: The interactive short course covers the basic knowledge required and takes about an hour to
+L242@P6: complete. It is not the same as Food Safety Supervisor training, which is delivered by certified
+L243@P6: registered training organisations.
+L244@P6: • Access Food Handler Basics training
+L245@P6: Steps to complying with the food handler training requirement
+L246@P6: 1. Check whether food handlers have an adequate understanding of the above topics. You may wish
+L247@P6: to refer to the factsheets available at foodauthority.nsw.gov.au/resource-centre.
+L248@P6: 2. Set aside at least 1 hour for each food handler who requires training to complete the Food
+L249@P6: Authority’s free Food Handler Basics course, or develop and deliver in-house training.
+L250@P6: 3. It is recommended you keep a record of training food handlers have completed to show authorised
+L251@P6-7: officers on request. Standard 3.2.2A guideline for food retailers
+L252@P7: FA560/2311 8
+L253@P7: Tool 3 – Showing food is safe
+L254@P7: Retailers that undertake higher risk food handling need to be able to demonstrate safe food practices
+L255@P7: under Standard 3.2.2A of the Code. This requirement ensures businesses are actively monitoring and
+L256@P7: managing key risks related to temperature control, processing, and cleaning and sanitising, which are
+L257@P7: critical for food safety.  Retailers can meet this requirement by either:
+L258@P7: Demonstrating safe
+L259@P7: food handling practices
+L260@P7: Keeping records
+L261@P7: Who this requirement applies to
+L262@P7: This requirement applies to businesses that process potentially hazardous food into a food that is
+L263@P7: ready-to-eat and potentially hazardous, and serve it to consumers. “Process” is defined as chopping,
+L264@P7: cooking, drying, fermenting, heating, thawing and/or washing. Supermarkets, delis and greengrocers
+L265@P7: have until 8 December 2024 to comply with this requirement.
+L266@P7: What needs to be shown
+L267@P7: Businesses must be able to show they are monitoring and managing the following (where applicable):
+L268@P7: Activity  Food safety requirement
+L269@P7: Receipt   A food business must take all practicable measures to ensure it only
+L270@P7: accepts potentially hazardous food (PHF) at a temperature of:
+L271@P7: • 5°C or below; or
+L272@P7: • 60°C or above, unless the business transporting the food
+L273@P7: demonstrates the temperature of the food will not adversely affect its
+L274@P7: microbiological safety due to the time taken to deliver it.
+L275@P7: What needs to be shown: The temperature of PHF when received OR
+L276@P7: the time arrangement with the supplier showing that food safety has not
+L277@P7: been adversely affected during food transport.
+L278@P7: Storage A food business must, when storing PHF, store it under temperature
+L279@P7: control.
+L280@P7: What needs to be shown: The temperature of PHF during storage.
+L281@P7: Display A food business must, when displaying PHF, display it under temperature
+L282@P7: control.
+L283@P7: What needs to be shown: That PHF is displayed at 5°C or below; or
+L284@P7: 60°C or above, or the total time out of temperature control does not
+L285@P7: exceed 4 hours (2 hr/4 hr rule).
+L286@P7-8: ORStandard 3.2.2A guideline for food retailers
+L287@P8: FA560/2311 9
+L288@P8: Transport A food business must, when transporting food, transport PHF under
+L289@P8: temperature control.
+L290@P8: What needs to be shown: That PHF is transported at 5°C or below; or
+L291@P8: 60°C or above, or total time out of temperature control does not exceed 4
+L292@P8: hours (2 hr/4 hr rule).
+L293@P8: Pathogen reduction
+L294@P8: during food
+L295@P8: processing (cooking)
+L296@P8: A food business must, when processing food, where a process step is
+L297@P8: needed to reduce to safe levels any pathogens that may be present in the
+L298@P8: food, use a process step that is reasonably known to achieve the
+L299@P8: microbiological safety of the food.
+L300@P8: What needs to be shown: That pathogen reduction or killing step has
+L301@P8: been used on PHF to achieve safety of the food (destroy pathogens
+L302@P8: potentially present). See Processing food safely for guidance.
+L303@P8: Minimising time during
+L304@P8: food processing
+L305@P8: A food business must, when processing PHF that is not undergoing a
+L306@P8: pathogen control step, ensure that the time the food remains at
+L307@P8: temperatures that permit the growth of infectious or toxigenic
+L308@P8: microorganisms in the food is minimised.
+L309@P8: What needs to be shown: The time that ready-to-eat PHF is in the
+L310@P8: temperature danger zone (between 5°C and 60°C) is minimised and does
+L311@P8: not make the food unsafe (see the 2-hour/4hour rule).
+L312@P8: Cooling food A food business must cool PHF:
+L313@P8: • within 2 hours – from 60°C to 21°C; and
+L314@P8: • within a further 4 hours – from 21°C to 5°C unless the food business
+L315@P8: demonstrates that the cooling process used will not adversely affect
+L316@P8: the microbiological safety of the food.
+L317@P8: What needs to be shown: That cooked PHF has cooled to prescribed
+L318@P8: temperatures within the required timeframes.
+L319@P8: Reheating food
+L320@P8: A food business must, when reheating previously cooked and cooled
+L321@P8: potentially hazardous food to hold it hot, use a heat process that rapidly
+L322@P8: heats the food to a temperature of 60°C or above, unless the food
+L323@P8: business demonstrates that the heating process used will not adversely
+L324@P8: affect the microbiological safety of the food.
+L325@P8: What needs to be shown: That cooked and cooled PHF is reheated
+L326@P8: rapidly (within 2 hours) to 60°C or above.
+L327@P8: Cleaning and
+L328@P8: sanitising
+L329@P8: A food business must ensure the following equipment is in a clean and
+L330@P8: sanitary condition in the circumstances set out below:
+L331@P8: • eating and drinking utensils - immediately before each use; and
+L332@P8: • food contact surfaces of equipment - whenever food that will come into
+L333@P8: contact with the surface is likely to be contaminated.
+L334@P8: What needs to be shown: That eating and drinking utensils and food
+L335@P8: contact surfaces have been cleaned and sanitised when required (see
+L336@P8-9: Cleaning and sanitising surfaces and utensils (PDF, 384KB)).Standard 3.2.2A guideline for food retailers
+L337@P9: FA560/2311 10
+L338@P9: Keeping records
+L339@P9: ‘Records’ are documents or objects kept for the information they contain, or can be obtained from
+L340@P9: them. Examples include writing on invoices or templates, photos or footage, data logger information,
+L341@P9: and verified written instructions, such as a validated recipe or standard operating procedure (SOP).
+L342@P9: If making records, they should include the date (and time, if appropriate) and the food or activity it
+L343@P9: relates to. Records should be made each day the business handles unpackaged potentially hazardous
+L344@P9: food, unless it can be shown in another way requirements are being met. Once made, records must
+L345@P9: be kept for 3 months.
+L346@P9: Templates available
+L347@P9: A range of free templates are available to help businesses record food temperatures and their
+L348@P9: cleaning and sanitising activities on the Food Authority website at Showing food is safe.
+L349@P9: Demonstrating safe practices
+L350@P9: Records are not needed if the business can show in another way it has adequately managed food
+L351@P9: safety risks.
+L352@P9: This could include having a written instruction sheet or standard operating procedure, and/or being
+L353@P9: able to walk and talk an authorised officer through their food handling practices and processes.
+L354@P9: Steps to complying with the showing food is safe requirement
+L355@P9: • Ensure food handlers are capable of demonstrating safe food handling practices and processes to
+L356@P9: an authorised officer, or
+L357@P9: • Have a written instruction sheet or standard operating procedure that is followed for each of the
+L358@P9: activities above, or
+L359@P9: • Keep records of important food safety information, including how you have safely received, stored,
+L360@P9: processed, displayed, and transported potentially hazardous food, and cleaned and sanitised.
+L361@P9: See Standard 3.2.2A – showing food is safe for more information on this tool.
+L362@P9: More information
+L363@P9: • Visit the Food Authority website:
+L364@P9: o foodauthority.nsw.gov.au/safetytools
+L365@P9: o Standard 3.2.2A - Frequently asked questions
+L366@P9: o Standard 3.2.2A - quiz for businesses
+L367@P9: • Phone the Food Authority helpline on 1300 552 406
+L368@P9: • Email food.contact@dpi.nsw.gov.au
+L369@P9: © State of New South Wales through Regional NSW 2023. The information contained in this publication is based on knowledge and
+L370@P9: understanding at the time of writing November, 2023. However, because of advances in knowledge, users are reminded of the need to
+L371@P9: ensure that the information upon which they rely is up to date and to check the currency of the information with the appropriate officer of the
+L372@P9: Regional NSW or the user’s independent adviser.
+

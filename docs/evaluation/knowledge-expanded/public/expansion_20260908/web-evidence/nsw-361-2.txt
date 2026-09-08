@@ -1,0 +1,443 @@
+ (https://www.foodauthority.nsw.gov.au/media/8631)
+citeturn128view0 [wordlim: 200] Crawled: today; Content type: application/pdf; Number of pages: 20; Source: open({"ref_id":"https://www.foodauthority.nsw.gov.au/media/8631","lineno":553}); Total lines: 554
+L113@P5: Studies have been done that show food can be safely held out of temperature control for short periods of
+L114@P5: time without significantly increasing the risk of food poisoning. The time for which food can be safely held
+L115@P5: between 5°C and 60°C is commonly referred to as the ‘2-hour/4-hour rule’ and is applied as follows:
+L116@P5: Total time food is between 5°C and 60°C
+L118@P5: reduce or eliminate any pathogenic bacteria present in the food.
+L119@P5: The NSW Food Authority and local councils recognise the 2-hour/4-hour rule as a validated alternative means
+L120@P5: of compliance with temperature control requirements in the Food Standards Code. However, it must be
+L121@P5: used correctly.
+L122@P5: This guideline has been prepared to help retail businesses apply the 2-hour/4-hour rule correctly to ensure
+L123@P5: compliance with Food Standards Code requirements.
+L124@P5: 1 hour
+L125@P5: 3 hours 2 hours
+L126@P5: 4 hours
+L127@P5: 0 to 2 hours
+L128@P5: Use immediately or
+L129@P5: refrigerate ≤ 5°C or
+L130@P5: keep hot ≥ 60°C
+L131@P5: 2 to 4 hours
+L132@P5: Use immediately
+L133@P5: After 4 hours
+L134@P5: Throw away
+L135@P5: After the first 2 hours (red zone)
+L136@P5: the food must be either used up
+L137@P5: within 2 hours or thrown out.
+L138@P5: It cannot be returned to
+L139@P5: refrigeration or reheated at 60°C
+L140@P5: or above (unless cooking for
+L141@P5: immediate consumption).
+L142@P5: Within the first 2 hours (green zone)
+L143@P5: there are three options for the food:
+L144@P5: - it can be used immediately,
+L145@P5: - returned to refrigeration at or
+L146@P5: below 5°C, or
+L147@P5: - reheated to 60°C or above.
+L148@P5: BUT you must keep track of this time
+L149@P5-6: and subtract it from the total 4 hours.7
+L150@P6: How to use the 2-hour/4-hour rule
+L151@P6: To ensure that the 2-hour/4-hour rule is being applied correctly to the retail display or temporary storage of
+L152@P6: potentially hazardous food, there are certain requirements that must be met. You must be able to show how
+L153@P6: you are complying with the rule if asked by an authorised officer from the Food Authority or a local council
+L154@P6: Environmental Health Officer.
+L155@P6: To demonstrate that the 2-hour/4-hour rule is being applied correctly, you will need to:
+L156@P6: • ensure the Food Standards Code requirements are followed for potentially hazardous food and
+L157@P6: ingredients during:
+L158@P6: o receival,
+L159@P6: o storage, and
+L160@P6: o preparation.
+L161@P6: • ensure cold foods are not displayed in direct sunlight or at temperatures above 25°C, as this will allow
+L162@P6: bacteria to quickly increase in numbers.
+L163@P6: • implement a documented system for:
+L164@P6: o monitoring the length of time food is displayed out of temperature control,
+L165@P6: o ensuring the food is appropriately identified, and
+L166@P6: o ensuring food is disposed of appropriately after 4 hours.
+L167@P6: Food which has been in the temperature danger zone for less than 2 hours (during preparation + storage +
+L168@P6: display) can be returned to the refrigerator at or below 5°C or heated to above 60°C and brought out again
+L169@P6: at a later time. However, the total time in the temperature danger zone must not be longer than 4 hours.
+L170@P6: Whatever system you choose to use, you must be able to demonstrate what you have done.
+L171@P6: The documented system can take the form of:
+L172@P6: • a set of work instructions on how the 2-hour/4-hour rule is applied by your business (see Appendix 1
+L173@P6: for an example), or
+L174@P6: • keeping records demonstrating adherence to the time temperature requirements (see Appendix 2 for
+L175@P6: an example).
+L176@P6: If you decide to use the 2-hour/4-hour rule for temperature control but are not able to satisfactorily
+L177@P6: demonstrate that you are applying the rule correctly, then you are in breach of Food Standards Code
+L178@P6: requirements. It could lead to enforcement action being taken against you.
+L179@P6: It is the responsibility of the food business to ensure all food handlers are adequately trained in the use of
+L180@P6-7: the documented work instructions or the completion of records if the 2-hour/4-hour rule is to be applied.8
+L181@P7: Ensure potentially hazardous food and ingredients are handled correctly
+L182@P7: To use the 2-hour/4-hour rule, you must ensure that potentially hazardous foods and ingredients have
+L183@P7: been handled correctly during receival, storage and preparation. If you cannot be sure of this, then you
+L184@P7: cannot satisfactorily demonstrate the use of the 2-hour/4-hour rule.
+L185@P7: Receival of food
+L186@P7: Only receive potentially hazardous foods that have been transported under temperature control.
+L187@P7: • Once you receive potentially hazardous foods, you must place it under refrigerated storage at 5°C or
+L188@P7: less, or keep it hot above 60°C, or place it on display immediately with the time recorded or
+L189@P7: according to your work instructions.
+L190@P7: • You should always check the temperature of food for each batch received. The temperature must be
+L191@P7: below 5°C or above 60°C (as appropriate).
+L192@P7: • Any temperature outside this range should be recorded and the food either rejected or, if there is
+L193@P7: evidence that the food has only been out of temperature control for a short period of time, an
+L194@P7: assessment made as to its safety prior to its use and this time taken off the allowable 4 hours out of
+L195@P7: temperature control during display, preparation, or storage. Any assessment or corrective action
+L196@P7: should be recorded.
+L197@P7: Storage
+L198@P7: You must keep all potentially hazardous foods and ingredients under temperature control until you use or
+L199@P7: display them.
+L200@P7: • Food must be covered during storage to protect against contamination.
+L201@P7: • Cool room temperatures should be checked and recorded periodically to ensure they are running at
+L202@P7: 5°C or below.
+L203@P7: Preparation of ready-to-eat foods
+L204@P7: Because ready-to-eat food is eaten without any further cooking, it is important that you handle it correctly
+L205@P7: and safely. If your business only has a limited amount of storage and display space, you should only
+L206@P7: prepare an amount of food that you can adequately store or display under temperature control.
+L207@P7: • When preparing foods such as sandwiches, limit the amount of time the potentially hazardous
+L208@P7: ingredients (e.g., cooked chicken, ham, fresh cut lettuce) are out of temperature control.
+L209@P7: • Where sandwich ingredients are on display for ready-made sandwiches, the ingredients must be kept
+L210@P7: under temperature control or have the 2-hour/4-hour rule applied to them.
+L211@P7: • It is important to maintain good personal hygiene when preparing ready-to-eat foods.
+L212@P7: The total allowable time food can stay out of temperature control is 4 hours, so any time during transport,
+L213@P7-8: storage or preparation the food spends between 5°C and 60°C must be counted towards this time.9
+L214@P8: Display and use of cooked foods
+L215@P8: If potentially hazardous food has not been cooled safely after cooking, the number of bacteria may be able
+L216@P8: to grow, and it may not be safe for this food to have the 2-hour/4-hour rule applied to it.
+L217@P8: Cold display You must ensure that cooked foods have been cooled in accordance with Food Standards
+L218@P8: Code requirements – that is, cooled to below 21°C within 2 hours and below 5°C within a
+L219@P8: total of 6 hours.
+L220@P8: Hot display You must display cooked foods at 60°C or above, or according to the 2-hour/4-hour rule with
+L221@P8: the time commencing immediately when the coolest part of the food drops below 60°C (i.e.,
+L222@P8: into the temperature danger zone).
+L223@P8: Bain marie and hot display cabinet temperatures should be checked and recorded periodically to ensure
+L224@P8: they are able to maintain food at or above 60°C. If they operate at a lower temperature, the 2-hour/4-hour
+L225@P8: rule is applied.
+L226@P8-9: You must keep cooked foods separate from raw foods to avoid them becoming cross contaminated.10
+L227@P9: Examples showing how the rule should be implemented
+L228@P9: Example A – A shop making fresh sandwiches to order
+L229@P9: A sandwich shop makes sandwiches on demand with all salad and meat ingredients sitting on display
+L230@P9: within a display case. This case typically keeps the ingredients at around 15°C. This is within the
+L231@P9: temperature danger zone.
+L232@P9: 7:00am: All potentially hazardous ingredients have been sitting in the refrigerator
+L233@P9: overnight and have been kept at or below 5°C.
+L234@P9: 8:00am: Sandwich ingredients are taken from the refrigerator and prepared by
+L235@P9: chopping/slicing at room temperature.
+L236@P9: 8:30am: Prepared ingredients are placed into tubs, marked with the preparation
+L237@P9: date and then stored back in the refrigerator (at or below 5°C). This 30 minute of
+L238@P9: preparation time must be counted towards the time the food is out of
+L239@P9: temperature control.
+L240@P9: 11:30pm: The tubs of ingredients are moved into the display case.
+L241@P9: There are several options how to apply the 2-hour/4-hour rule.
+L242@P9: 1:00pm: The tubs can be returned to
+L243@P9: the refrigerator (this equals 2 hours
+L244@P9: out of temperature control,
+L245@P9: including preparation + display
+L246@P9: times). Mark with the time
+L247@P9: remaining.
+L248@P9: 3:00pm: The ingredients must be
+L249@P9: discarded (this equals to 4 hours
+L250@P9: out of temperature control,
+L251@P9: including preparation + display
+L252@P9: times).
+L253@P9: These ingredients may then be
+L254@P9: displayed again in the display case
+L255@P9: the next day for another 2 hours.
+L256@P9: After this time they must be
+L257@P9: discarded (they cannot be returned
+L258@P9: to the refrigerator again).
+L259@P9: Once the ingredients have spent a total of 4 hours in the temperature danger zone they
+L260@P9: must have been used up or discarded.
+L261@P9: Tubs of spare ingredients are kept under refrigeration at or below 5°C until
+L262@P9: needed.
+L263@P9: You must either make a written procedure which the staff will use each day or record the
+L264@P9: times when ingredients and sandwiches are out of refrigeration, and if/when they are
+L265@P9: returned to refrigeration or discarded.
+L266@P9-10: See Appendix 1 and 2 for examples of a work instruction and record sheet for this example.11
+L267@P10: Example B – Cooking and using ingredients
+L268@P10: A sandwich shop receives raw chicken which is cooked and cooled for use in making sandwiches. The shop
+L269@P10: displays these sandwiches at room temperature over the busy lunch period.
+L270@P10: 7:00am: Raw chicken is delivered to the shop at 5°C or below.
+L271@P10: 7:30am: Chicken is cooked to a minimum of 74°C (core temperature). This should be
+L272@P10: checked with a thermometer.
+L273@P10: 9:30am: Chicken is cooled from 60°C to 21°C within 2 hours. Cooling time does not
+L274@P10: count towards the time the food is out of temperature control – provided it meets
+L275@P10: Food Standards Code requirements (Standard 3.2.2).
+L276@P10: 9:30am: Chicken is cut up and used in making sandwiches.
+L277@P10: This takes 30 minutes of preparation time, which must be counted towards the time
+L278@P10: the food is out of temperature control
+L279@P10: There are several options how to apply the 2-hour/4-hour rule
+L280@P10: 10:00am:
+L281@P10: Sandwiches are put
+L282@P10: back into refrigerator
+L283@P10: (at or below 5°C) for
+L284@P10: display later.
+L285@P10: 11:30am: Sandwiches
+L286@P10: have been at room
+L287@P10: temperature for 2 hours
+L288@P10: (including preparation +
+L289@P10: display times). They can
+L290@P10: be placed back in the
+L291@P10: refrigerator for use
+L292@P10: another time.
+L293@P10: 1:30pm:
+L294@P10: Sandwiches
+L295@P10: have been at
+L296@P10: room
+L297@P10: temperature for
+L298@P10: 4 hours
+L299@P10: (including
+L300@P10: preparation +
+L301@P10: display times).
+L302@P10: Sandwiches may be
+L303@P10: displayed for another
+L304@P10: 1½ hours (with 2
+L305@P10: hours still remaining)
+L306@P10: or 3½ hours (must be
+L307@P10: discarded)
+L308@P10: Sandwiches may be
+L309@P10: displayed again in the
+L310@P10: display case the next day
+L311@P10: for another 2 hours. After
+L312@P10: this time they must be
+L313@P10: discarded (they cannot
+L314@P10: be returned to the
+L315@P10: refrigerator again)
+L316@P10: Once the sandwiches have spent a total of 4 hours in the temperature danger zone they must
+L317@P10: have been used up or discarded.
+L318@P10: You must document the cooking and cooling process for the chicken to demonstrate the
+L319@P10: compliance with Standard 3.2.2 of the Food Standards Code. You must also either make a
+L320@P10: written procedure which the staff will use each day or record the times when chicken and
+L321@P10-11: sandwiches are out of refrigeration, and if/when they are returned to refrigeration or discarded.12
+L322@P11: Example C – Receiving cooked ingredients from another business
+L323@P11: A sandwich shop receives chicken that has been cooked that morning by another business.
+L324@P11: 7:00am: Cooked chicken is delivered warm to the sandwich shop.
+L325@P11: You must have a documented arrangement to show how the chicken is cooked
+L326@P11: and cooled by the other business. Unless you can demonstrate that the other
+L327@P11: business cools the chicken in accordance with Food Standards Code requirements,
+L328@P11: you cannot use the 2-hour/4-hour rule and you must either keep the chicken
+L329@P11: below 5°C or above 60°C immediately from the time you received it.
+L330@P11: Example D – Displaying hot food
+L331@P11: A bistro has ready-to-eat potentially hazardous food in display units for sale over the lunch
+L332@P11: and dinner periods. The display units keep the hot food at approximately 45°C (i.e. in the
+L333@P11: temperature danger zone).
+L334@P11: 7:30am: Chicken is cooked to a minimum of 74°C (core temperature) and
+L335@P11: then cooled from 74°C to 60°C. This time does not count toward the 2-
+L336@P11: hour/4-hour rule.
+L337@P11: 9:30am: Because the food is to be displayed hot, the time for applying
+L338@P11: the
+L339@P11: 2-hour/4-hour rule starts when the food first cools below 60°C.
+L340@P11: 1:30pm: Any unused chicken must be discarded as it has been in the
+L341@P11: temperature danger zone for 4 hours.
+L342@P11: You must either make a written procedure which the staff will use each day or
+L343@P11: record the times when the chicken and other foods are in the temperature danger
+L344@P11: zone (i.e. between 5°C and 60°C) and if/when they are returned to refrigeration
+L345@P11: or reheated or discarded.
+L346@P11: Food stored in a heated display unit where the food is maintained at or above 60°C does not need to have
+L347@P11-12: the 2-hour/4-hour rule applied. In this instance, it is complying with the Food Standards Code already. 13
+L348@P12: Example E – Displaying or storing food for multiple times out of refrigerator
+L349@P12: Monday 12:00pm: A leg of ham is removed from the refrigerator at 12 noon on Monday.
+L350@P12: There are several options how to apply the 2-hour/4-hour rule.
+L351@P12: 1:00pm: Ham is at
+L352@P12: room temperature
+L353@P12: for 1 hour then
+L354@P12: returned to the
+L355@P12: refrigerator. It has 3
+L356@P12: hours left.
+L357@P12: 2:00pm: Ham is at
+L358@P12: room temperature
+L359@P12: for
+L360@P12: 2 hours then
+L361@P12: returned to the
+L362@P12: refrigerator It has 2
+L363@P12: hours left.
+L364@P12: 4:00pm: Ham is
+L365@P12: at room
+L366@P12: temperature for
+L367@P12: 4 hours. It has 0
+L368@P12: hours left so it
+L369@P12: must be
+L370@P12: discarded
+L371@P12: Tuesday 12:00 –
+L372@P12: 1:00pm
+L373@P12: Ham is at room
+L374@P12: temperature for 1
+L375@P12: hour. It has 2 hours
+L376@P12: left.
+L377@P12: Tuesday 12:00 –
+L378@P12: 2:00pm
+L379@P12: Ham is at room
+L380@P12: temperature for a
+L381@P12: further 2 hours. It
+L382@P12: cannot be returned
+L383@P12: to the refrigerator. It
+L384@P12: has 0 hours left so it
+L385@P12: Wednesday 12:00 must be discarded. –
+L386@P12: 2:00pm
+L387@P12: Ham is at room
+L388@P12: temperature for a
+L389@P12: further 2 hours. It
+L390@P12: cannot be returned
+L391@P12: to the refrigerator. It
+L392@P12: has 0 hours left so
+L393@P12: must be discarded.
+L394@P12: Once the ham has spent a total of 4 hours in the temperature danger zone it must have
+L395@P12: been used up or discarded.
+L396@P12: You must either make a written procedure which the staff will use each day or record the
+L397@P12: times when foods are out of refrigeration and if/when they are returned to refrigeration
+L398@P12: or discarded.
+L399@P12: Any sandwiches made from this ham must take into account the time the ham has been in the temperature
+L400@P12-13: danger zone and also have the same 2-hour/4-hour rule time limitations applied to them.14
+L401@P13: Why do foods need to be kept under temperature control?
+L402@P13: The temperature range between 5°C and 60°C is the ‘temperature danger zone’ where food poisoning
+L403@P13: bacteria can grow.
+L404@P13: The legal requirement in Standard 3.2.2 of the Food Standards Code requires potentially hazardous food to
+L405@P13: be displayed under temperature control so that bacteria don’t grow in the food. This means:
+L406@P13: • you must minimise the time that food spends in the temperature danger zone to protect your
+L407@P13: customers from food poisoning
+L408@P13: • you need to keep refrigerated food cold (5ºC or below)
+L409@P13: • you need to keep hot foods at hot temperatures (60ºC or above)
+L410@P13: • you can keep foods at another temperature, but only if it is safe to do so.
+L411@P13: If you want to display potentially hazardous food at temperatures between 5°C and 60°C you must
+L412@P13-14: demonstrate this will not affect the safety of the food.15
+L413@P14: Potentially hazardous foods
+L414@P14: In Standard 3.2.2 potentially hazardous food is defined as food that has to be kept at certain temperatures
+L415@P14: to minimise the growth of any pathogenic microorganisms that may be present in the food or to prevent
+L416@P14: the formation of toxins in the food. Examples of potentially hazardous foods include:
+L417@P14: • raw and cooked meat/poultry or foods containing raw or cooked meat/poultry; for example, burgers,
+L418@P14: curries, kebabs, pate and meat pies
+L419@P14: • foods containing eggs (cooked or raw), beans, nuts or other protein-rich food; for example, batter,
+L420@P14: mousse, quiche and tofu
+L421@P14: • dairy products and foods containing dairy products; for example, dairy-based desserts, bakery
+L422@P14: products filled with fresh cream or with fresh custard
+L423@P14: • seafood (excluding live seafood) and foods containing seafood; for example, sushi
+L424@P14: • sprouted seeds, for example beans and alfalfa
+L425@P14: • prepared fruits and vegetables; for example, cut melons, salads and unpasteurised juices
+L426@P14: • cooked rice and both fresh and cooked pasta
+L427@P14: • foods that contain any of the above foods, for example sandwiches, pizzas and rice rolls.
+L428@P14: These foods need to be kept at temperatures that will stop bacteria from growing (i.e., out of the
+L429@P14: temperature danger zone). This is particularly important for ready-to-eat (RTE) foods as these foods will
+L430@P14: not be further cooked prior to being eaten.
+L431@P14: The Food Authority has prepared a separate document on potentially hazardous foods to help distinguish
+L432@P14: whether foods fall within this category, see Potentially hazardous foods – Foods that require temperature
+L433@P14: control for safety at www.foodauthority.nsw.gov.au
+L434@P14: Shelf stable foods
+L435@P14: Shelf stable foods are not subject to the temperature control requirements. Shelf stable foods can be
+L436@P14: displayed at ambient (room) temperatures for the duration of the shelf life of the food. Examples include:
+L437@P14: • whole fruits and vegetables
+L438@P14: • canned food*
+L439@P14: • dried foods
+L440@P14: • pickled or preserved foods
+L441@P14: * If the canned food contains a potentially hazardous food (e.g., canned salmon) it must be kept under
+L442@P14: temperature control once the can is opened, or the food is removed from the can.
+L443@P14: Foods with storage instructions
+L444@P14: When you receive foods that contain directions for use and recommended storage temperatures from the
+L445@P14-15: manufacturer, these instructions must be followed.16
+L446@P15: Alternatives to temperature control other than the 2-hour/4-hour rule
+L447@P15: Enforcement agencies such as the NSW Food Authority and local councils will regard the
+L448@P15: 2-hour/4-hour rule, when used according to these guidelines, as a documented, sound scientific method of
+L449@P15: alternative compliance with the temperature control requirements of the Food Standards Code.
+L450@P15: However, if you want to use a different method of complying with temperature control requirements, then
+L451@P15: the responsibility lies with your business to demonstrate that this will not affect the safety and suitability of
+L452@P15: the food.
+L453@P15: Note that the word ‘demonstrate’ is defined in NSW food safety legislation as:
+L454@P15: ‘…demonstrate to the satisfaction of the NSW Food Authority…’
+L455@P15: To demonstrate to the satisfaction of the NSW Food Authority will require sound scientific evidence. For
+L456@P15: example, that an extension in time will not adversely affect the safety or suitability of the food.
+L457@P15: The amount of time that the food can be safely displayed will vary depending on the type of food and the
+L458@P15: pathogens of concern. You may be required to apply to the Food Authority in writing outlining your
+L459@P15-16: alternative method of compliance.17
+L460@P16: References and further reading
+L461@P16: CSIRO Food & Nutritional Sciences (2010). Make it Safe. A Guide to Food Safety. CSIRO PUBLISHING,
+L462@P16: Collingwood.
+L463@P16: Food Standards Australia New Zealand (2016). Safe Food Australia: A Guide to the Food Safety Standards.
+L464@P16: Canberra. Available at:
+L465@P16: https://www.foodstandards.gov.au/publications/pages/safefoodaustralia3rd16.aspx
+L466@P16: Food Standards Australia New Zealand (2002), Food Safety: Temperature control of potentially hazardous
+L467@P16: foods – Guidance on the temperature control requirements of Standard 3.2.2 Food Safety Practices and
+L468@P16: General Requirements. Food Standards Australia New Zealand, Canberra. Available at:
+L469@P16: http://www.foodstandards.gov.au/publications/documents/FSTemp_control_Edition_for_printing.pdf
+L470@P16: NSW Food Authority (2020). Food safety guidelines for the preparation and display of sushi. Available at:
+L471@P16: https://www.foodauthority.nsw.gov.au/sites/default/files/2021-
+L472@P16: 01/FI366%202011_%20Food%20Safety%20Guidelines%20for%20the%20Preparation%20and%20Display%2
+L473@P16: 0of%20Sushi.pdf
+L474@P16: NSW Food Authority (2008). Potentially hazardous foods: Foods that require temperature control for safety.
+L475@P16: Available at:
+L476@P16-17: https://www.foodauthority.nsw.gov.au/sites/default/files/_Documents/scienceandtechnical/potentiallyhazardous-foods.pdf18
+L477@P17: Appendix 1 – Example work procedure
+L478@P17: Preparing sandwich ingredients
+L479@P17: Receival and storage of ingredients
+L480@P17: • Sandwich ingredients (potentially hazardous) received at or below 5°C.
+L481@P17: • Sandwich ingredients (potentially hazardous) stored at or below 5°C.
+L482@P17: • Cooked ingredients have been cooked and cooled in accordance with Food Standards Code
+L483@P17: requirements (you may need a procedure to show how you do this).
+L484@P17: Preparing ingredients
+L485@P17: • Sandwich ingredients are removed from the refrigerator at 8:00 am.
+L486@P17: • All ingredients are prepared by 8:30 am and placed in tubs.
+L487@P17: • All tubs of ingredients are returned to the cool room.
+L488@P17: • Ingredients tubs for display are labelled with the appropriate coloured dot (or ‘made-on date’), (e.g.,
+L489@P17: Monday – blue; Tuesday – yellow; Wednesday – red; Thursday – green; Friday – black).
+L490@P17: • All prepared ingredients are stored in the cool room until they are removed and placed on display.
+L491@P17: Displaying tubs of sandwich ingredients
+L492@P17: • Ingredient tubs are placed in display case at 11:30 am.
+L493@P17: • Using the 2-hour/4-hour rule the ingredients are displayed for a maximum of 3½ hours until 3:00pm
+L494@P17: (this equals a total of 4 hours to include preparation + display time)
+L495@P17: Leftover ingredients
+L496@P17: • Any ingredients returned to the fridge by 1:00pm (within the 2 total hours, during preparation +
+L497@P17: display) are marked with the time remaining (i.e., 2 hours remaining of the 4 hours which it can be
+L498@P17: displayed for).
+L499@P17: • All unsold ingredients are removed from display at 3:00pm (after 4 total hours, for preparation +
+L500@P17: display) and discarded.
+L501@P17: Prepare a number of work procedures for foods you prepare regularly.
+L502@P17: To demonstrate compliance whenever you are visited by an authorised officer from the NSW Food
+L503@P17: Authority or a local council Environmental Health Officer, you will need to show them the procedure and
+L504@P17: follow it exactly every time sandwich ingredients are prepared and displayed using the 2-hour/4-hour rule.
+L505@P17: If variations to the procedure are required, or any corrective action needs to be taken, these should be
+L506@P17-18: documented to ensure compliance.19
+L507@P18: Appendix 2 – Example records to be kept
+L508@P18: Records that must be kept
+L509@P18: An alternative to a work procedure is keeping records that demonstrate:
+L510@P18: • the date and time the food was prepared and placed on display
+L511@P18: • the time the food was on display
+L512@P18: • whether the food was discarded or returned to the fridge
+L513@P18: • the system used to identify food (e.g., corresponding sticker colour, plate patterns, labelled with ‘made-on’ date).
+L514@P18: Example of records to be kept in demonstrating use of the 2-hour/4-hour rule
+L515@P18: DATE Food product Time food
+L516@P18: removed from
+L517@P18: fridge for
+L518@P18: preparation
+L519@P18: Time food placed in fridge
+L520@P18: after preparation
+L521@P18: Time placed on
+L522@P18: display
+L523@P18: Time product placed in
+L524@P18: fridge/discarded
+L525@P18: Time used up/
+L526@P18: remaining
+L527@P18: Action
+L528@P18: 25/10/10 Sandwich ingredients
+L529@P18: Blue dot
+L530@P18: 8:00 AM/PM 8:30 AM/PM 11:30 AM/PM 3:00 AM/PM 4 hours / 0 hours left  Returned to fridge
+L531@P18:  Discarded
+L532@P18: 26/10/10 Sandwich ingredients
+L533@P18: Yellow dot
+L534@P18: 8:00 AM/PM 8:30 AM/PM 11:30 AM/PM 1:00 AM/PM 2 hours / 2 hours left  Returned to fridge
+L535@P18:  Discarded
+L536@P18: 27/10/10 Sandwich ingredients
+L537@P18: Yellow dot
+L538@P18: N/A N/A 11:00 AM/PM 1:00 AM/PM 2 hours / 0 hours left  Returned to fridge
+L539@P18:  Discarded
+L540@P18: AM/PM AM/PM  Returned to fridge
+L541@P18:  Discarded
+L542@P18: Corrective action: _____________________________________________________________________________________________________________
+L543@P18: To demonstrate compliance whenever you are visited by an authorised officer from the NSW Food Authority or a local council Environmental Health Officer, you will need to show them
+L544@P18: these records for every time sandwich ingredients are prepared and displayed using the 2-hour/4-hour rule. If variations or corrective action is required, these should be documented to
+L545@P18-19: ensure compliance20
+L546@P19: The NSW Food Authority is the regulator and source of truth for food safety in NSW, underpinned by science in an evidence-based approach
+L547@P19: from paddock to plate.
+L548@P19: Note: This information is a general summary and cannot cover all situations. Food businesses are required to comply with all provisions of the
+L549@P19: Food Standards Code and the Food Act 2003 (NSW).
+L550@P19: January/2023
+L551@P19: FI410/2301
+L552@P19: 
+L553@P19: This page is intentionally blank
+

@@ -1,0 +1,13 @@
+{
+  "chunk_count": null,
+  "dataset": "expanded-stress-only",
+  "isolation": "separate indexes; clones never count toward quality documents or 300 questions",
+  "quality_denominator": false,
+  "source_manifest": "full.json",
+  "status": "not_materialized_requires_actual_parser_chunks",
+  "targets_chunk_count": [
+    10000,
+    50000,
+    100000
+  ]
+}
