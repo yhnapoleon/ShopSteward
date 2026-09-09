@@ -184,6 +184,16 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/documents/{document_id}/versions/{version_id}",
         "/api/v1/documents/{document_id}/versions/{version_id}/content",
         "/api/v1/documents/{document_id}/control",
+        "/api/v1/work-items",
+        "/api/v1/work-items/{item_id}",
+        "/api/v1/work-items/{item_id}/messages",
+        "/api/v1/work-items/{item_id}/mission",
+        "/api/v1/work-items/{item_id}/control",
+        "/api/v1/missions/{mission_id}/work-item",
+        "/internal/v1/work-items",
+        "/internal/v1/work-items/{item_id}/claim",
+        "/internal/v1/work-items/{item_id}/context",
+        "/internal/v1/work-items/{item_id}/updates",
         *K2_ROUTES,
     }
     assert schema["paths"]["/api/v1/monitoring/status"]["get"]["security"] == [{"UserBearer": []}]
@@ -300,3 +310,11 @@ def test_embedded_upload_provenance_keeps_constraints_without_orphan_refs():
     validator.validate({"title": "Example", "provenance": {"synthetic": True}})
     assert list(validator.iter_errors({"title": "Example", "provenance": {"synthetic": "yes"}}))
     assert "#/$defs/" not in json.dumps(metadata)
+
+
+async def test_intake_capabilities_remain_available_with_production_docs_disabled():
+    async with client_for(make_app(app_env="production")) as client:
+        assert (await client.get("/openapi.json")).status_code == 404
+        response = await client.get("/api/v1/me", headers={"Authorization": "Bearer " + VIEWER})
+        assert response.status_code == 200
+        assert set(response.json()["capabilities"]) == {"work_intake", "plan_revision"}

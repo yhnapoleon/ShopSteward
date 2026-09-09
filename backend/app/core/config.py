@@ -44,6 +44,8 @@ class Settings(BaseSettings):
     knowledge_service_key: SecretStr | None = Field(default=None, repr=False)
     knowledge_http_timeout_seconds: float = Field(default=8, gt=0, le=8)
     knowledge_delivery_lease_seconds: int = Field(default=30, ge=15, le=300)
+    # External intake processor; independent of the existing mission Agent.
+    work_processor_enabled: bool = False
     agent_enabled: bool = False
     agent_base_url: str = "https://api.openai.com/v1"
     agent_model: str = "gpt-4.1-mini"

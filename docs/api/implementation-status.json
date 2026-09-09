@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-09-07",
+  "updated_at": "2026-09-09",
   "application_version": "0.1.0",
-  "work_package": "K0 baseline + K1 knowledge document management",
+  "work_package": "Runtime implementations including work intake; AI intent/dispatch remains external",
   "runtime_schema": "backend.runtime.openapi.json",
   "implemented_operation_ids": [
     "list_alerts",
@@ -16,6 +16,9 @@
     "configure_agent_followup",
     "list_agent_knowledge",
     "edit_agent_knowledge",
+    "list_agent_progress_events",
+    "stream_agent_progress_events",
+    "get_agent_historical_evidence",
     "call_agent_tool",
     "get_dashboard",
     "list_mission_timeline",
@@ -26,6 +29,7 @@
     "list_ledger_entries",
     "decide_plan",
     "get_action",
+    "revise_plan",
     "get_current_user",
     "list_visible_stores",
     "health_live",
@@ -51,9 +55,23 @@
     "get_knowledge_version",
     "download_knowledge_original",
     "control_knowledge_document",
+    "request_knowledge_index",
+    "get_knowledge_index",
+    "retry_knowledge_index",
+    "publish_knowledge_generation",
+    "create_work_item",
+    "list_work_items",
+    "get_work_item",
+    "send_work_message",
+    "open_mission_work_item",
+    "accept_work_mission",
+    "control_work_item",
+    "pending_work_items",
+    "claim_work_item",
+    "publish_work_update",
+    "read_work_context",
     "create_dev_scenario",
-    "advance_dev_scenario",
-    "revise_plan"
+    "advance_dev_scenario"
   ],
   "registered_job_types": [
     "worker_probe",
@@ -126,5 +144,13 @@
       "Agent tools",
       "UI"
     ]
+  },
+  "work_intake": {
+    "date": "2026-09-09",
+    "migration": "0013_work_intake",
+    "status": "implemented_and_verified",
+    "scope": "Persistent work intake, frontend continuity and external adapter handoff; no model or intent classifier",
+    "spec": "backend/app/work_items/README.md",
+    "verification": "docs/reports/work-intake-verification.md"
   }
 }

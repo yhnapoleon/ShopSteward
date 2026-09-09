@@ -1,5 +1,10 @@
 # Backend B0-01 至 B0-07
 
+## 事项入口（2026-09-09）
+
+新增work_items平台承接，迁移0013_work_intake。无需模型即可保存和恢复用户事项；外部Agent接入协议独立于原AGENT_ENABLED，WORK_PROCESSOR_ENABLED默认false。真实处理者尚未接入时不会自动生成答案。[业务、接口及恢复语义](app/work_items/README.md)，[验证边界](../docs/reports/work-intake-verification.md)。
+
+
 <!-- md-alignment-2026-09-08 -->
 ## 任务工作区所需后端支撑（2026-09-08增补）
 

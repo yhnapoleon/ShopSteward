@@ -1,5 +1,10 @@
 # ShopSteward 项目总说明与对话交接
 
+## 用户主动事项与AI接入分工（2026-09-09）
+
+新增统一事项承接层：先保存用户的一件事，再由外部处理者返回追问、进度、结果或已有Mission关联；不把咨询强制建成备货Mission。用户确认建立跟进条件后才调用原Mission创建，每笔采购仍走原审批。本轮只实现前后端承接，意图分类、LangGraph、多模型分发和预测由后续AI实现连接。[实现/协议与待接入](backend/app/work_items/README.md)；[验证边界](docs/reports/work-intake-verification.md)。
+
+
 <!-- md-alignment-2026-09-08 -->
 ### 三阶段任务交互已合并（2026-09-08增补）
 

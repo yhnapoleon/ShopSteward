@@ -21,6 +21,7 @@ from app.operations.router import router as operations_router
 from app.planning.router import router as planning_router
 from app.reporting.read_router import router as read_router
 from app.reporting.router import router as reporting_router
+from app.work_items.router import router as work_router
 
 
 def create_app(settings: Settings | None = None) -> FastAPI:
@@ -78,6 +79,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(operations_router)
     app.include_router(missions_router)
     app.include_router(knowledge_router)
+    app.include_router(work_router)
     if settings.app_env != "production":
         app.include_router(dev_router)
     return app

@@ -1,0 +1,89 @@
+{
+  "checks": [
+    "normal identity capabilities work with OpenAPI documentation disabled",
+    "real committed create + lost response + refresh replays once",
+    "clarification, steering, stale callback rejected, durable forecast + download, mobile",
+    "same item across history and mission association; original dialog retained; purchases zero"
+  ],
+  "errors": [],
+  "store": "store_d5800661227445d7a5799627fbce0e76",
+  "item": "51c90c73-52ee-40d6-91a5-d7ad798a976c",
+  "mission": "2f618094-5471-4953-b0f1-7683eb3f03e5",
+  "model_calls": 0,
+  "purchases": 0,
+  "baseline": "919bcde5ce107610070a63f2e26d1c01e1bed8c4",
+  "date": "2026-09-09",
+  "backend_tests": 108,
+  "frontend_regression_tests": 29,
+  "production_browser_tests": 1,
+  "shared_business_writes": 0,
+  "migration": "0013_work_intake",
+  "verification_boundary": "Real PG/HTTP/Nitro/Vue; deterministic, explicitly labelled adapter. No real model, prediction or procurement acceptance.",
+  "local_runtime": {
+    "migration": "0013_work_intake",
+    "business_fingerprint_before": "9476b7ae36b78a039ded62619632310dd240d882fc4c5682934e1b327c4ae377",
+    "business_fingerprint_after": "9476b7ae36b78a039ded62619632310dd240d882fc4c5682934e1b327c4ae377",
+    "business_unchanged": true,
+    "agent_enabled": false,
+    "work_processor_enabled": false,
+    "restarted": [
+      "api"
+    ]
+  },
+  "source_sha256": {
+    "backend/app/api/router.py": "c907f2a5520282130c9358081ff1d632cb836699476f848d6812ed10c87b6708",
+    "backend/app/core/config.py": "639ba2dd226e2572434c8d783f8cb1877a12bd0f5c58f34e847951a986fb1431",
+    "backend/app/db/session.py": "84204b7d38386494b4ee67e8705e94526828e52644739c7278f9042ad095f2ac",
+    "backend/app/main.py": "c7550ef563f69b33faa8cd9cdc5bf08b5c0159d8180e5bf0c57dcb9698c379c9",
+    "backend/app/reporting/read_schemas.py": "f07558fb9e6c7cc9c8cb70192cba40dea658e6bdc9620b642e06a54f3d98ec14",
+    "backend/app/work_items/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/app/work_items/models.py": "5d0f1266dc97e962cc45b8b302e2bc47555e40fbe85b5ad079daa0c8199c5dfe",
+    "backend/app/work_items/repository.py": "a6fa3e8d01431f912392d41f2740aeeeac506191df9aeefb216be1fa42393090",
+    "backend/app/work_items/router.py": "026ea95b692b8bc0fccbc7ff6f5bddf5148d7b7dbe598b99d29fba8ecfd69b48",
+    "backend/app/work_items/schemas.py": "f83e2e9b1a5f3292894ee3137adc176b1c6813bb015e949f451f5637c5440c9b",
+    "backend/migrations/env.py": "3b3f6dab45f1921bf7032f496c46b502fdb8a3478f8b66b2b75424936490d70a",
+    "backend/migrations/versions/0013_work_intake.py": "86028097db1415ad7b1e72fe19b22b00e2684c5e6150c20fc7112cd82719e477",
+    "frontend/app/assets/css/work.css": "522fedd662effe4750be2954b4db188628c912d350b11e13b72e43204dbea331",
+    "frontend/app/components/GoalDeck.vue": "5c739ac8bc229defa60a7ea7b882183a5202f705cbcd3ed925e1cf2875f1a14c",
+    "frontend/app/components/TaskWorkspace.vue": "cb86f05aa400ec5dce012595c09f84b83785ecb3defa9af29bdd2478d7764eb2",
+    "frontend/app/components/WorkCard.vue": "c043bee71dfdc0035e4131ff97af4b7e90ec5464358acda29e19f7245592b319",
+    "frontend/app/components/WorkConversation.vue": "5ef55d450e5d59a2792aba718f95f14ec9e65a0c1428300f68182525ecbed3ba",
+    "frontend/app/components/WorkIntake.vue": "7c775a8f09eeb5b622c73f99b5a75e1eedc686880e5859e85cd5ec0fe84e7b39",
+    "frontend/app/components/WorkResult.vue": "7ab5ef9b3c3545fd5ec2b96dece94704cf169bfb5e2791fc600f1c01ae18a0de",
+    "frontend/app/components/WorkWorkspace.vue": "990d23001c37f36d39b10831b81e41d0866e3cdfa952b4e3b64424d7bbf5577b",
+    "frontend/app/composables/useWorkItems.ts": "543e399735d75a0b0e92ad2e833f574634c7dfea35538209cc0c2061325060e8",
+    "frontend/app/pages/index.vue": "1e7857da40b975505059832a8b9a3f4670b63d4e8fb8695f86620e2f3195b449",
+    "frontend/app/types/backend.d.ts": "8f849749348c286e4e4cef0942c6f09d43445b43ca78cc1623aaeeb493755420",
+    "frontend/app/types/models.ts": "6abe53873da1cfce607b3bc96c4702fef96daff715f7ea721043edfe9220f687",
+    "frontend/server/api/session.get.ts": "370e9dce88df8976a589d0084664ad83dbf005bff400f2ca0b97a393a28ec5e3",
+    "frontend/server/utils/backend-routes.ts": "00e8e4db0195ac38edf36fe4f2f849da54409dee50b6fecd6c139d66227fc985",
+    "frontend/server/utils/backend.ts": "3fa3ff08dc02d35b40c45775a4c8b96ef21342249de153bc21518ffdba0c5084"
+  },
+  "live_entry": {
+    "url": "http://127.0.0.1:3000",
+    "work_intake_available": true,
+    "agent_enabled": false,
+    "read_only_browser_verified": true
+  },
+  "review": {
+    "date": "2026-09-09",
+    "scope": "Seven approved intake/platform boundaries; no classifier, model dispatch or prediction implementation",
+    "production_docs_disabled": true,
+    "backend_failures": 0,
+    "frontend_failures": 0,
+    "browser_failures": 0,
+    "skipped": 0,
+    "resolved": [
+      "revoked access retry loop",
+      "lost receipt protection",
+      "single missing item isolation",
+      "recovered list errors",
+      "canonical-only list replacement",
+      "persisted demo provenance",
+      "revoked owner queue blocking",
+      "duplicate mission proposal on linked work",
+      "late cross-store navigation",
+      "production capabilities without OpenAPI"
+    ]
+  }
+}

@@ -6,6 +6,7 @@ export type Session = {
   roles: string[]
   agentEnabled: boolean
   devTools: boolean
+  workIntake?: boolean
   planRevision: boolean
 }
 export type PendingApproval = {
