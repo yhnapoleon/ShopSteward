@@ -214,6 +214,34 @@ export const backendRoutes = [
   ],
   [
     "POST",
+    "/api/v1/work-items"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}"
+  ],
+  [
+    "POST",
+    "/api/v1/work-items/{item_id}/messages"
+  ],
+  [
+    "POST",
+    "/api/v1/missions/{mission_id}/work-item"
+  ],
+  [
+    "POST",
+    "/api/v1/work-items/{item_id}/mission"
+  ],
+  [
+    "POST",
+    "/api/v1/work-items/{item_id}/control"
+  ],
+  [
+    "POST",
     "/dev/v1/scenarios"
   ],
   [

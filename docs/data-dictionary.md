@@ -1,5 +1,10 @@
 # 首批前端数据字典 v1
 
+## 用户主动事项（0013_work_intake，2026-09-09）
+
+新增work_items（用户/店铺/目标、状态及版本、待补问题、下一步、结果、Mission关联/待接受条件、规范事项关联、处理租约）与work_messages（原始消息、角色、历史结果与模拟标识）。恢复与幂等复用command_receipts。咨询处理完成不等于关联Mission完成；业务状态继续从Mission/Plan/Action读取。字段与状态约束由[模块契约](../backend/app/work_items/README.md)和实际OpenAPI维护，不另设经营事实副本。
+
+
 <!-- md-alignment-2026-09-08 -->
 ## Agent过程、证据与成果的数据增补（2026-09-08）
 

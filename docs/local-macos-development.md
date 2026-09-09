@@ -1,5 +1,10 @@
 # macOS 本地开发
 
+## 事项承接本机状态（2026-09-09）
+
+Mac mini开发库已备份并迁移至0013_work_intake，仅更新API进程；模型和新事项处理器均保持关闭，原业务worker/模拟器保留。3000可输入并保存事项，不能据此声称自动理解已接入。字段、接入方法与验证边界见[事项模块](../backend/app/work_items/README.md)及[验证记录](reports/work-intake-verification.md)。其他机器先按原方式应用迁移，再配置受控处理者；不要套用本机进程或备份路径。
+
+
 <!-- md-alignment-2026-09-08 -->
 ## 当前Mac mini接续补充（2026-09-08）
 

@@ -160,6 +160,7 @@ async function recover() {
         ><button class="text-link" @click="emit('open', 'mission')">委托详情</button>
       </div>
     </header>
+    <slot name="intake" />
     <div class="task-mobile-tabs" aria-label="任务内容切换">
       <button :aria-pressed="mobilePanel === 'result'" @click="mobilePanel = 'result'">
         方案与进展</button
@@ -435,8 +436,8 @@ async function recover() {
         :initial="reduce ? false : { opacity: 0, y: 8 }"
         :animate="{ opacity: 1, y: 0 }"
         :transition="{ duration: reduce ? 0 : 0.28 }"
-        ><AgentWorkspace @target="highlight($event, true)"
-      /></motion.div>
+        ><slot name="assistant"><AgentWorkspace @target="highlight($event, true)" /></slot
+      ></motion.div>
     </div>
   </section>
 </template>

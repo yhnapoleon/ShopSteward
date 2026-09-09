@@ -6,12 +6,20 @@ import { downloadFile } from '~/utils/quotations'
 const shop = useShop()
 const { s, mission, stock, product, plan, unresolved, canDecide, hasRole } = shop
 const agent = useAgentConversation(true)
+const work = useWorkItems(true)
+const activeWorks = computed(() =>
+  work.s.items.filter((i) =>
+    i.mission
+      ? !['COMPLETED', 'CANCELLED'].includes(i.mission.status)
+      : !['COMPLETED', 'CANCELLED'].includes(i.status),
+  ),
+)
 const taskRouteError = ref('')
 const viewScroll: Record<string, number> = {}
 const route = useRoute(),
   router = useRouter()
 const view = computed(() =>
-  ['today', 'following', 'journal', 'overview', 'documents', 'task'].includes(
+  ['today', 'following', 'journal', 'overview', 'documents', 'task', 'work'].includes(
     String(route.query.view),
   )
     ? String(route.query.view)
@@ -32,7 +40,7 @@ watch(
     dialog.value = ''
     deck.value = false
     taskRouteError.value = ''
-    if (view.value === 'task') void router.replace({ query: { view: 'today' } })
+    if (['task', 'work'].includes(view.value)) void router.replace({ query: { view: 'today' } })
   },
 )
 let poll: ReturnType<typeof setInterval> | undefined
@@ -54,6 +62,8 @@ onMounted(async () => {
     if (mission.value?.id !== route.query.mission)
       taskRouteError.value = '无法读取这项任务，请返回今日选择可见任务。'
   }
+  if (view.value === 'work' && typeof route.query.item === 'string')
+    await openWork(route.query.item)
   poll = setInterval(() => void shop.pollEnvironment(), 2500)
 })
 onUnmounted(() => {
@@ -72,8 +82,46 @@ async function navigate(next: string) {
   await nextTick()
   window.scrollTo({ top: viewScroll[next] || 0 })
 }
+async function openWork(id: string) {
+  dialog.value = ''
+  taskRouteError.value = ''
+  await work.select(id)
+  await syncWork()
+}
+async function syncWork() {
+  const item = work.s.detail?.item,
+    epoch = work.s.epoch
+  if (!item || item.store_id !== s.storeId) return
+  if (item.mission_id && s.missionId !== item.mission_id) await shop.selectMission(item.mission_id)
+  if (epoch !== work.s.epoch || work.s.detail?.item.id !== item.id || item.store_id !== s.storeId)
+    return
+  await router.push({ query: { view: 'work', item: item.id, store: item.store_id } })
+}
+watch(
+  () => route.query.item,
+  (id) => {
+    if (view.value === 'work' && typeof id === 'string' && id !== work.s.selected) void openWork(id)
+  },
+)
+watch(
+  () => work.s.detail?.item.mission_id,
+  (id) => {
+    if (id && view.value === 'work') void syncWork()
+  },
+)
+watch(
+  () => work.s.detail?.item.id,
+  (id) => {
+    if (id && view.value === 'work' && route.query.item !== id) void syncWork()
+  },
+)
 async function openTask(id = mission.value?.id, panel = 'result') {
   if (!id) return
+  if (work.s.available) {
+    const d = await work.fromMission(id)
+    if (d) await syncWork()
+    return
+  }
   viewScroll[view.value] = window.scrollY
   dialog.value = ''
   taskRouteError.value = ''
@@ -158,6 +206,7 @@ const title = computed(
       overview: '经营概览',
       documents: '文档中心',
       task: '任务工作区',
+      work: '事项工作区',
     })[view.value],
 )
 const issue = computed(() =>
@@ -283,7 +332,13 @@ function briefing() {
       <header v-if="!['overview', 'documents'].includes(view)" class="topbar">
         <div class="breadcrumb">
           我的经营空间<AppIcon name="chevron-right" /><b>{{
-            { today: '今日', following: '持续跟进', journal: '经营记录', task: '任务工作区' }[view]
+            {
+              today: '今日',
+              following: '持续跟进',
+              journal: '经营记录',
+              task: '任务工作区',
+              work: '事项工作区',
+            }[view]
           }}</b>
         </div>
         <div class="mobile-header">
@@ -297,7 +352,7 @@ function briefing() {
           </button>
         </div>
       </header>
-      <div v-if="!['overview', 'documents', 'task'].includes(view)" class="page-head">
+      <div v-if="!['overview', 'documents', 'task', 'work'].includes(view)" class="page-head">
         <div>
           <div class="eyebrow">{{ s.connected ? '业务接口已连接' : '经营空间' }}</div>
           <h1>{{ title }}</h1>
@@ -328,6 +383,13 @@ function briefing() {
         {{ s.error }}
         <button class="text-link" @click="act(() => shop.refresh(true))">刷新状态</button>
       </p>
+      <p
+        v-if="(work.s.syncError || work.s.listError || work.s.error) && view !== 'work'"
+        class="notice amber"
+        role="alert"
+      >
+        {{ work.s.syncError || work.s.listError || work.s.error }}
+      </p>
       <div v-if="s.loading" class="empty-decision glass" role="status">正在读取经营数据…</div>
       <div v-else-if="!s.session?.authenticated" class="start-card glass">
         <h2>先连接后端用户身份。</h2>
@@ -346,6 +408,16 @@ function briefing() {
         :session="s.session"
         :catalog="s.catalog"
         @navigate="navigate"
+      />
+      <WorkWorkspace
+        v-else-if="view === 'work'"
+        :issue="issue"
+        :working="Boolean(working)"
+        @open="open"
+        @confirm="prepare"
+        @back="navigate('today')"
+        @navigate="navigate"
+        @changed="syncWork"
       />
       <TaskWorkspace
         v-else-if="view === 'task' && mission && !taskRouteError"
@@ -377,10 +449,36 @@ function briefing() {
         <section class="main-column">
           <div v-if="view === 'today'" id="decision-zone">
             <div class="section-label">
-              需要你决定<span class="small-count">{{ decisionCount }}</span
+              {{ work.s.available ? '正在处理的事情' : '需要你决定'
+              }}<span class="small-count">{{
+                work.s.available
+                  ? activeWorks.length +
+                    (mission && !work.s.items.some((i) => i.mission_id === mission?.id) ? 1 : 0)
+                  : decisionCount
+              }}</span
               ><span class="right">每笔采购单独确认</span>
             </div>
-            <TaskCard v-if="mission" @open="openTask()" />
+            <template v-if="work.s.available">
+              <p v-if="work.s.syncError" class="notice amber" role="alert">
+                {{ work.s.syncError }}
+              </p>
+              <WorkCard
+                v-for="item in activeWorks"
+                :key="item.id"
+                :item="item"
+                @open="openWork(item.id)"
+              />
+              <div v-if="!mission && !activeWorks.length" class="work-intake-inline glass">
+                <WorkIntake @submitted="openWork" />
+              </div>
+              <button v-if="work.s.cursor" class="text-link" @click="work.list(true)">
+                查看更早事项
+              </button>
+            </template>
+            <TaskCard
+              v-if="mission && !work.s.items.some((i) => i.mission_id === mission?.id)"
+              @open="openTask()"
+            />
             <article v-else-if="!s.storeId" class="start-card glass">
               <span class="tag">从示例店铺开始</span>
               <h2>先准备这一轮经营资料。</h2>
@@ -442,7 +540,7 @@ function briefing() {
                 }}
               </button>
             </article>
-            <article v-else-if="!mission" class="start-card glass">
+            <article v-else-if="!mission && !work.s.available" class="start-card glass">
               <span class="tag">从示例店铺开始</span>
               <h2>先把这次备货交代清楚。</h2>
               <p>查看库存与现金，比较补货安排；每笔采购由你确认，之后跟进到货和需求变化。</p>
@@ -460,7 +558,19 @@ function briefing() {
               <p class="channel-note">尚未建立委托，也没有采购。</p>
             </article>
           </div>
-          <template v-if="mission && view === 'following'"
+          <template v-if="work.s.available && view === 'following'"
+            ><WorkCard
+              v-for="item in activeWorks"
+              :key="item.id"
+              :item="item"
+              @open="openWork(item.id)"
+          /></template>
+          <template
+            v-if="
+              mission &&
+              view === 'following' &&
+              !work.s.items.some((i) => i.mission_id === mission?.id)
+            "
             ><div class="section-label">我在跟进<span class="small-count">1</span></div>
             <FollowUpCard
               @pause="open('pause')"
@@ -469,6 +579,16 @@ function briefing() {
               @mission="openTask()"
               @check="act(() => shop.requestCheck())"
           /></template>
+          <template v-if="work.s.available && view === 'journal'"
+            ><WorkCard
+              v-for="item in work.s.items"
+              :key="item.id"
+              :item="item"
+              @open="openWork(item.id)"
+            /><button v-if="work.s.cursor" class="text-link" @click="work.list(true)">
+              查看更早事项
+            </button></template
+          >
           <template v-if="view === 'journal'"
             ><div class="view-toggle">
               <button
@@ -600,7 +720,7 @@ function briefing() {
       </div>
     </main>
   </div>
-  <nav v-if="view !== 'task'" class="workspace-dock" aria-label="经营快捷入口">
+  <nav v-if="!['task', 'work'].includes(view)" class="workspace-dock" aria-label="经营快捷入口">
     <button
       v-if="mission"
       class="dock-agent-entry"
@@ -650,7 +770,13 @@ function briefing() {
     {{ s.busy || s.notice
     }}<button v-if="!s.busy" aria-label="关闭提示" @click="s.notice = ''">×</button>
   </div>
-  <GoalDeck :open="deck" @close="deck = false" @start="start" @quote="open('quote')" />
+  <GoalDeck
+    @submitted="openWork"
+    :open="deck"
+    @close="deck = false"
+    @start="start"
+    @quote="open('quote')"
+  />
   <AppDialog
     :open="Boolean(dialog)"
     :title="labels[dialog] || '经营空间'"

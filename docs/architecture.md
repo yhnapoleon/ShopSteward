@@ -1,5 +1,10 @@
 # 简化架构与分工
 
+## 事项入口层（2026-09-09）
+
+用户自然语言先进入work_items/work_messages，独立于原Mission Agent运行。外部处理者通过服务身份、事项版本与可撤销短租约取得上下文和回传状态；平台不实现意图分类或预测。work_items只关联原Mission及结果，不复制账本；同一用户同一Mission的事项归并保留原消息。用户显式接受备货条件复用create_mission，采购与到货维持原事务和护栏。[完整交接协议](../backend/app/work_items/README.md)。
+
+
 <!-- md-alignment-2026-09-08 -->
 ## 当前任务交互链路补充（2026-09-08）
 
