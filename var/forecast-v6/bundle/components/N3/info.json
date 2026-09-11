@@ -1,0 +1,90 @@
+{
+  "arm": "N3",
+  "seed": 20260910,
+  "best_epochs": 17,
+  "epochs_ran": 17,
+  "training_time": 91.18394329999865,
+  "count": 286400,
+  "best_weekly_mae": null,
+  "history": [
+    {
+      "epoch": 1,
+      "training_loss": 0.8229956003274331
+    },
+    {
+      "epoch": 2,
+      "training_loss": 0.7388000901184935
+    },
+    {
+      "epoch": 3,
+      "training_loss": 0.7201674093081298
+    },
+    {
+      "epoch": 4,
+      "training_loss": 0.6967139098630937
+    },
+    {
+      "epoch": 5,
+      "training_loss": 0.6852513214862547
+    },
+    {
+      "epoch": 6,
+      "training_loss": 0.6753757842159804
+    },
+    {
+      "epoch": 7,
+      "training_loss": 0.6764379179144705
+    },
+    {
+      "epoch": 8,
+      "training_loss": 0.6631974545803816
+    },
+    {
+      "epoch": 9,
+      "training_loss": 0.6567992054417147
+    },
+    {
+      "epoch": 10,
+      "training_loss": 0.6496329942229074
+    },
+    {
+      "epoch": 11,
+      "training_loss": 0.6438786972035243
+    },
+    {
+      "epoch": 12,
+      "training_loss": 0.6395545361961067
+    },
+    {
+      "epoch": 13,
+      "training_loss": 0.6325910019474988
+    },
+    {
+      "epoch": 14,
+      "training_loss": 0.630814697316239
+    },
+    {
+      "epoch": 15,
+      "training_loss": 0.6340384626788134
+    },
+    {
+      "epoch": 16,
+      "training_loss": 0.6244276487494315
+    },
+    {
+      "epoch": 17,
+      "training_loss": 0.6235516290558117
+    }
+  ],
+  "torch_version": "2.14.0+cpu",
+  "parameters": {
+    "weekly_loss_weight": 2.0,
+    "learning_rate": 0.001,
+    "weight_decay": 0.0001,
+    "batch_size": 512,
+    "threads": 4,
+    "device": "cpu",
+    "max_epochs": 17,
+    "patience": 5
+  }
+}

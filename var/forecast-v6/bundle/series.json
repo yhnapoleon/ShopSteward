@@ -1,0 +1,2402 @@
+[
+  {
+    "series_id": "FOODS_1_014_CA_1",
+    "item_id": "FOODS_1_014",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_1_043_WI_3",
+    "item_id": "FOODS_1_043",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_045_CA_4",
+    "item_id": "FOODS_1_045",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_1_051_CA_2",
+    "item_id": "FOODS_1_051",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_1_053_WI_3",
+    "item_id": "FOODS_1_053",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_061_WI_1",
+    "item_id": "FOODS_1_061",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_074_WI_1",
+    "item_id": "FOODS_1_074",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_085_WI_2",
+    "item_id": "FOODS_1_085",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_109_TX_3",
+    "item_id": "FOODS_1_109",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_1_111_CA_2",
+    "item_id": "FOODS_1_111",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_1_138_WI_1",
+    "item_id": "FOODS_1_138",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_146_TX_2",
+    "item_id": "FOODS_1_146",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_1_154_WI_3",
+    "item_id": "FOODS_1_154",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_160_CA_3",
+    "item_id": "FOODS_1_160",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_1_164_WI_2",
+    "item_id": "FOODS_1_164",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_167_WI_1",
+    "item_id": "FOODS_1_167",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_186_WI_1",
+    "item_id": "FOODS_1_186",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_188_WI_1",
+    "item_id": "FOODS_1_188",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_195_CA_3",
+    "item_id": "FOODS_1_195",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_1_209_CA_4",
+    "item_id": "FOODS_1_209",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_1_210_TX_3",
+    "item_id": "FOODS_1_210",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_1_217_WI_2",
+    "item_id": "FOODS_1_217",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_1_219_CA_3",
+    "item_id": "FOODS_1_219",
+    "dept_id": "FOODS_1",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_006_WI_2",
+    "item_id": "FOODS_2_006",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_2_016_TX_3",
+    "item_id": "FOODS_2_016",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_045_TX_1",
+    "item_id": "FOODS_2_045",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_052_WI_1",
+    "item_id": "FOODS_2_052",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_2_091_CA_1",
+    "item_id": "FOODS_2_091",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_094_TX_1",
+    "item_id": "FOODS_2_094",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_106_CA_2",
+    "item_id": "FOODS_2_106",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_122_CA_3",
+    "item_id": "FOODS_2_122",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_125_TX_3",
+    "item_id": "FOODS_2_125",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_143_CA_1",
+    "item_id": "FOODS_2_143",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_148_WI_2",
+    "item_id": "FOODS_2_148",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_2_186_CA_2",
+    "item_id": "FOODS_2_186",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_191_WI_1",
+    "item_id": "FOODS_2_191",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_2_194_TX_3",
+    "item_id": "FOODS_2_194",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_201_TX_2",
+    "item_id": "FOODS_2_201",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_227_CA_3",
+    "item_id": "FOODS_2_227",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_234_CA_2",
+    "item_id": "FOODS_2_234",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_251_TX_2",
+    "item_id": "FOODS_2_251",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_297_CA_3",
+    "item_id": "FOODS_2_297",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_309_TX_1",
+    "item_id": "FOODS_2_309",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_316_TX_1",
+    "item_id": "FOODS_2_316",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_321_WI_3",
+    "item_id": "FOODS_2_321",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_2_347_TX_2",
+    "item_id": "FOODS_2_347",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_367_TX_3",
+    "item_id": "FOODS_2_367",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_368_CA_1",
+    "item_id": "FOODS_2_368",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_2_369_WI_3",
+    "item_id": "FOODS_2_369",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_2_383_WI_2",
+    "item_id": "FOODS_2_383",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_2_384_TX_2",
+    "item_id": "FOODS_2_384",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_2_394_TX_3",
+    "item_id": "FOODS_2_394",
+    "dept_id": "FOODS_2",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_021_CA_1",
+    "item_id": "FOODS_3_021",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_029_TX_2",
+    "item_id": "FOODS_3_029",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_048_TX_3",
+    "item_id": "FOODS_3_048",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_053_TX_2",
+    "item_id": "FOODS_3_053",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_078_WI_3",
+    "item_id": "FOODS_3_078",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_112_CA_4",
+    "item_id": "FOODS_3_112",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_121_WI_1",
+    "item_id": "FOODS_3_121",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_132_TX_1",
+    "item_id": "FOODS_3_132",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_143_CA_3",
+    "item_id": "FOODS_3_143",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_145_CA_1",
+    "item_id": "FOODS_3_145",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_158_WI_2",
+    "item_id": "FOODS_3_158",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_181_CA_2",
+    "item_id": "FOODS_3_181",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_182_CA_3",
+    "item_id": "FOODS_3_182",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_184_CA_4",
+    "item_id": "FOODS_3_184",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_215_CA_4",
+    "item_id": "FOODS_3_215",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_239_TX_1",
+    "item_id": "FOODS_3_239",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_251_CA_3",
+    "item_id": "FOODS_3_251",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_253_TX_1",
+    "item_id": "FOODS_3_253",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_276_TX_2",
+    "item_id": "FOODS_3_276",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_298_WI_3",
+    "item_id": "FOODS_3_298",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_331_WI_3",
+    "item_id": "FOODS_3_331",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_372_CA_2",
+    "item_id": "FOODS_3_372",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_383_CA_4",
+    "item_id": "FOODS_3_383",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_386_CA_4",
+    "item_id": "FOODS_3_386",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_395_TX_2",
+    "item_id": "FOODS_3_395",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_406_CA_2",
+    "item_id": "FOODS_3_406",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_431_WI_2",
+    "item_id": "FOODS_3_431",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_449_CA_4",
+    "item_id": "FOODS_3_449",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_473_TX_3",
+    "item_id": "FOODS_3_473",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_475_TX_1",
+    "item_id": "FOODS_3_475",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_507_CA_4",
+    "item_id": "FOODS_3_507",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_519_WI_3",
+    "item_id": "FOODS_3_519",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_549_TX_3",
+    "item_id": "FOODS_3_549",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_561_CA_1",
+    "item_id": "FOODS_3_561",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_571_CA_2",
+    "item_id": "FOODS_3_571",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_577_WI_3",
+    "item_id": "FOODS_3_577",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_644_TX_1",
+    "item_id": "FOODS_3_644",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_664_CA_2",
+    "item_id": "FOODS_3_664",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_666_WI_2",
+    "item_id": "FOODS_3_666",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_680_TX_2",
+    "item_id": "FOODS_3_680",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_698_WI_1",
+    "item_id": "FOODS_3_698",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_705_CA_4",
+    "item_id": "FOODS_3_705",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_706_TX_1",
+    "item_id": "FOODS_3_706",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "FOODS_3_764_WI_2",
+    "item_id": "FOODS_3_764",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "FOODS_3_788_CA_3",
+    "item_id": "FOODS_3_788",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_814_CA_1",
+    "item_id": "FOODS_3_814",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_822_CA_1",
+    "item_id": "FOODS_3_822",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "FOODS_3_827_CA_1",
+    "item_id": "FOODS_3_827",
+    "dept_id": "FOODS_3",
+    "cat_id": "FOODS",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_004_WI_2",
+    "item_id": "HOBBIES_1_004",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_017_CA_4",
+    "item_id": "HOBBIES_1_017",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_021_CA_2",
+    "item_id": "HOBBIES_1_021",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_022_WI_2",
+    "item_id": "HOBBIES_1_022",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_025_WI_3",
+    "item_id": "HOBBIES_1_025",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_031_CA_1",
+    "item_id": "HOBBIES_1_031",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_038_TX_1",
+    "item_id": "HOBBIES_1_038",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_044_CA_2",
+    "item_id": "HOBBIES_1_044",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_054_WI_2",
+    "item_id": "HOBBIES_1_054",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_072_TX_2",
+    "item_id": "HOBBIES_1_072",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_077_WI_1",
+    "item_id": "HOBBIES_1_077",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_078_WI_3",
+    "item_id": "HOBBIES_1_078",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_079_CA_3",
+    "item_id": "HOBBIES_1_079",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_081_TX_2",
+    "item_id": "HOBBIES_1_081",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_085_TX_2",
+    "item_id": "HOBBIES_1_085",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_090_TX_2",
+    "item_id": "HOBBIES_1_090",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_094_CA_1",
+    "item_id": "HOBBIES_1_094",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_118_CA_3",
+    "item_id": "HOBBIES_1_118",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_124_TX_2",
+    "item_id": "HOBBIES_1_124",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_127_WI_2",
+    "item_id": "HOBBIES_1_127",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_138_WI_1",
+    "item_id": "HOBBIES_1_138",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_141_CA_2",
+    "item_id": "HOBBIES_1_141",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_146_TX_1",
+    "item_id": "HOBBIES_1_146",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_149_TX_2",
+    "item_id": "HOBBIES_1_149",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_151_WI_2",
+    "item_id": "HOBBIES_1_151",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_153_CA_4",
+    "item_id": "HOBBIES_1_153",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_161_WI_1",
+    "item_id": "HOBBIES_1_161",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_163_TX_2",
+    "item_id": "HOBBIES_1_163",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_168_CA_3",
+    "item_id": "HOBBIES_1_168",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_169_TX_1",
+    "item_id": "HOBBIES_1_169",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_171_WI_1",
+    "item_id": "HOBBIES_1_171",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_172_TX_3",
+    "item_id": "HOBBIES_1_172",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_176_TX_1",
+    "item_id": "HOBBIES_1_176",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_186_CA_1",
+    "item_id": "HOBBIES_1_186",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_198_WI_3",
+    "item_id": "HOBBIES_1_198",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_213_TX_1",
+    "item_id": "HOBBIES_1_213",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_223_TX_3",
+    "item_id": "HOBBIES_1_223",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_224_WI_3",
+    "item_id": "HOBBIES_1_224",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_233_TX_3",
+    "item_id": "HOBBIES_1_233",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_234_CA_1",
+    "item_id": "HOBBIES_1_234",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_235_WI_1",
+    "item_id": "HOBBIES_1_235",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_240_WI_1",
+    "item_id": "HOBBIES_1_240",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_243_TX_3",
+    "item_id": "HOBBIES_1_243",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_251_CA_3",
+    "item_id": "HOBBIES_1_251",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_257_CA_4",
+    "item_id": "HOBBIES_1_257",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_277_TX_1",
+    "item_id": "HOBBIES_1_277",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_280_WI_3",
+    "item_id": "HOBBIES_1_280",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_289_WI_1",
+    "item_id": "HOBBIES_1_289",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_310_CA_3",
+    "item_id": "HOBBIES_1_310",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_314_TX_1",
+    "item_id": "HOBBIES_1_314",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_326_CA_3",
+    "item_id": "HOBBIES_1_326",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_330_WI_1",
+    "item_id": "HOBBIES_1_330",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_339_CA_4",
+    "item_id": "HOBBIES_1_339",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_345_TX_2",
+    "item_id": "HOBBIES_1_345",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_349_CA_1",
+    "item_id": "HOBBIES_1_349",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_352_WI_3",
+    "item_id": "HOBBIES_1_352",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_356_WI_2",
+    "item_id": "HOBBIES_1_356",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_357_CA_1",
+    "item_id": "HOBBIES_1_357",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_358_WI_2",
+    "item_id": "HOBBIES_1_358",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_364_CA_2",
+    "item_id": "HOBBIES_1_364",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_373_CA_2",
+    "item_id": "HOBBIES_1_373",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_375_TX_3",
+    "item_id": "HOBBIES_1_375",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_376_TX_3",
+    "item_id": "HOBBIES_1_376",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_1_378_CA_4",
+    "item_id": "HOBBIES_1_378",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_387_CA_1",
+    "item_id": "HOBBIES_1_387",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_394_WI_3",
+    "item_id": "HOBBIES_1_394",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_404_WI_2",
+    "item_id": "HOBBIES_1_404",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_1_413_CA_3",
+    "item_id": "HOBBIES_1_413",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_414_CA_1",
+    "item_id": "HOBBIES_1_414",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_419_CA_4",
+    "item_id": "HOBBIES_1_419",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_1_423_CA_4",
+    "item_id": "HOBBIES_1_423",
+    "dept_id": "HOBBIES_1",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_006_TX_2",
+    "item_id": "HOBBIES_2_006",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_009_CA_2",
+    "item_id": "HOBBIES_2_009",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_012_CA_4",
+    "item_id": "HOBBIES_2_012",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_015_CA_3",
+    "item_id": "HOBBIES_2_015",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_016_WI_1",
+    "item_id": "HOBBIES_2_016",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_2_018_CA_2",
+    "item_id": "HOBBIES_2_018",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_034_TX_3",
+    "item_id": "HOBBIES_2_034",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_036_TX_3",
+    "item_id": "HOBBIES_2_036",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_038_CA_3",
+    "item_id": "HOBBIES_2_038",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_041_CA_2",
+    "item_id": "HOBBIES_2_041",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_047_TX_3",
+    "item_id": "HOBBIES_2_047",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_061_WI_1",
+    "item_id": "HOBBIES_2_061",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_2_064_TX_1",
+    "item_id": "HOBBIES_2_064",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_065_TX_2",
+    "item_id": "HOBBIES_2_065",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_069_CA_4",
+    "item_id": "HOBBIES_2_069",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_071_CA_2",
+    "item_id": "HOBBIES_2_071",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_074_WI_2",
+    "item_id": "HOBBIES_2_074",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_2_078_CA_1",
+    "item_id": "HOBBIES_2_078",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_086_TX_3",
+    "item_id": "HOBBIES_2_086",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_090_CA_4",
+    "item_id": "HOBBIES_2_090",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_095_TX_1",
+    "item_id": "HOBBIES_2_095",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_097_WI_3",
+    "item_id": "HOBBIES_2_097",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_2_106_TX_1",
+    "item_id": "HOBBIES_2_106",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOBBIES_2_115_CA_2",
+    "item_id": "HOBBIES_2_115",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_116_CA_3",
+    "item_id": "HOBBIES_2_116",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_126_WI_3",
+    "item_id": "HOBBIES_2_126",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_2_134_CA_1",
+    "item_id": "HOBBIES_2_134",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOBBIES_2_144_WI_3",
+    "item_id": "HOBBIES_2_144",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOBBIES_2_146_WI_2",
+    "item_id": "HOBBIES_2_146",
+    "dept_id": "HOBBIES_2",
+    "cat_id": "HOBBIES",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_002_TX_1",
+    "item_id": "HOUSEHOLD_1_002",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_019_TX_2",
+    "item_id": "HOUSEHOLD_1_019",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_020_CA_2",
+    "item_id": "HOUSEHOLD_1_020",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_023_CA_1",
+    "item_id": "HOUSEHOLD_1_023",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_039_WI_1",
+    "item_id": "HOUSEHOLD_1_039",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_044_WI_2",
+    "item_id": "HOUSEHOLD_1_044",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_048_CA_4",
+    "item_id": "HOUSEHOLD_1_048",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_075_TX_1",
+    "item_id": "HOUSEHOLD_1_075",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_081_TX_3",
+    "item_id": "HOUSEHOLD_1_081",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_082_CA_4",
+    "item_id": "HOUSEHOLD_1_082",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_086_CA_2",
+    "item_id": "HOUSEHOLD_1_086",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_087_TX_2",
+    "item_id": "HOUSEHOLD_1_087",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_091_CA_2",
+    "item_id": "HOUSEHOLD_1_091",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_096_CA_1",
+    "item_id": "HOUSEHOLD_1_096",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_097_CA_3",
+    "item_id": "HOUSEHOLD_1_097",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_105_CA_4",
+    "item_id": "HOUSEHOLD_1_105",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_122_WI_2",
+    "item_id": "HOUSEHOLD_1_122",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_142_WI_2",
+    "item_id": "HOUSEHOLD_1_142",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_159_TX_1",
+    "item_id": "HOUSEHOLD_1_159",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_189_CA_4",
+    "item_id": "HOUSEHOLD_1_189",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_205_CA_2",
+    "item_id": "HOUSEHOLD_1_205",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_215_TX_3",
+    "item_id": "HOUSEHOLD_1_215",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_218_TX_1",
+    "item_id": "HOUSEHOLD_1_218",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_222_CA_1",
+    "item_id": "HOUSEHOLD_1_222",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_227_CA_1",
+    "item_id": "HOUSEHOLD_1_227",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_253_TX_3",
+    "item_id": "HOUSEHOLD_1_253",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_254_TX_3",
+    "item_id": "HOUSEHOLD_1_254",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_264_WI_3",
+    "item_id": "HOUSEHOLD_1_264",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_270_CA_2",
+    "item_id": "HOUSEHOLD_1_270",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_275_WI_1",
+    "item_id": "HOUSEHOLD_1_275",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_294_TX_2",
+    "item_id": "HOUSEHOLD_1_294",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_296_CA_4",
+    "item_id": "HOUSEHOLD_1_296",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_300_TX_1",
+    "item_id": "HOUSEHOLD_1_300",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_311_WI_3",
+    "item_id": "HOUSEHOLD_1_311",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_317_CA_2",
+    "item_id": "HOUSEHOLD_1_317",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_377_CA_3",
+    "item_id": "HOUSEHOLD_1_377",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_390_TX_1",
+    "item_id": "HOUSEHOLD_1_390",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_428_TX_2",
+    "item_id": "HOUSEHOLD_1_428",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_431_CA_1",
+    "item_id": "HOUSEHOLD_1_431",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_436_TX_1",
+    "item_id": "HOUSEHOLD_1_436",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_437_WI_2",
+    "item_id": "HOUSEHOLD_1_437",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_440_WI_1",
+    "item_id": "HOUSEHOLD_1_440",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_442_CA_2",
+    "item_id": "HOUSEHOLD_1_442",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_446_TX_2",
+    "item_id": "HOUSEHOLD_1_446",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_449_CA_4",
+    "item_id": "HOUSEHOLD_1_449",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_453_CA_4",
+    "item_id": "HOUSEHOLD_1_453",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_490_CA_2",
+    "item_id": "HOUSEHOLD_1_490",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_491_WI_3",
+    "item_id": "HOUSEHOLD_1_491",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_496_CA_4",
+    "item_id": "HOUSEHOLD_1_496",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_1_498_WI_3",
+    "item_id": "HOUSEHOLD_1_498",
+    "dept_id": "HOUSEHOLD_1",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_011_CA_3",
+    "item_id": "HOUSEHOLD_2_011",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_019_CA_3",
+    "item_id": "HOUSEHOLD_2_019",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_028_CA_3",
+    "item_id": "HOUSEHOLD_2_028",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_048_WI_2",
+    "item_id": "HOUSEHOLD_2_048",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_078_CA_4",
+    "item_id": "HOUSEHOLD_2_078",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_084_WI_2",
+    "item_id": "HOUSEHOLD_2_084",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_088_CA_1",
+    "item_id": "HOUSEHOLD_2_088",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_110_TX_1",
+    "item_id": "HOUSEHOLD_2_110",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_120_WI_1",
+    "item_id": "HOUSEHOLD_2_120",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_127_TX_2",
+    "item_id": "HOUSEHOLD_2_127",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_132_TX_3",
+    "item_id": "HOUSEHOLD_2_132",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_141_WI_3",
+    "item_id": "HOUSEHOLD_2_141",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_195_CA_3",
+    "item_id": "HOUSEHOLD_2_195",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_198_CA_1",
+    "item_id": "HOUSEHOLD_2_198",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_202_WI_1",
+    "item_id": "HOUSEHOLD_2_202",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_210_CA_3",
+    "item_id": "HOUSEHOLD_2_210",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_213_CA_4",
+    "item_id": "HOUSEHOLD_2_213",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_4",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_216_TX_3",
+    "item_id": "HOUSEHOLD_2_216",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_235_CA_1",
+    "item_id": "HOUSEHOLD_2_235",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_241_WI_1",
+    "item_id": "HOUSEHOLD_2_241",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_248_CA_2",
+    "item_id": "HOUSEHOLD_2_248",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_266_TX_2",
+    "item_id": "HOUSEHOLD_2_266",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_276_TX_2",
+    "item_id": "HOUSEHOLD_2_276",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_279_CA_3",
+    "item_id": "HOUSEHOLD_2_279",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_280_WI_3",
+    "item_id": "HOUSEHOLD_2_280",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_299_WI_3",
+    "item_id": "HOUSEHOLD_2_299",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_315_CA_3",
+    "item_id": "HOUSEHOLD_2_315",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_329_TX_1",
+    "item_id": "HOUSEHOLD_2_329",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_337_WI_1",
+    "item_id": "HOUSEHOLD_2_337",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_341_TX_1",
+    "item_id": "HOUSEHOLD_2_341",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_1",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_343_WI_2",
+    "item_id": "HOUSEHOLD_2_343",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_345_WI_1",
+    "item_id": "HOUSEHOLD_2_345",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_352_WI_3",
+    "item_id": "HOUSEHOLD_2_352",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_354_WI_3",
+    "item_id": "HOUSEHOLD_2_354",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_379_TX_3",
+    "item_id": "HOUSEHOLD_2_379",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_390_WI_2",
+    "item_id": "HOUSEHOLD_2_390",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_399_TX_3",
+    "item_id": "HOUSEHOLD_2_399",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_402_WI_1",
+    "item_id": "HOUSEHOLD_2_402",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_403_WI_2",
+    "item_id": "HOUSEHOLD_2_403",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_408_WI_1",
+    "item_id": "HOUSEHOLD_2_408",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_1",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_411_CA_1",
+    "item_id": "HOUSEHOLD_2_411",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_428_TX_2",
+    "item_id": "HOUSEHOLD_2_428",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_434_CA_2",
+    "item_id": "HOUSEHOLD_2_434",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_2",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_438_CA_3",
+    "item_id": "HOUSEHOLD_2_438",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_3",
+    "state_id": "CA"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_451_TX_3",
+    "item_id": "HOUSEHOLD_2_451",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_460_TX_3",
+    "item_id": "HOUSEHOLD_2_460",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_3",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_472_WI_2",
+    "item_id": "HOUSEHOLD_2_472",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_2",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_501_TX_2",
+    "item_id": "HOUSEHOLD_2_501",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "TX_2",
+    "state_id": "TX"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_509_WI_3",
+    "item_id": "HOUSEHOLD_2_509",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "WI_3",
+    "state_id": "WI"
+  },
+  {
+    "series_id": "HOUSEHOLD_2_513_CA_1",
+    "item_id": "HOUSEHOLD_2_513",
+    "dept_id": "HOUSEHOLD_2",
+    "cat_id": "HOUSEHOLD",
+    "store_id": "CA_1",
+    "state_id": "CA"
+  }
+]

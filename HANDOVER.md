@@ -353,3 +353,9 @@ simulation目录设置TEST_SIM_DATABASE_URL后执行`..\.venv\Scripts\python.exe
 4. 修改完成后更新PROJECT_CONTEXT的状态/设计变更和本文的现场/待办/验证日期；保存可区分测试、真实HTTP和重启验收的证据，不覆盖历史结论的适用范围。
 
 主要入口：[backend开发设计](docs/backend-development.md)、[simulator契约](docs/simulation-contract.md)、[接口设计/用法](docs/api/README.md)、[实际实现清单](docs/api/implementation-status.json)、[backend启动说明](backend/README.md)、[simulator启动说明](simulation/README.md)。这些用于深入实施，不是先理解交接必须逐份读取的材料。
+
+## 2026-09-11 v6 产品接入完成
+
+主 ShopSteward 已接入独立 v6 ML 服务、后端预测 API/持久化/规划适配、首页预测面板，以及 LangGraph `get_forecast` 取证和引用校验。开发与测试库迁移到 `0012_forecast_v6`；现有采购审批不变。按用户最新要求，界面及 Agent 统一使用“模型推演，仅供参考”，原始日期放详情。
+
+本机 `http://127.0.0.1:3000` 已启动，模型服务8053、后端8000、模拟器8001。便携模型包 `var/forecast-v6/bundle` 已随Git发布，组员按ml/README.md安装验证；私有启动配置沿用现有模型虚拟环境。完整 API、数据模式、规划适用范围、启动方法及验证见 [v6接入报告](docs/reports/forecast-v6-product-integration.md)。真实 Luna 问答已跑通库存→预测→方案并保存结构化预测引用。

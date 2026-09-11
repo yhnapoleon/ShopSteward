@@ -1,5 +1,9 @@
 # ShopSteward
 
+[v6 模型推演：组员安装与复现](ml/README.md) · [前端、后端与 LangGraph 接入说明](docs/reports/forecast-v6-product-integration.md)
+
+`YH` 分支已包含 v6 四组件模型、参考输入与推理代码。拉取后可直接验证推理结果，无需重新训练；界面统一标注“模型推演，仅供参考”。
+
 [项目总说明与对话交接](PROJECT_CONTEXT.md)：新对话先读，包含架构、资料与参考项目索引，以及主干设计/实施状态。
 
 按团队职责划分的项目。backend已完成B0-01至B0-05：业务事实、Mission/规划、警报/看板/历史、审批采购与回执核对；显式推进的完整SC01已验证。下一步为B0-06周期调度。

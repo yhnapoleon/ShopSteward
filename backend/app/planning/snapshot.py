@@ -6,6 +6,8 @@ from pydantic import ValidationError
 from sqlalchemy import func, select, text
 
 from app.core.hashing import digest
+from app.forecast_v6.models import ForecastV6Binding
+from app.forecast_v6.repository import read_current
 from app.missions.models import InboundRow, MissionRow
 from app.operations.models import ForecastRow, OfferRow, SourceCursor
 from app.operations.repository import get_state
@@ -152,9 +154,22 @@ async def prepare(db, mission_id, settings):
             if not offer.valid_from <= now < offer.valid_until or offer.currency != state.currency:
                 prepared.reason = "OFFER_EXPIRED"
                 return prepared
-            forecast, renewal = FixedForecastProvider().read(
-                forecast_row, stock, state, cursor, now, settings.fixed_forecast_ttl_seconds
+            binding = (
+                await session.get(ForecastV6Binding, (state.store_id, stock.sku_id))
+                if settings.forecast_v6_enabled
+                else None
             )
+            if binding is not None and binding.activate_for_planning:
+                current = await read_current(session, state.store_id, stock.sku_id, settings, now)
+                if current["status"] != "READY" or not current["usable_for_planning"]:
+                    prepared.reason = "FORECAST_UNAVAILABLE"
+                    return prepared
+                forecast = v6_snapshot(current["forecast"], stock, cursor)
+                renewal = None
+            else:
+                forecast, renewal = FixedForecastProvider().read(
+                    forecast_row, stock, state, cursor, now, settings.fixed_forecast_ttl_seconds
+                )
             rows = list(
                 await session.scalars(
                     select(InboundRow)
@@ -204,3 +219,32 @@ async def prepare(db, mission_id, settings):
         except (ValueError, KeyError, TypeError, ValidationError):
             prepared.reason = "INVALID_FORECAST_OR_OFFER"
         return prepared
+
+
+def v6_snapshot(document, stock, cursor):
+    return ForecastSnapshot(
+        forecast_id=document["forecast_id"],
+        # Execution compares this business projection version with stock. The v6 evidence
+        # is separately identified by forecast_id/model_version and store.state_version.
+        forecast_version=stock.forecast_version,
+        store_id=document["store_id"],
+        sku_id=document["sku_id"],
+        remaining_demand=document["predicted_quantity"],
+        unit="piece",
+        data_as_of=timestamp(document["horizon_start"]),
+        source_sequence=cursor.last_sequence,
+        horizon_start=timestamp(document["horizon_start"]),
+        horizon_end=timestamp(document["horizon_end"]),
+        valid_until=timestamp(document["valid_until"]),
+        source="model",
+        model_name=document["model_name"],
+        model_version=document["model_version"],
+        assumptions=list(document["assumptions"])
+        + [
+            "Explicitly imported observed history; v6 activated for planning.",
+            "MVP uses the full seven-day sum only at the first forecast day at UTC midnight; "
+            "later instants are unavailable because reliable remaining demand is not established.",
+            "forecast_version tracks the business projection; "
+            "forecast_id/model_version identify v6 evidence.",
+        ],
+    )

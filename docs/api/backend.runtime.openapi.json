@@ -3231,6 +3231,354 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/stores/{store_id}/forecast/model": {
+      "get": {
+        "tags": [
+          "Forecast v6"
+        ],
+        "summary": "Model",
+        "operationId": "get_forecast_v6_model",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Store Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastV6Model"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/stores/{store_id}/forecast": {
+      "get": {
+        "tags": [
+          "Forecast v6"
+        ],
+        "summary": "Current",
+        "operationId": "get_forecast_v6",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Store Id"
+            }
+          },
+          {
+            "name": "sku_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Sku Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastV6Current"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
+    "/api/v1/stores/{store_id}/forecast/refresh": {
+      "post": {
+        "tags": [
+          "Forecast v6"
+        ],
+        "summary": "Refresh",
+        "operationId": "refresh_forecast_v6",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Store Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForecastV6Refresh"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForecastV6Current"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        }
+      }
+    },
     "/api/v1/me": {
       "get": {
         "tags": [
@@ -5217,6 +5565,91 @@
                           ],
                           "title": "Visibility",
                           "type": "string"
+                        },
+                        "provenance": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "source_kind": {
+                                  "default": "document",
+                                  "maxLength": 64,
+                                  "title": "Source Kind",
+                                  "type": "string"
+                                },
+                                "source_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Family Id"
+                                },
+                                "scenario_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Scenario Family Id"
+                                },
+                                "source_url": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 2000,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Url"
+                                },
+                                "publisher": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 300,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Publisher"
+                                },
+                                "jurisdiction": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 100,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Jurisdiction"
+                                },
+                                "synthetic": {
+                                  "default": false,
+                                  "title": "Synthetic",
+                                  "type": "boolean"
+                                }
+                              },
+                              "title": "Provenance",
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         }
                       },
                       "required": [
@@ -5904,6 +6337,91 @@
                           "minimum": 1,
                           "title": "Expected Metadata Version",
                           "type": "integer"
+                        },
+                        "provenance": {
+                          "anyOf": [
+                            {
+                              "additionalProperties": false,
+                              "properties": {
+                                "source_kind": {
+                                  "default": "document",
+                                  "maxLength": 64,
+                                  "title": "Source Kind",
+                                  "type": "string"
+                                },
+                                "source_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Family Id"
+                                },
+                                "scenario_family_id": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 128,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Scenario Family Id"
+                                },
+                                "source_url": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 2000,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Source Url"
+                                },
+                                "publisher": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 300,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Publisher"
+                                },
+                                "jurisdiction": {
+                                  "anyOf": [
+                                    {
+                                      "maxLength": 100,
+                                      "type": "string"
+                                    },
+                                    {
+                                      "type": "null"
+                                    }
+                                  ],
+                                  "title": "Jurisdiction"
+                                },
+                                "synthetic": {
+                                  "default": false,
+                                  "title": "Synthetic",
+                                  "type": "boolean"
+                                }
+                              },
+                              "title": "Provenance",
+                              "type": "object"
+                            },
+                            {
+                              "type": "null"
+                            }
+                          ]
                         }
                       },
                       "required": [
@@ -6487,6 +7005,576 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/documents/{document_id}/versions/{version_id}/index-jobs": {
+      "post": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Request Index",
+        "operationId": "request_knowledge_index",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "version_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Version Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IndexRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexProgress"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}": {
+      "get": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Index Progress",
+        "operationId": "get_knowledge_index",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Request Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexProgress"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}/retry": {
+      "post": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Retry Index",
+        "operationId": "retry_knowledge_index",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "request_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Request Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IndexProgress"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/documents/{document_id}/publications": {
+      "post": {
+        "tags": [
+          "Knowledge"
+        ],
+        "summary": "Publish",
+        "operationId": "publish_knowledge_generation",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "document_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Document Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Activation"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PublicationResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          },
+          "413": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Request Entity Too Large"
+          }
+        },
+        "x-phase": "K2",
+        "x-implementation-status": "implemented"
+      }
+    },
     "/dev/v1/scenarios": {
       "post": {
         "tags": [
@@ -6901,6 +7989,75 @@
           "next_cursor"
         ],
         "title": "ActionList"
+      },
+      "Activation": {
+        "properties": {
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "version_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version Id"
+          },
+          "generation_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Generation Id"
+          },
+          "manifest_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Manifest Hash"
+          },
+          "expected_publication_revision": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Expected Publication Revision"
+          },
+          "replace_version_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Replace Version Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "version_id",
+          "generation_id",
+          "manifest_hash",
+          "expected_publication_revision"
+        ],
+        "title": "Activation"
       },
       "Alert": {
         "properties": {
@@ -7800,6 +8957,11 @@
             "type": "integer",
             "title": "Metadata Version"
           },
+          "evidence_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Evidence Revision"
+          },
           "status": {
             "type": "string",
             "enum": [
@@ -7828,8 +8990,33 @@
           },
           "indexing_status": {
             "type": "string",
-            "const": "NOT_INDEXED",
+            "enum": [
+              "NOT_INDEXED",
+              "QUEUED",
+              "INDEXING",
+              "READY",
+              "PARTIAL",
+              "FAILED"
+            ],
             "title": "Indexing Status"
+          },
+          "publication_revision": {
+            "type": "integer",
+            "title": "Publication Revision",
+            "default": 0
+          },
+          "requires_republication": {
+            "type": "boolean",
+            "title": "Requires Republication",
+            "default": false
+          },
+          "publications": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Publications"
           },
           "created_at": {
             "type": "string",
@@ -7850,6 +9037,7 @@
           "store_id",
           "owner_principal_id",
           "metadata_version",
+          "evidence_revision",
           "status",
           "latest_version_id",
           "ingestion_status",
@@ -8165,6 +9353,243 @@
         ],
         "title": "ForecastSnapshot"
       },
+      "ForecastV6Current": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "READY",
+              "STALE",
+              "UNAVAILABLE"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "store_id": {
+            "type": "string",
+            "title": "Store Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "title": "Sku Id"
+          },
+          "mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "observed",
+                  "historical_demo"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mode"
+          },
+          "usable_for_planning": {
+            "type": "boolean",
+            "title": "Usable For Planning"
+          },
+          "activate_for_planning": {
+            "type": "boolean",
+            "title": "Activate For Planning",
+            "default": false
+          },
+          "forecast": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forecast"
+          },
+          "history": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "History"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "reason",
+          "store_id",
+          "sku_id",
+          "mode",
+          "usable_for_planning",
+          "forecast",
+          "history",
+          "model"
+        ],
+        "title": "ForecastV6Current"
+      },
+      "ForecastV6Model": {
+        "properties": {
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "feature_profile": {
+            "type": "string",
+            "title": "Feature Profile"
+          },
+          "minimum_history_days": {
+            "type": "integer",
+            "title": "Minimum History Days"
+          },
+          "recommended_history_days": {
+            "type": "integer",
+            "title": "Recommended History Days"
+          },
+          "weights": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Weights"
+          },
+          "evaluation": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Evaluation"
+          },
+          "supported_series": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Supported Series"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "model_version",
+          "feature_profile",
+          "minimum_history_days",
+          "recommended_history_days",
+          "weights",
+          "evaluation",
+          "supported_series",
+          "limitations"
+        ],
+        "title": "ForecastV6Model"
+      },
+      "ForecastV6Refresh": {
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "series_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Series Id"
+          },
+          "mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "observed",
+                  "historical_demo"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mode"
+          },
+          "history": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/HistoryDay"
+                },
+                "type": "array",
+                "maxItems": 374,
+                "minItems": 84
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "History"
+          },
+          "observation_end_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observation End Date"
+          },
+          "activate_for_planning": {
+            "type": "boolean",
+            "title": "Activate For Planning",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku_id"
+        ],
+        "title": "ForecastV6Refresh"
+      },
       "Freshness": {
         "properties": {
           "status": {
@@ -8232,6 +9657,33 @@
           "component"
         ],
         "title": "Health"
+      },
+      "HistoryDay": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "sold_quantity": {
+            "type": "integer",
+            "maximum": 1000000000.0,
+            "minimum": 0.0,
+            "title": "Sold Quantity"
+          },
+          "complete": {
+            "type": "boolean",
+            "title": "Complete"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "date",
+          "sold_quantity",
+          "complete"
+        ],
+        "title": "HistoryDay"
       },
       "InboundItem": {
         "properties": {
@@ -8415,6 +9867,126 @@
           "eligible"
         ],
         "title": "InboundSnapshot"
+      },
+      "IndexProgress": {
+        "properties": {
+          "request_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Request Id"
+          },
+          "document_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Document Id"
+          },
+          "version_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version Id"
+          },
+          "metadata_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Metadata Revision"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "RUNNING",
+              "RETRY_WAIT",
+              "SUCCEEDED",
+              "FAILED"
+            ],
+            "title": "State"
+          },
+          "attempt": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Attempt"
+          },
+          "job_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Job Id"
+          },
+          "generation_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generation Id"
+          },
+          "manifest_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Manifest Hash"
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Error"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "request_id",
+          "document_id",
+          "version_id",
+          "metadata_revision",
+          "state",
+          "attempt",
+          "job_id",
+          "generation_id",
+          "manifest_hash",
+          "error"
+        ],
+        "title": "IndexProgress"
+      },
+      "IndexRequest": {
+        "properties": {
+          "profile_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Profile Id",
+            "default": "lexical-v1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "IndexRequest"
       },
       "JobAccepted": {
         "properties": {
@@ -9925,6 +11497,150 @@
           "expected_arrival_at"
         ],
         "title": "ProposedPurchase"
+      },
+      "Provenance": {
+        "properties": {
+          "source_kind": {
+            "type": "string",
+            "maxLength": 64,
+            "title": "Source Kind",
+            "default": "document"
+          },
+          "source_family_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Family Id"
+          },
+          "scenario_family_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Family Id"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 2000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "publisher": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publisher"
+          },
+          "jurisdiction": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Jurisdiction"
+          },
+          "synthetic": {
+            "type": "boolean",
+            "title": "Synthetic",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Provenance"
+      },
+      "PublicationResult": {
+        "properties": {
+          "document_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Document Id"
+          },
+          "version_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Version Id"
+          },
+          "generation_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Generation Id"
+          },
+          "manifest_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Manifest Hash"
+          },
+          "publication_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Publication Revision"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "document_id",
+          "version_id",
+          "generation_id",
+          "manifest_hash",
+          "publication_revision"
+        ],
+        "title": "PublicationResult"
       },
       "PurchaseEvent": {
         "properties": {
@@ -11519,6 +13235,16 @@
               }
             ],
             "title": "Valid Until"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Provenance"
+              },
+              {
+                "type": "null"
+              }
+            ]
           },
           "id": {
             "type": "string",

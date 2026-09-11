@@ -1,7 +1,24 @@
 <script setup lang="ts">
 import type { Schema } from '~/types/models'
 import { api } from '~/utils/api'
+import type { ForecastReference } from '~/types/forecast'
 const { s, mission, refresh, hasRole } = useShop()
+const requestedForecast = useState<ForecastReference | null>('forecast-reference', () => null)
+function forecastReferences(message: Schema<'MessageView'>) {
+  return message.references.filter((r) => r.type === 'forecast' && typeof r.id === 'string')
+}
+async function openForecast(reference: Record<string, unknown>) {
+  if (reference.store_id !== s.storeId || reference.sku_id !== mission.value?.sku_id) {
+    error.value = '这条预测引用属于其他门店或商品，请切换到对应经营范围后查看。'
+    return
+  }
+  requestedForecast.value = {
+    id: String(reference.id),
+    storeId: s.storeId,
+    skuId: mission.value!.sku_id,
+    nonce: Date.now(),
+  }
+}
 const messages = ref<Schema<'MessageView'>[]>([]),
   conversation = ref<Schema<'ConversationView'> | null>(null),
   run = ref<Schema<'RunView'> | null>(null),
@@ -182,6 +199,16 @@ async function toggleFollowup() {
       <div v-for="m in messages" :key="m.id" class="bubble" :class="{ user: m.role === 'user' }">
         <div v-if="m.role === 'assistant'" class="bubble-label">ShopSteward</div>
         {{ m.content }}
+        <div v-if="forecastReferences(m).length" class="forecast-references">
+          <button
+            v-for="reference in forecastReferences(m)"
+            :key="String(reference.id)"
+            class="text-link"
+            @click="openForecast(reference)"
+          >
+            查看预测依据 · {{ reference.version || reference.id }}
+          </button>
+        </div>
       </div>
     </div>
     <p v-if="run?.status === 'WAITING_INPUT'" class="notice">

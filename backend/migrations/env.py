@@ -9,6 +9,7 @@ from app.alerts import models as alert_models  # noqa: F401
 from app.core.config import Settings
 from app.db.base import Base
 from app.execution import models as execution_models  # noqa: F401
+from app.forecast_v6 import models as forecast_v6_models  # noqa: F401
 from app.knowledge import index_models as knowledge_index_models  # noqa: F401
 from app.knowledge import models as knowledge_models  # noqa: F401
 from app.missions import models as mission_models  # noqa: F401

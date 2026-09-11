@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-09-07",
+  "updated_at": "2026-09-11",
   "application_version": "0.1.0",
-  "work_package": "K0 baseline + K1 knowledge document management",
+  "work_package": "K0 baseline + K1 knowledge document management + v6 forecast product integration",
   "runtime_schema": "backend.runtime.openapi.json",
   "implemented_operation_ids": [
     "list_alerts",
@@ -26,6 +26,10 @@
     "list_ledger_entries",
     "decide_plan",
     "get_action",
+    "revise_plan",
+    "get_forecast_v6_model",
+    "get_forecast_v6",
+    "refresh_forecast_v6",
     "get_current_user",
     "list_visible_stores",
     "health_live",
@@ -51,9 +55,12 @@
     "get_knowledge_version",
     "download_knowledge_original",
     "control_knowledge_document",
+    "request_knowledge_index",
+    "get_knowledge_index",
+    "retry_knowledge_index",
+    "publish_knowledge_generation",
     "create_dev_scenario",
-    "advance_dev_scenario",
-    "revise_plan"
+    "advance_dev_scenario"
   ],
   "registered_job_types": [
     "worker_probe",
@@ -126,5 +133,13 @@
       "Agent tools",
       "UI"
     ]
+  },
+  "forecast_v6": {
+    "migration": "0012_forecast_v6",
+    "model_version": "shopsteward-v6-1885",
+    "service": "http://127.0.0.1:8053",
+    "agent_tool": "get_forecast",
+    "user_label": "模型推演，仅供参考",
+    "report": "../reports/forecast-v6-product-integration.md"
   }
 }

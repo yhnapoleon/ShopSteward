@@ -1,3 +1,5 @@
 * text=auto eol=lf
 # Corpus manifests and provenance hash original bytes; preserve them across hosts.
 docs/evaluation/knowledge-expanded/** -text
+# Manifest hashes are byte hashes: never convert bundle line endings on checkout.
+var/forecast-v6/bundle/** -text -diff

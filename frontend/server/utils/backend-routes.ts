@@ -90,6 +90,18 @@ export const backendRoutes = [
   ],
   [
     "GET",
+    "/api/v1/stores/{store_id}/forecast/model"
+  ],
+  [
+    "GET",
+    "/api/v1/stores/{store_id}/forecast"
+  ],
+  [
+    "POST",
+    "/api/v1/stores/{store_id}/forecast/refresh"
+  ],
+  [
+    "GET",
     "/api/v1/me"
   ],
   [
@@ -183,6 +195,22 @@ export const backendRoutes = [
   [
     "POST",
     "/api/v1/documents/{document_id}/control"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/versions/{version_id}/index-jobs"
+  ],
+  [
+    "GET",
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/index-jobs/{request_id}/retry"
+  ],
+  [
+    "POST",
+    "/api/v1/documents/{document_id}/publications"
   ],
   [
     "POST",

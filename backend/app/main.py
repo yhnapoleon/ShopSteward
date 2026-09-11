@@ -14,6 +14,7 @@ from app.core.config import Settings
 from app.core.logging import configure_logging
 from app.db.session import Database
 from app.execution.router import router as execution_router
+from app.forecast_v6.router import router as forecast_v6_router
 from app.knowledge.router import router as knowledge_router
 from app.missions.router import router as missions_router
 from app.operations.router import dev_router
@@ -47,6 +48,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(read_router)
     app.include_router(execution_router)
     app.include_router(planning_router)
+    app.include_router(forecast_v6_router)
     app.state.settings = settings
     url = settings.database_url.get_secret_value() if settings.database_url else None
     app.state.db = Database(url)

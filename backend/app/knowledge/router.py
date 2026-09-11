@@ -40,6 +40,21 @@ router = KnowledgeRouter(tags=["Knowledge"], responses=errors | {413: {"model": 
 
 
 def upload_contract(model):
+    schema = model.model_json_schema()
+    definitions = schema.pop("$defs", {})
+
+    def inline(value):
+        # The metadata schema is embedded inside OpenAPI, where #/$defs would
+        # resolve against the whole document. These metadata models are acyclic.
+        if isinstance(value, list):
+            return [inline(child) for child in value]
+        if isinstance(value, dict):
+            if "$ref" in value:
+                name = value["$ref"].removeprefix("#/$defs/")
+                value = definitions[name] | {k: v for k, v in value.items() if k != "$ref"}
+            return {key: inline(child) for key, child in value.items()}
+        return value
+
     return {
         "requestBody": {
             "required": True,
@@ -55,7 +70,7 @@ def upload_contract(model):
                                 "type": "string",
                                 "description": f"JSON-encoded {model.__name__}",
                                 "contentMediaType": "application/json",
-                                "contentSchema": model.model_json_schema(),
+                                "contentSchema": inline(schema),
                             },
                         },
                     }

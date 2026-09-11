@@ -421,6 +421,14 @@ function briefing() {
               @mission="open('mission')"
               @check="act(() => shop.requestCheck())"
           /></template>
+          <ForecastPanel
+            v-if="s.storeId && stock?.sku_id && view !== 'journal'"
+            :key="s.storeId + ':' + stock.sku_id + ':' + s.session?.principal_id"
+            :store-id="s.storeId"
+            :sku-id="stock.sku_id"
+            :state-version="s.dashboard?.state.state_version"
+            :can-manage="hasRole('operator')"
+          />
           <template v-if="view === 'journal'"
             ><div class="view-toggle">
               <button
