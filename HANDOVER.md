@@ -1,5 +1,49 @@
 # ShopSteward 当前开发交接
 
+### 最新实施检查点：本地预测首轮实验与服务（2026-09-08）
+
+**先读[首轮实验与研究分析报告](../ShopSteward-forecast/docs/reports/forecast-experiment-analysis.md)。** 已完成真实数据准备、训练、冻结测试与本地推理服务；当前不是“尚未开始训练”。实现代码位于独立工作树 `ShopSteward-forecast`，分支 `codex/b1-local-forecast`，本次文档整理前代码 HEAD 为 `c160644`。原 `ShopSteward` 的 YH 开发代码和服务没有合并/切换到该版本；在原目录阅读时，请进入同级 `../ShopSteward-forecast` 继续实现或运行命令。
+
+#### 模型与结果
+
+- M5 官方原件已获取并记录来源/hash；固定 500 条门店商品序列、970,500 行、1941 天。用历史销量与日历构造 33 个特征，将未来 1–7 天观测销量作为直接多步回归目标；不预测采购量，不声称恢复缺货后的真实需求。
+- 4 配置 × 8 外层窗口、64 次拟合完成；选择 **LightGBM Poisson / 31 leaves / 188 rounds**。搜索约42.5分钟；最终模型只训练至2016-03-27，测试2016-03-28至05-22，期间不更新参数。
+- 正式七天累计 MAE：mean28 **3.57275**，模型 **3.41619**，改善 **4.382%**；95%配对时间块改善区间 **[0.457%, 7.852%]**。唯一未通过门槛是改善不足5%，因此 **candidate，offline_model_validated=false**，不能把候选模型经普通配置切到active。
+- 日MAE改善4.627%、日RMSE改善8.325%；但销量加权累计MAE恶化8.292%，业务取整后累计改善只有2.970%。8周中2周恶化；h5始终对应周五，距离和星期混杂。详细切片、关键大销量序列、原因假设和研究优先级见分析报告。
+- 模型 `m5-lgbm-direct7-004bc1ba9223756a04b1`；模型文件SHA `965708ba9757dbc2751200be361598e1b87e44a6951cb29cca3a6fcc595cc580`。服务制品包SHA `300f2fc3057baf1b684f6dee761b5ee0686c62e32c3d8f9c640d4742b47ba033`。统计对照版本 `m5-baseline-mean28-2518321ecc3552d67f9e` 明确标记baseline/candidate。
+
+补充数值口径：离线原取整辅助指标改善2.970%；按在线有序float64累加重算为2.943%（基线52/4000窗口取整不同，模型无差异）。不影响未取整主指标4.382%与candidate结论；后续经营评估须统一口径，旧正式摘要保持不变。
+
+#### 实施进度与验证
+
+| 工作项 | 状态与证据 |
+|---|---|
+| A1–A5 数据/特征/基线/训练/冻结评测 | 完成并通过审查。A5元数据两轮修复后复审通过，正式模型和测试结论未变 |
+| A6 HTTP服务 | `ad0a5d8`，完成并独立审查通过。Bearer、版本/hash、56–365日完整历史、自然日/DST、1MiB/并发边界和原生加载已实现 |
+| B1 绑定/观察历史/不可变预测明细 | `e5fd244` + `9645faa`，完成并通过审查，迁移 `forecast_b1_0012` |
+| B2 独立预测worker/队列/原子发布 | `c160644`，实现与本地验证完成，**独立审查待完成**，迁移 `forecast_b2_0013` |
+| B3/B4 生命周期/业务API与配置 | 待实施；公开active资格校验属于B4，不因已有内部active发布分支而视为完成 |
+| B5/B6 REPLAY/经营评估 | B6纯指标校验helper已完成；隐藏需求回放、真实270场景与故障验收待完成 |
+| C1–C5 前端/LangGraph/全栈恢复 | 本次预测能力仍待接入与验收；既有Agent/业务功能独立保留 |
+
+ML最终 **151 passed**，包含真实100起点训练/推理特征一致性；A6复审另跑28项通过（与151有交集，不累加）。Ruff、涉及文件格式、契约、wheel构建通过；旧Forecast schema、9个非ML路由与SC01初始化样例保持兼容。额外全ML格式扫描有4个既有文件格式差异，未做无关改动。
+
+真实HTTP在100次预热后，分别采样100次，并发1/4的p95为 **95.9/381.3ms**，重启后同请求预测ID/原始曲线/总量一致；验收自有8052进程已停止。首次四并发1.265s不达标，后通过一次构造多日特征改善，预测值不变。见[服务验收](../ShopSteward-forecast/docs/reports/forecast-service.md)和[启动说明](../ShopSteward-forecast/ml/README.md)。
+
+B2单元/API **51 passed**，专用PG相关回归 **78 passed, 1 deselected**，迁移head/check、bigint和部分唯一索引验证通过。排除项为全库历史Plan哈希断言：持久测试fixture累积后521条中117可重建、404不匹配。B1此前48/48语料验证不能替代B2的本次排除项；后续需独立审查并用干净隔离库重做非空历史兼容性验收，不应写成全回归通过。
+
+#### 环境与接续顺序
+
+- 独立测试PG：`shopsteward-forecast-test-20260908`，`127.0.0.1:55435`。`shopsteward_test` 已到 `forecast_b2_0013`，`shopsteward_sim_test` 保持既有模拟器head。另备有forecast acceptance专用双库，其backend仍按准备时0011，后续须核对并迁移；不要混用会清理fixture的测试库与acceptance库。
+- 本机私有环境为 `var/forecast/test.private.env` 与 `var/forecast/acceptance.private.env`；模型在 `var/forecast/artifacts/`，完整预测与原件也在忽略目录。不要提交令牌、原件、模型或未来日销量到Git/业务接口。原开发PG55432、8000/8001和知识容器本轮未切换。
+- 接续先读分析报告及B2实现报告，完成B2独立审查/洁净Plan验收，再按总计划推进B3→B4→B5/B6→C1–C5；不重复A1下载、正式搜索或最终测试。新模型研究须另建版本与预注册测试协议，不能继续在已查看测试集上选参后宣称独立通过。
+- 质量不足不阻断受控shadow技术联调；模型与统计基线当前均candidate，普通active路径不能绕过门槛。如何在保留资格约束下完成候选模型的隔离经营对照仍需在B5/B6明确记录，不能伪造validated状态。
+- 总状态：数据/制品可用，ML服务验收完成；`offline_model_validated=false`、`backend_ready=false`、`replay_ready=false`、`agent_ready=false`、`b1_ready=false`。知识检索的pilot/MVP标志是另一个工作包，未因预测实验改变。
+
+完整设计与分工：[设计](../ShopSteward-forecast/docs/superpowers/specs/2026-09-08-local-forecast-design.md)、[总计划](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast.md)、[A模型](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast-model.md)、[B后端](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast-backend.md)、[C产品/Agent](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast-product.md)。原计划的未勾选框不能覆盖本节实际执行状态。完整本机任务报告/复审在 `.superpowers/sdd/2026-09-08-local-forecast/`，正式可传递的摘要在docs。
+
+以下保留其他工作包的历史交接，其中旧“真实预测未实现”“最新head”等描述按记录日期理解，当前预测进度以上述检查点为准。
+
 **首要交接入口：[Knowledge服务器部署完整手册](docs/runbooks/knowledge-server-handoff.md)。** 已按用户要求整合为单文档14个主题章节，覆盖部署/完整配置/启动/跨机网络/backend与LangGraph接入/语料与关系/验收/备份恢复/排障/选型/回填模板，无需先阅读其他子文档；源码及原始报告在末尾作为参考。当前可开展环境准备和隔离试部署，完整搬迁验收仍待补。
 
 ### 最新Git与文档交付（2026-09-08）
@@ -353,6 +397,7 @@ simulation目录设置TEST_SIM_DATABASE_URL后执行`..\.venv\Scripts\python.exe
 4. 修改完成后更新PROJECT_CONTEXT的状态/设计变更和本文的现场/待办/验证日期；保存可区分测试、真实HTTP和重启验收的证据，不覆盖历史结论的适用范围。
 
 主要入口：[backend开发设计](docs/backend-development.md)、[simulator契约](docs/simulation-contract.md)、[接口设计/用法](docs/api/README.md)、[实际实现清单](docs/api/implementation-status.json)、[backend启动说明](backend/README.md)、[simulator启动说明](simulation/README.md)。这些用于深入实施，不是先理解交接必须逐份读取的材料。
+
 
 ## 2026-09-11 v6 产品接入完成
 

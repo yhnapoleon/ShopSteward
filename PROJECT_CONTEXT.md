@@ -1,5 +1,25 @@
 # ShopSteward 项目总说明与对话交接
 
+### 最新实施：本地零售预测首轮实验（2026-09-08）
+
+当前已从完整设计进入实际实现。**模型数据、训练、冻结测试和HTTP推理（A1–A6）已完成并通过审查；后端存储B1完成，预测worker B2已实现并本地验证，独立审查待完成。** 前端预测面板、预测相关LangGraph工具、隐藏需求REPLAY和经营/全栈恢复验证尚待完成。原有业务Agent和知识检索功能不受这项状态划分影响。
+
+实现位于同级工作树 **`ShopSteward-forecast` / `codex/b1-local-forecast`**，文档整理前最新代码提交 `c160644`；ML服务为 `ad0a5d8`。原 `ShopSteward` checkout的开发代码和服务尚未合并/切换。接续命令在实现工作树执行，避免直接在原YH目录重复实施。
+
+首版模型是 **LightGBM Poisson直接多步回归**：共享模型学习M5固定500条门店商品序列，使用33个销量/日历/分类特征，分别预测未来1–7天实际售出件数。最终配置31个叶子、188轮。它不直接决定采购数量，也未恢复缺货下潜在需求；库存、现金与审批仍由backend负责。
+
+正式冻结测试为2016-03-28至05-22，500序列×8窗口×7天共28,000个日预测；模型参数固定，历史仅逐步追加当时已发生销量。mean28基线七天累计MAE **3.57275**，模型 **3.41619**，改善 **4.382%**，低于预设5%门槛；95%配对时间块改善区间为 **[0.457%,7.852%]**。模型保留candidate，`offline_model_validated=false`。不能因技术服务ready或部分子组改善就允许普通active配置绕过门槛。
+
+进一步分析发现：日MAE/RMSE改善4.627%/8.325%，但销量加权累计MAE恶化8.292%，总量取整后改善仅2.970%；8周中2周恶化，少数大销量序列贡献较大退化。h5总是周五，预测距离和星期效应无法由本次切分区分。上述结果、原因假设与下一轮可证伪实验见[详细分析报告](../ShopSteward-forecast/docs/reports/forecast-experiment-analysis.md)，事实与假设已分开。
+
+补充数值口径：离线原取整辅助指标改善2.970%；按在线有序float64累加重算为2.943%（基线52/4000窗口取整不同，模型无差异）。不影响未取整主指标4.382%与candidate结论；后续经营评估须统一口径，旧正式摘要保持不变。
+
+ML回归151项通过（真实100起点特征一致性包含在内），服务真实100次预热后并发1/4各100次，p95 **95.9/381.3ms**；重启原始预测与ID一致。B2单元/API51项通过，PG相关78项通过、**1项排除**：持久测试库全体Plan夹具污染导致全库哈希断言未纳入，需洁净隔离库补验。不能累加有交集批次，也不能把服务延迟测试当作预测质量或经营收益证据。
+
+测试只使用本轮专用PG55435与独立工作树；原开发库和服务未切换。HTTP验收自有8052进程已停止。整体保持 `backend_ready/replay_ready/agent_ready/b1_ready=false`，先收口B2审查与历史兼容性，再推进生命周期、业务API、REPLAY、前端和LangGraph。新模型调研不得反复用本次已查看的测试标签选参或改门槛。
+
+阅读入口：[HANDOVER当前执行检查点](HANDOVER.md)、[实验分析](../ShopSteward-forecast/docs/reports/forecast-experiment-analysis.md)、[冻结实验记录](../ShopSteward-forecast/docs/reports/forecast-offline.md)、[机器摘要](../ShopSteward-forecast/docs/evaluation/forecast/experiment-result.json)、[服务验收](../ShopSteward-forecast/docs/reports/forecast-service.md)、[总实施计划](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast.md)。以下其他工作包与旧阶段描述按其日期理解，不能覆盖本节的当前预测状态。
+
 ### 最新实施与交付：知识检索及服务器交接（2026-09-08）
 
 本轮新增独立 `knowledge` 服务、解析/索引/重试与发布、PG有向关系、可选云embedding与重排接口、Agent只读证据工具及Compose/恢复/验证工具。已按用户要求本地提交并推送到YH，创建 [PR #10](https://github.com/yhnapoleon/ShopSteward/pull/10)（YH → main，更新时为OPEN，未合并）。功能提交 `96ee2a0`，同步main提交 `2406371`，完整手册提交 `e65e066`；未部署到开发服务或创建云资源。原K0冻结集与K1契约保留；新backend迁移 `0011_knowledge_delivery` 和独立knowledge迁移 `knowledge_0002` 已通过专用PG验收。
@@ -697,6 +717,7 @@ B0共7个工作包，B0-01至B0-07已完成并验证。采购/到货、自动SC0
 维护约定：PROJECT_CONTEXT保存长期背景、架构、历史证据与阶段总览；HANDOVER保存最新工程原则、Git现场、当前待办、运行/验证方式和边界。每轮完成后同步更新日期、阶段、测试证据的范围及提交状态；旧smoke和旧测试记录保留其日期，不当作新版本已经重新验证。最新用户要求优先于历史建议；若事实与文档不符，核对实际代码与Git后修正文档。
 
 初版整合核查范围：本地工程/研究文档、飞书历史快照映射、当前模块目录；BAU采用此前源码阅读结论并核对入口；RAilG/TallyGuard仅读取说明与核对文件位置。v0.2早期修订核查文档与契约；本轮B0-07重新执行全量测试、自动SC01、双worker故障恢复和全服务重启。外部参考项目未重新在线审计，飞书页面未修改。
+
 
 ## 2026-09-11 v6 产品接入完成
 
