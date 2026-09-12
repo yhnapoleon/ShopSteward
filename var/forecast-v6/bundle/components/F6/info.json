@@ -1,0 +1,33 @@
+{
+  "arm": "F6",
+  "rounds": {
+    "all": 246,
+    "1": 211,
+    "2": 232,
+    "3": 187
+  },
+  "seconds": 24.75,
+  "examples": 482000,
+  "objective": "regression_l1",
+  "params": {
+    "device_type": "cpu",
+    "learning_rate": 0.04,
+    "num_leaves": 31,
+    "min_data_in_leaf": 100,
+    "lambda_l2": 3.0,
+    "deterministic": true,
+    "force_col_wise": true,
+    "seed": 20260910,
+    "verbosity": -1,
+    "objective": "regression_l1",
+    "metric": "None",
+    "num_threads": 4
+  },
+  "model_files": {
+    "all": "model_0.txt",
+    "1": "model_1.txt",
+    "2": "model_2.txt",
+    "3": "model_3.txt"
+  },
+  "threads": 4
+}

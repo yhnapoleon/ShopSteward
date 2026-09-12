@@ -102,6 +102,18 @@ export const backendRoutes = [
   ],
   [
     "GET",
+    "/api/v1/stores/{store_id}/forecast/model"
+  ],
+  [
+    "GET",
+    "/api/v1/stores/{store_id}/forecast"
+  ],
+  [
+    "POST",
+    "/api/v1/stores/{store_id}/forecast/refresh"
+  ],
+  [
+    "GET",
     "/api/v1/me"
   ],
   [

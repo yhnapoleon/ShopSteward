@@ -1,5 +1,9 @@
 # ShopSteward
 
+[v6 模型推演：组员安装与复现](ml/README.md) · [前端、后端与 LangGraph 接入说明](docs/reports/forecast-v6-product-integration.md)
+
+`YH` 分支已包含 v6 四组件模型、参考输入与推理代码。拉取后可直接验证推理结果，无需重新训练；界面统一标注“模型推演，仅供参考”。
+
 <!-- md-alignment-2026-09-08 -->
 ## 当前实现入口（2026-09-08增补）
 

@@ -579,6 +579,15 @@ function briefing() {
               @mission="openTask()"
               @check="act(() => shop.requestCheck())"
           /></template>
+          <ForecastPanel
+            v-if="s.storeId && stock?.sku_id && view !== 'journal'"
+            :key="s.storeId + ':' + stock.sku_id + ':' + s.session?.principal_id"
+            :store-id="s.storeId"
+            :sku-id="stock.sku_id"
+            :state-version="s.dashboard?.state.state_version"
+            :can-manage="hasRole('operator')"
+          />
+
           <template v-if="work.s.available && view === 'journal'"
             ><WorkCard
               v-for="item in work.s.items"

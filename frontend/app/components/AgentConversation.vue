@@ -1,8 +1,27 @@
 <script setup lang="ts">
+import type { Schema } from '~/types/models'
+import type { ForecastReference } from '~/types/forecast'
 import { when } from '~/utils/presentation'
 const agent = useAgentConversation()
 const { s, enabled, active } = agent
-const { hasRole, mission } = useShop()
+const { hasRole, mission, s: shopState } = useShop()
+const router = useRouter()
+const requestedForecast = useState<ForecastReference | null>('forecast-reference', () => null)
+function forecastReferences(message: Schema<'MessageView'>) {
+  return message.references.filter((r) => r.type === 'forecast' && typeof r.id === 'string')
+}
+async function openForecast(reference: Record<string, unknown>) {
+  if (reference.store_id !== shopState.storeId || reference.sku_id !== mission.value?.sku_id) {
+    s.error = '这条预测引用属于其他门店或商品，请切换到对应经营范围后查看。'
+    return
+  }
+  const storeId = shopState.storeId
+  const skuId = mission.value!.sku_id
+  await router.push({ query: { view: 'today' } })
+  await nextTick()
+  if (storeId !== shopState.storeId || skuId !== mission.value?.sku_id) return
+  requestedForecast.value = { id: String(reference.id), storeId, skuId, nonce: Date.now() }
+}
 const thread = ref<HTMLElement | null>(null),
   composer = ref<HTMLTextAreaElement | null>(null)
 const newContent = ref(false),
@@ -105,6 +124,16 @@ onUnmounted(() => clearTimeout(copyTimer))
         </div>
         <p v-if="m.role === 'user'" class="agent-user-text">{{ m.content }}</p>
         <MarkdownMessage v-else :content="m.content" />
+        <div v-if="forecastReferences(m).length" class="forecast-references">
+          <button
+            v-for="reference in forecastReferences(m)"
+            :key="String(reference.id)"
+            class="text-link"
+            @click="openForecast(reference)"
+          >
+            查看预测依据 · {{ reference.version || reference.id }}
+          </button>
+        </div>
         <AgentReferences
           v-if="m.role === 'assistant'"
           :references="m.references || []"

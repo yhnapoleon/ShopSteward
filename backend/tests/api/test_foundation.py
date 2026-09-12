@@ -140,6 +140,9 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
     assert set(schema["paths"]) == {
         "/api/v1/me",
         "/api/v1/stores",
+        "/api/v1/stores/{store_id}/forecast/model",
+        "/api/v1/stores/{store_id}/forecast",
+        "/api/v1/stores/{store_id}/forecast/refresh",
         "/api/v1/sales",
         "/api/v1/sales/summary",
         "/api/v1/actions",
@@ -225,6 +228,8 @@ async def test_all_runtime_operations_have_phase_and_implementation_metadata():
                 if path in K2_ROUTES:
                     assert method == K2_ROUTES[path][0], (method, path)
                     assert operation.get("x-phase") == "K2", (method, path)
+                elif path.startswith("/api/v1/stores/{store_id}/forecast"):
+                    assert operation.get("x-phase") == "V6", (method, path)
                 else:
                     assert operation.get("x-phase") in {"B0", "B2-A", "K1"}, (method, path)
                 assert operation.get("x-implementation-status") == "implemented", (method, path)

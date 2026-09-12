@@ -41,6 +41,8 @@ def scheduler_references(references):
     return [
         {"type": "artifact", "id": ref["id"], "version": ref["version_id"]}
         if ref.get("type") == "document"
+        else {"type": "artifact", "id": ref["id"], "version": ref["version"]}
+        if ref.get("type") == "forecast"
         else ref
         for ref in references
     ]

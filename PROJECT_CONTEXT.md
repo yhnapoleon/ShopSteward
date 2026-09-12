@@ -1,5 +1,29 @@
 # ShopSteward 项目总说明与对话交接
 
+## 当前合流入口（2026-09-12）
+
+v6 预测接入与 main 的任务工作区、Agent 进度/成果和事项承接已整合，PR 发布状态以 GitHub 为准。统一迁移头、验证结果及启动注意见 [HANDOVER 顶部](HANDOVER.md)。下方按原时间保留首轮预测实验及其他模块记录；其中“尚未接入”和运行进程信息仅代表各自记录时点。
+
+### 最新实施：本地零售预测首轮实验（2026-09-08）
+
+当前已从完整设计进入实际实现。**模型数据、训练、冻结测试和HTTP推理（A1–A6）已完成并通过审查；后端存储B1完成，预测worker B2已实现并本地验证，独立审查待完成。** 前端预测面板、预测相关LangGraph工具、隐藏需求REPLAY和经营/全栈恢复验证尚待完成。原有业务Agent和知识检索功能不受这项状态划分影响。
+
+实现位于同级工作树 **`ShopSteward-forecast` / `codex/b1-local-forecast`**，文档整理前最新代码提交 `c160644`；ML服务为 `ad0a5d8`。原 `ShopSteward` checkout的开发代码和服务尚未合并/切换。接续命令在实现工作树执行，避免直接在原YH目录重复实施。
+
+首版模型是 **LightGBM Poisson直接多步回归**：共享模型学习M5固定500条门店商品序列，使用33个销量/日历/分类特征，分别预测未来1–7天实际售出件数。最终配置31个叶子、188轮。它不直接决定采购数量，也未恢复缺货下潜在需求；库存、现金与审批仍由backend负责。
+
+正式冻结测试为2016-03-28至05-22，500序列×8窗口×7天共28,000个日预测；模型参数固定，历史仅逐步追加当时已发生销量。mean28基线七天累计MAE **3.57275**，模型 **3.41619**，改善 **4.382%**，低于预设5%门槛；95%配对时间块改善区间为 **[0.457%,7.852%]**。模型保留candidate，`offline_model_validated=false`。不能因技术服务ready或部分子组改善就允许普通active配置绕过门槛。
+
+进一步分析发现：日MAE/RMSE改善4.627%/8.325%，但销量加权累计MAE恶化8.292%，总量取整后改善仅2.970%；8周中2周恶化，少数大销量序列贡献较大退化。h5总是周五，预测距离和星期效应无法由本次切分区分。上述结果、原因假设与下一轮可证伪实验见[详细分析报告](../ShopSteward-forecast/docs/reports/forecast-experiment-analysis.md)，事实与假设已分开。
+
+补充数值口径：离线原取整辅助指标改善2.970%；按在线有序float64累加重算为2.943%（基线52/4000窗口取整不同，模型无差异）。不影响未取整主指标4.382%与candidate结论；后续经营评估须统一口径，旧正式摘要保持不变。
+
+ML回归151项通过（真实100起点特征一致性包含在内），服务真实100次预热后并发1/4各100次，p95 **95.9/381.3ms**；重启原始预测与ID一致。B2单元/API51项通过，PG相关78项通过、**1项排除**：持久测试库全体Plan夹具污染导致全库哈希断言未纳入，需洁净隔离库补验。不能累加有交集批次，也不能把服务延迟测试当作预测质量或经营收益证据。
+
+测试只使用本轮专用PG55435与独立工作树；原开发库和服务未切换。HTTP验收自有8052进程已停止。整体保持 `backend_ready/replay_ready/agent_ready/b1_ready=false`，先收口B2审查与历史兼容性，再推进生命周期、业务API、REPLAY、前端和LangGraph。新模型调研不得反复用本次已查看的测试标签选参或改门槛。
+
+阅读入口：[HANDOVER当前执行检查点](HANDOVER.md)、[实验分析](../ShopSteward-forecast/docs/reports/forecast-experiment-analysis.md)、[冻结实验记录](../ShopSteward-forecast/docs/reports/forecast-offline.md)、[机器摘要](../ShopSteward-forecast/docs/evaluation/forecast/experiment-result.json)、[服务验收](../ShopSteward-forecast/docs/reports/forecast-service.md)、[总实施计划](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast.md)。以下其他工作包与旧阶段描述按其日期理解，不能覆盖本节的当前预测状态。
+
 ## 用户主动事项与AI接入分工（2026-09-09）
 
 新增统一事项承接层：先保存用户的一件事，再由外部处理者返回追问、进度、结果或已有Mission关联；不把咨询强制建成备货Mission。用户确认建立跟进条件后才调用原Mission创建，每笔采购仍走原审批。本轮只实现前后端承接，意图分类、LangGraph、多模型分发和预测由后续AI实现连接。[实现/协议与待接入](backend/app/work_items/README.md)；[验证边界](docs/reports/work-intake-verification.md)。
@@ -716,3 +740,10 @@ B0共7个工作包，B0-01至B0-07已完成并验证。采购/到货、自动SC0
 维护约定：PROJECT_CONTEXT保存长期背景、架构、历史证据与阶段总览；HANDOVER保存最新工程原则、Git现场、当前待办、运行/验证方式和边界。每轮完成后同步更新日期、阶段、测试证据的范围及提交状态；旧smoke和旧测试记录保留其日期，不当作新版本已经重新验证。最新用户要求优先于历史建议；若事实与文档不符，核对实际代码与Git后修正文档。
 
 初版整合核查范围：本地工程/研究文档、飞书历史快照映射、当前模块目录；BAU采用此前源码阅读结论并核对入口；RAilG/TallyGuard仅读取说明与核对文件位置。v0.2早期修订核查文档与契约；本轮B0-07重新执行全量测试、自动SC01、双worker故障恢复和全服务重启。外部参考项目未重新在线审计，飞书页面未修改。
+
+
+## 2026-09-11 v6 产品接入完成
+
+主 ShopSteward 已接入独立 v6 ML 服务、后端预测 API/持久化/规划适配、首页预测面板，以及 LangGraph `get_forecast` 取证和引用校验。开发与测试库迁移到 `0012_forecast_v6`；现有采购审批不变。按用户最新要求，界面及 Agent 统一使用“模型推演，仅供参考”，原始日期放详情。
+
+本机 `http://127.0.0.1:3000` 已启动，模型服务8053、后端8000、模拟器8001。便携模型包 `var/forecast-v6/bundle` 已随Git发布，组员按ml/README.md安装验证；私有启动配置沿用现有模型虚拟环境。完整 API、数据模式、规划适用范围、启动方法及验证见 [v6接入报告](docs/reports/forecast-v6-product-integration.md)。真实 Luna 问答已跑通库存→预测→方案并保存结构化预测引用。

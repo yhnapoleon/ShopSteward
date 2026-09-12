@@ -34,6 +34,10 @@ class Settings(BaseSettings):
     source_stale_seconds: int = Field(default=30, ge=1, le=3600)
     plan_ttl_seconds: int = Field(default=900, ge=1, le=86400)
     fixed_forecast_ttl_seconds: int = Field(default=3600, ge=1, le=86400)
+    forecast_v6_enabled: bool = False
+    forecast_v6_url: str = "http://127.0.0.1:8053"
+    forecast_v6_token: SecretStr | None = Field(default=None, repr=False)
+    forecast_v6_timeout_seconds: float = Field(default=8, gt=0, le=120)
     # Relative paths resolve against the API process working directory.
     knowledge_storage_root: str = "var/knowledge"
     knowledge_service_enabled: bool = False

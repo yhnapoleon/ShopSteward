@@ -2,6 +2,7 @@
 
 import re
 
+from app.agent_bridge.forecast_evidence import forecast_requested, replenishment_requested
 from app.agent_bridge.presentation import explicit_memory_intent
 
 
@@ -30,7 +31,7 @@ def current_state_requested(content):
     return False
 
 
-def evidence_policy(content, *, documents_enabled):
+def evidence_policy(content, *, documents_enabled, forecasts_enabled=False):
     """Unknown wording remains model-directed; this only strengthens explicit cases."""
     required, reasons = [], []
     unavailable = False
@@ -40,9 +41,15 @@ def evidence_policy(content, *, documents_enabled):
         # Retain separately stated requests after sentence/additional-request boundaries.
         clauses = re.split(r"[。！？!?；;\n]+|[，,]\s*(?=另外|此外|同时|并且|也请|然后)", content)
         content = "。".join(clause for clause in clauses if not explicit_memory_intent(clause))
-    if current_state_requested(content):
+    forecast = forecast_requested(content) or (
+        forecasts_enabled and replenishment_requested(content)
+    )
+    if current_state_requested(content) or forecast:
         required.append("get_dashboard")
         reasons.append("current_business_state")
+    if forecast:
+        required.append("get_forecast")
+        reasons.append("forecast_evidence")
     if re.search(r"方案|补货计划|采购计划|current plan|replenishment plan", content, re.I):
         required.append("get_plan")
         reasons.append("current_plan")

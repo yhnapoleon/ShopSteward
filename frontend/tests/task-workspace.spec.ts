@@ -523,11 +523,16 @@ test('代码块分别复制原始字符，键盘可用，复制失败明确提�
   const article = page.locator('.agent-message').filter({ hasText: '代码复制验收' })
   await expect(article.getByRole('button', { name: '复制第 1 段代码', exact: true })).toBeVisible()
   await article.getByRole('button', { name: '复制第 1 段代码', exact: true }).click()
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(first)
+  // The Windows system clipboard converts LF to CRLF; compare logical lines.
+  expect((await page.evaluate(() => navigator.clipboard.readText())).replaceAll('\r\n', '\n')).toBe(
+    first,
+  )
   const other = article.getByRole('button', { name: '复制第 2 段代码', exact: true })
   await other.focus()
   await page.keyboard.press('Enter')
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(second)
+  expect((await page.evaluate(() => navigator.clipboard.readText())).replaceAll('\r\n', '\n')).toBe(
+    second,
+  )
   await expect(article.getByRole('status')).toContainText('第 2 段代码已复制')
   expect(await article.locator('script').count()).toBe(0)
   await article.scrollIntoViewIfNeeded()
