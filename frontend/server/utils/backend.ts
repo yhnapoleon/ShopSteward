@@ -19,8 +19,14 @@ export function backendSettings(event: H3Event) {
 export async function currentIdentity(event: H3Event) {
   const config = backendSettings(event)
   if (!config.token) throw createError({ statusCode: 401, statusMessage: '请连接后端用户身份' })
-  return await $fetch<{ principal_id: string; roles: string[]; store_scope: string }>(
-    config.url + '/api/v1/me',
-    { headers: { Authorization: 'Bearer ' + config.token }, timeout: 10000, retry: 0 },
-  )
+  return await $fetch<{
+    principal_id: string
+    roles: string[]
+    store_scope: string
+    capabilities?: string[]
+  }>(config.url + '/api/v1/me', {
+    headers: { Authorization: 'Bearer ' + config.token },
+    timeout: 10000,
+    retry: 0,
+  })
 }

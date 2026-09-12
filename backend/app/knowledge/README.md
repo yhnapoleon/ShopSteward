@@ -1,5 +1,9 @@
 # Knowledge K1 backend
 
+<!-- md-alignment-2026-09-08 -->
+> **2026-09-08 integration update (PR #12):** This document retains the original K1 delivery and its test timestamps. The combined backend now requires `0012_agent_progress`; the `0010` readiness/head statements below describe K1's original checkpoint, not the current backend requirement. The separate Knowledge service migration is unchanged by this delivery. The Agent workspace can read an authorized historical excerpt from a committed tool result and download its exact original version through the existing version/content APIs. This does not add parsing/search controls to Document Center, change original-file ownership rules, or prove remote retrieval quality. See the [combined delivery](../../../docs/reports/agent-workspace-delivery.md) and [runtime API](../../../docs/api/README.md).
+<!-- /md-alignment-2026-09-08 -->
+
 Scope follows `docs/superpowers/plans/2026-09-07-k0-k1-execution.md`.
 K1 stores originals and metadata only. No index job, parsing, extraction, search,
 reindex or index activation is registered. Those belong to K2.

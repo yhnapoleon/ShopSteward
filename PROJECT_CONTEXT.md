@@ -1,5 +1,9 @@
 # ShopSteward 项目总说明与对话交接
 
+## 当前合流入口（2026-09-12）
+
+v6 预测接入与 main 的任务工作区、Agent 进度/成果和事项承接已整合，PR 发布状态以 GitHub 为准。统一迁移头、验证结果及启动注意见 [HANDOVER 顶部](HANDOVER.md)。下方按原时间保留首轮预测实验及其他模块记录；其中“尚未接入”和运行进程信息仅代表各自记录时点。
+
 ### 最新实施：本地零售预测首轮实验（2026-09-08）
 
 当前已从完整设计进入实际实现。**模型数据、训练、冻结测试和HTTP推理（A1–A6）已完成并通过审查；后端存储B1完成，预测worker B2已实现并本地验证，独立审查待完成。** 前端预测面板、预测相关LangGraph工具、隐藏需求REPLAY和经营/全栈恢复验证尚待完成。原有业务Agent和知识检索功能不受这项状态划分影响。
@@ -19,6 +23,25 @@ ML回归151项通过（真实100起点特征一致性包含在内），服务真
 测试只使用本轮专用PG55435与独立工作树；原开发库和服务未切换。HTTP验收自有8052进程已停止。整体保持 `backend_ready/replay_ready/agent_ready/b1_ready=false`，先收口B2审查与历史兼容性，再推进生命周期、业务API、REPLAY、前端和LangGraph。新模型调研不得反复用本次已查看的测试标签选参或改门槛。
 
 阅读入口：[HANDOVER当前执行检查点](HANDOVER.md)、[实验分析](../ShopSteward-forecast/docs/reports/forecast-experiment-analysis.md)、[冻结实验记录](../ShopSteward-forecast/docs/reports/forecast-offline.md)、[机器摘要](../ShopSteward-forecast/docs/evaluation/forecast/experiment-result.json)、[服务验收](../ShopSteward-forecast/docs/reports/forecast-service.md)、[总实施计划](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast.md)。以下其他工作包与旧阶段描述按其日期理解，不能覆盖本节的当前预测状态。
+
+## 用户主动事项与AI接入分工（2026-09-09）
+
+新增统一事项承接层：先保存用户的一件事，再由外部处理者返回追问、进度、结果或已有Mission关联；不把咨询强制建成备货Mission。用户确认建立跟进条件后才调用原Mission创建，每笔采购仍走原审批。本轮只实现前后端承接，意图分类、LangGraph、多模型分发和预测由后续AI实现连接。[实现/协议与待接入](backend/app/work_items/README.md)；[验证边界](docs/reports/work-intake-verification.md)。
+
+
+<!-- md-alignment-2026-09-08 -->
+### 三阶段任务交互已合并（2026-09-08增补）
+
+第一阶段建立同一Mission贯穿的任务卡、独立详情页、常驻Agent区和共享会话，通过[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)合并为 `c46e85c`。第二阶段增加真实工具生命周期与可恢复事件；第三阶段增加准确历史证据、结构化试算/修订成果，并补齐历史原件下载和逐代码块复制，通过[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并为 `1bbcad5`，文件树与已验证 `c7607ea` 一致。
+
+本次是前后端支撑能力交付：backend/agent_bridge、读取契约、事件/活动存储和就绪检查承接前端需求，组合代码需要 `0012_agent_progress`。规划、Mission、账本、审批执行、经营状态、业务调度和 `agent/` 主体源码未改。依据、作用条件与分批验证统一见[组合交付](docs/reports/agent-workspace-delivery.md)，运行接续见[HANDOVER](HANDOVER.md)。
+
+本机Mac mini模型保持关闭；先前Windows真实模型报告仍保留其原版本和环境，不能视为三阶段新增体验的模型验收。语音、正文流、多任务并发、完整A-01/L-01及远端Knowledge新一轮验收仍未完成。
+
+以下“最新”小节按各自阶段时点保留，包括PR #10创建时状态、早期接口数、迁移版本和运行进程。它们不替代本节与HANDOVER顶部的当前接续；知识服务交付、上云限制和原业务职责不因本次前端交付而被删除或判定完成。
+
+原Windows参考工程及仓库外资料链接保留来源环境；本机未能解析的旧路径不能当作当前可用入口，也不通过创建空文件或复制工程来补造来源。
+<!-- /md-alignment-2026-09-08 -->
 
 ### 最新实施与交付：知识检索及服务器交接（2026-09-08）
 

@@ -16,6 +16,7 @@ class CurrentUser(DTO):
     principal_id: Identifier
     roles: list[Role] = Field(json_schema_extra={"uniqueItems": True})
     store_scope: Literal["ALL", "ASSIGNED"]
+    capabilities: list[str] = Field(default_factory=list)
 
     @field_validator("roles")
     @classmethod

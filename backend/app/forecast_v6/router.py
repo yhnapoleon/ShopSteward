@@ -17,7 +17,16 @@ from app.forecast_v6.schemas import (
     validate_history,
 )
 
-router = APIRouter(tags=["Forecast v6"], responses=errors)
+
+class ForecastRouter(APIRouter):
+    def add_api_route(self, path, endpoint, *, openapi_extra=None, **kwargs):
+        metadata = {"x-phase": "V6", "x-implementation-status": "implemented"}
+        super().add_api_route(
+            path, endpoint, openapi_extra=metadata | (openapi_extra or {}), **kwargs
+        )
+
+
+router = ForecastRouter(tags=["Forecast v6"], responses=errors)
 
 
 @router.get(

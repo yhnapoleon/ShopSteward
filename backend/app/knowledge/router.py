@@ -39,22 +39,29 @@ class KnowledgeRouter(APIRouter):
 router = KnowledgeRouter(tags=["Knowledge"], responses=errors | {413: {"model": Error}})
 
 
-def upload_contract(model):
+def embedded_metadata_schema(model):
+    """Inline local definitions: their #/$defs roots change when embedded in OpenAPI."""
     schema = model.model_json_schema()
     definitions = schema.pop("$defs", {})
 
-    def inline(value):
-        # The metadata schema is embedded inside OpenAPI, where #/$defs would
-        # resolve against the whole document. These metadata models are acyclic.
+    def expand(value, stack=()):
         if isinstance(value, list):
-            return [inline(child) for child in value]
-        if isinstance(value, dict):
-            if "$ref" in value:
-                name = value["$ref"].removeprefix("#/$defs/")
-                value = definitions[name] | {k: v for k, v in value.items() if k != "$ref"}
-            return {key: inline(child) for key, child in value.items()}
-        return value
+            return [expand(item, stack) for item in value]
+        if not isinstance(value, dict):
+            return value
+        reference = value.get("$ref", "")
+        if reference.startswith("#/$defs/"):
+            name = reference.removeprefix("#/$defs/")
+            if name in stack:
+                raise ValueError("Recursive metadata schema requires an explicit OpenAPI component")
+            value = {**definitions[name], **{k: v for k, v in value.items() if k != "$ref"}}
+            stack = (*stack, name)
+        return {k: expand(v, stack) for k, v in value.items()}
 
+    return expand(schema)
+
+
+def upload_contract(model):
     return {
         "requestBody": {
             "required": True,
@@ -70,7 +77,7 @@ def upload_contract(model):
                                 "type": "string",
                                 "description": f"JSON-encoded {model.__name__}",
                                 "contentMediaType": "application/json",
-                                "contentSchema": inline(schema),
+                                "contentSchema": embedded_metadata_schema(model),
                             },
                         },
                     }

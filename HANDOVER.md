@@ -1,5 +1,13 @@
 # ShopSteward 当前开发交接
 
+## 2026-09-12：预测与任务工作区合流
+
+PR #15 的 v6 预测接入已与 main 的任务工作区、Agent 进度/成果和事项承接整合；发布状态以 GitHub PR 为准。当前入口见 [v6 接入](docs/reports/forecast-v6-product-integration.md)和[事项承接](backend/app/work_items/README.md)。以下首轮预测实验、各阶段服务和分支状态均保留历史时点，不能覆盖较新的 v6 接入记录。
+
+统一业务库迁移头为 `0014_forecast_work_merge`，保留 `0012_forecast_v6` 与 `0013_work_intake` 的既有历史。拉取后在 backend 目录执行 `alembic upgrade head`；本次代码合流没有执行本地业务库迁移或重启既有服务。
+
+合流验证：backend unit/API/forecast 304 passed，Agent 32 passed / 3 skipped，ML runtime 22 passed；前端契约、typecheck、production build 通过。24 项浏览器回归中 23 项首轮通过，1 项 Windows 剪贴板换行断言适配后复测通过。迁移覆盖空库和两个已部署分支的离线升级 SQL；未运行真实 PostgreSQL 升级验收。
+
 ### 最新实施检查点：本地预测首轮实验与服务（2026-09-08）
 
 **先读[首轮实验与研究分析报告](../ShopSteward-forecast/docs/reports/forecast-experiment-analysis.md)。** 已完成真实数据准备、训练、冻结测试与本地推理服务；当前不是“尚未开始训练”。实现代码位于独立工作树 `ShopSteward-forecast`，分支 `codex/b1-local-forecast`，本次文档整理前代码 HEAD 为 `c160644`。原 `ShopSteward` 的 YH 开发代码和服务没有合并/切换到该版本；在原目录阅读时，请进入同级 `../ShopSteward-forecast` 继续实现或运行命令。
@@ -43,6 +51,45 @@ B2单元/API **51 passed**，专用PG相关回归 **78 passed, 1 deselected**，
 完整设计与分工：[设计](../ShopSteward-forecast/docs/superpowers/specs/2026-09-08-local-forecast-design.md)、[总计划](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast.md)、[A模型](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast-model.md)、[B后端](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast-backend.md)、[C产品/Agent](../ShopSteward-forecast/docs/superpowers/plans/2026-09-08-local-forecast-product.md)。原计划的未勾选框不能覆盖本节实际执行状态。完整本机任务报告/复审在 `.superpowers/sdd/2026-09-08-local-forecast/`，正式可传递的摘要在docs。
 
 以下保留其他工作包的历史交接，其中旧“真实预测未实现”“最新head”等描述按记录日期理解，当前预测进度以上述检查点为准。
+
+## 本轮接续：用户主动事项承接（2026-09-09）
+
+从919bcde继续，新增事项入口、统一卡片/对话/结果、恢复与受控Agent交接，关联原Mission并保留原采购护栏。详细实现、接口、并发语义和待接入内容统一见[模块说明](backend/app/work_items/README.md)，实测与本机运行边界见[验证记录](docs/reports/work-intake-verification.md)。需要0013_work_intake；不是原agent/或LangGraph的意图分类实现，也未调用付费模型。
+
+用户随后授权复核、PR并在验证通过后合并。复核已修复撤权重试、未知提交保护、旧模拟标识、已有Mission重复提案与生产能力探测等问题；108项相关后端/Agent、29项生产前端及1条真实浏览器链通过。发布状态以对应PR与Git为准；未改飞书或部署网站。旧HANDOVER 2.md继续保留。下方三阶段“已完成”是此前交付状态，不能视为本次自然语言理解或预测已经接入。
+
+
+<!-- md-alignment-2026-09-08 -->
+### 三阶段合并状态与旧文阅读规则（2026-09-08增补）
+
+[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)已合并第一阶段；[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)已于2026-09-08合并第二/三阶段及补齐项，提交 `1bbcad5`，与已测 `c7607ea` 文件树相同，[Windows CI](https://github.com/yhnapoleon/ShopSteward/actions/runs/34246514054)通过。工程事实统一从[组合交付说明](docs/reports/agent-workspace-delivery.md)进入。
+
+本次Markdown增补只明确当前状态与历史适用范围，原正文、测试数字和验证JSON不改写。下方“第二/三阶段尚未提交”“证据/试算未实现”等仍描述各报告形成时点；不能据此重复开发或重新认领已合并工作。语音、正文流、多任务并发、完整Agent验收和已知排队延迟仍是未完成项。
+<!-- /md-alignment-2026-09-08 -->
+
+### Agent工作区组合交付（2026-09-08）
+
+第二、三阶段及原件下载/代码块复制已组成同一交付范围。[组合交付说明](docs/reports/agent-workspace-delivery.md)逐项说明业务目标、后端支撑边界、迁移要求与验证；[最终指纹](docs/reports/agent-workspace-delivery-verification.json)对应本轮组合源码。515项后端/Agent普通用例分批通过，2项真实浏览器通过，23项前端回归通过。四项文档运行时配置失败补齐环境后复验通过，未改变业务实现。
+
+需要0012迁移；Mac mini已在阶段二升级，模型保持关闭。规划、账本、审批执行、Mission、业务调度与Agent主体目录无本轮源码变化。后端增添只承担真实过程和证据/成果所需的存储、接口与记录钩子。以下阶段记录保留历史时点；PR合并状态以Git/关联PR为准。
+
+### 证据与业务成果 · 第三阶段（2026-09-08）
+
+已在保护第二阶段未提交改动的基础上实现历史证据片段、类型化试算/方案比较和刷新可恢复的版本回执。复用ToolInvocation与Plan，新增Run outcomes和历史证据GET，修订结果绑定base_plan_id；无迁移、采购审批不变。详见[第三阶段实施与验证](docs/reports/agent-business-outcomes.md)及[验证指纹](docs/reports/agent-business-outcomes-verification.json)。
+
+相关后端/真实浏览器61项、前端12项通过，类型/构建/契约/Ruff通过。真实PG/HTTP/业务工具/Nuxt链验证40→20、现金不变、采购0及刷新；原文使用持久检索夹具验证版本/权限/安全呈现，不计远端检索或真实模型验收。仅重启Mac mini API，模型仍关闭；第二/三阶段均未提交，旧HANDOVER 2.md及stash保留。下方第二阶段“证据/成果待实现”是旧阶段边界，当前以本节为准。
+
+### Agent工具生命周期 · 第二阶段已实现（2026-09-08）
+
+第一阶段已通过[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)合并为 `c46e85c`，合并前 `8b9246b` 的Windows CI通过。第二阶段在此基线上独立实现，尚未提交：持久工具活动/事件、鉴权SSE与轮询接口、同源流式代理、实时工具状态/耗时及恢复。业务语义、代码入口、实际验证和剩余项见[第二阶段报告](docs/reports/agent-progress-events.md)。
+
+64项后端及真实浏览器串联、23项前端生产回归、4项本机作用域回归通过。完整SC01因后台排队达到300秒总时限，原场景续验确认现金400元、库存70件、在途0件且无重复采购；超时与续验分开记录，不声称自动长流程一次通过。Mac mini开发库备份后由0010升级到0012，API/业务worker已重启，3000/8001保留、模型仍关闭。工具链使用真实PG/HTTP，测试执行器控制工具顺序与暂停，不计真实模型验收。
+
+后续先独立审阅第二阶段差异，再按明确授权提交PR；证据片段DTO、结构化试算结果、语音及真实模型验证仍待推进。本轮未向飞书写入或发布到外部服务。
+
+### 前端任务工作区 · 第一阶段（2026-09-08）
+
+本轮按已确认的任务体验实现第一阶段：任务卡片、独立任务页、常驻Agent工作区、共享对话状态、真实工具完成记录、来源定位、结束委托及原确认恢复。验证基于 `jeffrey / 5f57a3b` 的提交前工作区；发布状态按GitHub实际PR和提交核对。工程接续与验证见[任务工作区报告](docs/reports/task-workspace-verification.md)；视觉规范见[frontend/style.md](frontend/style.md)。模型继续按本机配置关闭，实时工具开始事件、证据片段与语音尚未实现；不能把本阶段当作完整Agent验收。
 
 **首要交接入口：[Knowledge服务器部署完整手册](docs/runbooks/knowledge-server-handoff.md)。** 已按用户要求整合为单文档14个主题章节，覆盖部署/完整配置/启动/跨机网络/backend与LangGraph接入/语料与关系/验收/备份恢复/排障/选型/回填模板，无需先阅读其他子文档；源码及原始报告在末尾作为参考。当前可开展环境准备和隔离试部署，完整搬迁验收仍待补。
 

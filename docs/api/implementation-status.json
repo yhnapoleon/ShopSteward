@@ -1,7 +1,7 @@
 {
-  "updated_at": "2026-09-11",
+  "updated_at": "2026-09-12",
   "application_version": "0.1.0",
-  "work_package": "K0 baseline + K1 knowledge document management + v6 forecast product integration",
+  "work_package": "Knowledge delivery, durable agent workspace, work intake and v6 forecast integration; work-intake AI intent/dispatch remains external",
   "runtime_schema": "backend.runtime.openapi.json",
   "implemented_operation_ids": [
     "list_alerts",
@@ -16,6 +16,9 @@
     "configure_agent_followup",
     "list_agent_knowledge",
     "edit_agent_knowledge",
+    "list_agent_progress_events",
+    "stream_agent_progress_events",
+    "get_agent_historical_evidence",
     "call_agent_tool",
     "get_dashboard",
     "list_mission_timeline",
@@ -27,9 +30,6 @@
     "decide_plan",
     "get_action",
     "revise_plan",
-    "get_forecast_v6_model",
-    "get_forecast_v6",
-    "refresh_forecast_v6",
     "get_current_user",
     "list_visible_stores",
     "health_live",
@@ -59,8 +59,22 @@
     "get_knowledge_index",
     "retry_knowledge_index",
     "publish_knowledge_generation",
+    "create_work_item",
+    "list_work_items",
+    "get_work_item",
+    "send_work_message",
+    "open_mission_work_item",
+    "accept_work_mission",
+    "control_work_item",
+    "pending_work_items",
+    "claim_work_item",
+    "publish_work_update",
+    "read_work_context",
     "create_dev_scenario",
-    "advance_dev_scenario"
+    "advance_dev_scenario",
+    "get_forecast_v6_model",
+    "get_forecast_v6",
+    "refresh_forecast_v6"
   ],
   "registered_job_types": [
     "worker_probe",
@@ -134,6 +148,14 @@
       "UI"
     ]
   },
+  "work_intake": {
+    "date": "2026-09-09",
+    "migration": "0013_work_intake",
+    "status": "implemented_and_verified",
+    "scope": "Persistent work intake, frontend continuity and external adapter handoff; no model or intent classifier",
+    "spec": "backend/app/work_items/README.md",
+    "verification": "docs/reports/work-intake-verification.md"
+  },
   "forecast_v6": {
     "migration": "0012_forecast_v6",
     "model_version": "shopsteward-v6-1885",
@@ -141,5 +163,6 @@
     "agent_tool": "get_forecast",
     "user_label": "模型推演，仅供参考",
     "report": "../reports/forecast-v6-product-integration.md"
-  }
+  },
+  "schema_revision": "0014_forecast_work_merge"
 }

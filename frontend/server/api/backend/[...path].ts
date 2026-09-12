@@ -1,3 +1,4 @@
+import { agentProgressStream } from '../../utils/agent-progress-stream'
 import { backendRoutes } from '../../utils/backend-routes'
 import { backendSettings, sameOrigin } from '../../utils/backend'
 import { isKnowledgeTransfer, knowledgeTransfer } from '../../utils/knowledge-transfer'
@@ -13,6 +14,8 @@ export default defineEventHandler(async (event) => {
   if (!allowed || (path.startsWith('/dev/') && !config.devTools))
     throw createError({ statusCode: 404, statusMessage: 'Unknown operation' })
   if (!config.token) throw createError({ statusCode: 401, statusMessage: '请连接后端用户身份' })
+  if (method === 'GET' && /^\/api\/v1\/agent-runs\/[A-Za-z0-9_-]+\/events\/stream$/.test(path))
+    return agentProgressStream(event, config.url + path, config.token)
   if (isKnowledgeTransfer(method, path)) return knowledgeTransfer(event, path)
   const headers: Record<string, string> = { Authorization: 'Bearer ' + config.token }
   let body: string | undefined

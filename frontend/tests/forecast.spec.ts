@@ -137,6 +137,8 @@ async function setup(page: Page, role = 'admin', initial = 'UNAVAILABLE') {
           items: [
             {
               id: 'forecast-message',
+              seq: 1,
+              created_at: '2026-09-11T00:00:00Z',
               role: 'assistant',
               run_id: null,
               content: '请核对预测依据。',
@@ -267,6 +269,7 @@ test('Agent forecast reference opens the panel and identifies superseded evidenc
   const control = await setup(page, 'admin', 'READY')
   control.reference = 'older-forecast-id'
   await page.reload()
+  await page.getByRole('button', { name: '查看Agent工作区', exact: true }).click()
   await page.getByRole('button', { name: '查看预测依据 · v6-test', exact: true }).click()
   const panel = page.getByRole('region', { name: '七日需求预测' })
   await expect(panel).toContainText('正在核对引用：older-forecast-id')

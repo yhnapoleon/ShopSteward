@@ -4,12 +4,19 @@ export default defineEventHandler(async (event) => {
   const config = backendSettings(event)
   try {
     const identity = await currentIdentity(event)
-    const runtime = await $fetch<{ paths: Record<string, unknown> }>(config.url + '/openapi.json', {
-      timeout: 5000,
-      retry: 0,
-    }).catch(() => null)
+    const runtime = identity.capabilities
+      ? null
+      : await $fetch<{ paths: Record<string, unknown> }>(config.url + '/openapi.json', {
+          timeout: 5000,
+          retry: 0,
+        }).catch(() => null)
     return {
-      planRevision: Boolean(runtime?.paths['/api/v1/plans/{plan_id}/revision']),
+      workIntake: identity.capabilities
+        ? identity.capabilities.includes('work_intake')
+        : Boolean(runtime?.paths['/api/v1/work-items']),
+      planRevision: identity.capabilities
+        ? identity.capabilities.includes('plan_revision')
+        : Boolean(runtime?.paths['/api/v1/plans/{plan_id}/revision']),
       authenticated: true,
       ...identity,
       agentEnabled: config.agentEnabled,
@@ -17,6 +24,7 @@ export default defineEventHandler(async (event) => {
     }
   } catch {
     return {
+      workIntake: false,
       planRevision: false,
       authenticated: false,
       roles: [],

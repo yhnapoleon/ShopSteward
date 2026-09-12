@@ -133,6 +133,5 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
         </button>
       </div>
     </div>
-    <AgentConversation />
   </article>
 </template>

@@ -1,5 +1,20 @@
 # macOS 本地开发
 
+## 事项承接本机状态（2026-09-09）
+
+Mac mini开发库已备份并迁移至0013_work_intake，仅更新API进程；模型和新事项处理器均保持关闭，原业务worker/模拟器保留。3000可输入并保存事项，不能据此声称自动理解已接入。字段、接入方法与验证边界见[事项模块](../backend/app/work_items/README.md)及[验证记录](reports/work-intake-verification.md)。其他机器先按原方式应用迁移，再配置受控处理者；不要套用本机进程或备份路径。
+
+
+<!-- md-alignment-2026-09-08 -->
+## 当前Mac mini接续补充（2026-09-08）
+
+三阶段已通过[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)、[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并，业务代码 `1bbcad5` 需要 `0012_agent_progress`。Mac mini开发库已在第二阶段备份并升级0012；下文9382779基准、0009/0010迁移、空前端和初次测试数字继续保留原环境配置时点，不表示当前版本。
+
+本指南的start/status/migrate/test仍是该Mac mini环境入口；实际进程每次用status核对，不能沿用旧PID。三阶段没有改变其他机器环境、业务调度或模拟器迁移。真实模型保持关闭，未启动Agent worker；已有窗口中的旧Windows模型记录不改变本机设置。
+
+组合验证见[交付说明](reports/agent-workspace-delivery.md)。全部后端/Agent测试须按本脚本使用backend/pyproject.toml配置；语料的Office/PDF用例还需将KNOWLEDGE_DOCUMENT_PYTHON指向本机已存在且包含对应库的文档Python运行时。该值因机器而异，缺配置的失败不能算业务通过，也不能为测试删改原业务实现。
+<!-- /md-alignment-2026-09-08 -->
+
 2026-09-07 · 已在Apple Silicon Mac完成本机配置和验证。基准为main提交 `9382779` 加本次未提交的Mac适配改动；不是新的团队合并版本。真实模型由用户明确暂缓配置，当前只启动业务worker。
 
 ## 日常使用

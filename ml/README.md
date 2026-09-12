@@ -38,7 +38,7 @@ FORECAST_V6_URL=http://127.0.0.1:8053
 FORECAST_V6_TOKEN=与模型服务相同的随机token
 ```
 
-后端目录执行 `alembic upgrade head`，迁移到 `0012_forecast_v6`。启动后首页可选模型系列并“运行模型推演”；LangGraph 启用且配置了组员自己的 LLM key 时可调用 `get_forecast`。Windows 总启动器 `infra/start_windows.py` 会启动模型服务；此时不要提前单独占用 8053，且 `ML_PYTHON` 应指向组员本机安装了 ML 依赖的 Python。完整公开 API 及输入格式见 [接入报告](../docs/reports/forecast-v6-product-integration.md)。
+后端目录执行 `alembic upgrade head`，迁移到 `0014_forecast_work_merge`（同时包含预测、Agent 进度和事项承接迁移；已有任一分支的数据库均可升级）。启动后首页可选模型系列并“运行模型推演”；LangGraph 启用且配置了组员自己的 LLM key 时可调用 `get_forecast`。Windows 总启动器 `infra/start_windows.py` 会启动模型服务；此时不要提前单独占用 8053，且 `ML_PYTHON` 应指向组员本机安装了 ML 依赖的 Python。完整公开 API 及输入格式见 [接入报告](../docs/reports/forecast-v6-product-integration.md)。
 
 以下是原实现说明；其中研究目录命令只用于重新打包，不是组员运行模型的前置条件。
 
