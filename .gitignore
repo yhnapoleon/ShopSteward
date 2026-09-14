@@ -20,6 +20,8 @@ data/**/*
 var/**/*
 !var/**/
 !var/**/.gitkeep
+# Frozen v6 inference bundle is shared with the group; other runtime data stays local.
+!var/forecast-v6/bundle/**
 .DS_Store
 Thumbs.db
 

@@ -12,6 +12,8 @@ from sqlalchemy import func, select
 from app.api.dependencies import authorize_store
 from app.core.errors import AppError
 from app.core.hashing import digest
+from app.forecast_v6.models import ForecastV6Binding
+from app.forecast_v6.repository import read_current
 from app.missions import repository as missions
 from app.missions.models import InboundRow
 from app.missions.schemas import MissionCreate
@@ -22,7 +24,7 @@ from app.planning.engine import RULE_VERSION
 from app.planning.evaluation import evaluate_candidates
 from app.planning.schemas import InboundSnapshot, Policy
 from app.planning.simulation_schemas import QuantitySimulation, QuantitySimulationInput
-from app.planning.snapshot import FixedForecastProvider, source_fresh
+from app.planning.snapshot import FixedForecastProvider, source_fresh, v6_snapshot
 
 REASONS = {
     "CASH_FLOOR_VIOLATION": "采购后可用现金低于底线",
@@ -56,6 +58,7 @@ async def capture(session, store_id, body, settings):
     if state.simulation_time is None:
         raise AppError(422, "SIMULATION_TIME_MISSING", "缺少经营时点，无法判断到货窗口。")
     forecast = None
+    forecast_provider = "projection"
     if body.remaining_demand is None:
         row = (
             await session.get(ForecastRow, (store_id, stock.sku_id, stock.forecast_version))
@@ -67,9 +70,21 @@ async def capture(session, store_id, body, settings):
                 422, "FORECAST_UNAVAILABLE", "缺少当前需求依据，请填写明确的需求假设及期间。"
             )
         try:
-            forecast, renewal = FixedForecastProvider().read(
-                row, stock, state, cursor, now, settings.fixed_forecast_ttl_seconds
+            binding = (
+                await session.get(ForecastV6Binding, (store_id, stock.sku_id))
+                if settings.forecast_v6_enabled
+                else None
             )
+            if binding is not None and binding.activate_for_planning:
+                current = await read_current(session, store_id, stock.sku_id, settings, now)
+                if current["status"] != "READY" or not current["usable_for_planning"]:
+                    raise ValueError("active v6 forecast is not usable")
+                forecast = v6_snapshot(current["forecast"], stock, cursor)
+                forecast_provider, renewal = "v6", None
+            else:
+                forecast, renewal = FixedForecastProvider().read(
+                    row, stock, state, cursor, now, settings.fixed_forecast_ttl_seconds
+                )
             if renewal:
                 raise ValueError("expired forecast")
         except (ValueError, TypeError, KeyError):
@@ -145,6 +160,7 @@ async def capture(session, store_id, body, settings):
         horizon_start=start,
         horizon_end=end,
         demand_source=source,
+        forecast_provider=forecast_provider,
         forecast_id=forecast.forecast_id if forecast else None,
         forecast_version=forecast.forecast_version if forecast else None,
         forecast_valid_until=forecast.valid_until if forecast else None,
@@ -182,6 +198,24 @@ async def stale_reasons(session, calculation, settings):
         stock = await session.get(StockRow, (value.state.store_id, value.sku_id))
         if stock is None or stock.forecast_version != value.forecast_version:
             reasons.append("需求依据已变化")
+        binding = (
+            await session.get(ForecastV6Binding, (value.state.store_id, value.sku_id))
+            if settings.forecast_v6_enabled
+            else None
+        )
+        v6_active = binding is not None and binding.activate_for_planning
+        if value.forecast_provider == "v6":
+            current = await read_current(session, value.state.store_id, value.sku_id, settings, now)
+            if (
+                not v6_active
+                or current["status"] != "READY"
+                or not current["usable_for_planning"]
+                or current["forecast"]["forecast_id"] != value.forecast_id
+                or current["forecast"]["predicted_quantity"] != value.remaining_demand
+            ):
+                reasons.append("模型需求依据已变化或不再适用")
+        elif v6_active:
+            reasons.append("需求来源已切换到模型预测")
     return reasons
 
 

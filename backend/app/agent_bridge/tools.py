@@ -76,6 +76,11 @@ DEFINITIONS = {
         "读取当前或指定真实方案。金额单位为分，审批必须由用户现有审批接口执行。",
     ),
     "get_dashboard": (Empty, "读取真实库存、现金、在途和警报。"),
+    "get_forecast": (
+        Empty,
+        "读取当前任务门店商品的已保存 v6 七日预测、日期、版本、适用范围。"
+        "historical_demo对用户称为模型推演，仅供参考；不可用时先补充历史并刷新。",
+    ),
     "get_action": (ActionArgs, "读取采购行动及受理/到货状态，受理不等于到货。"),
     "read_timeline": (LimitArgs, "读取当前任务最近业务事件和可引用的记录。"),
     "read_sales_summary": (SalesArgs, "读取当前店铺最近指定天数销售汇总。"),
@@ -178,6 +183,42 @@ async def execute_tool(
     elif name == "get_dashboard":
         value = encoded(await reporting.dashboard(session, store.id, settings))
         references = [{"type": "store", "id": store.id, "version": str(store.state_version)}]
+    elif name == "get_forecast":
+        from app.forecast_v6.repository import read_current
+
+        value = await read_current(session, store.id, mission.sku_id, settings)
+        if value["status"] != "READY" or not value.get("forecast"):
+            return {
+                "ok": False,
+                "data": value,
+                "references": [],
+                "error": {
+                    "code": "FORECAST_UNAVAILABLE",
+                    "message": value.get("reason") or "Forecast unavailable",
+                },
+            }
+        forecast = value["forecast"]
+        references = [
+            {
+                "type": "forecast",
+                "id": forecast["forecast_id"],
+                "version": forecast["model_version"],
+                "store_id": store.id,
+                "sku_id": mission.sku_id,
+                "mode": value["mode"],
+            }
+        ]
+        history = value.get("history", [])
+        model = value.get("model") or {}
+        # The product keeps complete input for inspection. The Agent only needs
+        # the seven predictions and input coverage, not 300 series or 374 rows.
+        value = {k: v for k, v in value.items() if k not in {"history", "model"}}
+        value["input_coverage"] = {
+            "days": len(history),
+            "start": history[0]["date"] if history else None,
+            "end": history[-1]["date"] if history else None,
+        }
+        value["model"] = {k: v for k, v in model.items() if k != "supported_series"}
     elif name == "get_action":
         action = await session.get(ActionRow, args.action_id)
         if action is None or action.mission_id != mission.id:

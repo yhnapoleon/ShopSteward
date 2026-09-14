@@ -1,5 +1,7 @@
 # 事项入口与 Agent 接入
 
+2026-09-14合流补充：本模块现与PR15共用 `0014_forecast_work_merge` schema头。独立试算在v6明确启用为规划需求时读取同一模型证据，失效时不回退旧投影；历史演示仍不能作为经营需求。`calculation.input.forecast_provider`区分投影与v6，旧记录默认projection；导出保留预测证据ID。[整合验收](../../../docs/reports/quantity-work-merge-verification.md)。下方0013描述为初次功能交付时点。
+
 2026-09-09。本模块承接用户主动提出的一件事，保存对话、进度、问题、结果，并关联既有备货 Mission。它不判断意图、不调用模型、不实现预测/报价算法，也不授予采购权限。现有 `agent/` 与 `agent_bridge` 的 LangGraph、任务内工具和历史会话保持原实现。
 
 ## 用户行为与职责

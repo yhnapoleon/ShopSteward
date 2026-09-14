@@ -4,6 +4,24 @@ from app.core.config import Settings
 from app.main import create_app
 
 
+def test_embedded_upload_metadata_refs_resolve_in_complete_openapi_document():
+    from app.knowledge.router import upload_contract
+    from app.knowledge.schemas import UploadMetadata
+
+    schema = upload_contract(UploadMetadata)
+
+    def walk(value):
+        if isinstance(value, dict):
+            assert "$ref" not in value, "Embedded metadata must not contain root $defs refs"
+            for child in value.values():
+                walk(child)
+        elif isinstance(value, list):
+            for child in value:
+                walk(child)
+
+    walk(schema)
+
+
 def test_knowledge_openapi_is_valid_and_documents_multipart_and_phase_boundaries():
     app = create_app(Settings(_env_file=None))
     schema = app.openapi()

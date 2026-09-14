@@ -8,6 +8,7 @@ from sqlalchemy.engine import make_url
 from app.agent_bridge.checkpoint_fence import make_fence
 from app.agent_bridge.document_evidence import all_relation_paths_current, current_authority
 from app.agent_bridge.evidence_policy import document_answer_guard, evidence_policy
+from app.agent_bridge.forecast_evidence import forecast_answer_guard
 from app.agent_bridge.jobs import assert_lease, current_principal
 from app.agent_bridge.knowledge import read
 from app.agent_bridge.models import AgentRun, Conversation, Message, ToolInvocation
@@ -18,7 +19,7 @@ from app.agent_bridge.presentation import (
 )
 from app.agent_bridge.tools import catalog, tool_schemas
 from app.core.errors import AppError
-from app.missions.models import PlanRow
+from app.missions.models import MissionRow, PlanRow
 
 
 async def execute(context):
@@ -50,7 +51,11 @@ async def execute(context):
     current_input = original_input or next(
         (m["content"] for m in reversed(context["messages"]) if m["role"] == "user"), ""
     )
-    policy = evidence_policy(current_input, documents_enabled=settings.knowledge_service_enabled)
+    policy = evidence_policy(
+        current_input,
+        documents_enabled=settings.knowledge_service_enabled,
+        forecasts_enabled=settings.forecast_v6_enabled,
+    )
 
     async def load_context():
         async with db.session() as session, session.begin():
@@ -102,6 +107,15 @@ async def execute(context):
             return (
                 "用中文回答。业务金额是整数分，显示元时直接复制工具money_display的yuan字符串，不自行换算。每次经营提问先读真实业务工具，不凭历史数值下结论。"
                 "当前Mission已绑定，get_plan不需要用户提供plan_id；用户询问当前方案时必须调用get_plan，不能要求用户重新提供方案。"
+                "get_forecast为空参数只读工具，返回当前任务同门店商品已保存的v6预测；预测和补货问题先读取库存、预测，再读取方案。"
+                "预测数量直接复制工具值，并说明模型版本和适用范围；预测销量不等于采购量，不是保证或概率。"
+                "mode=historical_demo对用户统一称为‘模型推演，仅供参考’，不主动强调历史演示、M5或年份，"
+                "也不把原始时间改写成当前日期。只有用户明确核对原始日期时才如实给出日期。"
+                "usable_for_planning=false表示当前规划未采用这份v6预测；它可以辅助理解，采购仍须结合当前库存和方案。"
+                "对用户用自然语言说明适用性，不输出mode、usable_for_planning等内部字段名。"
+                "不得把历史误差当作当前门店准确率。"
+                "引用使用工具提供的forecast references，不手工编造ID。"
+                "缺少预测时请用户在前端绑定序列、导入完整历史并刷新。"
                 "提供方案→等待用户反馈→只读试算或明确修订→展示新待确认版本。用户确认采购必须去已有审批接口，不能声称已采购。"
                 "如果用户请求长期记住/纠正/删除偏好，调用memory_edit并确认工具成功。仅一次的数量约束用方案工具。"
                 "通用偏好存USER，任务流程偏好存SKILL(replenishment)。不存在的scope版本为0。source_message_id由后端注入，不要向用户索要消息ID。"
@@ -181,6 +195,7 @@ async def execute(context):
             required_tools=policy["required_tools"],
             required_read_tools={
                 "get_dashboard",
+                "get_forecast",
                 "get_plan",
                 "search_documents",
                 "read_document_evidence",
@@ -282,6 +297,21 @@ async def execute(context):
             authority=authority,
             relations_changed=not all_relation_paths_current(paths, authority, datetime.now(UTC)),
         )
+        requires_forecast = "get_forecast" in policy["required_tools"]
+        if requires_forecast or any(
+            r.get("type") == "forecast" for r in result.get("references", [])
+        ):
+            from app.forecast_v6.repository import read_current
+
+            conversation = await session.get(Conversation, context["conversation_id"])
+            current_principal(settings, conversation)
+            mission = await session.get(MissionRow, conversation.mission_id)
+            current_forecast = await read_current(
+                session, conversation.store_id, mission.sku_id, settings
+            )
+            result = forecast_answer_guard(
+                result, required=requires_forecast, current=current_forecast
+            )
     result.update(
         evidence_policy=policy,
         cards=cards,

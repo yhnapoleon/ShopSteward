@@ -15,6 +15,7 @@ import sys
 import time
 from datetime import UTC, datetime
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import httpx
 from dotenv import dotenv_values
@@ -63,6 +64,32 @@ def main():
         SIMULATION_BASE_URL="http://127.0.0.1:8001",
         AGENT_BACKEND_URL="http://127.0.0.1:8000",
     )
+    # Always import this checkout, even when using an existing shared interpreter.
+    env["PYTHONPATH"] = os.pathsep.join(
+        str(ROOT / path)
+        for path in ("backend", "agent/src", "ml/src", "simulation", "knowledge/src")
+    )
+    forecast = env.get("FORECAST_V6_ENABLED", "false").lower() == "true"
+    if forecast:
+        url = urlsplit(env.get("FORECAST_V6_URL", "http://127.0.0.1:8053"))
+        if (
+            url.scheme != "http"
+            or url.hostname != "127.0.0.1"
+            or url.path not in ("", "/")
+        ):
+            raise SystemExit("Windows launcher requires a loopback FORECAST_V6_URL.")
+        forecast_port = url.port or 8053
+        if listening(forecast_port):
+            raise SystemExit(
+                f"Forecast port {forecast_port} is occupied; verify its owner first."
+            )
+        if not env.get("FORECAST_V6_TOKEN"):
+            raise SystemExit("Configure FORECAST_V6_TOKEN before enabling v6.")
+        bundle = Path(
+            env.get("ML_V6_BUNDLE", str(ROOT / "var/forecast-v6/bundle"))
+        ).resolve()
+        if not (bundle / "manifest.json").is_file():
+            raise SystemExit("Package the v6 bundle before starting.")
     frontend_env = {
         **os.environ,
         "NUXT_BACKEND_URL": "http://127.0.0.1:8000",
@@ -91,12 +118,36 @@ def main():
         records.append({"component": name, "pid": child.pid, "port": port})
 
     try:
+        if forecast:
+            spawn(
+                "forecast-v6",
+                [
+                    env.get("ML_PYTHON", sys.executable),
+                    "-m",
+                    "uvicorn",
+                    "shopsteward_ml.service:create_app",
+                    "--factory",
+                    "--host",
+                    "127.0.0.1",
+                    "--port",
+                    str(forecast_port),
+                    "--no-access-log",
+                ],
+                ".",
+                env
+                | {
+                    "ML_SERVICE_TOKEN": env["FORECAST_V6_TOKEN"],
+                    "ML_V6_BUNDLE": str(bundle),
+                },
+                forecast_port,
+            )
         if not listening(8001):
             sim_env = {
                 **os.environ,
                 "SIM_CONSOLE_ENABLED": "true",
                 "SIM_BACKEND_BASE_URL": "http://127.0.0.1:8000",
                 "SIM_BACKEND_TOKEN": admin["token"],
+                "PYTHONPATH": env["PYTHONPATH"],
             }
             spawn(
                 "simulator",
@@ -153,17 +204,27 @@ def main():
             3000,
         )
         with httpx.Client(timeout=2, trust_env=False) as client:
-            for port, path in (
+            checks = [
                 (8001, "/health/ready"),
                 (8000, "/health/ready"),
                 (3000, "/api/session"),
-            ):
+            ]
+            if forecast:
+                checks.insert(0, (forecast_port, "/health/ready"))
+            for port, path in checks:
                 deadline = time.monotonic() + 60
                 while time.monotonic() < deadline:
                     if any(p.poll() is not None for p in created):
                         raise RuntimeError(f"A service exited. Inspect {log_dir}")
                     try:
-                        response = client.get(f"http://127.0.0.1:{port}{path}")
+                        headers = (
+                            {"Authorization": "Bearer " + env["FORECAST_V6_TOKEN"]}
+                            if forecast and port == forecast_port
+                            else {}
+                        )
+                        response = client.get(
+                            f"http://127.0.0.1:{port}{path}", headers=headers
+                        )
                         if response.status_code == 200:
                             if port == 3000 and not response.json().get(
                                 "authenticated"
@@ -180,6 +241,7 @@ def main():
         result = {
             "started_at": datetime.now(UTC).isoformat(),
             "agent_enabled": agent,
+            "forecast_v6_enabled": forecast,
             "model": env.get("AGENT_MODEL") if agent else None,
             "processes": records,
             "logs": str(log_dir),

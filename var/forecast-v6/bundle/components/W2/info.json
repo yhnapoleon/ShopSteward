@@ -1,0 +1,25 @@
+{
+  "arm": "W2",
+  "best_rounds": 343,
+  "params": {
+    "device_type": "cpu",
+    "num_threads": 4,
+    "learning_rate": 0.05,
+    "max_depth": -1,
+    "min_data_in_leaf": 100,
+    "feature_fraction": 1.0,
+    "bagging_fraction": 1.0,
+    "bagging_freq": 0,
+    "lambda_l2": 1.0,
+    "deterministic": true,
+    "force_col_wise": true,
+    "seed": 20260908,
+    "metric": "None",
+    "verbosity": -1,
+    "objective": "regression_l1",
+    "num_leaves": 31
+  },
+  "training_seconds": 6.547000000005937,
+  "examples": 208000,
+  "meaning": "median_type"
+}

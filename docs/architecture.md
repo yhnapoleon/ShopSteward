@@ -1,67 +1,109 @@
-# 简化架构与分工
+# 项目架构与数据边界
 
-## 事项入口层（2026-09-09）
+本页对应 2026-09-12 合流基线 `2313365`。安装、配置和启动命令见[根 README](../README.md)；本页说明模块如何协作及状态由谁维护。
 
-用户自然语言先进入work_items/work_messages，独立于原Mission Agent运行。外部处理者通过服务身份、事项版本与可撤销短租约取得上下文和回传状态；平台不实现意图分类或预测。work_items只关联原Mission及结果，不复制账本；同一用户同一Mission的事项归并保留原消息。用户显式接受备货条件复用create_mission，采购与到货维持原事务和护栏。[完整交接协议](../backend/app/work_items/README.md)。
-
-
-<!-- md-alignment-2026-09-08 -->
-## 当前任务交互链路补充（2026-09-08）
-
-任务工作区三阶段已随[PR #11](https://github.com/yhnapoleon/ShopSteward/pull/11)和[PR #12](https://github.com/yhnapoleon/ShopSteward/pull/12)合并。一个Mission承接用户委托，Plan承接候选/修订，Action与批准承接实际采购；Conversation/Run承接对话和工具过程。前端共用同一任务/会话同步器，不为每张卡片复制任务或账目。
-
-模型选择工具并解释结果；backend业务模块决定真实方案/账目/审批状态，Agent桥接层记录运行与工具生命周期并公开经过筛选的进度、历史证据和成果。结果/完成记录与原业务事务一致；当前Agent没有审批采购工具。第一阶段以已有接口为主，第二/三阶段包含新增桥接接口和0012存储，不应统称纯前端改动。
-
-下方“Agent/RAG后接”的叙述、虚线和职责表保留原先分工阶段。Agent及Knowledge的已有实现见各模块说明；本次没有改动原主图、规划、账本、审批执行、业务调度或独立Knowledge服务架构。[组合交付](reports/agent-workspace-delivery.md)列明本轮已验与未验，不能将UI合并视为完整A-01/L-01或云部署完成。
-<!-- /md-alignment-2026-09-08 -->
-
-按交付模块划分，backend的B0-01至B0-07已完成；Mission、规划、警报、看板、审批采购、持续源同步及周期/事件调度可用。B0-07补齐组合故障与双worker进程验收，并修复两处锁竞争阻塞；范围与边界见[测试报告](reports/b0-07-test-report.md)。实际启动见 [Backend说明](../backend/README.md)。后端内部聚类与开发契约见 [Backend 开发与接口规范](backend-development.md)，接口预览见 [Swagger / OpenAPI](api/README.md)。以下按“先做 backend，Agent/RAG 后接”的最新安排更新职责。
-
-## 模块职责
-
-| 目录 | 负责什么 | 对外提供什么 |
-|---|---|---|
-| frontend | Nuxt 页面、交互、执行进度展示 | 用户提交与结果展示 |
-| backend | HTTP API、业务任务调度与恢复、库存和现金账本、采购规则与批准校验 | 前端接口与 Agent 业务工具接口 |
-| agent | 推理编排、图检查点与恢复、LLM 调用、记忆和技能学习 | 后续接收任务触发，推进推理并回传进度与结果 |
-| ml | 预测数据处理、训练、评估与推理；需要时提供独立预测服务 | 有版本和数据截止时间的预测结果 |
-| simulation | 合成经营场景、模拟时间、需求、到货、销售和结算事件；模拟外部动作结果 | 场景重置、时间推进、事件与执行回执 |
-| infra | Docker、环境配置、启动脚本、部署与联调配置 | 一致的开发与运行环境 |
-| docs | 架构、接口契约、数据字段、分工、实验说明 | 团队共同遵循的约定 |
-| tests | 跨模块集成与 A-01 / SC-01 / L-01 验收 | 检查整条业务链是否连通、正确 |
-
-## 模块交互
+## 运行进程
 
 ```mermaid
-flowchart LR
-    F[frontend / Nuxt] -->|用户请求| B[backend / API 与业务服务]
-    B -->|持久业务调度| W[backend / Worker]
-    W -.->|后续任务触发与结果核对| A[agent / 推理编排]
-    A -->|调用业务工具、记录进度| B
-    B -->|需求预测| M[ml / 预测能力]
-    B -->|模拟外部动作| S[simulation / 经营环境]
-    S -->|事件与回执| B
-    A -->|文本推理| L[外部或自部署 LLM]
+flowchart TB
+    UI[Nuxt / Vue 用户工作区] --> N[Nitro 会话与同源代理]
+    N --> API[FastAPI 业务 API]
+    API --> DB[(业务 PostgreSQL)]
+    BW[业务 worker] --> DB
+    BW <-->|源事件 / 执行回执| SIM[HTTP 模拟器]
+    SIM --> SDB[(模拟器 PostgreSQL)]
+    AW[Agent worker] --> DB
+    AW --> GRAPH[LangGraph / 模型适配 / 记忆与 Skill]
+    GRAPH --> LLM[外部或自部署 LLM]
+    GRAPH -->|受限工具 HTTP| API
+    API -->|预测刷新| ML[v6 推理 API]
+    ML --> BUNDLE[只读模型包与 manifest]
+    API -->|检索 / 索引查询与发布| KAPI[Knowledge API]
+    PUB[backend Knowledge publisher] --> DB
+    PUB -->|持久 outbox 交付| KAPI
+    KAPI --> KDB[(Knowledge PostgreSQL / 文件存储)]
+    KW[Knowledge worker] --> KDB
+    KW --> SEARCH[OpenSearch]
+    KAPI --> SEARCH
+    EXT[外部事项处理者：待接入] -.->|service 身份 / 租约 / 版本| API
 ```
 
-## 分工时需要共同确定的边界
-
-1. **backend 与 agent：**backend 保存经营事实和任务记录，负责业务检查调度、动作权限和采购核对；agent 后续负责推理任务并保存自己的图检查点与记忆。两者通过 agent_run_id 关联恢复状态。现金或库存不能由模型直接改写，Agent 未启用时后端仍能独立运行。
-2. **backend 与 simulation：**simulation 模拟店铺外部世界及动作结果；backend 根据带唯一 ID 的事件/回执更新经营账本。状态归属、初始状态导入、事件顺序和去重规则在接口文档中写明，避免同一次销售或到货重复记账。
-3. **backend 与 ml：**ml 返回预测，backend 负责现金约束、方案推演和采购比较。LLM 客户端归 agent，销量预测模型归 ml。
-4. **infra 与业务对接：**infra 负责让模块启动、联网和部署；业务 API、模型调用和模拟器适配代码归各调用方，接口约定放 docs。
-
-这些是代码所有权边界，不等于八个独立部署服务。B0 联调采用 API、worker、单一持久 HTTP simulation 与 PostgreSQL；ml 首先使用 backend 的 fixed provider。simulation 可与 backend 共用 PostgreSQL 实例，但表、迁移和状态所有权独立，不共享业务事务。进程内 simulation fake 仅用于开发/单元测试，不能在 API 和 worker 内各建一份可变世界。
-
-后端可以先开发，不必等完整模拟平台。先固定 [Simulator 行为契约](simulation-contract.md)，再交错实现 backend 最小业务链与 simulation 的五个接口；首次采购联调前接入持久模拟器。payload 字段之外，必须共同约定事件序号、一次性效果、采购核对、时间推进和双方重启语义。
-
-## 四人认领建议
-
-| 工作包 | 主负责 | 协作 |
+| 进程 | 工作目录 / 入口 | 必要条件 |
 |---|---|---|
-| 产品与整合 | frontend、infra | 汇总 docs、组织 tests |
-| 业务与环境 | backend、simulation | 与 Agent/模型负责人对齐输入输出 |
-| Agent 与学习 | agent | 与 backend 对齐任务、工具、批准与恢复 |
-| 预测与实验 | ml | 共同完善 simulation 场景及效果评价 |
+| 前端开发服务 | 根目录；`corepack pnpm --filter @shopsteward/frontend dev` | Node、前端依赖、可访问的后端 |
+| 业务 API | `backend/`；`python -m app` | 业务配置与迁移后的数据库 |
+| 业务 worker | `backend/`；`python -m app.worker --profile business` | 同一业务库；经营同步和采购链需要模拟器 |
+| Agent worker | `backend/`；`python -m app.worker --profile agent` | `AGENT_ENABLED`、模型配置、API、业务库 |
+| 模拟器 | `simulation/`；`python -m simulator` | 独立数据库、迁移和服务 token |
+| v6 ML | 根目录；`python -m uvicorn shopsteward_ml.service:create_app --factory --host 127.0.0.1 --port 8053` | ML runtime、模型包、进程环境中的共享 token |
+| Knowledge publisher | `backend/`；`python -m app.knowledge.publisher` | 业务 outbox、原件存储、Knowledge 连接配置 |
+| Knowledge API / worker | `infra/compose.knowledge.yaml`；详见[部署手册](runbooks/knowledge-server-handoff.md) | 独立 PG、OpenSearch、原件存储、迁移和服务 key |
 
-各模块负责人共同补充 docs 和 tests。若业务与环境工作量过重，可由预测负责人认领模拟需求与场景部分；不为分工方便而复制业务状态或计算规则。
+`agent/` 是 Agent worker 加载的运行时包；图检查点与业务状态的持久化由桥接层协调。业务 worker、Agent worker、Knowledge publisher 和 Knowledge worker 是不同进程，不能互相替代。Windows 启动器管理基础栈及按开关启用的 Agent/ML，不启动 Knowledge 栈或 publisher。
+
+## 状态与数据归属
+
+| 状态 | 所有者 | 约束 |
+|---|---|---|
+| 库存、现金、销售、在途、采购账本 | backend | 唯一业务事实来源；模型文字和 UI 表格不直接写账 |
+| Mission、Plan、审批与 Action | backend | Mission 表示持续备货委托；Plan 保存候选及输入证据；批准后才产生执行链 |
+| Conversation、Message、Run、工具活动与事件 | backend Agent 桥接层 | 按用户、门店与任务隔离，记录可恢复进度和实际成果 |
+| 图检查点、记忆与任务 Skill | Agent 运行时及桥接层 | 与 Run/租约关联；通过现有管理与鉴权边界使用 |
+| WorkItem、WorkMessage、结果、领取租约 | backend 事项承接层 | 先保存用户的一件事，可关联已有 Mission；不复制账本 |
+| 预测输入、不可变证据、当前绑定 | backend forecast_v6 | 绑定门店/SKU、输入、模型版本与业务状态；规划启用需显式选择并持续校验 |
+| 冻结模型、特征计算与原始推理输出 | ml | 校验 manifest 哈希；不决定采购数量或审批 |
+| 文档归属、版本元数据、原件与交付 outbox | backend knowledge | 管理上传、访问与交付；publisher 向独立服务提交 |
+| 解析块、检索索引、有向关系及服务数据 | knowledge | 自有 PG/文件存储/OpenSearch，与业务库分别迁移 |
+| 模拟时间、外部经营事件和采购回执 | simulation | 独立数据库和幂等记录；backend 拉取或接收后按规则入账 |
+
+业务和模拟器可共用 PostgreSQL 实例，但账号、数据库、迁移与事务独立。Knowledge Compose 另有独立 PG 和 OpenSearch。前端没有独立经营账本，页面缓存和草稿不能作为最终业务状态。
+
+## 关键业务链路
+
+### 备货、采购与持续跟进
+
+1. 用户在合成环境初始化 SC01/SANDBOX，API 保存任务，由业务 worker 从模拟器导入状态并持续同步事件。
+2. 用户创建 Mission，确定门店/SKU、现金底线、供应商及候选数量；周期调度、事件和手动检查共同触发规划。
+3. 后端读取一致快照，生成带版本/hash 的 Plan 与警报；数据过期或输入不完整时不发布可执行的新结论。
+4. 用户批准具体 Plan，后端重新校验版本、资金与权限，记录 Action 并执行采购发送/回执核实。模型没有采购批准工具。
+5. 模拟器产生回执和到货/销售等事件，后端按唯一标识与序号去重入账；超时或未知结果沿原 Action 核实，不盲目重购。
+
+细节见[后端开发规范](backend-development.md)、[Simulator 契约](simulation-contract.md)和[组合故障验证](reports/b0-07-test-report.md)。
+
+### 已有 Mission 的 Agent 协作
+
+用户消息进入持久 Conversation/Run，独立 Agent worker 执行 LangGraph。模型调用受限业务工具，后端完成身份、任务、门店与输入校验；查询、试算、方案修订返回可引用的结构化结果。
+
+桥接层持久化工具开始/结束/失败、Run 事件、引用和成果。前端通过事件回放/SSE与轮询恢复显示，区分试算、修订、采购与到货。停止回答不撤销已经提交的业务变更；修订方案仍需要用户另行批准采购。
+
+启用文档服务后可用 `search_documents` / `read_document_evidence`；启用 v6 后可用 `get_forecast` 读取已保存预测。工具能力是否开放取决于运行配置与权限。架构不把模型生成的文本等同于已核实事实。
+
+### v6 预测与规划
+
+模型包由 F6、F3、W2、N3 四组件组成，随仓库分发并在加载时校验文件哈希。后端通过独立 ML HTTP 服务刷新结果，保存输入与不可变预测证据，再建立当前门店/SKU 绑定。
+
+- `historical_demo`：使用明确选择的原始历史示例，只供“模型推演”，不能启用为实际规划需求。
+- `observed`：导入连续完整的 84–374 天整数销量，显式选择规划启用；后端还检查预测期限、业务时间、状态版本及作用范围。
+- 前端和 Agent 读取已保存证据；失效、被替换或范围不符的引用不能当成当前预测。
+
+ML 负责七日销量预测，backend 继续负责现金、库存、报价、候选数量及审批。当前质量记录不等于生产经营收益证明，详见[v6 接入报告](reports/forecast-v6-product-integration.md)。
+
+### Knowledge 交付与检索
+
+后端管理文档与原件，记录待交付 outbox；独立 publisher 负责提交。Knowledge worker 处理服务侧解析/索引任务，API 提供查询、检索与证据展开。索引构建和发布分别记录，未完成发布不能当作可检索版本。
+
+历史引用绑定文档版本、索引代次、块与内容校验值，访问时重新核对权限；历史证据不可用时明确显示，不用最新版冒充。部署、导入、原件存储、备份及恢复见[完整手册](runbooks/knowledge-server-handoff.md)。
+
+### 主动事项承接与待接入处理者
+
+新事项先保存 WorkItem 和连续消息。外部处理者使用 service 身份领取事项，取得版本化上下文，再回传追问、进度、结果或已有 Mission 关联；短租约和处理令牌防止过期回传覆盖用户新输入。
+
+平台承接和协议已实现，意图分类及实际处理进程仍待接入。`WORK_PROCESSOR_ENABLED` 只声明服务可用性，独立于 `AGENT_ENABLED`。用户接受显示出的备货条件后，平台才调用原 Mission 创建；每笔采购仍走原审批。详见[事项协议](../backend/app/work_items/README.md)。
+
+## 契约、迁移与验证入口
+
+- 业务运行时接口：[`backend.runtime.openapi.json`](api/backend.runtime.openapi.json)，当前基线为 63 条路径、71 个 HTTP 操作；开发与生产是否公开 Swagger 由配置决定。
+- 前端类型和公开代理白名单从运行时契约生成，浏览器代理不开放 `/internal/` 服务接口；生成与校验命令见[根 README](../README.md)。
+- 业务迁移头 `0014_forecast_work_merge` 合并已有 `0012_forecast_v6` 与 `0013_work_intake`；模拟器为 `sim_0003_controls`，Knowledge 为 `knowledge_0002`。
+- Git 更新不自动迁移数据库或重启进程。业务单元测试、真实 PG/HTTP 集成、浏览器受控响应回归和真实模型验收分别保留证据，不把一种测试替代另一种。
+- 当前合流验证与边界见 [HANDOVER 顶部](../HANDOVER.md)；完整 A-01/L-01、事项处理者和云端/真实经营效果继续按各模块的待完成项推进。

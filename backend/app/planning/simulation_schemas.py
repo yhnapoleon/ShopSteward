@@ -45,6 +45,7 @@ class QuantitySimulationInput(DTO):
     horizon_start: AwareDatetime
     horizon_end: AwareDatetime
     demand_source: Literal["fixed", "manual", "model", "assumption"]
+    forecast_provider: Literal["projection", "v6"] = "projection"
     forecast_id: str | None
     forecast_version: str | None
     forecast_valid_until: AwareDatetime | None

@@ -50,7 +50,14 @@ export function resultMetadata(value: Schema<'WorkResultExport'>): [string, stri
           ['计算规则版本', r.calculation.rule_version],
           ['输入快照hash', r.calculation.input_hash],
           ['报价版本', r.calculation.input.offer.offer_version],
-          ['需求版本', r.calculation.input.forecast_version || '用户独立假设'],
+          ['业务需求版本', r.calculation.input.forecast_version || '用户独立假设'],
+          ['预测证据ID', r.calculation.input.forecast_id || '用户独立假设'],
+          [
+            '需求提供者',
+            r.calculation.input.forecast_provider === 'v6'
+              ? 'v6模型预测'
+              : '经营需求投影或用户假设',
+          ],
           ['表格单位', '金额为人民币元，数量为件；JSON原始金额字段为整数分。'],
         ] as [string, string][])
       : []),

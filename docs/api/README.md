@@ -160,3 +160,6 @@ B0-05后质量收口：所有21个运行时操作均有x-phase=B0及x-implementa
 新增 `POST /api/v1/plans/{plan_id}/revision`，operationId `revise_plan`。请求为 `expected_mission_version` 与 `max_purchase_qty`（null清除本轮数量上限），要求用户operator/admin及门店权限、Idempotency-Key；返回新待确认Plan。复用原Agent工具evaluate服务，未改变算法、审批或执行规则，无迁移。运行时契约现为41个操作、37条路径。
 
 前端从runtime生成DTO和公开代理白名单，并探测实际后端是否支持此路径。没有该路径时不允许非推荐采购确认。见[前端接入说明](../../frontend/README.md)。
+
+
+2026-09-11：v6 预测的 model/current/refresh 三个接口已注册并生成前端类型与代理路由；LangGraph 使用只读 `get_forecast`。详见 [v6接入报告](../reports/forecast-v6-product-integration.md)。本节更新优先于上方旧阶段状态。

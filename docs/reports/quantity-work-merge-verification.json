@@ -1,0 +1,91 @@
+{
+  "date": "2026-09-14",
+  "upstream_main": "e8a51a312c847a5787dbc3b7e723f6e5af84e0a4",
+  "local_feature_commit": "9665eee10f06b5a761a599b2d244ef639e70f902",
+  "backend_unique_passed_after_environment_retest": 387,
+  "backend_first_run": {
+    "total": 387,
+    "failed": 4,
+    "skipped": 0
+  },
+  "document_module_retest": {
+    "total": 38,
+    "failed": 0,
+    "skipped": 0
+  },
+  "agent": {
+    "total": 32,
+    "failed": 0,
+    "skipped": 0
+  },
+  "ml": {
+    "total": 22,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser": {
+    "total": 2,
+    "failed": 0,
+    "skipped": 0
+  },
+  "frontend_passed": 25,
+  "migration": {
+    "database": "shopsteward_test",
+    "before": {
+      "revision": "0013_work_intake",
+      "work_items": 160,
+      "work_messages": 378,
+      "missions": 324,
+      "plans": 285,
+      "actions": 167,
+      "ledger_entries": 619
+    },
+    "after": {
+      "revision": "0014_forecast_work_merge",
+      "work_items": 160,
+      "work_messages": 378,
+      "missions": 324,
+      "plans": 285,
+      "actions": 167,
+      "ledger_entries": 619
+    },
+    "retained_existing_records": true
+  },
+  "code_sha256": {
+    "backend/app/api/router.py": "658dd1a7d65036b8efe0b6d8ec3cacf7dd9af4bd5addc09685705314db8a84d9",
+    "backend/app/planning/engine.py": "9456c70b52d95f9e441e4e61fca12e9f4dd8460f8b07a5d9d1ef1f376093e5d7",
+    "backend/app/planning/evaluation.py": "4c814894d1dc8b35cb719a4b1aab33d575c1ae6349eb6f7e770b7d83a454d869",
+    "backend/app/planning/simulation_schemas.py": "4f3189d6d8805013f774531cee916e4669cf5bcb00271e7b6fe9abbc7a5efd56",
+    "backend/app/planning/simulations.py": "619521fc34c58fb6cf319e16ef1ee21b570aa50bc7c4dd4f253d75da7c9195dd",
+    "backend/app/work_items/README.md": "766dddb1359ef7de3a178d221e48fec86a7fe477c236dec5232d1fdfba344994",
+    "backend/app/work_items/business.py": "16ca54bfd91146479cbfc9c74a3e750f3f49f02277ae8ee9a6a534bc437bd654",
+    "backend/app/work_items/repository.py": "897577e1073612f5e09c70d30f33ad6a471c602c36344a1731745878c30eb682",
+    "backend/app/work_items/results.py": "31c6ea4306af4d142b3783666fad94ea33094f7be452e738e24ec7606c8ad5ea",
+    "backend/app/work_items/router.py": "5c1867c47b19ed8413ef909f156d5630e5b364aa4a90e4916b1f06752bf0e07f",
+    "backend/app/work_items/schemas.py": "734abfed8ad5903e21b9b9b71f9d0a3b705376df1b4cb6dce7d362c84c4d5b1f",
+    "frontend/app/assets/css/shop.css": "99b604722e94f7cdaf40f39ea93447d2bd9b055af27ef3fb803baafe9dc06d7c",
+    "frontend/app/assets/css/work.css": "af1b6e80c4394073c38316e9de5c2f850646333e6250ca070ba8f0e3abd5cf43",
+    "frontend/app/components/QuantitySimulationPanel.vue": "8de2e91df203ce14caa4b21b704bd3ce4bd5aea27d83b96fdd73367f0855f000",
+    "frontend/app/components/WorkCard.vue": "d0e585309ec15295ce3fa547cb23aff8a4bc09e5231ec27a35c84498a3dafe15",
+    "frontend/app/components/WorkConversation.vue": "13cf84b78d3a05dd96607d693c00eacc0e27ae90ee0583a03b9e34d6c6df8a05",
+    "frontend/app/components/WorkResult.vue": "77a8c788ae4517e3f44b415477ffc57f30fbcf7471bcb2eb2ca4636c5474fe0f",
+    "frontend/app/components/WorkWorkspace.vue": "49e97d1a36b8dee5ed1057c0e6d4d0aa3c712dce9c648ffc6960e4b0639addb1",
+    "frontend/app/composables/useTaskPresentation.ts": "2bf68e84b8be19c0ce3f3c2cf0c7055d2cce104df4a634e08d5f213e098b715f",
+    "frontend/app/composables/useWorkItems.ts": "fad3c0716c92ce979d3bcea7c6d72a7772da3363ef95522515e351921d991777",
+    "frontend/app/pages/index.vue": "0fb09bfc5df39ec64fd71a646418e4c23e67cfe9287d2c19e74276660054cd89",
+    "frontend/app/types/backend.d.ts": "a48f083ee30958b882e93aa14a28dbe2cae6560351347b624655ce7dec30ac64",
+    "frontend/app/types/models.ts": "ff415a3d358e7b7305dce96c1faede62e12f2e275746f3a31cc0afde0f891375",
+    "frontend/app/utils/quotations.ts": "5f2da8b562d15cf39be98d81c01caa27dedbd4c28f39e974fc0a02dc471840f8",
+    "frontend/app/utils/workPresentation.ts": "cb8b473b50ef20da6cf793bc78e13885a291786705515d88f47c6c563682e714",
+    "frontend/app/utils/workResultExport.ts": "06a2f09451d07714079654ffe7030ce46e0c6d3fa6b6bad30c68e592d834b5d8",
+    "frontend/server/api/session.get.ts": "8225fba29b47be89877f53cf2a5558306c5a420765ab74e18a9091cbf5c66d07",
+    "frontend/server/utils/backend-routes.ts": "7b51dcb9db9cc2e3013ab1f2993f4209bbef76eb961c6136e26f074333f5fa2c"
+  },
+  "status": "local_integration_verified_before_PR_CI",
+  "boundaries": [
+    "Only dedicated test DB migrated; development DB unchanged",
+    "ML used one process-scoped Torch libomp via DYLD_LIBRARY_PATH",
+    "No real LLM or daily-service deployment",
+    "Two upstream ML deprecation warnings retained"
+  ]
+}
