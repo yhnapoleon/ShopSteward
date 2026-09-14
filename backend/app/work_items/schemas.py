@@ -8,6 +8,7 @@ from pydantic import Field, model_validator
 from app.agent_bridge.schemas import DTO
 from app.missions.schemas import Mission, MissionCreate, MissionList
 from app.operations.schemas import Catalog
+from app.planning.simulation_schemas import QuantitySimulation
 from app.reporting.schemas import Dashboard
 
 WorkStatus = Literal[
@@ -35,7 +36,7 @@ class WorkEvidence(DTO):
     label: str = Field(min_length=1, max_length=200)
 
 
-class WorkResult(DTO):
+class WorkResultInput(DTO):
     kind: Literal["answer", "analysis", "forecast", "quotation", "brief"]
     title: str = Field(min_length=1, max_length=200)
     content: str = Field(min_length=1, max_length=16000)
@@ -52,6 +53,51 @@ class WorkResult(DTO):
         ):
             raise ValueError("Table rows must match columns, with bounded cells")
         return self
+
+
+class ResultProvenance(DTO):
+    result_id: str
+    result_version: int = 1
+    work_id: str
+    work_version: int | None
+    generated_at: datetime
+    data_as_of: datetime | None
+    state_version: int | None
+    source_type: str | None
+    currency: str | None
+    reference_versions: dict[str, str] = Field(default_factory=dict)
+    limitations: list[str] = Field(default_factory=list)
+
+
+class WorkResult(WorkResultInput):
+    provenance: ResultProvenance | None = None
+    calculation: QuantitySimulation | None = None
+
+
+class WorkBusinessState(DTO):
+    code: str
+    label: str
+    detail: str
+    tone: Literal["gray", "amber", "blue", "green"]
+    priority: int
+    action_label: str
+    needs_attention: bool
+    can_confirm: bool = False
+    state_version: int
+    mission_version: int
+    plan_id: str | None = None
+    plan_version: int | None = None
+    action_id: str | None = None
+    observed_at: datetime
+    valid_until: datetime | None = None
+
+
+class WorkResultExport(DTO):
+    result: WorkResult
+    demonstration: bool
+    current_work_version: int
+    is_latest_result: bool
+    stale_reasons: list[str] = Field(default_factory=list)
 
 
 class WorkMessage(DTO):
@@ -83,6 +129,7 @@ class WorkView(DTO):
     created_at: datetime
     updated_at: datetime
     mission: Mission | None = None
+    business: WorkBusinessState | None = None
 
 
 class WorkDetail(DTO):
@@ -128,7 +175,7 @@ class WorkUpdate(WorkVersion):
     next_step: str = Field(default="", max_length=1000)
     question: str | None = Field(default=None, min_length=1, max_length=2000)
     answer: str | None = Field(default=None, min_length=1, max_length=16000)
-    result: WorkResult | None = None
+    result: WorkResultInput | None = None
     link_mission_id: str | None = Field(default=None, max_length=128)
     mission_request: MissionCreate | None = None
     demonstration: bool = False

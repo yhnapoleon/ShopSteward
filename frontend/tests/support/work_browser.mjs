@@ -161,7 +161,10 @@ try {
   ).toBeVisible()
   const download = page.waitForEvent('download')
   await page.getByRole('button', { name: '保存结果', exact: true }).first().click()
-  expect((await download).suggestedFilename()).toBe('事项结果.txt')
+  const exportedResult = (await read(id)).item.result.provenance
+  expect((await download).suggestedFilename()).toBe(
+    `事项结果-${exportedResult.result_id}-v${exportedResult.result_version}.txt`,
+  )
   checks.push(
     'clarification, steering, stale callback rejected, durable forecast + download, mobile',
   )

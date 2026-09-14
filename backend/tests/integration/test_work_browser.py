@@ -18,10 +18,18 @@ pytestmark = [
 ]
 
 
-async def test_work_intake_browser(db, tmp_path):
+@pytest.mark.parametrize("script", ["work_browser.mjs", "quantity_browser.mjs"])
+async def test_work_intake_browser(db, tmp_path, script):
     import uvicorn
 
     async with env(db, docs_enabled=False) as (seed, _, app):
+        if script == "quantity_browser.mjs":
+            from app.operations.repository import mark_caught_up
+
+            app.state.settings.work_processor_enabled = False
+            app.state.settings.source_stale_seconds = 300
+            async with db.session() as session, session.begin():
+                await mark_caught_up(session, seed["scenario_run_id"], 0)
         backend_socket = socket.socket()
         backend_socket.bind(("127.0.0.1", 0))
         backend_url = f"http://127.0.0.1:{backend_socket.getsockname()[1]}"
@@ -32,7 +40,11 @@ async def test_work_intake_browser(db, tmp_path):
         server = uvicorn.Server(uvicorn.Config(app, log_level="error"))
         serving = asyncio.create_task(server.serve(sockets=[backend_socket]))
         frontend = browser = None
-        output = ROOT / "var/work-intake-browser"
+        output = (
+            ROOT
+            / "var"
+            / ("quantity-browser" if script == "quantity_browser.mjs" else "work-intake-browser")
+        )
         output.mkdir(parents=True, exist_ok=True)
         log = (output / "frontend.log").open("wb")
         try:
@@ -77,7 +89,7 @@ async def test_work_intake_browser(db, tmp_path):
             )
             browser = await asyncio.create_subprocess_exec(
                 "node",
-                "tests/support/work_browser.mjs",
+                "tests/support/" + script,
                 cwd=ROOT / "frontend",
                 env=process_env,
                 stdout=asyncio.subprocess.PIPE,

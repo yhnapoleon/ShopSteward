@@ -1,0 +1,102 @@
+{
+  "verified_at_utc": "2026-09-12T08:07:54.103099+00:00",
+  "baseline_commit": "7a1622c5194fc8f57bb46afa2dfe7c917b1f71c2",
+  "branch": "jeffrey",
+  "delivery_state": "local_uncommitted_not_deployed",
+  "scope": [
+    "E03_single_product_quantity_comparison",
+    "P1-05_business_card_state",
+    "P1-07_authorized_versioned_exports"
+  ],
+  "pytest": {
+    "total_passed": 109,
+    "backend_api_business_passed": 107,
+    "real_http_pg_production_browser_passed": 2,
+    "failed": 0,
+    "skipped": 0,
+    "final_database_cleanup_warnings": 0,
+    "receipt": "var/quantity-verification/final-pytest.xml"
+  },
+  "frontend": {
+    "passed": 9,
+    "failed": 0,
+    "skipped": 0,
+    "page_tests_with_controlled_transport": 5,
+    "pure_presentation_export_tests": 4,
+    "receipt": "var/frontend-e2e/results.json"
+  },
+  "browser": {
+    "checks": [
+      "real POST commit, lost response, refresh and same-key retry keep exactly one result and zero business writes",
+      "authorized TXT/CSV/JSON downloads preserve same immutable result, assumptions, provenance and integer money",
+      "result survives refresh and narrow viewport has no page overflow",
+      "changing assumptions updates the same work, preserves the previous immutable result and avoids duplicate cards",
+      "explicit user conversion creates one Mission with the reviewed floor and no purchase"
+    ],
+    "pageErrors": [],
+    "store": "store_1cc4ff571ca94eb1b72699c75cf09cb7",
+    "workId": "341ad9bd-6785-4503-aea3-4a157e825d35",
+    "resultId": "4a182152-d281-4665-bda6-0827fa7966ce",
+    "businessStateUnchanged": true,
+    "modelCalls": 0
+  },
+  "checks": {
+    "typecheck": "passed",
+    "build": "passed",
+    "ruff": "passed",
+    "design_contracts": "passed",
+    "diff_whitespace": "passed"
+  },
+  "source_sha256": {
+    "backend/app/api/router.py": "658dd1a7d65036b8efe0b6d8ec3cacf7dd9af4bd5addc09685705314db8a84d9",
+    "backend/app/planning/engine.py": "9456c70b52d95f9e441e4e61fca12e9f4dd8460f8b07a5d9d1ef1f376093e5d7",
+    "backend/app/planning/evaluation.py": "4c814894d1dc8b35cb719a4b1aab33d575c1ae6349eb6f7e770b7d83a454d869",
+    "backend/app/planning/simulation_schemas.py": "74b3deeca3e940d172db6ee9fef4a9fde63aec678e00dbedb2c1eda9ceb55190",
+    "backend/app/planning/simulations.py": "14716d758d423c8dfb395c5dc8b827ec2839744b969dac4512ad574d73271f5f",
+    "backend/app/work_items/README.md": "76331d9d661347ce07d4937ae9f8d605230b18531a4f8fcd89e9225f7a3a27b5",
+    "backend/app/work_items/business.py": "16ca54bfd91146479cbfc9c74a3e750f3f49f02277ae8ee9a6a534bc437bd654",
+    "backend/app/work_items/repository.py": "897577e1073612f5e09c70d30f33ad6a471c602c36344a1731745878c30eb682",
+    "backend/app/work_items/results.py": "31c6ea4306af4d142b3783666fad94ea33094f7be452e738e24ec7606c8ad5ea",
+    "backend/app/work_items/router.py": "5c1867c47b19ed8413ef909f156d5630e5b364aa4a90e4916b1f06752bf0e07f",
+    "backend/app/work_items/schemas.py": "734abfed8ad5903e21b9b9b71f9d0a3b705376df1b4cb6dce7d362c84c4d5b1f",
+    "frontend/app/assets/css/shop.css": "99b604722e94f7cdaf40f39ea93447d2bd9b055af27ef3fb803baafe9dc06d7c",
+    "frontend/app/assets/css/work.css": "af1b6e80c4394073c38316e9de5c2f850646333e6250ca070ba8f0e3abd5cf43",
+    "frontend/app/components/QuantitySimulationPanel.vue": "8de2e91df203ce14caa4b21b704bd3ce4bd5aea27d83b96fdd73367f0855f000",
+    "frontend/app/components/WorkCard.vue": "d0e585309ec15295ce3fa547cb23aff8a4bc09e5231ec27a35c84498a3dafe15",
+    "frontend/app/components/WorkConversation.vue": "13cf84b78d3a05dd96607d693c00eacc0e27ae90ee0583a03b9e34d6c6df8a05",
+    "frontend/app/components/WorkResult.vue": "77a8c788ae4517e3f44b415477ffc57f30fbcf7471bcb2eb2ca4636c5474fe0f",
+    "frontend/app/components/WorkWorkspace.vue": "49e97d1a36b8dee5ed1057c0e6d4d0aa3c712dce9c648ffc6960e4b0639addb1",
+    "frontend/app/composables/useTaskPresentation.ts": "2bf68e84b8be19c0ce3f3c2cf0c7055d2cce104df4a634e08d5f213e098b715f",
+    "frontend/app/composables/useWorkItems.ts": "fad3c0716c92ce979d3bcea7c6d72a7772da3363ef95522515e351921d991777",
+    "frontend/app/pages/index.vue": "da5940ad8b181a855168658aea54a786a2d392c23bdc019c094df770116a37f3",
+    "frontend/app/types/backend.d.ts": "db4d064f2d3e650900ce7c5567b8d2e63ed6ca0ab689bb737dac273d3c82e41d",
+    "frontend/app/types/models.ts": "ff415a3d358e7b7305dce96c1faede62e12f2e275746f3a31cc0afde0f891375",
+    "frontend/app/utils/quotations.ts": "5f2da8b562d15cf39be98d81c01caa27dedbd4c28f39e974fc0a02dc471840f8",
+    "frontend/app/utils/workPresentation.ts": "cb8b473b50ef20da6cf793bc78e13885a291786705515d88f47c6c563682e714",
+    "frontend/app/utils/workResultExport.ts": "66299cb2dc3875c7dab7ca54a46528cda79ec2553485bb273d83913bc00f2835",
+    "frontend/server/api/session.get.ts": "8225fba29b47be89877f53cf2a5558306c5a420765ab74e18a9091cbf5c66d07",
+    "frontend/server/utils/backend-routes.ts": "8070ecc43cfd7ce5ee81064706d9c37220267c17ef0e82d3f2bf46e13571f641"
+  },
+  "screenshot_sha256": {
+    "desktop.png": "a76216a3b489c6ccd6f2e372d0ceb7ce187c85ad7357996bc13290e4969c79ef",
+    "mobile.png": "00ce7c23f3d4933d483f8706d878a74c1a42aace75a198dab6ff9129b8eb983c",
+    "form.png": "905fad489e587d8cd0dae1f1042dfdfb6a39cf6a1856d48ac64f458fb71039e0"
+  },
+  "boundaries": {
+    "database_revision": "0013_work_intake",
+    "new_migrations": false,
+    "new_dependencies": false,
+    "model_calls": 0,
+    "daily_services_restarted": false,
+    "feishu_modified": false,
+    "git_committed_or_pushed": false,
+    "full_A01_L01_acceptance": false,
+    "multi_product_or_multi_day": false
+  },
+  "resolved_initial_failures": [
+    "transaction-scope indentation caused an unreturned context-read connection; restored transaction and asserted checkedout=0",
+    "existing revision test reused a fixed key across runs; scoped key to each Mission",
+    "route/capability and download filename assertions updated for the implemented contract",
+    "browser locator disambiguated current result from history; money assertion matches the shared formatter"
+  ]
+}

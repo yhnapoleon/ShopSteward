@@ -3,16 +3,23 @@ import type { Schema } from '~/types/models'
 import { api } from '~/utils/api'
 import { money, number, when, actionLabel, reasonLabel } from '~/utils/presentation'
 import { downloadFile } from '~/utils/quotations'
+import { workPresentation } from '~/utils/workPresentation'
 const shop = useShop()
 const { s, mission, stock, product, plan, unresolved, canDecide, hasRole } = shop
 const agent = useAgentConversation(true)
 const work = useWorkItems(true)
 const activeWorks = computed(() =>
-  work.s.items.filter((i) =>
-    i.mission
-      ? !['COMPLETED', 'CANCELLED'].includes(i.mission.status)
-      : !['COMPLETED', 'CANCELLED'].includes(i.status),
-  ),
+  work.s.items
+    .filter(
+      (i) =>
+        i.business?.needs_attention ||
+        ['QUEUED', 'EXECUTING'].includes(i.business?.code || '') ||
+        ['RECEIVED', 'PROCESSING', 'WAITING_INPUT', 'BLOCKED'].includes(i.status) ||
+        (i.mission
+          ? !['COMPLETED', 'CANCELLED'].includes(i.mission.status)
+          : !['COMPLETED', 'CANCELLED'].includes(i.status)),
+    )
+    .sort((a, b) => workPresentation(a).priority - workPresentation(b).priority),
 )
 const taskRouteError = ref('')
 const viewScroll: Record<string, number> = {}
@@ -252,6 +259,7 @@ const labels: Record<string, string> = {
   facts: '当前账目与来源',
   brief: '本次经营简报',
   quote: '整理供应商报价',
+  simulation: '先试算补货',
   connection: '连接后端身份',
   alerts: '需要关注的事项',
 }
@@ -366,14 +374,23 @@ function briefing() {
             }}
           </p>
         </div>
-        <button
-          class="quiet-button"
-          aria-label="交给我一件事"
-          :disabled="s.loading"
-          @click="deck = true"
-        >
-          <AppIcon name="plus" /><span>交给我一件事</span>
-        </button>
+        <div class="page-head-actions">
+          <button
+            v-if="s.session?.quantitySimulation && s.storeId"
+            class="secondary"
+            @click="open('simulation')"
+          >
+            先试算补货
+          </button>
+          <button
+            class="quiet-button"
+            aria-label="交给我一件事"
+            :disabled="s.loading"
+            @click="deck = true"
+          >
+            <AppIcon name="plus" /><span>交给我一件事</span>
+          </button>
+        </div>
       </div>
       <p
         v-if="s.error && !dialog && !['overview', 'documents'].includes(view)"
@@ -1161,5 +1178,16 @@ function briefing() {
       <button class="text-link" @click="open('connection')">更换后端用户身份</button></template
     >
     <QuotationPanel v-else-if="dialog === 'quote'" />
+    <QuantitySimulationPanel
+      v-else-if="dialog === 'simulation'"
+      :initial="view === 'work' ? work.s.detail?.item.result?.calculation?.request : null"
+      :item-id="
+        view === 'work' && work.s.detail?.item.result?.calculation
+          ? work.s.detail.item.id
+          : undefined
+      "
+      :item-version="work.s.detail?.item.version"
+      @created="openWork"
+    />
   </AppDialog>
 </template>

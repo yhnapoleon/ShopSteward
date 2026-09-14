@@ -204,3 +204,54 @@ test('事项列表连接恢复后清除旧错误，其他事项仍保留', async
   })
   await expect(page.locator('.work-card')).toHaveCount(2)
 })
+
+test('真实业务状态优先展示，已取消委托的 UNKNOWN 采购仍留在待办顶部', async ({ page }) => {
+  const c = await setup(page)
+  const observed = new Date().toISOString()
+  Object.assign(c.items[0], {
+    mission_id: 'mission-a',
+    mission: { id: 'mission-a', status: 'ACTIVE' },
+    business: {
+      code: 'PENDING_APPROVAL',
+      label: '等待你确认',
+      detail: '核对采购条件',
+      action_label: '核对采购方案',
+      priority: 10,
+      needs_attention: true,
+      can_confirm: true,
+      tone: 'amber',
+      observed_at: observed,
+      valid_until: new Date(Date.now() + 60000).toISOString(),
+    },
+  })
+  Object.assign(c.items[1], {
+    mission_id: 'mission-b',
+    mission: { id: 'mission-b', status: 'CANCELLED' },
+    business: {
+      code: 'UNKNOWN',
+      label: '采购结果待核实',
+      detail: '先核实原回执',
+      action_label: '查看采购回执',
+      priority: 0,
+      needs_attention: true,
+      can_confirm: false,
+      tone: 'amber',
+      observed_at: observed,
+    },
+  })
+  await expect(page.locator('.work-card').first()).toHaveAttribute('data-work-id', 'work-b')
+  await expect(page.locator('[data-work-id="work-b"]')).toContainText('采购结果待核实')
+  await expect(page.locator('[data-work-id="work-a"]').getByRole('button')).toHaveText(
+    '核对采购方案',
+  )
+  c.items[0].business = {
+    ...c.items[0].business,
+    code: 'PLAN_STALE',
+    label: '方案待更新',
+    action_label: '查看并重新检查',
+    can_confirm: false,
+    observed_at: new Date(Date.now() + 1000).toISOString(),
+  }
+  await expect(page.locator('[data-work-id="work-a"]')).toContainText('方案待更新')
+  expect(c.writes).toEqual([])
+})

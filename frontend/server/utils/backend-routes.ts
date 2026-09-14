@@ -226,6 +226,14 @@ export const backendRoutes = [
   ],
   [
     "POST",
+    "/api/v1/stores/{store_id}/simulations"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}/results/{result_id}"
+  ],
+  [
+    "POST",
     "/api/v1/work-items"
   ],
   [

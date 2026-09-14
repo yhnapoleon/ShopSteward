@@ -13,6 +13,7 @@ from app.api.dependencies import (
 )
 from app.api.routing import B0Router, errors
 from app.core.errors import AppError
+from app.planning.simulation_schemas import QuantitySimulationRequest
 from app.reporting.read_router import read_transaction
 from app.work_items import repository as repo
 from app.work_items.models import WorkItem
@@ -25,11 +26,65 @@ from app.work_items.schemas import (
     WorkInput,
     WorkLease,
     WorkList,
+    WorkResultExport,
     WorkUpdate,
     WorkVersion,
 )
 
 router = B0Router(tags=["Work intake"], responses=errors)
+
+
+@router.post(
+    "/api/v1/stores/{store_id}/simulations",
+    response_model=WorkDetail,
+    status_code=201,
+    operation_id="create_quantity_simulation",
+)
+async def simulate(
+    request: Request, principal: User, store_id: Id, body: QuantitySimulationRequest, key: Key
+):
+    from app.planning.simulations import create
+
+    async with request.app.state.db.session() as session, session.begin():
+        return await create(session, principal, store_id, body, key, request.app.state.settings)
+
+
+@router.get(
+    "/api/v1/work-items/{item_id}/results/{result_id}",
+    response_model=WorkResultExport,
+    operation_id="get_work_result_export",
+)
+async def result_export(request: Request, principal: User, item_id: Id, result_id: Id):
+    from app.operations.models import Store
+    from app.planning.simulations import stale_reasons
+    from app.work_items.models import WorkMessageRow
+    from app.work_items.results import legacy_result
+
+    async with read_transaction(request) as session:
+        row = await repo.visible(session, principal, item_id)
+        message = await session.get(WorkMessageRow, result_id)
+        if message is None or message.result is None:
+            raise repo.unavailable()
+        origin = await repo.visible(session, principal, message.item_id)
+        if origin.id != row.id:
+            raise repo.unavailable()
+        result = legacy_result(message)
+        reasons = []
+        if result.calculation:
+            reasons = await stale_reasons(session, result.calculation, request.app.state.settings)
+        elif result.provenance.state_version is not None:
+            store = await session.get(Store, row.store_id)
+            if store.state_version != result.provenance.state_version:
+                reasons = ["经营状态已变化；此文件保留当时结果"]
+        if row.status in {"RECEIVED", "PROCESSING", "WAITING_INPUT"}:
+            reasons.append("本事项后续要求尚未完成处理")
+        return WorkResultExport(
+            result=result,
+            demonstration=message.demonstration,
+            current_work_version=row.version,
+            is_latest_result=row.result == message.result,
+            stale_reasons=reasons,
+        )
 
 
 @router.post(
@@ -136,7 +191,7 @@ async def pending(request: Request, service: Service, store_id: str, limit: Limi
             )
         )
         return {
-            "items": [await repo.view(session, row, request.app.state.settings) for row in rows],
+            "items": await repo.views(session, rows, request.app.state.settings),
             "next_cursor": None,
             "processor_available": request.app.state.settings.work_processor_enabled,
         }

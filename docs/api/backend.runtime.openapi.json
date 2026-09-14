@@ -8012,6 +8012,260 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/stores/{store_id}/simulations": {
+      "post": {
+        "tags": [
+          "Work intake"
+        ],
+        "summary": "Simulate",
+        "operationId": "create_quantity_simulation",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Store Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuantitySimulationRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/work-items/{item_id}/results/{result_id}": {
+      "get": {
+        "tags": [
+          "Work intake"
+        ],
+        "summary": "Result Export",
+        "operationId": "get_work_result_export",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "item_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Item Id"
+            }
+          },
+          {
+            "name": "result_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Result Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WorkResultExport"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
     "/api/v1/work-items": {
       "post": {
         "tags": [
@@ -13990,6 +14244,327 @@
         ],
         "title": "PurchaseReceipt"
       },
+      "QuantitySimulation": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "const": "quantity-simulation-v1",
+            "title": "Schema Version",
+            "default": "quantity-simulation-v1"
+          },
+          "rule_version": {
+            "type": "string",
+            "title": "Rule Version"
+          },
+          "input_hash": {
+            "type": "string",
+            "title": "Input Hash"
+          },
+          "input": {
+            "$ref": "#/components/schemas/QuantitySimulationInput"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/Candidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "recommended_candidate_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommended Candidate Id"
+          },
+          "expected_arrival_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Arrival At"
+          },
+          "valid_until": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Valid Until"
+          },
+          "request": {
+            "$ref": "#/components/schemas/QuantitySimulationRequest"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rule_version",
+          "input_hash",
+          "input",
+          "candidates",
+          "recommended_candidate_id",
+          "expected_arrival_at",
+          "valid_until",
+          "request"
+        ],
+        "title": "QuantitySimulation"
+      },
+      "QuantitySimulationInput": {
+        "properties": {
+          "state": {
+            "$ref": "#/components/schemas/State"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "product_name": {
+            "type": "string",
+            "title": "Product Name"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/Policy"
+          },
+          "remaining_demand": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Remaining Demand"
+          },
+          "horizon_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Horizon Start"
+          },
+          "horizon_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Horizon End"
+          },
+          "demand_source": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "manual",
+              "model",
+              "assumption"
+            ],
+            "title": "Demand Source"
+          },
+          "forecast_provider": {
+            "type": "string",
+            "enum": [
+              "projection",
+              "v6"
+            ],
+            "title": "Forecast Provider",
+            "default": "projection"
+          },
+          "forecast_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forecast Id"
+          },
+          "forecast_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forecast Version"
+          },
+          "forecast_valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Forecast Valid Until"
+          },
+          "offer": {
+            "$ref": "#/components/schemas/Offer"
+          },
+          "inbound_items": {
+            "items": {
+              "$ref": "#/components/schemas/InboundSnapshot"
+            },
+            "type": "array",
+            "title": "Inbound Items"
+          },
+          "eligible_inbound_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Eligible Inbound Qty"
+          },
+          "source_sequence": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Source Sequence"
+          },
+          "source_type": {
+            "type": "string",
+            "title": "Source Type"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Evaluated At"
+          },
+          "source_fresh_until": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Source Fresh Until"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "state",
+          "sku_id",
+          "product_name",
+          "policy",
+          "remaining_demand",
+          "horizon_start",
+          "horizon_end",
+          "demand_source",
+          "forecast_id",
+          "forecast_version",
+          "forecast_valid_until",
+          "offer",
+          "inbound_items",
+          "eligible_inbound_qty",
+          "source_sequence",
+          "source_type",
+          "evaluated_at",
+          "source_fresh_until"
+        ],
+        "title": "QuantitySimulationInput"
+      },
+      "QuantitySimulationRequest": {
+        "properties": {
+          "expected_state_version": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Expected State Version"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "cash_floor_minor": {
+            "type": "integer",
+            "maximum": 1000000000000.0,
+            "minimum": 0.0,
+            "title": "Cash Floor Minor"
+          },
+          "candidate_quantities": {
+            "items": {
+              "type": "integer",
+              "maximum": 1000000.0,
+              "minimum": 0.0
+            },
+            "type": "array",
+            "maxItems": 20,
+            "minItems": 2,
+            "title": "Candidate Quantities"
+          },
+          "remaining_demand": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 1000000.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Remaining Demand"
+          },
+          "horizon_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 90.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Horizon Days"
+          },
+          "work_item_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Work Item Id"
+          },
+          "expected_work_version": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expected Work Version"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_state_version",
+          "sku_id",
+          "supplier_id",
+          "cash_floor_minor",
+          "candidate_quantities"
+        ],
+        "title": "QuantitySimulationRequest"
+      },
       "ReadContext": {
         "properties": {
           "store_id": {
@@ -14179,6 +14754,111 @@
           "id"
         ],
         "title": "Reference"
+      },
+      "ResultProvenance": {
+        "properties": {
+          "result_id": {
+            "type": "string",
+            "title": "Result Id"
+          },
+          "result_version": {
+            "type": "integer",
+            "title": "Result Version",
+            "default": 1
+          },
+          "work_id": {
+            "type": "string",
+            "title": "Work Id"
+          },
+          "work_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Work Version"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "data_as_of": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data As Of"
+          },
+          "state_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State Version"
+          },
+          "source_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Type"
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency"
+          },
+          "reference_versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Reference Versions"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "result_id",
+          "work_id",
+          "work_version",
+          "generated_at",
+          "data_as_of",
+          "state_version",
+          "source_type",
+          "currency"
+        ],
+        "title": "ResultProvenance"
       },
       "Resume": {
         "properties": {
@@ -15619,6 +16299,122 @@
         ],
         "title": "VersionList"
       },
+      "WorkBusinessState": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "tone": {
+            "type": "string",
+            "enum": [
+              "gray",
+              "amber",
+              "blue",
+              "green"
+            ],
+            "title": "Tone"
+          },
+          "priority": {
+            "type": "integer",
+            "title": "Priority"
+          },
+          "action_label": {
+            "type": "string",
+            "title": "Action Label"
+          },
+          "needs_attention": {
+            "type": "boolean",
+            "title": "Needs Attention"
+          },
+          "can_confirm": {
+            "type": "boolean",
+            "title": "Can Confirm",
+            "default": false
+          },
+          "state_version": {
+            "type": "integer",
+            "title": "State Version"
+          },
+          "mission_version": {
+            "type": "integer",
+            "title": "Mission Version"
+          },
+          "plan_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Id"
+          },
+          "plan_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Plan Version"
+          },
+          "action_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Action Id"
+          },
+          "observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Observed At"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code",
+          "label",
+          "detail",
+          "tone",
+          "priority",
+          "action_label",
+          "needs_attention",
+          "state_version",
+          "mission_version",
+          "observed_at"
+        ],
+        "title": "WorkBusinessState"
+      },
       "WorkClaim": {
         "properties": {
           "expected_version": {
@@ -15950,6 +16746,26 @@
             "type": "array",
             "maxItems": 100,
             "title": "Rows"
+          },
+          "provenance": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResultProvenance"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "calculation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QuantitySimulation"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "additionalProperties": false,
@@ -15960,6 +16776,111 @@
           "content"
         ],
         "title": "WorkResult"
+      },
+      "WorkResultExport": {
+        "properties": {
+          "result": {
+            "$ref": "#/components/schemas/WorkResult"
+          },
+          "demonstration": {
+            "type": "boolean",
+            "title": "Demonstration"
+          },
+          "current_work_version": {
+            "type": "integer",
+            "title": "Current Work Version"
+          },
+          "is_latest_result": {
+            "type": "boolean",
+            "title": "Is Latest Result"
+          },
+          "stale_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Stale Reasons"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "result",
+          "demonstration",
+          "current_work_version",
+          "is_latest_result"
+        ],
+        "title": "WorkResultExport"
+      },
+      "WorkResultInput": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "answer",
+              "analysis",
+              "forecast",
+              "quotation",
+              "brief"
+            ],
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "maxLength": 16000,
+            "minLength": 1,
+            "title": "Content"
+          },
+          "assumptions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Assumptions"
+          },
+          "references": {
+            "items": {
+              "$ref": "#/components/schemas/WorkEvidence"
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "References"
+          },
+          "columns": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "title": "Columns"
+          },
+          "rows": {
+            "items": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Rows"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "title",
+          "content"
+        ],
+        "title": "WorkResultInput"
       },
       "WorkUpdate": {
         "properties": {
@@ -16039,7 +16960,7 @@
           "result": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/WorkResult"
+                "$ref": "#/components/schemas/WorkResultInput"
               },
               {
                 "type": "null"
@@ -16217,6 +17138,16 @@
             "anyOf": [
               {
                 "$ref": "#/components/schemas/Mission"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "business": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/WorkBusinessState"
               },
               {
                 "type": "null"

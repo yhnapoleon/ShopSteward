@@ -7,6 +7,7 @@ export type Session = {
   agentEnabled: boolean
   devTools: boolean
   workIntake?: boolean
+  quantitySimulation?: boolean
   planRevision: boolean
 }
 export type PendingApproval = {

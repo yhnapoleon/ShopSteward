@@ -154,8 +154,13 @@ export function quoteCSV(r: QuoteResult) {
     .map((r) => r.map(cell).join(','))
     .join('\n')
 }
-export function downloadFile(name: string, text: string, mime = 'text/plain;charset=utf-8') {
-  const url = URL.createObjectURL(new Blob(['\ufeff' + text], { type: mime }))
+export function downloadFile(
+  name: string,
+  text: string,
+  mime = 'text/plain;charset=utf-8',
+  bom = true,
+) {
+  const url = URL.createObjectURL(new Blob([(bom ? '\ufeff' : '') + text], { type: mime }))
   const a = document.createElement('a')
   a.href = url
   a.download = name

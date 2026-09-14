@@ -63,34 +63,77 @@ async def changed(session, row):
     row.updated_at = await session.scalar(select(func.clock_timestamp()))
 
 
-async def append(session, row, role, content, *, result=None, demonstration=False):
-    session.add(
-        WorkMessageRow(
-            id=str(uuid4()),
-            item_id=row.id,
-            role=role,
-            content=content,
-            result=result,
-            demonstration=demonstration,
+async def append(
+    session, row, role, content, *, result=None, demonstration=False, result_work_version=None
+):
+    from app.work_items.results import stamp
+
+    identifier = str(uuid4())
+    now = await session.scalar(select(func.clock_timestamp()))
+    if result:
+        result = await stamp(
+            session,
+            row,
+            identifier,
+            result,
+            now,
+            row.version if result_work_version is None else result_work_version,
         )
+    message = WorkMessageRow(
+        id=identifier,
+        item_id=row.id,
+        role=role,
+        content=content,
+        result=result,
+        demonstration=demonstration,
+        created_at=now,
     )
+    session.add(message)
     await session.flush()
+    return message
 
 
-async def view(session, row, settings):
+async def view(session, row, settings, business=None):
+    from app.work_items.business import load
+    from app.work_items.results import legacy_result
+
+    if business is None:
+        business = await load(session, [row], settings)
     data = {
         k: getattr(row, k)
         for k in WorkView.model_fields
-        if k not in {"mission", "processor_available"}
+        if k not in {"mission", "processor_available", "business"}
     }
+    if row.result and not row.result.get("provenance"):
+        message = await session.scalar(
+            select(WorkMessageRow)
+            .where(
+                WorkMessageRow.item_id == row.id,
+                WorkMessageRow.result == row.result,
+            )
+            .order_by(WorkMessageRow.created_at.desc(), WorkMessageRow.id.desc())
+            .limit(1)
+        )
+        if message:
+            data["result"] = legacy_result(message)
     return WorkView(
         **data,
         processor_available=settings.work_processor_enabled,
-        mission=await missions.read_mission(session, row.mission_id) if row.mission_id else None,
+        mission=business[row.mission_id][0] if row.mission_id in business else None,
+        business=business[row.mission_id][1] if row.mission_id in business else None,
     )
 
 
+async def views(session, rows, settings):
+    from app.work_items.business import load
+
+    business = await load(session, rows, settings)
+    return [await view(session, row, settings, business) for row in rows]
+
+
 async def detail(session, row, settings):
+    from app.work_items.results import legacy_result
+
     members = select(WorkItem.id).where(or_(WorkItem.id == row.id, WorkItem.canonical_id == row.id))
     messages = list(
         await session.scalars(
@@ -101,7 +144,12 @@ async def detail(session, row, settings):
     )
     return WorkDetail(
         item=await view(session, row, settings),
-        messages=[WorkMessage.model_validate(m) for m in messages],
+        messages=[
+            WorkMessage.model_validate(m).model_copy(
+                update={"result": legacy_result(m) if m.result else None}
+            )
+            for m in messages
+        ],
     )
 
 
@@ -166,7 +214,7 @@ async def listing(session, principal, store_id, cursor, limit, settings):
         )
     )
     return {
-        "items": [await view(session, row, settings) for row in rows[:limit]],
+        "items": await views(session, rows[:limit], settings),
         "next_cursor": encode_cursor(scope, rows[limit - 1]) if len(rows) > limit else None,
         "processor_available": settings.work_processor_enabled,
     }
@@ -247,6 +295,20 @@ async def accept_mission(session, principal, identifier, body, key, settings):
         or row.mission_id
     ):
         raise AppError(409, "WORK_NOT_READY", "当前没有可建立的真实备货委托。")
+    if row.result and row.result.get("calculation"):
+        from app.planning.simulation_schemas import QuantitySimulation
+        from app.planning.simulations import stale_reasons
+
+        calculation = QuantitySimulation.model_validate(row.result["calculation"])
+        reasons = await stale_reasons(session, calculation, settings)
+        if reasons:
+            raise AppError(
+                409, "SIMULATION_STALE", "；".join(reasons) + "，请重新试算后再建立委托。"
+            )
+        if calculation.input.demand_source == "assumption":
+            raise AppError(
+                409, "SIMULATION_ASSUMPTION_ONLY", "独立需求假设不能直接作为正式备货依据。"
+            )
     request = MissionCreate.model_validate(row.mission_request)
     if request.store_id != row.store_id:
         raise AppError(409, "WORK_SCOPE_CONFLICT", "Store mismatch")
@@ -411,14 +473,17 @@ async def publish(session, service, identifier, body, key, settings):
     if body.result:
         row.result = body.result.model_dump(mode="json")
     if body.answer or body.question or body.result:
-        await append(
+        message = await append(
             session,
             row,
             "assistant",
             body.answer or body.question or body.result.content,
             result=body.result.model_dump(mode="json") if body.result else None,
             demonstration=body.demonstration,
+            result_work_version=row.version + 1,
         )
+        if body.result:
+            row.result = message.result
     if body.status == "PROCESSING":
         row.processing_expires_at = now + timedelta(seconds=120)
     else:

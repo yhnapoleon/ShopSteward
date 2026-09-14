@@ -1,5 +1,13 @@
 # ShopSteward 当前开发交接
 
+## 2026-09-14：本地功能与最新main验证合流
+
+整合目标main e8a51a3，保留PR15预测和PR16 README及本地独立试算/事项/导出；额外修复激活模型后试算仍用旧需求的接入问题。分组验证、迁移及MacBook OpenMP启动条件见[合流验收](docs/reports/quantity-work-merge-verification.md)。测试库已到0014，开发库/日常服务未切换；本轮没有执行部署。下方交接均保留各自历史时点，最终发布以当前PR/Git记录为准。
+
+## 本轮接续：独立试算、事项提示和导出（2026-09-12）
+
+MacBook在jeffrey / 7a1622c基线上完成E03单商品部分、P1-05和P1-07，改动尚未提交或切换日常服务。最后109项后端/API/两条真实浏览器链通过；另9项前端回归通过，类型/构建/契约/格式检查通过，数据库连接告警已修复。新接口、可复跑输入、截图、hash与未覆盖范围统一见[验收记录](docs/reports/quantity-work-verification.md)。复用0013的事项/消息JSON，无迁移或依赖变更；模型继续关闭。下一步按用户新的验看或发布指令推进，不自动合并、部署或开启二期其他能力。
+
 ## 2026-09-12：预测与任务工作区合流
 
 PR #15 的 v6 预测接入已与 main 的任务工作区、Agent 进度/成果和事项承接整合；发布状态以 GitHub PR 为准。当前入口见 [v6 接入](docs/reports/forecast-v6-product-integration.md)和[事项承接](backend/app/work_items/README.md)。以下首轮预测实验、各阶段服务和分支状态均保留历史时点，不能覆盖较新的 v6 接入记录。

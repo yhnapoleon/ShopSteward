@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
           retry: 0,
         }).catch(() => null)
     return {
+      quantitySimulation: Boolean(identity.capabilities?.includes('quantity_simulation')),
       workIntake: identity.capabilities
         ? identity.capabilities.includes('work_intake')
         : Boolean(runtime?.paths['/api/v1/work-items']),
@@ -24,6 +25,7 @@ export default defineEventHandler(async (event) => {
     }
   } catch {
     return {
+      quantitySimulation: false,
       workIntake: false,
       planRevision: false,
       authenticated: false,

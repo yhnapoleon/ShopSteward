@@ -192,6 +192,8 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/api/v1/work-items/{item_id}/messages",
         "/api/v1/work-items/{item_id}/mission",
         "/api/v1/work-items/{item_id}/control",
+        "/api/v1/stores/{store_id}/simulations",
+        "/api/v1/work-items/{item_id}/results/{result_id}",
         "/api/v1/missions/{mission_id}/work-item",
         "/internal/v1/work-items",
         "/internal/v1/work-items/{item_id}/claim",
@@ -322,4 +324,9 @@ async def test_intake_capabilities_remain_available_with_production_docs_disable
         assert (await client.get("/openapi.json")).status_code == 404
         response = await client.get("/api/v1/me", headers={"Authorization": "Bearer " + VIEWER})
         assert response.status_code == 200
-        assert set(response.json()["capabilities"]) == {"work_intake", "plan_revision"}
+        assert set(response.json()["capabilities"]) == {
+            "work_intake",
+            "plan_revision",
+            "quantity_simulation",
+            "work_result_export",
+        }

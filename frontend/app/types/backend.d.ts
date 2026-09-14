@@ -885,6 +885,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/stores/{store_id}/simulations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Simulate */
+        post: operations["create_quantity_simulation"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/work-items/{item_id}/results/{result_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Result Export */
+        get: operations["get_work_result_export"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/work-items": {
         parameters: {
             query?: never;
@@ -2575,6 +2609,110 @@ export interface components {
             /** Reason */
             reason: string | null;
         };
+        /** QuantitySimulation */
+        QuantitySimulation: {
+            /**
+             * Schema Version
+             * @default quantity-simulation-v1
+             * @constant
+             */
+            schema_version: "quantity-simulation-v1";
+            /** Rule Version */
+            rule_version: string;
+            /** Input Hash */
+            input_hash: string;
+            input: components["schemas"]["QuantitySimulationInput"];
+            /** Candidates */
+            candidates: components["schemas"]["Candidate"][];
+            /** Recommended Candidate Id */
+            recommended_candidate_id: string | null;
+            /** Expected Arrival At */
+            expected_arrival_at: string | null;
+            /**
+             * Valid Until
+             * Format: date-time
+             */
+            valid_until: string;
+            request: components["schemas"]["QuantitySimulationRequest"];
+        };
+        /** QuantitySimulationInput */
+        QuantitySimulationInput: {
+            state: components["schemas"]["State"];
+            /** Sku Id */
+            sku_id: string;
+            /** Product Name */
+            product_name: string;
+            policy: components["schemas"]["Policy"];
+            /** Remaining Demand */
+            remaining_demand: number;
+            /**
+             * Horizon Start
+             * Format: date-time
+             */
+            horizon_start: string;
+            /**
+             * Horizon End
+             * Format: date-time
+             */
+            horizon_end: string;
+            /**
+             * Demand Source
+             * @enum {string}
+             */
+            demand_source: "fixed" | "manual" | "model" | "assumption";
+            /**
+             * Forecast Provider
+             * @default projection
+             * @enum {string}
+             */
+            forecast_provider: "projection" | "v6";
+            /** Forecast Id */
+            forecast_id: string | null;
+            /** Forecast Version */
+            forecast_version: string | null;
+            /** Forecast Valid Until */
+            forecast_valid_until: string | null;
+            offer: components["schemas"]["Offer"];
+            /** Inbound Items */
+            inbound_items: components["schemas"]["InboundSnapshot"][];
+            /** Eligible Inbound Qty */
+            eligible_inbound_qty: number;
+            /** Source Sequence */
+            source_sequence: number;
+            /** Source Type */
+            source_type: string;
+            /**
+             * Evaluated At
+             * Format: date-time
+             */
+            evaluated_at: string;
+            /**
+             * Source Fresh Until
+             * Format: date-time
+             */
+            source_fresh_until: string;
+        };
+        /** QuantitySimulationRequest */
+        QuantitySimulationRequest: {
+            /** Expected State Version */
+            expected_state_version: number;
+            /** Sku Id */
+            sku_id: string;
+            /** Supplier Id */
+            supplier_id: string;
+            /** Cash Floor Minor */
+            cash_floor_minor: number;
+            /** Candidate Quantities */
+            candidate_quantities: number[];
+            /** Remaining Demand */
+            remaining_demand?: number | null;
+            /** Horizon Days */
+            horizon_days?: number | null;
+            /** Work Item Id */
+            work_item_id?: string | null;
+            /** Expected Work Version */
+            expected_work_version?: number | null;
+        };
         /** ReadContext */
         ReadContext: {
             /** Store Id */
@@ -2647,6 +2785,39 @@ export interface components {
             id: string;
             /** Version */
             version?: string;
+        };
+        /** ResultProvenance */
+        ResultProvenance: {
+            /** Result Id */
+            result_id: string;
+            /**
+             * Result Version
+             * @default 1
+             */
+            result_version: number;
+            /** Work Id */
+            work_id: string;
+            /** Work Version */
+            work_version: number | null;
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            /** Data As Of */
+            data_as_of: string | null;
+            /** State Version */
+            state_version: number | null;
+            /** Source Type */
+            source_type: string | null;
+            /** Currency */
+            currency: string | null;
+            /** Reference Versions */
+            reference_versions?: {
+                [key: string]: string;
+            };
+            /** Limitations */
+            limitations?: string[];
         };
         /** Resume */
         Resume: {
@@ -3170,6 +3341,48 @@ export interface components {
             /** Next Cursor */
             next_cursor: string | null;
         };
+        /** WorkBusinessState */
+        WorkBusinessState: {
+            /** Code */
+            code: string;
+            /** Label */
+            label: string;
+            /** Detail */
+            detail: string;
+            /**
+             * Tone
+             * @enum {string}
+             */
+            tone: "gray" | "amber" | "blue" | "green";
+            /** Priority */
+            priority: number;
+            /** Action Label */
+            action_label: string;
+            /** Needs Attention */
+            needs_attention: boolean;
+            /**
+             * Can Confirm
+             * @default false
+             */
+            can_confirm: boolean;
+            /** State Version */
+            state_version: number;
+            /** Mission Version */
+            mission_version: number;
+            /** Plan Id */
+            plan_id?: string | null;
+            /** Plan Version */
+            plan_version?: number | null;
+            /** Action Id */
+            action_id?: string | null;
+            /**
+             * Observed At
+             * Format: date-time
+             */
+            observed_at: string;
+            /** Valid Until */
+            valid_until?: string | null;
+        };
         /** WorkClaim */
         WorkClaim: {
             /** Expected Version */
@@ -3286,6 +3499,40 @@ export interface components {
             columns?: string[];
             /** Rows */
             rows?: string[][];
+            provenance?: components["schemas"]["ResultProvenance"] | null;
+            calculation?: components["schemas"]["QuantitySimulation"] | null;
+        };
+        /** WorkResultExport */
+        WorkResultExport: {
+            result: components["schemas"]["WorkResult"];
+            /** Demonstration */
+            demonstration: boolean;
+            /** Current Work Version */
+            current_work_version: number;
+            /** Is Latest Result */
+            is_latest_result: boolean;
+            /** Stale Reasons */
+            stale_reasons?: string[];
+        };
+        /** WorkResultInput */
+        WorkResultInput: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "answer" | "analysis" | "forecast" | "quotation" | "brief";
+            /** Title */
+            title: string;
+            /** Content */
+            content: string;
+            /** Assumptions */
+            assumptions?: string[];
+            /** References */
+            references?: components["schemas"]["WorkEvidence"][];
+            /** Columns */
+            columns?: string[];
+            /** Rows */
+            rows?: string[][];
         };
         /** WorkUpdate */
         WorkUpdate: {
@@ -3314,7 +3561,7 @@ export interface components {
             question?: string | null;
             /** Answer */
             answer?: string | null;
-            result?: components["schemas"]["WorkResult"] | null;
+            result?: components["schemas"]["WorkResultInput"] | null;
             /** Link Mission Id */
             link_mission_id?: string | null;
             mission_request?: components["schemas"]["MissionCreate"] | null;
@@ -3373,6 +3620,7 @@ export interface components {
              */
             updated_at: string;
             mission?: components["schemas"]["Mission"] | null;
+            business?: components["schemas"]["WorkBusinessState"] | null;
         };
     };
     responses: never;
@@ -8477,6 +8725,183 @@ export interface operations {
             };
             /** @description Request Entity Too Large */
             413: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    create_quantity_simulation: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                store_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QuantitySimulationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkDetail"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    get_work_result_export: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                item_id: string;
+                result_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["WorkResultExport"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Conflict */
+            409: {
                 headers: {
                     [name: string]: unknown;
                 };
