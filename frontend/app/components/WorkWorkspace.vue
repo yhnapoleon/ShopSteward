@@ -12,6 +12,15 @@ const work = useWorkItems(),
   { s } = work,
   shop = useShop()
 const item = computed(() => s.detail?.item)
+const simulationStale = computed(() => {
+  const c = item.value?.result?.calculation
+  return (
+    !!c &&
+    (c.input.state.state_version !== shop.s.dashboard?.state.state_version ||
+      Date.parse(c.valid_until) <= Date.now() ||
+      shop.s.dashboard?.freshness.status !== 'FRESH')
+  )
+})
 async function control(operation: 'cancel' | 'retry') {
   if (await work.control(operation)) emit('changed')
 }
@@ -50,6 +59,13 @@ const expired = computed(
               这是之前的结果，尚未根据新要求更新。
             </p>
             <WorkResult :result="item.result" :demonstration="item.demonstration" />
+            <button
+              v-if="item.result.calculation"
+              class="secondary"
+              @click="emit('open', 'simulation')"
+            >
+              调整条件再试算
+            </button>
           </details>
           <NuxtLink
             class="text-link"
@@ -72,7 +88,10 @@ const expired = computed(
       </header>
       <div class="work-detail-grid">
         <div class="work-result-column">
-          <section class="glass work-status-panel">
+          <section
+            v-if="!item.result?.calculation || item.status !== 'RESULT_READY'"
+            class="glass work-status-panel"
+          >
             <h2>
               {{
                 item.status === 'WAITING_INPUT'
@@ -97,10 +116,20 @@ const expired = computed(
               这是之前的结果，尚未根据新要求更新。
             </p>
             <WorkResult :result="item.result" :demonstration="item.demonstration" />
+            <button
+              v-if="item.result.calculation"
+              class="secondary"
+              @click="emit('open', 'simulation')"
+            >
+              调整条件再试算
+            </button>
           </section>
           <section v-if="item.mission_request" class="glass work-status-panel">
             <h2>开始持续跟进这项备货</h2>
             <p>{{ item.mission_request.objective }}</p>
+            <p v-if="item.result?.calculation" class="source-note">
+              按这里的现金底线和候选数量建立委托，业务系统会用最新有效需求重新生成方案。
+            </p>
             <p>
               现金至少保留 {{ money(item.mission_request.policy.cash_floor_minor) }}；每
               {{ item.mission_request.check_interval_seconds }} 秒检查。
@@ -108,7 +137,13 @@ const expired = computed(
             <p>这一步只建立跟进委托，每笔采购仍需你单独确认。</p>
             <button
               class="primary"
-              :disabled="s.busy || !!s.pending || item.demonstration || !shop.hasRole('operator')"
+              :disabled="
+                s.busy ||
+                !!s.pending ||
+                item.demonstration ||
+                simulationStale ||
+                !shop.hasRole('operator')
+              "
               @click="accept"
             >
               按这些条件开始跟进

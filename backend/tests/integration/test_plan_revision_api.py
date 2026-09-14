@@ -20,7 +20,7 @@ async def test_revision_replays_without_spending_and_invalidates_old_approval(db
         mission, old = await prepared(client, db, seed)
         url = f"/api/v1/plans/{old['id']}/revision"
         payload = {"expected_mission_version": mission["mission_version"], "max_purchase_qty": 20}
-        auth = headers(key="revision-once")
+        auth = headers(key="revision-once:" + mission["id"])
         result = await client.post(url, json=payload, headers=auth)
         assert result.status_code == 200, result.text
         plan = result.json()

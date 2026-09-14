@@ -1,6 +1,8 @@
 import { actionLabel, when } from '~/utils/presentation'
+import { workPresentation } from '~/utils/workPresentation'
 export function useTaskPresentation() {
   const { s, mission, stock, canDecide } = useShop()
+  const work = useWorkItems()
   const actions = computed(() => s.actions.filter((a) => a.mission_id === mission.value?.id))
   const pending = computed(() =>
     actions.value.find((a) => ['QUEUED', 'EXECUTING', 'UNKNOWN'].includes(a.status)),
@@ -8,6 +10,19 @@ export function useTaskPresentation() {
   const status = computed(() => {
     if (!mission.value)
       return { label: '尚未建立', tone: 'gray', group: '待处理', detail: '先交代这次备货目标。' }
+    if (
+      work.s.detail?.item.mission_id === mission.value.id &&
+      work.s.detail.item.business &&
+      !s.pending
+    ) {
+      const p = workPresentation(work.s.detail.item)
+      return {
+        label: p.label,
+        tone: p.tone,
+        detail: p.detail,
+        group: p.priority < 40 ? '待处理' : p.priority >= 90 ? '已结束' : '进行中',
+      }
+    }
     if (mission.value.status === 'COMPLETED')
       return {
         label: '委托已完成',

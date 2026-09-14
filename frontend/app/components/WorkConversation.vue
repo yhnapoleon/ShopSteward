@@ -36,7 +36,11 @@ watch(
       </div>
     </header>
     <p v-if="!s.detail?.item.processor_available" class="notice">
-      助手暂不可用。要求已保存，可以继续补充；已有备货操作仍可使用。
+      {{
+        s.detail?.item.result?.calculation
+          ? '试算已完成，可以调整条件继续比较。对话助手暂不可用。'
+          : '助手暂不可用。要求已保存，可以继续补充；已有备货操作仍可使用。'
+      }}
     </p>
     <p v-if="s.syncError || s.listError" class="notice amber" role="alert">
       {{ s.syncError || s.listError }}<button class="text-link" @click="resync">重新同步</button>
@@ -49,7 +53,14 @@ watch(
         :class="{ 'is-user': message.role === 'user' }"
       >
         <div class="agent-message-byline">
-          {{ message.role === 'user' ? '你' : message.role === 'system' ? '事项进展' : '助手'
+          {{
+            message.role === 'user'
+              ? '你'
+              : message.role === 'system'
+                ? '事项进展'
+                : message.result?.calculation
+                  ? '试算结果'
+                  : '助手'
           }}<time>{{ when(message.created_at) }}</time>
         </div>
         <small v-if="message.demonstration" class="tag amber">模拟接入</small>

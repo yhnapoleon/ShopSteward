@@ -1,0 +1,98 @@
+import type { Schema } from '~/types/models'
+
+export type ResultFileFormat = 'txt' | 'csv' | 'json'
+const kinds: Record<string, string> = {
+  answer: '咨询答复',
+  analysis: '分析',
+  forecast: '预测',
+  quotation: '报价整理',
+  brief: '简报',
+}
+const missing = '未记录'
+
+export function resultMetadata(value: Schema<'WorkResultExport'>): [string, string][] {
+  const r = value.result,
+    p = r.provenance
+  return [
+    ['结果ID', p?.result_id || missing],
+    ['结果版本', String(p?.result_version ?? missing)],
+    ['事项ID', p?.work_id || missing],
+    ['发布时事项版本', String(p?.work_version ?? missing)],
+    ['生成时间', p?.generated_at || missing],
+    ['业务截至', p?.data_as_of || missing],
+    ['业务状态版本', String(p?.state_version ?? missing)],
+    ['结果类型', r.calculation ? '假设试算，不是采购方案' : kinds[r.kind] || r.kind],
+    ['经营来源', p?.source_type === 'simulation' ? '合成模拟环境' : p?.source_type || missing],
+    ['币种', p?.currency || missing],
+    ['标题', r.title],
+    ['正文', r.content],
+    ['输入假设', (r.assumptions || []).join('\n') || '未提供'],
+    [
+      '来源引用',
+      (r.references || [])
+        .map(
+          (ref) =>
+            `${ref.label} | ${ref.type}:${ref.id} | 版本 ${p?.reference_versions?.[ref.type + ':' + ref.id] ?? missing}`,
+        )
+        .join('\n') || '未提供',
+    ],
+    [
+      '适用性',
+      [
+        value.is_latest_result ? '此事项最近一次结果' : '此事项历史结果',
+        ...(value.stale_reasons || []),
+        ...(value.demonstration ? ['模拟处理响应，非真实Agent分析'] : []),
+      ].join('\n'),
+    ],
+    ['局限', [...(p?.limitations || []), '采购和到货以实际业务回执为准。'].join('\n')],
+    ...(r.calculation
+      ? ([
+          ['计算规则版本', r.calculation.rule_version],
+          ['输入快照hash', r.calculation.input_hash],
+          ['报价版本', r.calculation.input.offer.offer_version],
+          ['需求版本', r.calculation.input.forecast_version || '用户独立假设'],
+          ['表格单位', '金额为人民币元，数量为件；JSON原始金额字段为整数分。'],
+        ] as [string, string][])
+      : []),
+  ]
+}
+
+export function csvCell(value: string) {
+  // Quoting alone does not stop spreadsheet formulas. Preserve arbitrary text as text.
+  const safe = /^[\s\u0000-\u001f]*[=+\-@]|^[\t\r\n]/.test(value) ? "'" + value : value
+  return '"' + safe.replace(/"/g, '""') + '"'
+}
+
+export function resultFile(value: Schema<'WorkResultExport'>, format: ResultFileFormat) {
+  const r = value.result,
+    metadata = resultMetadata(value)
+  const name = `事项结果-${r.provenance?.result_id || '历史'}-v${r.provenance?.result_version || 1}.${format}`
+  if (format === 'json')
+    return { name, mime: 'application/json;charset=utf-8', text: JSON.stringify(value, null, 2) }
+  if (format === 'csv') {
+    const columns = r.columns || []
+    const rows = r.rows?.length ? r.rows : [columns.map(() => '')]
+    const records = [
+      [...columns, ...metadata.map(([key]) => key)],
+      ...rows.map((row) => [...row, ...metadata.map(([, text]) => text)]),
+    ]
+    return {
+      name,
+      mime: 'text/csv;charset=utf-8',
+      text: records.map((row) => row.map(csvCell).join(',')).join('\r\n'),
+    }
+  }
+  return {
+    name,
+    mime: 'text/plain;charset=utf-8',
+    text: [
+      r.title,
+      '',
+      ...metadata.map(([key, value]) => `${key}：${value}`),
+      '',
+      ...(r.columns?.length
+        ? ['比较表', r.columns.join('\t'), ...(r.rows || []).map((row) => row.join('\t'))]
+        : []),
+    ].join('\n'),
+  }
+}

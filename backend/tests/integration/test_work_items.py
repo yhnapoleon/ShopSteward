@@ -344,6 +344,7 @@ async def test_concurrent_claim_context_and_replay_after_app_recreation(db):
         )
         assert context.status_code == 200, context.text
         assert context.json()["dashboard"]["state"]["available_cash_minor"] == 100000
+        assert app.state.db.engine.pool.checkedout() == 0
         responses = await asyncio.gather(
             *[
                 c.post(
