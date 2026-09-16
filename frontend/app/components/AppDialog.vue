@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { t as tr } from '~/i18n'
 const props = defineProps<{ open: boolean; title: string; busy?: boolean }>()
 const emit = defineEmits<{ close: [] }>()
 const dialog = ref<HTMLDialogElement>()
@@ -40,8 +41,8 @@ function outside(e: MouseEvent) {
 <template>
   <dialog ref="dialog" :aria-labelledby="titleId" @cancel.prevent="close" @click="outside">
     <header class="modal-head">
-      <h2 :id="titleId">{{ title }}</h2>
-      <button class="icon-btn" aria-label="关闭对话框" :disabled="busy" @click="close">
+      <h2 :id="titleId">{{ tr(title) }}</h2>
+      <button class="icon-btn" :aria-label="tr('关闭对话框')" :disabled="busy" @click="close">
         <AppIcon name="x" />
       </button>
     </header>

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { t as tr } from '~/i18n'
 const work = useWorkItems(),
   { s } = work
 const emit = defineEmits<{ submitted: [id: string] }>()
@@ -16,19 +17,19 @@ function keydown(e: KeyboardEvent) {
 </script>
 <template>
   <section class="work-intake">
-    <h2>今天想解决什么事？</h2>
-    <p>可以先问一问，也可以交代一件需要跟进的事情。</p>
+    <h2>{{ tr('今天想解决什么事？') }}</h2>
+    <p>{{ tr('可以先问一问，也可以交代一件需要跟进的事情。') }}</p>
     <p v-if="!s.processorAvailable" class="source-note">
-      助手暂不可用，要求会先保存；已有经营安排仍可查看。
+      {{ tr('助手暂不可用，要求会先保存；已有经营安排仍可查看。') }}
     </p>
-    <label :for="inputId">把事情告诉我</label
+    <label :for="inputId">{{ tr('把事情告诉我') }}</label
     ><textarea
       :id="inputId"
       v-model="s.input"
       rows="3"
       maxlength="8000"
       :disabled="s.busy || !!s.pending"
-      placeholder="例如：下周有活动，帮我看看牛奶够不够卖，至少留500块钱。"
+      :placeholder="tr('例如：下周有活动，帮我看看牛奶够不够卖，至少留500块钱。')"
       @keydown="keydown"
     />
     <div class="work-examples">
@@ -41,16 +42,16 @@ function keydown(e: KeyboardEvent) {
         :key="example"
         class="quiet-button"
         :disabled="s.busy || !!s.pending"
-        @click="s.input = example"
+        @click="s.input = tr(example)"
       >
-        {{ example }}
+        {{ tr(example) }}
       </button>
     </div>
-    <p v-if="s.error" class="notice amber" role="alert">{{ s.error }}</p>
+    <p v-if="s.error" class="notice amber" role="alert">{{ tr(s.error) }}</p>
     <div class="work-card-bottom">
-      <small>发送后保留在同一事项中；不会自动采购。</small
+      <small>{{ tr('发送后保留在同一事项中；不会自动采购。') }}</small
       ><button class="primary" :disabled="s.busy || (!s.pending && !s.input.trim())" @click="send">
-        {{ s.pending ? '恢复原提交' : '交给助手' }}<AppIcon name="arrow-right" />
+        {{ tr(s.pending ? '恢复原提交' : '交给助手') }}<AppIcon name="arrow-right" />
       </button>
     </div>
   </section>

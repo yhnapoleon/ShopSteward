@@ -1,3 +1,4 @@
+import { t } from '~/i18n'
 import { actionLabel, when } from '~/utils/presentation'
 import { workPresentation } from '~/utils/workPresentation'
 export function useTaskPresentation() {
@@ -101,7 +102,7 @@ export function useTaskPresentation() {
       label: '持续跟进中',
       tone: 'blue',
       group: '进行中',
-      detail: '下一次检查：' + when(mission.value.schedule.next_run_at),
+      detail: t('下一次检查：{0}', [when(mission.value.schedule.next_run_at)]),
     }
   })
   return { status, actions, pending }

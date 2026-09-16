@@ -1,0 +1,156 @@
+
+Running 4 tests using 1 worker
+
+(node:59570) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/4] tests/i18n-integrity.spec.ts:7:1 › translated templates preserve original product names, identifiers and spaces
+  1) tests/i18n-integrity.spec.ts:7:1 › translated templates preserve original product names, identifiers and spaces
+
+    Error: expect(received).toBe(expected) // Object.is equality
+
+    Expected: "库存 · Restocking quantity trial"
+    Received: "Inventory · Restocking quantity trial"
+
+       7 | test('translated templates preserve original product names, identifiers and spaces', () => {
+       8 |   locale.value = 'en'
+    >  9 |   expect(t('库存 · 补货数量试算')).toBe('库存 · Restocking quantity trial')
+         |                            ^
+      10 |   expect(t('现  金 · 补货数量试算')).toBe('现  金 · Restocking quantity trial')
+      11 | })
+      12 | test('external result assumptions, cells and source labels are not rewritten', () => {
+        at <workspace>/frontend/tests/i18n-integrity.spec.ts:9:28
+
+    Error Context: ../var/frontend-e2e/artifacts/i18n-integrity-translated--e1d9f-ames-identifiers-and-spaces/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../var/frontend-e2e/artifacts/i18n-integrity-translated--e1d9f-ames-identifiers-and-spaces/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../var/frontend-e2e/artifacts/i18n-integrity-translated--e1d9f-ames-identifiers-and-spaces/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:59573) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/4] tests/i18n-integrity.spec.ts:12:1 › external result assumptions, cells and source labels are not rewritten
+  2) tests/i18n-integrity.spec.ts:12:1 › external result assumptions, cells and source labels are not rewritten
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "现金底线"
+    Received string:    "库存·
+    Result ID：r
+    Result version：1
+    Work item ID：Not recorded
+    Work version at publication：Not recorded
+    Generated at：Not recorded
+    Business data as of：Not recorded
+    Business state version：Not recorded
+    Result type：Analysis
+    Business source：Not recorded
+    Currency：Not recorded
+    Title：库存
+    Content：现金
+    Input assumptions：Cash floor
+    Source references：来源 | store:x | 版本 未记录
+    Applicability：Latest result for this item
+    Limitations：View source
+    Purchases and arrivals are confirmed by actual business receipts.·
+    Comparison table
+    商品
+    采购"
+
+      14 |   const input: any = { result: { kind: 'analysis', title: '库存', content: '现金', columns: ['商品'], rows: [['采购']], assumptions: ['现金底线'], references: [{type: 'store',id: 'x',label: '来源'}], provenance: {result_id: 'r',result_version: 1, limitations: ['查看来源']} }, is_latest_result: true }
+      15 |   const output = resultFile(input, 'txt').text
+    > 16 |   expect(output).toContain('现金底线')
+         |                  ^
+      17 |   expect(output).toContain('查看来源')
+      18 |   expect(output).toContain('来源 | store:x')
+      19 |   expect(resultFile(input, 'csv').text).toContain('"商品"')
+        at <workspace>/frontend/tests/i18n-integrity.spec.ts:16:18
+
+    Error Context: ../var/frontend-e2e/artifacts/i18n-integrity-external-re-00615-ce-labels-are-not-rewritten/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../var/frontend-e2e/artifacts/i18n-integrity-external-re-00615-ce-labels-are-not-rewritten/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../var/frontend-e2e/artifacts/i18n-integrity-external-re-00615-ce-labels-are-not-rewritten/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:59574) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[3/4] tests/i18n-integrity.spec.ts:21:1 › bilingual duplicate columns and excess cells cannot silently overwrite quotes
+  3) tests/i18n-integrity.spec.ts:21:1 › bilingual duplicate columns and excess cells cannot silently overwrite quotes
+
+    Error: expect(received).toThrow()
+
+    Received function did not throw
+
+      20 | })
+      21 | test('bilingual duplicate columns and excess cells cannot silently overwrite quotes', () => {
+    > 22 |   expect(() => processQuotes('x.csv', 'Product,商品,Quote amount,Pricing unit,Currency\nA,B,120,box,CNY', null)).toThrow()
+         |                                                                                                                ^
+      23 |   expect(() => processQuotes('x.csv', 'Product,Quote amount,Pricing unit,Currency\nA,120,box,CNY,extra', null)).toThrow()
+      24 | })
+      25 | test('quote export keeps unknowns localized and blocks formulas after whitespace', () => {
+        at <workspace>/frontend/tests/i18n-integrity.spec.ts:22:112
+
+    Error Context: ../var/frontend-e2e/artifacts/i18n-integrity-bilingual-d-8d96b-t-silently-overwrite-quotes/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../var/frontend-e2e/artifacts/i18n-integrity-bilingual-d-8d96b-t-silently-overwrite-quotes/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../var/frontend-e2e/artifacts/i18n-integrity-bilingual-d-8d96b-t-silently-overwrite-quotes/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+(node:59576) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[4/4] tests/i18n-integrity.spec.ts:25:1 › quote export keeps unknowns localized and blocks formulas after whitespace
+  4) tests/i18n-integrity.spec.ts:25:1 › quote export keeps unknowns localized and blocks formulas after whitespace
+
+    Error: expect(received).toContain(expected) // indexOf
+
+    Expected substring: "Undetermined"
+    Received string:    "\"Product\",\"Unit price (CNY)\",\"Original quote\",\"Original currency\",\"Pricing unit\",\"Pack size\",\"Minimum order\",\"MOQ unit\",\"MOQ in units\",\"Source\",\"Record number\"
+    \"	=SUM(1,2)\",\"未确定\",\"120\",\"CNY\",\"box\",\"\",\"2\",\"box\",\"\",\"source\",\"1\""
+
+      27 |   const result = processQuotes('x.csv', header + '\nA,120,CNY,箱,,2,箱,source', null)
+      28 |   result.rows[0]!.product = '\t=SUM(1,2)'
+    > 29 |   expect(quoteCSV(result)).toContain('Undetermined')
+         |                            ^
+      30 |   expect(quoteCSV(result)).toContain('"\'\t=SUM(1,2)"')
+      31 | })
+      32 |
+        at <workspace>/frontend/tests/i18n-integrity.spec.ts:29:28
+
+    Error Context: ../var/frontend-e2e/artifacts/i18n-integrity-quote-expor-daba8-s-formulas-after-whitespace/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ../var/frontend-e2e/artifacts/i18n-integrity-quote-expor-daba8-s-formulas-after-whitespace/trace.zip
+    Usage:
+
+        pnpm exec playwright show-trace ../var/frontend-e2e/artifacts/i18n-integrity-quote-expor-daba8-s-formulas-after-whitespace/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+
+  4 failed
+    tests/i18n-integrity.spec.ts:7:1 › translated templates preserve original product names, identifiers and spaces
+    tests/i18n-integrity.spec.ts:12:1 › external result assumptions, cells and source labels are not rewritten
+    tests/i18n-integrity.spec.ts:21:1 › bilingual duplicate columns and excess cells cannot silently overwrite quotes
+    tests/i18n-integrity.spec.ts:25:1 › quote export keeps unknowns localized and blocks formulas after whitespace

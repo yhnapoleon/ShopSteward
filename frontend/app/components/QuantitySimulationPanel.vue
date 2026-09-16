@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { money, when } from '~/utils/presentation'
 const props = defineProps<{
@@ -106,39 +107,51 @@ async function simulate() {
 </script>
 <template>
   <form class="quantity-simulation" @submit.prevent="simulate">
-    <p>先比较补货的代价。结果会保存，建立委托和采购分别确认。</p>
+    <p>{{ tr('先比较补货的代价。结果会保存，建立委托和采购分别确认。') }}</p>
     <div class="simulation-baseline">
       <div>
-        <small>当前可用现金</small><strong>{{ money(baseline?.available_cash_minor) }}</strong>
+        <small>{{ tr('当前可用现金') }}</small
+        ><strong>{{ tr(money(baseline?.available_cash_minor)) }}</strong>
       </div>
       <div>
-        <small>所选商品现货</small><strong>{{ stock?.on_hand ?? '—' }} 件</strong>
+        <small>{{ tr('所选商品现货') }}</small
+        ><strong>{{ joinText([tr(stock?.on_hand ?? '—'), tr('件')]) }}</strong>
       </div>
       <div>
-        <small>已在途</small><strong>{{ stock?.in_transit ?? '—' }} 件</strong>
+        <small>{{ tr('已在途') }}</small
+        ><strong>{{ joinText([tr(stock?.in_transit ?? '—'), tr('件')]) }}</strong>
       </div>
     </div>
     <p class="source-note">
-      经营时点：{{ when(baseline?.simulation_time) }}；到货影响按本期总量比较。
+      {{
+        joinText([
+          tr('经营时点：'),
+          tr(when(baseline?.simulation_time)),
+          tr('；到货影响按本期总量比较。'),
+        ])
+      }}
     </p>
     <fieldset :disabled="work.s.busy || !!work.s.pending">
       <div class="simulation-fields">
         <label :for="prefix + '-sku'"
-          >商品<select :id="prefix + '-sku'" v-model="sku" required>
+          >{{ tr('商品')
+          }}<select :id="prefix + '-sku'" v-model="sku" required>
             <option v-for="p in shop.s.catalog?.products" :key="p.sku_id" :value="p.sku_id">
               {{ p.name }}
             </option>
           </select></label
         >
         <label :for="prefix + '-supplier'"
-          >供应商报价<select :id="prefix + '-supplier'" v-model="supplier" required>
+          >{{ tr('供应商报价')
+          }}<select :id="prefix + '-supplier'" v-model="supplier" required>
             <option v-for="o in offers" :key="o.supplier_id" :value="o.supplier_id">
-              {{ o.supplier_id }} · {{ money(o.unit_price_minor) }}/件
+              {{ joinText([o.supplier_id, '·', tr(money(o.unit_price_minor)), tr('/件')]) }}
             </option>
           </select></label
         >
         <label :for="prefix + '-floor'"
-          >现金至少保留（元）<input
+          >{{ tr('现金至少保留（元）')
+          }}<input
             :id="prefix + '-floor'"
             v-model="floor"
             inputmode="decimal"
@@ -146,19 +159,17 @@ async function simulate() {
             required
         /></label>
         <label :for="prefix + '-quantities'"
-          >比较数量（件，以逗号分隔）<input
-            :id="prefix + '-quantities'"
-            v-model="quantities"
-            maxlength="180"
-            required
+          >{{ tr('比较数量（件，以逗号分隔）')
+          }}<input :id="prefix + '-quantities'" v-model="quantities" maxlength="180" required
         /></label>
       </div>
       <label class="simulation-toggle"
-        ><input v-model="customDemand" type="checkbox" />用我自己的需求假设</label
+        ><input v-model="customDemand" type="checkbox" />{{ tr('用我自己的需求假设') }}</label
       >
       <div v-if="customDemand" class="simulation-fields">
         <label :for="prefix + '-demand'"
-          >假设剩余需求（件）<input
+          >{{ tr('假设剩余需求（件）')
+          }}<input
             :id="prefix + '-demand'"
             v-model="demand"
             inputmode="numeric"
@@ -166,29 +177,36 @@ async function simulate() {
             required
         /></label>
         <label :for="prefix + '-days'"
-          >从当前经营时点起（天）<input
-            :id="prefix + '-days'"
-            v-model="days"
-            inputmode="numeric"
-            maxlength="2"
-            required
+          >{{ tr('从当前经营时点起（天）')
+          }}<input :id="prefix + '-days'" v-model="days" inputmode="numeric" maxlength="2" required
         /></label>
-        <p class="source-note">自定义需求仅用于本次试算；建立委托前需要正式需求依据。</p>
+        <p class="source-note">
+          {{ tr('自定义需求仅用于本次试算；建立委托前需要正式需求依据。') }}
+        </p>
       </div>
       <p v-else class="source-note">
-        采用当前需求依据：{{ stock?.remaining_demand ?? '未取得' }} 件，使用其原适用期间。
+        {{
+          joinText([
+            tr('采用当前需求依据：'),
+            tr(stock?.remaining_demand ?? '未取得'),
+            tr('件，使用其原适用期间。'),
+          ])
+        }}
       </p>
     </fieldset>
     <p v-if="changed" class="notice amber">
-      经营数据有新变化。<button type="button" class="text-link" @click="refresh">
-        刷新试算基线
-      </button>
+      {{ tr('经营数据有新变化。')
+      }}<button type="button" class="text-link" @click="refresh">{{ tr('刷新试算基线') }}</button>
     </p>
     <p v-if="error || work.s.error" class="notice amber" role="alert">
-      {{ error || work.s.error }}
+      {{ tr(error || work.s.error) }}
     </p>
     <p class="source-note">
-      当前支持单商品数量与现金底线比较。“晚两天采购”、多商品共用预算和逐日现金曲线尚不可计算。
+      {{
+        tr(
+          '当前支持单商品数量与现金底线比较。“晚两天采购”、多商品共用预算和逐日现金曲线尚不可计算。',
+        )
+      }}
     </p>
     <div class="work-card-bottom">
       <button
@@ -197,18 +215,20 @@ async function simulate() {
         :disabled="work.s.busy || !!work.s.pending"
         @click="refresh"
       >
-        刷新经营数据
+        {{ tr('刷新经营数据') }}
       </button>
       <button
         class="primary"
         :disabled="work.s.busy || (!pendingSimulation && (changed || !!work.s.pending))"
       >
         {{
-          work.s.busy
-            ? '正在计算并保存…'
-            : pendingSimulation
-              ? '查询并重试原试算'
-              : '比较并保存结果'
+          tr(
+            work.s.busy
+              ? '正在计算并保存…'
+              : pendingSimulation
+                ? '查询并重试原试算'
+                : '比较并保存结果',
+          )
         }}
       </button>
     </div>

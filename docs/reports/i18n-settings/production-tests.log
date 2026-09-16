@@ -1,0 +1,72 @@
+
+Running 64 tests using 1 worker
+
+(node:65492) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/64] tests/agent-progress.spec.ts:33:1 › 实时进度：重复不会重播，缺口不跳过，同名调用保留身份
+[2/64] tests/agent-progress.spec.ts:52:1 › 实时进度：旧任务和无效活动不会改当前任务
+[3/64] tests/agent-progress.spec.ts:72:1 › 实时进度：工具失败与整轮成功分离，恢复保持同一调用的尝试号
+[4/64] tests/agent-progress.spec.ts:87:1 › 实时进度：旧后端摘要保持兼容，不推测开始或耗时
+[5/64] tests/documents.spec.ts:184:1 › 资料可从既有入口进入；上传、版本、信息编辑、归档恢复和下载完整闭环
+[6/64] tests/documents.spec.ts:221:1 › 丢失上传响应后刷新，核对原文件并沿用同一幂等键，不重复建档
+[7/64] tests/documents.spec.ts:246:1 › 版本冲突不会静默覆盖；载入最新资料后才能重新保存
+[8/64] tests/documents.spec.ts:263:1 › 只读身份与其他成员私有资料不显示写入或原件入口
+[9/64] tests/documents.spec.ts:282:1 › 标题筛选、资料分页和版本分页保留完整记录
+[10/64] tests/documents.spec.ts:302:1 › 切换场景时迟到版本响应不能污染新店铺
+[11/64] tests/documents.spec.ts:315:3 › 首次上传校验期间切换场景，不再发起旧页面的写入
+[12/64] tests/documents.spec.ts:315:3 › 重试上传校验期间切换场景，不再发起旧页面的写入
+[13/64] tests/documents.spec.ts:358:1 › 无效文件在提交前阻止；手机布局、键盘弹层与焦点可用
+[14/64] tests/documents.spec.ts:387:1 › 桌面长标题与可追溯详情，下载权限失效显示准确失败
+[15/64] tests/forecast.spec.ts:170:1 › forecast unavailable is empty; model scenario keeps exact dates in expandable evidence
+[16/64] tests/forecast.spec.ts:194:1 › viewer can read stale evidence but cannot refresh
+[17/64] tests/forecast.spec.ts:203:1 › switching store discards an in-flight refresh response
+[18/64] tests/forecast.spec.ts:223:1 › observed history validation blocks missing days and activation requires explicit choice
+[19/64] tests/forecast.spec.ts:266:1 › Agent forecast reference opens the panel and identifies superseded evidence
+[20/64] tests/forecast.spec.ts:279:1 › reusing observed input preserves explicit planning activation even when not currently usable
+[21/64] tests/forecast.spec.ts:293:1 › switching SKU clears the old forecast and imported draft
+[22/64] tests/i18n-integrity.spec.ts:9:1 › translated templates preserve original product names, identifiers and spaces
+[23/64] tests/i18n-integrity.spec.ts:14:1 › external result assumptions, cells and source labels are not rewritten
+[24/64] tests/i18n-integrity.spec.ts:35:1 › bilingual duplicate columns and excess cells cannot silently overwrite quotes
+[25/64] tests/i18n-integrity.spec.ts:47:1 › quote export keeps unknowns localized and blocks formulas after whitespace
+[26/64] tests/i18n.spec.ts:15:1 › language switches immediately without writes, survives reload and syncs across tabs
+[27/64] tests/i18n.spec.ts:42:1 › schedule change saves once, keeps enabled state and rolls back after failure
+[28/64] tests/i18n.spec.ts:92:1 › English navigation, charts, mobile settings and quote flow remain usable
+[29/64] tests/i18n.spec.ts:119:1 › storage failures remain usable and never claim persistence
+[30/64] tests/i18n.spec.ts:133:1 › English quote round trip, source preservation, system messages and raw JSON
+[31/64] tests/i18n.spec.ts:166:1 › English chrome covers every primary view and task workspace
+[32/64] tests/i18n.spec.ts:189:1 › a lost schedule response plus failed verification never claims rollback or allows another write
+[33/64] tests/i18n.spec.ts:229:1 › language switches preserve original product names and task objectives
+[34/64] tests/overview.spec.ts:223:1 › 默认今日，次级入口与返回保留原工作区；概览不发写请求
+[35/64] tests/overview.spec.ts:240:1 › UTC销售区间、金额切换与现金事件图；仅影响销售区间
+[36/64] tests/overview.spec.ts:262:1 › 销售总量不依赖明细第一页，明细可完整翻页
+[37/64] tests/overview.spec.ts:278:1 › 刷新失败保留原值并显式标记，区间切换不保留旧总量
+[38/64] tests/overview.spec.ts:292:1 › 不同快照、部分到货及未知ETA，不伪装成一致或已收完
+[39/64] tests/overview.spec.ts:304:1 › 新环境自动切换，旧场景迟到的销售响应不能污染新页面
+[40/64] tests/overview.spec.ts:319:1 › 图表键盘、日期弹层和手机浏览均可操作，无页面溢出
+[41/64] tests/overview.spec.ts:346:1 › 可复现S5视觉：桌面、触摸、减少动效与截图
+[42/64] tests/overview.spec.ts:375:1 › 时间与现金历史边界：UTC、未知、超过90日、期初缺失及账不平
+[43/64] tests/overview.spec.ts:394:1 › 原方案往返后仍可核对，切换环境自动关闭旧确认框
+[44/64] tests/overview.spec.ts:415:1 › 生产构建：今日不下载图表引擎，打开概览才加载
+[45/64] tests/overview.spec.ts:437:1 › 初始现金不画假趋势；单独过期的流水在现金区域明确提示
+[46/64] tests/settings-visual.spec.ts:3:1 › settings material is opaque and mobile content scrolls inside dialog
+[47/64] tests/task-workspace.spec.ts:220:1 › 同一任务跨首页/详情/刷新；草稿保留，工具按调用身份去重，历史不冒充当前过程
+[48/64] tests/task-workspace.spec.ts:255:1 › 富文本安全、中文输入法、发送丢响应沿用幂等键
+[49/64] tests/task-workspace.spec.ts:291:1 › 运行连接丢失停止忙碌动效；恢复后终态不掩盖失败子步骤
+[50/64] tests/task-workspace.spec.ts:311:1 › 结束委托绑定原任务，刷新可回看；未知采购阻止结束
+[51/64] tests/task-workspace.spec.ts:332:1 › 手机任务工作区、长表格不溢出，减少动效生效
+[52/64] tests/task-workspace.spec.ts:377:1 › 事实更新先等待新方案；修订回执来自真实版本，现金不因方案调整改变
+[53/64] tests/task-workspace.spec.ts:453:1 › 会话分页使用后端after游标，第二页默认会话不会被第一条替代
+[54/64] tests/task-workspace.spec.ts:462:1 › 历史原文关闭后迟到响应不恢复内容；轮询鉴权失败清除会话
+[55/64] tests/task-workspace.spec.ts:504:1 › 代码块分别复制原始字符，键盘可用，复制失败明确提示
+[56/64] tests/work-intake.spec.ts:148:1 › 撤权停止事项重试；刷新身份后重新验证，不无限请求
+[57/64] tests/work-intake.spec.ts:167:1 › 消息结果未知时不能另建跟进覆盖原请求；重试沿用原键
+[58/64] tests/work-intake.spec.ts:184:1 › 失效的事项链接只影响该事项，其余卡片仍可打开
+[59/64] tests/work-intake.spec.ts:197:1 › 事项列表连接恢复后清除旧错误，其他事项仍保留
+[60/64] tests/work-intake.spec.ts:208:1 › 真实业务状态优先展示，已取消委托的 UNKNOWN 采购仍留在待办顶部
+[61/64] tests/work-priorities.spec.ts:5:1 › 旧列表迟到不能覆盖更新的采购状态；输入版本与业务观察独立比较
+[62/64] tests/work-priorities.spec.ts:23:1 › 待补信息不能遮蔽结果不明采购，审批提示到期后需要重查
+[63/64] tests/work-priorities.spec.ts:49:1 › 导出完整保留中文、空值、负数、小数、假设及模拟标识
+[64/64] tests/work-priorities.spec.ts:93:1 › CSV 引号不能代替公式防护，带空白或控制字符的公式仍按文本导出
+  64 passed (2.3m)

@@ -1,3 +1,4 @@
+import { t, locale } from '../i18n'
 export const header = '商品,报价金额,币种,计价单位,每包装件数,最低订购量,MOQ单位,来源'
 export const samples = [
   { name: '示例报价_甲.csv', text: header + '\n报价样品甲,120,CNY,箱,12,2,箱,示例供应商报价第1条' },
@@ -59,9 +60,12 @@ export function parseCSV(text: string) {
 }
 export function processQuotes(name: string, text: string, rule: QuoteRule | null): QuoteResult {
   const table = parseCSV(text.replace(/^\uFEFF/, '')),
-    cols = table.shift()
+    cols = table.shift()?.map((column) => quoteColumn(column))
   if (!cols || !['商品', '报价金额', '计价单位'].every((k) => cols.includes(k)))
     throw Error('缺少必要列名，请下载格式模板。')
+  if (new Set(cols).size !== cols.length) throw Error('列名重复，不能确定报价字段。')
+  if (table.some((row) => row.length > cols.length))
+    throw Error('报价行的列数超过表头，请核对CSV格式。')
   if (!table.length || table.length > 100) throw Error('请选择1至100条报价资料。')
   const issues: string[] = [],
     positive = (s: string | undefined) =>
@@ -72,8 +76,8 @@ export function processQuotes(name: string, text: string, rule: QuoteRule | null
       price = positive(a['报价金额']),
       pack = positive(a['每包装件数']),
       moq = positive(a['最低订购量']),
-      unit = a['计价单位'] || '',
-      moqUnit = a['MOQ单位'] || ''
+      unit = quoteUnit(a['计价单位'] || ''),
+      moqUnit = quoteUnit(a['MOQ单位'] || '')
     let unitPrice: number | null = null,
       basis = '缺少计算依据'
     const problem = (t: string) => issues.push(`第${record}条报价：${t}`)
@@ -119,7 +123,7 @@ export function processQuotes(name: string, text: string, rule: QuoteRule | null
 }
 function cell(v: unknown) {
   let s = String(v ?? '')
-  if (/^[=+@-]/.test(s)) s = "'" + s
+  if (/^[\s\u0000-\u001f]*[=+\-@]|^[\t\r\n]/.test(s)) s = "'" + s
   return '"' + s.replaceAll('"', '""') + '"'
 }
 export function quoteCSV(r: QuoteResult) {
@@ -139,19 +143,19 @@ export function quoteCSV(r: QuoteResult) {
     ],
     ...r.rows.map((a) => [
       a.product,
-      a.unitPrice ?? '未确定',
+      a.unitPrice ?? t('未确定'),
       a.price,
       a.currency,
-      a.unit,
+      t(a.unit),
       a.pack,
       a.moq,
-      a.moqUnit,
+      t(a.moqUnit),
       a.moqPieces,
       a.source,
       a.record,
     ]),
   ]
-    .map((r) => r.map(cell).join(','))
+    .map((r, i) => r.map((value) => cell(i === 0 ? t(value) : value)).join(','))
     .join('\n')
 }
 export function downloadFile(
@@ -166,4 +170,55 @@ export function downloadFile(
   a.download = name
   a.click()
   setTimeout(() => URL.revokeObjectURL(url), 1000)
+}
+
+const englishHeaders = [
+  'Product',
+  'Quote amount',
+  'Currency',
+  'Pricing unit',
+  'Units per pack',
+  'Minimum order',
+  'MOQ unit',
+  'Source',
+]
+function quoteColumn(value: string) {
+  const index = englishHeaders.findIndex((key) => key.toLowerCase() === value.trim().toLowerCase())
+  return index < 0 ? value : header.split(',')[index]!
+}
+function quoteUnit(value: string) {
+  return (
+    (
+      {
+        unit: '件',
+        units: '件',
+        piece: '件',
+        pieces: '件',
+        box: '箱',
+        boxes: '箱',
+        pack: '包',
+        packs: '包',
+      } as Record<string, string>
+    )[value.toLowerCase()] || value
+  )
+}
+export function localizedSamples() {
+  if (locale.value !== 'en') return samples
+  const head = englishHeaders.join(',') + '\n'
+  return [
+    {
+      name: 'sample-quote-A.csv',
+      text: head + 'Sample A,120,CNY,box,12,2,box,Sample supplier quote 1',
+    },
+    {
+      name: 'sample-quote-B.csv',
+      text: head + 'Sample B,180,CNY,box,15,3,box,Sample supplier quote 1',
+    },
+    {
+      name: 'sample-quote-incomplete.csv',
+      text:
+        head +
+        'Pack sample,120,CNY,box,,2,box,Sample record 1\nUnit sample,12,CNY,unit,,,unit,Sample record 2',
+    },
+  ]
 }

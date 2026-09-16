@@ -50,19 +50,28 @@ def evidence_policy(content, *, documents_enabled, forecasts_enabled=False):
     if forecast:
         required.append("get_forecast")
         reasons.append("forecast_evidence")
-    if re.search(r"方案|补货计划|采购计划|current plan|replenishment plan", content, re.I):
+    if re.search(
+        r"方案|补货计划|采购计划|current plan|replenishment plan|restocking plan|purchase plan",
+        content,
+        re.I,
+    ):
         required.append("get_plan")
         reasons.append("current_plan")
     no_docs = re.search(
-        r"(?:不用|不要|无需|不必|不需要).{0,3}(?:查|检索|搜索|读取)?(?:文档|资料|合同|条款)",
+        r"(?:不用|不要|无需|不必|不需要).{0,3}(?:查|检索|搜索|读取)?(?:文档|资料|合同|条款)|"
+        r"\b(?:don't|do not|no need to)\b.{0,25}\b(?:documents?|contracts?|terms|policy)\b",
         content,
+        re.I,
     )
     expand = re.search(
-        r"(?:展开|核对原文|读原文).{0,12}(?:引用|证据|片段)|(?:引用|片段).{0,12}(?:展开|上下文)",
+        r"(?:展开|核对原文|读原文).{0,12}(?:引用|证据|片段)|(?:引用|片段).{0,12}(?:展开|上下文)|"
+        r"\b(?:expand|read|verify)\b.{0,30}\b(?:citation|excerpt|source evidence)\b",
         content,
+        re.I,
     )
     document = re.search(
-        r"条款|合同|供应商.{0,10}(?:退货|凭证|起订|规定)|操作规程|SOP|商品说明|文档|资料|policy|contract|document",
+        r"条款|合同|供应商.{0,10}(?:退货|凭证|起订|规定)|操作规程|SOP|商品说明|文档|资料|"
+        r"policy|contract|document|supplier terms",
         content,
         re.I,
     )
