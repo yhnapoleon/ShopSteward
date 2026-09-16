@@ -63,7 +63,12 @@ async def test_identity_and_store_discovery_are_scoped(db):
             "principal_id": "viewer",
             "roles": ["viewer"],
             "store_scope": "ASSIGNED",
-            "capabilities": ["work_intake", "plan_revision"],
+            "capabilities": [
+                "work_intake",
+                "plan_revision",
+                "quantity_simulation",
+                "work_result_export",
+            ],
         }
         stores = await get(client, "stores")
         assert [item["store_id"] for item in stores["items"]] == [seed["store_id"]]

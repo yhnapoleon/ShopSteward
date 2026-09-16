@@ -1,3 +1,4 @@
+import { intlLocale, locale } from '~/i18n'
 import type { Schema } from '~/types/models'
 
 export type ReadContext = Schema<'ReadContext'>
@@ -27,7 +28,7 @@ export function utcTime(value: string | null | undefined) {
   const d = new Date(value)
   if (!Number.isFinite(d.getTime())) return '时点未知'
   return (
-    new Intl.DateTimeFormat('zh-CN', {
+    new Intl.DateTimeFormat(intlLocale(), {
       timeZone: 'UTC',
       month: '2-digit',
       day: '2-digit',

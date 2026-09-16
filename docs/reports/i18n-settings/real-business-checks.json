@@ -1,0 +1,87 @@
+{
+  "before": {
+    "store_id": "store_705ecfd9d592493b804aad2d58f15bb8",
+    "state_version": 1,
+    "currency": "CNY",
+    "cash_minor": 100000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 100000,
+    "receivables_minor": 0,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 20,
+        "in_transit": 0,
+        "remaining_demand": 60,
+        "forecast_version": "local-1cb87ab24cde68fc3611c6c97897d27c"
+      }
+    ],
+    "data_as_of": "2026-09-16T03:43:22.984746Z",
+    "simulation_time": "2026-09-16T03:43:22.984746Z"
+  },
+  "accepted": {
+    "store_id": "store_705ecfd9d592493b804aad2d58f15bb8",
+    "state_version": 3,
+    "currency": "CNY",
+    "cash_minor": 60000,
+    "reserved_cash_minor": 0,
+    "available_cash_minor": 60000,
+    "receivables_minor": 0,
+    "stocks": [
+      {
+        "sku_id": "sku_001",
+        "on_hand": 20,
+        "in_transit": 40,
+        "remaining_demand": 60,
+        "forecast_version": "local-1cb87ab24cde68fc3611c6c97897d27c"
+      }
+    ],
+    "data_as_of": "2026-09-16T03:43:25.221017Z",
+    "simulation_time": "2026-09-16T03:43:22.984746Z"
+  },
+  "missionStatus": "PAUSED",
+  "schedule": {
+    "id": "90a89804-9165-4791-a2b9-073eb3e0e494",
+    "job_type": "check_mission",
+    "mission_id": "9bdb0335-2e83-4a60-8155-e23dd1f64386",
+    "trigger": "INTERVAL",
+    "interval_seconds": 300,
+    "enabled": true,
+    "version": 5,
+    "next_run_at": null
+  },
+  "actions": [
+    {
+      "id": "eaffbd53-3857-480f-88e4-da8ea5803ccb",
+      "quantity": 40,
+      "status": "SUCCEEDED"
+    }
+  ],
+  "pageErrors": [],
+  "writes": [
+    {
+      "path": "/api/backend/api/v1/missions/9bdb0335-2e83-4a60-8155-e23dd1f64386/schedule",
+      "method": "PATCH"
+    },
+    {
+      "path": "/api/backend/api/v1/missions/9bdb0335-2e83-4a60-8155-e23dd1f64386/schedule",
+      "method": "PATCH"
+    },
+    {
+      "path": "/api/backend/api/v1/plans/eb18756e-17f4-4d1b-b123-57daad5454f1/decision",
+      "method": "POST"
+    },
+    {
+      "path": "/api/backend/api/v1/missions/9bdb0335-2e83-4a60-8155-e23dd1f64386/control",
+      "method": "POST"
+    },
+    {
+      "path": "/api/backend/api/v1/missions/9bdb0335-2e83-4a60-8155-e23dd1f64386/schedule",
+      "method": "PATCH"
+    }
+  ],
+  "realHTTP": true,
+  "realPostgreSQL": true,
+  "supplier": "deterministic test adapter",
+  "modelCalls": 0
+}

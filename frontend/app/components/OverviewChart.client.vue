@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { intlLocale, locale } from '~/i18n'
+
+import { joinText, t as tr } from '~/i18n'
 import { init, use, graphic, type EChartsCoreOption } from 'echarts/core'
 import { BarChart, LineChart } from 'echarts/charts'
 import { GridComponent, TooltipComponent, MarkLineComponent } from 'echarts/components'
@@ -19,7 +22,10 @@ let observer: ResizeObserver | undefined
 let media: MediaQueryList | undefined
 let focusIndex = -1
 const valueLabel = (v: number) =>
-  props.kind === 'cash' || props.monetary ? money(v) : `${v.toLocaleString('zh-CN')} 件`
+  props.kind === 'cash' || props.monetary
+    ? money(v)
+    : tr('{0} 件', [v.toLocaleString(intlLocale())])
+watch(locale, () => draw())
 function draw() {
   if (!chart) return
   const cash = props.kind === 'cash'
@@ -56,12 +62,12 @@ function draw() {
       formatter: (params: unknown) => {
         const p = (params as { dataIndex: number }[])[0]
         const point = p && props.points[p.dataIndex]
-        return point ? `${point.detail || point.label}\n${valueLabel(point.value)}` : ''
+        return point ? `${tr(point.detail || point.label)}\n${valueLabel(point.value)}` : ''
       },
     },
     xAxis: {
       type: 'category',
-      data: props.points.map((p) => p.label),
+      data: props.points.map((p) => tr(p.label)),
       boundaryGap: !cash,
       axisLine: { show: !cash, lineStyle: { color: '#d9e1e8' } },
       axisTick: { show: false },
@@ -83,7 +89,13 @@ function draw() {
       axisLabel: {
         fontSize: 13,
         color: '#778592',
-        formatter: (v: number) => (v >= 10000 ? `${v / 10000}万` : v.toLocaleString('zh-CN')),
+        formatter: (v: number) =>
+          v >= 10000
+            ? new Intl.NumberFormat(intlLocale(), {
+                notation: 'compact',
+                maximumFractionDigits: 1,
+              }).format(v)
+            : v.toLocaleString(intlLocale()),
       },
       splitLine: {
         lineStyle: {
@@ -109,7 +121,7 @@ function draw() {
               color: '#57738b',
               fontSize: 13,
               distance: 9,
-              formatter: (p: { value: unknown }) => Number(p.value).toLocaleString('zh-CN'),
+              formatter: (p: { value: unknown }) => Number(p.value).toLocaleString(intlLocale()),
             },
             showSymbol: true,
             lineStyle: {
@@ -222,7 +234,7 @@ onUnmounted(() => {
     class="overview-chart"
     :class="`overview-chart--${kind}`"
     role="group"
-    :aria-label="label + '。左右方向键选择，回车查看明细。'"
+    :aria-label="joinText([tr(label), tr('。左右方向键选择，回车查看明细。')])"
     tabindex="0"
     @keydown="keyboard"
   />

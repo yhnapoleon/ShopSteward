@@ -32,6 +32,7 @@ export function workPresentation(item: Schema<'WorkView'>, now = Date.now()) {
       return {
         label: '方案待重新核对',
         detail: '方案或数据有效期已到，请刷新后核对。',
+        detailIsOriginal: false,
         action: '查看并重新检查',
         tone: 'amber',
         priority: 15,
@@ -42,6 +43,7 @@ export function workPresentation(item: Schema<'WorkView'>, now = Date.now()) {
       return {
         label: business.label,
         detail: item.question || business.detail,
+        detailIsOriginal: !!item.question,
         action: '补充信息',
         tone: 'amber',
         priority: 30,
@@ -50,6 +52,7 @@ export function workPresentation(item: Schema<'WorkView'>, now = Date.now()) {
     return {
       label: business.label,
       detail: business.detail,
+      detailIsOriginal: false,
       action: business.action_label,
       tone: business.tone,
       priority: business.priority,
@@ -60,6 +63,7 @@ export function workPresentation(item: Schema<'WorkView'>, now = Date.now()) {
     return {
       label: '备货状态待核对',
       detail: '打开事项读取当前方案和采购回执。',
+      detailIsOriginal: false,
       action: '查看备货状态',
       tone: 'gray',
       priority: 35,
@@ -71,6 +75,7 @@ export function workPresentation(item: Schema<'WorkView'>, now = Date.now()) {
       item.question && item.status === 'WAITING_INPUT'
         ? item.question
         : item.summary || '要求已保存，可以继续补充。',
+    detailIsOriginal: !!(item.question && item.status === 'WAITING_INPUT') || !!item.summary,
     action: item.status === 'WAITING_INPUT' ? '补充信息' : item.result ? '查看结果' : '继续这件事',
     tone: ['WAITING_INPUT', 'BLOCKED'].includes(item.status) ? 'amber' : 'gray',
     priority: item.status === 'WAITING_INPUT' ? 30 : item.status === 'BLOCKED' ? 32 : 75,

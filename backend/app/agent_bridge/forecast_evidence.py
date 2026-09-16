@@ -26,9 +26,17 @@ def forecast_requested(content):
 
 def replenishment_requested(content):
     for clause in re.split(r"[，,。；;！？!?\n]", content):
-        if re.search(r"(?:不用|不要|无需|不必|不需要|别).{0,12}补货|什么是|原理|定义", clause):
+        if re.search(
+            r"(?:不用|不要|无需|不必|不需要|别).{0,12}补货|什么是|原理|定义|"
+            r"\b(?:don't|do not|no need to)\b.{0,25}\b(?:restock|replenish|purchase)|"
+            r"\bwhat is\b|\bhow .{0,12}works?\b",
+            clause,
+            re.I,
+        ):
             continue
-        if re.search(r"补货|采购计划|replenishment", clause, re.I):
+        if re.search(
+            r"补货|采购计划|\b(?:replenishment|restock(?:ing)?|purchase plan)\b", clause, re.I
+        ):
             return True
     return False
 

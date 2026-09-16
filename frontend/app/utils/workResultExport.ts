@@ -1,3 +1,4 @@
+import { t } from '../i18n'
 import type { Schema } from '~/types/models'
 
 export type ResultFileFormat = 'txt' | 'csv' | 'json'
@@ -10,7 +11,7 @@ const kinds: Record<string, string> = {
 }
 const missing = '未记录'
 
-export function resultMetadata(value: Schema<'WorkResultExport'>): [string, string][] {
+function rawMetadata(value: Schema<'WorkResultExport'>): [string, string][] {
   const r = value.result,
     p = r.provenance
   return [
@@ -64,6 +65,47 @@ export function resultMetadata(value: Schema<'WorkResultExport'>): [string, stri
   ]
 }
 
+export function resultMetadata(value: Schema<'WorkResultExport'>): [string, string][] {
+  const r = value.result
+  return rawMetadata(value).map(([key, content]) => {
+    if (['标题', '正文', '输入假设'].includes(key) && !r.calculation) return [t(key), content]
+    if (key === '局限' && !r.calculation)
+      return [
+        t(key),
+        [...(r.provenance?.limitations || []), t('采购和到货以实际业务回执为准。')].join('\n'),
+      ]
+    if (key === '来源引用')
+      return [
+        t(key),
+        (r.references || [])
+          .map((ref) =>
+            t('{0} | {1}:{2} | 版本 {3}', [
+              r.calculation ? t(ref.label) : ref.label,
+              ref.type,
+              ref.id,
+              r.provenance?.reference_versions?.[ref.type + ':' + ref.id] ?? t(missing),
+            ]),
+          )
+          .join('\n') || t('未提供'),
+      ]
+    const systemFields = ['结果类型', '经营来源', '适用性', '表格单位', '需求提供者']
+    const localize =
+      (!!r.calculation && ['标题', '正文', '输入假设', '局限'].includes(key)) ||
+      systemFields.includes(key) ||
+      content === missing ||
+      content === '用户独立假设'
+    return [
+      t(key),
+      localize
+        ? content
+            .split('\n')
+            .map((line) => t(line))
+            .join('\n')
+        : content,
+    ]
+  })
+}
+
 export function csvCell(value: string) {
   // Quoting alone does not stop spreadsheet formulas. Preserve arbitrary text as text.
   const safe = /^[\s\u0000-\u001f]*[=+\-@]|^[\t\r\n]/.test(value) ? "'" + value : value
@@ -73,15 +115,22 @@ export function csvCell(value: string) {
 export function resultFile(value: Schema<'WorkResultExport'>, format: ResultFileFormat) {
   const r = value.result,
     metadata = resultMetadata(value)
-  const name = `事项结果-${r.provenance?.result_id || '历史'}-v${r.provenance?.result_version || 1}.${format}`
+  const name = t('事项结果-{0}-v{1}.{2}', [
+    r.provenance?.result_id || t('历史'),
+    r.provenance?.result_version || 1,
+    format,
+  ])
   if (format === 'json')
     return { name, mime: 'application/json;charset=utf-8', text: JSON.stringify(value, null, 2) }
   if (format === 'csv') {
-    const columns = r.columns || []
+    const columns = (r.columns || []).map((column) => (r.calculation ? t(column) : column))
     const rows = r.rows?.length ? r.rows : [columns.map(() => '')]
     const records = [
       [...columns, ...metadata.map(([key]) => key)],
-      ...rows.map((row) => [...row, ...metadata.map(([, text]) => text)]),
+      ...rows.map((row) => [
+        ...row.map((cell) => (r.calculation ? t(cell) : cell)),
+        ...metadata.map(([, text]) => text),
+      ]),
     ]
     return {
       name,
@@ -93,12 +142,18 @@ export function resultFile(value: Schema<'WorkResultExport'>, format: ResultFile
     name,
     mime: 'text/plain;charset=utf-8',
     text: [
-      r.title,
+      r.calculation ? t(r.title) : r.title,
       '',
       ...metadata.map(([key, value]) => `${key}：${value}`),
       '',
       ...(r.columns?.length
-        ? ['比较表', r.columns.join('\t'), ...(r.rows || []).map((row) => row.join('\t'))]
+        ? [
+            t('比较表'),
+            r.columns.map((cell) => (r.calculation ? t(cell) : cell)).join('\t'),
+            ...(r.rows || []).map((row) =>
+              row.map((cell) => (r.calculation ? t(cell) : cell)).join('\t'),
+            ),
+          ]
         : []),
     ].join('\n'),
   }

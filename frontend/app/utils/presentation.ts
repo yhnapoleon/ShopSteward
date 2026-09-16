@@ -1,24 +1,26 @@
+import { t, intlLocale } from '~/i18n'
 export const money = (minor: number | undefined | null) =>
   minor == null
-    ? '未取得'
-    : new Intl.NumberFormat('zh-CN', {
+    ? t('未取得')
+    : new Intl.NumberFormat(intlLocale(), {
         style: 'currency',
         currency: 'CNY',
         maximumFractionDigits: 2,
         minimumFractionDigits: 0,
+        currencyDisplay: localeCurrencyDisplay(),
       }).format(minor / 100)
 export const number = (n: number | undefined | null) =>
-  n == null ? '未取得' : n.toLocaleString('zh-CN')
+  n == null ? t('未取得') : n.toLocaleString(intlLocale())
 export const when = (v: string | undefined | null) =>
   v
-    ? new Date(v).toLocaleString('zh-CN', {
+    ? new Date(v).toLocaleString(intlLocale(), {
         month: 'numeric',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
       })
-    : '尚未取得'
+    : t('尚未取得')
 export const actionLabel = (status: string) =>
   ({
     QUEUED: '等待提交',
@@ -37,3 +39,6 @@ export const reasonLabel = (r: string) =>
     PACK_SIZE_MISMATCH: '不符合包装数量',
     ARRIVAL_WINDOW_MISSED: '不能在需求周期内到货',
   })[r] || r
+
+const localeCurrencyDisplay = () =>
+  intlLocale() === 'en-SG' ? ('code' as const) : ('symbol' as const)

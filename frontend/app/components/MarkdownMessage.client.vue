@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { t as tr, locale } from '~/i18n'
 import MarkdownIt from 'markdown-it'
 import DOMPurify from 'dompurify'
 const props = defineProps<{ content: string }>()
@@ -27,18 +28,18 @@ function addCopyButtons() {
     const button = document.createElement('button')
     button.type = 'button'
     button.className = 'text-link'
-    button.textContent = '复制代码'
-    button.setAttribute('aria-label', `复制第 ${index + 1} 段代码`)
+    button.textContent = tr('复制代码')
+    button.setAttribute('aria-label', tr('复制第 {0} 段代码', [index + 1]))
     button.addEventListener('click', async () => {
       button.disabled = true
       try {
         await navigator.clipboard.writeText(code.textContent || '')
         if (version !== epoch || !root.value?.contains(button)) return
-        button.textContent = '已复制'
+        button.textContent = tr('已复制')
         copyStatus.value = `第 ${index + 1} 段代码已复制。`
         resetTimers.push(
           setTimeout(() => {
-            if (version === epoch) button.textContent = '复制代码'
+            if (version === epoch) button.textContent = tr('复制代码')
           }, 1800),
         )
       } catch {
@@ -52,6 +53,14 @@ function addCopyButtons() {
     wrapper.append(toolbar, pre)
   })
 }
+watch(locale, () => {
+  root.value
+    ?.querySelectorAll<HTMLButtonElement>('.agent-code-toolbar button')
+    .forEach((button, index) => {
+      button.textContent = tr('复制代码')
+      button.setAttribute('aria-label', tr('复制第 {0} 段代码', [index + 1]))
+    })
+})
 onMounted(addCopyButtons)
 onUnmounted(invalidate)
 const markdown = new MarkdownIt({ html: false, linkify: false, breaks: true })
@@ -105,6 +114,6 @@ watch(
 <template>
   <div>
     <div ref="root" class="agent-markdown" v-html="rendered" />
-    <p v-if="copyStatus" class="code-copy-status" role="status">{{ copyStatus }}</p>
+    <p v-if="copyStatus" class="code-copy-status" role="status">{{ tr(copyStatus) }}</p>
   </div>
 </template>

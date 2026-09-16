@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { joinText as joinLocalizedText, t as tr } from '~/i18n'
+const joinText = (parts: unknown[]) => joinLocalizedText(parts, ' ')
 import { api, query } from '~/utils/api'
 import type {
   ForecastCurrent,
@@ -221,55 +223,80 @@ onUnmounted(() => {
     ref="panel"
     class="forecast-panel glass"
     role="region"
-    aria-label="七日需求预测"
+    :aria-label="tr('七日需求预测')"
     tabindex="-1"
   >
     <div class="forecast-header">
       <div>
         <div class="eyebrow">SHOPSTEWARD V6</div>
-        <h2>七日需求预测</h2>
+        <h2>{{ tr('七日需求预测') }}</h2>
       </div>
       <span class="tag" :class="{ amber: current?.status !== 'READY' }" role="status">{{
-        loading ? '正在读取…' : current?.status || 'UNAVAILABLE'
+        tr(loading ? '正在读取…' : current?.status || 'UNAVAILABLE')
       }}</span>
     </div>
-    <p class="source-note">当前门店 {{ storeId }} · 商品 {{ skuId }}</p>
-    <p v-if="error" class="notice amber" role="alert">{{ error }}</p>
-    <p v-if="referenceId" class="source-note">正在核对引用：{{ referenceId }}</p>
-    <p v-if="referenceChanged" class="notice amber" role="alert">
-      该引用已被更新或当前不可用。下方仅展示当前保存的预测，不能作为原引用的复核结果。
+    <p class="source-note">
+      {{ joinText([tr('当前门店'), tr(storeId), tr('· 商品'), tr(skuId)]) }}
     </p>
-    <p v-if="reason" class="notice amber">{{ reason }}</p>
+    <p v-if="error" class="notice amber" role="alert">{{ tr(error) }}</p>
+    <p v-if="referenceId" class="source-note">
+      {{ joinLocalizedText([tr('正在核对引用：'), tr(referenceId)]) }}
+    </p>
+    <p v-if="referenceChanged" class="notice amber" role="alert">
+      {{ tr('该引用已被更新或当前不可用。下方仅展示当前保存的预测，不能作为原引用的复核结果。') }}
+    </p>
+    <p v-if="reason" class="notice amber">{{ tr(reason) }}</p>
     <p v-if="current?.status === 'STALE'" class="notice amber">
-      预测已失效，仅供追溯；重新运行并核对适用范围后才能作为当前依据。
+      {{ tr('预测已失效，仅供追溯；重新运行并核对适用范围后才能作为当前依据。') }}
     </p>
     <template v-if="forecast">
       <div class="forecast-summary">
         <div>
-          <span>七日需求合计</span
-          ><strong data-testid="forecast-total">{{ forecast.predicted_quantity }} 件</strong
-          ><small>原始合计 {{ forecast.total_quantity_raw.toFixed(2) }} 件，整周向上取整一次</small>
+          <span>{{ tr('七日需求合计') }}</span
+          ><strong data-testid="forecast-total">{{
+            joinText([tr(forecast.predicted_quantity), tr('件')])
+          }}</strong
+          ><small>{{
+            joinText([
+              tr('原始合计'),
+              tr(forecast.total_quantity_raw.toFixed(2)),
+              tr('件，整周向上取整一次'),
+            ])
+          }}</small>
         </div>
         <div>
-          <span>来源</span
+          <span>{{ tr('来源') }}</span
           ><b>{{
-            current?.mode === 'historical_demo' ? '模型推演，仅供参考' : '用户导入的完整销售记录'
+            tr(
+              current?.mode === 'historical_demo' ? '模型推演，仅供参考' : '用户导入的完整销售记录',
+            )
           }}</b
-          ><small>输入与日期详见可追溯依据</small>
+          ><small>{{ tr('输入与日期详见可追溯依据') }}</small>
         </div>
       </div>
-      <p v-if="current?.mode === 'historical_demo'" class="notice">模型推演，仅供参考。</p>
+      <p v-if="current?.mode === 'historical_demo'" class="notice">
+        {{ tr('模型推演，仅供参考。') }}
+      </p>
       <p v-else class="source-note">
         {{
-          current?.usable_for_planning
-            ? '已明确启用且当前符合规划适用条件。'
-            : current?.activate_for_planning
-              ? '已启用规划，但当前不符合适用条件；需核对业务时点、有效期与输入状态。'
-              : '当前未作为规划依据；还需显式启用并满足业务时点和有效期条件。'
-        }}预测是需求估计，采购数量仍须结合库存、在途、现金与逐笔审批。
+          joinText([
+            tr(
+              current?.usable_for_planning
+                ? '已明确启用且当前符合规划适用条件。'
+                : current?.activate_for_planning
+                  ? '已启用规划，但当前不符合适用条件；需核对业务时点、有效期与输入状态。'
+                  : '当前未作为规划依据；还需显式启用并满足业务时点和有效期条件。',
+            ),
+            tr('预测是需求估计，采购数量仍须结合库存、在途、现金与逐笔审批。'),
+          ])
+        }}
       </p>
       <figure class="forecast-chart">
-        <svg viewBox="0 0 480 160" role="img" aria-label="七日需求预测曲线，具体日期和数量见下表">
+        <svg
+          viewBox="0 0 480 160"
+          role="img"
+          :aria-label="tr('七日需求预测曲线，具体日期和数量见下表')"
+        >
           <path d="M24 16V140H466" fill="none" stroke="#b8c5bd" />
           <polyline
             :points="points"
@@ -279,73 +306,105 @@ onUnmounted(() => {
             stroke-linejoin="round"
           />
         </svg>
-        <figcaption>七日需求 · 单位：件</figcaption>
+        <figcaption>{{ tr('七日需求 · 单位：件') }}</figcaption>
       </figure>
       <div class="forecast-table">
-        <table aria-label="七日逐日预测">
+        <table :aria-label="tr('七日逐日预测')">
           <thead>
             <tr>
-              <th scope="col">预测日期</th>
-              <th scope="col">预计销量（件）</th>
+              <th scope="col">{{ tr('预测日期') }}</th>
+              <th scope="col">{{ tr('预计销量（件）') }}</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="row in forecast.daily_predictions" :key="row.date">
-              <th scope="row">{{ row.date.slice(5, 10) }}</th>
-              <td>{{ row.quantity.toFixed(2) }}</td>
+              <th scope="row">{{ tr(row.date.slice(5, 10)) }}</th>
+              <td>{{ tr(row.quantity.toFixed(2)) }}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <details>
-        <summary>版本与可追溯依据</summary>
-        <p>观察截至 {{ forecast.observation_end_date }}</p>
+        <summary>{{ tr('版本与可追溯依据') }}</summary>
+        <p>{{ joinText([tr('观察截至'), tr(forecast.observation_end_date)]) }}</p>
         <p>
-          预测范围 {{ forecast.horizon_start.slice(0, 10) }} 至
-          {{ forecast.horizon_end.slice(0, 10) }}
+          {{
+            joinText([
+              tr('预测范围'),
+              tr(forecast.horizon_start.slice(0, 10)),
+              tr('至'),
+              tr(forecast.horizon_end.slice(0, 10)),
+            ])
+          }}
         </p>
-        <p>模型 {{ forecast.model_version }} · 系列 {{ forecast.series_id }}</p>
-        <p>生成于 {{ forecast.generated_at }} · 有效至 {{ forecast.valid_until }}</p>
-        <p class="long-id">预测编号：{{ forecast.forecast_id }}</p>
-        <p v-for="assumption in forecast.assumptions" :key="assumption">{{ assumption }}</p>
+        <p>
+          {{
+            joinText([tr('模型'), tr(forecast.model_version), tr('· 系列'), tr(forecast.series_id)])
+          }}
+        </p>
+        <p>
+          {{
+            joinText([
+              tr('生成于'),
+              tr(forecast.generated_at),
+              tr('· 有效至'),
+              tr(forecast.valid_until),
+            ])
+          }}
+        </p>
+        <p class="long-id">{{ joinText([tr('预测编号：'), tr(forecast.forecast_id)]) }}</p>
+        <p v-for="assumption in forecast.assumptions" :key="assumption">{{ tr(assumption) }}</p>
       </details>
     </template>
-    <p v-else-if="!loading" class="channel-note">暂无可展示的预测。没有数据时不显示零需求。</p>
+    <p v-else-if="!loading" class="channel-note">
+      {{ tr('暂无可展示的预测。没有数据时不显示零需求。') }}
+    </p>
     <p class="forecast-quality">
-      质量说明：v6 历史八周 WAPE 为 34.976%，相对 v5 仅改善
-      0.57%；额外四周验证略差。有限历史评估不保证新门店效果，预测不是销量承诺或采购建议。
+      {{
+        tr(
+          '质量说明：v6 历史八周 WAPE 为 34.976%，相对 v5 仅改善 0.57%；额外四周验证略差。有限历史评估不保证新门店效果，预测不是销量承诺或采购建议。',
+        )
+      }}
     </p>
     <details v-if="canManage" open class="forecast-inputs">
-      <summary>运行预测</summary>
-      <p v-if="modelError" class="notice amber">模型信息暂不可用：{{ modelError }}</p>
-      <label class="field-label" for="forecast-mode">输入来源</label
+      <summary>{{ tr('运行预测') }}</summary>
+      <p v-if="modelError" class="notice amber">
+        {{ joinText([tr('模型信息暂不可用：'), tr(modelError)]) }}
+      </p>
+      <label class="field-label" for="forecast-mode">{{ tr('输入来源') }}</label
       ><select id="forecast-mode" v-model="mode" class="text-field" :disabled="saving">
-        <option value="historical_demo">模型推演，仅供参考</option>
-        <option value="observed">导入当前商品销售历史</option>
+        <option value="historical_demo">{{ tr('模型推演，仅供参考') }}</option>
+        <option value="observed">{{ tr('导入当前商品销售历史') }}</option>
       </select>
-      <label class="field-label" for="forecast-series">模型参考系列</label
+      <label class="field-label" for="forecast-series">{{ tr('模型参考系列') }}</label
       ><select
         id="forecast-series"
         v-model="series"
         class="text-field"
         :disabled="saving || !model"
       >
-        <option value="">选择一个已支持的系列</option>
+        <option value="">{{ tr('选择一个已支持的系列') }}</option>
         <option
           v-for="item in model?.supported_series || []"
           :key="item.series_id"
           :value="item.series_id"
         >
-          {{ item.series_id }} · {{ item.store_id }} / {{ item.item_id }}
+          {{ joinText([tr(item.series_id), '·', tr(item.store_id), '/', tr(item.item_id)]) }}
         </option>
       </select>
       <p class="source-note">
-        参考系列是模型分类映射；导入记录须来自当前门店商品。支持
-        {{ model?.minimum_history_days ?? 84 }}–374 天，建议
-        {{ model?.recommended_history_days ?? 374 }} 天。
+        {{
+          joinText([
+            tr('参考系列是模型分类映射；导入记录须来自当前门店商品。支持'),
+            tr(model?.minimum_history_days ?? 84),
+            tr('–374 天，建议'),
+            tr(model?.recommended_history_days ?? 374),
+            tr('天。'),
+          ])
+        }}
       </p>
       <template v-if="mode === 'observed'"
-        ><label class="field-label" for="forecast-history">完整销售历史 JSON</label
+        ><label class="field-label" for="forecast-history">{{ tr('完整销售历史 JSON') }}</label
         ><textarea
           id="forecast-history"
           v-model="historyJson"
@@ -353,7 +412,7 @@ onUnmounted(() => {
           rows="6"
           :disabled="saving"
           placeholder='[{"date":"2026-01-01","sold_quantity":3,"complete":true}, …]'
-        /><label class="field-label" for="forecast-end">观察截至日</label
+        /><label class="field-label" for="forecast-end">{{ tr('观察截至日') }}</label
         ><input
           id="forecast-end"
           v-model="observationEnd"
@@ -362,20 +421,20 @@ onUnmounted(() => {
           :disabled="saving"
         />
         <p class="source-note">
-          每天一条、日期连续且销量完整。只记录实际已观察销量，缺记录不补零。
+          {{ tr('每天一条、日期连续且销量完整。只记录实际已观察销量，缺记录不补零。') }}
         </p>
         <label class="forecast-activate"
-          ><input
-            v-model="activate"
-            type="checkbox"
-            :disabled="saving"
-          />明确启用这份观测预测作为规划依据（仅在业务时点匹配时生效）</label
+          ><input v-model="activate" type="checkbox" :disabled="saving" />{{
+            tr('明确启用这份观测预测作为规划依据（仅在业务时点匹配时生效）')
+          }}</label
         ></template
       >
       <div class="forecast-actions">
         <button class="primary" :disabled="saving || loading || !model" @click="refreshForecast()">
           {{
-            saving ? '正在运行…' : mode === 'historical_demo' ? '运行模型推演' : '导入并运行预测'
+            tr(
+              saving ? '正在运行…' : mode === 'historical_demo' ? '运行模型推演' : '导入并运行预测',
+            )
           }}</button
         ><button
           v-if="current?.forecast"
@@ -383,15 +442,18 @@ onUnmounted(() => {
           :disabled="saving || loading"
           @click="refreshForecast(true)"
         >
-          复用已保存输入运行{{
-            current?.activate_for_planning ? '（保持规划启用）' : '（保持规划关闭）'
+          {{
+            joinLocalizedText([
+              tr('复用已保存输入运行'),
+              tr(current?.activate_for_planning ? '（保持规划启用）' : '（保持规划关闭）'),
+            ])
           }}
         </button>
       </div>
     </details>
-    <p v-else class="channel-note">当前身份可查看预测；运行或导入需要操作员权限。</p>
+    <p v-else class="channel-note">{{ tr('当前身份可查看预测；运行或导入需要操作员权限。') }}</p>
     <button class="text-link" :disabled="loading || saving" @click="read">
-      重新读取已保存预测
+      {{ tr('重新读取已保存预测') }}
     </button>
   </section>
 </template>
