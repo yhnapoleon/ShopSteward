@@ -2,7 +2,7 @@ import type { Schema } from '~/types/models'
 import { api, ApiFailure, query } from '~/utils/api'
 import { newerWork, workPresentation } from '~/utils/workPresentation'
 
-type Submission = { path: string; body: Record<string, unknown>; key: string }
+type Submission = { path: string; body: Record<string, unknown>; key: string; quotation?: boolean }
 export function useWorkItems(owner = false) {
   const shop = useShop()
   const s = useState('work-items', () => ({
@@ -141,7 +141,12 @@ export function useWorkItems(owner = false) {
     // Persist before transmitting: a refresh can replay exactly the same request.
     try {
       sessionStorage.setItem(storageKey(), JSON.stringify(request))
-      const d = await api<Schema<'WorkDetail'>>(request.path, 'POST', request.body, request.key)
+      const response = await api<Schema<'WorkDetail'>>(
+        request.path,
+        'POST',
+        request.body,
+        request.key,
+      )
       if (!current(epoch)) return
       sessionStorage.removeItem(storageKey())
       s.pending = null
@@ -149,6 +154,12 @@ export function useWorkItems(owner = false) {
         await list()
         return
       }
+      if (request.quotation) {
+        await load()
+        await list()
+        return s.detail || undefined
+      }
+      const d = response
       s.input = ''
       apply(d, request.path.match(/^\/api\/v1\/work-items\/([^/]+)/)?.[1])
       await list()
@@ -178,6 +189,17 @@ export function useWorkItems(owner = false) {
       key: crypto.randomUUID(),
     })
   }
+  const quotation = (
+    operation: 'quotation-files' | 'quotation-results' | 'quotation-rule',
+    body: Record<string, unknown>,
+  ) =>
+    s.detail &&
+    submit({
+      path: '/api/v1/work-items/' + s.selected + '/' + operation,
+      body: { ...body, expected_work_version: s.detail.item.version },
+      key: crypto.randomUUID(),
+      quotation: true,
+    })
   const control = (operation: 'cancel' | 'retry') =>
     s.detail &&
     submit({
@@ -262,5 +284,18 @@ export function useWorkItems(owner = false) {
     })
     onUnmounted(() => clearInterval(timer))
   }
-  return { s, scope, list, load, select, submit, send, control, acceptMission, fromMission, label }
+  return {
+    s,
+    scope,
+    list,
+    load,
+    select,
+    submit,
+    send,
+    quotation,
+    control,
+    acceptMission,
+    fromMission,
+    label,
+  }
 }

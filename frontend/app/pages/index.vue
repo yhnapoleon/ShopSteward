@@ -1533,7 +1533,7 @@ function briefing() {
         {{ tr('更换后端用户身份') }}
       </button></template
     >
-    <QuotationPanel v-else-if="dialog === 'quote'" />
+    <QuotationPanel v-else-if="dialog === 'quote'" @submitted="openWork" />
     <QuantitySimulationPanel
       v-else-if="dialog === 'simulation'"
       :initial="view === 'work' ? work.s.detail?.item.result?.calculation?.request : null"

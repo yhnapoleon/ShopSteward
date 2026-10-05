@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
 import { locale, t } from '../app/i18n'
-import { header, processQuotes, quoteCSV } from '../app/utils/quotations'
 import { resultFile } from '../app/utils/workResultExport'
 
 test.afterEach(() => {
@@ -31,23 +30,4 @@ test('external result assumptions, cells and source labels are not rewritten', (
   expect(output).toContain('查看来源')
   expect(output).toContain('来源 | store:x')
   expect(resultFile(input, 'csv').text).toContain('"商品"')
-})
-test('bilingual duplicate columns and excess cells cannot silently overwrite quotes', () => {
-  expect(() =>
-    processQuotes(
-      'x.csv',
-      'Product,商品,Quote amount,Pricing unit,Currency\nA,B,120,box,CNY',
-      null,
-    ),
-  ).toThrow()
-  expect(() =>
-    processQuotes('x.csv', 'Product,Quote amount,Pricing unit,Currency\nA,120,box,CNY,extra', null),
-  ).toThrow()
-})
-test('quote export keeps unknowns localized and blocks formulas after whitespace', () => {
-  locale.value = 'en'
-  const result = processQuotes('x.csv', header + '\nA,120,CNY,箱,,2,箱,source', null)
-  result.rows[0]!.product = '\t=SUM(1,2)'
-  expect(quoteCSV(result)).toContain('Undetermined')
-  expect(quoteCSV(result)).toContain('"\'\t=SUM(1,2)"')
 })

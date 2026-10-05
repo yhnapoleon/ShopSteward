@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.core.errors import AppError
 
-SCHEMA_REVISION = "0014_forecast_work_merge"
+SCHEMA_REVISION = "0015_quotations"
 
 
 class Database:
@@ -64,6 +64,8 @@ class Database:
             )
             await session.execute(text("SELECT id, version FROM work_items LIMIT 0"))
             await session.execute(text("SELECT id FROM work_messages LIMIT 0"))
+            await session.execute(text("SELECT id, sha256 FROM quotation_files LIMIT 0"))
+            await session.execute(text("SELECT id, version FROM quotation_results LIMIT 0"))
             return True
 
     async def dispose(self):

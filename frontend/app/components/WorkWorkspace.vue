@@ -46,6 +46,7 @@ const expired = computed(
       <template #assistant><WorkConversation @changed="emit('changed')" /></template>
       <template #intake>
         <div class="work-linked-summary glass">
+          <QuotationWorkspace @changed="emit('changed')" />
           <div class="work-card-top">
             <b>{{ item.title }}</b
             ><span class="tag">{{ tr(work.label(item)) }}</span>
@@ -89,6 +90,7 @@ const expired = computed(
       </header>
       <div class="work-detail-grid">
         <div class="work-result-column">
+          <QuotationWorkspace @changed="emit('changed')" />
           <section
             v-if="!item.result?.calculation || item.status !== 'RESULT_READY'"
             class="glass work-status-panel"
@@ -111,7 +113,10 @@ const expired = computed(
               {{ tr('本轮处理未按时返回，可以重试；已保存的内容仍保留。') }}
             </p>
           </section>
-          <section v-if="item.result" class="glass work-status-panel">
+          <section
+            v-if="item.result && item.result.kind !== 'quotation'"
+            class="glass work-status-panel"
+          >
             <p
               v-if="['RECEIVED', 'PROCESSING', 'WAITING_INPUT'].includes(item.status)"
               class="notice"

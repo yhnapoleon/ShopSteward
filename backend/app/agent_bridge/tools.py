@@ -1,5 +1,4 @@
 import hashlib
-import re
 import secrets
 from datetime import UTC, datetime, timedelta
 from typing import Annotated
@@ -254,16 +253,9 @@ async def execute_tool(
     elif name in {"evaluate_plan", "revise_plan"}:
         if name == "revise_plan":
             source = await user_source(session, run, args.source_message_id)
-            if re.search(r"如果|假设|what if|suppose", source.content, re.I):
-                raise AppError(
-                    422, "HYPOTHETICAL_ONLY", "Hypothetical requests must use evaluate_plan"
-                )
-            if not re.search(
-                r"修改|改成|上限|最多|限制|调整|revise|change|limit|maximum", source.content, re.I
-            ):
-                raise AppError(
-                    422, "EXPLICIT_REVISION_REQUIRED", "User must request a proposal change"
-                )
+            from app.work_items.authorization import require_explicit_revision
+
+            require_explicit_revision(source.content)
         value = await evaluate(
             session, settings, mission, store, args, revise=name == "revise_plan"
         )

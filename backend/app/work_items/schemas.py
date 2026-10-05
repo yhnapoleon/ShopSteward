@@ -31,7 +31,9 @@ class WorkCreate(WorkInput):
 
 
 class WorkEvidence(DTO):
-    type: Literal["store", "mission", "plan", "action"]
+    type: Literal[
+        "store", "mission", "plan", "action", "quotation_file", "quotation_result", "quotation_rule"
+    ]
     id: str = Field(min_length=1, max_length=128)
     label: str = Field(min_length=1, max_length=200)
 

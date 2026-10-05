@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs'
 import { test, expect } from '@playwright/test'
 import { setup } from './support/i18n-fixture'
 import { locale, t } from '../app/i18n'
-import { localizedSamples, processQuotes, quoteCSV } from '../app/utils/quotations'
+import { localizedSamples } from '../app/utils/quotations'
 import { resultFile } from '../app/utils/workResultExport'
 
 const storageKey = 'shopsteward.locale.v1'
@@ -89,7 +89,7 @@ test('schedule change saves once, keeps enabled state and rolls back after failu
   expect(writes).toHaveLength(2)
 })
 
-test('English navigation, charts, mobile settings and quote flow remain usable', async ({
+test('English navigation, charts, mobile settings and server quote entry remain usable', async ({
   page,
 }) => {
   const c = await setup(page)
@@ -103,10 +103,12 @@ test('English navigation, charts, mobile settings and quote flow remain usable',
   await dialog.getByRole('button', { name: 'Close dialog' }).click()
   await page.getByRole('button', { name: 'Back to Today', exact: true }).click()
   await page.getByRole('button', { name: 'Organize a supplier quote' }).click()
-  await page.getByRole('button', { name: 'Try sample quote A', exact: true }).click()
-  await page.getByRole('button', { name: 'Organize quotes', exact: true }).click()
-  await expect(page.locator('dialog[open]')).toContainText('Sample A')
-  await expect(page.locator('dialog[open]')).toContainText('CNY')
+  await expect(page.locator('dialog[open]')).toContainText('saved on the server')
+  await expect(page.locator('dialog[open]')).toContainText('CNY only')
+  // This fixture deliberately has no Work intake capability: no local fake result.
+  await expect(
+    page.getByRole('button', { name: 'Start a quote work item', exact: true }),
+  ).toBeDisabled()
   await page.getByRole('button', { name: 'Close dialog' }).click()
   await page.setViewportSize({ width: 390, height: 844 })
   const mobile = await openSettings(page)
@@ -130,14 +132,12 @@ test('storage failures remain usable and never claim persistence', async ({ page
   await expect(dialog.getByRole('alert')).toContainText('browser storage is unavailable')
 })
 
-test('English quote round trip, source preservation, system messages and raw JSON', () => {
+test('English quote templates, source preservation, system messages and raw JSON', () => {
   locale.value = 'en'
   try {
     const sample = localizedSamples()[0]!
-    const result = processQuotes(sample.name, sample.text, null)
-    expect(result.rows[0]?.unitPrice).toBe(10)
-    expect(result.rows[0]?.moqPieces).toBe(24)
-    expect(quoteCSV(result)).toContain('Unit price (CNY)')
+    expect(sample.text).toContain('Product,Quote amount,Currency,Pricing unit,Units per pack')
+    expect(sample.text).toContain('Sample A,120,CNY,box,12,2,box')
     expect(t('本委托还有20件在途，到货后更新。')).toBe(
       '20 units remain in transit for this task. Updated after arrival.',
     )
