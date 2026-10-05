@@ -55,6 +55,7 @@ def test_missing_pack_and_unsupported_currency_are_not_ranked_or_zero():
         HEADER + "A,120,CNY,箱,12,2,箱,A\n" * 101,
         HEADER + '"unclosed,120,CNY,箱,12,2,箱,A',
     ],
+    ids=["duplicate-alias", "extra-column", "empty", "too-many-rows", "unclosed-quote"],
 )
 def test_reject_ambiguous_or_invalid_csv(content):
     with pytest.raises(AppError):
@@ -69,6 +70,7 @@ def test_reject_ambiguous_or_invalid_csv(content):
         ("quote.csv", "中" * 70000),
         ("quote.csv", HEADER + "A\x00,120,CNY,箱,12,2,箱,A"),
     ],
+    ids=["path-traversal", "header-injection", "utf8-over-200kb", "nul-byte"],
 )
 def test_upload_boundaries_are_bytes_and_safe_filename(filename, content):
     with pytest.raises(AppError):
