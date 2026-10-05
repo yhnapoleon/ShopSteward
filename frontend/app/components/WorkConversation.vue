@@ -85,6 +85,7 @@ watch(
       </article>
     </div>
     <div class="work-composer">
+      <QuotationUpload @changed="emit('changed')" />
       <label for="work-message">{{
         tr(s.detail?.item.status === 'WAITING_INPUT' ? '补充这件事需要的信息' : '继续说说你的要求')
       }}</label>

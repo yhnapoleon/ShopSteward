@@ -192,36 +192,41 @@ test('旧接口能力降级：可比较20件但禁止确认，仍能拒绝原方
   expect(await actions(page, id)).toHaveLength(0)
 })
 
-test('报价本地工具：实际文件输入、甲乙计算、原币种和下载', async ({ page }, info) => {
+test('报价服务器工具：实际文件输入、甲乙计算、原币种和受控下载', async ({ page }, info) => {
   await page.goto('/')
   await button(page, '整理一份供应商报价 查看单件价、包装、起订量与来源')
+  await button(page, '开始报价事项')
+  await expect(page.locator('.work-detail')).toBeVisible()
+  await page.locator('.quotation-attachment summary').click()
   await button(page, '使用示例报价甲')
-  await button(page, '开始整理')
-  await expect(page.getByRole('dialog')).toContainText('折合 24 件')
-  await button(page, '记下以后的整理要求')
-  await button(page, '以后按这些步骤整理')
+  const panel = page.locator('.quotation-workspace')
+  await expect(panel).toContainText('示例报价_甲.csv')
+  await panel.getByRole('button', { name: '仅更新本次结果', exact: true }).click()
+  await expect(panel).toContainText('折合 24 件')
+  await panel.getByRole('button', { name: '更新并记住整理顺序', exact: true }).click()
+  await expect(panel).toContainText('已保存的报价整理规则')
   await button(page, '换一份示例报价乙')
-  await button(page, '开始整理')
-  await expect(page.getByRole('dialog')).toContainText('折合 45 件')
-  await expect(page.getByRole('dialog')).toContainText('¥12')
+  await expect(panel.getByLabel('报价原件', { exact: true })).toContainText('示例报价_乙.csv')
+  await panel.getByRole('button', { name: '仅更新本次结果', exact: true }).click()
+  await expect(panel).toContainText('折合 45 件')
+  await expect(panel).toContainText('12 CNY')
   const d = page.waitForEvent('download')
-  await button(page, '保存本次结果')
+  await panel.getByRole('link', { name: '下载此版本 CSV', exact: true }).click()
   await (await d).saveAs(info.outputPath('quote-B.csv'))
-  expect(await fs.readFile(info.outputPath('quote-B.csv'), 'utf8')).toContain('"12"')
-  await page.locator('#quote-file').setInputFiles({
+  expect(await fs.readFile(info.outputPath('quote-B.csv'), 'utf8')).toContain('12')
+  await page.getByLabel('上传报价 CSV', { exact: true }).setInputFiles({
     name: '美元报价.csv',
     mimeType: 'text/csv',
     buffer: Buffer.from(
       '商品,报价金额,币种,计价单位,每包装件数,最低订购量,MOQ单位,来源\n样品,120,USD,箱,12,2,箱,报价单',
     ),
   })
-  await button(page, '开始整理')
-  await expect(page.getByRole('dialog')).toContainText('120 USD')
-  await expect(page.getByRole('dialog')).not.toContainText('¥120')
-  await expect(page.getByRole('dialog')).toContainText('暂不能计算')
+  await expect(panel).toContainText('美元报价.csv')
+  await panel.getByRole('button', { name: '仅更新本次结果', exact: true }).click()
+  await expect(panel).toContainText('120 USD')
+  await expect(panel).not.toContainText('120 CNY')
+  await expect(panel).toContainText('暂不能计算')
   await page.screenshot({ path: info.outputPath('quote-currency.jpg'), type: 'jpeg', quality: 80 })
-  await page.keyboard.press('Escape')
-  await expect(page.getByRole('dialog')).toHaveCount(0)
 })
 
 test('历史窗口：受控分页响应超过30条，轮询后仍保留旧记录', async ({ page }) => {

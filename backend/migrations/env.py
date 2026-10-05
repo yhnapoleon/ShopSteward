@@ -14,6 +14,7 @@ from app.knowledge import index_models as knowledge_index_models  # noqa: F401
 from app.knowledge import models as knowledge_models  # noqa: F401
 from app.missions import models as mission_models  # noqa: F401
 from app.operations import models as operations_models  # noqa: F401
+from app.quotations import models as quotation_models  # noqa: F401
 from app.scheduling import models  # noqa: F401
 from app.work_items import models as work_models  # noqa: F401
 

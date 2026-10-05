@@ -20,7 +20,13 @@ pytestmark = [
 
 
 @pytest.mark.parametrize(
-    "script", ["work_browser.mjs", "quantity_browser.mjs", "i18n_business_browser.mjs"]
+    "script",
+    [
+        "work_browser.mjs",
+        "quantity_browser.mjs",
+        "i18n_business_browser.mjs",
+        "quotation_browser.mjs",
+    ],
 )
 async def test_work_intake_browser(db, tmp_path, script):
     import uvicorn
@@ -81,6 +87,8 @@ async def test_work_intake_browser(db, tmp_path, script):
                 if script == "i18n_business_browser.mjs"
                 else "quantity-browser"
                 if script == "quantity_browser.mjs"
+                else "quotation-browser"
+                if script == "quotation_browser.mjs"
                 else "work-intake-browser"
             )
         )

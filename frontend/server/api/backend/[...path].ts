@@ -27,7 +27,10 @@ export default defineEventHandler(async (event) => {
     const key = getHeader(event, 'idempotency-key')
     if (key) headers['Idempotency-Key'] = key
     body = await readRawBody(event)
-    if (body && body.length > 256_000)
+    const maxBody = /^\/api\/v1\/work-items\/[A-Za-z0-9_-]+\/quotation-files$/.test(path)
+      ? 1_300_000
+      : 256_000
+    if (body && new TextEncoder().encode(body).byteLength > maxBody)
       throw createError({ statusCode: 413, statusMessage: 'Request too large' })
   }
   try {

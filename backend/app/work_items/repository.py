@@ -64,7 +64,15 @@ async def changed(session, row):
 
 
 async def append(
-    session, row, role, content, *, result=None, demonstration=False, result_work_version=None
+    session,
+    row,
+    role,
+    content,
+    *,
+    result=None,
+    demonstration=False,
+    result_work_version=None,
+    evidence=None,
 ):
     from app.work_items.results import stamp
 
@@ -78,6 +86,7 @@ async def append(
             result,
             now,
             row.version if result_work_version is None else result_work_version,
+            evidence=evidence,
         )
     message = WorkMessageRow(
         id=identifier,
@@ -400,7 +409,7 @@ async def claim(session, service, identifier, body, key, settings):
     return result
 
 
-async def publish(session, service, identifier, body, key, settings):
+async def publish(session, service, identifier, body, key, settings, *, evidence=None):
     require_role(service, "operator")
     row = await visible(session, service, identifier, service=True, lock=True)
     owner = current_owner(settings, row)
@@ -443,6 +452,10 @@ async def publish(session, service, identifier, body, key, settings):
                 value = await session.get(PlanRow, ref.id)
                 mission = await session.get(MissionRow, value.mission_id) if value else None
                 valid = mission is not None and mission.store_id == row.store_id
+            elif ref.type.startswith("quotation_"):
+                from app.quotations.repository import validate_reference
+
+                valid = await validate_reference(session, owner, row, ref)
             else:
                 value = await session.get(ActionRow, ref.id)
                 valid = value is not None and value.store_id == row.store_id
@@ -481,6 +494,7 @@ async def publish(session, service, identifier, body, key, settings):
             result=body.result.model_dump(mode="json") if body.result else None,
             demonstration=body.demonstration,
             result_work_version=row.version + 1,
+            evidence=evidence,
         )
         if body.result:
             row.result = message.result
