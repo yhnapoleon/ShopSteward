@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { motion, useReducedMotion } from 'motion-v'
 import { money, when } from '~/utils/presentation'
+import { selectedPlanCandidate } from '~/utils/plans'
 const { s, mission, plan, product, canDecide } = useShop()
 const { status } = useTaskPresentation()
 const agent = useAgentConversation()
@@ -35,10 +36,7 @@ defineEmits<{ open: [] }>()
       <div>
         <span>采购后预计现金</span
         ><b>{{
-          money(
-            plan.candidates.find((c) => c.quantity === plan?.proposed_purchase?.quantity)
-              ?.cash_after_minor,
-          )
+          money(selectedPlanCandidate(plan, plan.proposed_purchase.quantity)?.cash_after_minor)
         }}</b>
       </div>
       <div>

@@ -16,7 +16,7 @@ const { status, actions, pending } = useTaskPresentation()
 const reduce = useReducedMotion()
 const target = ref('')
 let timer: ReturnType<typeof setTimeout> | undefined
-const previousPlan = ref<import('~/types/models').Schema<'Plan'> | null>(null)
+const previousPlan = ref<import('~/types/models').PlanDocument | null>(null)
 let receiptEpoch = 0
 const receiptError = ref('')
 async function loadReceipt() {
@@ -51,7 +51,7 @@ watch(
   (value) => (mobilePanel.value = value === 'agent' ? 'agent' : 'result'),
 )
 const localError = ref('')
-const historicalPlans = ref<import('~/types/models').Schema<'Plan'>[]>([])
+const historicalPlans = ref<import('~/types/models').PlanDocument[]>([])
 const historyLoaded = ref(false)
 const historyError = ref('')
 const historyCursor = ref<string | null>(null)
@@ -160,6 +160,7 @@ async function recover() {
         ><button class="text-link" @click="emit('open', 'mission')">委托详情</button>
       </div>
     </header>
+    <RecoveryWorkspace v-if="s.session?.recoveryCases" :key="mission.id" :mission-id="mission.id" />
     <slot name="intake" />
     <div class="task-mobile-tabs" aria-label="任务内容切换">
       <button :aria-pressed="mobilePanel === 'result'" @click="mobilePanel = 'result'">

@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import type { Schema } from '~/types/models'
+import type { Schema, PlanDocument } from '~/types/models'
+import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 import { api } from '~/utils/api'
 import { money, number, when, actionLabel, reasonLabel } from '~/utils/presentation'
 import { downloadFile } from '~/utils/quotations'
@@ -19,7 +20,7 @@ const viewScroll: Record<string, number> = {}
 const route = useRoute(),
   router = useRouter()
 const view = computed(() =>
-  ['today', 'following', 'journal', 'overview', 'documents', 'task', 'work'].includes(
+  ['today', 'following', 'journal', 'overview', 'documents', 'task', 'work', 'learning'].includes(
     String(route.query.view),
   )
     ? String(route.query.view)
@@ -31,7 +32,7 @@ const dialog = ref(''),
   token = ref(''),
   scheduleSeconds = ref(30),
   recordFilter = ref('business')
-const approval = ref<{ plan: Schema<'Plan'>; quantity: number } | null>(null)
+const approval = ref<{ plan: PlanDocument; quantity: number } | null>(null)
 watch(
   () => s.storeId,
   (_id, previous) => {
@@ -407,6 +408,11 @@ function briefing() {
         :store-id="s.storeId"
         :session="s.session"
         :catalog="s.catalog"
+        @navigate="navigate"
+      />
+      <LearningWorkspace
+        v-else-if="view === 'learning'"
+        :key="s.storeId + ':' + s.session.principal_id + ':' + s.session.roles.join(',')"
         @navigate="navigate"
       />
       <WorkWorkspace
@@ -837,21 +843,13 @@ function briefing() {
           ><b
             >{{ money(approval.plan.input_snapshot.state.available_cash_minor) }} →
             {{
-              money(
-                approval.plan.candidates.find((c) => c.quantity === approval!.quantity)
-                  ?.cash_after_minor,
-              )
+              money(selectedPlanCandidate(approval.plan, approval.quantity)?.cash_after_minor)
             }}</b
           >
         </div>
         <div class="detail-row">
           <span>预计剩余缺货</span
-          ><b
-            >{{
-              approval.plan.candidates.find((c) => c.quantity === approval!.quantity)?.shortage_qty
-            }}
-            件</b
-          >
+          ><b>{{ selectedPlanCandidate(approval.plan, approval.quantity)?.shortage_qty }} 件</b>
         </div>
       </div>
       <p class="notice">
@@ -879,6 +877,7 @@ function briefing() {
         <table>
           <thead>
             <tr>
+              <th v-if="isRecoveryPlan(plan)">供应商</th>
               <th>数量</th>
               <th>支出</th>
               <th>剩余现金</th>
@@ -888,6 +887,9 @@ function briefing() {
           </thead>
           <tbody>
             <tr v-for="c in plan.candidates" :key="c.id">
+              <td v-if="isRecoveryPlan(plan)">
+                {{ 'supplier_id' in c ? c.supplier_id || '等待' : '—' }}
+              </td>
               <td>{{ c.quantity }}件</td>
               <td>{{ money(c.spend_minor) }}</td>
               <td>{{ money(c.cash_after_minor) }}</td>
@@ -1158,6 +1160,7 @@ function briefing() {
       <p class="source-note">
         推进按模拟器当前状态逐步执行：到货、销售、需求修订、追加到货。只有本浏览器创建的场景有控制引用，旧场景可查看或新建一轮。
       </p>
+      <button class="text-link" @click="navigate('learning')">学习与经验</button>
       <button class="text-link" @click="open('connection')">更换后端用户身份</button></template
     >
     <QuotationPanel v-else-if="dialog === 'quote'" />

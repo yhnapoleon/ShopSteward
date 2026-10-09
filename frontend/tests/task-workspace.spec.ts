@@ -9,7 +9,7 @@ const completedFixture = JSON.parse(
 
 // All /api traffic is intercepted: these exercise the actual Vue UI against
 // controlled protocol states, without a model, simulator changes, or procurement.
-async function setup(page: Page, running = true, initialQuantity?: number) {
+async function setup(page: Page, running = true, initialQuantity?: number, graphVersion = 'test') {
   const f = structuredClone(original)
   f.catalog.products[0].name = '精品咖啡豆'
   f.missions.items[0].objective = '为周末活动备货，采购前确认并持续跟进到货。'
@@ -39,7 +39,7 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
     status: running ? 'RUNNING' : 'SUCCEEDED',
     input_through_seq: 3,
     trigger: 'USER',
-    graph_version: 'test',
+    graph_version: graphVersion,
     interrupt_id: null,
     question: null,
     output: null,
@@ -87,6 +87,8 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
     loseMessage: false,
     messageCount: 0,
     paginateConversations: false,
+    context: null as any,
+    denyContext: false,
   }
   const conversation = () => ({
     id: 'conv-one',
@@ -153,6 +155,12 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
         },
       })
     }
+    if (path.endsWith('/context'))
+      return route.fulfill(
+        control.denyContext
+          ? { status: 403, json: { error: { code: 'FORBIDDEN', message: '无权读取上下文' } } }
+          : { json: control.context },
+      )
     if (path === 'stores')
       return route.fulfill({
         json: {
@@ -216,6 +224,114 @@ async function setup(page: Page, running = true, initialQuantity?: number) {
   await expect(page.locator('.task-workspace')).toBeVisible()
   return control
 }
+
+test('上下文检查展示冻结模型、实际调用和未知用量，权限撤销后清空', async ({ page }) => {
+  const c = await setup(page, true, undefined, 'agent-context-v1')
+  c.context = {
+    run_id: c.run.id,
+    config: {
+      profile: {
+        model_id: 'configured-test-model',
+        api_mode: 'responses',
+        profile_id: 'mission-configured',
+      },
+    },
+    frames: [
+      {
+        frame_id: 'frame-1',
+        validation_status: 'raw_fallback',
+        source_message_ids: ['m1', 'm3'],
+        constraints: [],
+        unresolved: [],
+      },
+    ],
+    calls: [
+      {
+        call_index: 1,
+        role: 'root',
+        status: 'failed',
+        usage_status: 'unknown',
+        usage: null,
+        cost_status: 'unknown',
+        error_code: 'timeout',
+      },
+    ],
+    manifests: [
+      {
+        selected_source_ids: ['m1', 'm3'],
+        omitted: [{ source_id: 'm-future', reason: 'admission' }],
+        token_budget: { estimated_input_tokens: 1200, max_input_tokens: 24000 },
+      },
+    ],
+  }
+  await expect(page.getByRole('button', { name: '查看上下文记录', exact: true })).toBeVisible({
+    timeout: 7000,
+  })
+  await page.getByRole('button', { name: '查看上下文记录', exact: true }).click()
+  const inspector = page.getByRole('region', { name: '上下文记录' })
+  await expect(inspector).toContainText('configured-test-model')
+  await expect(inspector).toContainText('用量未知')
+  await expect(inspector).toContainText('m-future')
+  c.denyContext = true
+  await inspector.getByRole('button', { name: '刷新记录', exact: true }).click()
+  await expect(inspector).not.toContainText('configured-test-model')
+  await expect(inspector).toContainText('当前身份没有执行此操作的权限')
+})
+
+test('同数量的恢复候选按已采纳供应商显示，确认金额不串到其他报价', async ({ page }) => {
+  const c = await setup(page, false)
+  const p = c.f.plan
+  p.plan_kind = 'recovery_v1'
+  p.selected_candidate_id = 'b20'
+  p.proposed_purchase = {
+    ...p.proposed_purchase,
+    supplier_id: 'supplier-b',
+    quantity: 20,
+    unit_price_minor: 1200,
+    total_minor: 24000,
+  }
+  p.input_snapshot.offer = {
+    ...p.input_snapshot.offer,
+    supplier_id: 'supplier-b',
+    unit_price_minor: 1200,
+  }
+  p.candidates = [
+    {
+      id: 'a20',
+      quantity: 20,
+      spend_minor: 18000,
+      cash_after_minor: 82000,
+      shortage_qty: 9,
+      feasible: true,
+      rejection_reasons: [],
+    },
+    {
+      id: 'b20',
+      quantity: 20,
+      spend_minor: 24000,
+      cash_after_minor: 76000,
+      shortage_qty: 0,
+      feasible: true,
+      rejection_reasons: [],
+    },
+    {
+      id: 'wait',
+      quantity: 0,
+      spend_minor: 0,
+      cash_after_minor: 100000,
+      shortage_qty: 20,
+      feasible: true,
+      rejection_reasons: [],
+    },
+  ]
+  await page.reload()
+  const card = page.locator('.decision-card')
+  await expect(card.locator('.impact-value').nth(1)).toHaveText('¥240', { timeout: 4000 })
+  await expect(card.getByRole('group', { name: '采购选项' }).getByRole('button')).toHaveCount(2)
+  await card.getByRole('button', { name: '核对 20 件采购', exact: true }).click()
+  await expect(page.getByRole('dialog')).toContainText('¥760')
+  expect(c.writes).toHaveLength(0)
+})
 
 test('同一任务跨首页/详情/刷新；草稿保留，工具按调用身份去重，历史不冒充当前过程', async ({
   page,

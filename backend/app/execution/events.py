@@ -96,4 +96,7 @@ async def apply_purchase_event(session, store, stock, event, receipts):
     inbound.received_qty += payload.quantity
     stock.in_transit -= payload.quantity
     stock.on_hand += payload.quantity
+    from app.learning.capture import mission_event
+    await mission_event(session, mission, 'PURCHASE_RECEIVED', event.event_id, None,
+                        [{'type':'action','id':action.id}])
     return True

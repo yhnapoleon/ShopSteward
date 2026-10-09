@@ -3,11 +3,12 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from app.core.errors import AppError
 
-SCHEMA_REVISION = "0014_forecast_work_merge"
+SCHEMA_REVISION = "0016_learning_foundation"
 
 
 class Database:
     def __init__(self, url: str | None):
+        self.learning_enabled = False
         self.engine = (
             create_async_engine(
                 url,
@@ -26,7 +27,9 @@ class Database:
             raise AppError(
                 503, "DEPENDENCY_UNAVAILABLE", "Database is not configured", retryable=True
             )
-        return self._sessions()
+        session = self._sessions()
+        session.info["learning_enabled"] = self.learning_enabled
+        return session
 
     async def ready(self) -> bool:
         async with self.session() as session:

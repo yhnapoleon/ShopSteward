@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
           retry: 0,
         }).catch(() => null)
     return {
+      recoveryCases: identity.capabilities?.includes('operations_cases') || false,
       workIntake: identity.capabilities
         ? identity.capabilities.includes('work_intake')
         : Boolean(runtime?.paths['/api/v1/work-items']),

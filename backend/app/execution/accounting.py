@@ -51,6 +51,21 @@ async def close_action(session, store, mission, action, status, *, reason=None):
         store.active_action_id = None
     if mission.current_action_id == action.id:
         mission.current_action_id = None
+    if mission.planning_context and mission.planning_context.get("plan_id") == action.plan_id:
+        from app.operations_cases.models import CaseRow
+        from app.operations_cases.repository import event as case_event
+
+        case = await session.get(CaseRow, mission.planning_context["case_id"], with_for_update=True)
+        if case:
+            if status == "SUCCEEDED" and case.status != "CANCELLED":
+                case.status = "MONITORING"
+            await case_event(
+                session,
+                case,
+                "RECOVERY_ACTION_" + status,
+                {"action_id": action.id, "reason": reason},
+            )
+        mission.planning_context = None
     if status == "SUCCEEDED" and mission.task_constraints:
         # This purchase round is over; a temporary quantity limit is not a lasting policy.
         mission.task_constraints = {}

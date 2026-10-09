@@ -28,7 +28,7 @@ from app.missions.schemas import (
     Schedule,
     ScheduleUpdate,
 )
-from app.planning.schemas import Plan, PlanList
+from app.planning.schemas import PlanDocument, PlanList
 
 router = B0Router(tags=["Missions"], responses=errors)
 
@@ -118,7 +118,10 @@ async def plans(
 
 
 @router.get(
-    "/api/v1/plans/{plan_id}", response_model=Plan, operation_id="get_plan", tags=["Planning"]
+    "/api/v1/plans/{plan_id}",
+    response_model=PlanDocument,
+    operation_id="get_plan",
+    tags=["Planning"],
 )
 async def plan(request: Request, principal: User, plan_id: Id):
     async with request.app.state.db.session() as session:

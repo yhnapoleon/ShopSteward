@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { describeTool } from '~/utils/agent'
 import { when } from '~/utils/presentation'
+import ContextInspector from '~/components/ContextInspector.vue'
 const agent = useAgentConversation()
 const { s, status, running, active, inspected, tools } = agent
 const emit = defineEmits<{ target: [name: string] }>()
@@ -181,6 +182,11 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
         :outcome="o"
       />
     </section>
+    <ContextInspector
+      v-if="inspected?.graph_version === 'agent-context-v1'"
+      :key="inspected.id"
+      :run-id="inspected.id"
+    />
     <AgentConversation />
   </aside>
 </template>

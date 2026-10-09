@@ -75,6 +75,10 @@ async def append(session, row, role, content, *, result=None, demonstration=Fals
         )
     )
     await session.flush()
+    if result:
+        from app.learning.capture import work_result
+
+        await work_result(session, row, result, demonstration)
 
 
 async def view(session, row, settings):

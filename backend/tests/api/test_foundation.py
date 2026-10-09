@@ -197,6 +197,22 @@ async def test_runtime_schema_registers_only_implemented_routes_and_auth():
         "/internal/v1/work-items/{item_id}/claim",
         "/internal/v1/work-items/{item_id}/context",
         "/internal/v1/work-items/{item_id}/updates",
+        "/api/v1/agent-runs/{run_id}/context",
+        "/api/v1/operations-cases",
+        "/api/v1/operations-cases/{case_id}",
+        "/api/v1/operations-cases/{case_id}/events",
+        "/api/v1/operations-cases/{case_id}/analyze",
+        "/api/v1/operations-cases/{case_id}/revise",
+        "/api/v1/operations-cases/{case_id}/materialize",
+        "/api/v1/operations-cases/{case_id}/control",
+        "/api/v1/stores/{store_id}/learning",
+        "/api/v1/stores/{store_id}/learning/policy",
+        "/api/v1/stores/{store_id}/learning/forget",
+        "/api/v1/stores/{store_id}/learning/assets/{asset_id}",
+        "/api/v1/stores/{store_id}/learning/assets/{asset_id}/transitions",
+        "/api/v1/stores/{store_id}/learning/assets/{asset_id}/evaluations",
+        "/api/v1/stores/{store_id}/learning/applications",
+        "/api/v1/stores/{store_id}/learning/applications/{application_id}/feedback",
         *K2_ROUTES,
     }
     assert schema["paths"]["/api/v1/monitoring/status"]["get"]["security"] == [{"UserBearer": []}]
@@ -322,4 +338,8 @@ async def test_intake_capabilities_remain_available_with_production_docs_disable
         assert (await client.get("/openapi.json")).status_code == 404
         response = await client.get("/api/v1/me", headers={"Authorization": "Bearer " + VIEWER})
         assert response.status_code == 200
-        assert set(response.json()["capabilities"]) == {"work_intake", "plan_revision"}
+        assert set(response.json()["capabilities"]) == {
+            "work_intake",
+            "plan_revision",
+            "operations_cases",
+        }

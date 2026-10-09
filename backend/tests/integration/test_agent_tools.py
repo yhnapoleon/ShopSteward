@@ -132,7 +132,11 @@ async def test_tool_receipt_replay_scope_restriction_and_token_revocation(db):
     await app.state.db.dispose()
 
 
-async def test_whatif_is_readonly_and_explicit_revision_preserves_policy_and_old_plan(db):
+@pytest.mark.parametrize("question", [
+    "这次修改方案，最多采购20件",
+    "请把方案修改为最多20件，不要下单",
+])
+async def test_whatif_is_readonly_and_explicit_revision_preserves_policy_and_old_plan(db, question):
     from app.agent_bridge.jobs import make_handlers
     from app.missions.models import MissionRow, PlanRow
     from app.planning.jobs import make_handlers as planning
@@ -183,7 +187,7 @@ async def test_whatif_is_readonly_and_explicit_revision_preserves_policy_and_old
         ).json()["id"]
         await client.post(
             f"/api/v1/conversations/{cid}/messages",
-            json={"content": "这次修改方案，最多采购20件"},
+            json={"content": question},
             headers=headers(),
         )
         await Runner(

@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { money, when } from '~/utils/presentation'
+import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 const { s, plan, product, mission, hasRole } = useShop()
 defineEmits<{ confirm: []; evidence: []; compare: []; mission: [] }>()
-const selected = computed(() => plan.value?.candidates.find((c) => c.quantity === s.selected))
+const selected = computed(() => selectedPlanCandidate(plan.value, s.selected))
 const recommended = computed(() => plan.value?.proposed_purchase?.quantity || 0)
 const options = computed(() => {
+  if (isRecoveryPlan(plan.value)) {
+    const adopted = plan.value.selected_candidate_id
+    return plan.value.candidates.filter((c) => c.id === adopted || c.quantity === 0)
+  }
   const order = [...new Set([recommended.value, 20, 40, 0])]
   return (plan.value?.candidates || [])
     .filter(
@@ -87,6 +92,9 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
           比较全部候选<AppIcon name="chevron-right" />
         </button>
       </div>
+      <p v-if="isRecoveryPlan(plan)" class="source-note">
+        这份待确认方案对应已采纳的报价。更换供应商或数量，请回到供应异常应对重新分析。
+      </p>
       <details
         class="options-disclosure"
         :open="expanded || changed"

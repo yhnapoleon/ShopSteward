@@ -2,7 +2,7 @@
 
 ShopSteward 围绕门店备货，把经营数据、七日需求预测、方案比较、人工采购确认、执行回执和 Agent 对话放在同一工作区。后端负责库存、现金与采购规则；Agent 查询证据、解释方案并协助试算；模拟器提供可重复的经营事件与外部执行结果。
 
-**当前基线：2026-09-12，main 已合并 [PR #15](https://github.com/yhnapoleon/ShopSteward/pull/15)，提交 `2313365`。** v6 预测与任务工作区、事项承接已合流。业务数据库迁移头为 **`0014_forecast_work_merge`**。
+**当前工作区：2026-10-02，下一阶段核心实现。** 在原 v6 预测与任务工作区基础上增加恢复 Case、Context Engineering、可选受限专家协作及独立评测口径。业务数据库迁移头为 **`0015_operations_cases`**。实现范围和验证结果见[本轮交付说明](docs/reports/2026-10-02-next-phase-delivery.md)，启用步骤见[下一阶段运行手册](docs/runbooks/next-phase-agent-recovery.md)。
 
 [当前能力](#当前能力与边界) · [项目架构](#项目架构) · [首次安装](#首次安装) · [启动服务](#启动服务) · [可选能力](#启用可选能力) · [更新与验证](#更新与验证) · [文档导航](#文档导航)
 
@@ -13,6 +13,9 @@ ShopSteward 围绕门店备货，把经营数据、七日需求预测、方案�
 | 经营与备货 | 库存/现金账本、销售与收货查询、Mission、候选方案、警报、周期检查、审批采购及回执恢复 | 需要业务 API、业务 worker、PostgreSQL 和模拟器；采购逐笔确认 |
 | 前端工作区 | 今日、持续跟进、经营记录、经营概览、文档中心；同一任务的方案、对话、工具进度和结果 | Nuxt 同源代理访问后端，数据来自实际 API |
 | Mission Agent | LangGraph 工具循环、澄清与恢复、持久会话/检查点、记忆与任务 Skill、试算/方案修订、历史引用与成果 | 配置模型和独立 Agent worker 后启用；没有审批采购工具 |
+| Context Engineering | 输入准入、有限且带原句依据的 TaskFrame、上下文预算、冻结模型配置、调用账本及检查视图 | 不支持的自然语言保留原文；必需来源超预算明确失败；不是任意语义压缩 |
+| 供应异常应对 | 七日逐日恢复试算、多报价比较、修订、待确认 Plan、真实执行状态与显式开启自动跟进 | 绑定现有 Mission；每个 Case 最多一笔已受理应急采购；专家解释可选，计算与审批不依赖模型 |
+| 新版离线评测 | D1–D6 / Q1–Q6、关键失败覆盖、三态结果、证据绑定、未知用量及完整分母 | v0 不变；当前九个示例用于开发验证，正式 CE/OPS 与人工校准仍待进行 |
 | v6 七日预测 | 四组件推理、300 个支持系列、历史示例、观察历史导入、不可变预测证据、前端面板、Agent `get_forecast` | 模型包随 Git 提供，无需重训；历史演示标注“模型推演，仅供参考”，不能启用为实际规划需求 |
 | 知识检索 | 文档/版本/原件管理、解析索引、发布与重试、检索和证据展开、Agent 文档工具 | 检索需独立 Knowledge API/worker、PostgreSQL、OpenSearch；云 embedding/rerank 为可选配置 |
 | 主动事项承接 | 自然语言事项保存、连续消息、状态/结果恢复、已有 Mission 关联、外部处理者领取/回传协议 | 新事项的意图分类和处理者尚待接入；与已有 Mission Agent 独立 |
@@ -142,7 +145,7 @@ Set-Location ../simulation
 Set-Location ..
 ```
 
-预期业务库为 `0014_forecast_work_merge`，模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，已有任一版本均通过 `upgrade head` 合流。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
+预期业务库为 `0015_operations_cases`，模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，通过 `0014_forecast_work_merge` 合流后升级至恢复 Case。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
 
 ## 启动服务
 

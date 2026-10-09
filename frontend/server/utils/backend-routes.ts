@@ -62,6 +62,10 @@ export const backendRoutes = [
   ],
   [
     "GET",
+    "/api/v1/agent-runs/{run_id}/context"
+  ],
+  [
+    "GET",
     "/api/v1/dashboard"
   ],
   [
@@ -113,6 +117,38 @@ export const backendRoutes = [
     "/api/v1/stores/{store_id}/forecast/refresh"
   ],
   [
+    "POST",
+    "/api/v1/stores/{store_id}/learning/applications/{application_id}/feedback"
+  ],
+  [
+    "GET",
+    "/api/v1/stores/{store_id}/learning/applications"
+  ],
+  [
+    "GET",
+    "/api/v1/stores/{store_id}/learning"
+  ],
+  [
+    "PATCH",
+    "/api/v1/stores/{store_id}/learning/policy"
+  ],
+  [
+    "GET",
+    "/api/v1/stores/{store_id}/learning/assets/{asset_id}"
+  ],
+  [
+    "POST",
+    "/api/v1/stores/{store_id}/learning/assets/{asset_id}/transitions"
+  ],
+  [
+    "POST",
+    "/api/v1/stores/{store_id}/learning/forget"
+  ],
+  [
+    "POST",
+    "/api/v1/stores/{store_id}/learning/assets/{asset_id}/evaluations"
+  ],
+  [
     "GET",
     "/api/v1/me"
   ],
@@ -139,6 +175,38 @@ export const backendRoutes = [
   [
     "GET",
     "/api/v1/catalog"
+  ],
+  [
+    "POST",
+    "/api/v1/operations-cases"
+  ],
+  [
+    "GET",
+    "/api/v1/operations-cases"
+  ],
+  [
+    "GET",
+    "/api/v1/operations-cases/{case_id}"
+  ],
+  [
+    "POST",
+    "/api/v1/operations-cases/{case_id}/analyze"
+  ],
+  [
+    "POST",
+    "/api/v1/operations-cases/{case_id}/revise"
+  ],
+  [
+    "POST",
+    "/api/v1/operations-cases/{case_id}/materialize"
+  ],
+  [
+    "POST",
+    "/api/v1/operations-cases/{case_id}/control"
+  ],
+  [
+    "GET",
+    "/api/v1/operations-cases/{case_id}/events"
   ],
   [
     "POST",

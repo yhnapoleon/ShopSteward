@@ -60,13 +60,14 @@ async def enqueue(
     return job
 
 
-async def claim(session, *, lease_seconds, job_types):
+async def claim(session, *, lease_seconds, job_types, job_ids=None):
     job = await session.scalar(
         select(Job)
         .where(
             Job.status.in_(["READY", "RETRY_WAIT"]),
             Job.available_at <= func.clock_timestamp(),
             Job.job_type.in_(job_types),
+            Job.id.in_(job_ids) if job_ids is not None else True,
         )
         .order_by(Job.available_at, Job.id)
         .with_for_update(skip_locked=True)
@@ -152,7 +153,7 @@ async def renew(session, job_id, token, lease_seconds):
     return changed.rowcount == 1
 
 
-async def recover_expired(session, *, retry_safe_types):
+async def recover_expired(session, *, retry_safe_types, job_ids=None):
     # External-write jobs are deliberately not eligible; their future handler must reconcile.
     jobs = (
         await session.scalars(
@@ -161,6 +162,7 @@ async def recover_expired(session, *, retry_safe_types):
                 Job.status == "RUNNING",
                 Job.lease_until <= func.clock_timestamp(),
                 Job.job_type.in_(retry_safe_types),
+                Job.id.in_(job_ids) if job_ids is not None else True,
             )
             .with_for_update(skip_locked=True)
             .limit(100)

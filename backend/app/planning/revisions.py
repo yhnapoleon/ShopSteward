@@ -13,6 +13,12 @@ async def evaluate(session, settings, mission, store, args, *, revise=False, act
     row = await session.get(PlanRow, args.plan_id, with_for_update=revise)
     if row is None or row.mission_id != mission.id:
         raise AppError(404, "RESOURCE_NOT_FOUND", "Plan is not in this mission")
+    if row.document.get("plan_kind") == "recovery_v1":
+        raise AppError(
+            409,
+            "RECOVERY_CASE_REVISION_REQUIRED",
+            "Revise and analyze the associated Case before adopting a new recovery plan",
+        )
     now = await session.scalar(select(func.clock_timestamp()))
     snapshot = DecisionSnapshot.model_validate(row.document["input_snapshot"])
     cursor = await session.scalar(select(SourceCursor).where(SourceCursor.store_id == store.id))

@@ -298,3 +298,223 @@ async def test_repair_malformed_name_but_never_unauthorized_name():
     with pytest.raises(package.RuntimeFailure, match="unknown_tool"):
         await runtime(unauthorized).execute("unauthorized", [])
     assert len(unauthorized.seen) == 1
+
+
+@pytest.mark.asyncio
+async def test_context_path_records_calls_and_keeps_active_protocol_intact():
+    from shopsteward_agent.context import (
+        AdmissionBoundary,
+        ContextBuilder,
+        MessageEnvelope,
+        ModelProfile,
+    )
+
+    opaque = [{"type": "reasoning", "encrypted_content": "opaque", "id": "r"}]
+    model = Model([{"tool_calls": [call()], "provider_items": opaque}, {"content": "Done"}])
+    records = []
+
+    async def record(value):
+        records.append(value)
+
+    run = runtime(
+        model,
+        context_builder=ContextBuilder(ModelProfile(model_id="test")),
+        admission=AdmissionBoundary(run_id="context", conversation_id="c", input_through_seq=1),
+        message_envelopes=[MessageEnvelope(message_id="m", seq=1, role="user", content="question")],
+        record_call=record,
+    )
+    result = await run.execute("context", [{"role": "user", "content": "question"}])
+    assert model.seen[1][:-2] == model.seen[0]
+    assert model.seen[1][-2]["provider_items"] == opaque
+    assert [r["status"] for r in records] == ["reserved", "completed", "reserved", "completed"]
+    assert result["context_manifest"]["selected_source_ids"] == ["m"]
+    assert result["cost_status"] == "unknown"
+
+
+@pytest.mark.asyncio
+async def test_context_source_change_rebuilds_without_old_tool_evidence():
+    from shopsteward_agent.context import (
+        AdmissionBoundary,
+        ContextBuilder,
+        MessageEnvelope,
+        ModelProfile,
+    )
+
+    model = Model([{"tool_calls": [call()]}, {"content": "Done"}])
+    run = runtime(
+        model,
+        context_builder=ContextBuilder(ModelProfile(model_id="test")),
+        admission=AdmissionBoundary(run_id="change", conversation_id="c", input_through_seq=1),
+        message_envelopes=[MessageEnvelope(message_id="m", seq=1, role="user", content="question")],
+    )
+    contexts = iter(["saved preference A", "no saved preferences"])
+
+    async def load():
+        return next(contexts)
+
+    run.load_context = load
+    result = await run.execute("change", [{"role": "user", "content": "question"}])
+    assert "saved preference A" not in str(model.seen[1])
+    assert not any(message.get("role") == "tool" for message in model.seen[1])
+    assert result["context_manifest"]["segment_id"] == 1
+
+
+@pytest.mark.asyncio
+async def test_frame_blocks_revision_that_drops_unresolved_or_exact_quantity():
+    from shopsteward_agent.context import (
+        AdmissionBoundary,
+        ContextBuilder,
+        MessageEnvelope,
+        ModelProfile,
+    )
+
+    model = Model([{"tool_calls": [call("revise_plan", '{"max_purchase_qty":20}')]}])
+    executed = []
+
+    async def write(*args):
+        executed.append(args)
+        return {"ok": True}
+
+    run = package.Runtime(
+        model,
+        InMemorySaver(),
+        [
+            {
+                "type": "function",
+                "function": {"name": "revise_plan", "parameters": {"type": "object"}},
+            }
+        ],
+        write,
+        context,
+        context_builder=ContextBuilder(ModelProfile(model_id="test")),
+        admission=AdmissionBoundary(run_id="exact", conversation_id="c", input_through_seq=1),
+        message_envelopes=[
+            MessageEnvelope(message_id="m", seq=1, role="user", content="本次恰好20件")
+        ],
+    )
+    with pytest.raises(package.RuntimeFailure, match="context_constraint_not_supported"):
+        await run.execute("exact", [{"role": "user", "content": "本次恰好20件"}])
+    assert executed == []
+
+
+@pytest.mark.asyncio
+async def test_newly_read_valid_document_keeps_tool_receipt_but_revocation_rebuilds():
+    import json
+
+    from shopsteward_agent.context import (
+        AdmissionBoundary,
+        ContextBuilder,
+        MessageEnvelope,
+        ModelProfile,
+    )
+
+    model = Model(
+        [{"tool_calls": [call()]}, {"tool_calls": [call(id="second")]}, {"content": "Done"}]
+    )
+    run = runtime(
+        model,
+        context_builder=ContextBuilder(ModelProfile(model_id="test")),
+        admission=AdmissionBoundary(run_id="docs", conversation_id="c", input_through_seq=1),
+        message_envelopes=[MessageEnvelope(message_id="m", seq=1, role="user", content="question")],
+    )
+    contexts = iter([{}, {"doc": "v1"}, {}])
+
+    async def load():
+        return {
+            "instructions": "rules",
+            "data": json.dumps({"document_source_versions": next(contexts)}),
+        }
+
+    run.load_context = load
+    result = await run.execute("docs", [{"role": "user", "content": "question"}])
+    assert any(message.get("role") == "tool" for message in model.seen[1])
+    assert not any(message.get("role") == "tool" for message in model.seen[2])
+    assert result["context_manifest"]["segment_id"] == 1
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "tool_name", ["revise_plan", "memory_edit", "request_check", "analyze_recovery_case"]
+)
+@pytest.mark.parametrize(
+    "question",
+    [
+        "只试算最多20件，不要保存",
+        "只试算，不要保存，数量上限改成20件",
+        "不要保存，先把数量上限改成20件试算一下",
+    ],
+)
+async def test_no_save_intent_blocks_adversarial_mutation_calls(tool_name, question):
+    from shopsteward_agent.context import (
+        AdmissionBoundary,
+        ContextBuilder,
+        MessageEnvelope,
+        ModelProfile,
+    )
+
+    executed = []
+
+    async def write(*args):
+        executed.append(args)
+        return {"ok": True}
+
+    run = package.Runtime(
+        Model([{"tool_calls": [call(tool_name, '{"max_purchase_qty":20}')]}, {"content": "done"}]),
+        InMemorySaver(),
+        [{"type": "function", "function": {"name": tool_name, "parameters": {"type": "object"}}}],
+        write,
+        context,
+        context_builder=ContextBuilder(ModelProfile(model_id="test")),
+        admission=AdmissionBoundary(run_id="readonly", conversation_id="c", input_through_seq=1),
+        message_envelopes=[MessageEnvelope(message_id="m", seq=1, role="user", content=question)],
+    )
+    with pytest.raises(package.RuntimeFailure, match="read_only_intent"):
+        await run.execute("readonly", [{"role": "user", "content": question}])
+    assert executed == []
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "history, tool_name",
+    [
+        (["请把方案修改为最多20件，不要下单"], "revise_plan"),
+        (["只试算，不要保存", "请把数量上限改成20件"], "revise_plan"),
+        (["只试算，不要保存", "Change the maximum to 20 items"], "revise_plan"),
+        (["请保存这个偏好，不要修改当前方案"], "memory_edit"),
+        (["只试算，不要保存", "删除这个偏好"], "memory_edit"),
+        (["只试算，不要保存", "Forget this preference"], "memory_edit"),
+        (["只试算，不要保存", "Update this preference"], "memory_edit"),
+    ],
+)
+async def test_targeted_denial_does_not_block_authorized_other_effect(history, tool_name):
+    from shopsteward_agent.context import (
+        AdmissionBoundary,
+        ContextBuilder,
+        MessageEnvelope,
+        ModelProfile,
+    )
+
+    executed = []
+
+    async def write(*args):
+        executed.append(args)
+        return {"ok": True}
+
+    messages = [{"role": "user", "content": content} for content in history]
+    run = package.Runtime(
+        Model([{"tool_calls": [call(tool_name, '{"max_purchase_qty":20}')]}, {"content": "done"}]),
+        InMemorySaver(),
+        [{"type": "function", "function": {"name": tool_name, "parameters": {"type": "object"}}}],
+        write,
+        context,
+        context_builder=ContextBuilder(ModelProfile(model_id="test")),
+        admission=AdmissionBoundary(
+            run_id="allowed", conversation_id="c", input_through_seq=len(history)
+        ),
+        message_envelopes=[
+            MessageEnvelope(message_id=str(i), seq=i, role="user", content=content)
+            for i, content in enumerate(history, start=1)
+        ],
+    )
+    await run.execute("allowed", messages)
+    assert len(executed) == 1

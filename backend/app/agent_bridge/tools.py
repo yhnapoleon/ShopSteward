@@ -47,6 +47,14 @@ class ActionArgs(Empty):
     action_id: str = Field(min_length=1, max_length=128)
 
 
+class CaseArgs(Empty):
+    case_id: str = Field(min_length=1, max_length=128)
+
+
+class CaseAnalysisArgs(CaseArgs):
+    expected_revision: int = Field(strict=True, ge=1)
+
+
 class CheckArgs(Empty):
     reason: str = Field(default="", max_length=1000)
 
@@ -70,6 +78,12 @@ class RevisionArgs(EvaluationArgs):
 
 
 DEFINITIONS = {
+    "get_recovery_cases": (Empty, "读取当前任务关联的供应异常恢复事项，不创建采购或修改约束。"),
+    "get_recovery_case": (CaseArgs, "读取已返回case_id的恢复事项、预算、候选、证据和状态。"),
+    "analyze_recovery_case": (
+        CaseAnalysisArgs,
+        "使用现有已确认输入进行确定性恢复分析，生成候选比较；不采纳、不批准、不发送采购。",
+    ),
     "get_mission": (Empty, "读取当前任务、正式现金底线和任务状态。"),
     "get_plan": (
         PlanArgs,
@@ -107,7 +121,7 @@ def catalog(principal, settings=None):
         definitions.update(DOCUMENT_TOOLS)
     names = set(definitions)
     if not {"operator", "admin"} & set(principal.roles):
-        names -= {"request_check", "revise_plan"}
+        names -= {"request_check", "revise_plan", "analyze_recovery_case"}
     return {name: definitions[name] for name in sorted(names)}
 
 
@@ -159,7 +173,69 @@ async def execute_tool(
     session, settings, principal, conversation, run, mission, store, name, args, invocation_id
 ):
     references = []
-    if name == "get_mission":
+    if (
+        name in {"revise_plan", "memory_edit", "request_check", "analyze_recovery_case"}
+        and run.trigger == "USER"
+    ):
+        from shopsteward_agent.context.intent import classify_intent
+
+        from app.agent_bridge.context_sources import load_history
+
+        history, _ = await load_history(session, conversation, run)
+        if (
+            name
+            in classify_intent([message for message in history if message["role"] == "user"])[
+                "denied_tools"
+            ]
+        ):
+            raise AppError(
+                422,
+                "EXPLICIT_MEMORY_INTENT_REQUIRED"
+                if name == "memory_edit"
+                else "EXPLICIT_READ_ONLY",
+                "The admitted user request forbids saving or changing state; use read-only tools",
+            )
+    if name in {"get_recovery_cases", "get_recovery_case", "analyze_recovery_case"}:
+        from app.operations_cases import repository as cases
+        from app.operations_cases.models import CaseRow
+        from app.operations_cases.schemas import CaseAnalyze
+
+        if name == "get_recovery_cases":
+            rows = (
+                await session.scalars(
+                    select(CaseRow)
+                    .where(
+                        CaseRow.mission_id == mission.id, CaseRow.owner_id == principal.principal_id
+                    )
+                    .order_by(CaseRow.created_at.desc())
+                    .limit(10)
+                )
+            ).all()
+            value = {"items": [encoded(await cases.detail(session, row)) for row in rows]}
+            references = [
+                {"type": "case", "id": row.id, "version": str(row.current_revision)} for row in rows
+            ]
+        else:
+            row = await cases.visible(session, principal, args.case_id)
+            if row.mission_id != mission.id:
+                raise AppError(404, "RESOURCE_NOT_FOUND", "Case is outside this Mission")
+            if name == "analyze_recovery_case":
+                # Gateway already holds store/Mission locks. Lock Case last.
+                await session.refresh(row, with_for_update=True)
+                value = encoded(
+                    await cases.analyze(
+                        session,
+                        row,
+                        CaseAnalyze(expected_revision=args.expected_revision),
+                        principal,
+                        digest([run.id, invocation_id]),
+                        settings,
+                    )
+                )
+            else:
+                value = encoded(await cases.detail(session, row))
+            references = [{"type": "case", "id": row.id, "version": str(row.current_revision)}]
+    elif name == "get_mission":
         value = encoded(await missions.read_mission(session, mission.id))
         value["task_constraints"] = mission.task_constraints
         references = [
@@ -407,6 +483,8 @@ async def _call_core(
         ):
             raise AppError(401, "INVALID_AGENT_TOKEN", "Run credential expired or was revoked")
         signature = digest([tool_name, body.arguments])
+        from app.learning.run_binding import assert_current
+        await assert_current(session,conversation,run.id,settings,principal)
         old = await session.get(ToolInvocation, (run.id, body.invocation_id))
         if old:
             if old.args_hash != signature:

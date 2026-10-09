@@ -1,4 +1,5 @@
-import type { Schema, Session, PendingApproval } from '~/types/models'
+import type { Schema, Session, PendingApproval, PlanDocument } from '~/types/models'
+import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 import { api, query, ApiFailure } from '~/utils/api'
 export function useShop() {
   const s = useState('shop', () => ({
@@ -9,11 +10,11 @@ export function useShop() {
     discovering: false,
     missionId: '',
     requestedMissionId: '',
-    planChange: null as { from: Schema<'Plan'>; to: Schema<'Plan'> } | null,
+    planChange: null as { from: PlanDocument; to: PlanDocument } | null,
     dashboard: null as Schema<'Dashboard'> | null,
     catalog: null as Schema<'Catalog'> | null,
     missions: [] as Schema<'Mission'>[],
-    plan: null as Schema<'Plan'> | null,
+    plan: null as PlanDocument | null,
     actions: [] as Schema<'Action'>[],
     inbounds: [] as Schema<'InboundItem'>[],
     timeline: [] as Schema<'TimelineEntry'>[],
@@ -45,7 +46,7 @@ export function useShop() {
   const unresolved = computed(() =>
     s.actions.find((a) => ['QUEUED', 'EXECUTING', 'UNKNOWN'].includes(a.status)),
   )
-  const currentCandidate = computed(() => s.plan?.candidates.find((c) => c.quantity === s.selected))
+  const currentCandidate = computed(() => selectedPlanCandidate(s.plan, s.selected))
   const canDecide = computed(
     () =>
       s.connected &&
@@ -173,7 +174,7 @@ export function useShop() {
         missions.items[0]
       const [nextPlan, timeline] = await Promise.all([
         m?.current_plan_id
-          ? api<Schema<'Plan'>>('/api/v1/plans/' + m.current_plan_id)
+          ? api<PlanDocument>('/api/v1/plans/' + m.current_plan_id)
           : Promise.resolve(null),
         m
           ? api<Schema<'TimelineEntryList'>>('/api/v1/missions/' + m.id + '/timeline?limit=30')
@@ -332,6 +333,8 @@ export function useShop() {
       if (!canDecide.value || !s.plan || !mission.value)
         throw new Error('当前方案不可确认，请刷新或重新检查。')
       if (s.selected !== 0 && s.selected !== s.plan.proposed_purchase?.quantity) {
+        if (isRecoveryPlan(s.plan))
+          throw new Error('请在供应异常应对中重新选择报价并生成待确认方案。')
         if (!s.session?.planRevision)
           throw new Error(
             '当前后端尚未提供数量修订接口，可以比较候选，但本次只能确认后端推荐数量。',
@@ -354,7 +357,7 @@ export function useShop() {
       return { plan: structuredClone(toRaw(s.plan)), quantity: s.selected }
     })
   }
-  async function decide(snapshot: { plan: Schema<'Plan'>; quantity: number }) {
+  async function decide(snapshot: { plan: PlanDocument; quantity: number }) {
     return command('正在提交确认', async () => {
       if (snapshot.plan.id !== s.plan?.id || snapshot.plan.mission_id !== s.missionId)
         throw new Error('经营环境或方案已经变化，请重新核对。')

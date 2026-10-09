@@ -5,6 +5,7 @@ from uuid import uuid4
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.agent_bridge.context_router import router as agent_context_router
 from app.agent_bridge.router import router as agent_router
 from app.agent_bridge.tools import router as agent_tool_router
 from app.alerts.router import router as alerts_router
@@ -16,9 +17,11 @@ from app.db.session import Database
 from app.execution.router import router as execution_router
 from app.forecast_v6.router import router as forecast_v6_router
 from app.knowledge.router import router as knowledge_router
+from app.learning.router import router as learning_router
 from app.missions.router import router as missions_router
 from app.operations.router import dev_router
 from app.operations.router import router as operations_router
+from app.operations_cases.router import router as cases_router
 from app.planning.router import router as planning_router
 from app.reporting.read_router import router as read_router
 from app.reporting.router import router as reporting_router
@@ -44,6 +47,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.include_router(alerts_router)
     app.include_router(agent_router)
+    app.include_router(agent_context_router)
     app.include_router(agent_tool_router)
     app.include_router(reporting_router)
     app.include_router(read_router)
@@ -53,6 +57,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.state.settings = settings
     url = settings.database_url.get_secret_value() if settings.database_url else None
     app.state.db = Database(url)
+    app.state.db.learning_enabled = settings.learning_enabled
+    app.include_router(learning_router)
     install_errors(app)
 
     @app.middleware("http")
@@ -79,6 +85,7 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     )
     app.include_router(router)
     app.include_router(operations_router)
+    app.include_router(cases_router)
     app.include_router(missions_router)
     app.include_router(knowledge_router)
     app.include_router(work_router)

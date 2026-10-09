@@ -4,6 +4,7 @@ from pydantic import AwareDatetime, Field, field_validator
 
 from app.api.schemas import DTO, Identifier
 from app.operations.schemas import Nonnegative, Offer, Positive, State
+from app.planning.recovery.schemas import RecoveryCandidate, RecoveryInput, RecoveryIntent
 
 
 class Policy(DTO):
@@ -102,8 +103,34 @@ class Plan(DTO):
     proposed_purchase: ProposedPurchase | None
 
 
+class RecoveryDecisionSnapshot(DecisionSnapshot):
+    recovery: RecoveryInput
+
+
+class RecoveryPlan(Plan):
+    plan_kind: Literal["recovery_v1"]
+    input_snapshot: RecoveryDecisionSnapshot
+    candidates: list[RecoveryCandidate] = Field(min_length=1)
+    selected_candidate_id: Identifier
+    recovery_intent: RecoveryIntent
+
+
+PlanDocument = Plan | RecoveryPlan
+
+
+def parse_plan(document):
+    from app.core.errors import AppError
+
+    kind = document.get("plan_kind")
+    if kind == "recovery_v1":
+        return RecoveryPlan.model_validate(document)
+    if kind is not None:
+        raise AppError(409, "PLAN_KIND_UNSUPPORTED", "This plan version cannot be executed")
+    return Plan.model_validate(document)
+
+
 class PlanList(DTO):
-    items: list[Plan]
+    items: list[PlanDocument]
     next_cursor: str | None
 
 

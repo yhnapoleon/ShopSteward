@@ -50,10 +50,34 @@ class Settings(BaseSettings):
     knowledge_delivery_lease_seconds: int = Field(default=30, ge=15, le=300)
     # External intake processor; independent of the existing mission Agent.
     work_processor_enabled: bool = False
+    learning_enabled: bool = False
+    learning_generation_enabled: bool = False
     agent_enabled: bool = False
     agent_base_url: str = "https://api.openai.com/v1"
     agent_model: str = "gpt-4.1-mini"
     agent_api_mode: Literal["chat_completions", "responses"] = "chat_completions"
+    agent_context_enabled: bool = True
+    agent_profile_id: str = "mission-configured"
+    agent_reasoning_effort: str | None = None
+    agent_max_input_tokens: int = Field(default=24000, ge=256, le=1000000)
+    agent_max_output_tokens: int = Field(default=2048, ge=128, le=128000)
+    agent_model_timeout_seconds: float = Field(default=30, gt=0, le=120)
+    agent_case_experts_enabled: bool = False
+    agent_case_model: str | None = None
+    agent_case_api_mode: Literal["chat_completions", "responses"] = "responses"
+    # Every strategy shares evidence, solver output and root budget; research runs
+    # may force another one per call.
+    agent_case_strategy: Literal["fixed", "single", "static_multi", "adaptive_multi"] = (
+        "adaptive_multi"
+    )
+    # Optional role -> model ID, frozen per run; other roles use AGENT_CASE_MODEL.
+    agent_case_role_models: dict[
+        Literal["evidence", "impact", "options", "single", "fixed"], str
+    ] = Field(default_factory=dict)
+    # Released text artifact for Case strategies; only offline optimization adds revisions.
+    agent_case_text_bundle: str = Field(
+        default="seed", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+    )
     agent_api_key_file: str | None = Field(default=None, repr=False)
     agent_backend_url: str = "http://127.0.0.1:8000"
     agent_worker_concurrency: int = Field(default=1, ge=1, le=8)

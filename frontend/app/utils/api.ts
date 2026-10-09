@@ -9,6 +9,9 @@ export class ApiFailure extends Error {
   }
 }
 const messages: Record<string, string> = {
+  LEARNING_CONTEXT_CHANGED: '本次引用的经验已撤销或依据发生变化，请重新发起请求。',
+  LEARNING_QUALITY_REQUIRED: '质量证据尚未满足启用条件，请查看质量卡。',
+  LEARNING_FORGOTTEN: '这项经验或其来源已被忘记，不能继续使用。',
   STATE_VERSION_CONFLICT: '经营状态已变化，请查看新方案再确认。',
   PLAN_INPUT_STALE: '方案依据已变化，请重新检查。',
   PLAN_VERSION_CONFLICT: '方案版本已变化，请重新核对。',

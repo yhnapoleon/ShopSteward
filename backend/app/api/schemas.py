@@ -45,6 +45,7 @@ class JobResult(DTO):
 
 
 JobType = Literal[
+    "learning_batch",
     "worker_probe",
     "sync_events",
     "check_mission",
@@ -52,6 +53,7 @@ JobType = Literal[
     "reconcile_action",
     "check_freshness",
     "agent_followup",
+    "operations_case_followup",
     "initialize_scenario",
     "advance_scenario",
 ]

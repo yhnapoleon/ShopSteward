@@ -10,7 +10,7 @@ from app.core.pagination import decode_cursor, encode_cursor
 from app.missions.models import MissionRow, PlanRow, ScheduleRow, TimelineRow
 from app.missions.schemas import JobAccepted, Mission, MissionList, Schedule
 from app.operations.models import Command, OfferRow, StockRow, Store
-from app.planning.schemas import Plan, PlanList
+from app.planning.schemas import PlanList, parse_plan
 from app.scheduling.models import Job
 from app.scheduling.repository import enqueue
 
@@ -85,6 +85,9 @@ async def timeline(session, mission, kind, summary, *, actor=None, references=No
         from app.agent_bridge.triggers import record_event
 
         await record_event(session, mission.id, event_id, references or [])
+    from app.learning.capture import mission_event
+
+    await mission_event(session, mission, kind, event_id, actor, references or [])
 
 
 def mission_dto(row, schedule):
@@ -387,7 +390,7 @@ async def list_missions(session, store_id, status, cursor, limit):
 
 def plan_dto(row, now):
     status = "EXPIRED" if row.status == "PENDING_APPROVAL" and row.expires_at <= now else row.status
-    return Plan.model_validate(row.document | {"status": status})
+    return parse_plan(row.document | {"status": status})
 
 
 async def list_plans(session, mission_id, cursor, limit):

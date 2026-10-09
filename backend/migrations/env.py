@@ -13,7 +13,9 @@ from app.forecast_v6 import models as forecast_v6_models  # noqa: F401
 from app.knowledge import index_models as knowledge_index_models  # noqa: F401
 from app.knowledge import models as knowledge_models  # noqa: F401
 from app.missions import models as mission_models  # noqa: F401
+from app.learning import models as learning_models  # noqa: F401
 from app.operations import models as operations_models  # noqa: F401
+from app.operations_cases import models as operations_case_models  # noqa: F401
 from app.scheduling import models  # noqa: F401
 from app.work_items import models as work_models  # noqa: F401
 
