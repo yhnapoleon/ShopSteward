@@ -1,0 +1,21 @@
+{
+  "artifact_kinds": [
+    "example"
+  ],
+  "files": [
+    {
+      "path": "results.jsonl",
+      "sha256": "dd2ebbc0dc0b713f9374c61b7e1523a8f8cf4da811a316a699fa2ac81d4e297c"
+    },
+    {
+      "path": "report.json",
+      "sha256": "e9e1be41627b3204efced8712c3c4d72f32057a6e57ea015e6bdc4f9a610eed9"
+    },
+    {
+      "path": "report.md",
+      "sha256": "6839a2751429ec8e38f66b6751e0cf568145294a1d9c311317d94c515216df1f"
+    }
+  ],
+  "schema_version": "case_output_manifest_v1",
+  "source_manifest_sha256": "dbc0dbf40cb05d17386ed7739eeed4d81d19f205e52e37c9952558ca3180bbf3"
+}

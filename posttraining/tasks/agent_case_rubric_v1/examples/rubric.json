@@ -1,0 +1,8 @@
+{
+  "anchors_version": "integrated-design-19.13-19.15-v1",
+  "calibration_status": "pilot_uncalibrated",
+  "minimum_reviewer_kind": "agent_reviewed",
+  "rubric_id": "agent_case_rubric_v1",
+  "rubric_version": "1.0.0",
+  "scoring_policy": "required_checks_and_endpoint_no_critical_failure"
+}

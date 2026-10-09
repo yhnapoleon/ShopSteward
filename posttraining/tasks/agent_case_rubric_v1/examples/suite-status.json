@@ -1,0 +1,25 @@
+{
+  "ce": {
+    "example_cases": 2,
+    "planned_dev": 24,
+    "planned_locked_test": 48,
+    "planned_smoke": 12
+  },
+  "human_reviewers": 0,
+  "independence": "Examples share templates and are development assets. No independent test set has been created.",
+  "locked_test_cases": 0,
+  "ops": {
+    "example_cases": 7,
+    "planned_dev": 24,
+    "planned_locked_test": 48,
+    "planned_smoke": 12
+  },
+  "required_before_research": [
+    "Create disjoint source/template/constraint groups across suites",
+    "Freeze actual model-visible inputs and capabilities",
+    "Calibrate semantic anchors with two independent team reviewers",
+    "Freeze model/strategy/profile versions",
+    "Run real traces and full root/helper/expert usage collection"
+  ],
+  "status": "development_examples_only"
+}

@@ -1,0 +1,433 @@
+{
+  "$defs": {
+    "DimensionContract": {
+      "additionalProperties": false,
+      "properties": {
+        "applicable": {
+          "title": "Applicable",
+          "type": "boolean"
+        },
+        "dimension_id": {
+          "enum": [
+            "D1",
+            "D2",
+            "D3",
+            "D4",
+            "D5",
+            "D6"
+          ],
+          "title": "Dimension Id",
+          "type": "string"
+        },
+        "full_checks": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "title": "Full Checks",
+          "type": "array"
+        },
+        "partial_checks": {
+          "default": [],
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "title": "Partial Checks",
+          "type": "array"
+        },
+        "reason": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dimension_id",
+        "applicable",
+        "full_checks",
+        "reason"
+      ],
+      "title": "DimensionContract",
+      "type": "object"
+    },
+    "Predicate": {
+      "additionalProperties": false,
+      "properties": {
+        "acceptable_values": {
+          "default": [],
+          "items": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "title": "Acceptable Values",
+          "type": "array"
+        },
+        "check_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Check Id",
+          "type": "string"
+        },
+        "critical_failure_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Critical Failure Code"
+        },
+        "expected": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Expected"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "business_state",
+            "solver",
+            "tool_receipt",
+            "context",
+            "transport"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        }
+      },
+      "required": [
+        "check_id",
+        "observation_id",
+        "expected",
+        "source_kind"
+      ],
+      "title": "Predicate",
+      "type": "object"
+    },
+    "SemanticCheck": {
+      "additionalProperties": false,
+      "properties": {
+        "check_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Check Id",
+          "type": "string"
+        },
+        "critical_failure_code": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Critical Failure Code"
+        },
+        "description": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "check_id",
+        "description"
+      ],
+      "title": "SemanticCheck",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "admission_revision": {
+      "minimum": 1,
+      "title": "Admission Revision",
+      "type": "integer"
+    },
+    "allowed_actions": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Allowed Actions",
+      "type": "array"
+    },
+    "allowed_side_effects": {
+      "default": [],
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Allowed Side Effects",
+      "type": "array"
+    },
+    "artifact_kind": {
+      "enum": [
+        "example",
+        "recorded"
+      ],
+      "title": "Artifact Kind",
+      "type": "string"
+    },
+    "capabilities": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Capabilities",
+      "type": "array"
+    },
+    "case_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Case Id",
+      "type": "string"
+    },
+    "clarification_required": {
+      "title": "Clarification Required",
+      "type": "boolean"
+    },
+    "complexity": {
+      "enum": [
+        "simple",
+        "complex"
+      ],
+      "title": "Complexity",
+      "type": "string"
+    },
+    "dataset_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "dimensions": {
+      "items": {
+        "$ref": "#/$defs/DimensionContract"
+      },
+      "maxItems": 6,
+      "minItems": 6,
+      "title": "Dimensions",
+      "type": "array"
+    },
+    "endpoint_check_id": {
+      "default": "endpoint",
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Endpoint Check Id",
+      "type": "string"
+    },
+    "fixture_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Fixture Hash",
+      "type": "string"
+    },
+    "fixture_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Fixture Id",
+      "type": "string"
+    },
+    "fixture_valid": {
+      "title": "Fixture Valid",
+      "type": "boolean"
+    },
+    "followup_expected": {
+      "title": "Followup Expected",
+      "type": "boolean"
+    },
+    "goal_endpoint": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Goal Endpoint",
+      "type": "string"
+    },
+    "invalid_fixture_reason": {
+      "anyOf": [
+        {
+          "minLength": 1,
+          "pattern": "\\S",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Invalid Fixture Reason"
+    },
+    "lock_status": {
+      "enum": [
+        "development",
+        "locked"
+      ],
+      "title": "Lock Status",
+      "type": "string"
+    },
+    "predicates": {
+      "items": {
+        "$ref": "#/$defs/Predicate"
+      },
+      "title": "Predicates",
+      "type": "array"
+    },
+    "required_condition_ids": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Required Condition Ids",
+      "type": "array"
+    },
+    "required_predicates": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Required Predicates",
+      "type": "array"
+    },
+    "required_semantic_checks": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Required Semantic Checks",
+      "type": "array"
+    },
+    "scenario_family": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Scenario Family",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "case_contract_v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_checks": {
+      "items": {
+        "$ref": "#/$defs/SemanticCheck"
+      },
+      "title": "Semantic Checks",
+      "type": "array"
+    },
+    "split": {
+      "enum": [
+        "smoke",
+        "dev",
+        "test"
+      ],
+      "title": "Split",
+      "type": "string"
+    },
+    "suite_id": {
+      "enum": [
+        "ce",
+        "ops"
+      ],
+      "title": "Suite Id",
+      "type": "string"
+    },
+    "task_contract_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Task Contract Version",
+      "type": "string"
+    },
+    "template_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Template Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schema_version",
+    "suite_id",
+    "case_id",
+    "dataset_version",
+    "task_contract_version",
+    "template_id",
+    "fixture_id",
+    "fixture_hash",
+    "split",
+    "lock_status",
+    "artifact_kind",
+    "complexity",
+    "scenario_family",
+    "goal_endpoint",
+    "capabilities",
+    "allowed_actions",
+    "admission_revision",
+    "required_condition_ids",
+    "predicates",
+    "semantic_checks",
+    "required_predicates",
+    "required_semantic_checks",
+    "dimensions",
+    "clarification_required",
+    "followup_expected",
+    "fixture_valid",
+    "invalid_fixture_reason"
+  ],
+  "title": "CaseContract",
+  "type": "object"
+}

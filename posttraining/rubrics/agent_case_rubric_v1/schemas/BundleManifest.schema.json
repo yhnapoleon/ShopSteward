@@ -1,0 +1,124 @@
+{
+  "$defs": {
+    "FileReference": {
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256"
+      ],
+      "title": "FileReference",
+      "type": "object"
+    },
+    "FixtureReference": {
+      "additionalProperties": false,
+      "properties": {
+        "fixture_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Fixture Id",
+          "type": "string"
+        },
+        "path": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Path",
+          "type": "string"
+        },
+        "sha256": {
+          "pattern": "^[0-9a-f]{64}$",
+          "title": "Sha256",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "sha256",
+        "fixture_id"
+      ],
+      "title": "FixtureReference",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "artifact_kind": {
+      "enum": [
+        "example",
+        "recorded"
+      ],
+      "title": "Artifact Kind",
+      "type": "string"
+    },
+    "cases": {
+      "$ref": "#/$defs/FileReference"
+    },
+    "dataset_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Dataset Version",
+      "type": "string"
+    },
+    "fixtures": {
+      "items": {
+        "$ref": "#/$defs/FixtureReference"
+      },
+      "title": "Fixtures",
+      "type": "array"
+    },
+    "locked_test_count": {
+      "minimum": 0,
+      "title": "Locked Test Count",
+      "type": "integer"
+    },
+    "research_status": {
+      "enum": [
+        "development_only_pending_human_calibration",
+        "locked_pending_execution",
+        "human_calibrated"
+      ],
+      "title": "Research Status",
+      "type": "string"
+    },
+    "reviews": {
+      "$ref": "#/$defs/FileReference"
+    },
+    "rubric": {
+      "$ref": "#/$defs/FileReference"
+    },
+    "schema_version": {
+      "const": "case_manifest_v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "traces": {
+      "$ref": "#/$defs/FileReference"
+    }
+  },
+  "required": [
+    "schema_version",
+    "dataset_version",
+    "artifact_kind",
+    "rubric",
+    "cases",
+    "traces",
+    "reviews",
+    "fixtures",
+    "research_status",
+    "locked_test_count"
+  ],
+  "title": "BundleManifest",
+  "type": "object"
+}

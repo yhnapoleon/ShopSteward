@@ -1,0 +1,838 @@
+{
+  "all_recorded_spend_known_subtotal": 0.0,
+  "excluded": [],
+  "groups": [
+    {
+      "active_latency": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 1
+      },
+      "clarification": {
+        "Q1": {
+          "pass": 1
+        },
+        "Q2": {
+          "pass": 1
+        },
+        "Q3": {
+          "pass": 1
+        },
+        "Q4": {
+          "fail": 1
+        },
+        "Q5": {
+          "pass": 1
+        },
+        "Q6": {
+          "not_applicable": 1
+        }
+      },
+      "configuration": {
+        "adapter_version": "illustrative-v1",
+        "artifact_kind": "example",
+        "builder_version": "illustrative-v1",
+        "dataset_version": "illustrative-dev-v1",
+        "goal_endpoint": "clarification",
+        "lock_status": "development",
+        "model_snapshot": "NO_MODEL_CALLS_SYNTHETIC_EXAMPLE",
+        "profile_hash": "7915be219c15c5ba81a1c095cc5f08c16c7d43e77488bbd3c21557e4d7200d78",
+        "prompt_hash": "3c0ddc257e91741da864a885f6862e043a3f4e546e9367dda09ca2e037749d12",
+        "rubric_hash": "8040ce63902ac33e3239db424479723d123d7d434f907b02b4ad1a5eb410d2b9",
+        "solver_version": "design-golden-oracle-v1",
+        "split": "dev",
+        "strategy_id": "illustrative-policy",
+        "suite_id": "ce",
+        "task_contract_version": "clarification-capability-v1"
+      },
+      "cost": {
+        "known_subtotal": 0.0,
+        "per_success": null,
+        "per_success_status": "undefined_no_success",
+        "status": "unknown",
+        "total": null,
+        "unknown_runs": 1
+      },
+      "critical_failure_rate": 0.0,
+      "critical_failure_runs": 0,
+      "critical_failures": {},
+      "dimensions": {
+        "D1": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D2": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D3": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D4": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D5": {
+          "applicable": 0,
+          "mean_among_scored_only": null,
+          "missing_trace": 0,
+          "not_applicable": 1,
+          "pending_review": 0,
+          "score_counts": {},
+          "scored": 0
+        },
+        "D6": {
+          "applicable": 1,
+          "mean_among_scored_only": 0.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "0": 1
+          },
+          "scored": 1
+        }
+      },
+      "failure_tags": {
+        "Q4": 1
+      },
+      "human_wait": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 1
+      },
+      "independent_scenarios": 1,
+      "outcomes": {
+        "attempted": 1,
+        "failure": 1,
+        "missing_trace": 0,
+        "pending_review": 0,
+        "success": 0,
+        "success_rate_lower": 0.0,
+        "success_rate_upper": 0.0,
+        "undetermined": 0
+      },
+      "replicates_are_not_independent_scenarios": true,
+      "review_status": {
+        "pending_human_review": 1
+      },
+      "strata": {
+        "complexity": {
+          "simple": {
+            "attempted": 1,
+            "failure": 1,
+            "missing_trace": 0,
+            "pending_review": 0,
+            "success": 0,
+            "success_rate_lower": 0.0,
+            "success_rate_upper": 0.0,
+            "undetermined": 0
+          }
+        },
+        "scenario_family": {
+          "unit_clarification": {
+            "attempted": 1,
+            "failure": 1,
+            "missing_trace": 0,
+            "pending_review": 0,
+            "success": 0,
+            "success_rate_lower": 0.0,
+            "success_rate_upper": 0.0,
+            "undetermined": 0
+          }
+        }
+      },
+      "usage": {
+        "by_role": {},
+        "by_status": {},
+        "cached_input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "incomplete_call_ledgers": 1,
+        "input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "observed_calls": 0,
+        "output_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "reasoning_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "total_calls": null
+      }
+    },
+    {
+      "active_latency": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 1
+      },
+      "clarification": {
+        "Q1": {
+          "pass": 1
+        },
+        "Q2": {
+          "pass": 1
+        },
+        "Q3": {
+          "pass": 1
+        },
+        "Q4": {
+          "pass": 1
+        },
+        "Q5": {
+          "pass": 1
+        },
+        "Q6": {
+          "pass": 1
+        }
+      },
+      "configuration": {
+        "adapter_version": "illustrative-v1",
+        "artifact_kind": "example",
+        "builder_version": "illustrative-v1",
+        "dataset_version": "illustrative-dev-v1",
+        "goal_endpoint": "pending_plan",
+        "lock_status": "development",
+        "model_snapshot": "NO_MODEL_CALLS_SYNTHETIC_EXAMPLE",
+        "profile_hash": "7915be219c15c5ba81a1c095cc5f08c16c7d43e77488bbd3c21557e4d7200d78",
+        "prompt_hash": "3c0ddc257e91741da864a885f6862e043a3f4e546e9367dda09ca2e037749d12",
+        "rubric_hash": "8040ce63902ac33e3239db424479723d123d7d434f907b02b4ad1a5eb410d2b9",
+        "solver_version": "design-golden-oracle-v1",
+        "split": "dev",
+        "strategy_id": "illustrative-policy",
+        "suite_id": "ce",
+        "task_contract_version": "clarification-capability-v1"
+      },
+      "cost": {
+        "known_subtotal": 0.0,
+        "per_success": null,
+        "per_success_status": "unknown_cost",
+        "status": "unknown",
+        "total": null,
+        "unknown_runs": 1
+      },
+      "critical_failure_rate": 0.0,
+      "critical_failure_runs": 0,
+      "critical_failures": {},
+      "dimensions": {
+        "D1": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D2": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D3": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D4": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D5": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        },
+        "D6": {
+          "applicable": 1,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 0,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 1
+          },
+          "scored": 1
+        }
+      },
+      "failure_tags": {},
+      "human_wait": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 1
+      },
+      "independent_scenarios": 1,
+      "outcomes": {
+        "attempted": 1,
+        "failure": 0,
+        "missing_trace": 0,
+        "pending_review": 0,
+        "success": 1,
+        "success_rate_lower": 1.0,
+        "success_rate_upper": 1.0,
+        "undetermined": 0
+      },
+      "replicates_are_not_independent_scenarios": true,
+      "review_status": {
+        "pending_human_review": 1
+      },
+      "strata": {
+        "complexity": {
+          "simple": {
+            "attempted": 1,
+            "failure": 0,
+            "missing_trace": 0,
+            "pending_review": 0,
+            "success": 1,
+            "success_rate_lower": 1.0,
+            "success_rate_upper": 1.0,
+            "undetermined": 0
+          }
+        },
+        "scenario_family": {
+          "unit_clarification": {
+            "attempted": 1,
+            "failure": 0,
+            "missing_trace": 0,
+            "pending_review": 0,
+            "success": 1,
+            "success_rate_lower": 1.0,
+            "success_rate_upper": 1.0,
+            "undetermined": 0
+          }
+        }
+      },
+      "usage": {
+        "by_role": {},
+        "by_status": {},
+        "cached_input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "incomplete_call_ledgers": 1,
+        "input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "observed_calls": 0,
+        "output_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "reasoning_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "total_calls": null
+      }
+    },
+    {
+      "active_latency": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 4
+      },
+      "clarification": {
+        "Q1": {
+          "not_applicable": 4
+        },
+        "Q2": {
+          "not_applicable": 4
+        },
+        "Q3": {
+          "not_applicable": 4
+        },
+        "Q4": {
+          "not_applicable": 4
+        },
+        "Q5": {
+          "not_applicable": 4
+        },
+        "Q6": {
+          "not_applicable": 4
+        }
+      },
+      "configuration": {
+        "adapter_version": "illustrative-v1",
+        "artifact_kind": "example",
+        "builder_version": "illustrative-v1",
+        "dataset_version": "illustrative-dev-v1",
+        "goal_endpoint": "analysis",
+        "lock_status": "development",
+        "model_snapshot": "NO_MODEL_CALLS_SYNTHETIC_EXAMPLE",
+        "profile_hash": "7915be219c15c5ba81a1c095cc5f08c16c7d43e77488bbd3c21557e4d7200d78",
+        "prompt_hash": "3c0ddc257e91741da864a885f6862e043a3f4e546e9367dda09ca2e037749d12",
+        "rubric_hash": "8040ce63902ac33e3239db424479723d123d7d434f907b02b4ad1a5eb410d2b9",
+        "solver_version": "design-golden-oracle-v1",
+        "split": "dev",
+        "strategy_id": "illustrative-policy",
+        "suite_id": "ops",
+        "task_contract_version": "recovery-case-capability-v1"
+      },
+      "cost": {
+        "known_subtotal": 0.0,
+        "per_success": null,
+        "per_success_status": "unknown_cost",
+        "status": "unknown",
+        "total": null,
+        "unknown_runs": 4
+      },
+      "critical_failure_rate": 0.25,
+      "critical_failure_runs": 1,
+      "critical_failures": {
+        "hard_budget_violation": 1,
+        "stale_goal": 1
+      },
+      "dimensions": {
+        "D1": {
+          "applicable": 4,
+          "mean_among_scored_only": 1.3333333333333333,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "0": 1,
+            "2": 2
+          },
+          "scored": 3
+        },
+        "D2": {
+          "applicable": 4,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 3
+          },
+          "scored": 3
+        },
+        "D3": {
+          "applicable": 4,
+          "mean_among_scored_only": 1.3333333333333333,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "0": 1,
+            "2": 2
+          },
+          "scored": 3
+        },
+        "D4": {
+          "applicable": 4,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 3
+          },
+          "scored": 3
+        },
+        "D5": {
+          "applicable": 2,
+          "mean_among_scored_only": 1.0,
+          "missing_trace": 0,
+          "not_applicable": 2,
+          "pending_review": 0,
+          "score_counts": {
+            "0": 1,
+            "2": 1
+          },
+          "scored": 2
+        },
+        "D6": {
+          "applicable": 4,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 3
+          },
+          "scored": 3
+        }
+      },
+      "failure_tags": {
+        "candidate": 1,
+        "hard_budget_violation": 1,
+        "lost_demand": 1,
+        "revision": 1,
+        "spend_minor": 1,
+        "stale_goal": 1,
+        "timeout": 1,
+        "within_budget": 1
+      },
+      "human_wait": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 4
+      },
+      "independent_scenarios": 4,
+      "outcomes": {
+        "attempted": 4,
+        "failure": 2,
+        "missing_trace": 1,
+        "pending_review": 0,
+        "success": 2,
+        "success_rate_lower": 0.5,
+        "success_rate_upper": 0.5,
+        "undetermined": 0
+      },
+      "replicates_are_not_independent_scenarios": true,
+      "review_status": {
+        "pending_human_review": 3,
+        "pending_review": 1
+      },
+      "strata": {
+        "complexity": {
+          "complex": {
+            "attempted": 4,
+            "failure": 2,
+            "missing_trace": 1,
+            "pending_review": 0,
+            "success": 2,
+            "success_rate_lower": 0.5,
+            "success_rate_upper": 0.5,
+            "undetermined": 0
+          }
+        },
+        "scenario_family": {
+          "budget_revision": {
+            "attempted": 2,
+            "failure": 1,
+            "missing_trace": 0,
+            "pending_review": 0,
+            "success": 1,
+            "success_rate_lower": 0.5,
+            "success_rate_upper": 0.5,
+            "undetermined": 0
+          },
+          "temporal_gap": {
+            "attempted": 2,
+            "failure": 1,
+            "missing_trace": 1,
+            "pending_review": 0,
+            "success": 1,
+            "success_rate_lower": 0.5,
+            "success_rate_upper": 0.5,
+            "undetermined": 0
+          }
+        }
+      },
+      "usage": {
+        "by_role": {},
+        "by_status": {},
+        "cached_input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "incomplete_call_ledgers": 4,
+        "input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "observed_calls": 0,
+        "output_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "reasoning_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "total_calls": null
+      }
+    },
+    {
+      "active_latency": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 3
+      },
+      "clarification": {
+        "Q1": {
+          "not_applicable": 3
+        },
+        "Q2": {
+          "not_applicable": 3
+        },
+        "Q3": {
+          "not_applicable": 3
+        },
+        "Q4": {
+          "not_applicable": 3
+        },
+        "Q5": {
+          "not_applicable": 3
+        },
+        "Q6": {
+          "not_applicable": 3
+        }
+      },
+      "configuration": {
+        "adapter_version": "illustrative-v1",
+        "artifact_kind": "example",
+        "builder_version": "illustrative-v1",
+        "dataset_version": "illustrative-dev-v1",
+        "goal_endpoint": "pending_plan",
+        "lock_status": "development",
+        "model_snapshot": "NO_MODEL_CALLS_SYNTHETIC_EXAMPLE",
+        "profile_hash": "7915be219c15c5ba81a1c095cc5f08c16c7d43e77488bbd3c21557e4d7200d78",
+        "prompt_hash": "3c0ddc257e91741da864a885f6862e043a3f4e546e9367dda09ca2e037749d12",
+        "rubric_hash": "8040ce63902ac33e3239db424479723d123d7d434f907b02b4ad1a5eb410d2b9",
+        "solver_version": "design-golden-oracle-v1",
+        "split": "dev",
+        "strategy_id": "illustrative-policy",
+        "suite_id": "ops",
+        "task_contract_version": "recovery-case-capability-v1"
+      },
+      "cost": {
+        "known_subtotal": 0.0,
+        "per_success": null,
+        "per_success_status": "undefined_no_success",
+        "status": "unknown",
+        "total": null,
+        "unknown_runs": 3
+      },
+      "critical_failure_rate": 0.3333333333333333,
+      "critical_failure_runs": 1,
+      "critical_failures": {
+        "delivery_state_misreported": 1
+      },
+      "dimensions": {
+        "D1": {
+          "applicable": 3,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 2
+          },
+          "scored": 2
+        },
+        "D2": {
+          "applicable": 3,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 2
+          },
+          "scored": 2
+        },
+        "D3": {
+          "applicable": 3,
+          "mean_among_scored_only": 2.0,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "2": 2
+          },
+          "scored": 2
+        },
+        "D4": {
+          "applicable": 3,
+          "mean_among_scored_only": 1.5,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "1": 1,
+            "2": 1
+          },
+          "scored": 2
+        },
+        "D5": {
+          "applicable": 0,
+          "mean_among_scored_only": null,
+          "missing_trace": 0,
+          "not_applicable": 3,
+          "pending_review": 0,
+          "score_counts": {},
+          "scored": 0
+        },
+        "D6": {
+          "applicable": 3,
+          "mean_among_scored_only": 1.0,
+          "missing_trace": 1,
+          "not_applicable": 0,
+          "pending_review": 0,
+          "score_counts": {
+            "0": 1,
+            "2": 1
+          },
+          "scored": 2
+        }
+      },
+      "failure_tags": {
+        "delivery_state_misreported": 1,
+        "endpoint": 1,
+        "state_truthful": 1
+      },
+      "human_wait": {
+        "observed": 0,
+        "p50_ms": null,
+        "p95_ms": null,
+        "unknown": 3
+      },
+      "independent_scenarios": 3,
+      "outcomes": {
+        "attempted": 3,
+        "failure": 2,
+        "missing_trace": 1,
+        "pending_review": 0,
+        "success": 0,
+        "success_rate_lower": 0.0,
+        "success_rate_upper": 0.3333333333333333,
+        "undetermined": 1
+      },
+      "replicates_are_not_independent_scenarios": true,
+      "review_status": {
+        "pending_human_review": 2,
+        "pending_review": 1
+      },
+      "strata": {
+        "complexity": {
+          "complex": {
+            "attempted": 3,
+            "failure": 2,
+            "missing_trace": 1,
+            "pending_review": 0,
+            "success": 0,
+            "success_rate_lower": 0.0,
+            "success_rate_upper": 0.3333333333333333,
+            "undetermined": 1
+          }
+        },
+        "scenario_family": {
+          "temporal_gap": {
+            "attempted": 3,
+            "failure": 2,
+            "missing_trace": 1,
+            "pending_review": 0,
+            "success": 0,
+            "success_rate_lower": 0.0,
+            "success_rate_upper": 0.3333333333333333,
+            "undetermined": 1
+          }
+        }
+      },
+      "usage": {
+        "by_role": {},
+        "by_status": {},
+        "cached_input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "incomplete_call_ledgers": 3,
+        "input_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "observed_calls": 0,
+        "output_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "reasoning_tokens": {
+          "known_subtotal": 0,
+          "total": null,
+          "unknown_calls": 0
+        },
+        "total_calls": null
+      }
+    }
+  ],
+  "notice": "Example fixture outcomes are not model/research scores. Endpoint and configuration groups are not pooled. Bounds reflect undetermined results, not confidence intervals.",
+  "record_count": 9,
+  "schema_version": "case_report_v1"
+}
