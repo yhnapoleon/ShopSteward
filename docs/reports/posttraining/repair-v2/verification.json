@@ -1,0 +1,42 @@
+{
+  "verified_at": "2026-09-15T02:40:22.865180+00:00",
+  "light_tests_passed": 66,
+  "ruff_check": "pass",
+  "ruff_format_files": 9,
+  "rescore_identical_runs": 4,
+  "pending_reviews": 0,
+  "environment_errors": 0,
+  "hash_checks": [
+    {
+      "run": "repair-diagnostics-v1",
+      "mode": "decision",
+      "policy": "B1",
+      "matched": true
+    },
+    {
+      "run": "repair-diagnostics-v1",
+      "mode": "decision",
+      "policy": "B1_candidate",
+      "matched": true
+    },
+    {
+      "run": "dev-repair-v2",
+      "mode": "decision",
+      "policy": "B1",
+      "matched": true
+    },
+    {
+      "run": "dev-repair-v2",
+      "mode": "execution",
+      "policy": "B1",
+      "matched": true
+    }
+  ],
+  "reviewer": "Codex",
+  "human_reviews": 0,
+  "original_dev_and_frozen_unchanged": true,
+  "original_prompt_hash_unchanged": true,
+  "selected_prompt_and_tools_hash_verified": true,
+  "followups_completed_each_mode": 30,
+  "report_links_checked": true
+}

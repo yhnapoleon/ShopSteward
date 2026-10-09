@@ -1,0 +1,2 @@
+﻿episode_id,task_type,request,expected,predicted,failure_tags,review_status
+dev-pt01-019,PT-01,先做沙盘推演，本次采购限额是45件。,"[{""allowed_actions"": [""evaluate_plan""], ""arguments"": {""plan_id"": ""$current_plan_id"", ""max_purchase_qty"": 45}, ""clarification_slot"": null}]","[{""name"": ""evaluate_plan"", ""arguments"": {""plan_id"": ""0962c602e-1ee5-4c70-a6a1-01601b839008"", ""max_purchase_qty"": 45}}]",argument_error,complete

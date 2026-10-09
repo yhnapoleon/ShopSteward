@@ -1,0 +1,82 @@
+{
+  "negative_ascii": [
+    "repair-negative_ascii-eval-7",
+    "repair-negative_ascii-revise-7",
+    "repair-negative_ascii-eval-19",
+    "repair-negative_ascii-revise-19",
+    "repair-negative_ascii-eval-42",
+    "repair-negative_ascii-revise-42"
+  ],
+  "negative_chinese": [
+    "repair-negative_chinese-eval-7",
+    "repair-negative_chinese-revise-7",
+    "repair-negative_chinese-eval-19",
+    "repair-negative_chinese-revise-19",
+    "repair-negative_chinese-eval-42",
+    "repair-negative_chinese-revise-42"
+  ],
+  "positive": [
+    "repair-positive-eval-7",
+    "repair-positive-revise-7",
+    "repair-positive-eval-19",
+    "repair-positive-revise-19",
+    "repair-positive-eval-42",
+    "repair-positive-revise-42"
+  ],
+  "negated_negative": [
+    "repair-negated_negative-eval-7",
+    "repair-negated_negative-revise-7",
+    "repair-negated_negative-eval-19",
+    "repair-negated_negative-revise-19",
+    "repair-negated_negative-eval-42",
+    "repair-negated_negative-revise-42"
+  ],
+  "upper": [
+    "repair-upper-eval-7",
+    "repair-upper-revise-7",
+    "repair-upper-eval-19",
+    "repair-upper-revise-19",
+    "repair-upper-eval-42",
+    "repair-upper-revise-42"
+  ],
+  "lower": [
+    "repair-lower-eval-7",
+    "repair-lower-revise-7",
+    "repair-lower-eval-19",
+    "repair-lower-revise-19",
+    "repair-lower-eval-42",
+    "repair-lower-revise-42"
+  ],
+  "exact": [
+    "repair-exact-eval-7",
+    "repair-exact-revise-7",
+    "repair-exact-eval-19",
+    "repair-exact-revise-19",
+    "repair-exact-eval-42",
+    "repair-exact-revise-42"
+  ],
+  "followup_cn": [
+    "repair-followup_cn-eval-7",
+    "repair-followup_cn-revise-7",
+    "repair-followup_cn-eval-19",
+    "repair-followup_cn-revise-19",
+    "repair-followup_cn-eval-42",
+    "repair-followup_cn-revise-42"
+  ],
+  "followup_en": [
+    "repair-followup_en-eval-7",
+    "repair-followup_en-revise-7",
+    "repair-followup_en-eval-19",
+    "repair-followup_en-revise-19",
+    "repair-followup_en-eval-42",
+    "repair-followup_en-revise-42"
+  ],
+  "packaging": [
+    "repair-packaging-eval-7",
+    "repair-packaging-revise-7",
+    "repair-packaging-eval-19",
+    "repair-packaging-revise-19",
+    "repair-packaging-eval-42",
+    "repair-packaging-revise-42"
+  ]
+}

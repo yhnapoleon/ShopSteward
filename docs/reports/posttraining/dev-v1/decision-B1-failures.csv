@@ -1,0 +1,3 @@
+﻿episode_id,task_type,request,expected,predicted,failure_tags,review_status
+dev-pt07-011,PT-07,仅试算本次上限-8件。,"[{""allowed_actions"": [""clarify""], ""arguments"": {}, ""clarification_slot"": ""valid_quantity""}]","[{""name"": ""evaluate_plan"", ""arguments"": {""plan_id"": ""c7594e16-cfcf-467e-8200-8ba7df7f69d0"", ""max_purchase_qty"": 8}}]",clarification_error,complete
+dev-pt07-014,PT-07,本次必须至少采购30件，我要的是最低数量，不是上限。,"[{""allowed_actions"": [""clarify""], ""arguments"": {}, ""clarification_slot"": ""quantity_semantics""}]","[{""name"": ""handoff"", ""arguments"": {""reason"": ""unsupported_request""}}]",clarification_error,complete

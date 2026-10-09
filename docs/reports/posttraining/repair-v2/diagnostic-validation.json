@@ -1,0 +1,48 @@
+{
+  "status": "spec_validated",
+  "schema_version": "eval-v0",
+  "release_status": "spec_validated_pending_execution",
+  "dataset_sha256": "17162e45e123dd7678eac408e8bf0ea9c53c4f9d3877fd266e35005a89ed8fc2",
+  "episode_count": 60,
+  "decision_target_count": 72,
+  "task_counts": {
+    "PT-01": 9,
+    "PT-02": 9,
+    "PT-04": 12,
+    "PT-07": 30
+  },
+  "suite_counts": {
+    "challenge": 30,
+    "core": 30
+  },
+  "split_counts": {
+    "dev": 60
+  },
+  "family_count": 20,
+  "family_counts": {
+    "repair-exact-eval": 3,
+    "repair-exact-revise": 3,
+    "repair-followup_cn-eval": 3,
+    "repair-followup_cn-revise": 3,
+    "repair-followup_en-eval": 3,
+    "repair-followup_en-revise": 3,
+    "repair-lower-eval": 3,
+    "repair-lower-revise": 3,
+    "repair-negated_negative-eval": 3,
+    "repair-negated_negative-revise": 3,
+    "repair-negative_ascii-eval": 3,
+    "repair-negative_ascii-revise": 3,
+    "repair-negative_chinese-eval": 3,
+    "repair-negative_chinese-revise": 3,
+    "repair-packaging-eval": 3,
+    "repair-packaging-revise": 3,
+    "repair-positive-eval": 3,
+    "repair-positive-revise": 3,
+    "repair-upper-eval": 3,
+    "repair-upper-revise": 3
+  },
+  "agent_reviewed_count": 60,
+  "human_reviewed_count": 0,
+  "execution_verified_count": 0,
+  "model_evaluation": "not_run"
+}

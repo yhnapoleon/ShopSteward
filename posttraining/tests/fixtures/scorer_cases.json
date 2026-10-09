@@ -1,0 +1,948 @@
+[
+  {
+    "spec": {
+      "episode_id": "scorer-1",
+      "task_type": "PT-02",
+      "scenario_family": "scorer-fixture",
+      "split": "dev",
+      "suite": "core",
+      "fixture_recipe": "replenishment_standard",
+      "user_message": "如果上限20件呢？",
+      "followup_user_message": null,
+      "expected_steps": [
+        {
+          "allowed_actions": [
+            "revise_plan"
+          ],
+          "arguments": {
+            "plan_id": "$current_plan_id",
+            "max_purchase_qty": 20,
+            "expected_mission_version": 3
+          },
+          "clarification_slot": null
+        }
+      ],
+      "final_predicates": [
+        "receipt_ok",
+        "no_purchase_created",
+        "cash_stock_transit_unchanged",
+        "revision_cap_matches",
+        "purchase_within_cap",
+        "old_plan_document_preserved",
+        "new_plan_pending"
+      ],
+      "review": {
+        "reviewer": "test",
+        "status": "agent_reviewed",
+        "rationale": "fixture"
+      }
+    },
+    "trace": {
+      "episode_id": "scorer-1",
+      "policy_id": "fake",
+      "mode": "execution",
+      "context": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "如果上限20件呢？"
+          }
+        ],
+        "mission_id": "m",
+        "plan_id": "plan-1",
+        "mission_version": 3,
+        "quantity_unit": "件",
+        "quantity_cap": null,
+        "tool_schemas": [
+          {
+            "type": "function",
+            "function": {
+              "name": "evaluate_plan",
+              "description": "只读试算本次采购数量上限；不修改正式方案。null表示无额外数量上限。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "plan_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Plan Id",
+                    "type": "string"
+                  },
+                  "max_purchase_qty": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Max Purchase Qty"
+                  }
+                },
+                "required": [
+                  "plan_id",
+                  "max_purchase_qty"
+                ],
+                "title": "EvaluationArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "revise_plan",
+              "description": "按用户明确要求修订本次上限，生成待确认方案；不执行采购。null表示取消额外上限。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "plan_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Plan Id",
+                    "type": "string"
+                  },
+                  "max_purchase_qty": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Max Purchase Qty"
+                  },
+                  "expected_mission_version": {
+                    "minimum": 1,
+                    "title": "Expected Mission Version",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "plan_id",
+                  "max_purchase_qty",
+                  "expected_mission_version"
+                ],
+                "title": "RevisionArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "clarify",
+              "description": "只询问影响当前动作的必要缺项，不猜数量、单位或指代。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "question": {
+                    "maxLength": 300,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Question",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "title": "ClarificationArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "handoff",
+              "description": "请求超出支持范围、上下文不足或权限不足时转交通用路径。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "enum": [
+                      "unsupported_request",
+                      "insufficient_context",
+                      "permission_scope"
+                    ],
+                    "title": "Reason",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "title": "HandoffArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "no_action",
+              "description": "用户撤回当前请求时结束本请求；不取消整个任务或回滚既有修改。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "const": "withdraw_current_request",
+                    "title": "Reason",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "title": "NoActionArguments",
+                "type": "object"
+              }
+            }
+          }
+        ],
+        "context_version": "v0"
+      },
+      "steps": [
+        {
+          "decision": {
+            "name": "revise_plan",
+            "arguments": {
+              "plan_id": "plan-1",
+              "max_purchase_qty": 20,
+              "expected_mission_version": 3
+            }
+          },
+          "raw_response": {
+            "tool_calls": [
+              {
+                "type": "function",
+                "function": {
+                  "name": "revise_plan",
+                  "arguments": {
+                    "plan_id": "plan-1",
+                    "max_purchase_qty": 20,
+                    "expected_mission_version": 3
+                  }
+                }
+              }
+            ]
+          },
+          "parse_error": null,
+          "usage": null,
+          "latency_ms": 1.0
+        }
+      ],
+      "receipts": [
+        {
+          "tool": "revise_plan",
+          "arguments": {
+            "plan_id": "plan-1",
+            "max_purchase_qty": 20,
+            "expected_mission_version": 3
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "id": "plan-2",
+              "base_plan_id": "plan-1",
+              "status": "PENDING_APPROVAL",
+              "input_snapshot": {
+                "task_constraints": {
+                  "max_purchase_qty": 20
+                }
+              },
+              "proposed_purchase": {
+                "quantity": 12
+              }
+            }
+          }
+        }
+      ],
+      "before_state": {
+        "current_plan_id": "plan-1",
+        "mission_version": 3,
+        "mission_status": "ACTIVE",
+        "task_constraints": {},
+        "policy": {
+          "cash_floor_minor": 30000
+        },
+        "cash_minor": 100000,
+        "stocks": [
+          {
+            "sku_id": "s",
+            "on_hand": 20,
+            "in_transit": 0
+          }
+        ],
+        "purchase_action_ids": [],
+        "plan_document": {
+          "id": "plan-1"
+        },
+        "plan_status": "PENDING_APPROVAL"
+      },
+      "after_state": {
+        "current_plan_id": "plan-2",
+        "mission_version": 4,
+        "mission_status": "ACTIVE",
+        "task_constraints": {
+          "max_purchase_qty": 20
+        },
+        "policy": {
+          "cash_floor_minor": 30000
+        },
+        "cash_minor": 100000,
+        "stocks": [
+          {
+            "sku_id": "s",
+            "on_hand": 20,
+            "in_transit": 0
+          }
+        ],
+        "purchase_action_ids": [],
+        "plan_document": {
+          "id": "plan-2",
+          "base_plan_id": "plan-1",
+          "status": "PENDING_APPROVAL",
+          "input_snapshot": {
+            "task_constraints": {
+              "max_purchase_qty": 20
+            }
+          },
+          "proposed_purchase": {
+            "quantity": 12
+          }
+        },
+        "plan_status": "PENDING_APPROVAL",
+        "old_plan_document": {
+          "id": "plan-1"
+        }
+      },
+      "delivery": {
+        "kind": "revise_plan",
+        "plan_id": "plan-2",
+        "max_purchase_qty": 20
+      }
+    },
+    "reviews": {},
+    "expected_success": true,
+    "expected_failure_tag": null
+  },
+  {
+    "spec": {
+      "episode_id": "scorer-1",
+      "task_type": "PT-01",
+      "scenario_family": "scorer-fixture",
+      "split": "dev",
+      "suite": "core",
+      "fixture_recipe": "replenishment_standard",
+      "user_message": "如果上限20件呢？",
+      "followup_user_message": null,
+      "expected_steps": [
+        {
+          "allowed_actions": [
+            "evaluate_plan"
+          ],
+          "arguments": {
+            "plan_id": "$current_plan_id",
+            "max_purchase_qty": 20
+          },
+          "clarification_slot": null
+        }
+      ],
+      "final_predicates": [
+        "receipt_ok",
+        "no_purchase_created",
+        "cash_stock_transit_unchanged",
+        "current_plan_unchanged",
+        "task_constraints_unchanged"
+      ],
+      "review": {
+        "reviewer": "test",
+        "status": "agent_reviewed",
+        "rationale": "fixture"
+      }
+    },
+    "trace": {
+      "episode_id": "scorer-1",
+      "policy_id": "fake",
+      "mode": "execution",
+      "context": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "如果上限20件呢？"
+          }
+        ],
+        "mission_id": "m",
+        "plan_id": "plan-1",
+        "mission_version": 3,
+        "quantity_unit": "件",
+        "quantity_cap": null,
+        "tool_schemas": [
+          {
+            "type": "function",
+            "function": {
+              "name": "evaluate_plan",
+              "description": "只读试算本次采购数量上限；不修改正式方案。null表示无额外数量上限。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "plan_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Plan Id",
+                    "type": "string"
+                  },
+                  "max_purchase_qty": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Max Purchase Qty"
+                  }
+                },
+                "required": [
+                  "plan_id",
+                  "max_purchase_qty"
+                ],
+                "title": "EvaluationArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "revise_plan",
+              "description": "按用户明确要求修订本次上限，生成待确认方案；不执行采购。null表示取消额外上限。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "plan_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Plan Id",
+                    "type": "string"
+                  },
+                  "max_purchase_qty": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Max Purchase Qty"
+                  },
+                  "expected_mission_version": {
+                    "minimum": 1,
+                    "title": "Expected Mission Version",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "plan_id",
+                  "max_purchase_qty",
+                  "expected_mission_version"
+                ],
+                "title": "RevisionArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "clarify",
+              "description": "只询问影响当前动作的必要缺项，不猜数量、单位或指代。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "question": {
+                    "maxLength": 300,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Question",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "title": "ClarificationArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "handoff",
+              "description": "请求超出支持范围、上下文不足或权限不足时转交通用路径。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "enum": [
+                      "unsupported_request",
+                      "insufficient_context",
+                      "permission_scope"
+                    ],
+                    "title": "Reason",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "title": "HandoffArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "no_action",
+              "description": "用户撤回当前请求时结束本请求；不取消整个任务或回滚既有修改。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "const": "withdraw_current_request",
+                    "title": "Reason",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "title": "NoActionArguments",
+                "type": "object"
+              }
+            }
+          }
+        ],
+        "context_version": "v0"
+      },
+      "steps": [
+        {
+          "decision": {
+            "name": "evaluate_plan",
+            "arguments": {
+              "plan_id": "plan-1",
+              "max_purchase_qty": 20
+            }
+          },
+          "raw_response": {
+            "tool_calls": [
+              {
+                "type": "function",
+                "function": {
+                  "name": "evaluate_plan",
+                  "arguments": {
+                    "plan_id": "plan-1",
+                    "max_purchase_qty": 20
+                  }
+                }
+              }
+            ]
+          },
+          "parse_error": null,
+          "usage": null,
+          "latency_ms": 1.0
+        }
+      ],
+      "receipts": [],
+      "before_state": {
+        "current_plan_id": "plan-1",
+        "mission_version": 3,
+        "mission_status": "ACTIVE",
+        "task_constraints": {},
+        "policy": {
+          "cash_floor_minor": 30000
+        },
+        "cash_minor": 100000,
+        "stocks": [
+          {
+            "sku_id": "s",
+            "on_hand": 20,
+            "in_transit": 0
+          }
+        ],
+        "purchase_action_ids": [],
+        "plan_document": {
+          "id": "plan-1"
+        },
+        "plan_status": "PENDING_APPROVAL"
+      },
+      "after_state": {
+        "current_plan_id": "plan-1",
+        "mission_version": 3,
+        "mission_status": "ACTIVE",
+        "task_constraints": {},
+        "policy": {
+          "cash_floor_minor": 30000
+        },
+        "cash_minor": 100000,
+        "stocks": [
+          {
+            "sku_id": "s",
+            "on_hand": 20,
+            "in_transit": 0
+          }
+        ],
+        "purchase_action_ids": [],
+        "plan_document": {
+          "id": "plan-1"
+        },
+        "plan_status": "PENDING_APPROVAL"
+      },
+      "delivery": {
+        "kind": "evaluate_plan",
+        "plan_id": "plan-1",
+        "max_purchase_qty": 20
+      }
+    },
+    "reviews": {},
+    "expected_success": false,
+    "expected_failure_tag": "execution_error"
+  },
+  {
+    "spec": {
+      "episode_id": "scorer-1",
+      "task_type": "PT-01",
+      "scenario_family": "scorer-fixture",
+      "split": "dev",
+      "suite": "core",
+      "fixture_recipe": "replenishment_standard",
+      "user_message": "如果上限20件呢？",
+      "followup_user_message": null,
+      "expected_steps": [
+        {
+          "allowed_actions": [
+            "evaluate_plan"
+          ],
+          "arguments": {
+            "plan_id": "$current_plan_id",
+            "max_purchase_qty": 20
+          },
+          "clarification_slot": null
+        }
+      ],
+      "final_predicates": [
+        "receipt_ok",
+        "no_purchase_created",
+        "cash_stock_transit_unchanged",
+        "current_plan_unchanged",
+        "task_constraints_unchanged"
+      ],
+      "review": {
+        "reviewer": "test",
+        "status": "agent_reviewed",
+        "rationale": "fixture"
+      }
+    },
+    "trace": {
+      "episode_id": "scorer-1",
+      "policy_id": "fake",
+      "mode": "execution",
+      "context": {
+        "messages": [
+          {
+            "role": "user",
+            "content": "如果上限20件呢？"
+          }
+        ],
+        "mission_id": "m",
+        "plan_id": "plan-1",
+        "mission_version": 3,
+        "quantity_unit": "件",
+        "quantity_cap": null,
+        "tool_schemas": [
+          {
+            "type": "function",
+            "function": {
+              "name": "evaluate_plan",
+              "description": "只读试算本次采购数量上限；不修改正式方案。null表示无额外数量上限。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "plan_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Plan Id",
+                    "type": "string"
+                  },
+                  "max_purchase_qty": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Max Purchase Qty"
+                  }
+                },
+                "required": [
+                  "plan_id",
+                  "max_purchase_qty"
+                ],
+                "title": "EvaluationArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "revise_plan",
+              "description": "按用户明确要求修订本次上限，生成待确认方案；不执行采购。null表示取消额外上限。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "plan_id": {
+                    "maxLength": 128,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Plan Id",
+                    "type": "string"
+                  },
+                  "max_purchase_qty": {
+                    "anyOf": [
+                      {
+                        "maximum": 1000000,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ],
+                    "title": "Max Purchase Qty"
+                  },
+                  "expected_mission_version": {
+                    "minimum": 1,
+                    "title": "Expected Mission Version",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "plan_id",
+                  "max_purchase_qty",
+                  "expected_mission_version"
+                ],
+                "title": "RevisionArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "clarify",
+              "description": "只询问影响当前动作的必要缺项，不猜数量、单位或指代。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "question": {
+                    "maxLength": 300,
+                    "minLength": 1,
+                    "pattern": "\\S",
+                    "title": "Question",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "question"
+                ],
+                "title": "ClarificationArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "handoff",
+              "description": "请求超出支持范围、上下文不足或权限不足时转交通用路径。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "enum": [
+                      "unsupported_request",
+                      "insufficient_context",
+                      "permission_scope"
+                    ],
+                    "title": "Reason",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "title": "HandoffArguments",
+                "type": "object"
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "no_action",
+              "description": "用户撤回当前请求时结束本请求；不取消整个任务或回滚既有修改。",
+              "parameters": {
+                "additionalProperties": false,
+                "properties": {
+                  "reason": {
+                    "const": "withdraw_current_request",
+                    "title": "Reason",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "reason"
+                ],
+                "title": "NoActionArguments",
+                "type": "object"
+              }
+            }
+          }
+        ],
+        "context_version": "v0"
+      },
+      "steps": [
+        {
+          "decision": {
+            "name": "evaluate_plan",
+            "arguments": {
+              "plan_id": "plan-1",
+              "max_purchase_qty": 20
+            }
+          },
+          "raw_response": {
+            "tool_calls": [
+              {
+                "type": "function",
+                "function": {
+                  "name": "evaluate_plan",
+                  "arguments": {
+                    "plan_id": "plan-1",
+                    "max_purchase_qty": 20
+                  }
+                }
+              }
+            ]
+          },
+          "parse_error": null,
+          "usage": null,
+          "latency_ms": 1.0
+        }
+      ],
+      "receipts": [
+        {
+          "tool": "evaluate_plan",
+          "arguments": {
+            "plan_id": "plan-1",
+            "max_purchase_qty": 20
+          },
+          "result": {
+            "ok": true,
+            "data": {
+              "hypothetical": true,
+              "base_plan_id": "plan-1",
+              "task_constraints": {
+                "max_purchase_qty": 20
+              },
+              "recommended_candidate_id": "q12",
+              "candidates": [
+                {
+                  "id": "q12",
+                  "quantity": 12
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "before_state": {
+        "current_plan_id": "plan-1",
+        "mission_version": 3,
+        "mission_status": "ACTIVE",
+        "task_constraints": {},
+        "policy": {
+          "cash_floor_minor": 30000
+        },
+        "cash_minor": 100000,
+        "stocks": [
+          {
+            "sku_id": "s",
+            "on_hand": 20,
+            "in_transit": 0
+          }
+        ],
+        "purchase_action_ids": [],
+        "plan_document": {
+          "id": "plan-1"
+        },
+        "plan_status": "PENDING_APPROVAL"
+      },
+      "after_state": {
+        "current_plan_id": "wrong-plan",
+        "mission_version": 3,
+        "mission_status": "ACTIVE",
+        "task_constraints": {},
+        "policy": {
+          "cash_floor_minor": 30000
+        },
+        "cash_minor": 100000,
+        "stocks": [
+          {
+            "sku_id": "s",
+            "on_hand": 20,
+            "in_transit": 0
+          }
+        ],
+        "purchase_action_ids": [],
+        "plan_document": {
+          "id": "plan-1"
+        },
+        "plan_status": "PENDING_APPROVAL"
+      },
+      "delivery": {
+        "kind": "evaluate_plan",
+        "plan_id": "plan-1",
+        "max_purchase_qty": 20
+      }
+    },
+    "reviews": {},
+    "expected_success": false,
+    "expected_failure_tag": "unexpected_business_mutation"
+  }
+]

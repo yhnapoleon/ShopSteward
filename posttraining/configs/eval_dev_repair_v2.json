@@ -1,0 +1,21 @@
+{
+  "schema_version": "eval-v0",
+  "runtime": "runtime_dev_repair_v2.json",
+  "dataset": "../datasets/dev-v1.jsonl",
+  "manifest": "../datasets/dev-v1-manifest.json",
+  "task_contract": "../tasks/replenishment_v0.json",
+  "expected_counts": {
+    "PT-01": 40,
+    "PT-02": 40,
+    "PT-03": 30,
+    "PT-04": 30,
+    "PT-05": 12,
+    "PT-06": 10,
+    "PT-07": 16,
+    "PT-08": 10,
+    "PT-09": 8,
+    "PT-10": 4
+  },
+  "case_list": "../../docs/reports/posttraining/repair-v2/dev-cases.md",
+  "validation_report": "../../docs/reports/posttraining/repair-v2/dev-validation.json"
+}

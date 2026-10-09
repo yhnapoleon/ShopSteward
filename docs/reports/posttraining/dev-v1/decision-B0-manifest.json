@@ -1,0 +1,17 @@
+{
+  "policy_id": "B0",
+  "mode": "decision",
+  "python": "3.12.13",
+  "concurrency": 1,
+  "dataset_sha256": "793be13d37609a0a5e438eee8a78e359a49207aef2f5ba2b5b1974517744de71",
+  "prompt_sha256": "37f2140d4304abc04196fac7c74fcf0e7b2527a7e29444d34a0eb374eb9a1a8c",
+  "tools_sha256": "0dbbd2476297525943b610b850e31b45bca4934f932ea49a12946ac98e42c676",
+  "temperature": 0,
+  "max_output_tokens": null,
+  "context_version": "replenishment-real-v1",
+  "price": null,
+  "created_at": "2026-09-14T16:17:07.319981+00:00",
+  "git_revision": "30bed9f8b750703654ac613a7569f559c7734189",
+  "working_tree": "uncommitted implementation; source snapshot accompanies run",
+  "frozen_sha256": "d1d89666bf6233f558bfe943632f193796ff7b48582befc1d5c90b21710c276a"
+}

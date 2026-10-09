@@ -1,0 +1,71 @@
+{
+  "chosen_prompt_version": "v2",
+  "status": "selected_with_remaining_error",
+  "scope": "受限策略评测与后续Data契约；没有替换通用生产Agent，默认构造器仍兼容v1。",
+  "config": "posttraining/configs/eval_dev_repair_v2.json",
+  "runtime": "posttraining/configs/runtime_dev_repair_v2.json",
+  "diagnostic_success": {
+    "v1": [
+      59,
+      60
+    ],
+    "v2": [
+      60,
+      60
+    ]
+  },
+  "decision_success": {
+    "v1": [
+      198,
+      200
+    ],
+    "v2": [
+      199,
+      200
+    ]
+  },
+  "core_execution_success": {
+    "v1": [
+      139,
+      140
+    ],
+    "v2": [
+      140,
+      140
+    ]
+  },
+  "fixed_ids": {
+    "decision": [
+      "dev-pt07-011",
+      "dev-pt07-014"
+    ],
+    "execution": [
+      "dev-pt04-019"
+    ]
+  },
+  "regressed_ids": {
+    "decision": [
+      "dev-pt01-019"
+    ],
+    "execution": []
+  },
+  "remaining_ids": [
+    "decision/dev-pt01-019"
+  ],
+  "reason": "原三个失败通过，诊断与全量任务成功数改善，执行全部成功；保留新增ID抄写错误和措辞残余。",
+  "tradeoffs": {
+    "decision": {
+      "tokens_per_success_before": 913.040404040404,
+      "tokens_per_success_after": 1190.6482412060302,
+      "tokens_per_success_change": 0.30404770253008584,
+      "task_p95_change": 0.02980926518090543
+    },
+    "execution": {
+      "tokens_per_success_before": 960.7410071942446,
+      "tokens_per_success_after": 1249.5857142857142,
+      "tokens_per_success_change": 0.3006478384169464,
+      "task_p95_change": 0.0126934309375355
+    }
+  },
+  "causal_limit": "全量为历史对比，调用时间及execution新fixture不同；不能证明新增错误必然由v2引起。"
+}
