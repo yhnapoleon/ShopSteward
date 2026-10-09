@@ -21,6 +21,8 @@ from .runner import (
     summarize,
 )
 
+EXPERT_QUESTIONS = "question.evidence,question.impact,question.options"
+
 
 def _model(args, fixtures):
     from shopsteward_agent.context import ModelProfile
@@ -46,56 +48,75 @@ def _model(args, fixtures):
     )
 
 
-def _evolve(args):
+def _evolve(args, parser):
     from shopsteward_agent.cases import load_bundle, make_bundle, save_bundle
     from shopsteward_agent.context import ModelProfile
     from shopsteward_agent.model import OpenAIModel
 
-    from .evolve import evolve
+    from .evolve import evolve, evolve_stage
 
-    def client(model_id, output, timeout):
+    if bool(args.strategy) == bool(args.stage):
+        parser.error("give exactly one of --strategy (case strategies) or --stage (sourcing loop)")
+
+    def client(model_id, output, timeout, *, reflects=False):
+        # The reflection model may live at another provider than the task model.
+        base_url = (reflects and args.reflection_base_url) or args.base_url
+        key_file = (reflects and args.reflection_key_file) or args.key_file
+        api_mode = (reflects and args.reflection_api_mode) or args.api_mode
         profile = ModelProfile(
             profile_id="evolve-" + model_id,
             model_id=model_id,
+            api_mode=api_mode,
             max_input_tokens=128000,
             max_output_tokens=output,
             timeout_s=timeout,
         )
         return (
             Retrying(
-                OpenAIModel(
-                    base_url=args.base_url, model=model_id, key_file=args.key_file, profile=profile
-                )
+                OpenAIModel(base_url=base_url, model=model_id, key_file=key_file, profile=profile)
             ),
             profile,
         )
 
-    base = load_bundle(args.bundle, directory=args.bundle_dir)
-    pairs = [
+    base = load_bundle(
+        args.bundle,
+        directory=args.bundle_dir,
+        bundle_id="supplier-review" if args.stage == "read" else "case-experts",
+    )
+    chosen = [
         pair
         for pair in load_dataset(args.cases)
         if pair[1]["partition"] in ("evo-train", "evo-val")
     ]
-    task_model, task_profile = client(args.model, 2048, 60)
-    reflection_model, reflection_profile = client(args.reflection_model, 4096, 120)
-    components = args.components.split(",")
-    best, result, adapter = evolve(
-        pairs,
-        base=base,
-        strategy=args.strategy,
-        task_model=task_model,
-        task_profile=task_profile,
-        reflection_model=reflection_model,
-        components=components,
-        max_metric_calls=args.max_metric_calls,
-        run_dir=args.run_dir,
-        seed=args.seed,
-        minibatch=args.minibatch,
-        parallel=args.parallel,
-    )
+    task_model, task_profile = client(args.model, args.max_output_tokens, 120 if args.stage else 60)
+    reflection_model, reflection_profile = client(args.reflection_model, 4096, 120, reflects=True)
+    default = "question.supplier,guidance.supplier" if args.stage == "read" else EXPERT_QUESTIONS
+    components = (args.components or default).split(",")
+    common = {
+        "base": base,
+        "task_model": task_model,
+        "task_profile": task_profile,
+        "reflection_model": reflection_model,
+        "components": components,
+        "max_metric_calls": args.max_metric_calls,
+        "run_dir": args.run_dir,
+        "seed": args.seed,
+        "minibatch": args.minibatch,
+        "parallel": args.parallel,
+    }
+    if args.stage:
+        best, result, adapter = evolve_stage(
+            [world for _, world in chosen],
+            stage=args.stage,
+            val_replicates=args.val_replicates,
+            **common,
+        )
+    else:
+        best, result, adapter = evolve(chosen, strategy=args.strategy, **common)
     scores = list(result.val_aggregate_scores)
     summary = {
         "strategy": args.strategy,
+        "stage": args.stage,
         "components": components,
         "seed_val_score": scores[0],
         "best_val_score": max(scores),
@@ -115,12 +136,19 @@ def _evolve(args):
                 "optimizer_version": "0.1.4",
                 "seed": args.seed,
                 "strategy": args.strategy,
+                **(
+                    {"stage": args.stage, "val_replicates": args.val_replicates}
+                    if args.stage
+                    else {}
+                ),
+                "dataset": Path(args.cases).name,
                 "max_metric_calls": args.max_metric_calls,
                 "task_profile": task_profile.model_dump(mode="json"),
                 "reflection_profile": reflection_profile.model_dump(mode="json"),
                 "val_score": {"parent": scores[0], "this": max(scores)},
                 "partitions": {"feedback": "evo-train", "selection": "evo-val"},
             },
+            bundle_id=base.bundle_id,
         )
         summary["saved"] = str(save_bundle(bundle, directory=args.bundle_dir))
     Path(args.run_dir, "evolution.json").write_text(
@@ -195,17 +223,18 @@ def _review(args, parser):
     return 0
 
 
-def _source(args, parser):
-    from shopsteward_agent.context import ModelProfile
-
-    from . import endtoend
-
-    worlds = [
+def _worlds(args):
+    return [
         world
         for _, world in load_dataset(args.cases)
         if world["partition"] == args.partition
         and (not args.families or world["family"] in args.families.split(","))
     ][: args.limit]
+
+
+def _loop_models(args):
+    """(profile, client) factories for commands that run the sourcing loop or a stage of it."""
+    from shopsteward_agent.context import ModelProfile
 
     def profile(model_id):
         # Reasoning models spend output tokens before the answer; leave room for both.
@@ -228,6 +257,72 @@ def _source(args, parser):
                 base_url=args.base_url, model=model_id, key_file=args.key_file, profile=chosen
             )
         ), chosen
+
+    return profile, client
+
+
+def _stage(args, parser):
+    from shopsteward_agent.cases import load_bundle
+
+    from . import endtoend, stages
+
+    worlds = _worlds(args)
+    profile, client = _loop_models(args)
+    bundle = load_bundle(
+        args.bundle,
+        directory=args.bundle_dir,
+        bundle_id="case-experts" if args.stage == "explain" else "supplier-review",
+    )
+    if args.fake:
+        model, chosen, roles, label = endtoend.OracleDesk(worlds), profile("oracle-fake"), {}, None
+    elif not args.key_file:
+        parser.error("--key-file is required unless --fake is given")
+    else:
+        model, chosen = client(args.model)
+        roles, label = {}, args.model
+        if args.stage == "read" and args.second_model:
+            roles = {"supplier_escalation": client(args.second_model)}
+            label = f"review={args.model} second={args.second_model}"
+    outcome = asyncio.run(
+        stages.run_batch(
+            worlds,
+            stage=args.stage,
+            bundle=bundle,
+            model=model,
+            profile=chosen,
+            role_models=roles,
+            label=label,
+            replicates=args.replicates,
+            out=args.out,
+            parallel=args.parallel,
+        )
+    )
+    print(
+        json.dumps(
+            {
+                "new_runs": len(outcome["records"]),
+                "provider_errors_to_rerun": outcome["provider_errors"],
+            }
+        )
+    )
+    rows = stages.summarize(
+        [record for stage in stages.STAGES for record in stages.load_records(args.out, stage)]
+    )
+    Path(args.out, "stage-summary.json").write_text(
+        json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"
+    )
+    Path(args.out, "stage-summary.md").write_text(
+        stages.markdown(rows), encoding="utf-8", newline="\n"
+    )
+    print(stages.markdown(rows))
+    return 0
+
+
+def _source(args, parser):
+    from . import endtoend
+
+    worlds = _worlds(args)
+    profile, client = _loop_models(args)
 
     if args.fake:
         model, chosen, roles, label = endtoend.OracleDesk(worlds), profile("oracle-fake"), {}, None
@@ -315,10 +410,12 @@ def main(argv=None):
     evolve.add_argument("--cases", required=True)
     evolve.add_argument("--run-dir", required=True)
     evolve.add_argument("--revision", required=True)
-    evolve.add_argument("--strategy", required=True)
+    evolve.add_argument("--strategy", help="evolve the expert text under this case strategy")
     evolve.add_argument(
-        "--components", default="question.evidence,question.impact,question.options"
+        "--stage", choices=["explain", "read"], help="evolve one stage of the sourcing loop"
     )
+    evolve.add_argument("--val-replicates", type=int, default=3, help="stage runs per val item")
+    evolve.add_argument("--components", help="default: the questions of the chosen text")
     evolve.add_argument("--max-metric-calls", type=int, required=True)
     evolve.add_argument("--minibatch", type=int, default=3)
     evolve.add_argument("--seed", type=int, default=0)
@@ -329,6 +426,13 @@ def main(argv=None):
     evolve.add_argument("--reflection-model", default="deepseek-v4-pro")
     evolve.add_argument("--base-url", default="https://api.deepseek.com")
     evolve.add_argument("--key-file", required=True)
+    evolve.add_argument(
+        "--api-mode", default="chat_completions", choices=["responses", "chat_completions"]
+    )
+    evolve.add_argument("--max-output-tokens", type=int, default=2048, help="task model")
+    evolve.add_argument("--reflection-base-url", help="default: --base-url")
+    evolve.add_argument("--reflection-key-file", help="default: --key-file")
+    evolve.add_argument("--reflection-api-mode", choices=["responses", "chat_completions"])
     review = commands.add_parser(
         "review", help="supplier reviews over sourcing worlds; prints the summary of --out"
     )
@@ -371,6 +475,27 @@ def main(argv=None):
     source.add_argument("--effort", help="reasoning effort, for models that take one")
     source.add_argument("--max-output-tokens", type=int, default=16000)
     source.add_argument("--fake", action="store_true", help="offline true answers, no network")
+    stage = commands.add_parser(
+        "stage", help="one stage of the sourcing loop against the answer key; prints the summary"
+    )
+    stage.add_argument("--stage", required=True, choices=["explain", "read"])
+    stage.add_argument("--cases", required=True)
+    stage.add_argument("--out", required=True)
+    stage.add_argument("--partition", required=True)
+    stage.add_argument("--limit", type=int)
+    stage.add_argument("--families")
+    stage.add_argument("--replicates", type=int, default=1)
+    stage.add_argument("--parallel", type=int, default=3, help="runs in flight")
+    stage.add_argument("--model", default="gpt-6-luna", help="explains, or does the first reading")
+    stage.add_argument("--second-model", help="read stage: second reading of a rejected card")
+    stage.add_argument("--bundle", default="seed", help="text version of this stage")
+    stage.add_argument("--bundle-dir")
+    stage.add_argument("--base-url", default="https://api.openai.com/v1")
+    stage.add_argument("--api-mode", default="responses", choices=["responses", "chat_completions"])
+    stage.add_argument("--key-file")
+    stage.add_argument("--effort", help="reasoning effort, for models that take one")
+    stage.add_argument("--max-output-tokens", type=int, default=16000)
+    stage.add_argument("--fake", action="store_true", help="offline true answers, no network")
     gate = commands.add_parser("gate", help="paired release check of a candidate text version")
     gate.add_argument("--out", required=True)
     gate.add_argument("--strategy", required=True)
@@ -431,11 +556,13 @@ def main(argv=None):
             )
         )
     if args.command == "evolve":
-        return _evolve(args)
+        return _evolve(args, parser)
     if args.command == "review":
         return _review(args, parser)
     if args.command == "source":
         return _source(args, parser)
+    if args.command == "stage":
+        return _stage(args, parser)
     if args.command == "gate":
         verdict = gate_report(
             load_records(args.out),

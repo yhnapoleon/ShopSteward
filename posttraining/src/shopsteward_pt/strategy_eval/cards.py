@@ -27,20 +27,56 @@ __all__ = [
     "REASONS",
     "Card",
     "check_card",
+    "cited",
     "decide",
     "parse",
     "solve",
     "to_offer",
     "unsupported",
+    "value",
 ]
 
 
-def _value(card, name):
+def value(card, name):
     if name in ("status", "reason"):
         return card[name]
     if name in ("deliveries", "late"):
         return card["history"][name]
     return (card["offer"] or {}).get(name)
+
+
+# Where a document states a field that is not on the item's own row.
+STATED = {"valid_until": "有效期", "status": "配送范围"}
+
+
+def _excerpt(text, name, sku):
+    """The line a careful reviewer would quote: where the field is stated, else the item's row."""
+    lines = [line for line in text.splitlines() if line.strip()]
+    for marker in (STATED.get(name), sku):
+        found = next((line for line in lines if marker and marker in line), None)
+        if found:
+            return found
+    return lines[0]
+
+
+def cited(supplier, sku):
+    """The supplier's true card as a careful reviewer would return it, citations included.
+
+    The excerpts are real lines about the requested item, as accepted cards carry in a
+    real run; a stand-in that quoted document titles would give the explainer a context
+    it never sees in the loop.
+    """
+    texts = {doc["doc_id"]: doc["text"] for doc in supplier["documents"]}
+    card = supplier["card"]
+    citations = [
+        {
+            "field": name,
+            "doc_id": supplier["evidence"][name][0],
+            "quote": _excerpt(texts[supplier["evidence"][name][0]], name, sku),
+        }
+        for name in (CITED if card["status"] == "offer" else ("status",))
+    ]
+    return {**card, "citations": citations}
 
 
 def check_card(raw, supplier):
@@ -52,7 +88,7 @@ def check_card(raw, supplier):
         name: "invalid"
         if card is None
         else "correct"
-        if _value(card, name) == _value(truth, name)
+        if value(card, name) == value(truth, name)
         else "wrong"
         for name in names
     }

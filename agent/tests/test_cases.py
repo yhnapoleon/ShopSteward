@@ -86,6 +86,9 @@ async def test_experts_cannot_access_write_tools_or_invent_support():
     ).run(specs)
     assert result["subtasks"][0]["status"] == "failed"
     assert "unsupported_claim" in result["subtasks"][0]["missing"]
+    # The rejected answer and the reference nobody supplied are kept for diagnosis.
+    rejected = result["subtasks"][0]["rejected"]
+    assert rejected["unsupplied"] == ["invented"] and '"statement":"claim"' in rejected["answer"]
 
 
 @pytest.mark.asyncio

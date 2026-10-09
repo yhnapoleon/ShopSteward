@@ -13,7 +13,7 @@ import time
 from pathlib import Path
 from statistics import mean, median
 
-from .cards import CITED, check_card, solve
+from .cards import check_card, cited, solve
 from .claims import check_claims
 from .runner import PROVIDER, OracleModel
 
@@ -48,17 +48,7 @@ class OracleDesk:
                 for index, doc in enumerate(task["documents"])
             ]
             return {"content": "", "tool_calls": calls, "usage": None}
-        texts = {doc["doc_id"]: doc["text"] for doc in supplier["documents"]}
-        card = supplier["card"]
-        citations = [
-            {
-                "field": name,
-                "doc_id": supplier["evidence"][name][0],
-                "quote": texts[supplier["evidence"][name][0]].splitlines()[0],
-            }
-            for name in (CITED if card["status"] == "offer" else ("status",))
-        ]
-        return {"content": json.dumps({**card, "citations": citations}), "usage": None}
+        return {"content": json.dumps(cited(supplier, task["request"]["sku_id"])), "usage": None}
 
 
 async def run_world(
@@ -144,7 +134,11 @@ async def run_world(
                     if state != "correct"
                 ],
                 "attempts": [
-                    {"model": attempt["model"], "problems": attempt["problems"]}
+                    {
+                        "model": attempt["model"],
+                        "problems": attempt["problems"],
+                        "reasons": attempt["reasons"],
+                    }
                     for attempt in reviews.get(s["supplier_id"], {}).get("attempts", [])
                 ],
             }

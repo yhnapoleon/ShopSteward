@@ -9,7 +9,7 @@ instead of surfacing only as a wrong recommendation.
 from datetime import date, timedelta
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, model_validator
 
 REASONS = ("SKU_NOT_COVERED", "STORE_NOT_SERVED", "SUPPLY_WITHDRAWN")
 OFFER_FIELDS = (
@@ -93,23 +93,53 @@ def parse(raw):
         return None
 
 
+def invalid(raw):
+    """Why `raw` is not a card, in words the next reader can act on; [] if it is one."""
+    if not isinstance(raw, dict):
+        return ["the answer is not one JSON object"]
+    try:
+        Card.model_validate(raw)
+    except ValidationError as exc:
+        return [
+            (".".join(str(part) for part in error["loc"]) or "card") + ": " + error["msg"]
+            for error in exc.errors()[:3]
+        ]
+    return []
+
+
 def squash(text):
     return "".join(text.split())
 
 
-def unsupported(card, documents):
-    """Fields this card should cite but does not back with an exact excerpt.
+def citation_problems(card, documents):
+    """(field, reason) for every field this card should cite but does not back.
 
+    A field is backed by an exact excerpt of a document in `documents`. The reason
+    says what was wrong with the citation, so a rejection can be read and acted on.
     Needs no answer key, so it can gate a card at run time.
     """
     texts = {doc["doc_id"]: squash(doc["text"]) for doc in documents}
-    backed = {
-        item["field"]
-        for item in card["citations"]
-        if squash(item["quote"]) in texts.get(item["doc_id"], "")
-    }
-    needed = CITED if card["status"] == "offer" else ("status",)
-    return [name for name in needed if name not in backed]
+    problems = []
+    for name in CITED if card["status"] == "offer" else ("status",):
+        given = [item for item in card["citations"] if item["field"] == name]
+        if any(squash(item["quote"]) in texts.get(item["doc_id"], "") for item in given):
+            continue
+        if not given:
+            reason = "no citation was given"
+        elif not any(item["doc_id"] in texts for item in given):
+            reason = f"the cited document {given[0]['doc_id']} was not opened in this reading"
+        else:
+            item = next(item for item in given if item["doc_id"] in texts)
+            reason = (
+                f'the quote "{item["quote"][:80]}" is not found word for word in {item["doc_id"]}'
+            )
+        problems.append((name, reason))
+    return problems
+
+
+def unsupported(card, documents):
+    """Fields this card should cite but does not back with an exact excerpt."""
+    return [name for name, _ in citation_problems(card, documents)]
 
 
 def to_offer(card, sku_id):

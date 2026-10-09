@@ -78,6 +78,124 @@ def test_search_improves_a_text_sensitive_model_using_only_train_and_val_cases(t
         )
 
 
+def sourcing_worlds():
+    from shopsteward_pt.strategy_eval.cases import load_dataset
+
+    worlds = [world for _, world in load_dataset(DATASET.parent / "ops-sourcing-v1")]
+    return {
+        name: [world for world in worlds if world["partition"] == name][:2]
+        for name in ("evo-train", "evo-val", "gate")
+    }
+
+
+class Reflector:
+    """Always proposes the same text and keeps the prompts it was shown."""
+
+    def __init__(self, text):
+        self.text, self.prompts = text, []
+
+    async def complete(self, messages, tools, **kwargs):
+        self.prompts.append(messages[0]["content"])
+        return {"content": f"```\n{self.text}\n```"}
+
+
+def test_the_explanation_of_the_sourcing_loop_is_evolved_alone_with_validation_repeated(tmp_path):
+    from shopsteward_agent.cases import load_bundle
+    from shopsteward_agent.context import ModelProfile
+
+    from shopsteward_pt.strategy_eval.endtoend import OracleDesk
+    from shopsteward_pt.strategy_eval.evolve import evolve_stage
+
+    parts = sourcing_worlds()
+    worlds = parts["evo-train"] + parts["evo-val"]
+    desk = OracleDesk(worlds)
+
+    class Forgetful:
+        """Leaves out every gap claim unless its instructions carry the marker."""
+
+        async def complete(self, messages, tools, **kwargs):
+            reply = await desk.complete(messages, tools, **kwargs)
+            if "STATE-EVERY-GAP" in json.dumps(messages):
+                return reply
+            answer = json.loads(reply["content"])
+            answer["claims"] = [c for c in answer["claims"] if c["subject"]["type"] != "gap"]
+            return {**reply, "content": json.dumps(answer)}
+
+    reflector = Reflector("Compare the solver candidates. STATE-EVERY-GAP.")
+    options = {
+        "base": load_bundle(),
+        "stage": "explain",
+        "task_model": Forgetful(),
+        "task_profile": ModelProfile(model_id="fake", max_input_tokens=128000),
+        "reflection_model": reflector,
+        "components": ["question.options"],
+        "minibatch": 2,
+    }
+    best, result, adapter = evolve_stage(
+        worlds, max_metric_calls=40, run_dir=tmp_path / "gepa", val_replicates=2, **options
+    )
+    assert "STATE-EVERY-GAP" in best["question.options"]
+    scores = list(result.val_aggregate_scores)
+    assert scores[0] == pytest.approx(1 / 3) and max(scores) == 1.0
+    assert "Required typed claims that were not stated" in reflector.prompts[0]
+    # Every validation world is run twice; nothing outside train and val is touched.
+    assert sorted(adapter.log[0]["cases"]) == sorted(2 * [w["case_id"] for w in parts["evo-val"]])
+    assert {case for entry in adapter.log for case in entry["cases"]} <= {
+        world["case_id"] for world in worlds
+    }
+    with pytest.raises(ValueError, match="only evo-train and evo-val"):
+        evolve_stage(
+            worlds + parts["gate"], max_metric_calls=5, run_dir=tmp_path / "leak", **options
+        )
+
+
+def test_the_reviewer_text_is_evolved_from_feedback_that_names_the_field_and_its_source(tmp_path):
+    from shopsteward_agent.cases import load_bundle
+    from shopsteward_agent.context import ModelProfile
+
+    from shopsteward_pt.strategy_eval.endtoend import OracleDesk
+    from shopsteward_pt.strategy_eval.evolve import evolve_stage
+
+    parts = sourcing_worlds()
+    worlds = parts["evo-train"] + parts["evo-val"]
+    desk = OracleDesk(worlds)
+
+    class Careless:
+        """Reads every price one yuan too high unless its instructions carry the marker."""
+
+        async def complete(self, messages, tools, **kwargs):
+            reply = await desk.complete(messages, tools, **kwargs)
+            if "CHECK-EVERY-PRICE" in json.dumps(messages) or not reply["content"]:
+                return reply
+            card = json.loads(reply["content"])
+            if card["offer"]:
+                card["offer"]["unit_price_minor"] += 100
+            return {**reply, "content": json.dumps(card)}
+
+    reflector = Reflector("Read every document of the supplier. CHECK-EVERY-PRICE.")
+    best, result, adapter = evolve_stage(
+        worlds,
+        base=load_bundle(bundle_id="supplier-review"),
+        stage="read",
+        task_model=Careless(),
+        task_profile=ModelProfile(model_id="fake", max_input_tokens=128000),
+        reflection_model=reflector,
+        components=["question.supplier"],
+        max_metric_calls=80,
+        run_dir=tmp_path / "gepa",
+        val_replicates=1,
+        minibatch=3,
+    )
+    assert "CHECK-EVERY-PRICE" in best["question.supplier"]
+    scores = list(result.val_aggregate_scores)
+    assert scores[0] < 1 and max(scores) == 1.0
+    assert "unit_price_minor: returned" in reflector.prompts[0]
+    assert "the documents support" in reflector.prompts[0] and "-quote" in reflector.prompts[0]
+    # One example is one supplier, so a world appears once per supplier it has.
+    suppliers = sum(len(world["suppliers"]) for world in parts["evo-val"])
+    assert len(adapter.log[0]["cases"]) == suppliers
+
+
 def test_oversized_text_scores_zero_and_an_outage_stops_the_search_instead_of_scoring_zero():
     from shopsteward_agent.cases import load_bundle
     from shopsteward_agent.context import ModelProfile

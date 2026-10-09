@@ -238,10 +238,45 @@ async def test_a_card_citing_unread_or_absent_text_gets_one_second_reading_by_th
     ]
     assert attempts["B"][0]["problems"] == ["invalid_card"] and attempts["B"][1]["problems"] == []
     assert result["status"] == "complete" and len(result["offers"]) == 1
+    # A rejection keeps what was written and why, so it can be read back later.
+    price = 'unit_price_minor: the quote "单价 9.00" is not found word for word in A-quote'
+    assert attempts["A"][0]["reasons"][0] == price
+    assert json.loads(attempts["A"][0]["answer"])["citations"][0]["quote"] == "单价 9.00"
+    assert attempts["B"][0]["reasons"] == ["the answer is not one JSON object"]
+    assert attempts["B"][0]["answer"] == "no card here"
+    assert attempts["A"][1]["reasons"] == [] and "answer" not in attempts["A"][1]
     # The stronger model only does the second readings, and is told why the first failed.
     assert sorted(who for who, _ in strong.calls) == ["A", "A", "B", "B"]
     assert any("was rejected (invalid_card)" in text for text in strong.shown)
+    assert any(price in text for text in strong.shown)
     assert not any("was rejected" in text for text in weak.shown)
+
+
+@pytest.mark.asyncio
+async def test_one_supplier_can_be_reviewed_on_its_own_and_the_gate_says_what_was_wrong():
+    from shopsteward_agent.cases import CallBudget, review_supplier
+    from shopsteward_agent.context import ModelProfile
+    from shopsteward_agent.offer_cards import citation_problems, invalid
+
+    unread = {**CARD_B, "citations": [{"field": "status", "doc_id": "A-quote", "quote": "x"}]}
+    desk = Desk({"B": [unread, {**CARD_B, "citations": []}]})
+    review = await review_supplier(
+        SUPPLIERS[1],
+        {"sku_id": "K1"},
+        case_id="c",
+        revision_id="1",
+        run_id="solo",
+        model=desk,
+        profile=ModelProfile(model_id="main", max_input_tokens=64000),
+        budget=CallBudget(max_model_calls=8, max_tool_calls=8, timeout_s=60),
+    )
+    assert (review["status"], review["card"]) == ("unreviewed", None)
+    assert [attempt["reasons"] for attempt in review["attempts"]] == [
+        ["status: the cited document A-quote was not opened in this reading"],
+        ["status: no citation was given"],
+    ]
+    assert citation_problems(CARD_A, SUPPLIERS[0]["documents"]) == []
+    assert invalid(CARD_A) == [] and invalid({**CARD_A, "status": "maybe"})[0].startswith("status")
 
 
 @pytest.mark.asyncio

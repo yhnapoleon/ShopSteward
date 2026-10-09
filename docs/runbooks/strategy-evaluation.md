@@ -118,6 +118,34 @@ uv pip install --python .venv-evo\Scripts\python.exe -c var\main-constraints.txt
 
 这条循环目前只在评测包里被调用，还没有接入后端入口和前端。
 
+被把关拒绝的报价卡会留下记录：`endtoend-runs.jsonl` 里每次阅读（`attempts`）带有 `problems`（代码）、`reasons`（哪个字段、哪份文档、哪句引文没找到）和 `answer`（被拒的原始回答）。复读时审查者会收到这些理由。
+
+### 单独跑一个环节
+
+完整循环每个场景约 8 次模型调用，而且一个环节的波动会盖住另一个。`stage` 命令对照标准答案只跑一个环节（2026-10-09 加入，设计见[寻源循环的自进化设计](../superpowers/specs/2026-10-09-sourcing-rsi-design.md)）：
+
+- `--stage explain`：把标准答案的报价卡和求解器方案交给解释者，只跑解释，1 次模型调用。通过的标准与完整循环的解释环节相同。
+- `--stage read`：一个审查者读一家供应商，含把关和一次复读。通过指求解器会读到的字段全部正确。
+
+```powershell
+# 不联网自检
+..\.venv\Scripts\python.exe -m shopsteward_pt.strategy_eval stage --stage read --cases datasets/ops-sourcing-v1 --out ../var/stage-check --partition smoke --fake
+
+# 解释环节，每个场景重复 3 次
+..\.venv\Scripts\python.exe -m shopsteward_pt.strategy_eval stage --stage explain --cases datasets/ops-sourcing-v1 --out <结果目录> --partition evo-val --replicates 3 --model gpt-6-luna --key-file <OpenAI 密钥文件>
+
+# 阅读环节，用 DeepSeek
+..\.venv\Scripts\python.exe -m shopsteward_pt.strategy_eval stage --stage read --cases datasets/ops-sourcing-v1 --out <结果目录> --partition evo-val --model deepseek-flash --base-url https://api.deepseek.com --api-mode chat_completions --key-file <DeepSeek 密钥文件>
+```
+
+`--bundle` 选这个环节的文本版本。结果写入 `stage-<环节>.jsonl` 和 `stage-<环节>-runs.jsonl`，汇总在 `stage-summary.md`，其中“Failures”一列按失败种类计数。单次运行有波动，比较两个版本时每个场景至少重复 3 次。
+
+演化某个环节的文本用 `evolve --stage`（必须用 `.venv-evo`）。验证集的每一项默认重复 3 次；任务模型和反思模型可以在不同的服务上：
+
+```powershell
+..\.venv-evo\Scripts\python.exe -m shopsteward_pt.strategy_eval evolve --stage explain --cases datasets/ops-sourcing-v1 --max-metric-calls 200 --revision <新版本名> --run-dir <新的运行目录> --model gpt-6-luna --base-url https://api.openai.com/v1 --api-mode responses --max-output-tokens 16000 --key-file <OpenAI 密钥文件> --reflection-model deepseek-v4-pro --reflection-base-url https://api.deepseek.com --reflection-api-mode chat_completions --reflection-key-file <DeepSeek 密钥文件>
+```
+
 读 `review` 的汇总表时注意：“Decision right”是求解器用模型的报价卡得出的推荐与标准推荐一致的场景数；“Cards safe”是求解器会读到的字段全部正确的报价卡数；“Truncated calls”是输出额度用完的调用数，这类失败不是读错。每条记录带提示词哈希，改了指令或输出约定之后的结果会单独成行，不要跨行比较。
 
 ## 结果文件

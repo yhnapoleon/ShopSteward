@@ -169,11 +169,13 @@ class BoundedCaseRunner:
                 "missing": [],
                 "followup_requests": [],
             }
+            answer, unsupplied = None, None
             try:
                 result = await runtime.execute(run_id, [{"role": "user", "content": spec.question}])
                 if result["status"] == "WAITING_INPUT":
                     return {**base, "status": "needs_input", "missing": [result["question"]]}
-                parsed = _parse(result["content"])
+                answer = result["content"]
+                parsed = _parse(answer)
                 if not isinstance(parsed, dict) or set(parsed) - {
                     "claims",
                     "missing",
@@ -203,6 +205,12 @@ class BoundedCaseRunner:
                             isinstance(ref, str) and ref in evidence for ref in claim["support"]
                         )
                     ):
+                        support = claim.get("support") if isinstance(claim, dict) else None
+                        unsupplied = [
+                            str(ref)
+                            for ref in (support if isinstance(support, list) else [])
+                            if not (isinstance(ref, str) and ref in evidence)
+                        ]
                         raise ValueError("unsupported_claim")
                     # Typed metadata drives the code-side join; unknown values fail closed.
                     if (
@@ -220,11 +228,15 @@ class BoundedCaseRunner:
                     "context_manifest": result["context_manifest"],
                 }
             except (RuntimeFailure, ValueError) as exc:
-                return {
+                failed = {
                     **base,
                     "status": "failed",
                     "missing": [exc.code if isinstance(exc, RuntimeFailure) else str(exc)],
                 }
+                if answer is not None:
+                    # Kept as written: a rejection that cannot be read back cannot be diagnosed.
+                    failed["rejected"] = {"answer": answer[:4000], "unsupplied": unsupplied or []}
+                return failed
 
     async def run(self, specs, *, depth=0):
         specs = [SubtaskSpec.model_validate(spec) for spec in specs]
