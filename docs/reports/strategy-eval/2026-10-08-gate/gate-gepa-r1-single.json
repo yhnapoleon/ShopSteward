@@ -1,0 +1,31 @@
+{
+  "strategy": "single",
+  "baseline": "seed",
+  "candidate": "gepa-r1",
+  "paired_runs": 24,
+  "task_success": {
+    "baseline": 21,
+    "candidate": 24
+  },
+  "mean_score": {
+    "baseline": 0.875,
+    "candidate": 1.0
+  },
+  "mean_model_calls": {
+    "baseline": 2,
+    "candidate": 2
+  },
+  "gains": [
+    "gate-moq_pack-04",
+    "gate-unverified_execution-15",
+    "gate-unverified_execution-23"
+  ],
+  "losses": [],
+  "checks": {
+    "no_critical_failure_or_contradiction": true,
+    "no_observed_loss": true,
+    "improved": true
+  },
+  "verdict": "pass",
+  "note": "Demonstration-level paired check on synthetic cases; not a statistical proof."
+}
