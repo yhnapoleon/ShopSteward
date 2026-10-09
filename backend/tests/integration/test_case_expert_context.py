@@ -27,6 +27,7 @@ async def test_case_expert_hook_persists_shared_usage_and_replay_does_not_call_a
     async with environment(db) as (seed, client):
         settings = client._transport.app.state.settings
         settings.agent_case_experts_enabled = True
+        settings.agent_case_strategy = "adaptive_multi"  # these tests cover the expert ledger
         settings.agent_case_model = "test-model"
         settings.agent_api_key_file = "test-provider-does-not-read-this"
         settings.agent_max_input_tokens = 48000
@@ -75,6 +76,7 @@ async def test_targeted_followup_is_charged_to_the_same_durable_ledger(db, monke
     async with environment(db) as (seed, client):
         settings = client._transport.app.state.settings
         settings.agent_case_experts_enabled = True
+        settings.agent_case_strategy = "adaptive_multi"  # these tests cover the expert ledger
         settings.agent_case_model = "test-model"
         settings.agent_api_key_file = "test-provider-does-not-read-this"
         settings.agent_max_input_tokens = 48000
@@ -110,6 +112,7 @@ async def test_changed_case_revision_cannot_publish_old_expert_results(db, monke
     async with environment(db) as (seed, client):
         settings = client._transport.app.state.settings
         settings.agent_case_experts_enabled = True
+        settings.agent_case_strategy = "adaptive_multi"  # these tests cover the expert ledger
         settings.agent_case_model = "test-model"
         settings.agent_api_key_file = "unused-fake-path"
         settings.agent_max_input_tokens = 48000
@@ -176,6 +179,7 @@ async def test_case_cancel_or_permission_revocation_stops_experts_but_keeps_acco
     async with environment(db) as (seed, client):
         settings = client._transport.app.state.settings
         settings.agent_case_experts_enabled = True
+        settings.agent_case_strategy = "adaptive_multi"  # these tests cover the expert ledger
         settings.agent_case_model = "test-model"
         settings.agent_api_key_file = "unused-test-path"
         settings.agent_max_input_tokens = 48000

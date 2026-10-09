@@ -35,7 +35,7 @@
 | `AGENT_MODEL_TIMEOUT_SECONDS` | 默认 30 秒 |
 | `AGENT_CASE_EXPERTS_ENABLED` | 默认 `false`；启用后 Case 分析提交后运行解释专家 |
 | `AGENT_CASE_MODEL` / `AGENT_CASE_API_MODE` | 单独显式配置 Case 模型；协议默认 `responses` |
-| `AGENT_CASE_STRATEGY` | 协作策略，默认 `adaptive_multi`；可选 `fixed` / `single` / `static_multi`，对应实验编号 R0–R3 |
+| `AGENT_CASE_STRATEGY` | 协作策略，默认 `fixed`（2026-10-09 起，依据见[评测与演化报告](../reports/2026-10-08-strategy-evaluation.md)）；可选 `single` / `static_multi` / `adaptive_multi`，对应实验编号 R0–R3 |
 | `AGENT_CASE_TEXT_BUNDLE` | 专家提问所用的文本版本，默认 `seed`；版本文件带哈希且不可覆盖，演化与评测见[协作策略评测说明](strategy-evaluation.md) |
 | `AGENT_CASE_ROLE_MODELS` | 可选 JSON，如 `{"evidence":"<模型ID>"}`；按角色指定模型并在运行开始时冻结，未列出的角色用 `AGENT_CASE_MODEL` |
 
@@ -43,10 +43,10 @@
 
 专家只读取当前 Case 冻结的授权证据/求解器输出。最多两个并发，委派深度一；根任务共享 14 次模型调用、28 次工具调用、150 秒预算，四种策略用同一份预算、同一份证据和同一输出格式（2026-10-08 接入）：
 
-- `fixed`（R0）：一次无业务工具的说明调用。
+- `fixed`（R0，默认）：一次无业务工具的说明调用。
 - `single`（R1）：一个 Agent 持有全部专家工具，可用完整根预算，不委派。
 - `static_multi`（R2）：三个专家全部启动，不补查。
-- `adaptive_multi`（R3，默认）：先 evidence、impact；多报价或求解器没有可行补购时加 options；之后最多一次定向补查。补查优先处理代码检出的适用性分歧，其次是专家提出的第一条请求，其余请求记入 `followup.unserved`，不循环。
+- `adaptive_multi`（R3，2026-10-09 之前的默认）：先 evidence、impact；多报价或求解器没有可行补购时加 options；之后最多一次定向补查。补查优先处理代码检出的适用性分歧，其次是专家提出的第一条请求，其余请求记入 `followup.unserved`，不循环。
 
 结果由代码合并（`expert_analysis.merged`）：多个专家重复同一说法只算一份依据；`calculation` 类说法未引用求解器方案 ID 的不采信；同一对象的适用性结论相互矛盾时，只有那一次补查能裁决，否则两边都不发布并标为部分完成；专家的澄清请求合并成一个问题。路由只看结构化事实（报价数、可行补购数），不看措辞。每次发送前持久化预算/请求，取消、改口或撤权阻止后续调用；已发送调用继续入账。未知 usage/cost 不记为零。专家输出不改变求解器数值或采购许可。
 

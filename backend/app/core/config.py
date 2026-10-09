@@ -66,10 +66,8 @@ class Settings(BaseSettings):
     agent_case_model: str | None = None
     agent_case_api_mode: Literal["chat_completions", "responses"] = "responses"
     # Every strategy shares evidence, solver output and root budget; research runs
-    # may force another one per call.
-    agent_case_strategy: Literal["fixed", "single", "static_multi", "adaptive_multi"] = (
-        "adaptive_multi"
-    )
+    # may force another one per call. One call did best in the 2026-10-08 comparison.
+    agent_case_strategy: Literal["fixed", "single", "static_multi", "adaptive_multi"] = "fixed"
     # Optional role -> model ID, frozen per run; other roles use AGENT_CASE_MODEL.
     agent_case_role_models: dict[
         Literal["evidence", "impact", "options", "single", "fixed"], str

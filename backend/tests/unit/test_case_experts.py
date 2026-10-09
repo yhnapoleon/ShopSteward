@@ -52,7 +52,7 @@ async def test_case_experts_share_frozen_solver_evidence_without_changing_propos
         case_id="case",
         revision_id="1",
         run_id="run",
-        settings=Settings(agent_case_experts_enabled=True),
+        settings=Settings(agent_case_experts_enabled=True, agent_case_strategy="adaptive_multi"),
         proposal=proposal,
         model=Model(),
     )
@@ -111,6 +111,23 @@ async def test_each_strategy_runs_on_the_same_evidence_and_root_budget(strategy,
 
 
 @pytest.mark.asyncio
+async def test_default_strategy_is_one_fixed_call():
+    from app.agent_bridge.context_cases import analyze_case_experts
+
+    result = await analyze_case_experts(
+        recovery_snapshot("b"),
+        case_id="case",
+        revision_id="1",
+        run_id="run",
+        settings=Settings(agent_case_experts_enabled=True),
+        proposal={"id": "proposal", "candidates": [{"id": "b", "quantity": 20, "feasible": True}]},
+        model=Agreeable(),
+    )
+    assert (result["strategy"], result["routing"]["forced"]) == ("fixed", False)
+    assert result["budget"]["model_calls"] == 1
+
+
+@pytest.mark.asyncio
 async def test_options_expert_joins_only_when_the_solver_found_no_feasible_purchase():
     from app.agent_bridge.context_cases import analyze_case_experts
 
@@ -126,7 +143,7 @@ async def test_options_expert_joins_only_when_the_solver_found_no_feasible_purch
         case_id="case",
         revision_id="1",
         run_id="run",
-        settings=Settings(agent_case_experts_enabled=True),
+        settings=Settings(agent_case_experts_enabled=True, agent_case_strategy="adaptive_multi"),
         proposal=proposal,
         model=Agreeable(),
     )
