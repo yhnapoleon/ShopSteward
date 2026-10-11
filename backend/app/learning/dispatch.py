@@ -10,6 +10,8 @@ from app.learning.models import BatchRow, EpisodeRow, LearningOutbox, LearningPo
 from app.learning.policy import trigger_candidates
 from app.scheduling.repository import enqueue
 
+PAGE = 100  # policies locked per query
+
 
 def current_owner(settings, pol):
     for principal in settings.auth_tokens:
@@ -23,6 +25,30 @@ def current_owner(settings, pol):
     return None
 
 
+async def _policies(session):
+    """Every enabled policy not locked elsewhere, one page at a time.
+
+    One LIMIT with a fixed order would serve the same first page on every call
+    and never reach the policies after it.
+    """
+    last = ""
+    while True:
+        page = list(
+            await session.scalars(
+                select(LearningPolicyRow)
+                .where(LearningPolicyRow.mode != "off", LearningPolicyRow.id > last)
+                .order_by(LearningPolicyRow.id)
+                .with_for_update(skip_locked=True)
+                .limit(PAGE)
+            )
+        )
+        for pol in page:
+            yield pol
+        if len(page) < PAGE:
+            return
+        last = page[-1].id
+
+
 async def enqueue_due(session, *, settings):
     if not settings.learning_enabled:
         return []
@@ -33,17 +59,8 @@ async def enqueue_due(session, *, settings):
     day = now.astimezone(ZoneInfo("Asia/Shanghai")).replace(
         hour=0, minute=0, second=0, microsecond=0
     )
-    policies = list(
-        await session.scalars(
-            select(LearningPolicyRow)
-            .where(LearningPolicyRow.mode != "off")
-            .order_by(LearningPolicyRow.id)
-            .with_for_update(skip_locked=True)
-            .limit(100)
-        )
-    )
     enqueued = []
-    for pol in policies:
+    async for pol in _policies(session):
         if not current_owner(settings, pol):
             continue
         count = await session.scalar(

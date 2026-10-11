@@ -7,11 +7,41 @@ from test_operations import initialize
 pytestmark = pytest.mark.integration
 
 
+async def test_dispatch_reaches_every_enabled_policy_not_only_the_first_page(db, monkeypatch):
+    from app.learning import dispatch
+    from app.learning.models import BatchRow
+    from app.learning.outbox import append
+    from app.learning.repository import scope_id
+    from app.learning.schemas import LearningScope
+
+    seed = fresh_seed()
+    await initialize(db, seed)
+    scopes = [
+        LearningScope(principal_id=principal, store_id=seed["store_id"])
+        for principal in ("admin", "operator")
+    ]
+    cfg = settings(db, seed, learning_enabled=True, learning_generation_enabled=True)
+    async with db.session() as session, session.begin():
+        for scope in scopes:
+            await enable(session, scope)
+            for i in range(3):
+                e = event(f"{scope.principal_id}-{i}")
+                e.payload = {"business_date": f"2026-10-0{1 + i % 2}"}
+                await append(session, scope=scope, event=e)
+    # With one policy per page, a fixed first page could serve at most one of the two.
+    monkeypatch.setattr(dispatch, "PAGE", 1)
+    async with db.session() as session, session.begin():
+        ids = await dispatch.enqueue_due(session, settings=cfg)
+        served = {(await session.get(BatchRow, identifier)).scope_id for identifier in ids}
+        assert {scope_id(scope) for scope in scopes} <= served
+
+
 async def test_dispatch_dedupes_and_worker_commits_only_drafts(db):
     from app.learning.dispatch import enqueue_due
     from app.learning.jobs import make_handlers
     from app.learning.models import AssetRevisionRow, BatchRow
     from app.learning.outbox import append
+    from app.learning.repository import scope_id
     from app.learning.schemas import LearningScope
     from app.scheduling.models import Job
     from app.scheduling.runner import Runner
@@ -27,7 +57,12 @@ async def test_dispatch_dedupes_and_worker_commits_only_drafts(db):
             e.payload = {"business_date": f"2026-10-0{1 + i % 2}"}
             await append(session, scope=scope, event=e)
     async with db.session() as session, session.begin():
-        ids = await enqueue_due(session, settings=cfg)
+        # The test database keeps other tests' policies; count this scope's batches only.
+        ids = [
+            identifier
+            for identifier in await enqueue_due(session, settings=cfg)
+            if (await session.get(BatchRow, identifier)).scope_id == scope_id(scope)
+        ]
         assert len(ids) == 1
         assert await enqueue_due(session, settings=cfg) == []
         batch = await session.get(BatchRow, ids[0])
