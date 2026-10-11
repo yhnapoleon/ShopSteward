@@ -498,9 +498,16 @@ def main(argv=None):
     stage.add_argument("--fake", action="store_true", help="offline true answers, no network")
     gate = commands.add_parser("gate", help="paired release check of a candidate text version")
     gate.add_argument("--out", required=True)
-    gate.add_argument("--strategy", required=True)
+    gate.add_argument("--strategy", help="case strategies: compare the runs of this strategy")
+    gate.add_argument(
+        "--stage", choices=["explain", "read"], help="sourcing loop: compare this stage's runs"
+    )
+    gate.add_argument("--loop-out", help="with --stage: folder with whole-loop runs of both texts")
+    gate.add_argument("--target", type=float, default=0.10, help="with --stage: pass-rate gain")
     gate.add_argument("--baseline", default="seed")
     gate.add_argument("--candidate", required=True)
+    ledger = commands.add_parser("ledger", help="count every recorded sourcing failure by kind")
+    ledger.add_argument("dirs", nargs="+", help="result folders of `source` and `stage` runs")
     args = parser.parse_args(argv)
 
     if args.command == "generate":
@@ -563,14 +570,49 @@ def main(argv=None):
         return _source(args, parser)
     if args.command == "stage":
         return _stage(args, parser)
-    if args.command == "gate":
-        verdict = gate_report(
-            load_records(args.out),
-            strategy=args.strategy,
-            baseline=args.baseline,
-            candidate=args.candidate,
+    if args.command == "ledger":
+        from . import endtoend, stages
+
+        rows = stages.ledger(
+            [record for folder in args.dirs for record in endtoend.load_records(folder)],
+            [
+                record
+                for folder in args.dirs
+                for stage in stages.STAGES
+                for record in stages.load_records(folder, stage)
+            ],
         )
-        Path(args.out, f"gate-{args.candidate}-{args.strategy}.json").write_text(
+        Path(args.dirs[0], "failure-ledger.json").write_text(
+            json.dumps(rows, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"
+        )
+        Path(args.dirs[0], "failure-ledger.md").write_text(
+            stages.ledger_markdown(rows), encoding="utf-8", newline="\n"
+        )
+        print(stages.ledger_markdown(rows))
+        return 0
+    if args.command == "gate":
+        if bool(args.strategy) == bool(args.stage):
+            parser.error("give exactly one of --strategy or --stage")
+        if args.stage:
+            from . import endtoend, stages
+
+            verdict = stages.release_report(
+                stages.load_records(args.out, args.stage),
+                stage=args.stage,
+                baseline=args.baseline,
+                candidate=args.candidate,
+                loop=endtoend.load_records(args.loop_out) if args.loop_out else None,
+                target=args.target,
+            )
+        else:
+            verdict = gate_report(
+                load_records(args.out),
+                strategy=args.strategy,
+                baseline=args.baseline,
+                candidate=args.candidate,
+            )
+        name = f"gate-{args.candidate}-{args.stage or args.strategy}.json"
+        Path(args.out, name).write_text(
             json.dumps(verdict, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"
         )
         print(json.dumps(verdict, ensure_ascii=False, indent=2))

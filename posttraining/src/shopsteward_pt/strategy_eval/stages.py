@@ -315,3 +315,133 @@ def markdown(rows):
             f"| {failures or '—'} | {row['mean_model_calls']} | {row['median_latency_ms']} |"
         )
     return "\n".join(lines) + "\n"
+
+
+def release_report(records, *, stage, baseline, candidate, loop=None, target=0.10):
+    """Paired release check of a candidate text version for one stage, on the gate partition.
+
+    Demonstration-level: it compares counts on synthetic worlds and is no statistical proof.
+    `records` are stage records of both versions; `loop` holds whole-loop records of both
+    versions when the loop was run, so that a gain in one stage cannot hide a loss elsewhere.
+    """
+
+    def runs(text):
+        chosen = {}
+        for record in records:
+            if (record["stage"], record["partition"], record["text"]) == (stage, "gate", text):
+                # The item and the model setup; the text version and replicate come after.
+                chosen.setdefault(record["run_id"].rsplit(":", 2)[0], []).append(record)
+        return chosen
+
+    def leaning(group):
+        """+1 if most replicates passed, -1 if most failed, 0 on a tie."""
+        passed = sum(record["passed"] for record in group)
+        return (passed * 2 > len(group)) - (passed * 2 < len(group))
+
+    def tally(groups, items):
+        chosen = [record for item in items for record in groups[item]]
+        return {"passed": sum(record["passed"] for record in chosen), "runs": len(chosen)}
+
+    old, new = runs(baseline), runs(candidate)
+    items = sorted(set(old) & set(new))
+    if not items:
+        raise ValueError("no paired gate runs of this stage for these text versions")
+    before, after = tally(old, items), tally(new, items)
+    losses = [item for item in items if leaning(old[item]) > 0 > leaning(new[item])]
+    gains = [item for item in items if leaning(old[item]) < 0 < leaning(new[item])]
+    gain = after["passed"] / after["runs"] - before["passed"] / before["runs"]
+    checks = {
+        "no_contradiction": not any(r.get("contradictions") for i in items for r in new[i]),
+        "no_majority_loss": not losses,
+        "improved": gain >= target,
+    }
+    report = {
+        "stage": stage,
+        "baseline": baseline,
+        "candidate": candidate,
+        "paired_items": len(items),
+        "passed": {"baseline": before, "candidate": after},
+        "pass_rate_gain": round(gain, 3),
+        "target_gain": target,
+        "gains": gains,
+        "losses": losses,
+    }
+    if loop is not None:
+        key = "explain" if stage == "explain" else "review"
+
+        def whole(text):
+            rows = [
+                r
+                for r in loop
+                if r["partition"] == "gate" and (r.get("text") or {}).get(key) == text
+            ]
+            if not rows:
+                raise ValueError(f"no whole-loop gate runs with {key} text {text}")
+            names = ("request", "reviewed", "cards", "decision", "explanation")
+            return {
+                "runs": len(rows),
+                "success": sum(r["success"] for r in rows),
+                **{name: sum(r["stages"][name] for r in rows) for name in names},
+            }
+
+        a, b = whole(baseline), whole(candidate)
+        report["loop"] = {"baseline": a, "candidate": b}
+        # Rates, because the two versions need not have the same number of loop runs.
+        checks["loop_not_worse"] = all(
+            b[name] / b["runs"] >= a[name] / a["runs"] for name in a if name != "runs"
+        )
+    return {
+        **report,
+        "checks": checks,
+        "verdict": "pass" if all(checks.values()) else "fail",
+        "note": "Demonstration-level paired check on synthetic worlds; not a statistical proof.",
+    }
+
+
+def ledger(loop_records=(), stage_records=()):
+    """Every failure on record, counted by where it happened and of what kind.
+
+    New kinds of failure here are what the next, harder dataset should be built from.
+    """
+    counts = {}
+
+    def note(where, kind, record, variant=""):
+        key = (where, kind, record["family"], variant or "", record["model"])
+        counts[key] = counts.get(key, 0) + 1
+
+    for record in stage_records:
+        for kind in [] if record["passed"] else failure_kinds(record) or ["other"]:
+            note(record["stage"], kind, record, record.get("variant"))
+    for record in loop_records:
+        for card in record["cards"]:
+            if not card["attempts"]:
+                continue
+            rejected = card["attempts"][-1]["problems"]
+            if rejected:
+                note("loop:read", "rejected:" + ",".join(rejected), record, card["variant"])
+            elif not card["decision_safe"]:
+                for name in card["wrong"]:
+                    note("loop:read", name, record, card["variant"])
+        stages = record["stages"]
+        if not stages["explanation"]:
+            kinds = {
+                item.split(":")[0] + "-unstated" for item in record["explanation_missing"] or []
+            }
+            kinds |= {"contradiction"} if record["contradictions"] else set()
+            for kind in sorted(kinds) or ["no-answer"]:
+                note("loop:explain", kind, record)
+        if stages["reviewed"] and stages["cards"] and not stages["decision"]:
+            note("loop:decide", "wrong-recommendation", record)
+    names = ("where", "failure", "family", "variant", "model", "count")
+    rows = [dict(zip(names, (*key, count), strict=True)) for key, count in counts.items()]
+    return sorted(rows, key=lambda row: (-row["count"], *(row[name] for name in names[:5])))
+
+
+def ledger_markdown(rows):
+    lines = ["| Where | Failure | Family | Supplier variant | Models | Count |", "|" + "---|" * 6]
+    for row in rows:
+        lines.append(
+            f"| {row['where']} | {row['failure']} | {row['family']} | {row['variant'] or '—'} "
+            f"| {row['model']} | {row['count']} |"
+        )
+    return "\n".join(lines) + "\n"

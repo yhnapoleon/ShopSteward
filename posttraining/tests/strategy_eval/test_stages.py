@@ -175,3 +175,115 @@ def test_a_batch_is_resumable_and_its_summary_names_the_repeated_failure(worlds,
     printed = capsys.readouterr().out
     suppliers = len(worlds[0]["suppliers"])
     assert f"| read | oracle-fake | seed | smoke | {suppliers}/{suppliers} | 1.0 |" in printed
+
+
+def test_a_text_version_is_released_only_on_a_paired_gain_without_losses():
+    from shopsteward_pt.strategy_eval.stages import release_report
+
+    def record(item, text, replicate, passed, contradictions=()):
+        return {
+            "run_id": f"{item}:explain:fake:{text}:{replicate}",
+            "stage": "explain",
+            "partition": "gate",
+            "text": text,
+            "passed": bool(passed),
+            "contradictions": list(contradictions),
+        }
+
+    def runs(text, outcomes):
+        return [
+            record(item, text, replicate, passed)
+            for item, results in outcomes.items()
+            for replicate, passed in enumerate(results, 1)
+        ]
+
+    seed = runs("seed", {"a": [1, 0, 0], "b": [1, 1, 0], "c": [1, 1, 1]})
+    better = runs("r1", {"a": [1, 1, 1], "b": [1, 1, 1], "c": [1, 1, 1]})
+    report = release_report(seed + better, stage="explain", baseline="seed", candidate="r1")
+    assert report["verdict"] == "pass" and report["gains"] == ["a:explain:fake"]
+    assert report["passed"] == {
+        "baseline": {"passed": 6, "runs": 9},
+        "candidate": {"passed": 9, "runs": 9},
+    }
+    # More passes overall do not excuse a world that used to pass and now mostly fails.
+    traded = runs("r2", {"a": [1, 1, 1], "b": [1, 1, 1], "c": [1, 0, 0]})
+    report = release_report(seed + traded, stage="explain", baseline="seed", candidate="r2")
+    assert report["losses"] == ["c:explain:fake"] and report["verdict"] == "fail"
+    assert report["checks"] == {
+        "no_contradiction": True,
+        "no_majority_loss": False,
+        "improved": True,
+    }
+    wrong = [*better[:-1], record("c", "r1", 3, False, ["candidate:X=recommended"])]
+    report = release_report(seed + wrong, stage="explain", baseline="seed", candidate="r1")
+    assert report["checks"]["no_contradiction"] is False and report["verdict"] == "fail"
+
+    def loop(text, explained, decided):
+        stages = {"request": 1, "reviewed": 1, "cards": 1, "decision": decided}
+        return {
+            "partition": "gate",
+            "text": {"explain": text, "review": "seed"},
+            "success": bool(explained and decided),
+            "stages": {**stages, "explanation": explained},
+        }
+
+    whole = [loop("seed", 0, 1), loop("seed", 1, 1), loop("r1", 1, 1), loop("r1", 1, 0)]
+    report = release_report(
+        seed + better, stage="explain", baseline="seed", candidate="r1", loop=whole
+    )
+    # The explanation got better, but the loop now decides wrongly more often.
+    assert report["checks"]["loop_not_worse"] is False and report["verdict"] == "fail"
+    with pytest.raises(ValueError, match="no paired gate runs"):
+        release_report(seed, stage="explain", baseline="seed", candidate="r9")
+
+
+def test_the_ledger_counts_failures_of_the_loop_and_of_single_stages_by_kind(worlds, tmp_path):
+    from shopsteward_pt.strategy_eval import endtoend, stages
+    from shopsteward_pt.strategy_eval.cli import main
+
+    world = worlds[0]
+    supplier = priced(world)
+
+    def silent(answer):
+        return {**answer, "claims": [c for c in answer["claims"] if c["subject"]["type"] != "gap"]}
+
+    def misread(card):
+        if card["supplier_id"] != supplier["supplier_id"]:
+            return card
+        offer = {**card["offer"], "unit_price_minor": card["offer"]["unit_price_minor"] + 100}
+        return {**card, "offer": offer}
+
+    class Loop:
+        """True answers, except one misread price and an explanation without gap claims."""
+
+        def __init__(self):
+            self.desk = endtoend.OracleDesk([world])
+
+        async def complete(self, messages, tools, **kwargs):
+            reply = await self.desk.complete(messages, tools, **kwargs)
+            if not reply["content"]:
+                return reply
+            reading = any(t["function"]["name"] == "read_supplier_document" for t in tools)
+            change = misread if reading else silent
+            return {**reply, "content": json.dumps(change(json.loads(reply["content"])))}
+
+    asyncio.run(endtoend.run_batch([world], model=Loop(), profile=profile(), out=tmp_path))
+    asyncio.run(
+        stages.run_batch(
+            [world],
+            stage="explain",
+            bundle=bundles()["explain"],
+            model=Altered([world], silent),
+            profile=profile(),
+            out=tmp_path,
+        )
+    )
+    rows = stages.ledger(endtoend.load_records(tmp_path), stages.load_records(tmp_path, "explain"))
+    found = {(row["where"], row["failure"], row["variant"]): row["count"] for row in rows}
+    assert found[("loop:read", "unit_price_minor", supplier["variant"])] == 1
+    assert found[("loop:explain", "gap-unstated", "")] == 1
+    assert found[("explain", "gap-unstated", "")] == 1
+    assert all(row["family"] == world["family"] for row in rows)
+    assert main(["ledger", str(tmp_path)]) == 0
+    written = (tmp_path / "failure-ledger.md").read_text(encoding="utf-8")
+    assert "| loop:read | unit_price_minor |" in written
