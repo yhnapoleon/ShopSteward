@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { joinText, t as tr } from '~/i18n'
 import { api, query, ApiFailure } from '~/utils/api'
 import type { Schema } from '~/types/models'
 import { sourceIdentity, sourceLabel } from '~/utils/agent'
@@ -212,56 +213,65 @@ const location = (v: unknown) => {
     .filter(([k, x]) => labels[k] && x != null && (!Array.isArray(x) || x.length))
     .map(
       ([k, x]) =>
-        `${labels[k]} ${Array.isArray(x) ? x.join(k === 'section_path' ? ' / ' : '–') : String(x)}`,
+        `${tr(labels[k])} ${Array.isArray(x) ? x.join(k === 'section_path' ? ' / ' : '–') : String(x)}`,
     )
   return parts.join(' · ') || '详见下方版本定位记录'
 }
 const value = (v: unknown) => (typeof v === 'object' ? JSON.stringify(v) : String(v))
 </script>
 <template>
-  <div v-if="items.length" class="agent-references" aria-label="本轮获取的来源">
+  <div v-if="items.length" class="agent-references" :aria-label="tr('本轮获取的来源')">
     <details v-for="r in items" :key="sourceIdentity(r)" class="agent-source">
       <summary>
-        <AppIcon name="file-text" />{{ sourceLabel(r)
-        }}<span v-if="r.version_id"> · 有版本记录</span><AppIcon name="chevron-down" />
+        <AppIcon name="file-text" />{{ tr(sourceLabel(r))
+        }}<span v-if="r.version_id">{{ tr('· 有版本记录') }}</span
+        ><AppIcon name="chevron-down" />
       </summary>
       <div class="agent-source-body">
-        <p>本轮获取的来源，供核对使用。</p>
+        <p>{{ tr('本轮获取的来源，供核对使用。') }}</p>
         <details class="tool-technical">
-          <summary>版本定位记录</summary>
+          <summary>{{ tr('版本定位记录') }}</summary>
           <dl>
             <template v-for="(label, field) in fields" :key="field"
               ><div v-if="r[field] != null">
-                <dt>{{ label }}</dt>
+                <dt>{{ tr(label) }}</dt>
                 <dd>{{ value(r[field]) }}</dd>
               </div></template
             >
           </dl>
         </details>
         <button v-if="r.chunk_id && runId" class="text-link" @click="open(r, $event)">
-          打开当时原文片段
+          {{ tr('打开当时原文片段') }}
         </button>
-        <p v-else-if="r.chunk_id">缺少运行关联，无法核对历史原文。</p>
+        <p v-else-if="r.chunk_id">{{ tr('缺少运行关联，无法核对历史原文。') }}</p>
       </div>
     </details>
     <dialog
       ref="dialog"
       class="evidence-dialog"
-      aria-label="历史原文片段"
+      :aria-label="tr('历史原文片段')"
       @close="closed"
       @click="$event.target === dialog && dialog?.close()"
     >
       <div class="evidence-dialog-content">
         <header>
-          <h2>历史原文片段</h2>
-          <button class="text-link" autofocus @click="dialog?.close()">关闭原文</button>
+          <h2>{{ tr('历史原文片段') }}</h2>
+          <button class="text-link" autofocus @click="dialog?.close()">{{ tr('关闭原文') }}</button>
         </header>
-        <p v-if="loading" role="status">正在核对历史版本与当前访问权限…</p>
-        <p v-if="error" role="alert">{{ error }}</p>
+        <p v-if="loading" role="status">{{ tr('正在核对历史版本与当前访问权限…') }}</p>
+        <p v-if="error" role="alert">{{ tr(error) }}</p>
         <template v-if="excerpt">
           <h3>{{ excerpt.title }}</h3>
-          <p>原件 v{{ excerpt.version_no }} · 本轮获取的来源，不代表逐句引用或当前有效条款。</p>
-          <p>原文位置：{{ location(excerpt.reference.locator) }}</p>
+          <p>
+            {{
+              joinText([
+                tr('原件 v'),
+                tr(excerpt.version_no),
+                tr('· 本轮获取的来源，不代表逐句引用或当前有效条款。'),
+              ])
+            }}
+          </p>
+          <p>{{ joinText([tr('原文位置：'), tr(location(excerpt.reference.locator))]) }}</p>
           <pre class="evidence-text">{{ excerpt.text }}</pre>
           <button
             class="text-link evidence-download"
@@ -269,16 +279,16 @@ const value = (v: unknown) => (typeof v === 'object' ? JSON.stringify(v) : Strin
             @click="downloadOriginal"
           >
             <AppIcon name="download" />{{
-              downloading ? '正在核对并下载…' : `下载原件 v${excerpt.version_no}`
+              tr(downloading ? '正在核对并下载…' : `下载原件 v${excerpt.version_no}`)
             }}
           </button>
-          <p v-if="downloadStatus" role="status">{{ downloadStatus }}</p>
-          <p v-if="excerpt.truncated">本片段已截断，并非完整原文。</p>
+          <p v-if="downloadStatus" role="status">{{ tr(downloadStatus) }}</p>
+          <p v-if="excerpt.truncated">{{ tr('本片段已截断，并非完整原文。') }}</p>
           <details>
-            <summary>核对版本与内容校验</summary>
+            <summary>{{ tr('核对版本与内容校验') }}</summary>
             <dl>
               <div v-for="(v, k) in excerpt.reference" :key="k">
-                <dt>{{ fields[k] || k }}</dt>
+                <dt>{{ tr(fields[k] || k) }}</dt>
                 <dd>{{ value(v) }}</dd>
               </div>
             </dl>

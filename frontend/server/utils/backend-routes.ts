@@ -294,6 +294,14 @@ export const backendRoutes = [
   ],
   [
     "POST",
+    "/api/v1/stores/{store_id}/simulations"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}/results/{result_id}"
+  ],
+  [
+    "POST",
     "/api/v1/work-items"
   ],
   [
@@ -319,6 +327,38 @@ export const backendRoutes = [
   [
     "POST",
     "/api/v1/work-items/{item_id}/control"
+  ],
+  [
+    "POST",
+    "/api/v1/work-items/{item_id}/quotation-files"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}/quotation-files"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}/quotation-results"
+  ],
+  [
+    "POST",
+    "/api/v1/work-items/{item_id}/quotation-results"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}/quotation-rule"
+  ],
+  [
+    "POST",
+    "/api/v1/work-items/{item_id}/quotation-rule"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}/quotation-files/{file_id}/download"
+  ],
+  [
+    "GET",
+    "/api/v1/work-items/{item_id}/quotation-results/{result_id}/download"
   ],
   [
     "POST",

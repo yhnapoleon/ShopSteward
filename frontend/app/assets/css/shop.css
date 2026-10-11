@@ -333,6 +333,13 @@ p {
   margin-top: 8px;
   max-width: 650px;
 }
+
+.page-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
 .quiet-button {
   display: flex;
   align-items: center;

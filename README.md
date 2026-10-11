@@ -2,7 +2,7 @@
 
 ShopSteward 围绕门店备货，把经营数据、七日需求预测、方案比较、人工采购确认、执行回执和 Agent 对话放在同一工作区。后端负责库存、现金与采购规则；Agent 查询证据、解释方案并协助试算；模拟器提供可重复的经营事件与外部执行结果。
 
-**当前工作区：2026-10-02，下一阶段核心实现。** 在原 v6 预测与任务工作区基础上增加恢复 Case、Context Engineering、可选受限专家协作及独立评测口径。业务数据库迁移头为 **`0015_operations_cases`**。实现范围和验证结果见[本轮交付说明](docs/reports/2026-10-02-next-phase-delivery.md)，启用步骤见[下一阶段运行手册](docs/runbooks/next-phase-agent-recovery.md)。
+**当前实现（2026-10-11）：** 在原 v6 预测与任务工作区基础上，本分支同时包含两条线。其一，新事项处理者与服务端报价整理、版本化纠正和跨事项规则复用，启用步骤与验证边界见[事项与报价接入](docs/work-intake-and-quotations.md)。其二，恢复 Case、Context Engineering、可选受限专家协作及独立评测口径，实现范围见[交付说明](docs/reports/2026-10-02-next-phase-delivery.md)，启用步骤见[下一阶段运行手册](docs/runbooks/next-phase-agent-recovery.md)。业务代码要求迁移头 **`0017_cases_quotations_merge`**。
 
 [当前能力](#当前能力与边界) · [项目架构](#项目架构) · [首次安装](#首次安装) · [启动服务](#启动服务) · [可选能力](#启用可选能力) · [更新与验证](#更新与验证) · [文档导航](#文档导航)
 
@@ -18,7 +18,10 @@ ShopSteward 围绕门店备货，把经营数据、七日需求预测、方案�
 | 新版离线评测 | D1–D6 / Q1–Q6、关键失败覆盖、三态结果、证据绑定、未知用量及完整分母 | v0 不变；当前九个示例用于开发验证，正式 CE/OPS 与人工校准仍待进行 |
 | v6 七日预测 | 四组件推理、300 个支持系列、历史示例、观察历史导入、不可变预测证据、前端面板、Agent `get_forecast` | 模型包随 Git 提供，无需重训；历史演示标注“模型推演，仅供参考”，不能启用为实际规划需求 |
 | 知识检索 | 文档/版本/原件管理、解析索引、发布与重试、检索和证据展开、Agent 文档工具 | 检索需独立 Knowledge API/worker、PostgreSQL、OpenSearch；云 embedding/rerank 为可选配置 |
-| 主动事项承接 | 自然语言事项保存、连续消息、状态/结果恢复、已有 Mission 关联、外部处理者领取/回传协议 | 新事项的意图分类和处理者尚待接入；与已有 Mission Agent 独立 |
+| 主动事项办理 | 多轮澄清、真实查询、数量比较、原任务关联、明确修订/暂停、待接受的委托条件；租约与幂等回执保护 | 配置模型并启动 `--profile work`；接受委托与采购审批分开；真实模型质量待单独验证 |
+| 持久报价 | CSV原件、服务端换算、字段纠正、不可变结果、授权下载及用户/店铺规则版本 | 200KB、1—100行结构化CSV、仅CNY；偏好只影响排序，不改账本或采购 |
+| 独立数量试算 | 无Mission的单商品候选比较、现金底线/包装/MOQ/到货约束、同事项重算及历史结果 | 今日页“先试算补货”；已激活v6时与正式规划使用同一需求，失效不回退旧数据；独立假设不自动成为正式预测 |
+| 事项决策与结果导出 | 真实待确认/UNKNOWN/到货/暂停提示；带来源的TXT、CSV、JSON | 下载重新授权读取指定结果；建立委托与采购分别确认，试算不写账本 |
 | 经营模拟 | SC01 与可配置 SANDBOX、模拟时间、销售/到货/结算事件、幂等采购回执、本地控制台 | 使用合成经营环境和独立数据库，不连接真实店铺 |
 
 目前是可运行的本地开发与验证系统。完整 A-01/L-01 联合验收、真实经营效果和云端部署验收仍有待完成；历史实验指标及某台机器的服务状态不能代替当前环境验收。
@@ -41,7 +44,8 @@ flowchart LR
     B -->|文档交付 / 检索| K[Knowledge API / worker]
     K --> KD[(Knowledge PostgreSQL / 原件)]
     K --> OS[OpenSearch]
-    X[外部事项处理者：待接入] -.->|领取 / 上下文 / 回传| B
+    X[事项 worker / LangGraph] -->|原用户权限 / 租约 / 业务工具| D
+    X --> L
 ```
 
 API 与 worker 共用业务库中的持久任务；API 不会自动启动 worker。`agent/` 是由 Agent worker 加载的 Python 包，不是另一个必须启动的 HTTP 服务。ML、Knowledge、simulation 有各自服务边界，模型和模拟器不直接修改业务账本。
@@ -145,7 +149,7 @@ Set-Location ../simulation
 Set-Location ..
 ```
 
-预期业务库为 `0015_operations_cases`，模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，通过 `0014_forecast_work_merge` 合流后升级至恢复 Case。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
+预期业务库为 `0017_cases_quotations_merge`，模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，经 `0014_forecast_work_merge` 合流；之后的报价分支 `0015_quotations` 与恢复 Case、学习分支（`0015_operations_cases`、`0016_learning_foundation`）经 `0017_cases_quotations_merge` 合流。已有任一版本均通过 `upgrade head` 升级。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
 
 ## 启动服务
 
@@ -191,7 +195,7 @@ Set-Location ..
 
 首次打开工作区，连接本机 admin 身份，通过“联调控制 · 合成数据”创建 SC01，再按界面建立备货跟进、核对方案并确认采购。没有初始化场景时没有门店和库存数据是正常状态。也可在后端 Swagger 使用用户 token 调用 `POST /dev/v1/scenarios`，body 为 `{"scenario":"SC01"}`，提供新的 `Idempotency-Key`，随后查询返回的 JobRun；202 表示受理，执行状态以任务结果为准。
 
-“交给我一件事”目前可以保存事项；自动理解和处理需另外接入事项处理者。要使用已有 Mission Agent，进入具体备货任务的 Agent 工作区。
+“交给我一件事”由独立事项worker处理，启用方法见[事项与报价接入](docs/work-intake-and-quotations.md)。已有 Mission Agent 继续在具体备货任务的 Agent 工作区使用。
 
 ## 启用可选能力
 
@@ -235,7 +239,7 @@ Windows 统一启动器会增加 Agent worker；手动启动则另开 `python -m
 
 Knowledge 的 API、worker、PostgreSQL、OpenSearch 和存储有单独部署流程，使用 [Knowledge 完整部署手册](docs/runbooks/knowledge-server-handoff.md)及 [Compose 配置](infra/compose.knowledge.yaml)。后端设置 `KNOWLEDGE_SERVICE_ENABLED=true`、`KNOWLEDGE_SERVICE_URL`、`KNOWLEDGE_SERVICE_KEY`，服务端 key 与后端一致。后端还需在独立终端运行 `python -m app.knowledge.publisher` 交付 outbox；它不属于业务 worker，也不会被 Windows 总启动器自动启动。不要只打开开关而省略服务、索引与发布流程。
 
-新事项通过 `/internal/v1/work-items` 协议交给外部处理者。`WORK_PROCESSOR_ENABLED=true` 仅声明已接入处理者，既不启动进程，也不把事项自动接到 Mission LangGraph；实际接入完成前保持默认 false。协议与分工见 [事项承接模块](backend/app/work_items/README.md)。
+新事项处理者复用 `/internal/v1/work-items` 的领取/回传语义。API和worker均配置 `WORK_PROCESSOR_ENABLED=true`，并独立启动 `python -m app.worker --profile work`；该开关不会启动进程，模型未配置时保持false。详情见[事项与报价接入](docs/work-intake-and-quotations.md)。
 
 ## 更新与验证
 
@@ -291,7 +295,7 @@ corepack pnpm --filter @shopsteward/frontend exec playwright test tests/forecast
 | 初始化或业务任务一直排队 | 业务 worker、模拟器 ready、两个服务 token 是否匹配；admin 查看 `/api/v1/monitoring/status` |
 | 前端未连接身份或 401 | `AUTH_TOKENS`、用户 token 与角色；开发模式的 `NUXT_BACKEND_TOKEN` 或登录会话 |
 | Agent 不工作 | 后端/前端开关、Key 文件、模型协议和 Agent worker；业务 worker 不处理 Agent 队列 |
-| 新事项只有“已保存”没有答案 | 外部事项处理者尚未接入；开启 Mission Agent 不会自动完成该接入 |
+| 新事项只有“已保存”没有答案 | 检查 `WORK_PROCESSOR_ENABLED`、独立work worker、模型配置与处理错误；开启Mission Agent不会启动事项worker |
 | 预测 UNAVAILABLE / STALE | 模型开关、8053 服务与 token、已导入输入、有效期及门店/SKU/业务状态是否匹配 |
 | Knowledge 检索不可用 | 独立服务与 worker、数据库/索引就绪、服务 key、文档索引及发布状态 |
 | 启动器报告端口占用 | 查明旧服务所有者并按原管理方式停止；统一启动器不会接管所有旧进程 |

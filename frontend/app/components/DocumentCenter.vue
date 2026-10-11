@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { joinText, t as tr } from '~/i18n'
 import type { Schema, Session } from '~/types/models'
 import {
   documentCategories,
@@ -174,15 +175,15 @@ async function submit() {
 </script>
 
 <template>
-  <section class="document-center" aria-label="文档中心">
+  <section class="document-center" :aria-label="tr('文档中心')">
     <button class="text-link dc-back" :disabled="locked" @click="emit('navigate', 'today')">
-      <AppIcon name="chevron-right" />返回今日
+      <AppIcon name="chevron-right" />{{ tr('返回今日') }}
     </button>
     <header class="dc-header">
       <div>
-        <div class="eyebrow">我的经营空间 · 资料</div>
-        <h1>把依据，留在手边。</h1>
-        <p>供货条款、商品说明与活动资料，在这里保存、整理和查阅。</p>
+        <div class="eyebrow">{{ tr('我的经营空间 · 资料') }}</div>
+        <h1>{{ tr('把依据，留在手边。') }}</h1>
+        <p>{{ tr('供货条款、商品说明与活动资料，在这里保存、整理和查阅。') }}</p>
       </div>
       <button
         v-if="canWrite && storeId"
@@ -190,104 +191,108 @@ async function submit() {
         :disabled="locked || !!pending"
         @click="open('create')"
       >
-        <AppIcon name="plus" />上传资料
+        <AppIcon name="plus" />{{ tr('上传资料') }}
       </button>
     </header>
     <div class="dc-scope">
-      <AppIcon name="file-check-2" /><span
-        >原件与版本可管理、下载。智能检索与 Agent 引用尚未接入。</span
-      >
+      <AppIcon name="file-check-2" /><span>{{
+        tr('原件与版本可管理、下载。智能检索与 Agent 引用尚未接入。')
+      }}</span>
     </div>
     <div v-if="notice" class="dc-notice" role="status">
-      <AppIcon name="check" /><span>{{ notice }}</span
-      ><button class="icon-btn" aria-label="关闭资料提示" @click="notice = ''">
+      <AppIcon name="check" /><span>{{ tr(notice) }}</span
+      ><button class="icon-btn" :aria-label="tr('关闭资料提示')" @click="notice = ''">
         <AppIcon name="x" />
       </button>
     </div>
-    <section v-if="pending" class="dc-recovery notice amber" aria-label="待核实的资料提交">
-      <h3>{{ busy ? '正在提交资料…' : '还有一笔资料提交待核实' }}</h3>
+    <section v-if="pending" class="dc-recovery notice amber" :aria-label="tr('待核实的资料提交')">
+      <h3>{{ tr(busy ? '正在提交资料…' : '还有一笔资料提交待核实') }}</h3>
       <p>
         {{ pending.title }}<span v-if="pending.file"> · {{ pending.file.name }}</span>
       </p>
-      <p>先核实原提交，再开始新的操作。重试会沿用同一提交标识。</p>
+      <p>{{ tr('先核实原提交，再开始新的操作。重试会沿用同一提交标识。') }}</p>
       <template v-if="!busy">
         <label v-if="pending.file" class="dc-field"
-          >重新选择原文件（刷新页面后需要）
-          <input
+          >{{ tr('重新选择原文件（刷新页面后需要）')
+          }}<input
             type="file"
             accept=".pdf,.docx,.xlsx,.csv,.md,.txt"
             @change="picked($event, true)"
           />
         </label>
-        <button class="secondary" @click="library.sendPending(recoveryFile)">核实原提交</button>
+        <button class="secondary" @click="library.sendPending(recoveryFile)">
+          {{ tr('核实原提交') }}
+        </button>
       </template>
-      <p v-if="pendingError" role="alert">{{ pendingError }}</p>
+      <p v-if="pendingError" role="alert">{{ tr(pendingError) }}</p>
     </section>
     <p v-if="pendingError && !pending && !mode" class="notice amber" role="alert">
-      {{ pendingError }}
+      {{ tr(pendingError) }}
     </p>
     <div v-if="!storeId" class="dc-empty glass">
       <AppIcon name="file-text" />
-      <h2>先选择经营环境</h2>
-      <p>资料会保存在所选店铺中。</p>
+      <h2>{{ tr('先选择经营环境') }}</h2>
+      <p>{{ tr('资料会保存在所选店铺中。') }}</p>
     </div>
     <template v-else>
-      <form class="dc-filters" aria-label="筛选资料" @submit.prevent="search">
+      <form class="dc-filters" :aria-label="tr('筛选资料')" @submit.prevent="search">
         <label class="dc-search"
-          ><span class="dc-label">搜索标题</span>
+          ><span class="dc-label">{{ tr('搜索标题') }}</span>
           <div>
             <AppIcon name="search" /><input
               v-model="filters.q"
               type="search"
               maxlength="300"
-              placeholder="查找一份资料…"
+              :placeholder="tr('查找一份资料…')"
             /></div
         ></label>
         <label
-          ><span class="dc-label">分类</span
+          ><span class="dc-label">{{ tr('分类') }}</span
           ><select v-model="filters.category" @change="search">
-            <option value="">全部分类</option>
+            <option value="">{{ tr('全部分类') }}</option>
             <option v-for="c in categoryOptions" :key="c" :value="c">
-              {{ documentCategory(c) }}
+              {{ tr(documentCategory(c)) }}
             </option>
           </select></label
         >
         <label
-          ><span class="dc-label">状态</span
+          ><span class="dc-label">{{ tr('状态') }}</span
           ><select v-model="filters.status" @change="search">
-            <option value="active">使用中</option>
-            <option value="archived">已归档</option>
+            <option value="active">{{ tr('使用中') }}</option>
+            <option value="archived">{{ tr('已归档') }}</option>
           </select></label
         >
-        <button type="submit" class="secondary" :disabled="loading">查找</button>
+        <button type="submit" class="secondary" :disabled="loading">{{ tr('查找') }}</button>
         <details class="dc-extra-filters">
-          <summary>关联筛选</summary>
+          <summary>{{ tr('关联筛选') }}</summary>
           <div class="dc-filter-entities">
             <label
-              >商品<select v-model="filters.sku_id" @change="search">
-                <option value="">全部商品</option>
+              >{{ tr('商品')
+              }}<select v-model="filters.sku_id" @change="search">
+                <option value="">{{ tr('全部商品') }}</option>
                 <option v-for="p in products" :key="p.sku_id" :value="p.sku_id">
                   {{ p.name }}
                 </option>
               </select></label
             >
             <label
-              >供应商<select v-model="filters.supplier_id" @change="search">
-                <option value="">全部供应商</option>
-                <option v-for="id in suppliers" :key="id" :value="id">{{ id }}</option>
+              >{{ tr('供应商')
+              }}<select v-model="filters.supplier_id" @change="search">
+                <option value="">{{ tr('全部供应商') }}</option>
+                <option v-for="id in suppliers" :key="id" :value="id">{{ tr(id) }}</option>
               </select></label
             >
           </div>
         </details>
       </form>
       <div class="dc-workspace">
-        <section class="dc-library glass" aria-label="资料列表" :aria-busy="loading">
+        <section class="dc-library glass" :aria-label="tr('资料列表')" :aria-busy="loading">
           <header class="dc-section-head">
-            <h2>{{ filters.status === 'archived' ? '归档资料' : '店铺资料' }}</h2>
-            <span>{{ documents.length }} 份已载入</span
+            <h2>{{ tr(filters.status === 'archived' ? '归档资料' : '店铺资料') }}</h2>
+            <span>{{ joinText([tr(documents.length), tr('份已载入')]) }}</span
             ><button
               class="icon-btn"
-              aria-label="刷新资料列表"
+              :aria-label="tr('刷新资料列表')"
               :disabled="loading"
               @click="library.loadList()"
             >
@@ -295,28 +300,32 @@ async function submit() {
             </button>
           </header>
           <div v-if="error" class="notice amber" role="alert">
-            <p>{{ error }}</p>
-            <button class="text-link" @click="library.loadList()">重新读取</button>
+            <p>{{ tr(error) }}</p>
+            <button class="text-link" @click="library.loadList()">{{ tr('重新读取') }}</button>
           </div>
           <div v-if="loading && !documents.length" class="dc-empty" role="status">
-            <p>正在读取资料…</p>
+            <p>{{ tr('正在读取资料…') }}</p>
           </div>
           <div v-else-if="!documents.length && !error" class="dc-empty">
             <AppIcon name="file-text" />
             <h3>
               {{
-                filters.q || filters.category || filters.sku_id || filters.supplier_id
-                  ? '没有找到匹配资料'
-                  : filters.status === 'archived'
-                    ? '还没有归档资料'
-                    : '从第一份资料开始'
+                tr(
+                  filters.q || filters.category || filters.sku_id || filters.supplier_id
+                    ? '没有找到匹配资料'
+                    : filters.status === 'archived'
+                      ? '还没有归档资料'
+                      : '从第一份资料开始',
+                )
               }}
             </h3>
             <p>
               {{
-                filters.status === 'archived'
-                  ? '归档资料保留记录，恢复后可继续查阅原件。'
-                  : '支持 PDF、Word、Excel、CSV、Markdown 与 TXT。'
+                tr(
+                  filters.status === 'archived'
+                    ? '归档资料保留记录，恢复后可继续查阅原件。'
+                    : '支持 PDF、Word、Excel、CSV、Markdown 与 TXT。',
+                )
               }}
             </p>
             <button
@@ -325,7 +334,7 @@ async function submit() {
               :disabled="!!pending"
               @click="open('create')"
             >
-              上传一份资料<AppIcon name="arrow-right" />
+              {{ tr('上传一份资料') }}<AppIcon name="arrow-right" />
             </button>
           </div>
           <ul v-else class="dc-documents">
@@ -341,9 +350,9 @@ async function submit() {
                 ><span class="dc-document-copy"
                   ><strong>{{ d.title }}</strong
                   ><span
-                    >{{ documentCategory(d.category) }}<i>·</i
-                    >{{ d.visibility === 'private' ? '私有资料' : '店铺可见' }}<i>·</i
-                    >{{ when(d.updated_at) }}</span
+                    >{{ tr(documentCategory(d.category)) }}<i>·</i
+                    >{{ tr(d.visibility === 'private' ? '私有资料' : '店铺可见') }}<i>·</i
+                    >{{ tr(when(d.updated_at)) }}</span
                   ></span
                 ><AppIcon name="chevron-right" />
               </button>
@@ -351,7 +360,7 @@ async function submit() {
           </ul>
           <footer v-if="cursor" class="dc-list-footer">
             <button class="text-link" :disabled="loading" @click="library.loadList(true)">
-              {{ loading ? '正在载入…' : '加载更多资料' }}
+              {{ tr(loading ? '正在载入…' : '加载更多资料') }}
             </button>
           </footer>
         </section>
@@ -359,33 +368,42 @@ async function submit() {
           ref="detailPane"
           class="dc-detail"
           tabindex="-1"
-          aria-label="资料详情"
+          :aria-label="tr('资料详情')"
           :aria-busy="detailLoading"
         >
           <div v-if="!selected && !detailError" class="dc-detail-empty">
             <span class="dc-file-icon"><AppIcon name="file-text" /></span>
-            <h2>{{ detailLoading ? '正在读取资料…' : '每一份原件，都有来处。' }}</h2>
-            <p>选择左侧资料，查看原件、版本和使用范围。</p>
+            <h2>{{ tr(detailLoading ? '正在读取资料…' : '每一份原件，都有来处。') }}</h2>
+            <p>{{ tr('选择左侧资料，查看原件、版本和使用范围。') }}</p>
           </div>
           <template v-if="selected">
             <div class="dc-detail-kicker">
-              <span>{{ documentCategory(selected.category) }}</span
+              <span>{{ tr(documentCategory(selected.category)) }}</span
               ><span class="dc-badge">{{
-                selected.status === 'archived' ? '已归档' : '原件已保存'
+                tr(selected.status === 'archived' ? '已归档' : '原件已保存')
               }}</span>
             </div>
             <h2 class="dc-detail-title">{{ selected.title }}</h2>
             <p class="dc-meta">
               {{
-                selected.owner_principal_id === session.principal_id ? '由我上传' : '由其他成员上传'
+                joinText([
+                  tr(
+                    selected.owner_principal_id === session.principal_id
+                      ? '由我上传'
+                      : '由其他成员上传',
+                  ),
+                  '·',
+                  tr(when(selected.created_at)),
+                ])
               }}
-              · {{ when(selected.created_at) }}
             </p>
             <div class="dc-visibility">
               <AppIcon name="lock-keyhole" /><span>{{
-                selected.visibility === 'private'
-                  ? '私有资料，只有所有者可以读取原件。'
-                  : '有本店铺访问权限的成员可以读取原件。'
+                tr(
+                  selected.visibility === 'private'
+                    ? '私有资料，只有所有者可以读取原件。'
+                    : '有本店铺访问权限的成员可以读取原件。',
+                )
               }}</span>
             </div>
             <div
@@ -395,7 +413,7 @@ async function submit() {
               <span v-for="id in selected.sku_ids" :key="id">{{
                 products.find((p) => p.sku_id === id)?.name || id
               }}</span
-              ><span v-for="id in selected.supplier_ids" :key="id">{{ id }}</span>
+              ><span v-for="id in selected.supplier_ids" :key="id">{{ tr(id) }}</span>
             </div>
             <div v-if="library.canManage(selected)" class="dc-actions">
               <button
@@ -404,138 +422,161 @@ async function submit() {
                 :disabled="locked || !!pending || !!detailError"
                 @click="open('append')"
               >
-                <AppIcon name="plus" />新版本
+                <AppIcon name="plus" />{{ tr('新版本') }}
               </button>
               <button class="text-link" :disabled="locked || !!pending" @click="open('edit')">
-                编辑信息
+                {{ tr('编辑信息') }}
               </button>
               <button
                 class="text-link"
                 :disabled="locked || !!pending"
                 @click="open(selected.status === 'active' ? 'archive' : 'restore')"
               >
-                {{ selected.status === 'active' ? '归档' : '恢复资料' }}
+                {{ tr(selected.status === 'active' ? '归档' : '恢复资料') }}
               </button>
             </div>
             <div v-if="selected.status === 'archived'" class="dc-explanation">
-              <h3>已收进归档</h3>
-              <p>原件和历史版本保留。恢复资料后，才可查看版本及下载原件。</p>
+              <h3>{{ tr('已收进归档') }}</h3>
+              <p>{{ tr('原件和历史版本保留。恢复资料后，才可查看版本及下载原件。') }}</p>
             </div>
             <div v-else-if="!library.canRead(selected)" class="dc-explanation">
-              <h3>仅可查看资料信息</h3>
-              <p>这是其他成员的私有资料。当前身份不能查看原件、版本或修改资料。</p>
+              <h3>{{ tr('仅可查看资料信息') }}</h3>
+              <p>{{ tr('这是其他成员的私有资料。当前身份不能查看原件、版本或修改资料。') }}</p>
             </div>
-            <section v-else class="dc-versions" aria-label="历史版本">
+            <section v-else class="dc-versions" :aria-label="tr('历史版本')">
               <header class="dc-section-head">
-                <h3>原件与版本</h3>
-                <span v-if="detailLoading" role="status">正在读取…</span>
+                <h3>{{ tr('原件与版本') }}</h3>
+                <span v-if="detailLoading" role="status">{{ tr('正在读取…') }}</span>
               </header>
               <article v-for="v in versions" :key="v.id" class="dc-version">
                 <div class="dc-version-heading">
-                  <b>v{{ v.version_no }}</b
-                  ><span v-if="v.id === selected.latest_version_id" class="dc-badge">最近上传</span
-                  ><span class="dc-meta">{{ fileSize(v.size_bytes) }}</span>
+                  <b>v{{ tr(v.version_no) }}</b
+                  ><span v-if="v.id === selected.latest_version_id" class="dc-badge">{{
+                    tr('最近上传')
+                  }}</span
+                  ><span class="dc-meta">{{ tr(fileSize(v.size_bytes)) }}</span>
                 </div>
                 <p class="dc-filename">{{ v.original_name }}</p>
-                <p class="dc-meta">{{ when(v.created_at) }}</p>
+                <p class="dc-meta">{{ tr(when(v.created_at)) }}</p>
                 <button
                   class="text-link dc-download"
                   :disabled="!!downloading"
-                  :aria-label="`下载原件 v${v.version_no} ${v.original_name}`"
+                  :aria-label="tr(`下载原件 v${v.version_no} ${v.original_name}`)"
                   @click="library.download(v)"
                 >
-                  <AppIcon name="download" />{{ downloading === v.id ? '正在下载…' : '下载原件' }}
+                  <AppIcon name="download" />{{
+                    tr(downloading === v.id ? '正在下载…' : '下载原件')
+                  }}
                 </button>
                 <details class="dc-source">
-                  <summary>有效期与原件校验信息</summary>
+                  <summary>{{ tr('有效期与原件校验信息') }}</summary>
                   <dl>
-                    <dt>生效时间</dt>
-                    <dd>{{ v.valid_from ? when(v.valid_from) : '未指定' }}</dd>
-                    <dt>失效时间</dt>
-                    <dd>{{ v.valid_until ? when(v.valid_until) : '未指定' }}</dd>
+                    <dt>{{ tr('生效时间') }}</dt>
+                    <dd>{{ tr(v.valid_from ? when(v.valid_from) : '未指定') }}</dd>
+                    <dt>{{ tr('失效时间') }}</dt>
+                    <dd>{{ tr(v.valid_until ? when(v.valid_until) : '未指定') }}</dd>
                     <dt>SHA-256</dt>
                     <dd class="dc-hash">{{ v.content_sha256 }}</dd>
                   </dl>
                 </details>
               </article>
-              <p v-if="!versions.length && !detailLoading && !detailError">没有可读取的版本。</p>
+              <p v-if="!versions.length && !detailLoading && !detailError">
+                {{ tr('没有可读取的版本。') }}
+              </p>
               <button
                 v-if="versionCursor"
                 class="text-link"
                 :disabled="detailLoading"
                 @click="library.moreVersions()"
               >
-                加载更早版本
+                {{ tr('加载更早版本') }}
               </button>
             </section>
           </template>
           <div v-if="detailError" class="notice amber" role="alert">
-            <p>{{ detailError }}</p>
+            <p>{{ tr(detailError) }}</p>
             <button v-if="selected" class="text-link" @click="library.select(selected.id)">
-              重新读取详情
+              {{ tr('重新读取详情') }}
             </button>
           </div>
         </aside>
       </div>
     </template>
-    <AppDialog :open="!!mode" :title="dialogTitle" :busy="locked" @close="mode = ''">
+    <AppDialog :open="!!mode" :title="tr(dialogTitle)" :busy="locked" @close="mode = ''">
       <form class="dc-form" @submit.prevent="submit">
         <p v-if="mode === 'append'">
-          为「{{ selected?.title }}」保存一份新原件。旧版本会完整保留。
+          {{ joinText([tr('为「'), selected?.title, tr('」保存一份新原件。旧版本会完整保留。')]) }}
         </p>
         <p v-if="mode === 'archive'">
-          「{{ selected?.title }}」将移入归档。原件与历史版本保留，归档期间不能下载；随时可以恢复。
+          {{
+            joinText([
+              '「',
+              selected?.title,
+              tr('」将移入归档。原件与历史版本保留，归档期间不能下载；随时可以恢复。'),
+            ])
+          }}
         </p>
         <p v-if="mode === 'restore'">
-          恢复「{{ selected?.title }}」后，有权限的成员可重新查看版本和下载原件。
+          {{
+            joinText([
+              tr('恢复「'),
+              selected?.title,
+              tr('」后，有权限的成员可重新查看版本和下载原件。'),
+            ])
+          }}
         </p>
         <fieldset :disabled="locked || !!pending">
           <label v-if="fileMode" class="dc-upload"
             ><span class="dc-file-icon"><AppIcon name="file-text" /></span
-            ><strong>{{ upload?.name || '选择一份原件' }}</strong
+            ><strong>{{ upload?.name || tr('选择一份原件') }}</strong
             ><span>{{
-              upload ? fileSize(upload.size) : 'PDF · DOCX · XLSX · CSV · MD · TXT，最大20 MiB'
+              tr(upload ? fileSize(upload.size) : 'PDF · DOCX · XLSX · CSV · MD · TXT，最大20 MiB')
             }}</span>
             <span class="dc-upload-action" aria-hidden="true">{{
-              upload ? '更换文件' : '浏览文件'
+              tr(upload ? '更换文件' : '浏览文件')
             }}</span>
             <input
               type="file"
               accept=".pdf,.docx,.xlsx,.csv,.md,.txt"
               :required="fileMode"
-              aria-label="选择原件"
+              :aria-label="tr('选择原件')"
               @change="picked($event)"
           /></label>
           <template v-if="metaMode">
             <label class="dc-field"
-              >资料标题<input v-model="form.title" required maxlength="300" autocomplete="off"
+              >{{ tr('资料标题')
+              }}<input v-model="form.title" required maxlength="300" autocomplete="off"
             /></label>
             <div class="dc-form-pair">
               <label class="dc-field"
-                >分类<select v-model="form.category" required>
+                >{{ tr('分类')
+                }}<select v-model="form.category" required>
                   <option v-for="value in categoryOptions" :key="value" :value="value">
-                    {{ documentCategory(value) }}
+                    {{ tr(documentCategory(value)) }}
                   </option>
                 </select></label
               >
               <label class="dc-field"
-                >可见范围<select v-model="form.visibility">
-                  <option value="store">店铺成员可见</option>
-                  <option value="private">仅自己可读</option>
+                >{{ tr('可见范围')
+                }}<select v-model="form.visibility">
+                  <option value="store">{{ tr('店铺成员可见') }}</option>
+                  <option value="private">{{ tr('仅自己可读') }}</option>
                 </select></label
               >
             </div>
             <p class="dc-meta">
               {{
-                form.visibility === 'private'
-                  ? '其他成员不能读取原件。管理员仍可能查看标题等资料信息。'
-                  : '有本店铺访问权限的成员可读取原件，请确认文件适合共享。'
+                tr(
+                  form.visibility === 'private'
+                    ? '其他成员不能读取原件。管理员仍可能查看标题等资料信息。'
+                    : '有本店铺访问权限的成员可读取原件，请确认文件适合共享。',
+                )
               }}
             </p>
             <details class="dc-relations">
-              <summary>关联商品与供应商（可选）</summary>
+              <summary>{{ tr('关联商品与供应商（可选）') }}</summary>
               <div class="dc-checks">
-                <span>商品</span
+                <span>{{ tr('商品') }}</span
                 ><label v-for="p in products" :key="p.sku_id"
                   ><input v-model="form.sku_ids" type="checkbox" :value="p.sku_id" />{{
                     p.name
@@ -543,55 +584,60 @@ async function submit() {
                 ><label
                   v-for="id in form.sku_ids.filter((id) => !products.some((p) => p.sku_id === id))"
                   :key="id"
-                  ><input v-model="form.sku_ids" type="checkbox" :value="id" />{{ id }}</label
-                ><span>供应商</span
+                  ><input v-model="form.sku_ids" type="checkbox" :value="id" />{{ tr(id) }}</label
+                ><span>{{ tr('供应商') }}</span
                 ><label v-for="id in [...new Set([...suppliers, ...form.supplier_ids])]" :key="id"
-                  ><input v-model="form.supplier_ids" type="checkbox" :value="id" />{{ id }}</label
+                  ><input v-model="form.supplier_ids" type="checkbox" :value="id" />{{
+                    tr(id)
+                  }}</label
                 >
               </div>
             </details>
           </template>
           <details v-if="fileMode" class="dc-validity">
-            <summary>原件有效期（可选）</summary>
-            <p class="dc-meta">按当前设备时区填写，留空表示未指定。</p>
+            <summary>{{ tr('原件有效期（可选）') }}</summary>
+            <p class="dc-meta">{{ tr('按当前设备时区填写，留空表示未指定。') }}</p>
             <div class="dc-form-pair">
               <label class="dc-field"
-                >生效时间<input v-model="form.valid_from" type="datetime-local" /></label
+                >{{ tr('生效时间')
+                }}<input v-model="form.valid_from" type="datetime-local" /></label
               ><label class="dc-field"
-                >失效时间<input v-model="form.valid_until" type="datetime-local"
+                >{{ tr('失效时间') }}<input v-model="form.valid_until" type="datetime-local"
               /></label>
             </div>
           </details>
         </fieldset>
         <p v-if="formError || pendingError" class="notice amber" role="alert">
-          {{ formError || pendingError }}
+          {{ tr(formError || pendingError) }}
         </p>
         <p v-if="pending && !busy" class="dc-meta">
-          结果尚未确认。重试将核实原提交，不会另建一份。
+          {{ tr('结果尚未确认。重试将核实原提交，不会另建一份。') }}
         </p>
         <div class="dc-form-actions">
           <button type="button" class="secondary" :disabled="locked" @click="mode = ''">
-            {{ pending ? '稍后核实' : '取消' }}</button
+            {{ tr(pending ? '稍后核实' : '取消') }}</button
           ><button
             v-if="pendingError && !pending && mode !== 'create'"
             type="button"
             class="secondary"
             @click="reloadForm"
           >
-            载入最新资料</button
+            {{ tr('载入最新资料') }}</button
           ><button type="submit" class="primary" :disabled="locked">
             {{
-              locked
-                ? '正在保存…'
-                : pending
-                  ? '重试原提交'
-                  : mode === 'archive'
-                    ? '确认归档'
-                    : mode === 'restore'
-                      ? '恢复资料'
-                      : fileMode
-                        ? '保存原件'
-                        : '保存信息'
+              tr(
+                locked
+                  ? '正在保存…'
+                  : pending
+                    ? '重试原提交'
+                    : mode === 'archive'
+                      ? '确认归档'
+                      : mode === 'restore'
+                        ? '恢复资料'
+                        : fileMode
+                          ? '保存原件'
+                          : '保存信息',
+              )
             }}
           </button>
         </div>

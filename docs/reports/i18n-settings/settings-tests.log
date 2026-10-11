@@ -1,0 +1,15 @@
+
+Running 7 tests using 1 worker
+
+(node:56015) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/7] tests/i18n.spec.ts:15:1 › language switches immediately without writes, survives reload and syncs across tabs
+[2/7] tests/i18n.spec.ts:42:1 › schedule change saves once, keeps enabled state and rolls back after failure
+[3/7] tests/i18n.spec.ts:82:1 › English navigation, charts, mobile settings and quote flow remain usable
+[4/7] tests/i18n.spec.ts:109:1 › storage failures remain usable and never claim persistence
+[5/7] tests/i18n.spec.ts:123:1 › English quote round trip, source preservation, system messages and raw JSON
+[6/7] tests/i18n.spec.ts:156:1 › English chrome covers every primary view and task workspace
+[7/7] tests/settings-visual.spec.ts:3:1 › settings material is opaque and mobile content scrolls inside dialog
+  7 passed (8.1s)

@@ -7,6 +7,7 @@ from pathlib import Path
 
 import httpx
 import pytest
+from test_missions import clean_queue  # noqa: F401
 from test_work_items import SERVICE, env
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -18,10 +19,56 @@ pytestmark = [
 ]
 
 
-async def test_work_intake_browser(db, tmp_path):
+@pytest.mark.parametrize(
+    "script",
+    [
+        "work_browser.mjs",
+        "quantity_browser.mjs",
+        "i18n_business_browser.mjs",
+        "quotation_browser.mjs",
+    ],
+)
+async def test_work_intake_browser(db, tmp_path, script):
     import uvicorn
 
-    async with env(db, docs_enabled=False) as (seed, _, app):
+    async with env(db, docs_enabled=False) as (seed, api_client, app):
+        if script in {"quantity_browser.mjs", "i18n_business_browser.mjs"}:
+            from app.operations.repository import mark_caught_up
+
+            app.state.settings.work_processor_enabled = False
+            app.state.settings.source_stale_seconds = 300
+            async with db.session() as session, session.begin():
+                await mark_caught_up(session, seed["scenario_run_id"], 0)
+        execution_task = None
+        if script == "i18n_business_browser.mjs":
+            from test_execution import Supplier
+            from test_missions import body, headers
+            from test_planning_jobs import run_check
+
+            from app.execution.jobs import make_handlers
+            from app.scheduling.runner import Runner
+
+            # One scoped identity exercises both UI permissions without discovering
+            # unrelated stores left by other tests in the shared test database.
+            operator = next(
+                g for g in app.state.settings.auth_tokens if g.principal_id == "operator"
+            )
+            operator.roles = ["operator", "approver"]
+            created = await api_client.post("/api/v1/missions", json=body(seed), headers=headers())
+            assert created.status_code == 201
+            await run_check(db, seed)
+            runner = Runner(
+                db,
+                app.state.settings,
+                handlers=make_handlers(app.state.settings, client=Supplier()),
+            )
+
+            async def execute_purchases():
+                while True:
+                    await runner.run_once()
+                    await asyncio.sleep(0.05)
+
+            execution_task = asyncio.create_task(execute_purchases())
         backend_socket = socket.socket()
         backend_socket.bind(("127.0.0.1", 0))
         backend_url = f"http://127.0.0.1:{backend_socket.getsockname()[1]}"
@@ -32,7 +79,19 @@ async def test_work_intake_browser(db, tmp_path):
         server = uvicorn.Server(uvicorn.Config(app, log_level="error"))
         serving = asyncio.create_task(server.serve(sockets=[backend_socket]))
         frontend = browser = None
-        output = ROOT / "var/work-intake-browser"
+        output = (
+            ROOT
+            / "var"
+            / (
+                "i18n-business-browser"
+                if script == "i18n_business_browser.mjs"
+                else "quantity-browser"
+                if script == "quantity_browser.mjs"
+                else "quotation-browser"
+                if script == "quotation_browser.mjs"
+                else "work-intake-browser"
+            )
+        )
         output.mkdir(parents=True, exist_ok=True)
         log = (output / "frontend.log").open("wb")
         try:
@@ -77,7 +136,7 @@ async def test_work_intake_browser(db, tmp_path):
             )
             browser = await asyncio.create_subprocess_exec(
                 "node",
-                "tests/support/work_browser.mjs",
+                "tests/support/" + script,
                 cwd=ROOT / "frontend",
                 env=process_env,
                 stdout=asyncio.subprocess.PIPE,
@@ -87,6 +146,12 @@ async def test_work_intake_browser(db, tmp_path):
             (output / "browser.log").write_bytes(stdout)
             assert browser.returncode == 0, stdout.decode()[-6000:]
         finally:
+            if execution_task:
+                execution_task.cancel()
+                try:
+                    await execution_task
+                except asyncio.CancelledError:
+                    pass
             if browser and browser.returncode is None:
                 browser.terminate()
                 await browser.wait()

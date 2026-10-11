@@ -7,6 +7,7 @@ export default defineNuxtConfig({
     '~/assets/css/overview.css',
     '~/assets/css/tasks.css',
     '~/assets/css/work.css',
+    '~/assets/css/settings.css',
   ],
   typescript: { strict: true },
   runtimeConfig: {

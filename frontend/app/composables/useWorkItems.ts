@@ -1,7 +1,8 @@
 import type { Schema } from '~/types/models'
 import { api, ApiFailure, query } from '~/utils/api'
+import { newerWork, workPresentation } from '~/utils/workPresentation'
 
-type Submission = { path: string; body: Record<string, unknown>; key: string }
+type Submission = { path: string; body: Record<string, unknown>; key: string; quotation?: boolean }
 export function useWorkItems(owner = false) {
   const shop = useShop()
   const s = useState('work-items', () => ({
@@ -77,11 +78,11 @@ export function useWorkItems(owner = false) {
         if (!cursor) break
       }
       s.listError = ''
-      s.items = items.map((item) =>
-        s.detail?.item.id === item.id && s.detail.item.version > item.version
-          ? s.detail.item
-          : item,
-      )
+      s.items = items.map((item) => {
+        const previous = s.items.find((i) => i.id === item.id)
+        const latest = previous ? newerWork(previous, item) : item
+        return s.detail?.item.id === item.id ? newerWork(s.detail.item, latest) : latest
+      })
       s.cursor = cursor
       s.available = true
       s.pages = count
@@ -101,7 +102,11 @@ export function useWorkItems(owner = false) {
     try {
       const d = await api<Schema<'WorkDetail'>>('/api/v1/work-items/' + id)
       if (!current(epoch) || s.selected !== selection) return
-      if (s.detail?.item.id === d.item.id && s.detail.item.version > d.item.version) return
+      if (s.detail?.item.id === d.item.id) {
+        const newer = s.detail.item.version > d.item.version
+        d.item = newerWork(s.detail.item, d.item)
+        if (newer) d.messages = s.detail.messages
+      }
       apply(d, id)
       s.syncError = ''
     } catch (e) {
@@ -136,7 +141,12 @@ export function useWorkItems(owner = false) {
     // Persist before transmitting: a refresh can replay exactly the same request.
     try {
       sessionStorage.setItem(storageKey(), JSON.stringify(request))
-      const d = await api<Schema<'WorkDetail'>>(request.path, 'POST', request.body, request.key)
+      const response = await api<Schema<'WorkDetail'>>(
+        request.path,
+        'POST',
+        request.body,
+        request.key,
+      )
       if (!current(epoch)) return
       sessionStorage.removeItem(storageKey())
       s.pending = null
@@ -144,6 +154,12 @@ export function useWorkItems(owner = false) {
         await list()
         return
       }
+      if (request.quotation) {
+        await load()
+        await list()
+        return s.detail || undefined
+      }
+      const d = response
       s.input = ''
       apply(d, request.path.match(/^\/api\/v1\/work-items\/([^/]+)/)?.[1])
       await list()
@@ -173,6 +189,17 @@ export function useWorkItems(owner = false) {
       key: crypto.randomUUID(),
     })
   }
+  const quotation = (
+    operation: 'quotation-files' | 'quotation-results' | 'quotation-rule',
+    body: Record<string, unknown>,
+  ) =>
+    s.detail &&
+    submit({
+      path: '/api/v1/work-items/' + s.selected + '/' + operation,
+      body: { ...body, expected_work_version: s.detail.item.version },
+      key: crypto.randomUUID(),
+      quotation: true,
+    })
   const control = (operation: 'cancel' | 'retry') =>
     s.detail &&
     submit({
@@ -197,22 +224,7 @@ export function useWorkItems(owner = false) {
       Date.parse(item.processing_expires_at) <= Date.now()
     )
       return '处理中断，等待恢复'
-    if (item.mission && ['RESULT_READY', 'COMPLETED'].includes(item.status))
-      return {
-        ACTIVE: '持续跟进中',
-        PAUSED: '备货跟进已暂停',
-        COMPLETED: '备货委托已结束',
-        CANCELLED: '备货委托已取消',
-      }[item.mission.status]
-    return {
-      RECEIVED: '已收到',
-      PROCESSING: '正在处理',
-      WAITING_INPUT: '需要你补充',
-      RESULT_READY: '结果已出',
-      BLOCKED: '需要处理',
-      COMPLETED: '本次事项已完成',
-      CANCELLED: '本轮处理已停止',
-    }[item.status]
+    return workPresentation(item).label
   }
   let timer: ReturnType<typeof setInterval> | undefined
   if (owner) {
@@ -272,5 +284,18 @@ export function useWorkItems(owner = false) {
     })
     onUnmounted(() => clearInterval(timer))
   }
-  return { s, scope, list, load, select, submit, send, control, acceptMission, fromMission, label }
+  return {
+    s,
+    scope,
+    list,
+    load,
+    select,
+    submit,
+    send,
+    quotation,
+    control,
+    acceptMission,
+    fromMission,
+    label,
+  }
 }

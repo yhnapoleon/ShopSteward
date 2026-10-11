@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { joinText, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
 const props = defineProps<{ open: boolean }>(),
   emit = defineEmits<{ close: []; start: []; quote: []; submitted: [id: string] }>()
@@ -105,22 +106,26 @@ async function quote() {
 <template>
   <dialog ref="layer" class="goal-deck" aria-labelledby="deck-title" @cancel.prevent="close">
     <div class="deck-scrim" @click="close" />
-    <button ref="anchor" class="deck-anchor" aria-label="收回委托入口" @click="close">
-      <AppIcon name="x" />交给我一件事
+    <button ref="anchor" class="deck-anchor" :aria-label="tr('收回委托入口')" @click="close">
+      <AppIcon name="x" />{{ tr('交给我一件事') }}
     </button>
     <div ref="echoes" class="deck-echoes" aria-hidden="true">
       <div class="deck-echo">
-        <AppIcon name="file-text" /><span>报价资料整理<small>单位、包装与来源</small></span>
+        <AppIcon name="file-text" /><span
+          >{{ tr('报价资料整理') }}<small>{{ tr('单位、包装与来源') }}</small></span
+        >
       </div>
       <div class="deck-echo">
-        <AppIcon name="orbit" /><span>活动备货跟进<small>每笔采购由你确认</small></span>
+        <AppIcon name="orbit" /><span
+          >{{ tr('活动备货跟进') }}<small>{{ tr('每笔采购由你确认') }}</small></span
+        >
       </div>
     </div>
     <section ref="main" class="deck-main" tabindex="-1">
       <template v-if="work.s.available"
         ><div class="deck-topline">
-          <span id="deck-title" class="tag">交给我一件事</span
-          ><button class="icon-btn" aria-label="收起委托卡片" @click="close">
+          <span id="deck-title" class="tag">{{ tr('交给我一件事') }}</span
+          ><button class="icon-btn" :aria-label="tr('收起委托卡片')" @click="close">
             <AppIcon name="x" />
           </button>
         </div>
@@ -128,43 +133,62 @@ async function quote() {
       /></template>
       <template v-else>
         <div class="deck-topline">
-          <span class="tag">当前可使用的两件事</span
-          ><button class="icon-btn" aria-label="收起委托卡片" @click="close">
+          <span class="tag">{{ tr('当前可使用的两件事') }}</span
+          ><button class="icon-btn" :aria-label="tr('收起委托卡片')" @click="close">
             <AppIcon name="x" />
           </button>
         </div>
-        <h2 id="deck-title">把这次备货交代清楚。</h2>
-        <p>确认下面的范围后建立跟进委托。开始跟进不会自动采购。</p>
+        <h2 id="deck-title">{{ tr('把这次备货交代清楚。') }}</h2>
+        <p>{{ tr('确认下面的范围后建立跟进委托。开始跟进不会自动采购。') }}</p>
         <div class="intake-scope">
           <div class="detail-row">
-            <span>商品</span><b>{{ product?.name || '请先选择示例店铺' }}</b>
-          </div>
-          <div class="detail-row"><span>目标</span><b>比较活动备货方案，跟进到货与需求变化</b></div>
-          <div class="detail-row">
-            <span>现金底线</span><b>{{ money(mission?.policy.cash_floor_minor ?? 30000) }}</b>
+            <span>{{ tr('商品') }}</span
+            ><b>{{ product?.name || tr('请先选择示例店铺') }}</b>
           </div>
           <div class="detail-row">
-            <span>当前条件</span
-            ><b
-              >现金{{ money(s.dashboard?.state.available_cash_minor) }}、库存{{
-                stock?.on_hand
-              }}件、预计需求{{ stock?.remaining_demand }}件</b
-            >
+            <span>{{ tr('目标') }}</span
+            ><b>{{ tr('比较活动备货方案，跟进到货与需求变化') }}</b>
           </div>
           <div class="detail-row">
-            <span>检查安排</span
-            ><b>每{{ mission?.schedule.interval_seconds ?? 30 }}秒检查计划，经营事件后复查</b>
+            <span>{{ tr('现金底线') }}</span
+            ><b>{{ tr(money(mission?.policy.cash_floor_minor ?? 30000)) }}</b>
+          </div>
+          <div class="detail-row">
+            <span>{{ tr('当前条件') }}</span
+            ><b>{{
+              joinText([
+                tr('现金'),
+                tr(money(s.dashboard?.state.available_cash_minor)),
+                tr('、库存'),
+                tr(stock?.on_hand),
+                tr('件、预计需求'),
+                tr(stock?.remaining_demand),
+                tr('件'),
+              ])
+            }}</b>
+          </div>
+          <div class="detail-row">
+            <span>{{ tr('检查安排') }}</span
+            ><b>{{
+              joinText([
+                tr('每'),
+                tr(mission?.schedule.interval_seconds ?? 30),
+                tr('秒检查计划，经营事件后复查'),
+              ])
+            }}</b>
           </div>
         </div>
-        <p class="channel-note">当前连接合成经营环境。每次采购仍需确认；进展在应用内查看。</p>
+        <p class="channel-note">
+          {{ tr('当前连接合成经营环境。每次采购仍需确认；进展在应用内查看。') }}
+        </p>
         <div class="modal-actions">
-          <button class="secondary" @click="quote">我想先整理报价</button
+          <button class="secondary" @click="quote">{{ tr('我想先整理报价') }}</button
           ><button
             class="primary"
             :disabled="!s.storeId || !offer || Boolean(s.busy)"
             @click="start"
           >
-            {{ mission ? '继续当前委托' : '按以上条件开始' }}
+            {{ tr(mission ? '继续当前委托' : '按以上条件开始') }}
           </button>
         </div>
       </template>

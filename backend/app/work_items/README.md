@@ -1,8 +1,22 @@
 # 事项入口与 Agent 接入
 
+2026-09-14合流补充：本模块现与PR15共用 `0014_forecast_work_merge` schema头。独立试算在v6明确启用为规划需求时读取同一模型证据，失效时不回退旧投影；历史演示仍不能作为经营需求。`calculation.input.forecast_provider`区分投影与v6，旧记录默认projection；导出保留预测证据ID。[整合验收](../../../docs/reports/quantity-work-merge-verification.md)。下方0013描述为初次功能交付时点。
+
 2026-09-09。本模块承接用户主动提出的一件事，保存对话、进度、问题、结果，并关联既有备货 Mission。它不判断意图、不调用模型、不实现预测/报价算法，也不授予采购权限。现有 `agent/` 与 `agent_bridge` 的 LangGraph、任务内工具和历史会话保持原实现。
 
 ## 用户行为与职责
+
+### 2026-09-12：独立试算、业务卡片与导出
+
+新增“先试算补货”直接入口，使用 `planning/evaluation.py` 与正式Plan相同的数量/现金/包装/MOQ/到货规则；它不依赖模型或占位Mission。`POST /api/v1/stores/{store_id}/simulations` 接受经营版本、商品、供应商、现金底线、含0的数量候选；需求假设与期间必须同时提供，否则读取当前有效需求依据。可带 `work_item_id/expected_work_version` 在原试算中生成新结果，旧结果保留。只写本模块的事项、消息和命令回执。
+
+每个原生试算结果包含不可变 `calculation` 和服务端 `provenance`；接受委托前重查快照，用户假设不能直接成为正式需求。已有Mission内重算不修改正式政策。没有新增迁移，仍用0013。
+
+`WorkView.business`批量提供关联Mission的真实状态、方案/业务版本、观察时点及确认条件有效期。UNKNOWN优先于暂停/结束；前端分别合并事项版本和业务观察时点，列表与详情使用相同展示判断。普通处理者不能回传这些业务状态。
+
+新增 `GET /api/v1/work-items/{item_id}/results/{result_id}`，按当前用户和规范事项重新授权读取指定历史结果，返回是否最近结果及失效原因。TXT/CSV/JSON使用同一DTO；CSV保护公式起始字符，JSON金额使用整数分。旧结果和外部处理者没有可验证快照的结果，不推测历史数据时点。`WorkUpdate.result`现在使用内容型 `WorkResultInput`，服务端来源和原生计算内容不接受处理者伪造。
+
+完整范围、测试和后续限制见[本轮验收](../../../docs/reports/quantity-work-verification.md)。下表中的Agent接入待办仍适用于自然语言处理；新增表单试算不表示A-01或L-01完成。
 
 | 用户行为 | 平台已实现 | Agent/AI 接入方仍需实现 |
 |---|---|---|

@@ -4,7 +4,7 @@
 
 ## 启动依赖
 
-沿用根 README 的依赖安装、数据库与模拟器配置。新的业务迁移头是 `0015_operations_cases`，新增 Case/版本/方案/事件表及 `missions.planning_context`。先确认 `DATABASE_URL` 指向要升级的数据库，再在 `backend/` 执行 `python -m alembic upgrade head`，随后重启业务 API、业务 worker 和前端。本轮只迁移了隔离测试库，没有升级日常使用库。
+沿用根 README 的依赖安装、数据库与模拟器配置。这一轮的业务迁移是 `0015_operations_cases`（2026-10-11 合并 `main` 后，迁移头是 `0017_cases_quotations_merge`），新增 Case/版本/方案/事件表及 `missions.planning_context`。先确认 `DATABASE_URL` 指向要升级的数据库，再在 `backend/` 执行 `python -m alembic upgrade head`，随后重启业务 API、业务 worker 和前端。本轮只迁移了隔离测试库，没有升级日常使用库。
 
 业务 worker：`python -m app.worker --profile business`。它现在同时执行显式开启的 Case 跟进；仅运行 API 不会定期跟进。Mission Agent 仍使用独立的 `python -m app.worker --profile agent`。启动器/环境文件说明沿用根 README，不在代码中嵌入凭据。
 

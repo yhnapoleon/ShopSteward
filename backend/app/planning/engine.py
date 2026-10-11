@@ -3,7 +3,8 @@ from uuid import uuid4
 
 from app.core.hashing import digest
 from app.planning.canonical import canonical
-from app.planning.schemas import Candidate, DecisionSnapshot, Plan, ProposedPurchase
+from app.planning.evaluation import evaluate_candidates
+from app.planning.schemas import DecisionSnapshot, Plan, ProposedPurchase
 
 RULE_VERSION = "finite-candidates-v1"
 
@@ -40,44 +41,17 @@ def arrival_at(snapshot):
 
 def build_plan(mission_id, plan_version, snapshot, *, ttl_seconds):
     snapshot = DecisionSnapshot.model_validate(canonical(snapshot.model_dump(mode="json")))
-    stock = next(s for s in snapshot.state.stocks if s.sku_id == snapshot.forecast.sku_id)
     offer = snapshot.offer
-    arrival = arrival_at(snapshot)
-    candidates = []
-    for quantity in sorted(snapshot.policy.candidate_quantities):
-        spend = quantity * offer.unit_price_minor
-        cash_after = snapshot.state.available_cash_minor - spend
-        reasons = []
-        if quantity > snapshot.task_constraints.get("max_purchase_qty", quantity):
-            reasons.append("TASK_QUANTITY_LIMIT")
-        if cash_after < snapshot.policy.cash_floor_minor:
-            reasons.append("CASH_FLOOR_VIOLATION")
-        if quantity:
-            if quantity < offer.minimum_order_quantity:
-                reasons.append("MINIMUM_ORDER_QUANTITY")
-            if quantity % offer.pack_size:
-                reasons.append("PACK_SIZE_MISMATCH")
-            if arrival is None or arrival >= snapshot.forecast.horizon_end:
-                reasons.append("ARRIVAL_WINDOW_MISSED")
-        candidates.append(
-            Candidate(
-                id=f"candidate_{quantity}",
-                quantity=quantity,
-                spend_minor=spend,
-                cash_after_minor=cash_after,
-                shortage_qty=max(
-                    0,
-                    snapshot.forecast.remaining_demand
-                    - stock.on_hand
-                    - snapshot.eligible_inbound_qty
-                    - quantity,
-                ),
-                feasible=not reasons,
-                rejection_reasons=reasons,
-            )
-        )
-    feasible = [c for c in candidates if c.feasible]
-    recommended = min(feasible, key=lambda c: (c.shortage_qty, c.quantity)) if feasible else None
+    candidates, recommended, arrival = evaluate_candidates(
+        state=snapshot.state,
+        sku_id=snapshot.forecast.sku_id,
+        remaining_demand=snapshot.forecast.remaining_demand,
+        horizon_end=snapshot.forecast.horizon_end,
+        offer=offer,
+        policy=snapshot.policy,
+        eligible_inbound_qty=snapshot.eligible_inbound_qty,
+        task_constraints=snapshot.task_constraints,
+    )
     purchase = None
     if recommended is not None and recommended.quantity:
         purchase = ProposedPurchase(

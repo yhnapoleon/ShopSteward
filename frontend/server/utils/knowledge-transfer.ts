@@ -8,7 +8,12 @@ const maxBodyBytes = 20 * 1024 * 1024 + 128 * 1024
 
 export function isKnowledgeTransfer(method: string, path: string) {
   return (
-    (method === 'POST' && uploadPath.test(path)) || (method === 'GET' && downloadPath.test(path))
+    (method === 'POST' && uploadPath.test(path)) ||
+    (method === 'GET' &&
+      (downloadPath.test(path) ||
+        /^\/api\/v1\/work-items\/[A-Za-z0-9_-]+\/quotation-(files|results)\/[A-Za-z0-9_-]+\/download$/.test(
+          path,
+        )))
   )
 }
 

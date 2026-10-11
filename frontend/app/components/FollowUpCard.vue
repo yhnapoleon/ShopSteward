@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { joinText, t as tr } from '~/i18n'
 import { when, actionLabel } from '~/utils/presentation'
 const { s, mission, product, stock, unresolved, canDecide, hasRole } = useShop()
 defineProps<{ conversation?: boolean }>()
@@ -23,11 +24,13 @@ const waiting = computed(() =>
       <div>
         <span class="tag" :class="mission.status === 'ACTIVE' ? 'green' : 'gray'"
           ><AppIcon :name="mission.status === 'ACTIVE' ? 'orbit' : 'pause'" />{{
-            mission.status === 'ACTIVE'
-              ? '备货委托进行中'
-              : mission.status === 'PAUSED'
-                ? '主动跟进已暂停'
-                : '委托已结束'
+            tr(
+              mission.status === 'ACTIVE'
+                ? '备货委托进行中'
+                : mission.status === 'PAUSED'
+                  ? '主动跟进已暂停'
+                  : '委托已结束',
+            )
           }}</span
         >
         <h3>{{ product?.name }}</h3>
@@ -38,55 +41,61 @@ const waiting = computed(() =>
         :disabled="Boolean(s.busy) || !hasRole('operator')"
         @click="mission.status === 'PAUSED' ? $emit('resume') : $emit('pause')"
       >
-        {{ mission.status === 'PAUSED' ? '恢复跟进' : '暂停跟进' }}
+        {{ tr(mission.status === 'PAUSED' ? '恢复跟进' : '暂停跟进') }}
       </button>
     </div>
     <dl class="follow-facts">
       <div>
-        <dt>正在等</dt>
-        <dd>{{ waiting }}</dd>
+        <dt>{{ tr('正在等') }}</dt>
+        <dd>{{ tr(waiting) }}</dd>
       </div>
       <div>
-        <dt>最近检查</dt>
-        <dd>{{ when(s.dashboard?.last_check_at) }}</dd>
+        <dt>{{ tr('最近检查') }}</dt>
+        <dd>{{ tr(when(s.dashboard?.last_check_at)) }}</dd>
       </div>
       <div>
-        <dt>下一次检查</dt>
+        <dt>{{ tr('下一次检查') }}</dt>
         <dd>
-          {{ mission.status === 'ACTIVE' ? when(mission.schedule.next_run_at) : '已暂停或结束' }}
+          {{
+            tr(mission.status === 'ACTIVE' ? when(mission.schedule.next_run_at) : '已暂停或结束')
+          }}
         </dd>
       </div>
       <div v-if="s.inbounds.some((i) => i.remaining_quantity)">
-        <dt>预计到货</dt>
+        <dt>{{ tr('预计到货') }}</dt>
         <dd v-for="i in s.inbounds.filter((i) => i.remaining_quantity)" :key="i.action_id">
-          {{ i.remaining_quantity }} 件 · {{ when(i.expected_arrival_at)
-          }}<span v-if="i.is_overdue"> · 已超过预计时间</span>
+          {{ joinText([tr(i.remaining_quantity), tr('件 ·'), tr(when(i.expected_arrival_at))])
+          }}<span v-if="i.is_overdue">{{ tr('· 已超过预计时间') }}</span>
         </dd>
       </div>
     </dl>
     <p v-if="s.plan?.status === 'REJECTED'" class="notice amber">
-      本轮不采购已记录。条件不变时不反复催促；后台会继续核对经营变化。
+      {{ tr('本轮不采购已记录。条件不变时不反复催促；后台会继续核对经营变化。') }}
     </p>
     <p class="channel-note">
       {{
-        mission.status === 'PAUSED'
-          ? '主动检查已暂停；已提交的动作仍需核实。'
-          : !s.connected
-            ? '当前连接不可用，无法确认新的检查结果。'
-            : '最近检查记录与已登记的下次计划如上。'
+        joinText([
+          tr(
+            mission.status === 'PAUSED'
+              ? '主动检查已暂停；已提交的动作仍需核实。'
+              : !s.connected
+                ? '当前连接不可用，无法确认新的检查结果。'
+                : '最近检查记录与已登记的下次计划如上。',
+          ),
+          tr('进展保存在应用内，不发送外部通知。'),
+        ])
       }}
-      进展保存在应用内，不发送外部通知。
     </p>
     <div class="follow-links">
       <button v-if="s.actions.length" class="text-link" @click="$emit('receipt')">
-        查看采购与到货记录</button
-      ><button class="text-link" @click="$emit('mission')">查看委托</button
+        {{ tr('查看采购与到货记录') }}</button
+      ><button class="text-link" @click="$emit('mission')">{{ tr('查看委托') }}</button
       ><button
         class="text-link"
         :disabled="Boolean(s.busy) || mission.status !== 'ACTIVE' || !hasRole('operator')"
         @click="$emit('check')"
       >
-        重新检查
+        {{ tr('重新检查') }}
       </button>
     </div>
   </article>

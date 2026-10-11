@@ -25,6 +25,14 @@ async def run(once: bool, profile: str = "business"):
 
             settings.worker_concurrency = 1
             runner = Runner(db, settings, handlers=make_handlers(settings))
+        elif profile == "work":
+            if not settings.work_processor_enabled:
+                raise RuntimeError(
+                    "Set WORK_PROCESSOR_ENABLED=true before starting the work worker"
+                )
+            from app.work_items.processor import Processor
+
+            runner = Processor(db, settings)
         elif profile == "agent":
             if not settings.agent_enabled:
                 raise RuntimeError("Set AGENT_ENABLED=true before starting the agent worker")
@@ -37,7 +45,8 @@ async def run(once: bool, profile: str = "business"):
         if once:
             await runner.run_once()
             async with db.session() as session, session.begin():
-                await heartbeat(session, runner.worker_id, "STOPPED")
+                if profile != "work":
+                    await heartbeat(session, runner.worker_id, "STOPPED")
         else:
             stop = asyncio.Event()
             loop = asyncio.get_running_loop()
@@ -56,8 +65,10 @@ async def run(once: bool, profile: str = "business"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the independent ShopSteward worker")
     parser.add_argument("--once", action="store_true", help="Process at most one registered job")
-    parser.add_argument("--profile", choices=["business", "agent", "learning"], default="business")
+    parser.add_argument(
+        "--profile", choices=["business", "agent", "learning", "work"], default="business"
+    )
     args = parser.parse_args()
-    if sys.platform == "win32" and args.profile in {"agent", "learning"}:
+    if sys.platform == "win32" and args.profile in {"agent", "learning", "work"}:
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     asyncio.run(run(args.once, args.profile))

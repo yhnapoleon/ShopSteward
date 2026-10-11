@@ -1,3 +1,4 @@
+import { t } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { api, ApiFailure, query } from '~/utils/api'
 import { describeTool } from '~/utils/agent'
@@ -82,7 +83,7 @@ export function useAgentConversation(owner = false) {
     if (s.sending) return '正在发送你的要求'
     if (!s.run) return business.session?.agentEnabled ? '等待你的问题' : 'Agent 暂未启用'
     if (s.run.status === 'RUNNING' && currentTool.value)
-      return '正在' + describeTool(currentTool.value.tool).title
+      return t('正在{0}', [t(describeTool(currentTool.value.tool).title)])
     return {
       QUEUED: '已收到，等待处理',
       RUNNING: '正在处理你的要求',

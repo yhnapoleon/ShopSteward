@@ -9,6 +9,7 @@ export type Session = {
   devTools: boolean
   workIntake?: boolean
   recoveryCases?: boolean
+  quantitySimulation?: boolean
   planRevision: boolean
 }
 export type PendingApproval = {
