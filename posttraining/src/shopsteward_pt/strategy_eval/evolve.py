@@ -240,11 +240,26 @@ mention specific suppliers, items, prices or dates, and stay under 1200 characte
 Provide the new text within ``` blocks."""
 
 
-def explain_feedback(record):
-    """Plain-language account of one explanation of a true proposal."""
+def explain_feedback(record, subtasks=()):
+    """Plain-language account of one explanation of a true proposal.
+
+    `subtasks` are the run's subtask results; a rejected one says what was wrong with it.
+    """
     lines = [f"Score {record['score']:.2f} (0 means no usable answer or a contradiction)."]
     if record["failed_subtasks"]:
         lines.append("No usable answer: " + json.dumps(record["failed_subtasks"]) + ".")
+        codes = {code for codes in record["failed_subtasks"].values() for code in codes}
+        unsupplied = sorted(
+            {ref for task in subtasks for ref in (task.get("rejected") or {}).get("unsupplied", [])}
+        )
+        if unsupplied:
+            lines.append(
+                "The whole answer was rejected because a claim's support named references that "
+                "were not supplied: " + ", ".join(unsupplied) + ". Support may name only the "
+                "supplied evidence ids."
+            )
+        if "AGENT_MODEL_INCOMPLETE" in codes:
+            lines.append("The answer was cut off at the output limit before it was complete.")
     elif record["missing"]:
         lines.append(
             "Required typed claims that were not stated (format type:candidate_id=result): "
@@ -323,7 +338,7 @@ class StageAdapter(CaseBundleAdapter):
             trajectory = {
                 "record": record,
                 "subtasks": outcome["subtasks"],
-                "feedback": explain_feedback(record),
+                "feedback": explain_feedback(record, outcome["subtasks"]),
             }
             return record, trajectory, 1.0
         trajectory = {

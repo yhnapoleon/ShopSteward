@@ -150,7 +150,9 @@ def _evolve(args, parser):
             },
             bundle_id=base.bundle_id,
         )
-        summary["saved"] = str(save_bundle(bundle, directory=args.bundle_dir))
+        save_bundle(bundle, directory=args.bundle_dir)
+        # Named by artifact and revision; an absolute path would tie the record to one machine.
+        summary["saved"] = f"{bundle.bundle_id}/{bundle.revision}.json"
     Path(args.run_dir, "evolution.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n"
     )

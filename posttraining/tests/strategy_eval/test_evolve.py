@@ -226,3 +226,22 @@ def test_oversized_text_scores_zero_and_an_outage_stops_the_search_instead_of_sc
     with pytest.raises(RuntimeError, match="provider unavailable"):
         adapter.evaluate(batch, {"question.options": "Compare the candidates."})
     assert model.calls >= 3  # each example was retried before the search was stopped
+
+
+def test_feedback_on_a_rejected_explanation_says_what_was_wrong_with_it():
+    from shopsteward_pt.strategy_eval.evolve import explain_feedback
+
+    record = {
+        "score": 0.0,
+        "failed_subtasks": {"fixed": ["unsupported_claim"]},
+        "missing": ["candidate:A_12=recommended"],
+        "contradictions": [],
+        "unverifiable": 0,
+    }
+    subtasks = [{"rejected": {"answer": "{}", "unsupplied": ["A-quote"]}}]
+    text = explain_feedback(record, subtasks)
+    assert "references that were not supplied: A-quote" in text
+    # A rejected answer stated nothing, so listing unstated claims would mislead.
+    assert "not stated" not in text
+    cut = {**record, "failed_subtasks": {"fixed": ["AGENT_MODEL_INCOMPLETE"]}}
+    assert "cut off at the output limit" in explain_feedback(cut)
