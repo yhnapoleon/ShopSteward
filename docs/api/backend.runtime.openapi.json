@@ -3641,6 +3641,261 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/actions/{action_id}/supplier-reply": {
+      "post": {
+        "tags": [
+          "Execution"
+        ],
+        "summary": "Supplier Reply",
+        "description": "The reply the owner pasted becomes the receipt, or leaves the order waiting.",
+        "operationId": "record_supplier_reply",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Action Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupplierReplyText"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Action"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/actions/{action_id}/withdrawal": {
+      "post": {
+        "tags": [
+          "Execution"
+        ],
+        "summary": "Withdrawal",
+        "operationId": "withdraw_assisted_order",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Action Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Action"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
     "/api/v1/plans/{plan_id}/revision": {
       "post": {
         "tags": [
@@ -6915,6 +7170,589 @@
             "description": "Service Unavailable"
           }
         },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/stores/{store_id}/supplier-documents": {
+      "get": {
+        "tags": [
+          "Sourcing"
+        ],
+        "summary": "Documents",
+        "operationId": "list_supplier_documents",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Store Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupplierDocumentSet"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      },
+      "post": {
+        "tags": [
+          "Sourcing"
+        ],
+        "summary": "Replace",
+        "operationId": "replace_supplier_documents",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Store Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SupplierDocumentsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupplierDocumentSet"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/stores/{store_id}/supplier-documents/sample": {
+      "post": {
+        "tags": [
+          "Sourcing"
+        ],
+        "summary": "Sample",
+        "description": "Three invented suppliers' documents about one item, for trying the sourcing loop.",
+        "operationId": "load_sample_supplier_documents",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "store_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Store Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SampleDocuments"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SupplierDocumentSet"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/operations-cases/{case_id}/source": {
+      "post": {
+        "tags": [
+          "Sourcing"
+        ],
+        "summary": "Source",
+        "description": "Start the reviewers; the Case shows their cards as they finish.",
+        "operationId": "source_operations_case",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "case_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Case Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseSource"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CaseDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
+    "/api/v1/text-bundles": {
+      "get": {
+        "tags": [
+          "Sourcing"
+        ],
+        "summary": "Bundles",
+        "operationId": "list_text_bundles",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextBundleList"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
         "x-phase": "B0",
         "x-implementation-status": "implemented"
       }
@@ -13098,6 +13936,34 @@
             ],
             "title": "Status"
           },
+          "channel": {
+            "type": "string",
+            "enum": [
+              "simulator",
+              "assisted"
+            ],
+            "title": "Channel"
+          },
+          "order_message": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OrderMessage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "supplier_reply": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SupplierReply"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "quantity": {
             "type": "integer",
             "maximum": 9.223372036854776e+18,
@@ -13171,6 +14037,9 @@
           "plan_id",
           "approval_id",
           "status",
+          "channel",
+          "order_message",
+          "supplier_reply",
           "quantity",
           "amount_minor",
           "currency",
@@ -13674,6 +14543,30 @@
         ],
         "title": "ApplicationFeedback"
       },
+      "BundleChange": {
+        "properties": {
+          "component": {
+            "type": "string",
+            "title": "Component"
+          },
+          "before": {
+            "type": "string",
+            "title": "Before"
+          },
+          "after": {
+            "type": "string",
+            "title": "After"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "component",
+          "before",
+          "after"
+        ],
+        "title": "BundleChange"
+      },
       "BusinessOutcome": {
         "properties": {
           "invocation_id": {
@@ -14133,6 +15026,18 @@
             ],
             "title": "Expert Analysis"
           },
+          "sourcing": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sourcing"
+          },
           "followup_enabled": {
             "type": "boolean",
             "title": "Followup Enabled"
@@ -14455,6 +15360,29 @@
           "expected_revision"
         ],
         "title": "CaseRevise"
+      },
+      "CaseSource": {
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "district": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "District",
+            "default": "滨江区"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "expected_revision"
+        ],
+        "title": "CaseSource"
       },
       "Catalog": {
         "properties": {
@@ -17552,6 +18480,92 @@
         ],
         "title": "Offer"
       },
+      "OrderMessage": {
+        "properties": {
+          "reference": {
+            "type": "string",
+            "title": "Reference"
+          },
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "product_name": {
+            "type": "string",
+            "title": "Product Name"
+          },
+          "quantity": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Quantity"
+          },
+          "unit_price_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Unit Price Minor"
+          },
+          "total_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Total Minor"
+          },
+          "currency": {
+            "type": "string",
+            "const": "CNY",
+            "title": "Currency"
+          },
+          "requested_delivery_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Requested Delivery Date"
+          },
+          "text": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "propertyNames": {
+              "enum": [
+                "zh",
+                "en"
+              ]
+            },
+            "type": "object",
+            "title": "Text"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "reference",
+          "supplier_id",
+          "sku_id",
+          "product_name",
+          "quantity",
+          "unit_price_minor",
+          "total_minor",
+          "currency",
+          "requested_delivery_date",
+          "text",
+          "generated_at"
+        ],
+        "title": "OrderMessage"
+      },
       "Plan": {
         "properties": {
           "id": {
@@ -17786,6 +18800,21 @@
             "type": "string",
             "pattern": "^sha256:[0-9a-f]{64}$",
             "title": "Proposal Hash"
+          },
+          "channel": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "simulator",
+                  "assisted"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Channel"
           }
         },
         "additionalProperties": false,
@@ -20057,6 +21086,35 @@
         ],
         "title": "Reference"
       },
+      "ReplyDifference": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "enum": [
+              "quantity",
+              "unit_price_minor",
+              "total_minor"
+            ],
+            "title": "Field"
+          },
+          "ordered": {
+            "type": "integer",
+            "title": "Ordered"
+          },
+          "replied": {
+            "type": "integer",
+            "title": "Replied"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "field",
+          "ordered",
+          "replied"
+        ],
+        "title": "ReplyDifference"
+      },
       "ResultProvenance": {
         "properties": {
           "result_id": {
@@ -20657,6 +21715,29 @@
         ],
         "title": "SaleSummary"
       },
+      "SampleDocuments": {
+        "properties": {
+          "sku_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Sku Id"
+          },
+          "district": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "District",
+            "default": "滨江区"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sku_id"
+        ],
+        "title": "SampleDocuments"
+      },
       "ScenarioAccepted": {
         "properties": {
           "job_run_id": {
@@ -21209,6 +22290,449 @@
           "simulation_time"
         ],
         "title": "StoreSummary"
+      },
+      "SupplierDocument": {
+        "properties": {
+          "doc_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Doc Id"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "quote",
+              "notice",
+              "terms",
+              "history",
+              "other"
+            ],
+            "title": "Kind"
+          },
+          "text": {
+            "type": "string",
+            "maxLength": 20000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "doc_id",
+          "kind",
+          "text"
+        ],
+        "title": "SupplierDocument"
+      },
+      "SupplierDocumentSet": {
+        "properties": {
+          "store_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Store Id"
+          },
+          "suppliers": {
+            "items": {
+              "$ref": "#/components/schemas/SupplierDocuments"
+            },
+            "type": "array",
+            "title": "Suppliers"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "store_id",
+          "suppliers"
+        ],
+        "title": "SupplierDocumentSet"
+      },
+      "SupplierDocuments": {
+        "properties": {
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/SupplierDocument"
+            },
+            "type": "array",
+            "title": "Documents"
+          },
+          "connected": {
+            "type": "boolean",
+            "title": "Connected",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "supplier_id",
+          "name",
+          "documents"
+        ],
+        "title": "SupplierDocuments"
+      },
+      "SupplierDocumentsUpdate": {
+        "properties": {
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "documents": {
+            "items": {
+              "$ref": "#/components/schemas/SupplierDocument"
+            },
+            "type": "array",
+            "maxItems": 12,
+            "title": "Documents"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "supplier_id",
+          "name",
+          "documents"
+        ],
+        "title": "SupplierDocumentsUpdate",
+        "description": "Replaces everything on file for one supplier; an empty list removes the supplier."
+      },
+      "SupplierReply": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "read_by": {
+            "type": "string",
+            "enum": [
+              "model",
+              "rules"
+            ],
+            "title": "Read By"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "declined",
+              "needs_attention"
+            ],
+            "title": "Outcome"
+          },
+          "decision": {
+            "type": "string",
+            "enum": [
+              "accepted",
+              "rejected",
+              "unclear"
+            ],
+            "title": "Decision"
+          },
+          "quantity": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quantity"
+          },
+          "unit_price_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit Price Minor"
+          },
+          "total_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minor"
+          },
+          "delivery_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delivery Date"
+          },
+          "supplier_order_ref": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier Order Ref"
+          },
+          "quotes": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Quotes"
+          },
+          "differences": {
+            "items": {
+              "$ref": "#/components/schemas/ReplyDifference"
+            },
+            "type": "array",
+            "title": "Differences"
+          },
+          "recorded_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Recorded At"
+          },
+          "recorded_by": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Recorded By"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text",
+          "read_by",
+          "outcome",
+          "decision",
+          "quantity",
+          "unit_price_minor",
+          "total_minor",
+          "delivery_date",
+          "supplier_order_ref",
+          "quotes",
+          "differences",
+          "recorded_at",
+          "recorded_by"
+        ],
+        "title": "SupplierReply"
+      },
+      "SupplierReplyText": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "SupplierReplyText"
+      },
+      "TextBundleEntry": {
+        "properties": {
+          "bundle_id": {
+            "type": "string",
+            "title": "Bundle Id"
+          },
+          "revision": {
+            "type": "string",
+            "title": "Revision"
+          },
+          "parent_revision": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parent Revision"
+          },
+          "content_hash": {
+            "type": "string",
+            "title": "Content Hash"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin"
+          },
+          "stage": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stage"
+          },
+          "dataset": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Dataset"
+          },
+          "task_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Task Model"
+          },
+          "reflection_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reflection Model"
+          },
+          "seed": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seed"
+          },
+          "metric_calls": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metric Calls"
+          },
+          "changes": {
+            "items": {
+              "$ref": "#/components/schemas/BundleChange"
+            },
+            "type": "array",
+            "title": "Changes"
+          },
+          "gate": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Gate"
+          },
+          "enabled_for": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Enabled For"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "bundle_id",
+          "revision",
+          "parent_revision",
+          "content_hash",
+          "origin",
+          "stage",
+          "dataset",
+          "task_model",
+          "reflection_model",
+          "seed",
+          "metric_calls",
+          "changes",
+          "gate",
+          "enabled_for"
+        ],
+        "title": "TextBundleEntry"
+      },
+      "TextBundleList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/TextBundleEntry"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "TextBundleList"
       },
       "TimelineEntry": {
         "properties": {

@@ -28,6 +28,11 @@ class CaseRevise(CaseAnalyze):
     supplier_ids: list[Identifier] | None = Field(default=None, min_length=1, max_length=3)
 
 
+class CaseSource(CaseAnalyze):
+    # Reviewers check each supplier's delivery area against where the store is.
+    district: str = Field(default="滨江区", min_length=1, max_length=64)
+
+
 class CaseMaterialize(CaseAnalyze):
     proposal_id: Identifier
     candidate_id: Identifier
@@ -74,6 +79,7 @@ class CaseDetail(DTO):
     current_plan_id: Identifier | None
     stale: bool
     expert_analysis: dict | None
+    sourcing: dict | None = None
     followup_enabled: bool
     created_at: AwareDatetime
     updated_at: AwareDatetime

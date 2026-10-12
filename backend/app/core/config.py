@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     simulation_token: SecretStr | None = Field(default=None, min_length=24)
     source_stale_seconds: int = Field(default=30, ge=1, le=3600)
     plan_ttl_seconds: int = Field(default=900, ge=1, le=86400)
+    # How an approved purchase reaches the supplier. "assisted": the owner sends the
+    # generated order message through their own channel and pastes the supplier's reply.
+    purchase_channel: Literal["simulator", "assisted"] = "simulator"
     fixed_forecast_ttl_seconds: int = Field(default=3600, ge=1, le=86400)
     forecast_v6_enabled: bool = False
     forecast_v6_url: str = "http://127.0.0.1:8053"
@@ -75,6 +78,18 @@ class Settings(BaseSettings):
     # Released text artifact for Case strategies; only offline optimization adds revisions.
     agent_case_text_bundle: str = Field(
         default="seed", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+    )
+    # Sourcing: one reviewer per supplier reads its documents into an offer card.
+    # Unset models fall back to AGENT_CASE_MODEL; a rejected card may get a stronger second reader.
+    agent_sourcing_model: str | None = None
+    agent_sourcing_escalation_model: str | None = None
+    # Released text artifacts for the reviewer and for explaining a sourced proposal. The
+    # explanation text is the one offline evolution produced; "seed" restores the original.
+    agent_sourcing_review_bundle: str = Field(
+        default="seed", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+    )
+    agent_sourcing_text_bundle: str = Field(
+        default="sourcing-r1-s1", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
     )
     agent_api_key_file: str | None = Field(default=None, repr=False)
     agent_backend_url: str = "http://127.0.0.1:8000"

@@ -16,6 +16,7 @@ from app.planning.schemas import parse_plan
 from app.planning.snapshot import source_fresh
 from app.scheduling.models import Job
 from app.scheduling.repository import enqueue
+from app.sourcing.models import SourcedOfferRow
 
 PENDING = {"QUEUED", "EXECUTING", "UNKNOWN"}
 
@@ -184,6 +185,10 @@ async def decide(session, plan_id, body, principal, key, settings):
     else:
         identifier = str(uuid4())
         purchase = plan.proposed_purchase
+        # A supplier known only from its documents has no ordering system to send to.
+        by_hand = await session.get(
+            SourcedOfferRow, (store.id, purchase.sku_id, purchase.supplier_id)
+        )
         request = PurchaseRequest(
             action_id=identifier,
             scenario_run_id=store.scenario_run_id,
@@ -201,6 +206,7 @@ async def decide(session, plan_id, body, principal, key, settings):
             plan_id=plan_id,
             approval_id=approval.id,
             status="QUEUED",
+            channel="assisted" if by_hand else body.channel or settings.purchase_channel,
             purchase_snapshot=purchase.model_dump(mode="json"),
             request_snapshot=request.model_dump(mode="json"),
             created_at=now,

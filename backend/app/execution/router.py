@@ -1,12 +1,22 @@
+from datetime import UTC, datetime
+
 from fastapi import Request, Response
 
 from app.api.dependencies import Id, Key, User, authorize_store, require_role, visible_mission
 from app.api.routing import B0Router, errors
 from app.core.errors import AppError
+from app.execution import assisted
 from app.execution.models import ActionRow
 from app.execution.repository import decide
-from app.execution.schemas import Action, DecisionApproved, DecisionRejected, PlanDecision
+from app.execution.schemas import (
+    Action,
+    DecisionApproved,
+    DecisionRejected,
+    PlanDecision,
+    SupplierReplyText,
+)
 from app.missions.models import PlanRow
+from app.operations.models import Store
 
 router = B0Router(tags=["Execution"], responses=errors)
 
@@ -33,11 +43,61 @@ async def decision(
         return result
 
 
+async def visible_action(session, principal, action_id):
+    row = await session.get(ActionRow, action_id)
+    if row is None:
+        raise AppError(404, "RESOURCE_NOT_FOUND", "Action does not exist")
+    authorize_store(principal, row.store_id)
+    return row
+
+
 @router.get("/api/v1/actions/{action_id}", response_model=Action, operation_id="get_action")
 async def action(request: Request, principal: User, action_id: Id):
     async with request.app.state.db.session() as session:
-        row = await session.get(ActionRow, action_id)
-        if row is None:
-            raise AppError(404, "RESOURCE_NOT_FOUND", "Action does not exist")
-        authorize_store(principal, row.store_id)
-        return Action.model_validate(row)
+        return Action.model_validate(await visible_action(session, principal, action_id))
+
+
+@router.post(
+    "/api/v1/actions/{action_id}/supplier-reply",
+    response_model=Action,
+    operation_id="record_supplier_reply",
+)
+async def supplier_reply(
+    request: Request, principal: User, action_id: Id, body: SupplierReplyText, key: Key
+):
+    """The reply the owner pasted becomes the receipt, or leaves the order waiting."""
+    require_role(principal, "approver")
+    state = request.app.state
+    async with state.db.session() as session:
+        row = await visible_action(session, principal, action_id)
+        if row.order_message is None:
+            raise AppError(409, "ACTION_NOT_WAITING", "This order was not sent by its owner")
+        order = row.order_message
+        clock = (await session.get(Store, row.store_id)).simulation_time or datetime.now(UTC)
+    # The reader may be a model: it runs between transactions, holding no lock.
+    reading, read_by = await assisted.read_reply(
+        body.text,
+        order,
+        clock.date(),
+        model=assisted.reader(state.settings),
+    )
+    async with state.db.session() as session, session.begin():
+        return Action.model_validate(
+            await assisted.record_reply(
+                session, action_id, body.text, reading, read_by, principal.principal_id, key
+            )
+        )
+
+
+@router.post(
+    "/api/v1/actions/{action_id}/withdrawal",
+    response_model=Action,
+    operation_id="withdraw_assisted_order",
+)
+async def withdrawal(request: Request, principal: User, action_id: Id, key: Key):
+    require_role(principal, "approver")
+    async with request.app.state.db.session() as session, session.begin():
+        await visible_action(session, principal, action_id)
+        return Action.model_validate(
+            await assisted.withdraw(session, action_id, principal.principal_id, key)
+        )

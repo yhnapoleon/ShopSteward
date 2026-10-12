@@ -5,6 +5,7 @@ from sqlalchemy import exists, func, or_, select
 from app.core.errors import AppError
 from app.core.hashing import digest
 from app.execution.accounting import action_alert, apply_receipt, close_action
+from app.execution.assisted import prepare, waiting
 from app.execution.models import ActionRow
 from app.execution.repository import PENDING, lock_action, queue_action, validate_current
 from app.missions.repository import queue_check, timeline
@@ -25,6 +26,8 @@ async def recover_actions(db):
                 .where(
                     ActionRow.status.in_(PENDING),
                     ActionRow.manual_review.is_(False),
+                    # An assisted order waits for its owner, not for a retry.
+                    or_(ActionRow.channel != "assisted", ActionRow.status == "QUEUED"),
                     or_(
                         ActionRow.next_attempt_at.is_(None),
                         ActionRow.next_attempt_at <= func.clock_timestamp(),
@@ -55,7 +58,7 @@ async def recover_actions(db):
             if available is None:
                 continue
             _, _, _, action = await lock_action(session, identifier)
-            if action.status in PENDING and not action.manual_review:
+            if action.status in PENDING and not action.manual_review and not waiting(action):
                 await queue_action(session, action)
 
 
@@ -93,10 +96,20 @@ def make_handlers(settings, *, client=None):
                     session,
                     mission,
                     "ACTION_EXECUTING",
-                    "采购已登记发送，资金暂时预留。",
+                    "订单信息已生成，等待你发给供应商；资金暂时预留。"
+                    if action.channel == "assisted"
+                    else "采购已登记发送，资金暂时预留。",
                     references=[{"type": "action", "id": action.id}],
                 )
             now = await session.scalar(select(func.clock_timestamp()))
+            if action.channel == "assisted":
+                # The owner is the channel: nothing is sent from here and nothing is polled.
+                if send:
+                    await prepare(session, action, now)
+                action.updated_at = now
+                if not await renew(session, job.id, job.lease_token, settings.job_lease_seconds):
+                    await session.rollback()
+                return None, None
             action.reconcile_count += 1
             delay = [5, 10, 30, 60][min(action.reconcile_count - 1, 3)]
             action.next_attempt_at = now + timedelta(seconds=delay)
@@ -131,6 +144,8 @@ def make_handlers(settings, *, client=None):
 
     async def after_complete(session, job, result):
         store, mission, _, action = await lock_action(session, job.payload["action_id"])
+        if waiting(action):
+            return
         if action.status in PENDING and not action.manual_review:
             await queue_action(session, action)
         elif action.status in {"SUCCEEDED", "FAILED"}:

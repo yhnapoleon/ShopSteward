@@ -41,6 +41,7 @@ async def analyze_case_experts(
     record_call=None,
     model=None,
     strategy=None,
+    text_bundle=None,
 ):
     from shopsteward_agent import OpenAIModel
     from shopsteward_agent.cases import CallBudget, analyze_frozen_case, load_bundle
@@ -91,7 +92,7 @@ async def analyze_case_experts(
         strategy=strategy or settings.agent_case_strategy,
         model=client(profile),
         profile=profile,
-        bundle=load_bundle(settings.agent_case_text_bundle),
+        bundle=load_bundle(text_bundle or settings.agent_case_text_bundle),
         role_models=role_models,
         budget=CallBudget(persist=persist),
         record_call=record_call,
@@ -106,6 +107,7 @@ async def attach_case_experts(db, settings, principal, case_id, revision, propos
     from app.agent_bridge.models import Receipt
     from app.operations_cases import repository as repo
     from app.operations_cases.models import CaseRevisionRow, RecoveryProposalRow
+    from app.sourcing.run import notes
 
     run_id = str(uuid4())
     history_owner = f"case-context:{case_id}:{revision}"
@@ -140,6 +142,11 @@ async def attach_case_experts(db, settings, principal, case_id, revision, propos
         if row is None or row.snapshot is None or proposal is None:
             return await repo.detail(session, case)
         snapshot, proposal_doc = row.snapshot, proposal.document
+        # Offers read out of supplier documents are explained with the cards beside them,
+        # by the text that offline evolution released for that step.
+        sourced = notes(case, snapshot)
+        if sourced:
+            snapshot = {**snapshot, "sourcing": sourced}
         case.expert_analysis = {
             "status": "running",
             "revision": revision,
@@ -213,6 +220,7 @@ async def attach_case_experts(db, settings, principal, case_id, revision, propos
             proposal=proposal_doc,
             persist=persist_budget,
             record_call=persist_call,
+            text_bundle=settings.agent_sourcing_text_bundle if sourced else None,
         )
         await update(result)
     except Exception:

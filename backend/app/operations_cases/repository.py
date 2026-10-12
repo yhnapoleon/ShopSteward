@@ -102,6 +102,10 @@ async def detail(session, row):
         )
     )
     values = revision.inputs
+    sourcing = row.sourcing
+    if sourcing and sourcing["status"] == "running" and now.timestamp() >= sourcing["deadline"]:
+        # The process that was reading stopped; say so instead of showing it as still running.
+        sourcing = {**sourcing, "status": "failed", "missing": ["SOURCING_INTERRUPTED"]}
     return CaseDetail(
         id=row.id,
         mission_id=row.mission_id,
@@ -132,6 +136,7 @@ async def detail(session, row):
         current_plan_id=mission.current_plan_id,
         stale=stale,
         expert_analysis=row.expert_analysis,
+        sourcing=sourcing,
         followup_enabled=row.followup_enabled,
         supplier_ids=revision.inputs.get("supplier_ids"),
         created_at=row.created_at,
@@ -206,63 +211,69 @@ async def analyze(session, row, body, principal, key, settings):
     if replay:
         return CaseDetail.model_validate(receipt.response)
     check_revision(row, body.expected_revision)
-    revision = await session.get(CaseRevisionRow, (row.id, row.current_revision))
-    if row.proposal_id is None:
-        mission = await session.get(MissionRow, row.mission_id)
-        try:
-            snapshot, evidence = await capture_snapshot(session, row, revision, mission, settings)
-            result = solve(snapshot.recovery)
-        except (AppError, ValidationError, ValueError) as exc:
-            code = (
-                exc.code
-                if isinstance(exc, AppError)
-                else "SEARCH_SPACE_EXCEEDED"
-                if isinstance(exc, SearchSpaceExceeded)
-                else "RECOVERY_INPUT_INVALID"
-            )
-            row.status = (
-                "NEEDS_INPUT"
-                if code
-                in {"DAILY_DEMAND_REQUIRED", "OFFER_SELECTION_REQUIRED", "RECOVERY_INPUT_INVALID"}
-                else "BLOCKED"
-            )
-            row.missing_inputs = [code]
-            await event(session, row, "ANALYSIS_BLOCKED", {"reason": code})
-        else:
-            now = snapshot.evaluated_at
-            proposal = RecoveryProposal(
-                **result.model_dump(),
-                id=str(uuid4()),
-                case_id=row.id,
-                revision=row.current_revision,
-                snapshot_hash=digest(snapshot.model_dump(mode="json")),
-                candidate_set_hash=digest(result.model_dump(mode="json")),
-                proposal_hash="",
-                created_at=now,
-                expires_at=min(
-                    now + timedelta(seconds=settings.plan_ttl_seconds),
-                    snapshot.forecast.valid_until,
-                ),
-            )
-            proposal.proposal_hash = "sha256:" + digest(
-                proposal.model_dump(mode="json", exclude={"proposal_hash"})
-            )
-            revision.snapshot = snapshot.model_dump(mode="json")
-            revision.evidence = evidence
-            session.add(
-                RecoveryProposalRow(
-                    id=proposal.id,
-                    case_id=row.id,
-                    revision=row.current_revision,
-                    document=proposal.model_dump(mode="json"),
-                )
-            )
-            row.proposal_id, row.status, row.missing_inputs = proposal.id, "OPTIONS_READY", []
-            await event(session, row, "OPTIONS_READY", {"proposal_id": proposal.id})
+    await solve_revision(session, row, settings)
     await session.flush()
     result = await detail(session, row)
     receipt.response = result.model_dump(mode="json")
     return result
+
+
+async def solve_revision(session, row, settings):
+    """Freeze the current revision's sources and solve it once; later calls keep the proposal."""
+    if row.proposal_id is not None:
+        return
+    revision = await session.get(CaseRevisionRow, (row.id, row.current_revision))
+    mission = await session.get(MissionRow, row.mission_id)
+    try:
+        snapshot, evidence = await capture_snapshot(session, row, revision, mission, settings)
+        result = solve(snapshot.recovery)
+    except (AppError, ValidationError, ValueError) as exc:
+        code = (
+            exc.code
+            if isinstance(exc, AppError)
+            else "SEARCH_SPACE_EXCEEDED"
+            if isinstance(exc, SearchSpaceExceeded)
+            else "RECOVERY_INPUT_INVALID"
+        )
+        row.status = (
+            "NEEDS_INPUT"
+            if code
+            in {"DAILY_DEMAND_REQUIRED", "OFFER_SELECTION_REQUIRED", "RECOVERY_INPUT_INVALID"}
+            else "BLOCKED"
+        )
+        row.missing_inputs = [code]
+        await event(session, row, "ANALYSIS_BLOCKED", {"reason": code})
+        return
+    now = snapshot.evaluated_at
+    proposal = RecoveryProposal(
+        **result.model_dump(),
+        id=str(uuid4()),
+        case_id=row.id,
+        revision=row.current_revision,
+        snapshot_hash=digest(snapshot.model_dump(mode="json")),
+        candidate_set_hash=digest(result.model_dump(mode="json")),
+        proposal_hash="",
+        created_at=now,
+        expires_at=min(
+            now + timedelta(seconds=settings.plan_ttl_seconds),
+            snapshot.forecast.valid_until,
+        ),
+    )
+    proposal.proposal_hash = "sha256:" + digest(
+        proposal.model_dump(mode="json", exclude={"proposal_hash"})
+    )
+    revision.snapshot = snapshot.model_dump(mode="json")
+    revision.evidence = evidence
+    session.add(
+        RecoveryProposalRow(
+            id=proposal.id,
+            case_id=row.id,
+            revision=row.current_revision,
+            document=proposal.model_dump(mode="json"),
+        )
+    )
+    row.proposal_id, row.status, row.missing_inputs = proposal.id, "OPTIONS_READY", []
+    await event(session, row, "OPTIONS_READY", {"proposal_id": proposal.id})
 
 
 async def invalidate_pending(session, row, mission):

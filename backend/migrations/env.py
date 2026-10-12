@@ -18,6 +18,7 @@ from app.operations import models as operations_models  # noqa: F401
 from app.operations_cases import models as operations_case_models  # noqa: F401
 from app.quotations import models as quotation_models  # noqa: F401
 from app.scheduling import models  # noqa: F401
+from app.sourcing import models as sourcing_models  # noqa: F401
 from app.work_items import models as work_models  # noqa: F401
 
 settings = Settings()

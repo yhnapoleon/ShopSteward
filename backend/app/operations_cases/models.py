@@ -21,6 +21,8 @@ class CaseRow(Base):
     plan_id: Mapped[str | None] = mapped_column(String(128))
     missing_inputs: Mapped[list] = mapped_column(JSONB, default=list)
     expert_analysis: Mapped[dict | None] = mapped_column(JSONB)
+    # The latest sourcing run: who read which supplier's documents and what they found.
+    sourcing: Mapped[dict | None] = mapped_column(JSONB)
     followup_enabled: Mapped[bool] = mapped_column(Boolean, default=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

@@ -26,6 +26,7 @@ from app.planning.router import router as planning_router
 from app.quotations.router import router as quotations_router
 from app.reporting.read_router import router as read_router
 from app.reporting.router import router as reporting_router
+from app.sourcing.router import router as sourcing_router
 from app.work_items.router import router as work_router
 
 
@@ -87,6 +88,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
     app.include_router(router)
     app.include_router(operations_router)
     app.include_router(cases_router)
+    app.include_router(sourcing_router)
+    app.state.sourcing_tasks = set()
     app.include_router(missions_router)
     app.include_router(knowledge_router)
     app.include_router(work_router)

@@ -36,6 +36,7 @@ async def current_user(request: Request, principal: User):
             "operations_cases",
             "quantity_simulation",
             "work_result_export",
+            "sourcing",
         ],
     )
 

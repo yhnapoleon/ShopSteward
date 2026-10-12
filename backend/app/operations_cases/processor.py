@@ -15,9 +15,11 @@ from app.planning.recovery.schemas import DailyDemand, RecoveryArrival, Recovery
 from app.planning.recovery.solver import allocate_daily
 from app.planning.schemas import ForecastSnapshot, InboundSnapshot, Policy, RecoveryDecisionSnapshot
 from app.planning.snapshot import source_fresh
+from app.sourcing.models import SourcedOfferRow
 
 
-async def capture_snapshot(session, case, revision, mission, settings):
+async def capture_snapshot(session, case, revision, mission, settings, *, with_offers=True):
+    """`with_offers=False` freezes the same facts with no offer: what sourcing starts from."""
     now = await session.scalar(select(func.clock_timestamp()))
     state = await get_state(session, case.store_id)
     cursor = await session.scalar(
@@ -79,14 +81,18 @@ async def capture_snapshot(session, case, revision, mission, settings):
             "summary": "显式七日日需求情景" if source == "user_scenario" else "已启用的 v6 日预测",
         }
     )
-    rows = list(
-        await session.scalars(
-            select(OfferRow)
-            .where(OfferRow.store_id == case.store_id, OfferRow.sku_id == case.sku_id)
-            .order_by(OfferRow.supplier_id)
+    rows = (
+        list(
+            await session.scalars(
+                select(OfferRow)
+                .where(OfferRow.store_id == case.store_id, OfferRow.sku_id == case.sku_id)
+                .order_by(OfferRow.supplier_id)
+            )
         )
+        if with_offers
+        else []
     )
-    selected_ids = request.get("supplier_ids")
+    selected_ids = request.get("supplier_ids") if with_offers else None
     if selected_ids:
         rows = [r for r in rows if r.supplier_id in selected_ids]
         if len(rows) != len(set(selected_ids)):
@@ -95,13 +101,16 @@ async def capture_snapshot(session, case, revision, mission, settings):
         raise AppError(422, "OFFER_SELECTION_REQUIRED", "Select at most three supplier offers")
     offers = [Offer.model_validate(r.document) for r in rows]
     for offer in offers:
+        read = await session.get(SourcedOfferRow, (case.store_id, case.sku_id, offer.supplier_id))
         evidence.append(
             {
                 "id": offer.supplier_id,
                 "kind": "supplier_offer",
                 "version": offer.offer_version,
                 "status": "verified_source",
-                "summary": "业务源结构化报价，适用性在候选中逐项检查",
+                "summary": "寻源时从供应商资料读出的报价，引文见寻源记录"
+                if read
+                else "业务源结构化报价，适用性在候选中逐项检查",
             }
         )
     inbound = list(
