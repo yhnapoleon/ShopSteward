@@ -20,6 +20,7 @@ from app.execution.accounting import apply_receipt, close_action
 from app.execution.repository import lock_action
 from app.missions.repository import command, queue_check, timeline
 from app.operations.models import ProductRow
+from app.sourcing.provider import configured, provider
 
 FIELDS = ("quantity", "unit_price_minor", "total_minor", "delivery_date", "supplier_order_ref")
 INSTRUCTION = (
@@ -177,26 +178,37 @@ def gated(raw, text):
 
 
 def reader(settings):
-    """The configured model, or None: reading a reply must also work without one."""
-    if not settings.agent_api_key_file or not settings.agent_model:
+    """The configured model, or None: reading a reply must also work without one.
+
+    The reply is read where supplier documents are read; without that, by the Agent's model.
+    """
+    where = provider(settings)
+    if not configured(settings):
+        where = {
+            "base_url": settings.agent_base_url,
+            "key_file": settings.agent_api_key_file,
+            "model": settings.agent_model,
+            "api_mode": settings.agent_api_mode,
+        }
+    if not where["key_file"] or not where["model"]:
         return None
     from shopsteward_agent import OpenAIModel
     from shopsteward_agent.context import ModelProfile
 
     profile = ModelProfile(
         profile_id="supplier-reply",
-        model_id=settings.agent_model,
-        api_mode=settings.agent_api_mode,
+        model_id=where["model"],
+        api_mode=where["api_mode"],
         reasoning_effort=settings.agent_reasoning_effort,
         max_input_tokens=settings.agent_max_input_tokens,
         max_output_tokens=settings.agent_max_output_tokens,
         timeout_s=settings.agent_model_timeout_seconds,
     )
     return OpenAIModel(
-        base_url=settings.agent_base_url,
+        base_url=where["base_url"],
         model=profile.model_id,
         profile=profile,
-        key_file=settings.agent_api_key_file,
+        key_file=where["key_file"],
     )
 
 

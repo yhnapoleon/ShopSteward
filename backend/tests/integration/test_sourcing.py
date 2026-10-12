@@ -166,7 +166,7 @@ async def test_documents_become_gated_offers_and_the_purchase_is_sent_by_the_own
     async with environment(db) as (seed, client):
         app = client._transport.app
         settings = app.state.settings
-        settings.agent_case_experts_enabled = True
+        # No experts flag: a sourced proposal is explained whenever a Case model exists.
         settings.agent_case_model = "test-model"
         settings.agent_api_key_file = "test-provider-does-not-read-this"
         settings.agent_max_input_tokens = 64000
@@ -279,8 +279,9 @@ async def test_a_card_the_gate_rejects_twice_leaves_that_supplier_out_and_says_w
     async with environment(db) as (seed, client):
         app = client._transport.app
         settings = app.state.settings
-        settings.agent_case_model = "test-model"
-        settings.agent_api_key_file = "test-provider-does-not-read-this"
+        # Only the readers have a model here; nothing is configured for the explanation.
+        settings.agent_sourcing_model = "test-reader"
+        settings.agent_sourcing_api_key_file = "test-provider-does-not-read-this"
         settings.agent_max_input_tokens = 64000
         case = await short_case(db, seed, client)
         documents = f"/api/v1/stores/{seed['store_id']}/supplier-documents"
@@ -310,9 +311,10 @@ async def test_a_card_the_gate_rejects_twice_leaves_that_supplier_out_and_says_w
         )
         attempts = next(r for r in sourcing["reviews"] if r["supplier_id"] == "B")["attempts"]
         assert [attempt["problems"] for attempt in attempts] == [["uncited:unit_price_minor"]] * 2
+        assert {attempt["model"] for attempt in attempts} == {"test-reader"}
         assert "is not found word for word in B-quote" in attempts[0]["reasons"][0]
         assert done["proposal"]["recommended_candidate_id"] == "A_20"
-        # Experts are off here: sourcing still ends with a solved Case and no explanation.
+        # Without a Case model sourcing still ends with a solved Case, just unexplained.
         assert done["expert_analysis"] is None
 
 
@@ -338,31 +340,41 @@ async def test_text_bundles_list_what_evolution_changed_and_where_each_runs(db):
 
 
 async def test_live_model_reads_the_sample_documents(db):
-    """Opt-in: one sourcing run and one reply reading on a real model, printed for inspection.
+    """Opt-in: one sourcing run and one reply reading on real models, printed for inspection.
 
-    Set SOURCING_LIVE_KEY_FILE (and optionally _MODEL, _BASE_URL, _API_MODE) and run with -s.
+    SOURCING_LIVE_KEY_FILE names the readers' key file; _MODEL, _BASE_URL and _API_MODE
+    default to deepseek-flash at DeepSeek. SOURCING_LIVE_CASE_KEY_FILE, _CASE_MODEL,
+    _CASE_BASE_URL and _CASE_API_MODE put the explanation at another provider; unset, it
+    runs where the readers do. Run with -s.
     """
     import os
 
-    if not os.environ.get("SOURCING_LIVE_KEY_FILE"):
+    env = os.environ.get
+    if not env("SOURCING_LIVE_KEY_FILE"):
         pytest.skip("Set SOURCING_LIVE_KEY_FILE to read the sample documents with a real model")
     from app.execution import assisted
 
     async with environment(db) as (seed, client):
         app = client._transport.app
         settings = app.state.settings
-        settings.agent_api_key_file = os.environ["SOURCING_LIVE_KEY_FILE"]
-        settings.agent_base_url = os.environ.get(
-            "SOURCING_LIVE_BASE_URL", "https://api.deepseek.com"
+        settings.agent_sourcing_api_key_file = env("SOURCING_LIVE_KEY_FILE")
+        settings.agent_sourcing_base_url = env("SOURCING_LIVE_BASE_URL", "https://api.deepseek.com")
+        settings.agent_sourcing_model = env("SOURCING_LIVE_MODEL", "deepseek-flash")
+        settings.agent_sourcing_api_mode = env("SOURCING_LIVE_API_MODE", "chat_completions")
+        settings.agent_api_key_file = env(
+            "SOURCING_LIVE_CASE_KEY_FILE", settings.agent_sourcing_api_key_file
         )
-        settings.agent_case_model = os.environ.get("SOURCING_LIVE_MODEL", "deepseek-flash")
-        settings.agent_model = settings.agent_case_model
-        settings.agent_api_mode = os.environ.get("SOURCING_LIVE_API_MODE", "chat_completions")
-        settings.agent_case_api_mode = settings.agent_api_mode
+        settings.agent_base_url = env(
+            "SOURCING_LIVE_CASE_BASE_URL", settings.agent_sourcing_base_url
+        )
+        settings.agent_case_model = env("SOURCING_LIVE_CASE_MODEL", settings.agent_sourcing_model)
+        settings.agent_case_api_mode = env(
+            "SOURCING_LIVE_CASE_API_MODE", settings.agent_sourcing_api_mode
+        )
         settings.agent_case_experts_enabled = True
         settings.agent_max_input_tokens = 64000
-        settings.agent_max_output_tokens = 8000
-        settings.agent_model_timeout_seconds = 90
+        settings.agent_max_output_tokens = 16000
+        settings.agent_model_timeout_seconds = 120
         case = await short_case(db, seed, client)
         documents = f"/api/v1/stores/{seed['store_id']}/supplier-documents"
         await client.post(documents + "/sample", json={"sku_id": "sku_001"}, headers=headers())
@@ -383,20 +395,24 @@ async def test_live_model_reads_the_sample_documents(db):
             print(
                 " ",
                 review["supplier_id"],
-                [attempt["problems"] for attempt in review["attempts"]],
+                [(attempt["model"], attempt["problems"]) for attempt in review["attempts"]],
                 card and (card["offer"] or card["reason"]),
             )
+        print("  readers:", sourcing.get("budget", {}).get("usage"))
         print("recommended:", done["proposal"] and done["proposal"]["recommended_candidate_id"])
         analysis = done["expert_analysis"] or {}
         print(
             "explanation:",
             analysis.get("status"),
             analysis.get("routing", {}).get("bundle_revision"),
+            (analysis.get("profile") or {}).get("model_id"),
+            analysis.get("usage"),
         )
         for task in analysis.get("subtasks", []):
-            print("  missing:", task.get("missing"))
-            for claim in task.get("claims", []):
-                print("  -", claim["statement"])
+            claims = task.get("claims", [])
+            print("  claims:", len(claims), "missing:", task.get("missing"))
+            for claim in claims[:6]:
+                print("  -", claim["statement"][:200])
         assert sourcing["status"] in {"complete", "partial"} and sourcing["registered"]
         assert done["status"] == "OPTIONS_READY"
 

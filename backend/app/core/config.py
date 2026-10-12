@@ -83,6 +83,11 @@ class Settings(BaseSettings):
     # Unset models fall back to AGENT_CASE_MODEL; a rejected card may get a stronger second reader.
     agent_sourcing_model: str | None = None
     agent_sourcing_escalation_model: str | None = None
+    # Readers may run at another provider than the explanation, e.g. a cheaper model as the
+    # reading core. Unset: AGENT_BASE_URL, AGENT_API_KEY_FILE and AGENT_CASE_API_MODE.
+    agent_sourcing_base_url: str | None = None
+    agent_sourcing_api_mode: Literal["chat_completions", "responses"] | None = None
+    agent_sourcing_api_key_file: str | None = Field(default=None, repr=False)
     # Released text artifacts for the reviewer and for explaining a sourced proposal. The
     # explanation text is the one offline evolution produced; "seed" restores the original.
     agent_sourcing_review_bundle: str = Field(

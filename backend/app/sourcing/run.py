@@ -24,6 +24,7 @@ from app.operations_cases.processor import capture_snapshot
 from app.operations_cases.schemas import CaseDetail
 from app.planning.recovery.solver import solve
 from app.sourcing.models import SourcedOfferRow
+from app.sourcing.provider import configured, provider
 from app.sourcing.repository import connected, suppliers
 
 SECONDS = 300
@@ -31,21 +32,16 @@ COMPARED = 3  # the solver compares at most three offers
 TERMINAL = {"CANCELLED", "RESOLVED", "CLOSED"}
 
 
-def configured(settings):
-    return bool(
-        settings.agent_api_key_file and (settings.agent_sourcing_model or settings.agent_case_model)
-    )
-
-
 def reviewers(settings):
     """(client, profile, role_models) for the reviewers."""
     from shopsteward_agent import OpenAIModel
     from shopsteward_agent.context import ModelProfile
 
+    where = provider(settings)
     profile = ModelProfile(
         profile_id="sourcing-configured",
-        model_id=settings.agent_sourcing_model or settings.agent_case_model,
-        api_mode=settings.agent_case_api_mode,
+        model_id=where["model"],
+        api_mode=where["api_mode"],
         reasoning_effort=settings.agent_reasoning_effort,
         max_input_tokens=settings.agent_max_input_tokens,
         max_output_tokens=settings.agent_max_output_tokens,
@@ -54,10 +50,10 @@ def reviewers(settings):
 
     def client(profile):
         return OpenAIModel(
-            base_url=settings.agent_base_url,
+            base_url=where["base_url"],
             model=profile.model_id,
             profile=profile,
-            key_file=settings.agent_api_key_file,
+            key_file=where["key_file"],
         )
 
     roles = {}
@@ -221,10 +217,13 @@ async def execute(db, settings, principal, case_id, work):
     except Exception:  # noqa: BLE001 - the Case must not be left showing a run that died
         await _update(db, principal, case_id, run_id, failed)
         return
-    if solved and settings.agent_case_experts_enabled:
+    if solved and settings.agent_api_key_file and settings.agent_case_model:
         from app.agent_bridge.context_cases import attach_case_experts
 
-        await attach_case_experts(db, settings, principal, case_id, *solved)
+        # A sourced proposal is always explained when a Case model exists. The flag only
+        # decides whether an ordinary analysis waits for an explanation.
+        explaining = settings.model_copy(update={"agent_case_experts_enabled": True})
+        await attach_case_experts(db, explaining, principal, case_id, *solved)
 
 
 async def register(session, row, work, reviews, text, budget, settings):
