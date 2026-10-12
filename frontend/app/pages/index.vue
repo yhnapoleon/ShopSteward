@@ -1147,7 +1147,7 @@ function briefing() {
               tr('件 ·'),
               tr(money(a.amount_minor)),
               '·',
-              tr(actionLabel(a.status)),
+              tr(actionLabel(a.status, a.channel)),
             ])
           }}
         </h3>
@@ -1161,7 +1161,14 @@ function briefing() {
         </div>
         <div class="detail-row">
           <span>{{ tr('预计到货') }}</span
-          ><b>{{ tr(when(a.purchase_snapshot.expected_arrival_at)) }}</b>
+          ><b>{{
+            tr(
+              when(
+                s.inbounds.find((i) => i.action_id === a.id)?.expected_arrival_at ||
+                  a.purchase_snapshot.expected_arrival_at,
+              ),
+            )
+          }}</b>
         </div>
         <div class="detail-row">
           <span>{{ tr('到货进度') }}</span
@@ -1175,6 +1182,7 @@ function briefing() {
           }}</b>
         </div>
         <p v-if="a.last_error" class="notice amber">{{ tr(a.last_error) }}</p>
+        <SupplierReceipt v-if="a.supplier_reply" :reply="a.supplier_reply" />
       </section>
       <p class="notice">{{ tr('采购已受理不等于到货。进度以回执与实际到货记录为准。') }}</p>
       <button class="secondary" @click="act(() => shop.refresh(true))">

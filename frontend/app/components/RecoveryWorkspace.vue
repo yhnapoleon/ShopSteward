@@ -121,6 +121,25 @@ onMounted(() => {
   }, 5000)
 })
 onUnmounted(() => clearInterval(timer))
+// While reviewers read, their cards arrive one by one; afterwards the newly read
+// suppliers have offers on file, so the shop's catalog is read again.
+const sourcingStatus = computed(
+  () => (detail.value?.sourcing as { status?: string } | null | undefined)?.status,
+)
+let sourcingTimer: ReturnType<typeof setInterval> | undefined
+watch(sourcingStatus, (status, previous) => {
+  clearInterval(sourcingTimer)
+  if (status === 'running')
+    sourcingTimer = setInterval(() => {
+      if (detail.value && !busy.value && !pending.value) void recovery.load(detail.value.id)
+    }, 2000)
+  else if (previous === 'running') void shop.refresh(true)
+})
+onUnmounted(() => clearInterval(sourcingTimer))
+async function source(district: string) {
+  notice.value = ''
+  await recovery.source(district)
+}
 const labels: Record<string, string> = {
   OPEN: '待分析',
   ANALYZING: '分析中',
@@ -362,6 +381,14 @@ function newCase() {
         </button>
       </div>
       <p v-if="notice" role="status" class="notice">{{ notice }}</p>
+      <SourcingPanel
+        v-if="shop.s.session?.sourcing && shop.mission.value"
+        :detail="detail"
+        :store-id="shop.s.storeId"
+        :sku-id="shop.mission.value.sku_id"
+        :disabled="disabled || editing || terminal"
+        @source="source"
+      />
       <div v-if="detail" class="recovery-result">
         <div class="recovery-heading">
           <h3>{{ labels[detail.status] || detail.status }}</h3>

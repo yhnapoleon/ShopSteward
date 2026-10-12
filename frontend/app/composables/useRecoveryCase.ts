@@ -170,6 +170,15 @@ export function useRecoveryCase(missionId: () => string) {
     )
     return updated && operation === 'refresh' ? analyze(updated) : updated
   }
+  // Starts the reviewers; their cards arrive on the Case as each one finishes.
+  async function source(district: string) {
+    const value = detail.value
+    if (!value) return
+    return post('source', `/api/v1/operations-cases/${encodeURIComponent(value.id)}/source`, {
+      expected_revision: value.current_revision,
+      district,
+    })
+  }
   async function retry() {
     const request = pending.value
     if (!request) return
@@ -196,7 +205,7 @@ export function useRecoveryCase(missionId: () => string) {
           saved &&
           typeof saved.key === 'string' &&
           typeof saved.phase === 'string' &&
-          /^\/api\/v1\/operations-cases(?:\/[^/]+\/(?:analyze|revise|materialize|control))?$/.test(
+          /^\/api\/v1\/operations-cases(?:\/[^/]+\/(?:analyze|revise|materialize|control|source))?$/.test(
             saved.path,
           ) &&
           saved.body &&
@@ -235,6 +244,7 @@ export function useRecoveryCase(missionId: () => string) {
     analyze,
     materialize,
     control,
+    source,
     retry,
     newDraft,
   }

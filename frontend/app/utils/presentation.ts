@@ -21,7 +21,14 @@ export const when = (v: string | undefined | null) =>
         hour12: false,
       })
     : t('尚未取得')
-export const actionLabel = (status: string) =>
+// The owner carries an assisted order to the supplier, so its stages read differently.
+const assistedLabels: Record<string, string> = {
+  QUEUED: '正在生成订单信息',
+  EXECUTING: '待供应商确认',
+  SUCCEEDED: '供应商已确认',
+}
+export const actionLabel = (status: string, channel?: string) =>
+  (channel === 'assisted' && assistedLabels[status]) ||
   ({
     QUEUED: '等待提交',
     EXECUTING: '正在提交',
@@ -30,7 +37,8 @@ export const actionLabel = (status: string) =>
     FAILED: '未成功',
     STALE: '原方案失效',
     CANCELLED: '已取消',
-  })[status] || status
+  })[status] ||
+  status
 export const reasonLabel = (r: string) =>
   ({
     CASH_FLOOR_VIOLATION: '低于现金底线',

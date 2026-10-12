@@ -9,6 +9,7 @@ export type Session = {
   devTools: boolean
   workIntake?: boolean
   recoveryCases?: boolean
+  sourcing?: boolean
   quantitySimulation?: boolean
   planRevision: boolean
 }

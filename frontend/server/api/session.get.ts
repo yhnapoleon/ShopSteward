@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
         }).catch(() => null)
     return {
       recoveryCases: identity.capabilities?.includes('operations_cases') || false,
+      sourcing: identity.capabilities?.includes('sourcing') || false,
       quantitySimulation: Boolean(identity.capabilities?.includes('quantity_simulation')),
       workIntake: identity.capabilities
         ? identity.capabilities.includes('work_intake')

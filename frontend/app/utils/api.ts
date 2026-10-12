@@ -19,6 +19,7 @@ const messages: Record<string, string> = {
   PLAN_EXPIRED: '方案已过期，请重新检查。',
   DATA_STALE: '数据还未同步完成，暂时不能采购。',
   ACTION_IN_PROGRESS: '已有采购待核实，请先查看原动作。',
+  ACTION_NOT_WAITING: '这笔订单已不在等待供应商回复，正在取得最新状态。',
   MISSION_NOT_ACTIVE: '任务已暂停或结束，不能提交采购。',
   CASH_FLOOR_VIOLATION: '采购会低于现金底线，不能执行。',
   AGENT_NOT_CONFIGURED: 'Agent暂未启用。经营查询与采购仍可使用。',

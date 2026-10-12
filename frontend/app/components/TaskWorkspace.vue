@@ -11,7 +11,7 @@ const emit = defineEmits<{
   navigate: [view: string]
 }>()
 const shop = useShop()
-const { s, mission, plan, stock, product, canDecide, hasRole } = shop
+const { s, mission, plan, stock, product, canDecide, awaitingSupplier, hasRole } = shop
 const agent = useAgentConversation()
 const { status, actions, pending } = useTaskPresentation()
 const reduce = useReducedMotion()
@@ -274,6 +274,7 @@ async function recover() {
             </button>
             <p v-if="localError" class="notice amber" role="alert">{{ tr(localError) }}</p>
           </article>
+          <AssistedOrderCard v-else-if="awaitingSupplier && !ended" />
           <DecisionCard
             v-else-if="canDecide && !ended"
             @confirm="emit('confirm')"
@@ -445,7 +446,7 @@ async function recover() {
                 }}
               </p>
               <p v-for="a in actions.filter((a) => a.plan_id === p.id)" :key="a.id">
-                {{ joinText([tr('采购'), tr(a.quantity), tr('件 ·'), tr(actionLabel(a.status))]) }}
+                {{ joinText([tr('采购'), tr(a.quantity), tr('件 ·'), tr(actionLabel(a.status, a.channel))]) }}
               </p>
             </article>
             <p v-if="historyLoaded && !historicalPlans.length">{{ tr('暂无方案记录。') }}</p>

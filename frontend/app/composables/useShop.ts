@@ -46,6 +46,12 @@ export function useShop() {
   const unresolved = computed(() =>
     s.actions.find((a) => ['QUEUED', 'EXECUTING', 'UNKNOWN'].includes(a.status)),
   )
+  // Sent by the owner and not yet answered: nothing is retried, the order simply waits.
+  const awaitingSupplier = computed(() =>
+    unresolved.value?.channel === 'assisted' && unresolved.value.status === 'EXECUTING'
+      ? unresolved.value
+      : null,
+  )
   const currentCandidate = computed(() => selectedPlanCandidate(s.plan, s.selected))
   const canDecide = computed(
     () =>
@@ -409,6 +415,33 @@ export function useShop() {
       await refresh(true)
     })
   }
+  // An order the owner sends by hand: the pasted reply becomes its receipt, or it keeps waiting.
+  async function recordSupplierReply(actionId: string, text: string) {
+    return command('正在登记供应商回复', async () => {
+      try {
+        return await api<Schema<'Action'>>(
+          '/api/v1/actions/' + encodeURIComponent(actionId) + '/supplier-reply',
+          'POST',
+          { text } satisfies Schema<'SupplierReplyText'>,
+        )
+      } finally {
+        await refresh(true)
+      }
+    })
+  }
+  async function withdrawOrder(actionId: string) {
+    return command('正在撤回订单', async () => {
+      try {
+        return await api<Schema<'Action'>>(
+          '/api/v1/actions/' + encodeURIComponent(actionId) + '/withdrawal',
+          'POST',
+          {},
+        )
+      } finally {
+        await refresh(true)
+      }
+    })
+  }
   async function advance() {
     return command('正在推进经营事件', async () => {
       const run = s.runs[s.storeId]
@@ -449,6 +482,7 @@ export function useShop() {
     offer,
     plan,
     unresolved,
+    awaitingSupplier,
     currentCandidate,
     canDecide,
     hasRole,
@@ -464,6 +498,8 @@ export function useShop() {
     prepareDecision,
     decide,
     recoverApproval,
+    recordSupplierReply,
+    withdrawOrder,
     advance,
     acknowledge,
     moreTimeline,

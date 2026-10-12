@@ -102,6 +102,14 @@ export const backendRoutes = [
   ],
   [
     "POST",
+    "/api/v1/actions/{action_id}/supplier-reply"
+  ],
+  [
+    "POST",
+    "/api/v1/actions/{action_id}/withdrawal"
+  ],
+  [
+    "POST",
     "/api/v1/plans/{plan_id}/revision"
   ],
   [
@@ -207,6 +215,26 @@ export const backendRoutes = [
   [
     "GET",
     "/api/v1/operations-cases/{case_id}/events"
+  ],
+  [
+    "GET",
+    "/api/v1/stores/{store_id}/supplier-documents"
+  ],
+  [
+    "POST",
+    "/api/v1/stores/{store_id}/supplier-documents"
+  ],
+  [
+    "POST",
+    "/api/v1/stores/{store_id}/supplier-documents/sample"
+  ],
+  [
+    "POST",
+    "/api/v1/operations-cases/{case_id}/source"
+  ],
+  [
+    "GET",
+    "/api/v1/text-bundles"
   ],
   [
     "POST",

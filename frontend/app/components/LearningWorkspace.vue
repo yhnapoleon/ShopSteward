@@ -122,6 +122,7 @@ async function forgetConfirmed(asset: LearningAsset) {
         </div>
       </article>
     </template>
+    <TextBundleLineage />
   </section>
 </template>
 <style scoped>
