@@ -47,13 +47,17 @@ flowchart LR
 
 | 变量 | 说明 |
 |---|---|
-| `AGENT_API_KEY_FILE`、`AGENT_BASE_URL` | 模型服务的密钥文件和地址，与已有 Agent 共用 |
-| `AGENT_CASE_MODEL`、`AGENT_CASE_API_MODE` | 审查者和解释默认用的模型与协议 |
-| `AGENT_SOURCING_MODEL` | 可选，单独指定审查者的模型 |
-| `AGENT_SOURCING_ESCALATION_MODEL` | 可选，第二次阅读改用的更强模型 |
+| `AGENT_API_KEY_FILE`、`AGENT_BASE_URL` | 解释所用模型服务的密钥文件和地址，与已有 Agent 共用 |
+| `AGENT_CASE_MODEL`、`AGENT_CASE_API_MODE` | 解释用的模型与协议。配置了它，寻源后就会运行解释 |
+| `AGENT_SOURCING_MODEL` | 读资料和读回复的模型；不设时用 `AGENT_CASE_MODEL` |
+| `AGENT_SOURCING_BASE_URL`、`AGENT_SOURCING_API_KEY_FILE`、`AGENT_SOURCING_API_MODE` | 让读资料的模型走另一家服务，例如便宜的模型；不设时沿用上面的地址、密钥和 `AGENT_CASE_API_MODE` |
+| `AGENT_SOURCING_ESCALATION_MODEL` | 可选，第二次阅读改用的更强模型，与读资料的模型在同一家服务 |
 | `AGENT_SOURCING_REVIEW_BUNDLE` | 审查者文本版本，默认 `seed` |
 | `AGENT_SOURCING_TEXT_BUNDLE` | 解释寻源方案用的文本版本，默认 `sourcing-r1-s1`；改成 `seed` 即回到演化前的文本 |
-| `AGENT_CASE_EXPERTS_ENABLED` | 设为 `true` 才会在寻源后运行解释 |
+| `AGENT_MAX_OUTPUT_TOKENS`、`AGENT_MODEL_TIMEOUT_SECONDS` | 一次解释约输出 4,000 token，默认的 2048 和 30 秒不够，建议设为 16000 和 120。这两项与 Agent 共用 |
+| `AGENT_CASE_EXPERTS_ENABLED` | 只决定普通的“开始分析”之后是否等待解释。寻源后的解释不看它 |
+
+一种已经跑通的组合：读资料用 DeepSeek 的 `deepseek-flash`（`chat_completions`），解释用 OpenAI 的 `gpt-6-luna`（`responses`）。
 
 阅读在 API 进程里后台运行，一次最长 300 秒。进程在阅读中途重启时，这次寻源会显示为中断，可以重新寻源。
 
@@ -81,7 +85,7 @@ flowchart LR
 1. 店主批准方案后，系统核对方案仍然有效并预留资金，然后生成一段订单信息：商品、数量、单价、合计、希望送达日期和订单编号，中英文各一份。
 2. 订单进入“待供应商确认”。系统不会重试，也不会轮询。
 3. 店主把订单信息发给供应商，收到回复后粘贴进来。
-4. 系统从回复里读出：接受还是拒绝、数量、单价、金额、送达日期、供应商自己的单号。配置了模型时由模型读，每一项必须引用回复里的原话，引不出原话的项丢弃；没有配置模型或模型失败时按固定规则读。
+4. 系统从回复里读出：接受还是拒绝、数量、单价、金额、送达日期、供应商自己的单号。配置了模型时由模型读，每一项必须引用回复里的原话，引不出原话的项丢弃；没有配置模型或模型失败时按固定规则读。读回复用的是读资料的那个模型（见 1.2），没有配置时用 `AGENT_MODEL`。
 5. 结果有三种：
    - **确认**：回复接受订单，且提到的数量、单价、金额与订单一致。采购入账，库存记为在途；回复里给了送达日期的，预计到货改用这个日期。
    - **拒绝**：订单关闭，预留资金释放。
@@ -130,23 +134,29 @@ flowchart LR
 | 寻源整条链：资料、把关、登记、求解、解释、采纳、批准、辅助发送、回执 | `backend/tests/integration/test_sourcing.py` | 3 项通过 |
 | 辅助发送：生成订单、等待、确认、不一致、拒绝、撤回、权限、重放 | `backend/tests/integration/test_assisted_purchase.py` | 5 项通过 |
 | 回复解读：规则、模型引文核对、模型失败时回退 | `backend/tests/unit/test_assisted_reply.py` | 3 项通过 |
-| 后端全量 | `backend/tests` | 752 项通过，6 项跳过 |
-| 前端类型检查、接口契约检查 | `nuxt typecheck`、`api:check` | 通过 |
-| 真实模型冒烟，1 次 | `test_sourcing.py` 里默认跳过的 `test_live_model_reads_the_sample_documents` | 见下 |
+| 读资料的模型走哪家服务 | `backend/tests/unit/test_sourcing_provider.py` | 1 项通过 |
+| 后端全量 | `backend/tests` | 753 项通过，7 项跳过 |
+| 前端类型检查、接口契约检查、生产构建 | `nuxt typecheck`、`api:check`、`nuxt build` | 通过 |
+| 真实模型冒烟，2 次 | `test_sourcing.py` 里默认跳过的 `test_live_model_reads_the_sample_documents` | 见下 |
 
-真实模型冒烟用 `deepseek-flash` 在示例资料上跑了一次，约 84 秒：
+真实模型冒烟在示例资料上跑了两次，每次是一轮完整的寻源加一次回复解读：
 
-- 三位审查者都是第一次阅读就通过把关。安和商贸读出 9.20 元（调价通知的价格），百川批发读出 8.60 元（每箱 86.00 元换算），诚达供应链判为门店不在配送范围。
-- 登记了百川批发和安和商贸两份报价，求解器推荐向百川批发买 20 件。
-- 解释用的是 `sourcing-r1-s1`，状态是“部分完成”：模型列出了它认为缺少的资料，所以没有记为完成。解释共二十多条，英文，逐条照抄求解器的字段，比较长。
-- 回复“好嘞老板，20件没问题，还是八块六一件，周四给你送过去”由模型读出：接受，20 件，8.60 元，送达日期按业务日期推到周四，每项都带原话。
+| 读资料 | 解释 | 耗时 | 三家是否读对 | 推荐 | 解释 |
+|---|---|---|---|---|---|
+| `deepseek-flash` | `deepseek-flash` | 约 84 秒 | 是，都是第一次阅读就通过把关 | 百川批发 20 件 | “部分完成”，二十多条 |
+| `deepseek-flash` | `gpt-6-luna` | 约 61 秒 | 是，都是第一次阅读就通过把关 | 百川批发 20 件 | “部分完成”，15 条 |
 
-这是一次运行，说明这条路能走通，不说明它每次都读对。重跑的方法：设置环境变量 `SOURCING_LIVE_KEY_FILE` 为密钥文件路径，可选 `SOURCING_LIVE_MODEL`、`SOURCING_LIVE_BASE_URL`、`SOURCING_LIVE_API_MODE`，然后带 `-s` 运行这一项测试。
+- “读对”指：安和商贸读出 9.20 元（调价通知的价格），百川批发读出 8.60 元（每箱 86.00 元换算），诚达供应链判为门店不在配送范围。
+- 解释用的是 `sourcing-r1-s1`。两次的状态都是“部分完成”，原因是模型列出了它认为缺少的资料。解释是英文的，逐条照抄求解器的字段。
+- 第二次的用量：三位审查者合计输入约 10,800、输出约 4,800 token；解释输入约 6,300、输出约 4,000 token。
+- 回复“好嘞老板，20件没问题，还是八块六一件，周四给你送过去”两次都由 `deepseek-flash` 读出：接受，20 件，8.60 元，送达日期按业务日期推到周四，每项都带原话。
+
+两次运行说明这条路能走通，不说明它每次都读对。重跑的方法：设置环境变量 `SOURCING_LIVE_KEY_FILE` 为读资料模型的密钥文件路径，可选 `SOURCING_LIVE_MODEL`、`SOURCING_LIVE_BASE_URL`、`SOURCING_LIVE_API_MODE`；要让解释走另一家服务，再设 `SOURCING_LIVE_CASE_KEY_FILE`、`SOURCING_LIVE_CASE_MODEL`、`SOURCING_LIVE_CASE_BASE_URL`、`SOURCING_LIVE_CASE_API_MODE`。然后带 `-s` 运行这一项测试。
 
 没有验证的：
 
-- **没有在浏览器里走过这两项功能的界面。** 前端只通过了类型检查和接口契约检查。
-- **没有用 `gpt-6-luna` 跑过产品里的这条路。** 上面的冒烟只用了 `deepseek-flash`。
+- **没有在浏览器里走过这两项功能的界面。** 前端通过了类型检查、接口契约检查和生产构建，没有人点过。
+- **没有用 `gpt-6-luna` 读过资料。** 它只在第二次冒烟里写了解释。
 - 示例资料之外的资料格式没有试过。
 
 ## 5. 已知的限制
