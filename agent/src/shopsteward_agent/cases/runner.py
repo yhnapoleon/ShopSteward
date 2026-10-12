@@ -48,6 +48,20 @@ def _parse(content):
         raise ValueError("invalid_subtask_result") from None
 
 
+def _named(ref, evidence):
+    """The supplied evidence ID that `ref` names, or None.
+
+    An ID is a 64-digit digest and models miscopy it: cut short, or with a stretch
+    repeated. Such a copy still names one ID when its opening matches no other.
+    """
+    if not isinstance(ref, str):
+        return None
+    if ref in evidence:
+        return ref
+    close = [item for item in evidence if len(ref) >= 24 and str(item).startswith(ref[:24])]
+    return close[0] if len(close) == 1 else None
+
+
 def _request_ok(item):
     return isinstance(item, str) or (
         isinstance(item, dict)
@@ -201,17 +215,17 @@ class BoundedCaseRunner:
                         or not isinstance(claim.get("statement"), str)
                         or not isinstance(claim.get("support"), list)
                         or not claim["support"]
-                        or not all(
-                            isinstance(ref, str) and ref in evidence for ref in claim["support"]
-                        )
+                        or not all(_named(ref, evidence) for ref in claim["support"])
                     ):
                         support = claim.get("support") if isinstance(claim, dict) else None
                         unsupplied = [
                             str(ref)
                             for ref in (support if isinstance(support, list) else [])
-                            if not (isinstance(ref, str) and ref in evidence)
+                            if not _named(ref, evidence)
                         ]
                         raise ValueError("unsupported_claim")
+                    # Downstream joins compare IDs exactly, so a miscopy is written back whole.
+                    claim["support"] = [_named(ref, evidence) for ref in claim["support"]]
                     # Typed metadata drives the code-side join; unknown values fail closed.
                     if (
                         claim.get("kind", "interpretation") not in CLAIM_KINDS

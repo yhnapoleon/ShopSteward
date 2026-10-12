@@ -277,6 +277,17 @@ async def test_one_supplier_can_be_reviewed_on_its_own_and_the_gate_says_what_wa
     ]
     assert citation_problems(CARD_A, SUPPLIERS[0]["documents"]) == []
     assert invalid(CARD_A) == [] and invalid({**CARD_A, "status": "maybe"})[0].startswith("status")
+    # A row quoted together with a line that is elsewhere in the document is still a quote;
+    # a line the document does not have spoils it.
+    price = CARD_A["citations"][0]
+    apart = {
+        **price,
+        "quote": "报价单号：Q-A\n| K1 | 12件/箱 | 24 | 12.00 | 下单后1个自然日内送达 |",
+    }
+    made_up = {**price, "quote": "报价单号：Q-A\n| K1 | 12件/箱 | 24 | 9.00 |"}
+    for citation, problems in ((apart, []), (made_up, ["unit_price_minor"])):
+        card = {**CARD_A, "citations": [citation, *CARD_A["citations"][1:]]}
+        assert [name for name, _ in citation_problems(card, SUPPLIERS[0]["documents"])] == problems
 
 
 @pytest.mark.asyncio

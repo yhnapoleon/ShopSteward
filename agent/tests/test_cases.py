@@ -92,6 +92,56 @@ async def test_experts_cannot_access_write_tools_or_invent_support():
 
 
 @pytest.mark.asyncio
+async def test_a_miscopied_evidence_id_still_names_the_one_it_was_copied_from():
+    import json
+
+    from shopsteward_agent.cases import BoundedCaseRunner, CallBudget, SubtaskSpec
+    from shopsteward_agent.context import ModelProfile
+
+    snapshot, other = "snapshot:" + "9291dc1b70c1e80f" * 4, "snapshot:" + "07907dc28a45212f" * 4
+    # Cut short, and with a stretch repeated: the two ways the long digest was miscopied.
+    short, repeated = snapshot[:50], snapshot[:40] + snapshot[20:]
+
+    class Model:
+        def __init__(self, support):
+            self.support = support
+
+        async def complete(self, messages, tools, **kwargs):
+            return {
+                "content": json.dumps(
+                    {"claims": [{"statement": "claim", "support": self.support}], "missing": []}
+                )
+            }
+
+    async def run(support, supplied):
+        spec = SubtaskSpec(
+            case_id="c",
+            revision_id="1",
+            run_id="root",
+            subtask_id="e",
+            role="fixed",
+            question="check",
+            allowed_scope={"store_id": "s"},
+            supplied_evidence_ids=supplied,
+        )
+        runner = BoundedCaseRunner(
+            model=Model(support),
+            profile=ModelProfile(model_id="test"),
+            tools=[],
+            call_tool=None,
+            budget=CallBudget(),
+        )
+        return (await runner.run([spec]))["subtasks"][0]
+
+    for copy in (short, repeated):
+        done = await run([copy], [snapshot, other])
+        assert done["status"] == "complete" and done["claims"][0]["support"] == [snapshot]
+    # Too little of it, or an opening two IDs share, names nothing.
+    assert (await run([snapshot[:20]], [snapshot]))["status"] == "failed"
+    assert (await run([short], [snapshot, snapshot[:60] + "0000"]))["status"] == "failed"
+
+
+@pytest.mark.asyncio
 async def test_budget_failed_unknown_attempt_stays_reserved_on_restore():
     from shopsteward_agent import RuntimeFailure
     from shopsteward_agent.cases import CallBudget

@@ -111,6 +111,17 @@ def squash(text):
     return "".join(text.split())
 
 
+def quoted(quote, text):
+    """Whether `quote` is an excerpt of the squashed `text`.
+
+    Reviewers often quote a table row together with the heading or the unit note
+    it depends on. Those lines are each in the document but not next to each
+    other, so a quote of several lines counts when every line is an excerpt.
+    """
+    lines = [line for line in map(squash, quote.splitlines()) if line]
+    return squash(quote) in text or (len(lines) > 1 and all(line in text for line in lines))
+
+
 def citation_problems(card, documents):
     """(field, reason) for every field this card should cite but does not back.
 
@@ -122,7 +133,7 @@ def citation_problems(card, documents):
     problems = []
     for name in CITED if card["status"] == "offer" else ("status",):
         given = [item for item in card["citations"] if item["field"] == name]
-        if any(squash(item["quote"]) in texts.get(item["doc_id"], "") for item in given):
+        if any(quoted(item["quote"], texts.get(item["doc_id"], "")) for item in given):
             continue
         if not given:
             reason = "no citation was given"
