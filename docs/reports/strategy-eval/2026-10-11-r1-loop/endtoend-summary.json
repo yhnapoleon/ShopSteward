@@ -1,0 +1,23 @@
+[
+  {
+    "model": "review=gpt-6-luna second=gpt-6-luna explain=gpt-6-luna",
+    "runs": 24,
+    "worlds": 24,
+    "success": 15,
+    "request": 24,
+    "reviewed": 23,
+    "cards": 23,
+    "decision": 23,
+    "explanation": 15,
+    "cards_total": 78,
+    "cards_safe": 77,
+    "cards_exact": 76,
+    "second_readings": 4,
+    "unreviewed": 1,
+    "mean_model_calls": 7.83,
+    "mean_tool_calls": 15.38,
+    "mean_input_tokens": 20472,
+    "mean_output_tokens": 4970,
+    "median_latency_ms": 36507
+  }
+]
