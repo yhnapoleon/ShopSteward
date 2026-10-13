@@ -161,7 +161,9 @@ Set-Location ..
 .venv/Scripts/python.exe infra/start_windows.py
 ```
 
-启动器读取 `backend/.env`，启动模拟器、业务 API、业务 worker 和前端；按开关增加 Agent worker 与 v6 ML 服务，并检查就绪状态。它不负责创建数据库、执行迁移或启动 Knowledge 服务。前端开发身份取自配置中的 admin 用户。
+启动器读取 `backend/.env`，启动模拟器、业务 API、业务 worker 和前端；按开关增加 Agent worker、学习 worker（`LEARNING_ENABLED`）、事项 worker（`WORK_PROCESSOR_ENABLED`）与 v6 ML 服务，并检查就绪状态。它不负责创建数据库、执行迁移或启动 Knowledge 服务。前端开发身份取自配置中的 admin 用户。
+
+想临时换一套配置而不改 `backend/.env`，加 `--overlay <文件>`：文件里的设置只对这一次启动生效，盖在 `backend/.env` 之上，其中 `SIM_` 开头的设置也会传给模拟器。[infra/demo-mature.env.example](infra/demo-mature.env.example) 是一份不做后训练、全部使用现成模型的演示配置。
 
 默认端口 3000/8000 必须空闲；8053 在启用预测时也必须空闲。已有 8001 模拟器会被复用并检查 ready，应确认它使用本项目配置。日志和本次创建的 PID 写入 `var/windows-stack-<时间>/` 的日志及 `processes.json`。启动成功后服务留在后台；脚本没有 `stop` 子命令，停止时根据该记录核对进程，或用下面的分终端方式管理生命周期。
 
