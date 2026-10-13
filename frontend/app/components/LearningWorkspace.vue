@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { LearningAsset } from '~/types/learning'
+import type { LearningAsset, SkillRevision } from '~/types/learning'
 const emit = defineEmits<{ navigate: [view: string] }>()
 const learning = useLearning(),
   shop = useShop()
@@ -20,6 +20,12 @@ const confirmForget = ref('')
 async function forgetConfirmed(asset: LearningAsset) {
   await learning.forget(asset)
   confirmForget.value = ''
+}
+// asset id and revision of the one the user is about to switch on with limited evidence
+const confirmLimited = ref('')
+async function enableLimited(asset: LearningAsset, rev: SkillRevision) {
+  await learning.transition(asset, rev, 'activate', true)
+  confirmLimited.value = ''
 }
 </script>
 <template>
@@ -64,7 +70,10 @@ async function forgetConfirmed(asset: LearningAsset) {
         <template v-for="rev in asset.revisions" :key="rev.revision">
           <details :open="rev.revision === asset.revisions[0]?.revision">
             <summary>
-              {{ rev.spec.title }} · v{{ rev.revision }} · {{ states[rev.status] || rev.status }}
+              {{ rev.spec.title }} · v{{ rev.revision }} · {{ states[rev.status] || rev.status
+              }}<template v-if="rev.status === 'ACTIVE' && rev.limited_evidence">
+                · 证据有限</template
+              >
             </summary>
             <p>{{ rev.spec.summary }}</p>
             <p>
@@ -101,6 +110,14 @@ async function forgetConfirmed(asset: LearningAsset) {
                 启用此版本
               </button>
               <button
+                v-if="rev.limited_evidence && rev.status !== 'ACTIVE'"
+                class="secondary"
+                :disabled="!canEdit || data.policy.mode === 'off'"
+                @click="confirmLimited = asset.id + ':' + rev.revision"
+              >
+                按有限证据启用
+              </button>
+              <button
                 v-if="rev.status === 'ACTIVE'"
                 class="secondary"
                 :disabled="!canEdit"
@@ -111,6 +128,19 @@ async function forgetConfirmed(asset: LearningAsset) {
               <button class="text-link" :disabled="!canEdit" @click="confirmForget = asset.id">
                 忘记这项经验
               </button>
+            </div>
+            <div
+              v-if="confirmLimited === asset.id + ':' + rev.revision"
+              role="group"
+              aria-label="确认按有限证据启用"
+            >
+              <p>
+                这个版本只通过了结构与工具契约检查，没有做过独立回放和人工复核。启用后 Agent
+                会把它当作参考做法；金额、权限和采购确认仍由业务规则把关。页面会一直标明“证据有限”，随时可以暂停。
+              </p>
+              <button class="primary" :disabled="!canEdit" @click="enableLimited(asset, rev)">
+                确认启用</button
+              ><button class="text-link" @click="confirmLimited = ''">取消</button>
             </div>
           </details>
         </template>

@@ -33,6 +33,13 @@ const verdict: Record<string, string> = {
     </p>
     <h4>质量检验 · {{ verdict[revision.quality_decision?.status || 'unknown'] }}</h4>
     <p>独立回放 {{ revision.quality?.independent_cases || 0 }} 例。未验证项目不会按通过处理。</p>
+    <p v-if="revision.limited_evidence">
+      {{
+        revision.status === 'ACTIVE'
+          ? '证据有限：这个版本由你手动启用，只通过了契约检查，没有独立回放和人工复核。'
+          : '证据有限：契约检查已通过，其余项目没有测过。你可以自己决定是否启用，系统不会替你启用。'
+      }}
+    </p>
     <dl>
       <template v-for="(name, key) in hard" :key="key"
         ><dt>{{ name }}</dt>

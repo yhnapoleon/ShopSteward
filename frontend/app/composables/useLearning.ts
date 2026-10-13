@@ -72,12 +72,18 @@ export function useLearning() {
       expected_version: asset.version,
       revision: rev.revision,
     })
-  const transition = (asset: LearningAsset, rev: SkillRevision, action: string) =>
+  const transition = (
+    asset: LearningAsset,
+    rev: SkillRevision,
+    action: string,
+    acceptLimitedEvidence = false,
+  ) =>
     send(`/assets/${asset.id}/transitions`, 'POST', {
       expected_version: asset.version,
       revision: rev.revision,
       action,
       evaluation_id: rev.evaluation_id,
+      accept_limited_evidence: acceptLimitedEvidence,
     })
   const forget = (asset: LearningAsset) =>
     data.value &&

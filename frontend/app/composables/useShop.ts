@@ -52,6 +52,19 @@ export function useShop() {
       ? unresolved.value
       : null,
   )
+  // Confirmed, but no source reports the goods of an order sent by hand: the owner records them.
+  const awaitingArrival = computed(() =>
+    s.actions.flatMap((action) => {
+      const inbound = s.inbounds.find((i) => i.action_id === action.id)
+      return action.channel === 'assisted' &&
+        action.status === 'SUCCEEDED' &&
+        action.mission_id === s.missionId &&
+        inbound &&
+        inbound.remaining_quantity > 0
+        ? [{ action, inbound }]
+        : []
+    }),
+  )
   const currentCandidate = computed(() => selectedPlanCandidate(s.plan, s.selected))
   const canDecide = computed(
     () =>
@@ -442,6 +455,19 @@ export function useShop() {
       }
     })
   }
+  async function recordArrival(actionId: string, quantity: number) {
+    return command('正在登记到货', async () => {
+      try {
+        return await api<Schema<'Action'>>(
+          '/api/v1/actions/' + encodeURIComponent(actionId) + '/arrival',
+          'POST',
+          { quantity } satisfies Schema<'ArrivalRecord'>,
+        )
+      } finally {
+        await refresh(true)
+      }
+    })
+  }
   async function advance() {
     return command('正在推进经营事件', async () => {
       const run = s.runs[s.storeId]
@@ -483,6 +509,7 @@ export function useShop() {
     plan,
     unresolved,
     awaitingSupplier,
+    awaitingArrival,
     currentCandidate,
     canDecide,
     hasRole,
@@ -500,6 +527,7 @@ export function useShop() {
     recoverApproval,
     recordSupplierReply,
     withdrawOrder,
+    recordArrival,
     advance,
     acknowledge,
     moreTimeline,

@@ -1486,5 +1486,13 @@
   "人工编写的初始版本": "Initial revision written by hand",
   "当前用于：": "Currently used for:",
   "相对父版本改了": "Changed from its parent:",
-  "处": "place(s)"
+  "处": "place(s)",
+  "货到后在这里登记": "Record the goods when they arrive",
+  "这笔订单是你自己发给供应商的，系统收不到到货通知。货到店后登记数量，库存才会更新。": "You sent this order to the supplier yourself, so the system gets no delivery notice. Record the quantity when the goods reach the store; stock updates only then.",
+  "当前身份可查看订单，登记到货需要操作权限。": "This identity can view the order. Recording an arrival needs operator permission.",
+  "本次到货件数": "Units arrived this time",
+  "登记到货": "Record arrival",
+  "正在登记…": "Recording…",
+  "正在登记到货": "Recording the arrival",
+  "到货数量要在 1 和未到数量之间。": "The quantity must be between 1 and what is still outstanding."
 }

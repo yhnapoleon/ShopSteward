@@ -430,6 +430,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/actions/{action_id}/arrival": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Arrival
+         * @description Goods of an order sent by hand reach stock when the owner records them.
+         */
+        post: operations["record_goods_arrival"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/plans/{plan_id}/revision": {
         parameters: {
             query?: never;
@@ -1811,6 +1831,11 @@ export interface components {
             attribution: "skill_defect" | "retrieval_mismatch" | "executor_noncompliance" | "tool_failure" | "changed_environment" | "unresolved";
             /** Evidence Ids */
             evidence_ids?: string[];
+        };
+        /** ArrivalRecord */
+        ArrivalRecord: {
+            /** Quantity */
+            quantity?: number | null;
         };
         /** BundleChange */
         BundleChange: {
@@ -4702,6 +4727,11 @@ export interface components {
             action: "shadow" | "activate" | "suspend" | "archive" | "revoke" | "rollback";
             /** Evaluation Id */
             evaluation_id?: string | null;
+            /**
+             * Accept Limited Evidence
+             * @default false
+             */
+            accept_limited_evidence: boolean;
         };
         /** Version */
         Version: {
@@ -7451,6 +7481,97 @@ export interface operations {
             cookie?: never;
         };
         requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Action"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    record_goods_arrival: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ArrivalRecord"];
+            };
+        };
         responses: {
             /** @description Successful Response */
             200: {

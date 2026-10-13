@@ -235,6 +235,7 @@ async function recover() {
               </div>
             </div></Transition
           >
+          <ArrivalCard />
           <article v-if="issue && !ended" class="attention-card glass">
             <span class="tag amber">{{ tr('需要处理') }}</span>
             <h2>

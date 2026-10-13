@@ -31,6 +31,8 @@ export type SkillRevision = {
   evaluation_id: string | null
   quality: QualityReport | null
   quality_decision: { status: string; reasons: string[] } | null
+  // Checked but never measured: only the user can switch it on, and the page says so.
+  limited_evidence?: boolean
   latest_check?: { id: string; evaluated_at: string; decision: { status: string } } | null
 }
 export type LearningAsset = {
