@@ -67,3 +67,40 @@ def decide(report, expected, *, now=None):
     ):
         reasons.append("coverage_gain_unproven")
     return {"status": "insufficient_evidence" if reasons else "pass", "reasons": reasons}
+
+
+# Shortfalls that say "nobody measured this", never "it was measured and fell short" or
+# "the report no longer describes what would run".
+UNMEASURED = {
+    "hard_checks_incomplete",
+    "unknown_dimension",
+    "coverage_insufficient",
+    "missing_independent_evidence",
+    "uncalibrated_judge",
+    "dimension_evidence_missing",
+    "noninferiority_unproven",
+    "incremental_value_unproven",
+    "coverage_gain_unproven",
+}
+
+
+def limited(report, decision):
+    """The contract check passed and every other shortfall is evidence nobody measured.
+
+    Such a revision is never switched on for its user; they may switch it on themselves, and
+    the interface then says the evidence is limited.
+    """
+    return (
+        decision["status"] == "insufficient_evidence"
+        and set(decision["reasons"]) <= UNMEASURED
+        and isinstance(report, dict)
+        and (report.get("checks") or {}).get("H1") == "pass"
+    )
+
+
+def standing(report, expected, *, now=None):
+    """Read a report against what would run now: "pass", "limited" or None."""
+    decision = decide(report, expected, now=now)
+    if decision["status"] == "pass":
+        return "pass"
+    return "limited" if limited(report, decision) else None

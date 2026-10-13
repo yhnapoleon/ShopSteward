@@ -62,6 +62,73 @@ async def test_static_evaluation_is_idempotent_and_unknown_cannot_activate(db):
         assert rejected.status_code == 409
 
 
+async def test_a_user_may_switch_on_a_checked_but_unmeasured_skill_by_hand(db):
+    from app.learning.models import EvaluationRow
+    from app.learning.retrieval import retrieve
+    from app.learning.schemas import LearningScope
+
+    async with environment(db) as (seed, client):
+        settings = client._transport.app.state.settings
+        settings.learning_enabled = True
+        principal = next(p for p in settings.auth_tokens if p.principal_id == "operator")
+        scope = LearningScope(principal_id="operator", store_id=seed["store_id"])
+        async with db.session() as s, s.begin():
+            await enable(s, scope)
+            aid = (await candidate(s, scope)).asset_id
+        root = f"/api/v1/stores/{seed['store_id']}/learning/assets/{aid}"
+        checked = (
+            await client.post(
+                root + "/evaluations",
+                json={"expected_version": 1, "revision": 1},
+                headers=headers(),
+            )
+        ).json()
+        listed = (await client.get(root, headers=headers())).json()["revisions"][0]
+        assert (listed["status"], listed["limited_evidence"]) == ("DRAFT", True)
+        switch = {
+            "expected_version": 2,
+            "revision": 1,
+            "action": "activate",
+            "evaluation_id": checked["id"],
+            "accept_limited_evidence": True,
+        }
+        active = await client.post(root + "/transitions", json=switch, headers=headers())
+        assert active.status_code == 200, active.text
+        assert active.json()["active_revision"] == 1
+        revision = active.json()["revisions"][0]
+        assert (revision["status"], revision["limited_evidence"]) == ("ACTIVE", True)
+        assert revision["quality_decision"]["status"] == "insufficient_evidence"
+        args = dict(
+            scope=scope,
+            family="replenishment",
+            facts={"current_mission": True, "unknown_execution": False},
+            settings=settings,
+            principal=principal,
+        )
+        async with db.session() as s, s.begin():
+            used = await retrieve(s, **args, run_id="by-hand")
+            assert [item["asset_id"] for item in used] == [aid]
+            # A check that failed is not "unmeasured": the same switch no longer holds.
+            evaluation = await s.get(EvaluationRow, checked["id"])
+            evaluation.report = {
+                **evaluation.report,
+                "checks": evaluation.report["checks"] | {"H2": "fail"},
+            }
+        async with db.session() as s, s.begin():
+            assert await retrieve(s, **args, run_id="after-failure") == []
+        suspended = (await client.get(root, headers=headers())).json()
+        assert (suspended["active_revision"], suspended["revisions"][0]["status"]) == (
+            None,
+            "SUSPENDED",
+        )
+        again = await client.post(
+            root + "/transitions",
+            json=switch | {"expected_version": suspended["version"]},
+            headers=headers(),
+        )
+        assert again.status_code == 409
+
+
 async def test_admission_revalidates_report_and_preferences(db):
     from app.learning.capture import explicit_memory_change
     from app.learning.evaluation import static_evaluate

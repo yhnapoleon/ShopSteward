@@ -7,7 +7,7 @@ from app.core.errors import AppError
 from app.core.hashing import digest
 from app.learning.lifecycle import binding
 from app.learning.models import ApplicationRow, AssetRevisionRow, AssetRow, EvaluationRow
-from app.learning.quality import decide
+from app.learning.quality import standing
 from app.learning.repository import policy
 
 
@@ -78,7 +78,8 @@ async def retrieve(session, *, scope, family, facts, settings, principal, run_id
                 settings=settings,
                 principal=principal,
             )
-            valid = evaluation and decide(evaluation.report, expected)["status"] == "pass"
+            # A revision is active only because it passed or its user switched it on by hand.
+            valid = evaluation and standing(evaluation.report, expected)
         except AppError:
             valid = False
         if not valid:

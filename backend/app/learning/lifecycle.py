@@ -13,7 +13,7 @@ from app.learning.models import (
     EvaluationRow,
     OutcomeRow,
 )
-from app.learning.quality import RUBRIC_VERSION, decide
+from app.learning.quality import RUBRIC_VERSION, decide, limited
 from app.learning.repository import evidence_rows, get_asset, policy
 
 
@@ -54,6 +54,10 @@ async def asset_dto(session, row):
                 "evaluation_id": rev.evaluation_id,
                 "quality": evaluation.report if evaluation else None,
                 "quality_decision": evaluation.decision if evaluation else None,
+                # Checked but never measured: only its user can switch it on, and it says so.
+                "limited_evidence": bool(
+                    evaluation and limited(evaluation.report, evaluation.decision)
+                ),
                 "latest_check": {
                     "id": latest_check.id,
                     "decision": latest_check.decision,
@@ -189,7 +193,9 @@ async def transition(session, *, scope, asset_id, body, key, settings, principal
             principal=principal,
         )
         decision = decide(evaluation.report, expected)
-        if decision["status"] != "pass":
+        if decision["status"] != "pass" and not (
+            body.accept_limited_evidence and limited(evaluation.report, decision)
+        ):
             raise AppError(
                 409,
                 "LEARNING_QUALITY_REQUIRED",

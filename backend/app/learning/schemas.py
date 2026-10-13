@@ -78,6 +78,8 @@ class Transition(Contract):
     revision: int = Field(ge=1, strict=True)
     action: Literal["shadow", "activate", "suspend", "archive", "revoke", "rollback"]
     evaluation_id: str | None = None
+    # The user switches on a revision that was checked but never measured, knowing that.
+    accept_limited_evidence: bool = Field(default=False, strict=True)
 
 
 class ForgetRequest(Contract):

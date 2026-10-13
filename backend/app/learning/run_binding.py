@@ -5,7 +5,7 @@ from app.core.errors import AppError
 from app.core.hashing import digest
 from app.learning.lifecycle import binding
 from app.learning.models import AssetRevisionRow, AssetRow, EvaluationRow
-from app.learning.quality import decide
+from app.learning.quality import standing
 from app.learning.repository import policy, scope_id
 from app.learning.schemas import LearningScope
 
@@ -65,7 +65,7 @@ async def validated(session, *, scope, frozen, settings, principal):
                 settings=settings,
                 principal=principal,
             )
-            passing = decide(evaluation.report, expected)["status"] == "pass"
+            passing = standing(evaluation.report, expected)
         except AppError:
             passing = False
         if not passing:
