@@ -1,5 +1,6 @@
 """Baselines read visible context only; no example IDs or expected answers."""
 
+import os
 import re
 from time import perf_counter
 
@@ -85,6 +86,10 @@ class RulePolicy:
         )
 
 
+def temperature(config):
+    return config.get("temperature", 0)
+
+
 def make_policy(policy_id, runtime):
     if policy_id == "B0":
         return RulePolicy()
@@ -101,7 +106,12 @@ def make_policy(policy_id, runtime):
     model = config.get("model") or settings.agent_model
     base_url = config.get("base_url") or settings.agent_base_url
     api_mode = config.get("api_mode") or settings.agent_api_mode
-    key_file = config.get("key_file") or settings.agent_api_key_file
+    # A committed config names the variable that holds the path, never the path itself.
+    key_file = (
+        config.get("key_file")
+        or os.environ.get(config.get("key_file_env") or "")
+        or settings.agent_api_key_file
+    )
     if not key_file or not Path(key_file).is_file():
         raise ValueError("configured model key file unavailable")
     client = ChatOpenAI(
@@ -110,11 +120,13 @@ def make_policy(policy_id, runtime):
         api_key=Path(key_file).read_text(encoding="utf-8").strip(),
         timeout=config.get("timeout_seconds", 60),
         max_retries=0,
-        temperature=0,
         max_completion_tokens=config.get("max_output_tokens", 1024),
         use_responses_api=api_mode == "responses",
+        # Some reasoning models refuse a temperature; null in the config leaves it out.
+        **({} if temperature(config) is None else {"temperature": temperature(config)}),
     )
     return RestrictedPolicy(
         OpenAIModel(base_url=base_url, model=model, client=client, api_mode=api_mode),
         prompt_version=config.get("prompt_version", "v1"),
+        tool_choice=config.get("tool_choice", "required"),
     )

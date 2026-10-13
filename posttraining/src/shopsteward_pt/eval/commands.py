@@ -7,6 +7,7 @@ import subprocess
 from datetime import UTC, datetime
 from pathlib import Path
 
+from shopsteward_pt.eval.policies import temperature
 from shopsteward_pt.eval.records import EpisodeSpec, EpisodeTrace
 from shopsteward_pt.eval.runner import load_runtime, run_episode
 from shopsteward_pt.eval.scorers import clarification_review, score_episode
@@ -137,7 +138,7 @@ def manifest(runtime, policy_id, mode):
         "tools_sha256": hashlib.sha256(
             json.dumps(decision_tool_schemas(), sort_keys=True).encode()
         ).hexdigest(),
-        "temperature": 0,
+        "temperature": temperature(runtime.get("policies", {}).get(policy_id, {})),
         "max_output_tokens": runtime.get("policies", {})
         .get(policy_id, {})
         .get("max_output_tokens"),
@@ -162,6 +163,7 @@ def manifest(runtime, policy_id, mode):
             model=config.get("model") or settings.agent_model,
             endpoint=config.get("base_url") or settings.agent_base_url,
             api_mode=config.get("api_mode") or settings.agent_api_mode,
+            tool_choice=config.get("tool_choice", "required"),
         )
     return metadata
 

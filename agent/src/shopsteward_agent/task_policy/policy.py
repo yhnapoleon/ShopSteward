@@ -40,9 +40,12 @@ def prompt_for_version(version: str) -> str:
 
 
 class RestrictedPolicy:
-    def __init__(self, model, *, prompt_version: str = "v1"):
+    def __init__(self, model, *, prompt_version: str = "v1", tool_choice: str = "required"):
         self.system_prompt = prompt_for_version(prompt_version)
         self.model = model
+        # Some providers refuse "required" while the model is thinking; "auto" leaves the
+        # one-tool-call rule to the prompt, and an answer without a call is a protocol error.
+        self.tool_choice = tool_choice
 
     async def decide(self, context: PolicyContext) -> DecisionRecord:
         state = context.model_dump(exclude={"messages", "tool_schemas"})
@@ -56,7 +59,9 @@ class RestrictedPolicy:
             *context.messages,
         ]
         start = perf_counter()
-        raw = await self.model.complete(messages, context.tool_schemas, tool_choice="required")
+        raw = await self.model.complete(
+            messages, context.tool_schemas, tool_choice=self.tool_choice
+        )
         elapsed = (perf_counter() - start) * 1000
         try:
             decision, error = parse_decision(raw), None
