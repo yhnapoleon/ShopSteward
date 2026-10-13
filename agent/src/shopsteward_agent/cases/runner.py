@@ -131,17 +131,23 @@ class BoundedCaseRunner:
                 return await self.call_tool(spec, name, args, invocation_id)
 
             async def context():
-                return json.dumps(
-                    {
-                        "role": spec.role,
-                        "scope": spec.allowed_scope,
-                        "dependency_versions": spec.dependency_versions,
-                        "evidence_ids": spec.supplied_evidence_ids,
-                        "data": spec.context,
-                        "output_contract": "Return one JSON object with claims [{statement, support:[evidence_id], kind?, subject?, applicability?:{result}}], missing:[], followup_requests:[string | {role, question}]. kind is source_fact, interpretation, assumption or calculation; a calculation claim must cite the solver proposal ID. Give subject and applicability.result when judging whether a source applies to an object. Two typed claims are checked against the solver output: subject {type:'candidate', id:<solver candidate id>} with applicability.result recommended, feasible or rejected (rejected means the solver lists rejection reasons for it, feasible means it lists none, recommended is the solver's recommended_candidate_id); and subject {type:'gap', id:<solver candidate id>} with applicability.result none or day-N, where N is the 1-based position of the first entry in that candidate's daily list with lost_qty above zero. A follow-up role is evidence, impact or options. Use only supplied or successful tool evidence IDs. All claims are advisory; no purchasing approval or memory/plan writes.",
-                    },
-                    ensure_ascii=False,
-                )
+                return {
+                    # The runtime's standing rule names tool results only. A subtask is also
+                    # handed evidence, and a model that reads the rule strictly cites nothing.
+                    "instructions": "Evidence IDs listed under evidence_ids below are supplied "
+                    "references; cite them as you would a successful tool result.",
+                    "data": json.dumps(
+                        {
+                            "role": spec.role,
+                            "scope": spec.allowed_scope,
+                            "dependency_versions": spec.dependency_versions,
+                            "evidence_ids": spec.supplied_evidence_ids,
+                            "data": spec.context,
+                            "output_contract": "Return one JSON object with claims [{statement, support:[evidence_id], kind?, subject?, applicability?:{result}}], missing:[], followup_requests:[string | {role, question}]. kind is source_fact, interpretation, assumption or calculation; a calculation claim must cite the solver proposal ID. Give subject and applicability.result when judging whether a source applies to an object. Two typed claims are checked against the solver output: subject {type:'candidate', id:<solver candidate id>} with applicability.result recommended, feasible or rejected (rejected means the solver lists rejection reasons for it, feasible means it lists none, recommended is the solver's recommended_candidate_id); and subject {type:'gap', id:<solver candidate id>} with applicability.result none or day-N, where N is the 1-based position of the first entry in that candidate's daily list with lost_qty above zero. A follow-up role is evidence, impact or options. Use only supplied or successful tool evidence IDs. All claims are advisory; no purchasing approval or memory/plan writes.",
+                        },
+                        ensure_ascii=False,
+                    ),
+                }
 
             runtime = Runtime(
                 model,
