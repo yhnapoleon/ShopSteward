@@ -10,6 +10,7 @@ from app.execution.models import ActionRow
 from app.execution.repository import decide
 from app.execution.schemas import (
     Action,
+    ArrivalRecord,
     DecisionApproved,
     DecisionRejected,
     PlanDecision,
@@ -100,4 +101,21 @@ async def withdrawal(request: Request, principal: User, action_id: Id, key: Key)
         await visible_action(session, principal, action_id)
         return Action.model_validate(
             await assisted.withdraw(session, action_id, principal.principal_id, key)
+        )
+
+
+@router.post(
+    "/api/v1/actions/{action_id}/arrival",
+    response_model=Action,
+    operation_id="record_goods_arrival",
+)
+async def arrival(request: Request, principal: User, action_id: Id, body: ArrivalRecord, key: Key):
+    """Goods of an order sent by hand reach stock when the owner records them."""
+    require_role(principal, "operator")
+    async with request.app.state.db.session() as session, session.begin():
+        await visible_action(session, principal, action_id)
+        return Action.model_validate(
+            await assisted.record_arrival(
+                session, action_id, body.quantity, principal.principal_id, key
+            )
         )

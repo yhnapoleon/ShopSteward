@@ -138,6 +138,47 @@ async def test_an_unanswered_order_can_be_withdrawn(db):
         assert (await reply(client, action, "确认40件")).status_code == 409
 
 
+async def test_goods_of_a_confirmed_order_reach_stock_when_the_owner_records_them(db):
+    async with environment(db) as (seed, client):
+        action = await sent(db, seed, client)
+        path = f"/api/v1/actions/{action['id']}/arrival"
+
+        async def arrive(body, role="operator", **kwargs):
+            return await client.post(path, json=body, headers=kwargs.get("key") or headers(role))
+
+        # Nothing is confirmed yet, so nothing can have arrived.
+        assert (await arrive({})).status_code == 409
+        assert (await reply(client, action, "收到，确认40件，单价10.00元/件")).status_code == 200
+        on_hand = (await state(db, seed))["stocks"][0]["on_hand"]
+        assert (await arrive({}, role="viewer")).status_code == 403
+        key = headers("operator")
+        assert (await arrive({"quantity": 15}, key=key)).status_code == 200
+        # The same submission replays; more than is still expected is refused.
+        assert (await arrive({"quantity": 15}, key=key)).status_code == 200
+        assert (await arrive({"quantity": 26})).status_code == 409
+        stock = (await state(db, seed))["stocks"][0]
+        assert (stock["on_hand"], stock["in_transit"]) == (on_hand + 15, 25)
+        assert (await arrive({})).status_code == 200
+        current = await state(db, seed)
+        stock = current["stocks"][0]
+        assert (stock["on_hand"], stock["in_transit"]) == (on_hand + 40, 0)
+        assert current["cash_minor"] == 60000
+        assert (await arrive({})).status_code == 409
+        scope = {"store_id": seed["store_id"]}
+        ledger = await client.get(
+            "/api/v1/ledger-entries",
+            params=scope | {"effect_type": "GOODS_RECEIVED"},
+            headers=headers("viewer"),
+        )
+        assert ledger.status_code == 200, ledger.text
+        assert [
+            (entry["action_id"], entry["source_event_id"], entry["changes"]["on_hand_delta"])
+            for entry in ledger.json()["items"]
+        ] == [(action["id"], None, 25), (action["id"], None, 15)]
+        inbound = await client.get("/api/v1/inbounds", params=scope, headers=headers("viewer"))
+        assert [item["arrival_status"] for item in inbound.json()["items"]] == ["RECEIVED"]
+
+
 async def test_an_order_sent_to_the_simulator_takes_no_pasted_reply(db):
     async with environment(db) as (seed, client):
         _, plan = await planned(db, seed, client)
@@ -147,3 +188,7 @@ async def test_an_order_sent_to_the_simulator_takes_no_pasted_reply(db):
         action = await read(client, response.json()["action_id"])
         assert (action["channel"], action["order_message"]) == ("simulator", None)
         assert (await reply(client, action, "确认40件")).status_code == 409
+        arrival = await client.post(
+            f"/api/v1/actions/{action['id']}/arrival", json={}, headers=headers("operator")
+        )
+        assert arrival.status_code == 409

@@ -16,10 +16,13 @@ from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy import func, select
 
 from app.core.errors import AppError
+from app.core.hashing import digest
 from app.execution.accounting import apply_receipt, close_action
 from app.execution.repository import lock_action
+from app.execution.schemas import RecordedArrival
+from app.missions.models import InboundRow
 from app.missions.repository import command, queue_check, timeline
-from app.operations.models import ProductRow
+from app.operations.models import LedgerEntry, ProductRow, StockRow
 from app.sourcing.provider import configured, provider
 
 FIELDS = ("quantity", "unit_price_minor", "total_minor", "delivery_date", "supplier_order_ref")
@@ -341,5 +344,70 @@ async def withdraw(session, action_id, principal, key):
     await close_action(session, store, mission, action, "CANCELLED", reason="WITHDRAWN_BY_OWNER")
     if mission.status == "ACTIVE":
         await queue_check(session, store, mission, key="withdrawn-" + action.id)
+    receipt.response = {"action_id": action.id}
+    return action
+
+
+async def record_arrival(session, action_id, quantity, principal, key):
+    """Goods the owner saw arrive: no source reports them for an order sent by hand."""
+    store, mission, _, action = await lock_action(session, action_id)
+    receipt, replay = await command(
+        session,
+        principal,
+        "record_goods_arrival",
+        key,
+        {"action_id": action_id, "quantity": quantity},
+    )
+    if replay:
+        return action
+    sku = action.purchase_snapshot["sku_id"]
+    inbound = await session.get(InboundRow, (action.id, sku))
+    if action.channel != "assisted" or action.status != "SUCCEEDED" or inbound is None:
+        raise AppError(
+            409, "ARRIVAL_NOT_EXPECTED", "Only a confirmed order sent by its owner takes an arrival"
+        )
+    stock = await session.get(StockRow, (store.id, sku))
+    outstanding = inbound.ordered_qty - inbound.received_qty
+    arrived = outstanding if quantity is None else quantity
+    if not 0 < arrived <= outstanding or stock.in_transit < arrived:
+        raise AppError(409, "GOODS_QUANTITY_CONFLICT", "More goods than this order still expects")
+    now = await session.scalar(select(func.clock_timestamp()))
+    inbound.received_qty += arrived
+    stock.in_transit -= arrived
+    stock.on_hand += arrived
+    store.state_version += 1
+    store.data_as_of = max(filter(None, [store.data_as_of, now]))
+    action.updated_at = now
+    effect_id = digest([action.id, "GOODS_RECEIVED", inbound.received_qty])
+    session.add(
+        LedgerEntry(
+            id=effect_id,
+            store_id=store.id,
+            effect_type="GOODS_RECEIVED",
+            state_version=store.state_version,
+            document=RecordedArrival(
+                source="owner",
+                payload={"action_id": action.id, "sku_id": sku, "quantity": arrived},
+                occurred_at=now,
+                simulation_time=store.simulation_time,
+                recorded_by=principal,
+            ).model_dump(mode="json"),
+        )
+    )
+    await session.flush()
+    references = [{"type": "action", "id": action.id}]
+    await timeline(
+        session,
+        mission,
+        "PURCHASE_RECEIVED",
+        f"店主登记到货 {arrived} 件，累计 {inbound.received_qty}/{inbound.ordered_qty} 件。",
+        actor=principal,
+        references=references,
+    )
+    from app.learning.capture import mission_event
+
+    await mission_event(session, mission, "PURCHASE_RECEIVED", effect_id, None, references)
+    if mission.status == "ACTIVE":
+        await queue_check(session, store, mission, key="arrival-" + effect_id)
     receipt.response = {"action_id": action.id}
     return action

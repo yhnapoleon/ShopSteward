@@ -4,7 +4,7 @@ from typing import Literal
 from pydantic import AwareDatetime, Field, model_validator
 
 from app.api.schemas import DTO, Identifier
-from app.operations.schemas import Nonnegative, Positive
+from app.operations.schemas import Nonnegative, Positive, ReceivedPayload
 from app.planning.schemas import ProposedPurchase
 
 Channel = Literal["simulator", "assisted"]
@@ -104,6 +104,21 @@ class SupplierReply(DTO):
 
 class SupplierReplyText(DTO):
     text: str = Field(min_length=1, max_length=4000)
+
+
+class ArrivalRecord(DTO):
+    # Omitted: everything this order still expects has arrived.
+    quantity: Positive | None = None
+
+
+class RecordedArrival(DTO):
+    """The ledger document of goods the owner recorded; no source event stands behind it."""
+
+    source: Literal["owner"]
+    payload: ReceivedPayload
+    occurred_at: AwareDatetime
+    simulation_time: AwareDatetime | None
+    recorded_by: Identifier
 
 
 class Action(DTO):
