@@ -111,6 +111,7 @@ const cashScale = computed(() => {
         {{ tr(mission ? '查看委托与检查安排' : '了解备货跟进') }}<AppIcon name="arrow-up-right" />
       </button>
     </section>
+    <SpaceServiceStatus />
     <p class="autonomy">
       <AppIcon name="shield-check" /><span
         >{{ tr('每笔采购由你确认。') }}<br />{{ tr('当前连接的是合成经营环境。') }}</span

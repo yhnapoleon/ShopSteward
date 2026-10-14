@@ -318,7 +318,20 @@ const issue = computed(() =>
 const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
 )
-const decisionCount = computed(() => (issue.value || canDecide.value ? 1 : 0))
+// Today (§5): what needs the owner comes first; everything else ongoing is "being watched".
+const decideWorks = computed(() => activeWorks.value.filter(needsOwner))
+const watchWorks = computed(() => activeWorks.value.filter((i) => !needsOwner(i)))
+const taskCardShown = computed(
+  () => !!mission.value && !work.s.items.some((i) => i.mission_id === mission.value?.id),
+)
+// The badge counts only the cards in "需要你拍板".
+const decisionCount = computed(
+  () =>
+    decideWorks.value.length + ((taskCardShown.value && canDecide.value) || issue.value ? 1 : 0),
+)
+const todayStarted = computed(() =>
+  Boolean(s.storeId && (mission.value || activeWorks.value.length || issue.value)),
+)
 const receiptActions = computed(() =>
   s.actions.filter((a) => !mission.value || a.mission_id === mission.value.id),
 )
@@ -614,40 +627,96 @@ function briefing() {
       <div v-else class="content-grid">
         <section class="main-column">
           <div v-if="view === 'today'" id="decision-zone">
-            <div class="section-label">
-              {{ tr(work.s.available ? '正在处理的事情' : '需要你决定')
-              }}<span class="small-count">{{
-                tr(
-                  work.s.available
-                    ? activeWorks.length +
-                        (mission && !work.s.items.some((i) => i.mission_id === mission?.id) ? 1 : 0)
-                    : decisionCount,
-                )
-              }}</span
-              ><span class="right">{{ tr('每笔采购单独确认') }}</span>
-            </div>
-            <template v-if="work.s.available">
-              <p v-if="work.s.syncError" class="notice amber" role="alert">
-                {{ tr(work.s.syncError) }}
-              </p>
+            <p v-if="work.s.available && work.s.syncError" class="notice amber" role="alert">
+              {{ tr(work.s.syncError) }}
+            </p>
+            <template v-if="todayStarted">
+              <div class="section-label">
+                {{ tr('需要你拍板') }}<span class="small-count">{{ tr(decisionCount) }}</span
+                ><span class="right">{{ tr('每笔采购单独确认') }}</span>
+              </div>
               <WorkCard
-                v-for="item in activeWorks"
+                v-for="item in decideWorks"
                 :key="item.id"
                 :item="item"
                 @open="openWork(item.id)"
               />
-              <div v-if="!mission && !activeWorks.length" class="work-intake-inline glass">
-                <WorkIntake @submitted="openWork" />
-              </div>
-              <button v-if="work.s.cursor" class="text-link" @click="work.list(true)">
-                {{ tr('查看更早事项') }}
-              </button>
+              <TaskCard v-if="taskCardShown" @open="openTask()" />
+              <article v-else-if="issue" class="attention-card glass">
+                <span class="tag amber">{{ tr('需要处理') }}</span>
+                <h2>
+                  {{
+                    tr(
+                      issue === 'confirmation'
+                        ? s.pending?.storeId !== s.storeId
+                          ? '历史场景的确认结果尚未取得'
+                          : '确认结果尚未取得'
+                        : issue === 'unknown'
+                          ? '采购结果还没有核实'
+                          : issue === 'expired'
+                            ? '原方案已过期'
+                            : '暂时无法确认最新经营数据',
+                    )
+                  }}
+                </h2>
+                <p>
+                  {{
+                    tr(
+                      issue === 'confirmation'
+                        ? '可能已经受理。查询会沿用原确认编号，不创建另一笔采购。'
+                        : issue === 'unknown'
+                          ? '后台正在核实原采购。不要用新采购代替查询，现金预留与原动作仍保留。'
+                          : issue === 'expired'
+                            ? '先重新检查适用条件，再核对新方案。'
+                            : '保留上次结果供参考，恢复数据前不允许确认采购。',
+                    )
+                  }}
+                </p>
+                <button
+                  class="primary"
+                  :disabled="Boolean(s.busy)"
+                  @click="
+                    act(
+                      issue === 'confirmation'
+                        ? () => shop.recoverApproval()
+                        : issue === 'expired'
+                          ? () => shop.requestCheck()
+                          : () => shop.refresh(true),
+                    )
+                  "
+                >
+                  {{
+                    tr(
+                      issue === 'confirmation'
+                        ? '查询原确认结果'
+                        : issue === 'expired'
+                          ? '重新检查'
+                          : '刷新原记录',
+                    )
+                  }}
+                </button>
+              </article>
+              <p v-if="!decideWorks.length && !taskCardShown && !issue" class="space-quiet">
+                {{ tr('现在没有需要你拍板的事。') }}
+              </p>
+              <template v-if="work.s.available">
+                <div class="section-label">
+                  {{ tr('系统在盯') }}<span class="small-count">{{ tr(watchWorks.length) }}</span
+                  ><span class="right">{{ tr('到货与检查会自动更新') }}</span>
+                </div>
+                <SpaceWatchList :items="watchWorks" @open="openWork" />
+                <button v-if="work.s.cursor" class="text-link" @click="work.list(true)">
+                  {{ tr('查看更早事项') }}
+                </button>
+              </template>
             </template>
-            <TaskCard
-              v-if="mission && !work.s.items.some((i) => i.mission_id === mission?.id)"
-              @open="openTask()"
-            />
-            <article v-else-if="!s.storeId" class="start-card glass">
+            <div
+              v-if="work.s.available && !mission && !activeWorks.length"
+              class="work-intake-inline glass"
+            >
+              <WorkIntake @submitted="openWork" />
+            </div>
+            <article v-if="!s.storeId" class="start-card glass">
               <span class="tag">{{ tr('从示例店铺开始') }}</span>
               <h2>{{ tr('先准备这一轮经营资料。') }}</h2>
               <p>{{ tr('创建独立SC-01场景，或选择当前身份可以查看的已有店铺。不重置旧数据。') }}</p>
@@ -662,61 +731,7 @@ function briefing() {
                 {{ tr('创建场景不会产生采购。没有开发权限时请由管理员准备。') }}
               </p>
             </article>
-            <article v-else-if="issue" class="attention-card glass">
-              <span class="tag amber">{{ tr('需要处理') }}</span>
-              <h2>
-                {{
-                  tr(
-                    issue === 'confirmation'
-                      ? s.pending?.storeId !== s.storeId
-                        ? '历史场景的确认结果尚未取得'
-                        : '确认结果尚未取得'
-                      : issue === 'unknown'
-                        ? '采购结果还没有核实'
-                        : issue === 'expired'
-                          ? '原方案已过期'
-                          : '暂时无法确认最新经营数据',
-                  )
-                }}
-              </h2>
-              <p>
-                {{
-                  tr(
-                    issue === 'confirmation'
-                      ? '可能已经受理。查询会沿用原确认编号，不创建另一笔采购。'
-                      : issue === 'unknown'
-                        ? '后台正在核实原采购。不要用新采购代替查询，现金预留与原动作仍保留。'
-                        : issue === 'expired'
-                          ? '先重新检查适用条件，再核对新方案。'
-                          : '保留上次结果供参考，恢复数据前不允许确认采购。',
-                  )
-                }}
-              </p>
-              <button
-                class="primary"
-                :disabled="Boolean(s.busy)"
-                @click="
-                  act(
-                    issue === 'confirmation'
-                      ? () => shop.recoverApproval()
-                      : issue === 'expired'
-                        ? () => shop.requestCheck()
-                        : () => shop.refresh(true),
-                  )
-                "
-              >
-                {{
-                  tr(
-                    issue === 'confirmation'
-                      ? '查询原确认结果'
-                      : issue === 'expired'
-                        ? '重新检查'
-                        : '刷新原记录',
-                  )
-                }}
-              </button>
-            </article>
-            <article v-else-if="!mission" class="start-card glass">
+            <article v-else-if="!mission && !issue" class="start-card glass">
               <span class="tag">{{ tr('从示例店铺开始') }}</span>
               <h2>{{ tr('先把这次备货交代清楚。') }}</h2>
               <p>
@@ -725,14 +740,17 @@ function briefing() {
               <div class="start-scope">
                 <b>{{ product?.name }}</b
                 ><span>{{
-                  joinText([
-                    tr('库存'),
-                    tr(number(stock?.on_hand)),
-                    tr('件 · 现金'),
-                    tr(money(s.dashboard?.state.available_cash_minor)),
-                  ])
+                  joinText(
+                    [
+                      tr('库存'),
+                      tr(number(stock?.on_hand)),
+                      tr('件 · 现金'),
+                      tr(money(s.dashboard?.state.available_cash_minor)),
+                    ],
+                    ' ',
+                  )
                 }}</span
-                ><span>{{ tr('建议现金底线¥300 · 采购条件来自当前场景') }}</span>
+                ><span>{{ tr('建议现金底线 ¥300 · 采购条件来自当前场景') }}</span>
               </div>
               <button class="primary" :disabled="!hasRole('operator')" @click="deck = true">
                 {{ tr('开始备货跟进') }}<AppIcon name="arrow-right" />
@@ -741,12 +759,14 @@ function briefing() {
             </article>
           </div>
           <template v-if="work.s.available && view === 'following'"
-            ><WorkCard
-              v-for="item in activeWorks"
-              :key="item.id"
-              :item="item"
-              @open="openWork(item.id)"
-          /></template>
+            ><SpaceFollowingList :items="work.s.items" @open="openWork" /><button
+              v-if="work.s.cursor"
+              class="text-link"
+              @click="work.list(true)"
+            >
+              {{ tr('查看更早事项') }}
+            </button></template
+          >
           <template
             v-if="
               mission &&
@@ -761,15 +781,6 @@ function briefing() {
               @mission="openTask()"
               @check="act(() => shop.requestCheck())"
           /></template>
-          <ForecastPanel
-            v-if="s.storeId && stock?.sku_id && view !== 'journal'"
-            :key="s.storeId + ':' + stock.sku_id + ':' + s.session?.principal_id"
-            :store-id="s.storeId"
-            :sku-id="stock.sku_id"
-            :state-version="s.dashboard?.state.state_version"
-            :can-manage="hasRole('operator')"
-          />
-
           <template v-if="work.s.available && view === 'journal'"
             ><WorkCard
               v-for="item in work.s.items"
@@ -960,10 +971,13 @@ function briefing() {
           <div v-if="s.alerts.some((a) => a.status === 'OPEN')" class="risk-link">
             <button class="text-link" @click="open('alerts')">
               {{
-                joinText([
-                  tr(s.alerts.filter((a) => a.status === 'OPEN').length),
-                  tr('项经营提醒，查看依据'),
-                ])
+                joinText(
+                  [
+                    tr(s.alerts.filter((a) => a.status === 'OPEN').length),
+                    tr('项经营提醒，查看依据'),
+                  ],
+                  ' ',
+                )
               }}<AppIcon name="chevron-right" />
             </button>
           </div>
@@ -993,6 +1007,14 @@ function briefing() {
               ><AppIcon name="chevron-right" />
             </button>
           </div>
+          <ForecastPanel
+            v-if="s.storeId && stock?.sku_id && view !== 'journal'"
+            :key="s.storeId + ':' + stock.sku_id + ':' + s.session?.principal_id"
+            :store-id="s.storeId"
+            :sku-id="stock.sku_id"
+            :state-version="s.dashboard?.state.state_version"
+            :can-manage="hasRole('operator')"
+          />
         </section>
         <BusinessFacts
           @overview="navigate('overview')"
@@ -1002,44 +1024,6 @@ function briefing() {
       </div>
     </main>
   </div>
-  <nav
-    v-if="!['task', 'work'].includes(view)"
-    class="workspace-dock"
-    :aria-label="tr('经营快捷入口')"
-  >
-    <button
-      v-if="mission"
-      class="dock-agent-entry"
-      :aria-label="tr('进入任务工作区')"
-      @click="openTask(undefined, 'agent')"
-    >
-      <span class="agent-live-dot" :class="{ 'is-running': agent.running.value }" /><span>{{
-        tr(agent.active.value || agent.s.syncError ? agent.status.value : '查看任务与 Agent')
-      }}</span>
-    </button>
-    <button :class="{ active: view === 'today' }" @click="navigate('today')">
-      <AppIcon name="panels-top-left" /><span>{{ tr('今日决策') }}</span>
-      <span v-if="decisionCount" class="small-count">{{ tr(decisionCount) }}</span>
-    </button>
-    <button :class="{ active: view === 'following' }" @click="navigate('following')">
-      <AppIcon name="orbit" /><span>{{ tr('持续跟进') }}</span>
-    </button>
-    <button :class="{ active: view === 'journal' }" @click="navigate('journal')">
-      <AppIcon name="notebook-pen" /><span>{{ tr('经营记录') }}</span>
-    </button>
-    <span class="dock-divider" aria-hidden="true" />
-    <button
-      class="dock-utility dock-overview"
-      :class="{ active: view === 'overview' }"
-      :aria-current="view === 'overview' ? 'page' : undefined"
-      @click="navigate('overview')"
-    >
-      <AppIcon name="chart-no-axes-combined" /><span>{{ tr('经营概览') }}</span>
-    </button>
-    <button class="dock-utility" :aria-label="tr('打开联调控制')" @click="open('controls')">
-      <AppIcon name="sliders-horizontal" /><span>{{ tr('联调控制') }}</span>
-    </button>
-  </nav>
   <nav class="mobile-nav" :aria-label="tr('移动端导航')">
     <button
       v-for="(label, id) in { today: '今日', following: '持续跟进', journal: '经营记录' }"
@@ -1103,11 +1087,14 @@ function briefing() {
           ><div class="detail-row">
             <span>{{ tr('数量与单价') }}</span
             ><b>{{
-              joinText([
-                tr(approval.quantity),
-                tr('件 ×'),
-                tr(money(approval.plan.proposed_purchase?.unit_price_minor)),
-              ])
+              joinText(
+                [
+                  tr(approval.quantity),
+                  tr('件 ×'),
+                  tr(money(approval.plan.proposed_purchase?.unit_price_minor)),
+                ],
+                ' ',
+              )
             }}</b>
           </div>
           <div class="detail-row">
