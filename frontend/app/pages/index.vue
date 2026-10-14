@@ -417,6 +417,7 @@ function briefing() {
         ><AppIcon name="arrow-up-right" />
       </button>
       <div class="header-store">
+        <MemoryEntry />
         <button class="icon-btn settings-entry" :aria-label="tr('设置')" @click="open('settings')">
           <AppIcon name="sliders-horizontal" />
         </button>
@@ -1036,6 +1037,7 @@ function briefing() {
       />{{ tr(label) }}
     </button>
   </nav>
+  <MemoryPanel />
   <div v-if="s.notice || s.busy" class="toast" role="status">
     {{ tr(s.busy || s.notice)
     }}<button v-if="!s.busy" :aria-label="tr('关闭提示')" @click="s.notice = ''">×</button>
@@ -1419,6 +1421,7 @@ function briefing() {
         </p>
         <p v-if="preferenceError" class="notice" role="alert">{{ tr(preferenceError) }}</p>
       </section>
+      <MemoryEntry variant="settings" />
       <section class="settings-section" aria-labelledby="schedule-heading">
         <h3 id="schedule-heading">{{ tr('跟进安排') }}</h3>
         <div v-if="mission" class="settings-group">

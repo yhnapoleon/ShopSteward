@@ -33,6 +33,12 @@ function show(next: 'agent' | 'work') {
   chosen.value = next
 }
 defineExpose({ show })
+// Memories the Agent formed in this conversation while the page was open (§8). The drawer's
+// owner detects them; here they become one line at the top of the Agent conversation.
+const memory = useAgentKnowledge()
+const remembered = computed(() =>
+  memory.s.receipt.scope && memory.s.receipt.scope === agent.s.scope ? memory.s.receipt.count : 0,
+)
 </script>
 <template>
   <div class="space-conversation">
@@ -48,6 +54,23 @@ defineExpose({ show })
       <button :aria-pressed="tab === 'work'" @click="show('work')">{{ tr('事项对话') }}</button>
     </div>
     <div v-if="linked" v-show="tab === 'agent'" class="space-conversation-pane">
+      <div class="memory-receipt-slot" role="status">
+        <Transition name="space-rise">
+          <p v-if="remembered" class="memory-receipt">
+            <AppIcon name="sparkles" /><span>{{
+              remembered === 1 ? tr('Agent 更新了一条记忆') : tr('Agent 更新了 {0} 条记忆', [remembered])
+            }}</span
+            ><span aria-hidden="true">·</span
+            ><button
+              class="text-link"
+              aria-haspopup="dialog"
+              @click="memory.show($event.currentTarget)"
+            >
+              {{ tr('查看记忆') }}
+            </button>
+          </p>
+        </Transition>
+      </div>
       <AgentWorkspace @target="emit('target', $event)" />
     </div>
     <div v-show="tab === 'work'" class="space-conversation-pane">

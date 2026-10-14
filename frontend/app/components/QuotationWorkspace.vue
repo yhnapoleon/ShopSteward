@@ -41,6 +41,17 @@ const ruleSource = (saved: QuotationRule) =>
   [saved.source.confirmation, saved.source.correction_content]
     .filter((value) => typeof value === 'string')
     .join(' · ')
+// The saved rule this version actually followed; a one-off sort only references it (§8 技能复用).
+const appliedRule = computed(() =>
+  result.value?.rule && result.value.sort_by === result.value.rule.sort_by
+    ? result.value.rule
+    : null,
+)
+/** The work item where that rule was saved, when it is another one. */
+const ruleOrigin = computed(() => {
+  const id = appliedRule.value?.source.work_id
+  return typeof id === 'string' && id && id !== work.s.detail?.item.id ? id : ''
+})
 const disabled = computed(
   () => loading.value || work.s.busy || !!work.s.pending || work.s.accessRevoked,
 )
@@ -192,7 +203,22 @@ async function removeRule() {
       >
         {{ tr('这是已保存的报价版本；新要求尚未完成时请先核对更新状态。') }}
       </p>
-      <p class="source-note">{{ tr('服务器结果 · 版本 {0}', [result.version]) }}</p>
+      <div class="quotation-result-head">
+        <p class="source-note">{{ tr('服务器结果 · 版本 {0}', [result.version]) }}</p>
+        <NuxtLink
+          v-if="appliedRule && ruleOrigin"
+          class="tag green quotation-rule-badge"
+          :to="{
+            query: { view: 'work', item: ruleOrigin, store: work.s.detail?.item.store_id },
+          }"
+          :aria-label="tr('沿用整理规则 v{0}，查看规则来源事项', [appliedRule.version])"
+          ><AppIcon name="sparkles" />{{ tr('沿用整理规则 v{0}', [appliedRule.version])
+          }}<AppIcon name="arrow-up-right"
+        /></NuxtLink>
+        <span v-else-if="appliedRule" class="tag green quotation-rule-badge"
+          ><AppIcon name="sparkles" />{{ tr('沿用整理规则 v{0}', [appliedRule.version]) }}</span
+        >
+      </div>
       <div v-if="result.issues.length" class="notice amber">
         <b>{{ tr('缺失或不能确定的内容') }}</b>
         <ul>

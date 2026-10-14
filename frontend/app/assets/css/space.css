@@ -915,3 +915,460 @@
     transform: none;
   }
 }
+
+/* ---------------------------------------------------------------------------------------------
+   C3 · Memory (redesign §8): the header entry, the drawer, the formation receipt and the badge
+   for a reused quote rule. The drawer slides in from the right on --ease-drawer within 300ms
+   and leaves in 200ms; opened or closed from the keyboard it appears without motion. Reduced
+   motion keeps opacity only.
+   ------------------------------------------------------------------------------------------- */
+:root {
+  --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Header entry beside settings; a dot while something newly remembered is unseen. */
+.memory-entry {
+  position: relative;
+}
+.memory-entry:active {
+  transform: scale(0.97);
+}
+.memory-dot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 0 2px #fff;
+  animation: memory-dot-in 200ms var(--space-ease) both;
+}
+@keyframes memory-dot-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+.memory-new {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 0 7px;
+  border-radius: 6px;
+  background: #e4effd;
+  color: #2a5f9e;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.7;
+  vertical-align: 2px;
+}
+
+/* With the memory entry in the header, the brand column takes only its content on mid-width
+   screens so the three main tabs keep one-line labels. Headers showing the Agent entry keep
+   their own, more specific columns (tasks.css). */
+@media (min-width: 821px) and (max-width: 1200px) {
+  .app-header {
+    grid-template-columns: auto 1fr auto;
+  }
+}
+
+/* Settings row: only where the header entry is not on screen. */
+.memory-settings {
+  display: none;
+}
+@media (max-width: 820px) {
+  .memory-settings {
+    display: block;
+  }
+}
+@media (min-width: 821px) and (max-width: 1150px) {
+  body:has(.app-header .global-agent-entry) .memory-settings {
+    display: block;
+  }
+}
+
+/* The drawer: the stable dialog surface, inset from the right edge, full height. */
+dialog.memory-drawer {
+  inset: 12px 12px 12px auto;
+  width: min(440px, calc(100vw - 72px));
+  max-width: none;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  transform: translateX(calc(100% + 48px));
+  transition: transform 300ms var(--ease-drawer);
+}
+dialog.memory-drawer[open] {
+  display: flex;
+  flex-direction: column;
+  animation: none;
+}
+dialog.memory-drawer[data-state='open'] {
+  transform: none;
+}
+dialog.memory-drawer[data-state='closing'] {
+  transition-duration: 200ms;
+}
+dialog.memory-drawer::backdrop {
+  opacity: 0;
+  transition: opacity 300ms var(--ease-drawer);
+}
+dialog.memory-drawer[data-state='open']::backdrop {
+  opacity: 1;
+}
+dialog.memory-drawer[data-state='closing']::backdrop {
+  transition-duration: 200ms;
+}
+.memory-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 20px 18px 26px;
+  border-bottom: 1px solid var(--line);
+}
+.memory-head h2 {
+  font-size: 22px;
+  line-height: 1.35;
+  letter-spacing: -0.4px;
+}
+/* The title takes focus when the drawer opens or an entry is removed; it is not a control. */
+.memory-head h2:focus {
+  outline: none;
+}
+.memory-head p {
+  margin-top: 4px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.memory-head .icon-btn {
+  flex-shrink: 0;
+  min-width: 40px;
+  min-height: 40px;
+  margin: -4px 0 0;
+}
+.memory-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 4px 26px 26px;
+}
+.memory-readonly.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 16px 0 4px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.memory-readonly .icon {
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  color: #47698b;
+}
+.memory-done {
+  font-size: 13px;
+  color: #32664d;
+}
+.memory-done:not(:empty) {
+  margin-top: 12px;
+}
+.memory-loading {
+  padding: 18px 0;
+  font-size: 13px;
+}
+.memory-section {
+  padding: 20px 0 6px;
+}
+.memory-section + .memory-section {
+  border-top: 1px solid var(--line);
+}
+.memory-section-head,
+.memory-group-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.memory-section-head h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2a3e50;
+}
+.memory-group-head h4 {
+  font-size: 13px;
+  color: #42617a;
+}
+.memory-version {
+  padding: 0 7px;
+  border-radius: 6px;
+  background: #edf1f5;
+  color: #5d6f80;
+  font-size: 11px;
+  line-height: 1.7;
+  font-variant-numeric: tabular-nums;
+}
+.memory-hint {
+  margin-top: 2px;
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.memory-none {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #74838f;
+}
+.memory-group {
+  margin-top: 10px;
+}
+.memory-group + .memory-group {
+  margin-top: 16px;
+}
+.memory-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.memory-item {
+  padding: 12px 0 8px;
+  border-top: 1px solid var(--line);
+}
+.memory-item:first-child {
+  border-top: 0;
+}
+.memory-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #2d3f4f;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.memory-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 560;
+  line-height: 1.6;
+  color: #24384a;
+  overflow-wrap: anywhere;
+}
+.memory-title + .memory-text {
+  margin-top: 2px;
+  font-size: 14px;
+  color: #4a5f72;
+}
+.memory-meta {
+  margin-top: 4px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.memory-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 18px;
+  margin-top: 4px;
+}
+.memory-actions .text-link {
+  min-height: 36px;
+}
+.memory-draft {
+  display: block;
+  width: 100%;
+  min-height: 92px;
+  padding: 10px 12px;
+  border: 1px solid #c9d6e3;
+  border-radius: 12px;
+  background: #fff;
+  color: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  resize: vertical;
+}
+.memory-draft:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+.memory-actions .memory-save,
+.memory-actions .memory-danger {
+  min-height: 38px;
+  padding: 7px 16px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+.memory-actions .memory-save:active:not(:disabled),
+.memory-actions .memory-danger:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.memory-danger.secondary {
+  color: #8a4a12;
+}
+.memory-confirm {
+  margin-top: 8px;
+  padding: 10px 14px 6px;
+  border-radius: 14px;
+  background: #fff4e0;
+}
+.memory-confirm p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #795418;
+}
+.memory-problem.notice {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  font-size: 13px;
+}
+.memory-raw {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #4f6478;
+}
+.memory-raw code {
+  display: block;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #f1f4f7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.memory-empty {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  padding: 22px 0 4px;
+}
+.memory-empty .settings-symbol {
+  width: 48px;
+}
+.memory-empty h3 {
+  font-size: 18px;
+  color: #2a3e50;
+}
+.memory-empty > p:not(.source-note) {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #4a5f72;
+}
+.memory-kinds {
+  width: 100%;
+  margin: 4px 0 0;
+}
+.memory-kinds > div {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 12px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+}
+.memory-kinds dt {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2f465b;
+}
+.memory-kinds dd {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.memory-foot {
+  margin-top: 18px !important;
+}
+
+/* Formation receipt at the top of the Agent conversation. */
+.memory-receipt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 8px;
+  margin: 0 0 10px;
+  padding: 6px 14px;
+  border: 1px solid #d3e6da;
+  border-radius: 14px;
+  background: #eef6f1;
+  color: #32664d;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.memory-receipt .icon {
+  width: 15px;
+  height: 15px;
+}
+.memory-receipt .text-link {
+  color: #2d5f8f;
+}
+
+/* Quote results: the reused rule as a badge on the result's title line. */
+.quotation-result-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 12px;
+  margin-top: 16px;
+}
+.quotation-result-head .source-note {
+  margin: 0 !important;
+}
+.quotation-rule-badge {
+  font-size: 12px;
+  text-decoration: none;
+}
+a.quotation-rule-badge {
+  transition:
+    background-color 160ms ease-out,
+    transform 160ms ease-out;
+}
+a.quotation-rule-badge:active {
+  transform: scale(0.97);
+}
+a.quotation-rule-badge:focus-visible {
+  outline: 3px solid #3177cb;
+  outline-offset: 2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  a.quotation-rule-badge:hover {
+    background: #d8ebdf;
+  }
+}
+
+@media (max-width: 580px) {
+  dialog.memory-drawer {
+    inset: 8px;
+    width: auto;
+    border-radius: 24px;
+  }
+  .memory-head {
+    padding: 20px 14px 14px 20px;
+  }
+  .memory-body {
+    padding: 2px 20px 22px;
+  }
+  .memory-kinds > div {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Fade only. The global rule removes transitions; these opt back in for opacity. */
+  dialog.memory-drawer {
+    transform: none;
+    opacity: 0;
+    transition: opacity 200ms ease !important;
+  }
+  dialog.memory-drawer[data-state='open'] {
+    opacity: 1;
+  }
+  dialog.memory-drawer[data-state='closing'] {
+    transition-duration: 150ms !important;
+  }
+  .memory-entry:active,
+  .memory-actions .memory-save:active:not(:disabled),
+  .memory-actions .memory-danger:active:not(:disabled),
+  a.quotation-rule-badge:active {
+    transform: none;
+  }
+}
