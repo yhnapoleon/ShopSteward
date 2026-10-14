@@ -58,6 +58,8 @@ function show(tone: Note['tone'], text: () => string, hold = 20000) {
   if (hold) expiry = setTimeout(() => (result.value = null), hold)
 }
 const pause = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+// The notice useShop().advance() leaves for pages without the bar.
+const ADVANCED = '模拟器事件已推进；后台正在同步并复查。'
 
 /** One sentence for the ledger entries newer than `from`, led by the newest entry's kind. */
 function describe(from: number | null, demandBefore: number | null): () => string {
@@ -107,6 +109,8 @@ async function nextDay() {
   marker.value = { from, until: Date.now() + 90000 }
   try {
     await shop.advance()
+    // The bar reports this step itself; the page's generic notice would say it a second time.
+    if (shop.s.notice === ADVANCED) shop.s.notice = ''
   } catch (error) {
     if (!current()) return
     phase.value = 'idle'
@@ -179,7 +183,13 @@ onUnmounted(() => {
 })
 </script>
 <template>
-  <div v-if="visible" class="presenter-bar" role="region" :aria-label="tr('演示控制')">
+  <div
+    v-if="visible"
+    class="presenter-bar"
+    role="region"
+    :aria-label="tr('演示控制')"
+    :data-phase="phase"
+  >
     <div class="presenter-note-slot" role="status">
       <Transition name="presenter-note" mode="out-in">
         <p v-if="note" :key="note.id" class="presenter-note" :class="note.tone">

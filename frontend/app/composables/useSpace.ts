@@ -1,6 +1,6 @@
 import { t } from '~/i18n'
 import type { Schema } from '~/types/models'
-import { statusBadge, type Badge } from '~/utils/glossary'
+import { firstSync, statusBadge, type Badge } from '~/utils/glossary'
 import { describeEvent } from '~/utils/timeline'
 import { when } from '~/utils/presentation'
 import { workPresentation } from '~/utils/workPresentation'
@@ -140,8 +140,10 @@ export function useSpace() {
       : confirmationPending.value
         ? statusBadge({ confirmationPending: true })
         : workBadge(current)
-    // Whatever the "需要处理" card below says, the badge must not claim all is well.
-    if (issue && !ended.value && badge.tone !== 'amber')
+    // Whatever the "需要处理" card below says, the badge must not claim all is well. A new
+    // store's first sync is not a problem, and the card says so in blue.
+    const syncing = issue === 'stale' && firstSync(s.dashboard?.freshness)
+    if (issue && !syncing && !ended.value && badge.tone !== 'amber')
       return { label: t('需要处理'), tone: 'amber' }
     return badge
   }

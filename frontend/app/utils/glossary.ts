@@ -54,6 +54,13 @@ export function statusBadge(input: BadgeInput): Badge {
     : badge('状态待核对', 'gray')
 }
 
+/**
+ * A new store whose business data has never been synced yet (§11). Its first sync takes a few
+ * seconds; until then the data cannot be confirmed, but nothing is wrong.
+ */
+export const firstSync = (freshness?: { status: string; last_sync_at: string | null } | null) =>
+  !!freshness && freshness.status !== 'FRESH' && !freshness.last_sync_at
+
 const alertNames: Record<string, string> = {
   STOCKOUT_RISK: '缺货风险',
   CASH_CONSTRAINT: '现金约束',

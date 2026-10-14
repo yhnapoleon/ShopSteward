@@ -19,35 +19,58 @@ async function submitted(id: string) {
 }
 const layer = ref<HTMLDialogElement>(),
   main = ref<HTMLElement>(),
-  anchor = ref<HTMLElement>()
+  anchor = ref<HTMLElement>(),
+  scrim = ref<HTMLElement>()
 let origin: HTMLElement | null = null,
   animations: Animation[] = []
 let serial = 0
+// Motion (§12): the card settles in from 96% toward the button that opened it in 240ms on the
+// ease-out curve and leaves in 160ms; the scrim and the anchor only fade. Opened or closed from
+// the keyboard it appears and disappears at once; reduced motion keeps the fades only.
+const ease = 'cubic-bezier(0.23, 1, 0.32, 1)'
+let keyboard = false
+const fromPointer = () => (keyboard = false)
+const fromKeyboard = (event: KeyboardEvent) => {
+  if (!['Shift', 'Control', 'Alt', 'Meta'].includes(event.key)) keyboard = true
+}
+const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+function fade(entering: boolean, duration: number) {
+  return [scrim.value, anchor.value]
+    .filter((el): el is HTMLElement => !!el && el.style.display !== 'none')
+    .map((el) =>
+      el.animate([{ opacity: entering ? 0 : 1 }, { opacity: entering ? 1 : 0 }], {
+        duration,
+        easing: ease,
+        fill: entering ? 'none' : 'forwards',
+      }),
+    )
+}
 async function close() {
   const n = ++serial
   const d = layer.value
   if (!d?.open) return
   animations.forEach((a) => a.cancel())
   animations = []
-  if (main.value) {
-    const r = main.value.getBoundingClientRect(),
-      o = origin?.getBoundingClientRect()
-    const duration = matchMedia('(prefers-reduced-motion:reduce)').matches ? 0 : 350
-    const a = main.value.animate(
-      [
-        { opacity: 1, transform: 'none' },
-        {
-          opacity: 0,
-          transform: o
-            ? `translate(${o.left - r.left}px,${o.top - r.top}px) scale(${o.width / r.width},.1)`
-            : 'scale(.94)',
-        },
-      ],
-      { duration, easing: 'ease-in', fill: 'forwards' },
-    )
-    await a.finished.catch(() => {})
+  if (main.value && !keyboard) {
+    const moving = !still(),
+      duration = moving ? 160 : 120
+    const leaving = [
+      main.value.animate(
+        moving
+          ? [
+              { opacity: 1, transform: 'none' },
+              { opacity: 0, transform: 'scale(0.97)' },
+            ]
+          : [{ opacity: 1 }, { opacity: 0 }],
+        { duration, easing: ease, fill: 'forwards' },
+      ),
+      ...fade(false, duration),
+    ]
+    animations = leaving
+    await Promise.all(leaving.map((a) => a.finished.catch(() => {})))
     if (n !== serial) return
-    a.cancel()
+    leaving.forEach((a) => a.cancel())
+    animations = []
   }
   d.close()
   origin?.isConnected && origin.focus({ preventScroll: true })
@@ -60,41 +83,62 @@ watch(
       if (layer.value?.open) void close()
       return
     }
-    const n = ++serial
+    ++serial
     await nextTick()
-    origin = document.activeElement as HTMLElement
-    layer.value?.showModal()
+    const d = layer.value
+    if (!d) return
+    // Safari does not focus a clicked button; without a control to return to there is no anchor.
+    const active = document.activeElement
+    origin = active instanceof HTMLElement && active !== document.body ? active : null
+    if (!d.open) d.showModal()
+    animations.forEach((a) => a.cancel())
+    animations = []
     if (!main.value) return
-    const o = origin.getBoundingClientRect(),
+    const o = origin?.getBoundingClientRect(),
       r = main.value.getBoundingClientRect()
     if (anchor.value)
-      Object.assign(anchor.value.style, {
-        left: o.left + 'px',
-        top: o.top + 'px',
-        width: o.width + 'px',
-        height: o.height + 'px',
-      })
-    const reduced = matchMedia('(prefers-reduced-motion:reduce)').matches
-    main.value.inert = true
-    const a = main.value.animate(
-      [
-        {
-          opacity: 0,
-          transform: `translate(${o.left - r.left}px,${o.top - r.top}px) scale(${o.width / r.width},.12)`,
-        },
-        { opacity: 1, transform: 'none' },
-      ],
-      { duration: reduced ? 100 : 720, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' },
-    )
-    animations = [a]
-    await a.finished.catch(() => {})
-    if (n === serial && main.value) {
-      main.value.inert = false
-      main.value.focus({ preventScroll: true })
-    }
+      Object.assign(
+        anchor.value.style,
+        o
+          ? {
+              display: '',
+              left: o.left + 'px',
+              top: o.top + 'px',
+              width: o.width + 'px',
+              height: o.height + 'px',
+            }
+          : { display: 'none' },
+      )
+    main.value.focus({ preventScroll: true })
+    if (keyboard) return
+    // Scale toward the trigger: its centre, in the card's own box, is the transform origin.
+    main.value.style.transformOrigin = o
+      ? `${o.left + o.width / 2 - r.left}px ${o.top + o.height / 2 - r.top}px`
+      : 'center'
+    const moving = !still()
+    animations = [
+      main.value.animate(
+        moving
+          ? [
+              { opacity: 0, transform: 'scale(0.96)' },
+              { opacity: 1, transform: 'none' },
+            ]
+          : [{ opacity: 0 }, { opacity: 1 }],
+        { duration: moving ? 240 : 160, easing: ease },
+      ),
+      ...fade(true, moving ? 200 : 160),
+    ]
   },
 )
-onUnmounted(() => animations.forEach((a) => a.cancel()))
+onMounted(() => {
+  document.addEventListener('pointerdown', fromPointer, true)
+  document.addEventListener('keydown', fromKeyboard, true)
+})
+onUnmounted(() => {
+  document.removeEventListener('pointerdown', fromPointer, true)
+  document.removeEventListener('keydown', fromKeyboard, true)
+  animations.forEach((a) => a.cancel())
+})
 async function start() {
   await close()
   emit('start')
@@ -106,7 +150,7 @@ async function quote() {
 </script>
 <template>
   <dialog ref="layer" class="goal-deck" aria-labelledby="deck-title" @cancel.prevent="close">
-    <div class="deck-scrim" @click="close" />
+    <div ref="scrim" class="deck-scrim" @click="close" />
     <button ref="anchor" class="deck-anchor" :aria-label="tr('收回委托入口')" @click="close">
       <AppIcon name="x" />{{ tr('交给我一件事') }}
     </button>

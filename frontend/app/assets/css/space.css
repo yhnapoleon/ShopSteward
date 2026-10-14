@@ -425,7 +425,7 @@
     transform 240ms var(--space-ease);
 }
 .space-rise-leave-active {
-  transition: opacity 150ms ease-out;
+  transition: opacity 150ms var(--space-ease);
 }
 .space-rise-enter-from {
   opacity: 0;
@@ -1320,8 +1320,8 @@ dialog.memory-drawer[data-state='closing']::backdrop {
 }
 a.quotation-rule-badge {
   transition:
-    background-color 160ms ease-out,
-    transform 160ms ease-out;
+    background-color 160ms ease,
+    transform 160ms var(--space-ease);
 }
 a.quotation-rule-badge:active {
   transform: scale(0.97);
@@ -1506,7 +1506,6 @@ a.quotation-rule-badge:focus-visible {
   padding: 9px 16px;
   border-radius: 14px;
   font-size: 13px;
-  transition: transform 160ms ease-out;
 }
 .surface-next-action .icon {
   width: 14px;
@@ -1680,7 +1679,6 @@ a.quotation-rule-badge:focus-visible {
   color: #5c6d80;
   font-size: 13px;
   white-space: nowrap;
-  transition: transform 160ms ease-out;
 }
 .presenter-action .icon {
   width: 16px;
@@ -1796,8 +1794,8 @@ a.quotation-rule-badge:focus-visible {
 .presenter-note-leave-active,
 .presenter-tick-leave-active {
   transition:
-    opacity 120ms ease-out,
-    transform 120ms ease-out;
+    opacity 120ms var(--space-ease),
+    transform 120ms var(--space-ease);
 }
 .presenter-note-enter-from,
 .presenter-tick-enter-from {
@@ -1855,6 +1853,172 @@ a.quotation-rule-badge:focus-visible {
   .presenter-bar .presenter-next:active:not(:disabled),
   .presenter-action:active:not(:disabled),
   .surface-next-action:active:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------------------------------------
+   C5 · Polish (redesign §12): press feedback in one place, the first sync of a new store, the
+   conversation pills on small screens, a quiet hover on rows and cards for fine pointers, and
+   focus rings for the few focusable elements the global rule does not cover.
+   ------------------------------------------------------------------------------------------- */
+
+/* Press feedback: pressable surfaces in the redesigned areas scale to 0.97 within 160ms on the
+   ease-out curve; colour and shadow keep the shop.css timing. Text links and switches stay put. */
+:is(
+    .space-workspace,
+    .space-watch,
+    .space-following,
+    .attention-card,
+    .work-card,
+    .goal-deck,
+    .memory-drawer,
+    .presenter-bar,
+    .surface
+  )
+  :is(.primary, .secondary, .icon-btn),
+.memory-entry,
+.presenter-action,
+.space-workspace .option {
+  transition-property: background-color, box-shadow, color, transform;
+  transition-duration: 200ms, 250ms, 200ms, 160ms;
+  transition-timing-function: ease, var(--ease), ease, var(--space-ease);
+}
+:is(
+    .space-workspace,
+    .space-watch,
+    .space-following,
+    .attention-card,
+    .work-card,
+    .goal-deck,
+    .memory-drawer,
+    .presenter-bar,
+    .surface
+  )
+  :is(.primary, .secondary, .icon-btn):active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+/* A new store's first sync is information, not a warning: the workspace card turns blue and its
+   refresh button steps down to a secondary one (the page refreshes by itself). */
+.space-workspace .space-issue.is-syncing.attention-card.glass {
+  background: rgb(238 244 252 / 80%);
+  border-color: #d6e3f4;
+}
+.attention-card > .secondary {
+  margin-top: 14px;
+}
+
+/* Rows and cards brighten a little under a mouse; touch screens never see a stuck hover. */
+@media (hover: hover) and (pointer: fine) {
+  .space-row.work-card,
+  .work-card.glass {
+    position: relative;
+    isolation: isolate;
+  }
+  .space-row.work-card::before,
+  .work-card.glass::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    border-radius: inherit;
+    background: rgb(255 255 255 / 42%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease;
+  }
+  .space-row.work-card::before {
+    inset: 3px -12px;
+    border-radius: 14px;
+  }
+  .work-card.glass::before {
+    inset: 0;
+  }
+  .space-row.work-card:hover::before,
+  .work-card.glass:hover::before {
+    opacity: 1;
+  }
+}
+
+/* The goal deck plays its own entrance (GoalDeck.vue); the full-screen wrapper does not also run
+   the generic dialog reveal, which moved the scrim and doubled the fade. */
+dialog.goal-deck[open] {
+  animation: none;
+}
+
+/* While the presenter bar reports "next day" in progress, the page's busy toast would say the same
+   thing at the top. The bar is only on screen from 821px, so the toast stays below that. */
+@media (min-width: 821px) {
+  body:has(.presenter-bar[data-phase='advancing']) .toast {
+    display: none;
+  }
+}
+
+/* Wide headers without the Agent entry: the store column grows to hold the memory entry,
+   settings and the store switch, so "当前经营环境" stays on one line. */
+@media (min-width: 1201px) {
+  .app-header {
+    grid-template-columns: 250px 1fr minmax(220px, auto);
+  }
+  .header-store .store-switch :is(strong, small) {
+    white-space: nowrap;
+  }
+}
+
+/* Focus rings matching buttons for links and the scrollable tables (tabindex="0"). */
+a:focus-visible,
+.surface-table:focus-visible {
+  outline: 3px solid #3177cb;
+  outline-offset: 2px;
+}
+
+@media (max-width: 820px) {
+  /* Under the outer "Agent 工作" switch the two conversations are a row of small pills, not a
+     second full-width switch. The pill shows 32px; its touch target stays 44px. */
+  .space-workspace .space-segment {
+    justify-self: start;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: none;
+  }
+  .space-workspace .space-segment button {
+    position: relative;
+    flex: 0 0 auto;
+    gap: 6px;
+    min-height: 32px;
+    padding: 5px 13px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: rgb(255 255 255 / 55%);
+    font-size: 12.5px;
+  }
+  .space-workspace .space-segment button::after {
+    content: '';
+    position: absolute;
+    inset: -7px -3px;
+  }
+  .space-workspace .space-segment button[aria-pressed='true'] {
+    border-color: #c6d8f0;
+    background: #e9f0fc;
+    color: #2a5f9e;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(
+      .space-workspace,
+      .space-watch,
+      .space-following,
+      .attention-card,
+      .work-card,
+      .goal-deck,
+      .memory-drawer,
+      .presenter-bar,
+      .surface
+    )
+    :is(.primary, .secondary, .icon-btn):active:not(:disabled) {
     transform: none;
   }
 }

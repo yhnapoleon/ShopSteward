@@ -42,10 +42,12 @@ async function resume() {
     <div class="task-heading-actions">
       <span class="tag" :class="badge.tone" role="status">{{ badge.label }}</span>
       <template v-if="mission"
-        ><button class="text-link" @click="emit('open', 'mission')">{{ tr('委托详情') }}</button
+        ><button class="text-link" aria-haspopup="dialog" @click="emit('open', 'mission')">
+          {{ tr('委托详情') }}</button
         ><button
           v-if="mission.status === 'ACTIVE'"
           class="text-link"
+          aria-haspopup="dialog"
           :disabled="Boolean(s.busy) || !hasRole('operator')"
           @click="emit('open', 'pause')"
         >
@@ -60,10 +62,12 @@ async function resume() {
         ><button
           v-if="!ended && hasRole('approver')"
           class="text-link"
+          aria-haspopup="dialog"
+          :aria-label="tr('结束委托…')"
           :disabled="Boolean(s.busy)"
           @click="emit('open', 'complete')"
         >
-          {{ tr('结束委托…') }}
+          {{ tr('结束') }}
         </button></template
       >
     </div>

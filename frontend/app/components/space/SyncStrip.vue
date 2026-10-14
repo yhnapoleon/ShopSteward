@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { t as tr } from '~/i18n'
 import { when } from '~/utils/presentation'
+import { firstSync } from '~/utils/glossary'
 
 // One line on how current the facts are. Routine polling is quick and stays silent; the pulse
 // appears only for a slow refresh, or after a simulated event until the state version moves.
@@ -58,7 +59,10 @@ onUnmounted(() => {
   clearTimeout(slowTimer)
   clearInterval(clock)
 })
-const syncing = computed(() => s.connected && (slow.value || waiting.value))
+// A new store's first sync is still running: the strip says so, like the card above it.
+const syncing = computed(
+  () => s.connected && (slow.value || waiting.value || firstSync(s.dashboard?.freshness)),
+)
 </script>
 <template>
   <div class="space-sync" :class="{ 'is-compact': compact }" :aria-label="tr('数据同步状态')">

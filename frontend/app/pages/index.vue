@@ -332,10 +332,14 @@ const watchWorks = computed(() => activeWorks.value.filter((i) => !needsOwner(i)
 const taskCardShown = computed(
   () => !!mission.value && !work.s.items.some((i) => i.mission_id === mission.value?.id),
 )
-// The badge counts only the cards in "需要你拍板".
+// The badge counts only the cards in "需要你拍板"; a new store's first sync is not a decision.
+const attention = computed(
+  () => !!issue.value && !(issue.value === 'stale' && firstSync(s.dashboard?.freshness)),
+)
 const decisionCount = computed(
   () =>
-    decideWorks.value.length + ((taskCardShown.value && canDecide.value) || issue.value ? 1 : 0),
+    decideWorks.value.length +
+    ((taskCardShown.value && canDecide.value) || attention.value ? 1 : 0),
 )
 const todayStarted = computed(() =>
   Boolean(s.storeId && (mission.value || activeWorks.value.length || issue.value)),
@@ -653,6 +657,22 @@ function briefing() {
                 @open="openWork(item.id)"
               />
               <TaskCard v-if="taskCardShown" @open="openTask()" />
+              <article
+                v-else-if="issue === 'stale' && firstSync(s.dashboard?.freshness)"
+                class="attention-card glass"
+                role="status"
+              >
+                <span class="tag blue">{{ tr('正在同步') }}</span>
+                <h2>{{ tr('正在首次同步经营数据') }}</h2>
+                <p>{{ tr('几秒后自动更新，期间不能确认采购。') }}</p>
+                <button
+                  class="secondary"
+                  :disabled="Boolean(s.busy)"
+                  @click="act(() => shop.refresh(true))"
+                >
+                  {{ tr('刷新原记录') }}
+                </button>
+              </article>
               <article v-else-if="issue" class="attention-card glass">
                 <span class="tag amber">{{ tr('需要处理') }}</span>
                 <h2>
@@ -1093,7 +1113,14 @@ function briefing() {
         <div class="detail-row">
           <span>{{ tr('商品 / 供应商') }}</span
           ><b>{{
-            joinText([product?.name, '/', approval.plan.input_snapshot.offer.supplier_id])
+            joinText(
+              [
+                product?.name,
+                '/',
+                supplierDisplayName(approval.plan.input_snapshot.offer.supplier_id),
+              ],
+              ' ',
+            )
           }}</b>
         </div>
         <template v-if="approval.quantity"
