@@ -318,6 +318,14 @@ const issue = computed(() =>
 const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
 )
+// Demo mode (§10): plain store names and the demo badge; business rules and data stay the same.
+const {
+  enabled: demoMode,
+  saveFailed: demoSaveFailed,
+  set: setDemo,
+  storeLabel,
+} = useDemoMode()
+const currentStore = computed(() => s.stores.find((st) => st.store_id === s.storeId))
 // Today (§5): what needs the owner comes first; everything else ongoing is "being watched".
 const decideWorks = computed(() => activeWorks.value.filter(needsOwner))
 const watchWorks = computed(() => activeWorks.value.filter((i) => !needsOwner(i)))
@@ -425,13 +433,15 @@ function briefing() {
           <span class="avatar">{{ tr('店') }}</span
           ><span
             ><strong>{{
-              tr(
-                s.storeId
-                  ? s.storeId === s.activeStoreId
-                    ? '当前经营环境'
-                    : '历史场景'
-                  : '选择店铺',
-              )
+              demoMode && currentStore
+                ? storeLabel(currentStore)
+                : tr(
+                    s.storeId
+                      ? s.storeId === s.activeStoreId
+                        ? '当前经营环境'
+                        : '历史场景'
+                      : '选择店铺',
+                  )
             }}</strong
             ><small>{{ tr('我的经营空间') }}</small></span
           ><AppIcon name="chevron-down" />
@@ -475,7 +485,7 @@ function briefing() {
         </div>
         <div class="top-actions">
           <button class="demo-badge" @click="open('controls')">
-            {{ tr('联调控制 · 合成数据') }}</button
+            {{ tr(demoMode ? '演示 · 合成数据' : '联调控制 · 合成数据') }}</button
           ><span class="top-clock">{{ tr(when(s.dashboard?.state.simulation_time)) }}</span
           ><button class="icon-btn" :aria-label="tr('设置')" @click="open('settings')">
             <AppIcon name="sliders-horizontal" />
@@ -1037,6 +1047,7 @@ function briefing() {
       />{{ tr(label) }}
     </button>
   </nav>
+  <LazyPresenterBar v-if="demoMode" @open="open" @navigate="navigate" />
   <MemoryPanel />
   <div v-if="s.notice || s.busy" class="toast" role="status">
     {{ tr(s.busy || s.notice)
@@ -1504,6 +1515,31 @@ function briefing() {
           }}
         </p>
       </section>
+      <section class="settings-section" aria-labelledby="demo-heading">
+        <h3 id="demo-heading">{{ tr('演示') }}</h3>
+        <div class="settings-group">
+          <label class="settings-row settings-switch-row">
+            <span
+              ><strong id="demo-mode-name">{{ tr('演示模式') }}</strong
+              ><small id="demo-mode-hint">{{ tr('隐藏调试标识，显示演示条') }}</small></span
+            ><input
+              type="checkbox"
+              role="switch"
+              class="settings-switch"
+              aria-labelledby="demo-mode-name"
+              aria-describedby="demo-mode-hint"
+              :checked="demoMode"
+              @change="setDemo(($event.target as HTMLInputElement).checked)"
+            />
+          </label>
+        </div>
+        <p class="settings-footnote">
+          {{ tr('演示条在桌面宽度显示；不改变业务规则、经营时钟或数据。') }}
+        </p>
+        <p v-if="demoSaveFailed" class="notice" role="alert">
+          {{ tr('演示模式已切换，但浏览器无法保存，刷新后可能恢复。') }}
+        </p>
+      </section>
     </template>
     <template v-else-if="dialog === 'facts'"
       ><div class="detail-row">
@@ -1608,13 +1644,15 @@ function briefing() {
         <option v-if="!s.stores.length" value="">{{ tr('尚无场景') }}</option>
         <option v-for="st in s.stores" :key="st.store_id" :value="st.store_id">
           {{
-            joinText([
-              tr(st.store_id === s.activeStoreId ? '当前环境' : '历史场景'),
-              '·',
-              tr(st.store_id.slice(-8)),
-              '·',
-              tr(when(st.simulation_time)),
-            ])
+            demoMode
+              ? storeLabel(st) + (st.store_id === s.activeStoreId ? tr('（当前环境）') : '')
+              : joinText([
+                  tr(st.store_id === s.activeStoreId ? '当前环境' : '历史场景'),
+                  '·',
+                  tr(st.store_id.slice(-8)),
+                  '·',
+                  tr(when(st.simulation_time)),
+                ])
           }}
         </option>
       </select>

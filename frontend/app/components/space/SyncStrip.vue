@@ -4,6 +4,9 @@ import { when } from '~/utils/presentation'
 
 // One line on how current the facts are. Routine polling is quick and stays silent; the pulse
 // appears only for a slow refresh, or after a simulated event until the state version moves.
+// `compact` (the today page's side column) keeps the business time and the state only; the sync
+// time is already on the cash card there.
+defineProps<{ compact?: boolean }>()
 const { s } = useShop()
 const advance = useState('space-sync-advance', () => ({ from: null as number | null, until: 0 }))
 const slow = ref(false)
@@ -58,12 +61,12 @@ onUnmounted(() => {
 const syncing = computed(() => s.connected && (slow.value || waiting.value))
 </script>
 <template>
-  <div class="space-sync" :aria-label="tr('数据同步状态')">
+  <div class="space-sync" :class="{ 'is-compact': compact }" :aria-label="tr('数据同步状态')">
     <span class="space-sync-item"
       ><AppIcon name="clock" />{{
         tr('经营时点 {0}', [when(s.dashboard?.state.simulation_time)])
       }}</span
-    ><span class="space-sync-item">{{
+    ><span v-if="!compact" class="space-sync-item">{{
       tr('数据同步 {0}', [when(s.dashboard?.freshness.last_sync_at)])
     }}</span
     ><span

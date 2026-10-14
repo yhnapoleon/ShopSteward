@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { joinText, t as tr } from '~/i18n'
+import { VIEW_TARGETS, type NextStepTarget } from '~/surfaces/types'
 import { money, when } from '~/utils/presentation'
 
 // What the owner and the assistant produced for this item: questions, results, quotations and
 // the conditions for starting a restocking mission. A mission item shows only what adds to the
 // mission cards above; a standalone item shows its full progress.
-const emit = defineEmits<{ open: [name: string]; changed: []; converse: [] }>()
+const emit = defineEmits<{
+  open: [name: string]
+  navigate: [view: string]
+  changed: []
+  converse: []
+}>()
 const work = useWorkItems()
 const { s } = work
 const shop = useShop()
@@ -30,6 +36,22 @@ const stale = computed(() =>
 )
 async function accept() {
   if (await work.acceptMission()) emit('changed')
+}
+// A result surface's next step opens an existing view or dialog; its quick answer is sent through
+// the item's conversation like a typed reply, keeping any unsent draft there.
+function surfaceOpen(name: NextStepTarget) {
+  if (VIEW_TARGETS.includes(name)) emit('navigate', name)
+  else emit('open', name)
+}
+async function surfaceAnswer(text: string) {
+  if (s.busy || s.pending) return
+  const draft = s.input
+  s.input = text
+  const sent = await work.send()
+  if (sent) {
+    s.input = draft
+    emit('changed')
+  } else if (!s.pending) s.input = draft
 }
 </script>
 <template>
@@ -71,11 +93,24 @@ async function accept() {
       <details v-if="linked" class="glass space-discussion">
         <summary>{{ tr('这次讨论的结果') }}</summary>
         <p v-if="stale" class="notice">{{ tr('这是之前的结果，尚未根据新要求更新。') }}</p>
-        <WorkResult :result="item.result" :demonstration="item.demonstration" />
+        <WorkResult
+          :result="item.result"
+          :demonstration="item.demonstration"
+          interactive
+          @open="surfaceOpen"
+          @submit="surfaceAnswer"
+        />
       </details>
       <section v-else class="glass work-status-panel">
         <p v-if="stale" class="notice">{{ tr('这是之前的结果，尚未根据新要求更新。') }}</p>
-        <WorkResult :result="item.result" :demonstration="item.demonstration" />
+        <WorkResult
+          :result="item.result"
+          :demonstration="item.demonstration"
+          interactive
+          animate
+          @open="surfaceOpen"
+          @submit="surfaceAnswer"
+        />
         <button
           v-if="item.result.calculation"
           class="secondary"

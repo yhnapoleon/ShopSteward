@@ -54,12 +54,49 @@ watch(
     if (activity && Date.now() - activity.at < 1500) void highlight(activity.target)
   },
 )
+// A business outcome the Agent records while this page is open gets one line above the plan
+// card (§4.4). Outcomes already there when the page or the conversation loads stay quiet, and
+// a refresh of the same run never brings the line back.
+const seenOutcomes = new Set<string>()
+const freshOutcome = ref<{ run: string; id: string; kind: 'evaluation' | 'revision' } | null>(
+  null,
+)
+function noteOutcomes(announce: boolean) {
+  const run = agent.s.run
+  for (const outcome of run?.outcomes || []) {
+    const key = run!.id + ':' + outcome.invocation_id
+    if (seenOutcomes.has(key)) continue
+    seenOutcomes.add(key)
+    if (announce && outcome.availability === 'available')
+      freshOutcome.value = { run: run!.id, id: outcome.invocation_id, kind: outcome.kind }
+  }
+}
+noteOutcomes(false)
+watch(
+  () => [agent.s.run?.id, agent.s.run?.outcomes?.length, agent.s.initialized] as const,
+  ([, , initialized], [, , wasInitialized]) => noteOutcomes(!!initialized && !!wasInitialized),
+)
+const outcomeHint = computed(() =>
+  freshOutcome.value && freshOutcome.value.run === agent.s.run?.id ? freshOutcome.value : null,
+)
+async function viewOutcome() {
+  const id = outcomeHint.value?.id
+  freshOutcome.value = null
+  mobilePanel.value = 'agent'
+  conversation.value?.show('agent')
+  await nextTick()
+  if (id)
+    document
+      .querySelector(`[data-outcome="${CSS.escape(id)}"]`)
+      ?.scrollIntoView({ behavior: reduce.value ? 'auto' : 'smooth', block: 'center' })
+}
 watch(
   () => item.value?.id,
   () => {
     clearTimeout(timer)
     target.value = ''
     localError.value = ''
+    freshOutcome.value = null
   },
 )
 onUnmounted(() => {
@@ -129,6 +166,35 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
           <SpaceSyncStrip />
           <SpaceIssueCard v-if="issue && !ended" :issue="issue" />
           <SpaceChangeCard v-if="mission" />
+          <div v-if="mission" class="space-agent-hint-slot" role="status">
+            <Transition name="space-rise">
+              <p v-if="outcomeHint" class="space-agent-hint">
+                <AppIcon name="sparkles" /><span class="space-wide">{{
+                  tr(
+                    outcomeHint.kind === 'evaluation'
+                      ? 'Agent 刚给出一份试算结果，见右侧'
+                      : 'Agent 刚给出一份修订结果，见右侧',
+                  )
+                }}</span
+                ><span class="space-narrow">{{
+                  tr(
+                    outcomeHint.kind === 'evaluation'
+                      ? 'Agent 刚给出一份试算结果'
+                      : 'Agent 刚给出一份修订结果',
+                  )
+                }}</span
+                ><button class="text-link" @click="viewOutcome">
+                  {{ tr('查看结果') }}<AppIcon name="arrow-right" /></button
+                ><button
+                  class="icon-btn space-agent-hint-close"
+                  :aria-label="tr('关闭提示')"
+                  @click="freshOutcome = null"
+                >
+                  <AppIcon name="x" />
+                </button>
+              </p>
+            </Transition>
+          </div>
           <section
             v-if="!issue || ended"
             id="space-plan"
@@ -156,6 +222,7 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
         <SpaceSyncStrip v-else-if="item.result?.calculation || item.mission_request" />
         <SpaceWorkContent
           @open="emit('open', $event)"
+          @navigate="emit('navigate', $event)"
           @changed="emit('changed')"
           @converse="converse"
         />
