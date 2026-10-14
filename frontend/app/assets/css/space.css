@@ -1,0 +1,187 @@
+/* Workspace redesign (2026-10). Loaded last; existing rules in shop/tasks/work.css stay as they are
+   and are overridden here with more specific selectors where needed. */
+
+/* Service outage: the backend did not answer. Shown above the retained data, not instead of it. */
+.service-outage {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  margin: 0 0 22px;
+  padding: 20px 24px;
+  border-radius: 22px;
+}
+.service-outage h2 {
+  font-size: 19px;
+  letter-spacing: -0.3px;
+}
+.service-outage p {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #4a5f72;
+}
+.service-outage-start .secondary {
+  margin-top: 18px;
+}
+
+/* Business records: translated events, owner actions marked with a person, system events with a dot. */
+.timeline-mark.green {
+  color: #32664d;
+  background: #e5f0e9;
+}
+.timeline-mark.amber {
+  color: #805316;
+  background: #fff1d7;
+}
+.timeline-mark.gray {
+  color: #526477;
+  background: #edf1f5;
+}
+.timeline-mark.blue {
+  color: #436ba0;
+  background: #e9f0fc;
+}
+.timeline-mark .icon {
+  width: 16px;
+  height: 16px;
+}
+.timeline-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+.activity-group {
+  border-bottom: 1px solid var(--line);
+}
+.activity-group:last-child {
+  border-bottom: 0;
+}
+.activity-group > summary {
+  list-style: none;
+  cursor: pointer;
+  border-bottom: 0;
+}
+.activity-group > summary::-webkit-details-marker {
+  display: none;
+}
+.activity-group > summary > .icon {
+  flex-shrink: 0;
+  align-self: center;
+  margin-left: auto;
+  width: 16px;
+  height: 16px;
+  color: #6b859b;
+}
+/* A disclosure state, not a motion: it flips instantly, including from the keyboard. */
+.activity-group[open] > summary > .icon {
+  transform: rotate(90deg);
+}
+.activity-copy {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.activity-copy strong {
+  font-size: 15px;
+  font-weight: 550;
+  overflow-wrap: anywhere;
+}
+.activity-copy span {
+  font-size: 13px;
+  color: var(--muted);
+}
+.activity-group-items {
+  display: grid;
+  gap: 8px;
+  margin: -4px 0 0;
+  padding: 0 0 18px 129px;
+  list-style: none;
+}
+.activity-group-items li {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #405569;
+  overflow-wrap: anywhere;
+}
+.activity-group-items time {
+  flex-shrink: 0;
+  min-width: 76px;
+  font-size: 12px;
+  color: #596c7d;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Hand me a task: the structured restocking entry under the free-text intake. */
+.deck-structured {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+.deck-structured h3 {
+  font-size: 17px;
+  color: #2c4356;
+}
+.deck-structured .start-scope {
+  margin: 14px 0 0;
+}
+.deck-structured .channel-note {
+  margin: 10px 0 2px;
+}
+
+@media (max-width: 820px) {
+  /* The fixed settings button owns the top-right corner of the first row. */
+  .workspace > .mobile-agent-entry {
+    width: calc(100% - 56px);
+    margin-right: 0;
+  }
+  .workspace > .mobile-settings-entry + .topbar {
+    padding-right: 56px;
+  }
+  /* One settings entry on small screens: the fixed button above replaces the top-bar copy. */
+  .topbar .top-actions .icon-btn {
+    display: none;
+  }
+  /* Page head: title first, then the two entries at equal width; they stack when too narrow. */
+  .page-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    padding-right: 4px;
+  }
+  .page-head .page-head-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 10px;
+    max-width: 520px;
+  }
+  .page-head .page-head-actions > button {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    justify-content: center;
+    text-align: center;
+  }
+  .page-head .page-head-actions .quiet-button {
+    position: static;
+    display: flex;
+    height: auto;
+    white-space: normal;
+  }
+  .page-head .page-head-actions .quiet-button span {
+    display: inline;
+  }
+}
+@media (max-width: 580px) {
+  .activity-group-items {
+    padding-left: 0;
+  }
+  .activity-group-items time {
+    min-width: 64px;
+  }
+  .service-outage {
+    padding: 18px;
+    border-radius: 20px;
+  }
+}

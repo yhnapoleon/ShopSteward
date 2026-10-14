@@ -88,6 +88,14 @@ function open(name: string) {
   dialog.value = name
   scheduleSeconds.value = mission.value?.schedule.interval_seconds || 30
 }
+// After an outage, resume exactly like the first load so the open view comes back by itself.
+const { unreachable: backendDown, probe: retryBackend } = useBackendHealth(true, async () => {
+  await shop.init(typeof route.query.store === 'string' ? route.query.store : undefined)
+  if (view.value === 'task' && typeof route.query.mission === 'string')
+    await shop.selectMission(route.query.mission)
+  if (view.value === 'work' && typeof route.query.item === 'string')
+    await openWork(route.query.item)
+})
 async function navigate(next: string) {
   viewScroll[view.value] = window.scrollY
   dialog.value = ''
@@ -101,14 +109,23 @@ async function openWork(id: string) {
   await work.select(id)
   await syncWork()
 }
-async function syncWork() {
+async function syncWork(panel?: string) {
   const item = work.s.detail?.item,
     epoch = work.s.epoch
   if (!item || item.store_id !== s.storeId) return
   if (item.mission_id && s.missionId !== item.mission_id) await shop.selectMission(item.mission_id)
   if (epoch !== work.s.epoch || work.s.detail?.item.id !== item.id || item.store_id !== s.storeId)
     return
-  await router.push({ query: { view: 'work', item: item.id, store: item.store_id } })
+  // An explicit entry (the Agent buttons) chooses the panel; refreshes of the same item keep it.
+  const keep = panel ?? (route.query.item === item.id ? route.query.panel : undefined)
+  await router.push({
+    query: {
+      view: 'work',
+      item: item.id,
+      store: item.store_id,
+      ...(typeof keep === 'string' && keep !== 'result' ? { panel: keep } : {}),
+    },
+  })
 }
 watch(
   () => route.query.item,
@@ -132,7 +149,7 @@ async function openTask(id = mission.value?.id, panel = 'result') {
   if (!id) return
   if (work.s.available) {
     const d = await work.fromMission(id)
-    if (d) await syncWork()
+    if (d) await syncWork(panel)
     return
   }
   viewScroll[view.value] = window.scrollY
@@ -305,11 +322,13 @@ const decisionCount = computed(() => (issue.value || canDecide.value ? 1 : 0))
 const receiptActions = computed(() =>
   s.actions.filter((a) => !mission.value || a.mission_id === mission.value.id),
 )
-const recordItems = computed(() =>
-  recordFilter.value === 'decisions'
-    ? s.timeline.filter((t) => t.actor_type === 'USER')
-    : s.timeline,
+const decisions = useDecisionRecords(
+  () => view.value === 'journal' && recordFilter.value === 'decisions',
 )
+const recordItems = computed(() =>
+  recordFilter.value === 'decisions' ? decisions.items.value : s.timeline,
+)
+const recordRows = computed(() => groupTimeline(recordItems.value))
 const labels: Record<string, string> = {
   approval: '核对这笔采购',
   evidence: '当前选择的依据',
@@ -333,14 +352,18 @@ function briefing() {
     `商品：${product.value?.name || '未取得'}`,
     `经营时点：${when(s.dashboard?.state.simulation_time)}`,
     `可用现金：${money(s.dashboard?.state.available_cash_minor)}`,
-    `在库：${number(stock.value?.on_hand)} 件；在途：${number(stock.value?.in_transit)} 件`,
+    // Translated by key: the generic "{0} 件" pattern would otherwise claim these lines first.
+    tr('在库：{0} 件；在途：{1} 件', [
+      number(stock.value?.on_hand),
+      number(stock.value?.in_transit),
+    ]),
     `待结算：${money(s.dashboard?.state.receivables_minor)}（未回款）`,
-    `剩余需求假设：${number(stock.value?.remaining_demand)} 件`,
-    `任务状态：${mission.value?.status || '尚未建立'}`,
+    tr('剩余需求假设：{0} 件', [number(stock.value?.remaining_demand)]),
+    `任务状态：${mission.value ? statusBadge({ mission: mission.value.status }).label : tr('尚未建立')}`,
     `最近检查：${when(s.dashboard?.last_check_at)}`,
     `下一检查：${when(mission.value?.schedule.next_run_at)}`,
     '',
-    ...s.timeline.map((t) => when(t.created_at) + ' ' + t.summary),
+    ...timelineLines(s.timeline),
     '',
     '以上来源于业务API；当前为合成经营环境，备货到位不代表活动结束。',
   ]
@@ -479,8 +502,31 @@ function briefing() {
           </button>
         </div>
       </div>
+      <section
+        v-if="
+          backendDown &&
+          s.session?.authenticated &&
+          !s.connected &&
+          !['overview', 'documents'].includes(view)
+        "
+        class="service-outage glass"
+        role="status"
+      >
+        <span class="tag amber">{{ tr('服务暂时中断') }}</span>
+        <h2>{{ tr('后端暂时无法连接，正在重试') }}</h2>
+        <p>
+          {{
+            s.dashboard?.freshness.last_sync_at
+              ? tr('页面保留 {0} 同步的数据；恢复后自动继续，期间不能确认采购。', [
+                  when(s.dashboard.freshness.last_sync_at),
+                ])
+              : tr('恢复后自动继续，期间不能确认采购。')
+          }}
+        </p>
+        <button class="text-link" @click="retryBackend()">{{ tr('立即重试') }}</button>
+      </section>
       <p
-        v-if="s.error && !dialog && !['overview', 'documents'].includes(view)"
+        v-if="s.error && !backendDown && !dialog && !['overview', 'documents'].includes(view)"
         class="notice amber"
         role="alert"
       >
@@ -490,13 +536,25 @@ function briefing() {
         </button>
       </p>
       <p
-        v-if="(work.s.syncError || work.s.listError || work.s.error) && view !== 'work'"
+        v-if="
+          (work.s.syncError || work.s.listError || work.s.error) && view !== 'work' && !backendDown
+        "
         class="notice amber"
         role="alert"
       >
         {{ tr(work.s.syncError || work.s.listError || work.s.error) }}
       </p>
-      <div v-if="s.loading" class="empty-decision glass" role="status">
+      <section
+        v-if="backendDown && !s.session?.authenticated"
+        class="start-card glass service-outage-start"
+        role="status"
+      >
+        <span class="tag amber">{{ tr('服务暂时中断') }}</span>
+        <h2>{{ tr('后端暂时无法连接，正在重试') }}</h2>
+        <p>{{ tr('每 5 秒自动重试，恢复后自动继续；不需要重新连接身份。') }}</p>
+        <button class="secondary" @click="retryBackend()">{{ tr('立即重试') }}</button>
+      </section>
+      <div v-else-if="s.loading" class="empty-decision glass" role="status">
         {{ tr('正在读取经营数据…') }}
       </div>
       <div v-else-if="!s.session?.authenticated" class="start-card glass">
@@ -658,7 +716,7 @@ function briefing() {
                 }}
               </button>
             </article>
-            <article v-else-if="!mission && !work.s.available" class="start-card glass">
+            <article v-else-if="!mission" class="start-card glass">
               <span class="tag">{{ tr('从示例店铺开始') }}</span>
               <h2>{{ tr('先把这次备货交代清楚。') }}</h2>
               <p>
@@ -744,7 +802,7 @@ function briefing() {
             <section class="summary-card glass">
               <template v-if="recordFilter === 'ledger'"
                 ><div v-for="e in s.ledger" :key="e.id" class="activity-item">
-                  <time>{{ tr(when(e.simulation_time)) }}</time>
+                  <time>{{ tr(when(e.simulation_time || e.occurred_at)) }}</time>
                   <div>
                     <h3>
                       {{
@@ -780,21 +838,91 @@ function briefing() {
                 </div>
                 <p v-if="!s.ledger.length">{{ tr('暂无账本记录。') }}</p></template
               ><template v-else
-                ><div v-for="e in recordItems" :key="e.id" class="activity-item">
-                  <time>{{ tr(when(e.created_at)) }}</time
-                  ><span class="mini-icon"><AppIcon name="clock" /></span>
-                  <div>
-                    <h3>{{ e.summary }}</h3>
-                    <p>{{ tr(e.actor_type === 'USER' ? '用户决定' : '后台记录') }}</p>
-                  </div>
-                </div>
-                <p v-if="!recordItems.length">{{ tr('还没有这类记录。') }}</p>
+                ><template v-for="row in recordRows" :key="row.key"
+                  ><details v-if="row.kind === 'group'" class="activity-group">
+                    <summary class="activity-item">
+                      <time>{{ tr(when(row.earliest)) }}</time
+                      ><span class="mini-icon timeline-mark" :class="row.tone"
+                        ><span class="timeline-dot" aria-hidden="true" /></span
+                      ><span class="activity-copy"
+                        ><strong>{{ row.label }}</strong
+                        ><span>{{ tr('系统记录 · 展开查看每一条') }}</span></span
+                      ><AppIcon name="chevron-right" />
+                    </summary>
+                    <ol class="activity-group-items">
+                      <li v-for="item in row.items" :key="item.entry.id">
+                        <time>{{ tr(when(item.entry.created_at)) }}</time
+                        ><span>{{
+                          [item.event.title, item.event.detail].filter(Boolean).join(' · ')
+                        }}</span>
+                      </li>
+                    </ol>
+                  </details>
+                  <div v-else class="activity-item">
+                    <time>{{ tr(when(row.entry.created_at)) }}</time
+                    ><span class="mini-icon timeline-mark" :class="row.event.tone"
+                      ><AppIcon v-if="row.event.icon === 'user'" name="user" /><span
+                        v-else
+                        class="timeline-dot"
+                        aria-hidden="true"
+                    /></span>
+                    <div>
+                      <h3>{{ row.event.title }}</h3>
+                      <p>
+                        {{
+                          [
+                            row.event.detail,
+                            tr(row.event.icon === 'user' ? '用户决定' : '系统记录'),
+                          ]
+                            .filter(Boolean)
+                            .join(' · ')
+                        }}
+                      </p>
+                    </div>
+                  </div></template
+                >
+                <p
+                  v-if="recordFilter === 'decisions' && decisions.state.loading"
+                  class="source-note"
+                  role="status"
+                >
+                  {{ tr('正在读取你的决定…') }}
+                </p>
+                <p
+                  v-if="recordFilter === 'decisions' && decisions.state.error"
+                  class="notice amber"
+                  role="alert"
+                >
+                  {{ tr(decisions.state.error)
+                  }}<button class="text-link" @click="decisions.load()">
+                    {{ tr('重试读取') }}
+                  </button>
+                </p>
+                <p
+                  v-if="
+                    !recordItems.length &&
+                    !(recordFilter === 'decisions' && decisions.state.loading)
+                  "
+                >
+                  {{ tr('还没有这类记录。') }}
+                </p>
                 <button
-                  v-if="s.timelineCursor"
+                  v-if="recordFilter !== 'decisions' && s.timelineCursor"
                   class="text-link"
                   @click="act(() => shop.moreTimeline())"
                 >
                   {{ tr('加载更早记录') }}
+                </button>
+                <button
+                  v-if="
+                    recordFilter === 'decisions' &&
+                    decisions.state.cursor &&
+                    !decisions.state.loading
+                  "
+                  class="text-link"
+                  @click="decisions.more()"
+                >
+                  {{ tr('加载更早的决定') }}
                 </button></template
               >
             </section></template

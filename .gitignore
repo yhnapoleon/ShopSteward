@@ -28,3 +28,6 @@ Thumbs.db
 # Local browser verification outputs
 frontend/test-results/
 frontend/playwright-report/
+
+# Local document uploads and other backend runtime files
+backend/var/

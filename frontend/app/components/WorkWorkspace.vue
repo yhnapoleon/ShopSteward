@@ -11,7 +11,10 @@ const emit = defineEmits<{
 }>()
 const work = useWorkItems(),
   { s } = work,
-  shop = useShop()
+  shop = useShop(),
+  route = useRoute()
+// `panel=agent` (from the Agent entries) opens the conversation side on small screens.
+const panel = computed(() => props.panel ?? (route.query.panel === 'agent' ? 'agent' : 'result'))
 const item = computed(() => s.detail?.item)
 const simulationStale = computed(() => {
   const c = item.value?.result?.calculation
@@ -38,6 +41,7 @@ const expired = computed(
     <TaskWorkspace
       v-if="item.mission_id && shop.mission.value?.id === item.mission_id"
       v-bind="props"
+      :panel="panel"
       @open="emit('open', $event)"
       @confirm="emit('confirm')"
       @back="emit('back')"
