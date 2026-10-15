@@ -1,20 +1,32 @@
 <script setup lang="ts">
 import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
+import type { NextStepTarget } from '~/surfaces/types'
+import { contentKey, resultSurface } from '~/surfaces/derive'
+import SurfaceRenderer from '~/components/surfaces/SurfaceRenderer.vue'
 import { downloadFile } from '~/utils/quotations'
 import { api } from '~/utils/api'
 import { resultFile, type ResultFileFormat } from '~/utils/workResultExport'
 import { money, when } from '~/utils/presentation'
-const props = defineProps<{ result: Schema<'WorkResult'>; demonstration?: boolean }>()
+const props = defineProps<{
+  result: Schema<'WorkResult'>
+  demonstration?: boolean
+  /** The host handles NextStep and ClarificationForm events (the item's own result card). */
+  interactive?: boolean
+  /** Blocks enter one after another; only where the result is in view, never inside a fold. */
+  animate?: boolean
+}>()
+const emit = defineEmits<{ open: [name: NextStepTarget]; submit: [text: string] }>()
 const shop = useShop(),
   saving = ref(false),
   downloadError = ref('')
 const scope = () =>
   [shop.s.session?.principal_id, shop.s.session?.roles.join(','), shop.s.storeId].join(':')
 const calculation = computed(() => props.result.calculation)
-const recommendation = computed(() =>
-  calculation.value?.candidates.find((c) => c.id === calculation.value?.recommended_candidate_id),
-)
+// The body as trusted blocks (redesign §9). Quotation results keep the plain layout below.
+const surface = computed(() => resultSurface(props.result))
+// Keyed by the stored result, so neither a refresh nor a language switch replays the entrance.
+const identity = computed(() => contentKey(props.result))
 const stale = computed(
   () =>
     calculation.value &&
@@ -83,34 +95,16 @@ async function download(format: ResultFileFormat = 'txt') {
     <p v-if="result.kind === 'forecast'" class="source-note">
       {{ tr('预测分析，包含假设；不是已发生的经营事实。') }}
     </p>
-    <MarkdownMessage
-      :content="
-        result.calculation
-          ? result.content
-              .split('\n')
-              .map((line) => tr(line))
-              .join('\n')
-          : result.content
-      "
+    <SurfaceRenderer
+      v-if="surface"
+      :surface="surface"
+      :identity="identity"
+      :interactive="interactive"
+      :animate="animate"
+      @open="emit('open', $event)"
+      @submit="emit('submit', $event)"
     />
-    <div v-if="recommendation" class="simulation-outcome" :aria-label="tr('推荐候选的代价')">
-      <div>
-        <small>{{ tr('本次推荐数量') }}</small
-        ><strong>{{ joinText([tr(recommendation.quantity), tr('件')], ' ') }}</strong>
-      </div>
-      <div>
-        <small>{{ tr('预计支出') }}</small
-        ><strong>{{ tr(money(recommendation.spend_minor)) }}</strong>
-      </div>
-      <div>
-        <small>{{ tr('可用现金剩余') }}</small
-        ><strong>{{ tr(money(recommendation.cash_after_minor)) }}</strong>
-      </div>
-      <div>
-        <small>{{ tr('按时到货后缺口') }}</small
-        ><strong>{{ joinText([tr(recommendation.shortage_qty), tr('件')], ' ') }}</strong>
-      </div>
-    </div>
+    <MarkdownMessage v-else :content="result.content" />
     <p v-if="result.provenance" class="source-note">
       {{
         joinText([
@@ -121,56 +115,48 @@ async function download(format: ResultFileFormat = 'txt') {
         ])
       }}
     </p>
-    <details
-      v-if="
-        result.assumptions?.length ||
-        result.references?.length ||
-        result.provenance?.limitations?.length
-      "
-    >
-      <summary>{{ tr('依据与假设') }}</summary>
-      <ul>
-        <li v-for="(a, i) in result.assumptions" :key="'a' + i">{{ calculation ? tr(a) : a }}</li>
-        <li v-for="(r, i) in result.references" :key="'r' + i">
-          {{ calculation ? tr(r.label) : r.label
-          }}<small>{{ joinText(['·', tr(r.type), '/', tr(r.id)]) }}</small>
-        </li>
-        <li v-for="(limit, i) in result.provenance?.limitations" :key="'limit' + i">
-          {{ calculation ? tr(limit) : limit }}
-        </li>
-      </ul>
-    </details>
-    <div
-      v-if="result.columns?.length"
-      class="work-result-table"
-      tabindex="0"
-      :aria-label="tr('结果表格，可横向滚动')"
-    >
-      <table>
-        <thead>
-          <tr>
-            <th v-for="(c, i) in result.columns" :key="i">{{ calculation ? tr(c) : c }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="(row, i) in result.rows"
-            :key="i"
-            :class="{
-              'recommended-row':
-                !!calculation &&
-                !!calculation.recommended_candidate_id &&
-                calculation.candidates[i]?.id === calculation.recommended_candidate_id,
-            }"
-          >
-            <td v-for="(value, j) in row" :key="j">{{ calculation ? tr(value) : value }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p v-if="result.columns?.length" class="source-note table-scroll-hint">
-      {{ tr('左右滑动表格可查看全部数量、现金与判断。') }}
-    </p>
+    <template v-if="!surface">
+      <details
+        v-if="
+          result.assumptions?.length ||
+          result.references?.length ||
+          result.provenance?.limitations?.length
+        "
+      >
+        <summary>{{ tr('依据与假设') }}</summary>
+        <ul>
+          <li v-for="(a, i) in result.assumptions" :key="'a' + i">{{ a }}</li>
+          <li v-for="(r, i) in result.references" :key="'r' + i">
+            {{ r.label }}<small>{{ joinText(['·', tr(r.type), '/', r.id]) }}</small>
+          </li>
+          <li v-for="(limit, i) in result.provenance?.limitations" :key="'limit' + i">
+            {{ limit }}
+          </li>
+        </ul>
+      </details>
+      <div
+        v-if="result.columns?.length"
+        class="work-result-table"
+        tabindex="0"
+        :aria-label="tr('结果表格，可横向滚动')"
+      >
+        <table>
+          <thead>
+            <tr>
+              <th v-for="(c, i) in result.columns" :key="i">{{ c }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(row, i) in result.rows" :key="i">
+              <td v-for="(value, j) in row" :key="j">{{ value }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p v-if="result.columns?.length" class="source-note table-scroll-hint">
+        {{ tr('左右滑动表格可查看全部数量、现金与判断。') }}
+      </p>
+    </template>
     <div class="result-downloads">
       <button
         v-if="result.columns?.length"
@@ -188,24 +174,6 @@ async function download(format: ResultFileFormat = 'txt') {
   </section>
 </template>
 <style scoped>
-.simulation-outcome {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
-  padding: 18px 0;
-}
-.simulation-outcome small,
-.simulation-outcome strong {
-  display: block;
-}
-.simulation-outcome strong {
-  font-size: 23px;
-  margin-top: 6px;
-}
-.recommended-row {
-  background: rgba(66, 112, 88, 0.09);
-  font-weight: 600;
-}
 .result-downloads {
   display: flex;
   flex-wrap: wrap;
@@ -218,9 +186,6 @@ async function download(format: ResultFileFormat = 'txt') {
 @media (max-width: 700px) {
   .table-scroll-hint {
     display: block;
-  }
-  .simulation-outcome {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 </style>

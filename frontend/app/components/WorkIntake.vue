@@ -2,11 +2,14 @@
 import { t as tr } from '~/i18n'
 const work = useWorkItems(),
   { s } = work
-const emit = defineEmits<{ submitted: [id: string] }>()
+// The today page shows this intake only while nothing is in progress, so it can unmount the
+// moment the new item is listed, before the request returns. A handler prop still runs then; an
+// emitted event would be dropped and the owner would not be taken to the new item.
+const props = defineProps<{ onSubmitted?: (id: string) => void }>()
 const inputId = useId()
 async function send() {
   const d = await work.send(true)
-  if (d) emit('submitted', d.item.id)
+  if (d) props.onSubmitted?.(d.item.id)
 }
 function keydown(e: KeyboardEvent) {
   if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
@@ -51,7 +54,8 @@ function keydown(e: KeyboardEvent) {
     <div class="work-card-bottom">
       <small>{{ tr('发送后保留在同一事项中；不会自动采购。') }}</small
       ><button class="primary" :disabled="s.busy || (!s.pending && !s.input.trim())" @click="send">
-        {{ tr(s.pending ? '恢复原提交' : '交给助手') }}<AppIcon name="arrow-right" />
+        {{ tr(s.pending ? '恢复原提交' : s.processorAvailable ? '交给助手' : '保存这件事')
+        }}<AppIcon name="arrow-right" />
       </button>
     </div>
   </section>
