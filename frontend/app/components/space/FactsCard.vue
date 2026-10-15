@@ -33,14 +33,14 @@ const verified = computed(() => s.connected && s.dashboard?.freshness.status ===
         <dt>{{ tr('在库') }}</dt>
         <dd>
           <span data-testid="stock">{{ tr(number(stock?.on_hand)) }}</span
-          ><small>{{ tr('件') }}</small>
+          ><small>{{ ' ' + tr('件') }}</small>
         </dd>
       </div>
       <div>
         <dt>{{ tr('采购在途') }}</dt>
         <dd>
           <span data-testid="inbound">{{ tr(number(stock?.in_transit)) }}</span
-          ><small>{{ tr('件') }}</small>
+          ><small>{{ ' ' + tr('件') }}</small>
         </dd>
       </div>
       <div>

@@ -1,7 +1,7 @@
 import { t } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { firstSync, statusBadge, type Badge } from '~/utils/glossary'
-import { describeEvent } from '~/utils/timeline'
+import { timelineItems } from '~/utils/timeline'
 import { when } from '~/utils/presentation'
 import { workPresentation } from '~/utils/workPresentation'
 
@@ -58,6 +58,41 @@ export function workBadge(item: Work, now = Date.now()): Badge {
 
 type ShopState = ReturnType<typeof useShop>['s']
 
+/**
+ * A mission's latest change worth one line (§5): purchase orders, arrivals, the owner's own actions
+ * and new reminders come first; routine checks never count. Null when nothing has happened yet.
+ */
+function latestChange(missionId: string, s: ShopState) {
+  const items = timelineItems(s.timeline).filter((i) => !i.event.routine)
+  const notable = items.find(
+    (i) => i.event.icon === 'user' || ['order', 'alert'].includes(i.event.kind),
+  )
+  // Arrivals are not mission timeline entries; the store ledger records them per purchase order.
+  const orders = new Set(s.actions.filter((a) => a.mission_id === missionId).map((a) => a.id))
+  const time = (at: string | null | undefined) => Date.parse(at || '') || 0
+  const arrival = s.ledger
+    .filter((e) => e.effect_type === 'GOODS_RECEIVED' && !!e.action_id && orders.has(e.action_id))
+    .sort((a, b) => time(b.occurred_at) - time(a.occurred_at))[0]
+  if (arrival && (!notable || time(arrival.occurred_at) > time(notable.entry.created_at)))
+    return {
+      title: arrival.changes?.on_hand_delta
+        ? t('到货已核实：在库 +{0}', [arrival.changes.on_hand_delta])
+        : t('到货已核实'),
+      at: arrival.occurred_at,
+    }
+  const latest = notable || items[0]
+  return latest ? { title: latest.event.title, at: latest.entry.created_at } : null
+}
+
+/**
+ * The Agent is not enabled and this mission has no Agent run or message to look back on. Entries
+ * to the Agent then say so plainly; they still open the workspace.
+ */
+export const agentDormant = (
+  session: { agentEnabled?: boolean } | null | undefined,
+  agent: { run: unknown; messages: unknown[] },
+) => !session?.agentEnabled && !agent.run && !agent.messages.length
+
 /** One-line watch summary for a work item: what the system waits for next, and the latest change. */
 export function watchSummary(item: Work, s: ShopState) {
   const mission = item.mission_id
@@ -85,8 +120,8 @@ export function watchSummary(item: Work, s: ShopState) {
   } else timing = t('最近更新 {0}', [when(item.updated_at)])
   let change = ''
   if (mission && s.missionId === mission.id) {
-    const latest = s.timeline.find((entry) => !describeEvent(entry).routine)
-    if (latest) change = `${describeEvent(latest).title} · ${when(latest.created_at)}`
+    const latest = latestChange(mission.id, s)
+    change = latest ? `${latest.title} · ${when(latest.at)}` : t('暂无变化')
   } else if (!mission) {
     const p = workPresentation(item)
     change = p.detailIsOriginal ? p.detail : t(p.detail)

@@ -372,7 +372,8 @@ const labels: Record<string, string> = {
   alerts: '需要关注的事项',
 }
 function briefing() {
-  return [
+  const current = mission.value
+  const facts = [
     `ShopSteward｜经营简报`,
     `商品：${product.value?.name || '未取得'}`,
     `经营时点：${when(s.dashboard?.state.simulation_time)}`,
@@ -384,16 +385,80 @@ function briefing() {
     ]),
     `待结算：${money(s.dashboard?.state.receivables_minor)}（未回款）`,
     tr('剩余需求假设：{0} 件', [number(stock.value?.remaining_demand)]),
-    `任务状态：${mission.value ? statusBadge({ mission: mission.value.status }).label : tr('尚未建立')}`,
+    `任务状态：${current ? statusBadge({ mission: current.status }).label : tr('尚未建立')}`,
     `最近检查：${when(s.dashboard?.last_check_at)}`,
-    `下一检查：${when(mission.value?.schedule.next_run_at)}`,
+    `下一检查：${when(current?.schedule.next_run_at)}`,
+  ].map((line) => tr(line))
+  // After the facts, five parts: what happened, what was done, what is pending, what comes next,
+  // and where it all comes from. These lines are written in the current language already.
+  const part = (title: string, lines: string[], empty: string) => [
     '',
-    ...timelineLines(s.timeline),
-    '',
-    '以上来源于业务API；当前为合成经营环境，备货到位不代表活动结束。',
+    tr(title),
+    ...(lines.length ? lines : [tr(empty)]).map((line) => `- ${line}`),
   ]
-    .map((line) => tr(line))
-    .join('\n')
+  const done = s.actions
+    .filter((a) => a.mission_id === current?.id)
+    .sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at))
+    .map((a) => {
+      const inbound = s.inbounds.find((i) => i.action_id === a.id)
+      const status = orderStatus(a, inbound).label
+      const arrived = [inbound?.received_quantity ?? 0, inbound?.ordered_quantity ?? a.quantity]
+      // Like the orders card: a failed or cancelled order brings nothing, so no arrival count.
+      if (!['QUEUED', 'EXECUTING', 'SUCCEEDED', 'UNKNOWN'].includes(a.status))
+        return tr('采购单 {0} 件 · {1} · {2}', [a.quantity, money(a.amount_minor), tr(status)])
+      return status === '已到货'
+        ? tr('采购单 {0} 件 · {1} · 已到货 {2}/{3}', [a.quantity, money(a.amount_minor), ...arrived])
+        : tr('采购单 {0} 件 · {1} · {2} · 已到货 {3}/{4}', [
+            a.quantity,
+            money(a.amount_minor),
+            tr(status),
+            ...arrived,
+          ])
+    })
+  const proposed =
+    plan.value?.status === 'PENDING_APPROVAL' ? plan.value.proposed_purchase?.quantity || 0 : 0
+  const arrivalTime = (at: string | null) => Date.parse(at || '') || Infinity
+  const waiting = [
+    ...s.inbounds
+      .filter((i) => i.mission_id === current?.id && i.remaining_quantity > 0)
+      .sort((a, b) => arrivalTime(a.expected_arrival_at) - arrivalTime(b.expected_arrival_at))
+      .map((i) =>
+        i.expected_arrival_at
+          ? tr('预计到货 {0} · {1} 件在途', [when(i.expected_arrival_at), i.remaining_quantity])
+          : tr('{0} 件在途，到货时间待供应商确认', [i.remaining_quantity]),
+      ),
+    ...(proposed
+      ? [
+          tr('待确认方案：建议补 {0} 件 · 支出 {1}', [
+            proposed,
+            money(plan.value?.proposed_purchase?.total_minor),
+          ]),
+        ]
+      : []),
+    ...work.s.items
+      .filter((i) => i.mission_id === current?.id && i.status === 'WAITING_INPUT' && i.question)
+      .map((i) => tr('需要你补充：{0}', [i.question || ''])),
+    ...(agent.s.run?.status === 'WAITING_INPUT' && agent.s.run.question
+      ? [tr('Agent 需要你补充：{0}', [agent.s.run.question])]
+      : []),
+  ]
+  const next = ['COMPLETED', 'CANCELLED'].includes(current?.status || '')
+    ? [tr('委托已结束')]
+    : [
+        current?.status === 'PAUSED'
+          ? tr('主动跟进已暂停')
+          : tr('下一次检查 {0}', [when(current?.schedule.next_run_at)]),
+        tr(proposed ? '核对方案' : '等待下一次经营变化'),
+      ]
+  return [
+    ...facts,
+    ...part('最近发生', timelineLines(s.timeline, 8), '暂无记录'),
+    ...part('已完成动作', done, '暂无采购单'),
+    ...part('等待事项', waiting, '暂无等待事项'),
+    ...part('下一步', next, '等待下一次经营变化'),
+    '',
+    tr('以上来源于业务API；当前为合成经营环境，备货到位不代表活动结束。'),
+  ].join('\n')
 }
 </script>
 <template>
@@ -419,12 +484,18 @@ function briefing() {
       <button
         v-if="mission"
         class="global-agent-entry"
-        :class="{ 'is-running': agent.running.value }"
+        :class="{ 'is-running': agent.running.value, 'is-off': agentDormant(s.session, agent.s) }"
         :aria-label="tr('查看Agent工作区')"
         @click="openTask(undefined, 'agent')"
       >
         <span class="agent-live-dot" /><span>{{
-          tr(agent.active.value || agent.s.syncError ? agent.status.value : 'Agent 工作区')
+          tr(
+            agentDormant(s.session, agent.s)
+              ? 'Agent 未启用'
+              : agent.active.value || agent.s.syncError
+                ? agent.status.value
+                : 'Agent 工作区',
+          )
         }}</span
         ><AppIcon name="arrow-up-right" />
       </button>
@@ -463,11 +534,18 @@ function briefing() {
       <button
         v-if="mission"
         class="mobile-agent-entry"
+        :class="{ 'is-off': agentDormant(s.session, agent.s) }"
         :aria-label="tr('移动端Agent工作区')"
         @click="openTask(undefined, 'agent')"
       >
         <span class="agent-live-dot" :class="{ 'is-running': agent.running.value }" />{{
-          tr(agent.active.value || agent.s.syncError ? agent.status.value : '查看任务与 Agent')
+          tr(
+            agentDormant(s.session, agent.s)
+              ? 'Agent 未启用'
+              : agent.active.value || agent.s.syncError
+                ? agent.status.value
+                : '查看任务与 Agent',
+          )
         }}<AppIcon name="arrow-up-right" />
       </button>
       <header v-if="!['overview', 'documents'].includes(view)" class="topbar">
@@ -741,8 +819,12 @@ function briefing() {
                 </button>
               </template>
             </template>
+            <!-- With the assistant available, telling it the task comes first. Without it the
+                 start card leads and the same intake folds into one line below the card. -->
             <div
-              v-if="work.s.available && !mission && !activeWorks.length"
+              v-if="
+                work.s.available && work.s.processorAvailable && !mission && !activeWorks.length
+              "
               class="work-intake-inline glass"
             >
               <WorkIntake @submitted="openWork" />
@@ -788,6 +870,18 @@ function briefing() {
               </button>
               <p class="channel-note">{{ tr('尚未建立委托，也没有采购。') }}</p>
             </article>
+            <details
+              v-if="
+                work.s.available && !work.s.processorAvailable && !mission && !activeWorks.length
+              "
+              class="work-intake-fold"
+            >
+              <summary>
+                <AppIcon name="notebook-pen" /><span>{{ tr('也可以用一句话交代这件事') }}</span
+                ><AppIcon name="chevron-down" />
+              </summary>
+              <WorkIntake @submitted="openWork" />
+            </details>
           </div>
           <template v-if="work.s.available && view === 'following'"
             ><SpaceFollowingList :items="work.s.items" @open="openWork" /><button

@@ -82,7 +82,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
         <div class="impact">
           <div class="impact-label">{{ tr('采购后预计缺货') }}</div>
           <div class="impact-value blue">
-            {{ tr(selected.shortage_qty) }}<small>{{ tr('件') }}</small>
+            {{ tr(selected.shortage_qty) }}<small>{{ ' ' + tr('件') }}</small>
           </div>
           <div class="impact-foot">{{ tr('来自当前方案推演') }}</div>
         </div>

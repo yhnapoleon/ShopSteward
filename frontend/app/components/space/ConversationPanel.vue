@@ -7,15 +7,12 @@ const emit = defineEmits<{ target: [name: string]; changed: [] }>()
 const route = useRoute()
 const { s } = useShop()
 const agent = useAgentConversation()
-const { item, linked } = useSpace()
+const { item, linked, ended } = useSpace()
 const chosen = ref<'agent' | 'work' | null>(route.query.panel === 'agent' ? 'agent' : null)
 // Default: the Agent when it is enabled, or when this mission already has Agent history to show
 // (a failed or waiting run must stay visible); otherwise the item's own conversation.
 const tab = computed(() =>
-  !linked.value
-    ? 'work'
-    : (chosen.value ??
-      (s.session?.agentEnabled || agent.s.run || agent.s.messages.length ? 'agent' : 'work')),
+  !linked.value ? 'work' : (chosen.value ?? (agentDormant(s.session, agent.s) ? 'work' : 'agent')),
 )
 watch(
   () => route.query.panel,
@@ -72,6 +69,13 @@ const remembered = computed(() =>
         </Transition>
       </div>
       <AgentWorkspace @target="emit('target', $event)" />
+      <!-- Below the workspace's own "not enabled" note: what enables the Agent, and that nothing
+           waits on it. The note above already lists what the owner can do meanwhile. -->
+      <p v-if="!s.session?.agentEnabled && !ended" class="space-agent-off">
+        <AppIcon name="info" /><span>{{
+          tr('Agent 需要在服务端配置模型后才会启用。在此之前，工作区的卡片已能完成全部操作，没有步骤在等它。')
+        }}</span>
+      </p>
     </div>
     <div v-show="tab === 'work'" class="space-conversation-pane">
       <WorkConversation @changed="emit('changed')" />

@@ -2022,3 +2022,123 @@ a:focus-visible,
     transform: none;
   }
 }
+
+/* ---------------------------------------------------------------------------------------------
+   C6 · Interaction polish: the Agent entry while the Agent is off, the folded intake under the
+   start card, the hint below the Agent workspace and the receipt of a saved message. Motion: one
+   240ms fade for the receipt, shown once; disclosures flip without animation.
+   ------------------------------------------------------------------------------------------- */
+
+/* The Agent is off and this mission has no Agent history: a quiet entry without the live dot. */
+.global-agent-entry.is-off,
+.mobile-agent-entry.is-off {
+  color: #66788a;
+}
+.global-agent-entry.is-off {
+  border-color: rgb(95 115 135 / 14%);
+  background: rgb(255 255 255 / 40%);
+}
+.is-off > .agent-live-dot {
+  display: none;
+}
+
+/* No assistant: the start card leads; telling the task in one sentence is a folded line below. */
+.work-intake-fold {
+  margin: 6px 0 22px;
+  border-block: 1px solid var(--line);
+}
+.work-intake-fold > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  list-style: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: #3f5a72;
+}
+.work-intake-fold > summary::-webkit-details-marker {
+  display: none;
+}
+.work-intake-fold > summary > .icon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: #6b859b;
+}
+.work-intake-fold > summary > .icon:last-child {
+  margin-left: auto;
+}
+.work-intake-fold[open] > summary > .icon:last-child {
+  transform: rotate(180deg);
+}
+.work-intake-fold > .work-intake {
+  padding: 4px 0 24px;
+}
+.work-intake-fold .work-intake h2 {
+  font-size: 20px;
+  letter-spacing: -0.3px;
+}
+
+/* Below the Agent workspace while the Agent is off: where to look, and that the cards suffice. */
+.space-agent-off {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 12px 6px 0;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.space-agent-off .icon {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  margin-top: 2px;
+  color: #6b859b;
+}
+
+/* A message saved while no assistant can process it: one line below the messages. */
+.work-saved-slot > .work-saved {
+  margin: 0 24px 14px;
+}
+.work-saved {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #d3e6da;
+  border-radius: 14px;
+  background: #eef6f1;
+  color: #32664d;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.work-saved .icon {
+  flex-shrink: 0;
+  width: 15px;
+  height: 15px;
+  margin-top: 3px;
+}
+.space-appear-enter-active {
+  transition: opacity 240ms var(--space-ease);
+}
+.space-appear-leave-active {
+  transition: opacity 150ms var(--space-ease);
+}
+.space-appear-enter-from,
+.space-appear-leave-to {
+  opacity: 0;
+}
+
+@media (max-width: 800px) {
+  .work-saved-slot > .work-saved {
+    margin: 0 18px 12px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .space-appear-enter-active,
+  .space-appear-leave-active {
+    transition: opacity 200ms ease !important;
+  }
+}

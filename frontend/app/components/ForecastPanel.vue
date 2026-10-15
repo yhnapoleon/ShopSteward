@@ -412,7 +412,8 @@ onUnmounted(() => {
         </table>
       </div>
     </template>
-    <p v-else-if="!loading" class="channel-note">
+    <!-- One sentence says why there is nothing to show: the reason above, or this line. -->
+    <p v-else-if="!loading && !reason && !error" class="channel-note">
       {{ tr('暂无可展示的预测。没有数据时不显示零需求。') }}
     </p>
     <details class="forecast-trace">
@@ -450,13 +451,26 @@ onUnmounted(() => {
         <p v-for="assumption in forecast.assumptions" :key="assumption">{{ tr(assumption) }}</p>
       </template>
     </details>
-    <p class="forecast-quality">
-      {{
-        tr(
-          '质量说明：v6 历史八周 WAPE 为 34.976%，相对 v5 仅改善 0.57%；额外四周验证略差。有限历史评估不保证新门店效果，预测不是销量承诺或采购建议。',
-        )
-      }}
-    </p>
+    <!-- Supporting notes stay one click away, beside the evidence, so the panel reads as a title,
+         one sentence and the result or the form. -->
+    <details class="forecast-notes">
+      <summary>{{ tr(canManage ? '质量与输入说明' : '质量说明') }}</summary>
+      <p class="forecast-quality">
+        {{
+          tr(
+            '质量说明：v6 历史八周 WAPE 为 34.976%，相对 v5 仅改善 0.57%；额外四周验证略差。有限历史评估不保证新门店效果，预测不是销量承诺或采购建议。',
+          )
+        }}
+      </p>
+      <p v-if="canManage">
+        {{
+          tr('参考系列是模型分类映射；导入记录须来自当前门店商品。支持 {0}–374 天，建议 {1} 天。', [
+            model?.minimum_history_days ?? 84,
+            model?.recommended_history_days ?? 374,
+          ])
+        }}
+      </p>
+    </details>
     <details v-if="canManage" open class="forecast-inputs">
       <summary>{{ tr('运行预测') }}</summary>
       <p v-if="modelError" class="notice amber">
@@ -483,17 +497,6 @@ onUnmounted(() => {
           {{ joinText([tr(item.series_id), '·', tr(item.store_id), '/', tr(item.item_id)]) }}
         </option>
       </select>
-      <p class="source-note">
-        {{
-          joinText([
-            tr('参考系列是模型分类映射；导入记录须来自当前门店商品。支持'),
-            tr(model?.minimum_history_days ?? 84),
-            tr('–374 天，建议'),
-            tr(model?.recommended_history_days ?? 374),
-            tr('天。'),
-          ])
-        }}
-      </p>
       <template v-if="mode === 'observed'"
         ><label class="field-label" for="forecast-history">{{ tr('完整销售历史 JSON') }}</label
         ><textarea
@@ -605,12 +608,6 @@ onUnmounted(() => {
 .forecast-table td {
   text-align: right;
 }
-.forecast-quality {
-  font-size: 12px;
-  line-height: 1.7;
-  color: #68766e;
-  margin-top: 20px;
-}
 .forecast-inputs {
   border-top: 1px solid #dce3dd;
   padding-top: 16px;
@@ -643,7 +640,11 @@ onUnmounted(() => {
 .forecast-trace {
   margin-top: 14px;
 }
-.forecast-trace p {
+.forecast-notes {
+  margin-top: 8px;
+}
+.forecast-trace p,
+.forecast-notes p {
   margin-top: 4px;
   font-size: 13px;
   line-height: 1.7;

@@ -1,29 +1,15 @@
 <script setup lang="ts">
 import { t as tr } from '~/i18n'
-import type { Schema } from '~/types/models'
-import type { BadgeTone } from '~/utils/glossary'
+import { orderStatus } from '~/utils/glossary'
 import { money, when } from '~/utils/presentation'
 
 // Purchase orders of this mission, newest first: what was bought, where it stands, and how much
-// has actually arrived. Identifiers stay inside each row's disclosure.
+// has actually arrived. Identifiers stay inside each row's disclosure. The status words are
+// shared with the business brief (utils/glossary.ts).
 const emit = defineEmits<{ open: [name: string] }>()
 const { s } = useShop()
 const space = useSpace()
 const { actions } = space
-function orderStatus(
-  action: Schema<'Action'>,
-  inbound?: Schema<'InboundItem'>,
-): { label: string; tone: BadgeTone } {
-  if (['QUEUED', 'EXECUTING'].includes(action.status))
-    return { label: '正在核实采购', tone: 'blue' }
-  if (action.status === 'UNKNOWN') return { label: '结果待核实', tone: 'amber' }
-  if (action.status === 'FAILED') return { label: '采购未成功', tone: 'amber' }
-  if (action.status === 'CANCELLED') return { label: '已取消', tone: 'gray' }
-  if (action.status === 'STALE') return { label: '原方案失效', tone: 'gray' }
-  if (inbound?.arrival_status === 'RECEIVED') return { label: '已到货', tone: 'green' }
-  if (inbound?.arrival_status === 'PARTIALLY_RECEIVED') return { label: '部分到货', tone: 'blue' }
-  return { label: '等待到货', tone: 'blue' }
-}
 const orders = computed(() =>
   [...actions.value]
     .sort((a, b) => Date.parse(b.created_at) - Date.parse(a.created_at))

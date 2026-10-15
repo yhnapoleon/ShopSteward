@@ -55,6 +55,26 @@ export function statusBadge(input: BadgeInput): Badge {
 }
 
 /**
+ * A purchase order in the owner's words (§6.1): verification first, then its outcome, then how
+ * much of it has arrived. Unlike the badge above, the label is the catalog key: callers translate
+ * it with t() and may compare it, as the orders card does for "已到货".
+ */
+export function orderStatus(
+  action: { status: string },
+  inbound?: { arrival_status?: string | null } | null,
+): Badge {
+  if (['QUEUED', 'EXECUTING'].includes(action.status))
+    return { label: '正在核实采购', tone: 'blue' }
+  if (action.status === 'UNKNOWN') return { label: '结果待核实', tone: 'amber' }
+  if (action.status === 'FAILED') return { label: '采购未成功', tone: 'amber' }
+  if (action.status === 'CANCELLED') return { label: '已取消', tone: 'gray' }
+  if (action.status === 'STALE') return { label: '原方案失效', tone: 'gray' }
+  if (inbound?.arrival_status === 'RECEIVED') return { label: '已到货', tone: 'green' }
+  if (inbound?.arrival_status === 'PARTIALLY_RECEIVED') return { label: '部分到货', tone: 'blue' }
+  return { label: '等待到货', tone: 'blue' }
+}
+
+/**
  * A new store whose business data has never been synced yet (§11). Its first sync takes a few
  * seconds; until then the data cannot be confirmed, but nothing is wrong.
  */
