@@ -14,12 +14,16 @@ const emit = defineEmits<{
   changed: []
 }>()
 const shop = useShop()
-const { s, stock, canDecide, hasRole } = shop
+const { s, stock, canDecide, hasRole, awaitingSupplier } = shop
 const work = useWorkItems()
 const agent = useAgentConversation()
 const space = useSpace()
 const { item, linked, mission, ended, openActions, target } = space
 const reduce = useReducedMotion()
+// This mission's own order, sent by the owner and not yet answered by the supplier.
+const sentByHand = computed(
+  () => !!mission.value && awaitingSupplier.value?.mission_id === mission.value.id,
+)
 const mobilePanel = ref(props.panel === 'agent' ? 'agent' : 'result')
 watch(
   () => props.panel,
@@ -163,7 +167,13 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
               {{ tr('查看来源') }}<AppIcon name="info" />
             </button>
           </div>
+          <RecoveryWorkspace
+            v-if="mission && s.session?.recoveryCases"
+            :key="mission.id"
+            :mission-id="mission.id"
+          />
           <SpaceSyncStrip />
+          <ArrivalCard v-if="mission" />
           <SpaceIssueCard v-if="issue && !ended" :issue="issue" />
           <SpaceChangeCard v-if="mission" />
           <div v-if="mission" class="space-agent-hint-slot" role="status">
@@ -201,8 +211,10 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
             class="space-target space-slot"
             :class="{ 'target-active': space.isTarget('plan') }"
           >
+            <!-- An order the owner sends by hand waits here for the supplier's reply. -->
+            <AssistedOrderCard v-if="sentByHand && !ended" />
             <SpacePlanCard
-              v-if="mission && canDecide && !ended"
+              v-else-if="mission && canDecide && !ended"
               @confirm="emit('confirm')"
               @open="emit('open', $event)"
             />

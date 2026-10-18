@@ -74,11 +74,14 @@ try {
     check_interval_seconds: 30,
   })
   const before = await stockOf(store, sku)
-  await page.goto(`${base}/?view=task&store=${store}&mission=${mission.id}`)
+  // The owner works on the mission from its work item, as the today page opens it.
+  const { item } = await write(`/api/v1/missions/${mission.id}/work-item`, {})
+  await page.goto(`${base}/?view=work&store=${store}&item=${item.id}`)
+  await expect(page.locator('.space-workspace')).toBeVisible({ timeout: 30000 })
   await expect(page.getByRole('button', { name: '供应异常应对', exact: true })).toBeVisible({
     timeout: 30000,
   })
-  await step('task-workspace', { store, on_hand: before.on_hand, in_transit: before.in_transit })
+  await step('work-item', { store, on_hand: before.on_hand, in_transit: before.in_transit })
 
   // 1. A recovery Case: seven days of demand the shelf cannot cover.
   await page.getByRole('button', { name: '供应异常应对', exact: true }).click()

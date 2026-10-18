@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { t as tr } from '~/i18n'
 import type { SkillRevision } from '~/types/learning'
 defineProps<{ revision: SkillRevision }>()
 const dimensions: Record<string, string> = {
@@ -25,48 +26,62 @@ const verdict: Record<string, string> = {
 }
 </script>
 <template>
-  <section class="skill-quality" aria-label="Skill 质量评估">
+  <section class="skill-quality" :aria-label="tr('Skill 质量评估')">
     <p v-if="revision.latest_check">
-      最近检查：{{
-        verdict[revision.latest_check.decision.status] || '评估中'
-      }}。已启用版本继续按原发布报告及当前依赖校验。
+      {{
+        tr('最近检查：{0}。已启用版本继续按原发布报告及当前依赖校验。', [
+          tr(verdict[revision.latest_check.decision.status] || '评估中'),
+        ])
+      }}
     </p>
-    <h4>质量检验 · {{ verdict[revision.quality_decision?.status || 'unknown'] }}</h4>
-    <p>独立回放 {{ revision.quality?.independent_cases || 0 }} 例。未验证项目不会按通过处理。</p>
+    <h4>
+      {{ tr('质量检验') }} ·
+      {{ tr(verdict[revision.quality_decision?.status || 'unknown']) }}
+    </h4>
+    <p>
+      {{
+        tr('独立回放 {0} 例。未验证项目不会按通过处理。', [
+          revision.quality?.independent_cases || 0,
+        ])
+      }}
+    </p>
     <p v-if="revision.limited_evidence">
       {{
         revision.status === 'ACTIVE'
-          ? '证据有限：这个版本由你手动启用，只通过了契约检查，没有独立回放和人工复核。'
-          : '证据有限：契约检查已通过，其余项目没有测过。你可以自己决定是否启用，系统不会替你启用。'
+          ? tr('证据有限：这个版本由你手动启用，只通过了契约检查，没有独立回放和人工复核。')
+          : tr(
+              '证据有限：契约检查已通过，其余项目没有测过。你可以自己决定是否启用，系统不会替你启用。',
+            )
       }}
     </p>
     <dl>
       <template v-for="(name, key) in hard" :key="key"
-        ><dt>{{ name }}</dt>
-        <dd>{{ verdict[revision.quality?.checks[key] || 'unknown'] }}</dd></template
+        ><dt>{{ tr(name) }}</dt>
+        <dd>{{ tr(verdict[revision.quality?.checks[key] || 'unknown']) }}</dd></template
       >
     </dl>
     <dl>
       <template v-for="(name, key) in dimensions" :key="key"
-        ><dt>{{ name }}</dt>
+        ><dt>{{ tr(name) }}</dt>
         <dd>
           {{
             revision.quality?.scores[key] == null
-              ? '证据不足'
+              ? tr('证据不足')
               : `${revision.quality.scores[key]} / 4`
-          }}<small v-if="revision.quality?.dimension_reviews[key]?.evidence_refs.length"
-            >（附评审证据）</small
-          >
+          }}<small v-if="revision.quality?.dimension_reviews[key]?.evidence_refs.length">{{
+            tr('（附评审证据）')
+          }}</small>
         </dd></template
       >
     </dl>
     <p v-if="revision.quality">
-      评估有效期至
       {{
-        new Date(revision.quality.expires_at).toLocaleString('zh-CN')
-      }}，启用与调用时会重新检查依据。
+        tr('评估有效期至 {0}，启用与调用时会重新检查依据。', [
+          new Date(revision.quality.expires_at).toLocaleString('zh-CN'),
+        ])
+      }}
     </p>
-    <p v-else>候选尚未评估。需先完成契约检查、独立回放及人工复核。</p>
+    <p v-else>{{ tr('候选尚未评估。需先完成契约检查、独立回放及人工复核。') }}</p>
   </section>
 </template>
 <style scoped>

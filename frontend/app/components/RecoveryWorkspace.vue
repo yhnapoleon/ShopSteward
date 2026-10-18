@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { t as tr } from '~/i18n'
 import { money, when } from '~/utils/presentation'
 import type { RecoveryCandidate } from '~/types/recovery'
 const props = defineProps<{ missionId: string }>()
@@ -272,31 +273,36 @@ function newCase() {
 </script>
 
 <template>
-  <section class="recovery-workspace glass" aria-label="供应异常应对">
+  <section class="recovery-workspace glass" :aria-label="tr('供应异常应对')">
     <button class="text-link recovery-toggle" :aria-expanded="expanded" @click="toggle">
-      供应异常应对
+      {{ tr('供应异常应对') }}
     </button>
     <template v-if="expanded">
-      <p class="source-note">比较未来七天的缺货、现金和补购方案。分析不会批准或发送采购。</p>
+      <p class="source-note">
+        {{ tr('比较未来七天的缺货、现金和补购方案。分析不会批准或发送采购。') }}
+      </p>
       <div v-if="recovery.items.value.length" class="recovery-history">
         <label
-          >已保存的恢复事项
+          >{{ tr('已保存的恢复事项') }}
           <select
             :value="detail?.id || ''"
             :disabled="busy || !!pending"
             @change="recovery.load(($event.target as HTMLSelectElement).value)"
           >
-            <option v-if="!detail" value="" disabled>正在创建新事项</option>
+            <option v-if="!detail" value="" disabled>{{ tr('正在创建新事项') }}</option>
             <option v-for="item in recovery.items.value" :key="item.id" :value="item.id">
               {{ item.objective }} · {{ when(item.updated_at) }}
             </option>
           </select>
         </label>
-        <button class="text-link" :disabled="disabled" @click="newCase">新建恢复事项</button>
+        <button class="text-link" :disabled="disabled" @click="newCase">
+          {{ tr('新建恢复事项') }}
+        </button>
       </div>
       <form @submit.prevent="run" novalidate>
         <label
-          >这次需要处理的问题<textarea
+          >{{ tr('这次需要处理的问题')
+          }}<textarea
             v-model="objective"
             :disabled="disabled || terminal"
             maxlength="2000"
@@ -305,14 +311,12 @@ function newCase() {
         </label>
         <div class="recovery-inputs">
           <label
-            >本次应急预算（元）<input
-              v-model="budget"
-              :disabled="disabled"
-              inputmode="decimal"
-              @input="changed"
+            >{{ tr('本次应急预算（元）')
+            }}<input v-model="budget" :disabled="disabled" inputmode="decimal" @input="changed"
           /></label>
           <label
-            >数量上限（件，可留空）<input
+            >{{ tr('数量上限（件，可留空）')
+            }}<input
               v-model="quantityCap"
               :disabled="disabled"
               inputmode="numeric"
@@ -324,7 +328,7 @@ function newCase() {
           :disabled="disabled || terminal"
           class="recovery-suppliers"
         >
-          <legend>参与比较的供应商（最多三家；留空则比较全部）</legend>
+          <legend>{{ tr('参与比较的供应商（最多三家；留空则比较全部）') }}</legend>
           <label v-for="supplier in availableSuppliers" :key="supplier"
             ><input v-model="suppliers" type="checkbox" :value="supplier" @change="changed" />{{
               supplier
@@ -332,19 +336,25 @@ function newCase() {
           >
         </fieldset>
         <details>
-          <summary>补充七日需求情景（没有可用日预测时填写）</summary>
+          <summary>{{ tr('补充七日需求情景（没有可用日预测时填写）') }}</summary>
           <p class="source-note">
-            这些数值作为你提供的情景假设保存，不作为模型预测或真实销量。留空时使用当前有效日预测；已有事项留空则保留原需求设定。
+            {{
+              tr(
+                '这些数值作为你提供的情景假设保存，不作为模型预测或真实销量。留空时使用当前有效日预测；已有事项留空则保留原需求设定。',
+              )
+            }}
           </p>
           <label
-            >七日需求（件，逗号分隔）<input
+            >{{ tr('七日需求（件，逗号分隔）')
+            }}<input
               v-model="demand"
               :disabled="disabled"
-              placeholder="逐日填写七个数值"
+              :placeholder="tr('逐日填写七个数值')"
               @input="changed"
           /></label>
           <label
-            >首日结算时间（UTC）<input
+            >{{ tr('首日结算时间（UTC）')
+            }}<input
               v-model="settlement"
               :disabled="disabled"
               type="datetime-local"
@@ -359,7 +369,7 @@ function newCase() {
             "
             type="submit"
           >
-            {{ detail ? '按新要求重新分析' : '开始分析' }}
+            {{ detail ? tr('按新要求重新分析') : tr('开始分析') }}
           </button>
           <button
             v-if="detail"
@@ -368,19 +378,21 @@ function newCase() {
             :disabled="disabled || editing || terminal"
             @click="recheck"
           >
-            重新核对最新依据
+            {{ tr('重新核对最新依据') }}
           </button>
         </div>
       </form>
-      <p v-if="validation || error" role="alert" class="notice amber">{{ validation || error }}</p>
-      <p v-if="syncError" role="status" class="notice amber">{{ syncError }}</p>
+      <p v-if="validation || error" role="alert" class="notice amber">
+        {{ tr(validation || error) }}
+      </p>
+      <p v-if="syncError" role="status" class="notice amber">{{ tr(syncError) }}</p>
       <div v-if="pending" class="notice amber">
-        <p>原提交的结果尚未确认，其他操作暂不可用。</p>
+        <p>{{ tr('原提交的结果尚未确认，其他操作暂不可用。') }}</p>
         <button class="secondary" :disabled="busy || revoked" @click="retry">
-          核实并重试原提交
+          {{ tr('核实并重试原提交') }}
         </button>
       </div>
-      <p v-if="notice" role="status" class="notice">{{ notice }}</p>
+      <p v-if="notice" role="status" class="notice">{{ tr(notice) }}</p>
       <SourcingPanel
         v-if="shop.s.session?.sourcing && shop.mission.value"
         :detail="detail"
@@ -391,21 +403,28 @@ function newCase() {
       />
       <div v-if="detail" class="recovery-result">
         <div class="recovery-heading">
-          <h3>{{ labels[detail.status] || detail.status }}</h3>
-          <span>第 {{ detail.current_revision }} 版 · {{ when(detail.updated_at) }}</span>
+          <h3>{{ tr(labels[detail.status] || detail.status) }}</h3>
+          <span>{{
+            tr('第 {0} 版 · {1}', [detail.current_revision, when(detail.updated_at)])
+          }}</span>
         </div>
-        <p v-if="prepared">已生成待确认计划，采购仍需你确认。</p>
+        <p v-if="prepared">{{ tr('已生成待确认计划，采购仍需你确认。') }}</p>
         <p v-else-if="detail.plan_id">
-          已关联第 {{ detail.plan_revision }} 版恢复计划（{{
-            detail.plan_status
-          }}）；采购受理与到货状态请查看下方采购记录。
+          {{
+            tr('已关联第 {0} 版恢复计划（{1}）；采购受理与到货状态请查看下方采购记录。', [
+              detail.plan_revision ?? '',
+              detail.plan_status ?? '',
+            ])
+          }}
         </p>
-        <p v-if="detail.execution_status">实际执行状态：{{ detail.execution_status }}</p>
+        <p v-if="detail.execution_status">
+          {{ tr('实际执行状态：{0}', [detail.execution_status]) }}
+        </p>
         <ul v-if="detail.missing_inputs.length" class="notice amber">
           <li v-for="input in detail.missing_inputs" :key="input">{{ input }}</li>
         </ul>
         <p v-if="detail.proposal && stale" class="notice amber">
-          当前候选尚未对应最新可执行条件，请重新分析或核对。
+          {{ tr('当前候选尚未对应最新可执行条件，请重新分析或核对。') }}
         </p>
         <div v-if="detail.proposal" class="recovery-candidates">
           <article
@@ -417,46 +436,46 @@ function newCase() {
             <h4>
               {{
                 candidate.quantity === 0
-                  ? '等待原订单'
-                  : `${candidate.supplier_id} · ${candidate.quantity} 件`
+                  ? tr('等待原订单')
+                  : `${candidate.supplier_id} · ${tr('{0} 件', [candidate.quantity])}`
               }}
-              <span v-if="candidate.id === detail.proposal.recommended_candidate_id" class="tag"
-                >推荐</span
-              >
+              <span v-if="candidate.id === detail.proposal.recommended_candidate_id" class="tag">{{
+                tr('推荐')
+              }}</span>
             </h4>
             <dl>
               <div>
-                <dt>新采购支出</dt>
+                <dt>{{ tr('新采购支出') }}</dt>
                 <dd>{{ money(candidate.spend_minor) }}</dd>
               </div>
               <div>
-                <dt>预计缺货</dt>
-                <dd>{{ candidate.lost_qty }} 件</dd>
+                <dt>{{ tr('预计缺货') }}</dt>
+                <dd>{{ tr('{0} 件', [candidate.lost_qty]) }}</dd>
               </div>
               <div>
-                <dt>期末库存</dt>
-                <dd>{{ candidate.end_stock }} 件</dd>
+                <dt>{{ tr('期末库存') }}</dt>
+                <dd>{{ tr('{0} 件', [candidate.end_stock]) }}</dd>
               </div>
               <div>
-                <dt>采购后现金</dt>
+                <dt>{{ tr('采购后现金') }}</dt>
                 <dd>{{ money(candidate.cash_after_minor) }}</dd>
               </div>
             </dl>
             <p v-if="candidate.rejection_reasons.length" class="notice amber">
-              {{ candidate.rejection_reasons.map((r) => reasons[r] || r).join('；') }}
+              {{ candidate.rejection_reasons.map((r) => tr(reasons[r] || r)).join(tr('；')) }}
             </p>
             <details v-if="candidate.daily.length">
-              <summary>逐日库存与缺口</summary>
+              <summary>{{ tr('逐日库存与缺口') }}</summary>
               <div class="recovery-table">
                 <table>
                   <thead>
                     <tr>
-                      <th>结算时间</th>
-                      <th>需求</th>
-                      <th>原订单到货</th>
-                      <th>应急到货</th>
-                      <th>缺货</th>
-                      <th>期末库存</th>
+                      <th>{{ tr('结算时间') }}</th>
+                      <th>{{ tr('需求') }}</th>
+                      <th>{{ tr('原订单到货') }}</th>
+                      <th>{{ tr('应急到货') }}</th>
+                      <th>{{ tr('缺货') }}</th>
+                      <th>{{ tr('期末库存') }}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -480,7 +499,7 @@ function newCase() {
               "
               @click="adopt(candidate)"
             >
-              生成待确认方案
+              {{ tr('生成待确认方案') }}
             </button>
             <button
               v-else
@@ -488,20 +507,22 @@ function newCase() {
               :disabled="disabled || stale || !candidate.feasible"
               @click="recovery.control('adopt_waiting')"
             >
-              采用等待方案
+              {{ tr('采用等待方案') }}
             </button>
           </article>
         </div>
         <details v-if="detail.evidence.length">
-          <summary>依据与情景假设</summary>
+          <summary>{{ tr('依据与情景假设') }}</summary>
           <ul class="recovery-evidence">
             <li v-for="source in detail.evidence" :key="source.id">
               <strong>{{
-                {
-                  verified_source: '业务来源',
-                  user_assumption: '用户情景假设',
-                  unresolved: '尚待核实',
-                }[source.status]
+                tr(
+                  {
+                    verified_source: '业务来源',
+                    user_assumption: '用户情景假设',
+                    unresolved: '尚待核实',
+                  }[source.status],
+                )
               }}</strong>
               · {{ source.summary }}<small>{{ source.kind }} · {{ source.version }}</small>
             </li>
@@ -509,36 +530,43 @@ function newCase() {
         </details>
         <details v-if="experts">
           <summary>
-            专家分析 · {{ expertStatuses[experts.status || ''] || experts.status
+            {{ tr('专家分析') }} · {{ tr(expertStatuses[experts.status || ''] || experts.status)
             }}<template v-if="experts.strategy">
-              · {{ expertStrategies[experts.strategy] || experts.strategy }}</template
+              · {{ tr(expertStrategies[experts.strategy] || experts.strategy) }}</template
             >
           </summary>
-          <p class="source-note">专家负责解释与核对；金额和数量以以上试算结果为准。</p>
+          <p class="source-note">
+            {{ tr('专家负责解释与核对；金额和数量以以上试算结果为准。') }}
+          </p>
           <p v-for="dispute in expertDisputes" :key="dispute" class="notice amber">
-            {{ dispute }}
+            {{ tr(dispute) }}
           </p>
           <p v-if="experts.merged?.clarification" class="notice amber">
-            需要补充：{{ experts.merged.clarification.question }}
+            {{ tr('需要补充：{0}', [experts.merged.clarification.question]) }}
           </p>
           <article v-for="subtask in experts.subtasks || []" :key="subtask.subtask_id">
             <h4>
-              {{ expertRoles[subtask.role || subtask.subtask_id] || subtask.subtask_id
-              }}<template v-if="subtask.subtask_id.endsWith(':followup')">（补查）</template> ·
-              {{ expertStatuses[subtask.status] || subtask.status }}
+              {{ tr(expertRoles[subtask.role || subtask.subtask_id] || subtask.subtask_id)
+              }}<template v-if="subtask.subtask_id.endsWith(':followup')">{{
+                tr('（补查）')
+              }}</template>
+              · {{ tr(expertStatuses[subtask.status] || subtask.status) }}
             </h4>
             <ul>
               <li v-for="(claim, index) in subtask.claims || []" :key="index">
-                {{ claim.statement }}<small>依据：{{ claim.support.join('、') }}</small>
+                {{ claim.statement
+                }}<small>{{ tr('依据：{0}', [claim.support.join(tr('、'))]) }}</small>
               </li>
             </ul>
             <p v-if="subtask.missing?.length" class="notice amber">
-              {{ subtask.missing.join('；') }}
+              {{ subtask.missing.join(tr('；')) }}
             </p>
           </article>
         </details>
         <div class="recovery-actions" v-if="!terminal">
-          <span>自动跟进：{{ detail.followup_enabled ? '已开启' : '未开启' }}</span
+          <span>{{
+            tr('自动跟进：{0}', [detail.followup_enabled ? tr('已开启') : tr('未开启')])
+          }}</span
           ><button
             class="secondary"
             :disabled="disabled"
@@ -546,25 +574,27 @@ function newCase() {
               recovery.control(detail.followup_enabled ? 'disable_followup' : 'enable_followup')
             "
           >
-            {{ detail.followup_enabled ? '停止自动跟进' : '开启自动跟进' }}
+            {{ detail.followup_enabled ? tr('停止自动跟进') : tr('开启自动跟进') }}
           </button>
         </div>
         <p v-if="detail.followup_enabled" class="source-note">
-          后台定期核对真实执行和到货状态；依据变化时会要求重新分析，采购仍需你确认。
+          {{ tr('后台定期核对真实执行和到货状态；依据变化时会要求重新分析，采购仍需你确认。') }}
         </p>
         <div class="recovery-actions">
           <button class="text-link" :disabled="busy" @click="recovery.load(detail.id)">
-            刷新处理状态</button
+            {{ tr('刷新处理状态') }}</button
           ><button
             v-if="!['CLOSED', 'CANCELLED', 'RESOLVED'].includes(detail.status)"
             class="text-link"
             :disabled="disabled"
             @click="recovery.control('cancel')"
           >
-            结束这项恢复事项
+            {{ tr('结束这项恢复事项') }}
           </button>
         </div>
-        <p class="source-note">结束事项不会取消已发送的采购，也不会结束原备货委托。</p>
+        <p class="source-note">
+          {{ tr('结束事项不会取消已发送的采购，也不会结束原备货委托。') }}
+        </p>
       </div>
     </template>
   </section>
