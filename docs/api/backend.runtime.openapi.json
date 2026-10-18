@@ -3896,6 +3896,129 @@
         "x-implementation-status": "implemented"
       }
     },
+    "/api/v1/actions/{action_id}/partial-acceptance": {
+      "post": {
+        "tags": [
+          "Execution"
+        ],
+        "summary": "Partial Acceptance",
+        "description": "The owner takes the smaller quantity the supplier confirmed; the rest is released.",
+        "operationId": "accept_partial_supply",
+        "security": [
+          {
+            "UserBearer": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "action_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Action Id"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128,
+              "title": "Idempotency-Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Action"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unauthorized"
+          },
+          "403": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Forbidden"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Internal Server Error"
+          },
+          "503": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            },
+            "description": "Service Unavailable"
+          }
+        },
+        "x-phase": "B0",
+        "x-implementation-status": "implemented"
+      }
+    },
     "/api/v1/actions/{action_id}/arrival": {
       "post": {
         "tags": [
@@ -15195,6 +15318,39 @@
             "type": "boolean",
             "title": "Followup Enabled"
           },
+          "purchases": {
+            "items": {
+              "$ref": "#/components/schemas/CasePurchase"
+            },
+            "type": "array",
+            "title": "Purchases"
+          },
+          "routine_paused": {
+            "type": "boolean",
+            "title": "Routine Paused",
+            "default": false
+          },
+          "recheck_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recheck Reason"
+          },
+          "outcome": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CaseOutcome"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "created_at": {
             "type": "string",
             "format": "date-time",
@@ -15424,6 +15580,141 @@
           "proposal_hash"
         ],
         "title": "CaseMaterialize"
+      },
+      "CaseOutcome": {
+        "properties": {
+          "path": {
+            "type": "string",
+            "enum": [
+              "purchase",
+              "waiting"
+            ],
+            "title": "Path"
+          },
+          "planned_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Planned Qty"
+          },
+          "purchased_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Purchased Qty"
+          },
+          "received_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Received Qty"
+          },
+          "spend_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Spend Minor"
+          },
+          "lost_qty_before": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Lost Qty Before"
+          },
+          "lost_qty_after": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Lost Qty After"
+          },
+          "action_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "type": "array",
+            "title": "Action Ids"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "path",
+          "planned_qty",
+          "purchased_qty",
+          "received_qty",
+          "spend_minor",
+          "lost_qty_before",
+          "lost_qty_after",
+          "action_ids"
+        ],
+        "title": "CaseOutcome",
+        "description": "What a resolved case achieved; shortage is projected over the analyzed seven days."
+      },
+      "CasePurchase": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "planned_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Planned Qty"
+          },
+          "accepted_qty": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accepted Qty"
+          },
+          "received_qty": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 9.223372036854776e+18,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Received Qty"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "supplier_id",
+          "status",
+          "planned_qty",
+          "accepted_qty",
+          "received_qty"
+        ],
+        "title": "CasePurchase",
+        "description": "An emergency purchase the case led to: approved, confirmed by the supplier, arrived."
       },
       "CaseRevise": {
         "properties": {
@@ -22591,6 +22882,7 @@
             "enum": [
               "confirmed",
               "declined",
+              "partial",
               "needs_attention"
             ],
             "title": "Outcome"

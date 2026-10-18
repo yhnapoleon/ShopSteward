@@ -12,6 +12,16 @@ from app.planning.schemas import DecisionSnapshot
 from app.planning.snapshot import prepare, source_fresh
 from app.scheduling.handlers import Handler
 
+EMERGENCY_HOLDS = "An emergency case holds this item until it ends"
+AGAIN = "请在应急事项里重新分析，或结束事项恢复例行补货。"
+# Why an adopted emergency plan can no longer be approved; it is not swapped for a routine one.
+STALE_RECOVERY = {
+    "PLAN_EXPIRED": "待确认的应急方案已过期，没有换成常规方案。" + AGAIN,
+    "BUSINESS_STATE_CHANGED": "库存、现金或营业时间已变化，待确认的应急方案不再成立，"
+    "没有换成常规方案。" + AGAIN,
+    "MISSION_CHANGED": "备货委托的设置已变化，待确认的应急方案不再成立，没有换成常规方案。" + AGAIN,
+}
+
 
 def intent_hash(snapshot):
     # Rejecting an intent must not be bypassed by a fixed-forecast TTL renewal alone.
@@ -77,29 +87,39 @@ def make_handlers(settings):
             if mission.current_plan_id
             else None
         )
-        if mission.planning_context:
-            from app.operations_cases.models import CaseRow
-            from app.operations_cases.repository import event as case_event
+        from app.operations_cases.lifecycle import owning_case, recheck, settle
 
-            if (
-                old
-                and old.status == "PENDING_APPROVAL"
-                and old.expires_at > now
-                and old.state_version == store.state_version
-                and old.document["input_snapshot"]["mission_version"] == mission.mission_version
-            ):
-                return result(
-                    "Recovery plan awaits explicit approval", "SKIPPED", mission, plan=old
-                )
-            if mission.current_action_id:
-                return result("Recovery purchase is unresolved", "SKIPPED", mission)
-            case = await session.get(
-                CaseRow, mission.planning_context["case_id"], with_for_update=True
+        case = await owning_case(session, mission)
+        if case and await settle(session, case, mission):
+            # Everything it waited for had arrived (perhaps before cases settled themselves).
+            case = None
+        if case:
+            # The owner decided in the case; a routine check neither replaces nor repeats it.
+            pending = (
+                old if old and old.status == "PENDING_APPROVAL" and old.id == case.plan_id else None
             )
-            if case:
-                await case_event(
-                    session, case, "RECOVERY_RECHECK_REQUIRED", {"reason": "PLAN_STALE_OR_CLOSED"}
+            if pending:
+                reason = (
+                    "PLAN_EXPIRED"
+                    if pending.expires_at <= now
+                    else "BUSINESS_STATE_CHANGED"
+                    if pending.state_version != store.state_version
+                    else "MISSION_CHANGED"
+                    if pending.document["input_snapshot"]["mission_version"]
+                    != mission.mission_version
+                    else None
                 )
+                if reason is None:
+                    return result(
+                        "Recovery plan awaits explicit approval", "SKIPPED", mission, plan=old
+                    )
+                pending.status = "EXPIRED" if reason == "PLAN_EXPIRED" else "SUPERSEDED"
+                mission.current_plan_id = mission.planning_context = None
+                await recheck(session, case, mission, reason, STALE_RECOVERY[reason])
+            mission.recheck_required = mission.manual_check_requested = False
+            return result(EMERGENCY_HOLDS, "SKIPPED", mission)
+        if mission.planning_context:
+            # A recovery link whose case has ended no longer holds anything.
             mission.planning_context = None
         if old and old.status == "PENDING_APPROVAL":
             if old.expires_at <= now:

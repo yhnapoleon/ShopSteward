@@ -189,6 +189,12 @@ async function setup(
         }
         if (body.operation === 'enable_followup') c.item.followup_enabled = true
         if (body.operation === 'disable_followup') c.item.followup_enabled = false
+      } else if (path.endsWith('/partial-acceptance')) {
+        const action = f.actions.items.find(
+          (a: any) => path === `actions/${a.id}/partial-acceptance`,
+        )
+        action.status = 'SUCCEEDED'
+        return route.fulfill({ json: action })
       } else
         return route.fulfill({
           status: 409,
@@ -428,4 +434,133 @@ test('从事项页进入：店主自己发出的订单在方案位置等待回�
   await expect(page.locator('.space-orders')).toContainText('待供应商确认')
   await expect(page.locator('.space-orders')).not.toContainText('正在核实采购')
   expect(c.writes).toHaveLength(0)
+})
+
+test('事项结束时写明补了多少、花了多少、缺货降了多少；需要重新分析时写明原因', async ({ page }) => {
+  const c = await setup(page)
+  await page.getByLabel('本次应急预算（元）', { exact: true }).fill('300')
+  await page.getByRole('button', { name: '开始分析', exact: true }).click()
+  await expect(page.locator('[data-recovery-candidate="b20"]')).toBeVisible()
+  c.item.status = 'RECHECK_REQUIRED'
+  c.item.recheck_reason = 'BUSINESS_STATE_CHANGED'
+  await page.getByRole('button', { name: '刷新处理状态', exact: true }).click()
+  await expect(page.locator('[data-recheck-reason]')).toContainText('库存、现金或营业时间已变化')
+  c.item.status = 'RESOLVED'
+  c.item.recheck_reason = null
+  c.item.outcome = {
+    path: 'purchase',
+    planned_qty: 20,
+    purchased_qty: 20,
+    received_qty: 20,
+    spend_minor: 24000,
+    lost_qty_before: 20,
+    lost_qty_after: 0,
+    action_ids: ['action-one'],
+  }
+  await page.getByRole('button', { name: '刷新处理状态', exact: true }).click()
+  const outcome = page.locator('[data-recovery-outcome]')
+  await expect(outcome).toContainText('20 件 → 0 件', { timeout: 3000 })
+  await expect(outcome).toContainText('¥240')
+  await expect(page.locator('.recovery-heading h3')).toHaveText('已解决')
+  await expect(page.getByRole('button', { name: '结束这项恢复事项' })).toHaveCount(0)
+})
+
+test('供应商只确认一部分：事项里缺的部分向其他供应商重新比较', async ({ page }) => {
+  const c = await setup(page, { suppliers: 3 })
+  await page.getByLabel('本次应急预算（元）', { exact: true }).fill('300')
+  await page.getByRole('button', { name: '开始分析', exact: true }).click()
+  await expect(page.locator('[data-recovery-candidate="b20"]')).toBeVisible()
+  c.item.status = 'MONITORING'
+  c.item.purchases = [
+    {
+      action_id: 'action-one',
+      supplier_id: 'supplier-2',
+      status: 'SUCCEEDED',
+      planned_qty: 20,
+      accepted_qty: 10,
+      received_qty: 0,
+    },
+  ]
+  await page.getByRole('button', { name: '刷新处理状态', exact: true }).click()
+  const shortfall = page.locator('[data-recovery-shortfall]')
+  await expect(shortfall).toContainText('还缺 10 件', { timeout: 3000 })
+  await shortfall.getByRole('button', { name: '缺的找别家补上' }).click()
+  await expect
+    .poll(() => c.writes.slice(-2).map((r) => r.path.split('/').at(-1)))
+    .toEqual(['revise', 'analyze'])
+  const revise = c.writes.at(-2)
+  expect(revise!.body.supplier_ids).toEqual(['supplier-1', 'supplier-3'])
+})
+
+test('从事项页进入：供应商只确认一部分时可按对方数量成交', async ({ page }) => {
+  const c = await setup(page, {
+    entry: 'work',
+    prepare: (f) => {
+      const mission = f.missions.items[0]
+      f.actions.items = [
+        {
+          id: 'action-by-hand',
+          mission_id: mission.id,
+          plan_id: f.plan.id,
+          approval_id: 'approval-one',
+          status: 'EXECUTING',
+          channel: 'assisted',
+          quantity: 20,
+          amount_minor: 24000,
+          currency: 'CNY',
+          external_order_id: null,
+          receipt: null,
+          last_error: null,
+          order_message: {
+            reference: 'PO-1A2B3C4D',
+            supplier_id: 'supplier-b',
+            sku_id: mission.sku_id,
+            product_name: f.catalog.products[0].name,
+            quantity: 20,
+            unit_price_minor: 1200,
+            total_minor: 24000,
+            currency: 'CNY',
+            requested_delivery_date: '2026-10-05',
+            text: { zh: '你好，订购 20 件。订单编号 PO-1A2B3C4D', en: 'Order 20 units.' },
+            generated_at: '2026-10-02T00:00:00Z',
+          },
+          supplier_reply: {
+            text: '可以，但只有10件',
+            read_by: 'rules',
+            outcome: 'partial',
+            decision: 'accepted',
+            quantity: 10,
+            unit_price_minor: null,
+            total_minor: null,
+            delivery_date: null,
+            supplier_order_ref: null,
+            quotes: { decision: '可以', quantity: '10件' },
+            differences: [{ field: 'quantity', ordered: 20, replied: 10 }],
+            recorded_at: '2026-10-02T01:00:00Z',
+            recorded_by: 'test-owner',
+          },
+          created_at: '2026-10-02T00:00:00Z',
+          updated_at: '2026-10-02T01:00:00Z',
+          purchase_snapshot: {
+            ...f.plan.proposed_purchase,
+            quantity: 20,
+            total_minor: 24000,
+            expected_arrival_at: '2026-10-05T00:00:00Z',
+          },
+        },
+      ]
+      mission.current_action_id = 'action-by-hand'
+      f.plan.status = 'APPROVED'
+    },
+  })
+  const order = page.locator('#space-plan [data-assisted-order]')
+  await expect(order.locator('.supplier-receipt')).toContainText('只确认了一部分', {
+    timeout: 5000,
+  })
+  const accept = order.locator('[data-accept-partial]')
+  await expect(accept).toHaveText('按对方数量成交（10 件）')
+  await accept.click()
+  await expect
+    .poll(() => c.writes.map((r) => r.path))
+    .toContain('actions/action-by-hand/partial-acceptance')
 })

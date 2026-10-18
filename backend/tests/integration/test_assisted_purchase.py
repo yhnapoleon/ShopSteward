@@ -107,11 +107,11 @@ async def test_a_confirming_reply_becomes_the_receipt_with_the_suppliers_date(db
 async def test_a_reply_that_departs_from_the_order_leaves_it_waiting_and_a_refusal_closes_it(db):
     async with environment(db) as (seed, client):
         action = await sent(db, seed, client)
-        changed = (await reply(client, action, "可以，但只有30件")).json()
+        changed = (await reply(client, action, "可以，40件，单价12元/件")).json()
         assert changed["status"] == "EXECUTING"
         assert changed["supplier_reply"]["outcome"] == "needs_attention"
         assert changed["supplier_reply"]["differences"] == [
-            {"field": "quantity", "ordered": 40, "replied": 30}
+            {"field": "unit_price_minor", "ordered": 1000, "replied": 1200}
         ]
         vague = (await reply(client, action, "稍等，我问一下仓库")).json()
         assert (vague["status"], vague["supplier_reply"]["decision"]) == ("EXECUTING", "unclear")
@@ -122,6 +122,39 @@ async def test_a_reply_that_departs_from_the_order_leaves_it_waiting_and_a_refus
         current = await state(db, seed)
         assert (current["cash_minor"], current["reserved_cash_minor"]) == (100000, 0)
         assert current["stocks"][0]["in_transit"] == 0
+
+
+async def test_a_partial_confirmation_is_taken_at_the_suppliers_quantity(db):
+    async with environment(db) as (seed, client):
+        action = await sent(db, seed, client)
+        path = f"/api/v1/actions/{action['id']}/partial-acceptance"
+        # Nothing was offered in part yet.
+        assert (await client.post(path, headers=headers("approver"))).status_code == 409
+        partial = (await reply(client, action, "可以，但只有30件")).json()
+        assert (partial["status"], partial["supplier_reply"]["outcome"]) == ("EXECUTING", "partial")
+        assert partial["supplier_reply"]["differences"] == [
+            {"field": "quantity", "ordered": 40, "replied": 30}
+        ]
+        assert (await state(db, seed))["reserved_cash_minor"] == 40000
+        assert (await client.post(path, headers=headers("operator"))).status_code == 403
+        key = headers("approver")
+        taken = await client.post(path, headers=key)
+        assert taken.status_code == 200, taken.text
+        done = taken.json()
+        assert (done["status"], done["receipt"]["quantity"], done["receipt"]["total_minor"]) == (
+            "SUCCEEDED",
+            30,
+            30000,
+        )
+        # Only what was confirmed is paid and expected; the rest of the hold is released.
+        current = await state(db, seed)
+        assert (
+            current["cash_minor"],
+            current["reserved_cash_minor"],
+            current["stocks"][0]["in_transit"],
+        ) == (70000, 0, 30)
+        assert (await client.post(path, headers=key)).json()["status"] == "SUCCEEDED"
+        assert (await client.post(path, headers=headers("approver"))).status_code == 409
 
 
 async def test_an_unanswered_order_can_be_withdrawn(db):

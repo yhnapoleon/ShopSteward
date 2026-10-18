@@ -49,7 +49,7 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
     request = revision.inputs
     daily = request.get("daily_demand")
     source, source_id = "user_scenario", f"{case.id}:{revision.revision}"
-    valid_until = now + timedelta(seconds=settings.plan_ttl_seconds)
+    valid_until = now + timedelta(seconds=settings.recovery_ttl_seconds)
     if daily is None:
         current = await read_current(session, case.store_id, case.sku_id, settings, now)
         if not current["usable_for_planning"]:
@@ -144,6 +144,8 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
         if v is not None
     ]
     store = await session.get(Store, case.store_id)
+    from app.operations_cases.lifecycle import short
+
     previous_action = (
         await session.scalar(select(ActionRow).where(ActionRow.plan_id == case.plan_id))
         if case.plan_id
@@ -168,7 +170,9 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
         unresolved_action_id=store.active_action_id or mission.current_action_id,
         completed_purchase_action_id=(
             previous_action.id
-            if previous_action and previous_action.status == "SUCCEEDED"
+            if previous_action
+            and previous_action.status == "SUCCEEDED"
+            and not short(previous_action)
             else None
         ),
     )

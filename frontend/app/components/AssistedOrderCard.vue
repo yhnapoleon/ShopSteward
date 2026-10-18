@@ -14,8 +14,8 @@ const reply = ref(''),
   copied = ref(false),
   confirmingWithdrawal = ref(false)
 const approver = computed(() => hasRole('approver'))
-// The supplier can supply only part of it: the backend cannot accept part of an order, so the
-// owner takes it back and compares other suppliers in an emergency restock (§18).
+// The supplier can supply only part of it. The owner takes that part as it is (only it is paid
+// for); taking the whole order back and comparing other suppliers stays a second way (§18).
 const launcher = useRecoveryLaunch()
 const partial = computed(() => partialReply(action.value))
 const canSwitch = computed(
@@ -58,6 +58,15 @@ async function submit() {
     const updated = await shop.recordSupplierReply(action.value.id, reply.value.trim())
     // A reply that settles nothing stays visible below; the box is ready for the next one.
     if (updated) reply.value = ''
+  } catch (e) {
+    error.value = (e as Error).message
+  }
+}
+async function acceptPartial() {
+  if (!action.value) return
+  error.value = ''
+  try {
+    await shop.acceptPartialSupply(action.value.id)
   } catch (e) {
     error.value = (e as Error).message
   }
@@ -116,6 +125,36 @@ async function withdraw() {
       </button>
     </div>
     <SupplierReceipt v-if="action.supplier_reply" :reply="action.supplier_reply" />
+    <div v-if="partial" class="assisted-partial" data-partial-supply>
+      <p>
+        {{
+          tr(
+            '供应商只能供 {0} 件，订单是 {1} 件。按这个数量成交：只付这 {0} 件，其余预留资金释放；缺的 {2} 件再找别家补。',
+            [partial.offered, partial.ordered, partial.ordered - partial.offered],
+          )
+        }}
+      </p>
+      <div class="action-row">
+        <button
+          v-if="canSwitch"
+          class="text-link"
+          type="button"
+          :disabled="Boolean(s.busy)"
+          data-recovery-switch
+          @click="switchSupplier"
+        >
+          {{ tr('撤回整单，找别家补 {0} 件', [partial.ordered]) }}</button
+        ><button
+          class="primary"
+          type="button"
+          :disabled="Boolean(s.busy) || !approver"
+          data-accept-partial
+          @click="acceptPartial"
+        >
+          {{ tr('按对方数量成交（{0} 件）', [partial.offered]) }}
+        </button>
+      </div>
+    </div>
     <label class="assisted-reply"
       >{{ tr('粘贴供应商的回复')
       }}<textarea
@@ -147,21 +186,12 @@ async function withdraw() {
           {{ tr('先不撤回') }}
         </button></span
       ><button
-        :class="canSwitch ? 'secondary' : 'primary'"
+        :class="partial ? 'secondary' : 'primary'"
         type="button"
         :disabled="Boolean(s.busy) || !approver || !reply.trim()"
         @click="submit"
       >
-        {{ tr(s.busy === '正在登记供应商回复' ? '正在读取回复…' : '登记回复') }}</button
-      ><button
-        v-if="canSwitch && partial"
-        class="primary"
-        type="button"
-        :disabled="Boolean(s.busy)"
-        data-recovery-switch
-        @click="switchSupplier"
-      >
-        {{ tr('撤回这单，找别家补 {0} 件', [partial.ordered]) }}
+        {{ tr(s.busy === '正在登记供应商回复' ? '正在读取回复…' : '登记回复') }}
       </button>
     </div>
   </article>
@@ -214,6 +244,18 @@ async function withdraw() {
   background: #fff;
   color: #203b31;
   font: inherit;
+}
+.assisted-partial {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  border: 1px solid #e3c98b;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fffaf0;
+}
+.assisted-partial p {
+  margin: 0;
 }
 .assisted-withdraw {
   display: flex;

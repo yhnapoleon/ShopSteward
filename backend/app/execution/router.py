@@ -105,6 +105,21 @@ async def withdrawal(request: Request, principal: User, action_id: Id, key: Key)
 
 
 @router.post(
+    "/api/v1/actions/{action_id}/partial-acceptance",
+    response_model=Action,
+    operation_id="accept_partial_supply",
+)
+async def partial_acceptance(request: Request, principal: User, action_id: Id, key: Key):
+    """The owner takes the smaller quantity the supplier confirmed; the rest is released."""
+    require_role(principal, "approver")
+    async with request.app.state.db.session() as session, session.begin():
+        await visible_action(session, principal, action_id)
+        return Action.model_validate(
+            await assisted.accept_partial(session, action_id, principal.principal_id, key)
+        )
+
+
+@router.post(
     "/api/v1/actions/{action_id}/arrival",
     response_model=Action,
     operation_id="record_goods_arrival",

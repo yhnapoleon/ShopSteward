@@ -99,4 +99,7 @@ async def apply_purchase_event(session, store, stock, event, receipts):
     from app.learning.capture import mission_event
     await mission_event(session, mission, 'PURCHASE_RECEIVED', event.event_id, None,
                         [{'type':'action','id':action.id}])
+    from app.operations_cases.lifecycle import settle_mission
+
+    await settle_mission(session, mission)
     return True

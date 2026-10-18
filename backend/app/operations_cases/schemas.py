@@ -54,6 +54,30 @@ class CaseEvidence(DTO):
     summary: str
 
 
+class CasePurchase(DTO):
+    """An emergency purchase the case led to: approved, confirmed by the supplier, arrived."""
+
+    action_id: Identifier
+    supplier_id: Identifier
+    status: str
+    planned_qty: Positive
+    accepted_qty: Nonnegative | None
+    received_qty: Nonnegative | None
+
+
+class CaseOutcome(DTO):
+    """What a resolved case achieved; shortage is projected over the analyzed seven days."""
+
+    path: Literal["purchase", "waiting"]
+    planned_qty: Nonnegative
+    purchased_qty: Nonnegative
+    received_qty: Nonnegative
+    spend_minor: Nonnegative
+    lost_qty_before: Nonnegative
+    lost_qty_after: Nonnegative
+    action_ids: list[Identifier]
+
+
 class CaseDetail(DTO):
     id: Identifier
     mission_id: Identifier
@@ -81,6 +105,11 @@ class CaseDetail(DTO):
     expert_analysis: dict | None
     sourcing: dict | None = None
     followup_enabled: bool
+    purchases: list[CasePurchase] = Field(default_factory=list)
+    # Set while the owner's decision in this case holds routine checks off the item.
+    routine_paused: bool = False
+    recheck_reason: str | None = None
+    outcome: CaseOutcome | None = None
     created_at: AwareDatetime
     updated_at: AwareDatetime
 

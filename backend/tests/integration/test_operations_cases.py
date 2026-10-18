@@ -503,3 +503,236 @@ async def test_one_accepted_emergency_purchase_per_case_even_after_revision(db):
             if candidate["quantity"]:
                 assert not candidate["executable"]
                 assert "EMERGENCY_PURCHASE_ALREADY_ACCEPTED" in candidate["rejection_reasons"]
+
+
+async def case_view(client, case):
+    return (await client.get(f"/api/v1/operations-cases/{case['id']}", headers=headers())).json()
+
+
+async def check_again(db, seed, client, case):
+    await client.post(f"/api/v1/missions/{case['mission_id']}/checks", json={}, headers=headers())
+    await run_check(db, seed)
+
+
+async def current_plan(client, case):
+    path = f"/api/v1/missions/{case['mission_id']}"
+    return (await client.get(path, headers=headers())).json()["current_plan_id"]
+
+
+async def timeline_types(client, case):
+    response = await client.get(
+        f"/api/v1/missions/{case['mission_id']}/timeline",
+        params={"limit": 100},
+        headers=headers(),
+    )
+    assert response.status_code == 200, response.text
+    return [entry["type"] for entry in response.json()["items"]]
+
+
+async def test_adopted_plan_waits_its_own_window_counted_from_adoption(db):
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        proposal = (await case_view(client, case))["proposal"]
+        window = datetime.fromisoformat(plan["expires_at"]) - datetime.fromisoformat(
+            proposal["created_at"]
+        )
+        assert window >= timedelta(seconds=settings(db, seed).recovery_ttl_seconds)
+        assert proposal["expires_at"] < plan["expires_at"]
+
+
+async def test_case_resolves_with_its_outcome_once_the_emergency_goods_arrive(db):
+    from test_execution import Supplier, approve, execute
+    from test_operations import event, ingest
+
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        candidates = {c["id"]: c for c in plan["candidates"]}
+        accepted = await approve(client, plan)
+        await execute(db, seed, Supplier())
+        current = await case_view(client, case)
+        assert (current["status"], current["stale"]) == ("MONITORING", False)
+        assert current["purchases"] == [
+            {
+                "action_id": accepted["action_id"],
+                "supplier_id": "B",
+                "status": "SUCCEEDED",
+                "planned_qty": 20,
+                "accepted_qty": 20,
+                "received_qty": 0,
+            }
+        ]
+        await ingest(
+            db,
+            seed,
+            [event(seed, 1, "GOODS_RECEIVED", action_id=accepted["action_id"], quantity=20)],
+        )
+        current = await case_view(client, case)
+        assert current["status"] == "RESOLVED" and current["routine_paused"] is False
+        assert current["outcome"] == {
+            "path": "purchase",
+            "planned_qty": 20,
+            "purchased_qty": 20,
+            "received_qty": 20,
+            "spend_minor": 24000,
+            "lost_qty_before": candidates["wait"]["lost_qty"],
+            "lost_qty_after": candidates["B_20"]["lost_qty"],
+            "action_ids": [accepted["action_id"]],
+        }
+        assert candidates["wait"]["lost_qty"] > candidates["B_20"]["lost_qty"]
+        assert "CASE_RESOLVED" in await timeline_types(client, case)
+
+
+async def test_followup_leaves_a_case_whose_purchase_was_accepted_monitoring(db):
+    from test_execution import Supplier, approve, execute
+
+    from app.operations_cases.jobs import make_handlers
+    from app.scheduling.runner import Runner
+
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        enabled = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/control",
+            json={"expected_revision": 1, "operation": "enable_followup"},
+            headers=headers(),
+        )
+        assert enabled.status_code == 200, enabled.text
+        await approve(client, plan)
+        await execute(db, seed, Supplier())
+        runner = Runner(db, settings(db, seed), handlers=make_handlers(settings(db, seed)))
+        assert await runner.run_once()
+        # Its own purchase moved cash and stock on; that is the decision, not a new question.
+        current = await case_view(client, case)
+        assert (current["status"], current["stale"]) == ("MONITORING", False)
+        assert current["recheck_reason"] is None
+
+
+async def test_routine_check_keeps_an_outdated_emergency_plan_out_and_says_why(db):
+    from app.missions.models import PlanRow
+    from app.operations.models import Store
+
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        async with db.session() as session, session.begin():
+            store = await session.get(Store, case["store_id"])
+            store.state_version += 1
+        await run_check(db, seed)
+        assert await current_plan(client, case) is None
+        async with db.session() as session:
+            assert (await session.get(PlanRow, plan["id"])).status == "SUPERSEDED"
+        current = await case_view(client, case)
+        assert current["status"] == "RECHECK_REQUIRED"
+        assert current["recheck_reason"] == "BUSINESS_STATE_CHANGED"
+        assert current["routine_paused"] is True
+        assert "CASE_RECHECK_REQUIRED" in await timeline_types(client, case)
+        # Later checks keep leaving the item to the case.
+        await check_again(db, seed, client, case)
+        assert await current_plan(client, case) is None
+
+
+async def test_waiting_holds_routine_orders_until_the_case_ends(db):
+    async with environment(db) as (seed, client):
+        case = await analyze(client, await recovery_case(db, seed, client))
+        await run_check(db, seed)
+        assert await current_plan(client, case) is not None
+        path = f"/api/v1/operations-cases/{case['id']}/control"
+        waited = await client.post(
+            path, json={"expected_revision": 1, "operation": "adopt_waiting"}, headers=headers()
+        )
+        assert waited.status_code == 200, waited.text
+        assert waited.json()["routine_paused"] is True
+        assert await current_plan(client, case) is None
+        await check_again(db, seed, client, case)
+        assert await current_plan(client, case) is None
+        assert "CASE_DECISION" in await timeline_types(client, case)
+        ended = await client.post(
+            path, json={"expected_revision": 1, "operation": "cancel"}, headers=headers()
+        )
+        assert ended.status_code == 200, ended.text
+        await run_check(db, seed)
+        assert await current_plan(client, case) is not None
+
+
+async def test_rejected_emergency_plan_is_not_replaced_by_a_routine_order(db):
+    from test_execution import decision
+
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        response = await client.post(
+            f"/api/v1/plans/{plan['id']}/decision",
+            json=decision(plan, "reject"),
+            headers=headers("approver"),
+        )
+        assert response.status_code == 200, response.text
+        await check_again(db, seed, client, case)
+        assert await current_plan(client, case) == plan["id"]
+        current = await case_view(client, case)
+        assert (current["status"], current["plan_status"]) == ("OPTIONS_READY", "REJECTED")
+        assert current["routine_paused"] is True
+
+
+async def test_part_of_an_emergency_order_can_be_taken_and_the_rest_bought_elsewhere(db):
+    from test_execution import Supplier, decision, execute
+
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        response = await client.post(
+            f"/api/v1/plans/{plan['id']}/decision",
+            json=decision(plan) | {"channel": "assisted"},
+            headers=headers("approver"),
+        )
+        assert response.status_code == 202, response.text
+        action_id = response.json()["action_id"]
+        await execute(db, seed, Supplier())
+        replied = await client.post(
+            f"/api/v1/actions/{action_id}/supplier-reply",
+            json={"text": "可以，但只有10件"},
+            headers=headers("approver"),
+        )
+        assert replied.json()["supplier_reply"]["outcome"] == "partial", replied.text
+        taken = await client.post(
+            f"/api/v1/actions/{action_id}/partial-acceptance", headers=headers("approver")
+        )
+        assert taken.status_code == 200, taken.text
+        current = await case_view(client, case)
+        assert current["status"] == "MONITORING"
+        assert [(p["planned_qty"], p["accepted_qty"]) for p in current["purchases"]] == [(20, 10)]
+        refreshed = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/control",
+            json={"expected_revision": 1, "operation": "refresh"},
+            headers=headers(),
+        )
+        current = await analyze(client, refreshed.json())
+        topups = [c for c in current["proposal"]["candidates"] if c["executable"]]
+        assert topups
+        assert all(
+            "EMERGENCY_PURCHASE_ALREADY_ACCEPTED" not in c["rejection_reasons"]
+            for c in current["proposal"]["candidates"]
+        )
+        adopted = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/materialize",
+            json=adopt_body(current) | {"candidate_id": topups[0]["id"]},
+            headers=headers(),
+        )
+        assert adopted.status_code == 200, adopted.text
+
+
+async def test_routine_check_settles_a_case_whose_goods_arrived_before_it_could(db):
+    from test_execution import Supplier, approve, execute
+
+    from app.missions.models import InboundRow
+    from app.operations.models import StockRow
+
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        accepted = await approve(client, plan)
+        await execute(db, seed, Supplier())
+        # Goods recorded before cases settled themselves: full inbound, case still following.
+        async with db.session() as session, session.begin():
+            inbound = await session.get(InboundRow, (accepted["action_id"], case["sku_id"]))
+            stock = await session.get(StockRow, (case["store_id"], case["sku_id"]))
+            stock.in_transit -= inbound.ordered_qty
+            stock.on_hand += inbound.ordered_qty
+            inbound.received_qty = inbound.ordered_qty
+        await check_again(db, seed, client, case)
+        assert (await case_view(client, case))["status"] == "RESOLVED"
+        assert await current_plan(client, case) not in (None, plan["id"])

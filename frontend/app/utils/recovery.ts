@@ -467,10 +467,9 @@ export const blockedReason = (code: string) =>
 /** A reply that accepts fewer units than ordered: the supplier can supply only part of it. */
 export function partialReply(action: Schema<'Action'> | null | undefined) {
   const reply = action?.supplier_reply
-  if (!reply || reply.outcome !== 'needs_attention' || reply.decision !== 'accepted') return null
-  const quantity = reply.differences.find((d) => d.field === 'quantity')
-  if (!quantity || Number(quantity.replied) >= Number(quantity.ordered)) return null
-  return { ordered: Number(quantity.ordered), offered: Number(quantity.replied) }
+  if (!action || reply?.outcome !== 'partial' || reply.quantity == null) return null
+  if (reply.quantity >= action.quantity) return null
+  return { ordered: action.quantity, offered: reply.quantity }
 }
 
 export type Outcome = {
