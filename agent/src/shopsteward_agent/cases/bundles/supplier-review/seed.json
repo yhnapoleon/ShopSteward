@@ -1,0 +1,16 @@
+{
+  "schema_version": "text-bundle-v1",
+  "bundle_id": "supplier-review",
+  "revision": "seed",
+  "parent_revision": null,
+  "components": {
+    "question.supplier": "Review this supplier's documents for the requested item at the requested store on the request date. Open every listed document with read_supplier_document before answering. The supplier's terms document says how its notices change its quote; apply it. Report only what the documents support. Do not choose a supplier, a quantity or a plan, and do not ask the user anything.",
+    "guidance.supplier": ""
+  },
+  "content_hash": "a9f742bf20f81709046fb81419d279c9cdce54f209ec8b3d037bdd3c3d13d4f3",
+  "provenance": {
+    "origin": "human",
+    "note": "First wording of the supplier reviewer, 2026-10-08."
+  },
+  "gate": null
+}

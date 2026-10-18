@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { joinText, t as tr } from '~/i18n'
-import type { Schema } from '~/types/models'
+import type { Schema, PlanDocument } from '~/types/models'
+import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 import { api } from '~/utils/api'
 import { money, number, when, actionLabel, reasonLabel } from '~/utils/presentation'
 import { downloadFile } from '~/utils/quotations'
@@ -31,7 +32,7 @@ const viewScroll: Record<string, number> = {}
 const route = useRoute(),
   router = useRouter()
 const view = computed(() =>
-  ['today', 'following', 'journal', 'overview', 'documents', 'task', 'work'].includes(
+  ['today', 'following', 'journal', 'overview', 'documents', 'task', 'work', 'learning'].includes(
     String(route.query.view),
   )
     ? String(route.query.view)
@@ -43,7 +44,7 @@ const dialog = ref(''),
   token = ref(''),
   scheduleSeconds = ref(30),
   recordFilter = ref('business')
-const approval = ref<{ plan: Schema<'Plan'>; quantity: number } | null>(null)
+const approval = ref<{ plan: PlanDocument; quantity: number } | null>(null)
 watch(
   () => s.storeId,
   (_id, previous) => {
@@ -681,6 +682,11 @@ function briefing() {
         :catalog="s.catalog"
         @navigate="navigate"
       />
+      <LearningWorkspace
+        v-else-if="view === 'learning'"
+        :key="s.storeId + ':' + s.session.principal_id + ':' + s.session.roles.join(',')"
+        @navigate="navigate"
+      />
       <WorkWorkspace
         v-else-if="view === 'work'"
         :issue="issue"
@@ -1247,10 +1253,7 @@ function briefing() {
               tr(money(approval.plan.input_snapshot.state.available_cash_minor)),
               '→',
               tr(
-                money(
-                  approval.plan.candidates.find((c) => c.quantity === approval!.quantity)
-                    ?.cash_after_minor,
-                ),
+                money(selectedPlanCandidate(approval.plan, approval.quantity)?.cash_after_minor),
               ),
             ])
           }}</b>
@@ -1259,10 +1262,7 @@ function briefing() {
           <span>{{ tr('预计剩余缺货') }}</span
           ><b>{{
             joinText([
-              tr(
-                approval.plan.candidates.find((c) => c.quantity === approval!.quantity)
-                  ?.shortage_qty,
-              ),
+              tr(selectedPlanCandidate(approval.plan, approval.quantity)?.shortage_qty),
               tr('件'),
             ])
           }}</b>
@@ -1300,6 +1300,7 @@ function briefing() {
         <table>
           <thead>
             <tr>
+              <th v-if="isRecoveryPlan(plan)">{{ tr('供应商') }}</th>
               <th>{{ tr('数量') }}</th>
               <th>{{ tr('支出') }}</th>
               <th>{{ tr('剩余现金') }}</th>
@@ -1309,6 +1310,9 @@ function briefing() {
           </thead>
           <tbody>
             <tr v-for="c in plan.candidates" :key="c.id">
+              <td v-if="isRecoveryPlan(plan)">
+                {{ 'supplier_id' in c ? c.supplier_id || tr('等待') : '—' }}
+              </td>
               <td>{{ joinText([tr(c.quantity), tr('件')]) }}</td>
               <td>{{ tr(money(c.spend_minor)) }}</td>
               <td>{{ tr(money(c.cash_after_minor)) }}</td>
@@ -1392,7 +1396,7 @@ function briefing() {
               tr('件 ·'),
               tr(money(a.amount_minor)),
               '·',
-              tr(actionLabel(a.status)),
+              tr(actionLabel(a.status, a.channel)),
             ])
           }}
         </h3>
@@ -1406,7 +1410,14 @@ function briefing() {
         </div>
         <div class="detail-row">
           <span>{{ tr('预计到货') }}</span
-          ><b>{{ tr(when(a.purchase_snapshot.expected_arrival_at)) }}</b>
+          ><b>{{
+            tr(
+              when(
+                s.inbounds.find((i) => i.action_id === a.id)?.expected_arrival_at ||
+                  a.purchase_snapshot.expected_arrival_at,
+              ),
+            )
+          }}</b>
         </div>
         <div class="detail-row">
           <span>{{ tr('到货进度') }}</span
@@ -1420,6 +1431,7 @@ function briefing() {
           }}</b>
         </div>
         <p v-if="a.last_error" class="notice amber">{{ tr(a.last_error) }}</p>
+        <SupplierReceipt v-if="a.supplier_reply" :reply="a.supplier_reply" />
       </section>
       <p class="notice">{{ tr('采购已受理不等于到货。进度以回执与实际到货记录为准。') }}</p>
       <button class="secondary" @click="act(() => shop.refresh(true))">
@@ -1806,6 +1818,7 @@ function briefing() {
           )
         }}
       </p>
+      <button class="text-link" @click="navigate('learning')">{{ tr('学习与经验') }}</button>
       <button class="text-link" @click="open('connection')">
         {{ tr('更换后端用户身份') }}
       </button></template

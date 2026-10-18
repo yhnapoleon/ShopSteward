@@ -1,0 +1,20 @@
+{
+  "schema_version": "text-bundle-v1",
+  "bundle_id": "case-experts",
+  "revision": "seed",
+  "parent_revision": null,
+  "components": {
+    "question.evidence": "Identify evidence coverage and missing source qualifications. Do not infer contract exceptions without a document.",
+    "question.impact": "Explain the supplied daily impact and its assumptions using the authoritative solver output. Do not recompute amounts.",
+    "question.options": "Compare supplied solver candidates; cite their IDs and explain rejection reasons. Do not invent or modify candidate numbers.",
+    "guidance.evidence": "",
+    "guidance.impact": "",
+    "guidance.options": ""
+  },
+  "content_hash": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+  "provenance": {
+    "origin": "human",
+    "note": "Text identical to the questions hard-coded before 2026-10-08."
+  },
+  "gate": null
+}

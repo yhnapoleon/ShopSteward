@@ -9,6 +9,10 @@ from sqlalchemy.engine import make_url
 
 def pytest_asyncio_loop_factories(config, item):
     if sys.platform == "win32":
+        # Browser acceptance starts Node subprocesses, unsupported by Selector.
+        # Keep the existing loop for all other database integration tests.
+        if item.path.name.endswith("_browser.py"):
+            return {"proactor": asyncio.ProactorEventLoop}
         return {"selector": asyncio.SelectorEventLoop}
     return {"default": asyncio.new_event_loop}
 

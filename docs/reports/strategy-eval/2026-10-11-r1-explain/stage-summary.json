@@ -1,0 +1,19 @@
+[
+  {
+    "stage": "explain",
+    "model": "gpt-6-luna",
+    "text": "seed",
+    "partition": "gate",
+    "runs": 72,
+    "items": 24,
+    "passed": 50,
+    "mean_score": 0.852,
+    "first_reading": null,
+    "failures": {
+      "gap-unstated": 17,
+      "unsupported_claim": 5
+    },
+    "mean_model_calls": 1,
+    "median_latency_ms": 23546
+  }
+]

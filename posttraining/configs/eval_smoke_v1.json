@@ -1,0 +1,21 @@
+{
+  "schema_version": "eval-v0",
+  "runtime": "runtime_v1.json",
+  "dataset": "../datasets/smoke-50.jsonl",
+  "manifest": "../datasets/split-manifest.json",
+  "task_contract": "../tasks/replenishment_v0.json",
+  "expected_counts": {
+    "PT-01": 10,
+    "PT-02": 10,
+    "PT-03": 8,
+    "PT-04": 8,
+    "PT-05": 3,
+    "PT-06": 3,
+    "PT-07": 4,
+    "PT-08": 2,
+    "PT-09": 1,
+    "PT-10": 1
+  },
+  "case_list": "../../docs/reports/posttraining/smoke-50-cases.md",
+  "validation_report": "../../docs/reports/posttraining/eval-e1-validation.json"
+}

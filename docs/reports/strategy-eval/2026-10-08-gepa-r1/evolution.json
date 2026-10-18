@@ -1,0 +1,521 @@
+{
+  "strategy": "adaptive_multi",
+  "components": [
+    "question.evidence",
+    "question.impact",
+    "question.options"
+  ],
+  "seed_val_score": 0.6666666666666666,
+  "best_val_score": 0.9166666666666666,
+  "candidates": 5,
+  "val_scores": [
+    0.6666666666666666,
+    0.8333333333333334,
+    0.8333333333333334,
+    0.6666666666666666,
+    0.9166666666666666
+  ],
+  "metric_calls": 105,
+  "changed": [
+    "question.evidence",
+    "question.impact"
+  ],
+  "evaluations": [
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-val-temporal_gap-00",
+        "evo-val-late_cheap_offer-01",
+        "evo-val-tight_budget-02",
+        "evo-val-cash_floor-03",
+        "evo-val-moq_pack-04",
+        "evo-val-partial_receipt-05",
+        "evo-val-no_action-06",
+        "evo-val-unverified_execution-07",
+        "evo-val-temporal_gap-08",
+        "evo-val-late_cheap_offer-09",
+        "evo-val-tight_budget-10",
+        "evo-val-cash_floor-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "notes": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "unnecessary_clarification",
+        "unnecessary_clarification",
+        "unnecessary_clarification",
+        "",
+        "",
+        "",
+        "solver_contradiction"
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-late_cheap_offer-01",
+        "evo-train-tight_budget-10",
+        "evo-train-late_cheap_offer-09"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-partial_receipt-05",
+        "evo-train-cash_floor-11",
+        "evo-train-tight_budget-02"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-cash_floor-03",
+        "evo-train-unverified_execution-07",
+        "evo-train-temporal_gap-08"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-moq_pack-04",
+        "evo-train-temporal_gap-00",
+        "evo-train-no_action-06"
+      ],
+      "scores": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "notes": [
+        "unnecessary_clarification",
+        "unnecessary_clarification",
+        ""
+      ]
+    },
+    {
+      "bundle": "79613d09e9ca4f7f759a7f9801f9927c1869567a0bc5c842eac3b066fd3b8b6d",
+      "cases": [
+        "evo-train-moq_pack-04",
+        "evo-train-temporal_gap-00",
+        "evo-train-no_action-06"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "79613d09e9ca4f7f759a7f9801f9927c1869567a0bc5c842eac3b066fd3b8b6d",
+      "cases": [
+        "evo-val-temporal_gap-00",
+        "evo-val-late_cheap_offer-01",
+        "evo-val-tight_budget-02",
+        "evo-val-cash_floor-03",
+        "evo-val-moq_pack-04",
+        "evo-val-partial_receipt-05",
+        "evo-val-no_action-06",
+        "evo-val-unverified_execution-07",
+        "evo-val-temporal_gap-08",
+        "evo-val-late_cheap_offer-09",
+        "evo-val-tight_budget-10",
+        "evo-val-cash_floor-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0
+      ],
+      "notes": [
+        "",
+        "",
+        "",
+        "unnecessary_clarification",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "unnecessary_clarification"
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-cash_floor-03",
+        "evo-train-tight_budget-10",
+        "evo-train-cash_floor-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "notes": [
+        "",
+        "",
+        "unnecessary_clarification"
+      ]
+    },
+    {
+      "bundle": "d629300c7f46b2f148788fcdff718da258d2ad201c9f7c86ff1ba67131847f15",
+      "cases": [
+        "evo-train-cash_floor-03",
+        "evo-train-tight_budget-10",
+        "evo-train-cash_floor-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "d629300c7f46b2f148788fcdff718da258d2ad201c9f7c86ff1ba67131847f15",
+      "cases": [
+        "evo-val-temporal_gap-00",
+        "evo-val-late_cheap_offer-01",
+        "evo-val-tight_budget-02",
+        "evo-val-cash_floor-03",
+        "evo-val-moq_pack-04",
+        "evo-val-partial_receipt-05",
+        "evo-val-no_action-06",
+        "evo-val-unverified_execution-07",
+        "evo-val-temporal_gap-08",
+        "evo-val-late_cheap_offer-09",
+        "evo-val-tight_budget-10",
+        "evo-val-cash_floor-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0
+      ],
+      "notes": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "solver_contradiction",
+        "",
+        "unnecessary_clarification"
+      ]
+    },
+    {
+      "bundle": "d629300c7f46b2f148788fcdff718da258d2ad201c9f7c86ff1ba67131847f15",
+      "cases": [
+        "evo-train-no_action-06",
+        "evo-train-partial_receipt-05",
+        "evo-train-temporal_gap-00"
+      ],
+      "scores": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "unnecessary_clarification",
+        ""
+      ]
+    },
+    {
+      "bundle": "ff53d44ac6da4de138e42af1cccab8663e5f5d1682c4be07559619f7fcc8094d",
+      "cases": [
+        "evo-train-no_action-06",
+        "evo-train-partial_receipt-05",
+        "evo-train-temporal_gap-00"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "ff53d44ac6da4de138e42af1cccab8663e5f5d1682c4be07559619f7fcc8094d",
+      "cases": [
+        "evo-val-temporal_gap-00",
+        "evo-val-late_cheap_offer-01",
+        "evo-val-tight_budget-02",
+        "evo-val-cash_floor-03",
+        "evo-val-moq_pack-04",
+        "evo-val-partial_receipt-05",
+        "evo-val-no_action-06",
+        "evo-val-unverified_execution-07",
+        "evo-val-temporal_gap-08",
+        "evo-val-late_cheap_offer-09",
+        "evo-val-tight_budget-10",
+        "evo-val-cash_floor-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        "unnecessary_clarification",
+        "",
+        "",
+        "invalid_subtask_result",
+        "unnecessary_clarification",
+        "unnecessary_clarification",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "ff53d44ac6da4de138e42af1cccab8663e5f5d1682c4be07559619f7fcc8094d",
+      "cases": [
+        "evo-train-unverified_execution-07",
+        "evo-train-tight_budget-02",
+        "evo-train-temporal_gap-08"
+      ],
+      "scores": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "unnecessary_clarification",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "270ae924fdcd6594150bf442114d4b05f92761b7dffb938257f02d85b1547630",
+      "cases": [
+        "evo-train-unverified_execution-07",
+        "evo-train-tight_budget-02",
+        "evo-train-temporal_gap-08"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "notes": [
+        "",
+        "",
+        "unnecessary_clarification"
+      ]
+    },
+    {
+      "bundle": "ff53d44ac6da4de138e42af1cccab8663e5f5d1682c4be07559619f7fcc8094d",
+      "cases": [
+        "evo-train-moq_pack-04",
+        "evo-train-late_cheap_offer-09",
+        "evo-train-late_cheap_offer-01"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "d629300c7f46b2f148788fcdff718da258d2ad201c9f7c86ff1ba67131847f15",
+      "cases": [
+        "evo-train-cash_floor-03",
+        "evo-train-late_cheap_offer-01",
+        "evo-train-tight_budget-02"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "d629300c7f46b2f148788fcdff718da258d2ad201c9f7c86ff1ba67131847f15",
+      "cases": [
+        "evo-train-partial_receipt-05",
+        "evo-train-no_action-06",
+        "evo-train-late_cheap_offer-09"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        0.0
+      ],
+      "notes": [
+        "",
+        "",
+        "unnecessary_clarification"
+      ]
+    },
+    {
+      "bundle": "9dc7f6b38f545a9b14838845b8d8bdb430baf2a8117bee54c2c973340335784b",
+      "cases": [
+        "evo-train-partial_receipt-05",
+        "evo-train-no_action-06",
+        "evo-train-late_cheap_offer-09"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "9dc7f6b38f545a9b14838845b8d8bdb430baf2a8117bee54c2c973340335784b",
+      "cases": [
+        "evo-val-temporal_gap-00",
+        "evo-val-late_cheap_offer-01",
+        "evo-val-tight_budget-02",
+        "evo-val-cash_floor-03",
+        "evo-val-moq_pack-04",
+        "evo-val-partial_receipt-05",
+        "evo-val-no_action-06",
+        "evo-val-unverified_execution-07",
+        "evo-val-temporal_gap-08",
+        "evo-val-late_cheap_offer-09",
+        "evo-val-tight_budget-10",
+        "evo-val-cash_floor-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "invalid_subtask_result",
+        ""
+      ]
+    }
+  ],
+  "saved": "agent/src/shopsteward_agent/cases/bundles/case-experts/gepa-r1.json"
+}

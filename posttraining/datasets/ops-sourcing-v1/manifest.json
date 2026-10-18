@@ -1,0 +1,80 @@
+{
+  "dataset_version": "ops-sourcing-v1",
+  "oracle": "recovery_solver_v1",
+  "partitions": {
+    "smoke": [
+      "smoke-baseline-00",
+      "smoke-baseline-10",
+      "smoke-case_price-01",
+      "smoke-case_price-11",
+      "smoke-expired-06",
+      "smoke-future_notice-03",
+      "smoke-lead_change-04",
+      "smoke-not_covered-08",
+      "smoke-notice_price-02",
+      "smoke-superseded-05",
+      "smoke-withdrawn-07",
+      "smoke-zone-09"
+    ],
+    "evo-train": [
+      "evo-train-baseline-00",
+      "evo-train-baseline-10",
+      "evo-train-case_price-01",
+      "evo-train-case_price-11",
+      "evo-train-expired-06",
+      "evo-train-future_notice-03",
+      "evo-train-lead_change-04",
+      "evo-train-not_covered-08",
+      "evo-train-notice_price-02",
+      "evo-train-superseded-05",
+      "evo-train-withdrawn-07",
+      "evo-train-zone-09"
+    ],
+    "evo-val": [
+      "evo-val-baseline-00",
+      "evo-val-baseline-10",
+      "evo-val-case_price-01",
+      "evo-val-case_price-11",
+      "evo-val-expired-06",
+      "evo-val-future_notice-03",
+      "evo-val-lead_change-04",
+      "evo-val-not_covered-08",
+      "evo-val-notice_price-02",
+      "evo-val-superseded-05",
+      "evo-val-withdrawn-07",
+      "evo-val-zone-09"
+    ],
+    "gate": [
+      "gate-baseline-00",
+      "gate-baseline-10",
+      "gate-baseline-20",
+      "gate-case_price-01",
+      "gate-case_price-11",
+      "gate-case_price-21",
+      "gate-expired-06",
+      "gate-expired-16",
+      "gate-future_notice-03",
+      "gate-future_notice-13",
+      "gate-future_notice-23",
+      "gate-lead_change-04",
+      "gate-lead_change-14",
+      "gate-not_covered-08",
+      "gate-not_covered-18",
+      "gate-notice_price-02",
+      "gate-notice_price-12",
+      "gate-notice_price-22",
+      "gate-superseded-05",
+      "gate-superseded-15",
+      "gate-withdrawn-07",
+      "gate-withdrawn-17",
+      "gate-zone-09",
+      "gate-zone-19"
+    ]
+  },
+  "sha256": {
+    "fixtures.jsonl": "9cd2ec0df7fb1697203ada7f106966d03348b76ebbaa78f91ad6359a75687534",
+    "cases.jsonl": "85b00365194dbe21ca9ce232ead0ccda1baa6de881d419b952db230dca1521f0",
+    "sources.json": "0e95d9799b0e2d559d87d0bf592af042f7a45e39954ba73cc03a1ceb56a34401"
+  },
+  "research_status": "development worlds: real M5 demand and prices, DataCo delivery delays, invented suppliers and documents; no locked test set"
+}

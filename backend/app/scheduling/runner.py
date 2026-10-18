@@ -16,9 +16,12 @@ async def wait_or_stop(event: asyncio.Event, seconds: float):
 
 
 class Runner:
-    def __init__(self, db, settings, *, worker_id=None, handlers=None, dispatcher=None):
+    def __init__(
+        self, db, settings, *, worker_id=None, handlers=None, dispatcher=None, job_ids=None
+    ):
         self.db = db
         self.settings = settings
+        self.job_ids = job_ids
         self.worker_id = worker_id or str(uuid4())
         if handlers is None:
             from app.bootstrap import make_handlers
@@ -33,6 +36,9 @@ class Runner:
                 handler.before_claim for handler in self.handlers.values() if handler.before_claim
             )
         )
+        if job_ids is not None:
+            self.before_claim = ()
+            self.dispatcher = None
 
     async def run_once(self, stop: asyncio.Event | None = None) -> bool:
         if stop is not None and stop.is_set():
@@ -45,6 +51,7 @@ class Runner:
             await repo.heartbeat(session, self.worker_id)
             await repo.recover_expired(
                 session,
+                job_ids=self.job_ids,
                 retry_safe_types=[
                     name for name, handler in self.handlers.items() if handler.retry_safe
                 ],
@@ -55,6 +62,7 @@ class Runner:
                 session,
                 lease_seconds=self.settings.job_lease_seconds,
                 job_types=list(self.handlers),
+                job_ids=self.job_ids,
             )
             if stop is not None and stop.is_set():
                 await session.rollback()

@@ -30,7 +30,14 @@ async def current_user(request: Request, principal: User):
         principal_id=principal.principal_id,
         roles=sorted(set(principal.roles)),
         store_scope="ALL" if "admin" in principal.roles else "ASSIGNED",
-        capabilities=["work_intake", "plan_revision", "quantity_simulation", "work_result_export"],
+        capabilities=[
+            "work_intake",
+            "plan_revision",
+            "operations_cases",
+            "quantity_simulation",
+            "work_result_export",
+            "sourcing",
+        ],
     )
 
 

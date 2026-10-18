@@ -1,0 +1,853 @@
+{
+  "strategy": null,
+  "stage": "explain",
+  "components": [
+    "question.evidence",
+    "question.impact",
+    "question.options"
+  ],
+  "seed_val_score": 0.8888888888888888,
+  "best_val_score": 0.9722222222222222,
+  "candidates": 4,
+  "val_scores": [
+    0.8888888888888888,
+    0.8425925925925926,
+    0.9722222222222222,
+    0.8888888888888888
+  ],
+  "metric_calls": 204,
+  "changed": [
+    "question.impact"
+  ],
+  "evaluations": [
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        0.6666666666666666,
+        1.0,
+        1.0,
+        0.6666666666666666,
+        0.6666666666666666,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.6666666666666666,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.3333333333333333,
+        1.0,
+        0.3333333333333333,
+        0.6666666666666666
+      ],
+      "notes": [
+        "",
+        "",
+        "gap-unstated",
+        "",
+        "",
+        "gap-unstated",
+        "gap-unstated",
+        "",
+        "",
+        "",
+        "candidate-unstated, contradiction",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "gap-unstated",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "gap-unstated",
+        "",
+        "gap-unstated",
+        "gap-unstated"
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-case_price-01",
+        "evo-train-baseline-10",
+        "evo-train-zone-09"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-superseded-05",
+        "evo-train-case_price-11",
+        "evo-train-notice_price-02"
+      ],
+      "scores": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "contradiction",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fead57abeeacecc83b6cdd74b1ba48ca6890be78f63d028b204620168afbdfc0",
+      "cases": [
+        "evo-train-superseded-05",
+        "evo-train-case_price-11",
+        "evo-train-notice_price-02"
+      ],
+      "scores": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "contradiction, gap-unstated",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-future_notice-03",
+        "evo-train-withdrawn-07",
+        "evo-train-not_covered-08"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-lead_change-04",
+        "evo-train-baseline-00",
+        "evo-train-expired-06"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-future_notice-03",
+        "evo-train-baseline-10",
+        "evo-train-case_price-11"
+      ],
+      "scores": [
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "notes": [
+        "",
+        "gap-unstated",
+        ""
+      ]
+    },
+    {
+      "bundle": "e745f3b78b898c475e3588c26eb68a0a6562194b6e30e6fca3b01005d6a35d1b",
+      "cases": [
+        "evo-train-future_notice-03",
+        "evo-train-baseline-10",
+        "evo-train-case_price-11"
+      ],
+      "scores": [
+        0.6666666666666666,
+        1.0,
+        0.6666666666666666
+      ],
+      "notes": [
+        "gap-unstated",
+        "",
+        "gap-unstated"
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-expired-06",
+        "evo-train-superseded-05",
+        "evo-train-baseline-00"
+      ],
+      "scores": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "unsupported_claim",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "01394ad4c1e84ac5a498562f0f5f7f6679b822c7cd05c55f368302873da615bd",
+      "cases": [
+        "evo-train-expired-06",
+        "evo-train-superseded-05",
+        "evo-train-baseline-00"
+      ],
+      "scores": [
+        1.0,
+        0.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "contradiction",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-withdrawn-07",
+        "evo-train-notice_price-02",
+        "evo-train-not_covered-08"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "notes": [
+        "",
+        "",
+        "gap-unstated"
+      ]
+    },
+    {
+      "bundle": "2ee8ea8db177a47ad74a8c6a202f3a4a3e6a5aef735751866e613bd600ccbbc6",
+      "cases": [
+        "evo-train-withdrawn-07",
+        "evo-train-notice_price-02",
+        "evo-train-not_covered-08"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "2ee8ea8db177a47ad74a8c6a202f3a4a3e6a5aef735751866e613bd600ccbbc6",
+      "cases": [
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        0.3333333333333333,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "unsupported_claim",
+        "candidate-unstated, contradiction",
+        "candidate-unstated, contradiction",
+        "",
+        "",
+        "",
+        "unsupported_claim",
+        "",
+        "",
+        "",
+        "",
+        "unsupported_claim",
+        "",
+        "",
+        "",
+        "gap-unstated",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-lead_change-04",
+        "evo-train-zone-09",
+        "evo-train-case_price-01"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "2ee8ea8db177a47ad74a8c6a202f3a4a3e6a5aef735751866e613bd600ccbbc6",
+      "cases": [
+        "evo-train-case_price-01",
+        "evo-train-case_price-11",
+        "evo-train-superseded-05"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-baseline-00",
+        "evo-train-notice_price-02",
+        "evo-train-lead_change-04"
+      ],
+      "scores": [
+        1.0,
+        0.6666666666666666,
+        1.0
+      ],
+      "notes": [
+        "",
+        "gap-unstated",
+        ""
+      ]
+    },
+    {
+      "bundle": "46389ef7827f645d523edb3674e81b6b46a7fdfab12bae0331ce340c5af2b209",
+      "cases": [
+        "evo-train-baseline-00",
+        "evo-train-notice_price-02",
+        "evo-train-lead_change-04"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "46389ef7827f645d523edb3674e81b6b46a7fdfab12bae0331ce340c5af2b209",
+      "cases": [
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "unsupported_claim",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "46389ef7827f645d523edb3674e81b6b46a7fdfab12bae0331ce340c5af2b209",
+      "cases": [
+        "evo-train-expired-06",
+        "evo-train-zone-09",
+        "evo-train-withdrawn-07"
+      ],
+      "scores": [
+        0.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "unsupported_claim",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "4330ddbf309682a30c6fbda53dfc71dac34381ff7930c7854c7e8f7317a87a2f",
+      "cases": [
+        "evo-train-expired-06",
+        "evo-train-zone-09",
+        "evo-train-withdrawn-07"
+      ],
+      "scores": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "notes": [
+        "unsupported_claim",
+        "",
+        "unsupported_claim"
+      ]
+    },
+    {
+      "bundle": "46389ef7827f645d523edb3674e81b6b46a7fdfab12bae0331ce340c5af2b209",
+      "cases": [
+        "evo-train-not_covered-08",
+        "evo-train-future_notice-03",
+        "evo-train-baseline-10"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "fd706b579abe5c7756dd382d8513ce8c9763429d84de59bd43e63dce8b403c15",
+      "cases": [
+        "evo-train-expired-06",
+        "evo-train-lead_change-04",
+        "evo-train-future_notice-03"
+      ],
+      "scores": [
+        0.0,
+        1.0,
+        0.6666666666666666
+      ],
+      "notes": [
+        "unsupported_claim",
+        "",
+        "gap-unstated"
+      ]
+    },
+    {
+      "bundle": "2abede40b33949784c1a8fca1233516bfbcfe199ac49480446d98194a7894ae9",
+      "cases": [
+        "evo-train-expired-06",
+        "evo-train-lead_change-04",
+        "evo-train-future_notice-03"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "bundle": "2abede40b33949784c1a8fca1233516bfbcfe199ac49480446d98194a7894ae9",
+      "cases": [
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-baseline-00",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-case_price-01",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-notice_price-02",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-future_notice-03",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-lead_change-04",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-superseded-05",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-expired-06",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-withdrawn-07",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-not_covered-08",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-zone-09",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-baseline-10",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11",
+        "evo-val-case_price-11"
+      ],
+      "scores": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        0.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "notes": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "unsupported_claim",
+        "",
+        "unsupported_claim",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "unsupported_claim",
+        "",
+        "",
+        "",
+        "",
+        "unsupported_claim",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    }
+  ],
+  "saved": "case-experts/sourcing-r1-s0.json"
+}

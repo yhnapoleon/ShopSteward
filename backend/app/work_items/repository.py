@@ -99,6 +99,10 @@ async def append(
     )
     session.add(message)
     await session.flush()
+    if result:
+        from app.learning.capture import work_result
+
+        await work_result(session, row, result, demonstration)
     return message
 
 

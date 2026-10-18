@@ -37,6 +37,12 @@ class ActionRow(Base):
     manual_review: Mapped[bool] = mapped_column(Boolean, default=False)
     reconcile_count: Mapped[int] = mapped_column(BigInteger, default=0)
     next_attempt_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    # "assisted": the owner carries the order to the supplier and the reply back.
+    channel: Mapped[str] = mapped_column(
+        String(16), default="simulator", server_default="simulator"
+    )
+    order_message: Mapped[dict | None] = mapped_column(JSONB)
+    supplier_reply: Mapped[dict | None] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     __table_args__ = (
@@ -44,6 +50,7 @@ class ActionRow(Base):
             "status IN ('QUEUED','EXECUTING','SUCCEEDED','FAILED','UNKNOWN','STALE','CANCELLED')",
             name="status",
         ),
+        CheckConstraint("channel IN ('simulator','assisted')", name="channel"),
         CheckConstraint("reserved_minor >= 0 AND reconcile_count >= 0", name="nonnegative"),
         Index("ix_actions_recovery", "status", "next_attempt_at"),
         Index("ix_actions_mission", "mission_id"),

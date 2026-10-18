@@ -1,0 +1,1008 @@
+{
+  "schema_version": "eval-v0",
+  "release_status": "spec_validated_pending_execution",
+  "dataset_sha256": "793be13d37609a0a5e438eee8a78e359a49207aef2f5ba2b5b1974517744de71",
+  "provenance": "Codex-authored synthetic evaluation cases derived from task semantics; family names are semantic groups, not independent real-world sources. Smoke50 is the unchanged subset.",
+  "episodes": [
+    {
+      "episode_id": "dev-pt01-001",
+      "scenario_family": "cap20-intent-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-002",
+      "scenario_family": "zero-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-003",
+      "scenario_family": "one-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-004",
+      "scenario_family": "max-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-005",
+      "scenario_family": "chinese-numeral-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-006",
+      "scenario_family": "noncandidate-cap-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-007",
+      "scenario_family": "trial-verb-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-008",
+      "scenario_family": "keep-plan-simulate",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-009",
+      "scenario_family": "existing-cap-hypothesis",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-010",
+      "scenario_family": "change-word-hypothesis",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-001",
+      "scenario_family": "cap20-intent-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-002",
+      "scenario_family": "zero-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-003",
+      "scenario_family": "one-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-004",
+      "scenario_family": "max-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-005",
+      "scenario_family": "chinese-numeral-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-006",
+      "scenario_family": "current-versus-historical-plan",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-007",
+      "scenario_family": "polite-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-008",
+      "scenario_family": "existing-cap-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-009",
+      "scenario_family": "self-correction-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-010",
+      "scenario_family": "current-version-binding",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-001",
+      "scenario_family": "cap20-intent-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-002",
+      "scenario_family": "zero-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-003",
+      "scenario_family": "negated-prior-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-004",
+      "scenario_family": "withdraw-then-evaluate",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-005",
+      "scenario_family": "keep-plan-simulate",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-006",
+      "scenario_family": "max-cap-pair",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-007",
+      "scenario_family": "negated-quantity-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-008",
+      "scenario_family": "quantity-correction-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-001",
+      "scenario_family": "missing-lower-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-002",
+      "scenario_family": "missing-lower-hypothesis",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-003",
+      "scenario_family": "missing-higher-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-004",
+      "scenario_family": "missing-suitable-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-005",
+      "scenario_family": "missing-trial-cap-zero",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-006",
+      "scenario_family": "missing-revision-cap-one",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-007",
+      "scenario_family": "missing-acceptable-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-008",
+      "scenario_family": "missing-hypothetical-cap-max",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-001",
+      "scenario_family": "unique-prior-evaluation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-002",
+      "scenario_family": "ambiguous-prior-evaluations",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-003",
+      "scenario_family": "missing-prior-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-001",
+      "scenario_family": "withdraw-current-request",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-002",
+      "scenario_family": "keep-existing-cap-on-withdrawal",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-003",
+      "scenario_family": "withdraw-new-change-keep-old",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-001",
+      "scenario_family": "negative-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-002",
+      "scenario_family": "fractional-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-003",
+      "scenario_family": "over-max-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-004",
+      "scenario_family": "exact-versus-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-001",
+      "scenario_family": "unsupported-quarterly-report",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-002",
+      "scenario_family": "unsupported-purchase-execution",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-001",
+      "scenario_family": "unknown-package-conversion",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt10-001",
+      "scenario_family": "remove-cap-versus-zero",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-011",
+      "scenario_family": "counterfactual-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-012",
+      "scenario_family": "counterfactual-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-013",
+      "scenario_family": "counterfactual-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-014",
+      "scenario_family": "counterfactual-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-015",
+      "scenario_family": "counterfactual-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-016",
+      "scenario_family": "trial-verb-paraphrases",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-017",
+      "scenario_family": "trial-verb-paraphrases",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-018",
+      "scenario_family": "trial-verb-paraphrases",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-019",
+      "scenario_family": "trial-verb-paraphrases",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-020",
+      "scenario_family": "trial-verb-paraphrases",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-021",
+      "scenario_family": "written-numeral-evaluation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-022",
+      "scenario_family": "written-numeral-evaluation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-023",
+      "scenario_family": "written-numeral-evaluation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-024",
+      "scenario_family": "written-numeral-evaluation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-025",
+      "scenario_family": "written-numeral-evaluation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-026",
+      "scenario_family": "evaluation-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-027",
+      "scenario_family": "evaluation-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-028",
+      "scenario_family": "evaluation-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-029",
+      "scenario_family": "evaluation-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-030",
+      "scenario_family": "evaluation-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-031",
+      "scenario_family": "english-hypothetical-request",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-032",
+      "scenario_family": "english-hypothetical-request",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-033",
+      "scenario_family": "english-hypothetical-request",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-034",
+      "scenario_family": "english-hypothetical-request",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-035",
+      "scenario_family": "english-hypothetical-request",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-036",
+      "scenario_family": "relative-evaluation-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-037",
+      "scenario_family": "relative-evaluation-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-038",
+      "scenario_family": "relative-evaluation-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-039",
+      "scenario_family": "relative-evaluation-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt01-040",
+      "scenario_family": "relative-evaluation-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-011",
+      "scenario_family": "absolute-cap-revision-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-012",
+      "scenario_family": "absolute-cap-revision-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-013",
+      "scenario_family": "absolute-cap-revision-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-014",
+      "scenario_family": "absolute-cap-revision-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-015",
+      "scenario_family": "absolute-cap-revision-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-016",
+      "scenario_family": "revision-with-old-request-negation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-017",
+      "scenario_family": "revision-with-old-request-negation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-018",
+      "scenario_family": "revision-with-old-request-negation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-019",
+      "scenario_family": "revision-with-old-request-negation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-020",
+      "scenario_family": "revision-with-old-request-negation",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-021",
+      "scenario_family": "revision-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-022",
+      "scenario_family": "revision-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-023",
+      "scenario_family": "revision-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-024",
+      "scenario_family": "revision-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-025",
+      "scenario_family": "revision-numeric-distractors",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-026",
+      "scenario_family": "written-numeral-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-027",
+      "scenario_family": "written-numeral-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-028",
+      "scenario_family": "written-numeral-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-029",
+      "scenario_family": "written-numeral-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-030",
+      "scenario_family": "written-numeral-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-031",
+      "scenario_family": "english-explicit-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-032",
+      "scenario_family": "english-explicit-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-033",
+      "scenario_family": "english-explicit-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-034",
+      "scenario_family": "english-explicit-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-035",
+      "scenario_family": "english-explicit-revision",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-036",
+      "scenario_family": "relative-revision-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-037",
+      "scenario_family": "relative-revision-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-038",
+      "scenario_family": "relative-revision-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-039",
+      "scenario_family": "relative-revision-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt02-040",
+      "scenario_family": "relative-revision-from-visible-cap",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-009",
+      "scenario_family": "read-only-negation-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-010",
+      "scenario_family": "read-only-negation-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-011",
+      "scenario_family": "read-only-negation-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-012",
+      "scenario_family": "read-only-negation-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-013",
+      "scenario_family": "read-only-negation-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-014",
+      "scenario_family": "read-only-negation-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-015",
+      "scenario_family": "revision-withdrawn-trial-remains",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-016",
+      "scenario_family": "revision-withdrawn-trial-remains",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-017",
+      "scenario_family": "revision-withdrawn-trial-remains",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-018",
+      "scenario_family": "revision-withdrawn-trial-remains",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-019",
+      "scenario_family": "revision-withdrawn-trial-remains",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-020",
+      "scenario_family": "revision-withdrawn-trial-remains",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-021",
+      "scenario_family": "negated-trailing-quantity",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-022",
+      "scenario_family": "negated-trailing-quantity",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-023",
+      "scenario_family": "negated-trailing-quantity",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-024",
+      "scenario_family": "negated-trailing-quantity",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-025",
+      "scenario_family": "negated-trailing-quantity",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-026",
+      "scenario_family": "quoted-intent-versus-current-intent",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-027",
+      "scenario_family": "quoted-intent-versus-current-intent",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-028",
+      "scenario_family": "quoted-intent-versus-current-intent",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-029",
+      "scenario_family": "quoted-intent-versus-current-intent",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt03-030",
+      "scenario_family": "quoted-intent-versus-current-intent",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-009",
+      "scenario_family": "missing-revision-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-010",
+      "scenario_family": "missing-revision-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-011",
+      "scenario_family": "missing-revision-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-012",
+      "scenario_family": "missing-revision-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-013",
+      "scenario_family": "missing-revision-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-014",
+      "scenario_family": "missing-revision-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-015",
+      "scenario_family": "missing-revision-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-016",
+      "scenario_family": "missing-target-relative-or-written",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-017",
+      "scenario_family": "missing-target-relative-or-written",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-018",
+      "scenario_family": "missing-target-relative-or-written",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-019",
+      "scenario_family": "missing-target-relative-or-written",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-020",
+      "scenario_family": "missing-trial-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-021",
+      "scenario_family": "missing-trial-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-022",
+      "scenario_family": "missing-trial-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-023",
+      "scenario_family": "missing-trial-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-024",
+      "scenario_family": "missing-trial-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-025",
+      "scenario_family": "missing-trial-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-026",
+      "scenario_family": "missing-trial-target",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-027",
+      "scenario_family": "missing-trial-relative-or-corrected",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-028",
+      "scenario_family": "missing-trial-relative-or-corrected",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-029",
+      "scenario_family": "missing-trial-relative-or-corrected",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt04-030",
+      "scenario_family": "missing-trial-relative-or-corrected",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-004",
+      "scenario_family": "resolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-005",
+      "scenario_family": "resolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-006",
+      "scenario_family": "resolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-007",
+      "scenario_family": "resolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-008",
+      "scenario_family": "resolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-009",
+      "scenario_family": "resolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-010",
+      "scenario_family": "unresolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-011",
+      "scenario_family": "unresolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt05-012",
+      "scenario_family": "unresolvable-history-reference",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-004",
+      "scenario_family": "withdraw-request-preserve-mission",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-005",
+      "scenario_family": "withdraw-request-preserve-mission",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-006",
+      "scenario_family": "withdraw-request-preserve-mission",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-007",
+      "scenario_family": "withdraw-request-preserve-mission",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-008",
+      "scenario_family": "withdraw-request-preserve-mission",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-009",
+      "scenario_family": "withdraw-request-preserve-mission",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt06-010",
+      "scenario_family": "withdraw-request-preserve-mission",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-005",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-006",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-007",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-008",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-009",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-010",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-011",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-012",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-013",
+      "scenario_family": "unsupported-exact-or-lower-bound",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-014",
+      "scenario_family": "unsupported-exact-or-lower-bound",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-015",
+      "scenario_family": "unsupported-exact-or-lower-bound",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt07-016",
+      "scenario_family": "illegal-cap-values",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-003",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-004",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-005",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-006",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-007",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-008",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-009",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt08-010",
+      "scenario_family": "outside-cap-policy-scope",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-002",
+      "scenario_family": "unknown-package-size",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-003",
+      "scenario_family": "unknown-package-size",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-004",
+      "scenario_family": "unknown-package-size",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-005",
+      "scenario_family": "unknown-package-size",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-006",
+      "scenario_family": "unknown-package-size",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-007",
+      "scenario_family": "unknown-package-size",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt09-008",
+      "scenario_family": "unknown-package-size",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt10-002",
+      "scenario_family": "explicit-unbounded-versus-zero",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt10-003",
+      "scenario_family": "explicit-unbounded-versus-zero",
+      "split": "dev"
+    },
+    {
+      "episode_id": "dev-pt10-004",
+      "scenario_family": "explicit-unbounded-versus-zero",
+      "split": "dev"
+    }
+  ]
+}

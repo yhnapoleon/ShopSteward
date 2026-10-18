@@ -1,0 +1,16 @@
+[
+  {
+    "stage": "read",
+    "model": "deepseek-v4-pro",
+    "text": "seed",
+    "partition": "smoke",
+    "runs": 42,
+    "items": 42,
+    "passed": 42,
+    "mean_score": 1.0,
+    "first_reading": 42,
+    "failures": {},
+    "mean_model_calls": 2,
+    "median_latency_ms": 22499
+  }
+]

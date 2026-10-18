@@ -1,0 +1,23 @@
+[
+  {
+    "model": "review=deepseek-flash second=deepseek-flash explain=deepseek-flash",
+    "runs": 12,
+    "worlds": 12,
+    "success": 11,
+    "request": 12,
+    "reviewed": 12,
+    "cards": 11,
+    "decision": 11,
+    "explanation": 12,
+    "cards_total": 42,
+    "cards_safe": 41,
+    "cards_exact": 41,
+    "second_readings": 2,
+    "unreviewed": 0,
+    "mean_model_calls": 8.5,
+    "mean_tool_calls": 15.83,
+    "mean_input_tokens": 24913,
+    "mean_output_tokens": 17253,
+    "median_latency_ms": 40100
+  }
+]

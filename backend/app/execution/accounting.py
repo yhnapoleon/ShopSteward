@@ -51,6 +51,21 @@ async def close_action(session, store, mission, action, status, *, reason=None):
         store.active_action_id = None
     if mission.current_action_id == action.id:
         mission.current_action_id = None
+    if mission.planning_context and mission.planning_context.get("plan_id") == action.plan_id:
+        from app.operations_cases.models import CaseRow
+        from app.operations_cases.repository import event as case_event
+
+        case = await session.get(CaseRow, mission.planning_context["case_id"], with_for_update=True)
+        if case:
+            if status == "SUCCEEDED" and case.status != "CANCELLED":
+                case.status = "MONITORING"
+            await case_event(
+                session,
+                case,
+                "RECOVERY_ACTION_" + status,
+                {"action_id": action.id, "reason": reason},
+            )
+        mission.planning_context = None
     if status == "SUCCEEDED" and mission.task_constraints:
         # This purchase round is over; a temporary quantity limit is not a lasting policy.
         mission.task_constraints = {}
@@ -85,7 +100,8 @@ async def record_conflict(session, store, mission, action, raw, reason="RECEIPT_
     await action_alert(session, store, mission, action, reason)
 
 
-async def apply_receipt(session, store, mission, action, raw):
+async def apply_receipt(session, store, mission, action, raw, *, expected_arrival_at=None):
+    """`expected_arrival_at` is the date the supplier itself gave, when it gave one."""
     try:
         receipt = PurchaseReceipt.model_validate(raw)
     except (ValidationError, TypeError, ValueError):
@@ -148,7 +164,8 @@ async def apply_receipt(session, store, mission, action, raw):
             sku_id=stock.sku_id,
             ordered_qty=receipt.quantity,
             received_qty=0,
-            expected_arrival_at=datetime.fromisoformat(purchase["expected_arrival_at"]),
+            expected_arrival_at=expected_arrival_at
+            or datetime.fromisoformat(purchase["expected_arrival_at"]),
         )
     )
     session.add(

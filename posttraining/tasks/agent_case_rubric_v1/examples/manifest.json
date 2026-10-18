@@ -1,0 +1,30 @@
+{
+  "artifact_kind": "example",
+  "cases": {
+    "path": "cases.jsonl",
+    "sha256": "6ceac99f5d92af466044c33cc48b52bea9f1b917c4baf68af926dad2e0c72ba0"
+  },
+  "dataset_version": "illustrative-dev-v1",
+  "fixtures": [
+    {
+      "fixture_id": "golden-design-example",
+      "path": "golden-fixture.json",
+      "sha256": "cb0a06406640be994a35cb7cfc53ca1191c0239d86a2c107aa9f6644bc8b8e80"
+    }
+  ],
+  "locked_test_count": 0,
+  "research_status": "development_only_pending_human_calibration",
+  "reviews": {
+    "path": "reviews.jsonl",
+    "sha256": "ac65bef82e37943607497daf9262cff156c29449d5c2648248d6a125b4972269"
+  },
+  "rubric": {
+    "path": "rubric.json",
+    "sha256": "c4e08cf7e86ad848683e61e182f59575bbb69542c0a6604d6cb10c4618a9154c"
+  },
+  "schema_version": "case_manifest_v1",
+  "traces": {
+    "path": "traces.jsonl",
+    "sha256": "f55dba3a2984bd78257613c2ff9eb90d20abf002c36b433ac81a6d9d975cf5d5"
+  }
+}

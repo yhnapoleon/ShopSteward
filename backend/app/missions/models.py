@@ -32,6 +32,7 @@ class MissionRow(Base):
     completion_criteria: Mapped[str] = mapped_column(String(256))
     plan_counter: Mapped[int] = mapped_column(BigInteger, default=0)
     recheck_required: Mapped[bool] = mapped_column(Boolean, default=False)
+    planning_context: Mapped[dict | None] = mapped_column(JSONB)
     manual_check_requested: Mapped[bool] = mapped_column(Boolean, default=False)
     task_constraints: Mapped[dict] = mapped_column(
         JSONB, default=dict, server_default=text("'{}'::jsonb")

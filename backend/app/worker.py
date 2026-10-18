@@ -13,11 +13,19 @@ from app.scheduling.runner import Runner
 async def run(once: bool, profile: str = "business"):
     settings = Settings()
     db = Database(settings.database_url.get_secret_value() if settings.database_url else None)
+    db.learning_enabled = settings.learning_enabled
     configure_logging()
     try:
         if not await db.ready():
             raise RuntimeError("Run Alembic upgrade head before starting the worker")
-        if profile == "work":
+        if profile == "learning":
+            if not settings.learning_enabled:
+                raise RuntimeError("Set LEARNING_ENABLED=true before starting the learning worker")
+            from app.learning.jobs import make_handlers
+
+            settings.worker_concurrency = 1
+            runner = Runner(db, settings, handlers=make_handlers(settings))
+        elif profile == "work":
             if not settings.work_processor_enabled:
                 raise RuntimeError(
                     "Set WORK_PROCESSOR_ENABLED=true before starting the work worker"
@@ -57,8 +65,10 @@ async def run(once: bool, profile: str = "business"):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Run the independent ShopSteward worker")
     parser.add_argument("--once", action="store_true", help="Process at most one registered job")
-    parser.add_argument("--profile", choices=["business", "agent", "work"], default="business")
+    parser.add_argument(
+        "--profile", choices=["business", "agent", "learning", "work"], default="business"
+    )
     args = parser.parse_args()
-    if sys.platform == "win32" and args.profile in {"agent", "work"}:
+    if sys.platform == "win32" and args.profile in {"agent", "learning", "work"}:
         asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
     asyncio.run(run(args.once, args.profile))

@@ -11,7 +11,7 @@ from app.core.errors import AppError
 from app.knowledge import repository as documents
 from app.knowledge.storage import original_path
 from app.missions.models import PlanRow
-from app.planning.schemas import Candidate, Plan
+from app.planning.schemas import Candidate, parse_plan
 
 
 class PlanComparison(DTO):
@@ -49,7 +49,7 @@ class HistoricalEvidence(DTO):
 
 
 def comparison(plan):
-    parsed = Plan.model_validate(plan)
+    parsed = parse_plan(plan)
     snapshot = parsed.input_snapshot
     return PlanComparison(
         plan_id=parsed.id,
@@ -59,7 +59,10 @@ def comparison(plan):
         currency=snapshot.state.currency,
         cash_floor_minor=snapshot.policy.cash_floor_minor,
         max_purchase_qty=snapshot.task_constraints.get("max_purchase_qty"),
-        candidates=parsed.candidates,
+        candidates=[
+            Candidate.model_validate(candidate.model_dump(include=set(Candidate.model_fields)))
+            for candidate in parsed.candidates
+        ],
         recommended_candidate_id=parsed.recommended_candidate_id,
         evaluated_at=snapshot.evaluated_at,
     )

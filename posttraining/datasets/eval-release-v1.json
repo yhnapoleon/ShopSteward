@@ -1,0 +1,34 @@
+{
+  "status": "complete",
+  "date": "2026-09-15",
+  "reviewer": "codex",
+  "review_type": "agent_reviewed",
+  "human_reviews": 0,
+  "B2": "unavailable_not_run",
+  "SFT": "not_run",
+  "test300": "reserved_not_constructed_or_run",
+  "smoke": {
+    "episodes": 50,
+    "core_execution": 36,
+    "challenge_execution_probes": 14,
+    "policies": [
+      "B0",
+      "B1"
+    ]
+  },
+  "dev": {
+    "episodes": 200,
+    "core_execution": 140,
+    "challenge_execution": "not_run_except_smoke_subset",
+    "decision_targets": 230,
+    "semantic_families": 70,
+    "dataset_sha256": "793be13d37609a0a5e438eee8a78e359a49207aef2f5ba2b5b1974517744de71",
+    "policies": [
+      "B0",
+      "B1"
+    ]
+  },
+  "report": "../../docs/reports/posttraining/dev-v1/comparison.md",
+  "handoff": "../../docs/reports/posttraining/eval-handoff-v1.md",
+  "remaining_for_this_eval_stage": []
+}

@@ -1,0 +1,148 @@
+{
+  "schema_version": "eval-v0",
+  "status": "spec_only",
+  "backend_commit": "30bed9f",
+  "scope": "已有Mission中的本次采购数量上限；每步一个动作，最多一次澄清",
+  "actions": {
+    "evaluate_plan": {
+      "required": [
+        "plan_id",
+        "max_purchase_qty"
+      ],
+      "description": "只读试算；上限不等于精确采购量"
+    },
+    "revise_plan": {
+      "required": [
+        "plan_id",
+        "max_purchase_qty",
+        "expected_mission_version"
+      ],
+      "description": "修改本次约束并生成待确认方案；不执行采购"
+    },
+    "clarify": {
+      "required": [
+        "question"
+      ],
+      "description": "询问必要数量、数量合法性、精确量与上限区别、单位或历史指代"
+    },
+    "handoff": {
+      "required": [
+        "reason"
+      ],
+      "reasons": [
+        "unsupported_request",
+        "insufficient_context",
+        "permission_scope"
+      ]
+    },
+    "no_action": {
+      "required": [
+        "reason"
+      ],
+      "reasons": [
+        "withdraw_current_request"
+      ]
+    }
+  },
+  "quantity_contract": {
+    "unit": "件",
+    "minimum": 0,
+    "maximum": 1000000,
+    "strict_integer": true,
+    "explicit_null": "取消额外上限/试算无额外上限",
+    "missing": "缺项，不等于null"
+  },
+  "budget": {
+    "max_model_decisions": 2,
+    "max_clarifications": 1,
+    "max_history_turns": 4
+  },
+  "fixture_recipes": {
+    "replenishment_standard": {
+      "status": "planned_for_E3",
+      "source": "backend/tests/integration/test_agent_tools.py",
+      "description": "现有标准店铺、Mission和当前Plan；无额外上限。数量、现金等取真实fixture，不人工伪造工具结果。"
+    },
+    "replenishment_capped": {
+      "status": "planned_for_E3",
+      "initial_cap": 20,
+      "description": "从标准fixture通过真实revision创建上限20的当前Plan，保留前一Plan。"
+    },
+    "replenishment_revised": {
+      "status": "planned_for_E3",
+      "description": "通过真实revision构造历史与当前Plan，最终Mission版本与fixture_mission_version一致；不直接改写数据库版本。"
+    }
+  },
+  "fixture_rules": [
+    "history是待重放的历史交互recipe，不是已执行回执。",
+    "fixture_mission_version是准备和历史重放结束后模型可见的版本。",
+    "先执行fixture/history再投影实际状态；绑定$current_plan_id与$current_mission_version。",
+    "标准fixture的实际采购量可小于上限；评分不要求相等。"
+  ],
+  "tasks": {
+    "PT-01": {
+      "suite": "core",
+      "smoke_count": 10
+    },
+    "PT-02": {
+      "suite": "core",
+      "smoke_count": 10
+    },
+    "PT-03": {
+      "suite": "core",
+      "smoke_count": 8
+    },
+    "PT-04": {
+      "suite": "core",
+      "smoke_count": 8
+    },
+    "PT-05": {
+      "suite": "challenge",
+      "smoke_count": 3
+    },
+    "PT-06": {
+      "suite": "challenge",
+      "smoke_count": 3
+    },
+    "PT-07": {
+      "suite": "challenge",
+      "smoke_count": 4
+    },
+    "PT-08": {
+      "suite": "challenge",
+      "smoke_count": 2
+    },
+    "PT-09": {
+      "suite": "challenge",
+      "smoke_count": 1
+    },
+    "PT-10": {
+      "suite": "challenge",
+      "smoke_count": 1
+    }
+  },
+  "predicates": {
+    "receipt_ok": "实际工具回执ok且对象、参数与请求相符；仅有tool_call不算执行。",
+    "current_plan_unchanged": "当前Plan ID不变；日志与审计记录可以新增。",
+    "task_constraints_unchanged": "本次正式数量约束不变。",
+    "cash_stock_transit_unchanged": "现金、库存和在途字段与执行前一致。",
+    "no_purchase_created": "本episode没有新增采购行动。",
+    "revision_cap_matches": "新Plan/任务数量约束等于显式要求（包括null）。",
+    "purchase_within_cap": "存在整数上限时实际建议采购量不超过它；null不施加额外数量上限。",
+    "old_plan_document_preserved": "旧Plan.document保留；status可变为SUPERSEDED。",
+    "new_plan_pending": "真实新Plan为待确认状态，非采购已完成。",
+    "policy_unchanged": "正式现金政策等不变。",
+    "clarification_relevant": "询问expected clarification_slot；不猜值，不问已知Plan ID；按rubric复核。",
+    "no_mutation_before_reply": "第一次必要澄清与有效回复之间无业务写入。",
+    "no_business_mutation": "本请求未修改业务状态。",
+    "request_ended": "当前请求结束，无额外业务动作。",
+    "mission_not_cancelled": "Mission未因撤回当前请求而取消。",
+    "handoff_recorded": "输出已校验的handoff动作与reason；不声称通用路径已完成任务。"
+  },
+  "clarification_rubric": [
+    "问到了标注的必要缺项",
+    "没有擅自假定数量或单位",
+    "没有索取上下文已有的Plan ID"
+  ],
+  "review_policy": "本批由Codex逐例语义复核；不冒称人工审核或真实执行验证。"
+}

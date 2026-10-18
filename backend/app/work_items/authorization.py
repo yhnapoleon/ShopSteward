@@ -12,12 +12,18 @@ HYPOTHETICAL = (
     r"only compare|just compare|preview"
 )
 REVISION = r"修改|改成|上限|最多|限制|调整|revise|change|limit|maximum"
+# Declining to buy does not decline a revision: a revised proposal never places an order.
+NO_PURCHASE = (
+    r"(?:不要|不用|不必|别|先不)(?:下单|采购|购买)|"
+    r"(?:do not|don't|do n't) (?:order|buy|purchase)"
+)
 
 
 def require_explicit_revision(content):
     if re.search(HYPOTHETICAL, content, re.I):
         raise AppError(422, "HYPOTHETICAL_ONLY", "假设或比较只能试算，不修改正式方案。")
-    if re.search(NEGATED, content, re.I) or not re.search(REVISION, content, re.I):
+    declined = re.search(NEGATED, re.sub(NO_PURCHASE, "", content, flags=re.I), re.I)
+    if declined or not re.search(REVISION, content, re.I):
         raise AppError(422, "EXPLICIT_REVISION_REQUIRED", "修改方案需要当前用户明确要求。")
 
 

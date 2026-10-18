@@ -27,7 +27,13 @@ def message(content, created_at=None):
 
 @pytest.mark.parametrize(
     "content",
-    ["只比较20和40件", "如果改成最多20件呢", "不要修改方案", "just compare; don't change it"],
+    [
+        "只比较20和40件",
+        "如果改成最多20件呢",
+        "不要修改方案",
+        "just compare; don't change it",
+        "先不采购，方案也不要调整",
+    ],
 )
 def test_read_only_or_negative_request_cannot_mutate(content):
     with pytest.raises(AppError):
@@ -36,6 +42,9 @@ def test_read_only_or_negative_request_cannot_mutate(content):
 
 def test_explicit_revision_and_ambiguous_stop():
     require_explicit_revision("把当前方案修改成最多20件")
+    # Declining to order is not declining the revision that was asked for.
+    require_explicit_revision("请把方案修改为最多20件，不要下单")
+    require_explicit_revision("Change the plan to at most 20 units, but don't order yet")
     args = ControlArgs(
         mission_id="m", operation="pause", expected_mission_version=1, source_quote="停一下"
     )

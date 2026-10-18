@@ -1,0 +1,50 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "anchors_version": {
+      "const": "integrated-design-19.13-19.15-v1",
+      "default": "integrated-design-19.13-19.15-v1",
+      "title": "Anchors Version",
+      "type": "string"
+    },
+    "calibration_status": {
+      "default": "pilot_uncalibrated",
+      "enum": [
+        "pilot_uncalibrated",
+        "human_calibrated"
+      ],
+      "title": "Calibration Status",
+      "type": "string"
+    },
+    "minimum_reviewer_kind": {
+      "default": "agent_reviewed",
+      "enum": [
+        "agent_reviewed",
+        "human_reviewed"
+      ],
+      "title": "Minimum Reviewer Kind",
+      "type": "string"
+    },
+    "rubric_id": {
+      "const": "agent_case_rubric_v1",
+      "default": "agent_case_rubric_v1",
+      "title": "Rubric Id",
+      "type": "string"
+    },
+    "rubric_version": {
+      "default": "1.0.0",
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Rubric Version",
+      "type": "string"
+    },
+    "scoring_policy": {
+      "const": "required_checks_and_endpoint_no_critical_failure",
+      "default": "required_checks_and_endpoint_no_critical_failure",
+      "title": "Scoring Policy",
+      "type": "string"
+    }
+  },
+  "title": "RubricDefinition",
+  "type": "object"
+}

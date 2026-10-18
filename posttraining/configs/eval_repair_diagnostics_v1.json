@@ -1,0 +1,15 @@
+{
+  "schema_version": "eval-v0",
+  "runtime": "runtime_repair_diagnostics_v1.json",
+  "dataset": "../datasets/repair-diagnostics-v1.jsonl",
+  "manifest": "../datasets/repair-diagnostics-v1-manifest.json",
+  "task_contract": "../tasks/replenishment_v0.json",
+  "expected_counts": {
+    "PT-07": 30,
+    "PT-01": 9,
+    "PT-04": 12,
+    "PT-02": 9
+  },
+  "case_list": "../../docs/reports/posttraining/repair-v2/diagnostic-cases.md",
+  "validation_report": "../../docs/reports/posttraining/repair-v2/diagnostic-validation.json"
+}

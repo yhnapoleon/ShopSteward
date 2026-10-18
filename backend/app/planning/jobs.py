@@ -77,6 +77,30 @@ def make_handlers(settings):
             if mission.current_plan_id
             else None
         )
+        if mission.planning_context:
+            from app.operations_cases.models import CaseRow
+            from app.operations_cases.repository import event as case_event
+
+            if (
+                old
+                and old.status == "PENDING_APPROVAL"
+                and old.expires_at > now
+                and old.state_version == store.state_version
+                and old.document["input_snapshot"]["mission_version"] == mission.mission_version
+            ):
+                return result(
+                    "Recovery plan awaits explicit approval", "SKIPPED", mission, plan=old
+                )
+            if mission.current_action_id:
+                return result("Recovery purchase is unresolved", "SKIPPED", mission)
+            case = await session.get(
+                CaseRow, mission.planning_context["case_id"], with_for_update=True
+            )
+            if case:
+                await case_event(
+                    session, case, "RECOVERY_RECHECK_REQUIRED", {"reason": "PLAN_STALE_OR_CLOSED"}
+                )
+            mission.planning_context = None
         if old and old.status == "PENDING_APPROVAL":
             if old.expires_at <= now:
                 old.status = "EXPIRED"
@@ -145,6 +169,7 @@ def make_handlers(settings):
         if (
             old
             and old.status == "REJECTED"
+            and old.document.get("plan_kind") != "recovery_v1"
             and not prepared.manual
             and intent_hash(snapshot)
             == intent_hash(DecisionSnapshot.model_validate(old.document["input_snapshot"]))

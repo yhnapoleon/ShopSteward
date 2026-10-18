@@ -5,7 +5,9 @@ from sqlalchemy import select
 
 from app.agent_bridge import progress
 from app.agent_bridge import repository as repo
-from app.agent_bridge.models import AgentRun, Conversation, Message
+from app.agent_bridge.context_repository import freeze_config
+from app.agent_bridge.context_sources import load_history
+from app.agent_bridge.models import AgentRun, Conversation
 from app.api.dependencies import authorize_store
 from app.core.errors import AppError
 from app.scheduling.handlers import Handler
@@ -59,34 +61,19 @@ def make_handlers(settings, *, executor=None):
             await session.refresh(item, with_for_update=True)
             if conversation.active_run_id != item.id or item.status not in {"QUEUED", "RUNNING"}:
                 raise AppError(409, "AGENT_RUN_INACTIVE", "Run is no longer active")
-            if item.graph_version != "agent-v1":
+            if item.graph_version not in {"agent-v1", "agent-context-v1"}:
                 raise AppError(
                     409, "GRAPH_VERSION_UNAVAILABLE", "Stored graph version is unavailable"
                 )
             current_principal(settings, conversation)
+            context_config = await freeze_config(session, item, settings)
+            if context_config["enabled"]:
+                item.graph_version = "agent-context-v1"
             await progress.interrupt_open(session, item, "WORKER_RESTARTED")
             item.status = "RUNNING"
             item.token_hash = hashlib.sha256(token.encode()).hexdigest()
             item.token_job_lease = job.lease_token
-            history = (
-                await session.scalars(
-                    select(Message)
-                    .where(
-                        Message.conversation_id == conversation.id,
-                        (Message.seq <= item.input_through_seq)
-                        | (Message.role == "assistant")
-                        | (Message.run_id == item.id),
-                    )
-                    .order_by(Message.seq.desc())
-                    .limit(80)
-                )
-            ).all()
-            # Queued user messages may precede an earlier reply in wall-clock order.
-            # Group complete turns so each prior reply follows its own input.
-            anchors = {}
-            for message in history:
-                anchors[message.run_id] = min(anchors.get(message.run_id, message.seq), message.seq)
-            history.sort(key=lambda message: (anchors[message.run_id], message.seq))
+            history, admission = await load_history(session, conversation, item)
             context = {
                 "db": db,
                 "settings": settings,
@@ -99,7 +86,10 @@ def make_handlers(settings, *, executor=None):
                 "token": token,
                 "resume": item.resume_value,
                 "resume_interrupt_id": item.interrupt_id,
-                "messages": [{"role": m.role, "content": m.content} for m in history],
+                "messages": [{"role": m["role"], "content": m["content"]} for m in history],
+                "message_envelopes": history,
+                "admission": admission,
+                "context_config": context_config,
             }
             if item.trigger == "FOLLOWUP":
                 context["messages"].append(
@@ -107,6 +97,14 @@ def make_handlers(settings, *, executor=None):
                         "role": "user",
                         "content": "后台跟进：检查最新经营变化，解释新增风险、方案或行动结果；"
                         "没有变化时简短说明。",
+                    }
+                )
+                context["message_envelopes"].append(
+                    {
+                        "message_id": "followup:" + item.id,
+                        "run_id": item.id,
+                        "seq": item.input_through_seq,
+                        **context["messages"][-1],
                     }
                 )
             await assert_lease(session, job)
@@ -129,6 +127,10 @@ def make_handlers(settings, *, executor=None):
             raise AppError(409, "AGENT_RUN_INACTIVE", "Run was cancelled")
         current_principal(settings, conversation)
         item.output = output
+        from app.learning.run_binding import assert_current
+        await assert_current(
+            session, conversation, item.id, settings, current_principal(settings, conversation)
+        )
         item.resume_value = None
         if output["status"] == "WAITING_INPUT":
             item.status = "WAITING_INPUT"
@@ -161,6 +163,8 @@ def make_handlers(settings, *, executor=None):
             if item.trigger_fingerprint:
                 conversation.last_fingerprint = item.trigger_fingerprint
             await repo.close_run(session, conversation, item, "SUCCEEDED")
+        from app.learning.monitoring import observe_run
+        await observe_run(session, item)
         return {
             "summary": "Agent paused for input"
             if item.status == "WAITING_INPUT"

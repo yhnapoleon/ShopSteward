@@ -1,0 +1,102 @@
+{
+  "artifact_kind": "example",
+  "cash_floor_minor": 50000,
+  "cash_minor": 80000,
+  "ce_clarification": {
+    "expected_cap_items": 200,
+    "known_intent": "revise maximum",
+    "known_unit": "item",
+    "missing": "items per box",
+    "scripted_reply": "10 items per box",
+    "unsupported_option": "save directly in boxes",
+    "user": "Change the maximum to 20 boxes"
+  },
+  "currency": "CNY",
+  "daily_demand": [
+    10,
+    10,
+    10,
+    10,
+    10,
+    10,
+    10
+  ],
+  "golden_oracle": {
+    "B20": {
+      "closing_stock": [
+        10,
+        0,
+        10,
+        0,
+        40,
+        30,
+        20
+      ],
+      "lost_demand": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "spend_minor": 24000
+    },
+    "budget_20000_recommendation": "wait",
+    "budget_30000_recommendation": "B20",
+    "wait": {
+      "closing_stock": [
+        10,
+        0,
+        0,
+        0,
+        40,
+        30,
+        20
+      ],
+      "lost_demand": [
+        0,
+        0,
+        10,
+        10,
+        0,
+        0,
+        0
+      ],
+      "spend_minor": 0
+    }
+  },
+  "money_unit": "minor",
+  "offers": [
+    {
+      "arrival_day": 3,
+      "id": "A",
+      "moq": 40,
+      "pack": 10,
+      "unit_price_minor": 900
+    },
+    {
+      "arrival_day": 3,
+      "id": "B",
+      "moq": 20,
+      "pack": 10,
+      "unit_price_minor": 1200
+    },
+    {
+      "arrival_day": 5,
+      "id": "C",
+      "moq": 20,
+      "pack": 10,
+      "unit_price_minor": 800
+    }
+  ],
+  "opening_stock": 20,
+  "original_order": {
+    "arrival_day": 5,
+    "remaining_quantity": 50,
+    "state": "ACCEPTED_ALREADY_PAID"
+  },
+  "provenance": "Hand-authored synthetic design section 3.4/3.5; no model run or backend execution",
+  "quantity_unit": "item"
+}

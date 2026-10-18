@@ -1,0 +1,503 @@
+{
+  "$defs": {
+    "ActionAttempt": {
+      "additionalProperties": false,
+      "properties": {
+        "action_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Action Id",
+          "type": "string"
+        },
+        "authorized_scope": {
+          "title": "Authorized Scope",
+          "type": "boolean"
+        },
+        "evidence_refs": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "known_stale_source": {
+          "title": "Known Stale Source",
+          "type": "boolean"
+        },
+        "name": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "action_id",
+        "name",
+        "authorized_scope",
+        "known_stale_source",
+        "evidence_refs"
+      ],
+      "title": "ActionAttempt",
+      "type": "object"
+    },
+    "CallUsage": {
+      "additionalProperties": false,
+      "properties": {
+        "cached_input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cached Input Tokens"
+        },
+        "call_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Call Id",
+          "type": "string"
+        },
+        "cost": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cost"
+        },
+        "currency": {
+          "const": "USD",
+          "default": "USD",
+          "title": "Currency",
+          "type": "string"
+        },
+        "input_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Input Tokens"
+        },
+        "output_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Output Tokens"
+        },
+        "reasoning_tokens": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reasoning Tokens"
+        },
+        "retry_of": {
+          "anyOf": [
+            {
+              "minLength": 1,
+              "pattern": "\\S",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Retry Of"
+        },
+        "role": {
+          "enum": [
+            "root",
+            "helper",
+            "expert"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "completed",
+            "error",
+            "timeout",
+            "rate_limited"
+          ],
+          "title": "Status",
+          "type": "string"
+        }
+      },
+      "required": [
+        "call_id",
+        "role",
+        "status",
+        "input_tokens",
+        "output_tokens",
+        "reasoning_tokens",
+        "cached_input_tokens",
+        "cost"
+      ],
+      "title": "CallUsage",
+      "type": "object"
+    },
+    "Observation": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_refs": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        },
+        "observation_id": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Observation Id",
+          "type": "string"
+        },
+        "source_kind": {
+          "enum": [
+            "business_state",
+            "solver",
+            "tool_receipt",
+            "context",
+            "transport"
+          ],
+          "title": "Source Kind",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "observation_id",
+        "value",
+        "source_kind",
+        "evidence_refs"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "TraceEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "minLength": 1,
+          "pattern": "\\S",
+          "title": "Code",
+          "type": "string"
+        },
+        "evidence_refs": {
+          "items": {
+            "minLength": 1,
+            "pattern": "\\S",
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Evidence Refs",
+          "type": "array"
+        }
+      },
+      "required": [
+        "code",
+        "evidence_refs"
+      ],
+      "title": "TraceEvent",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "actions": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ActionAttempt"
+      },
+      "title": "Actions",
+      "type": "array"
+    },
+    "active_latency_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Active Latency Ms"
+    },
+    "actual_side_effects": {
+      "items": {
+        "$ref": "#/$defs/TraceEvent"
+      },
+      "title": "Actual Side Effects",
+      "type": "array"
+    },
+    "adapter_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Adapter Version",
+      "type": "string"
+    },
+    "artifact_kind": {
+      "enum": [
+        "example",
+        "recorded"
+      ],
+      "title": "Artifact Kind",
+      "type": "string"
+    },
+    "attempted": {
+      "title": "Attempted",
+      "type": "boolean"
+    },
+    "backend_blocks": {
+      "items": {
+        "$ref": "#/$defs/TraceEvent"
+      },
+      "title": "Backend Blocks",
+      "type": "array"
+    },
+    "builder_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Builder Version",
+      "type": "string"
+    },
+    "calls": {
+      "items": {
+        "$ref": "#/$defs/CallUsage"
+      },
+      "title": "Calls",
+      "type": "array"
+    },
+    "calls_complete": {
+      "title": "Calls Complete",
+      "type": "boolean"
+    },
+    "case_contract_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Case Contract Hash",
+      "type": "string"
+    },
+    "case_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Case Id",
+      "type": "string"
+    },
+    "clarification_questions": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "title": "Clarification Questions",
+      "type": "array"
+    },
+    "decision_errors": {
+      "items": {
+        "$ref": "#/$defs/TraceEvent"
+      },
+      "title": "Decision Errors",
+      "type": "array"
+    },
+    "fixture_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Fixture Hash",
+      "type": "string"
+    },
+    "followup_received": {
+      "title": "Followup Received",
+      "type": "boolean"
+    },
+    "human_wait_ms": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Human Wait Ms"
+    },
+    "model_snapshot": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Model Snapshot",
+      "type": "string"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/Observation"
+      },
+      "title": "Observations",
+      "type": "array"
+    },
+    "profile_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Profile Hash",
+      "type": "string"
+    },
+    "prompt_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Prompt Hash",
+      "type": "string"
+    },
+    "replicate_id": {
+      "minimum": 1,
+      "title": "Replicate Id",
+      "type": "integer"
+    },
+    "response_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Response Text"
+    },
+    "run_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "run_status": {
+      "enum": [
+        "completed",
+        "timeout",
+        "rate_limited",
+        "model_error",
+        "environment_error",
+        "not_started"
+      ],
+      "title": "Run Status",
+      "type": "string"
+    },
+    "schema_version": {
+      "const": "case_trace_v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "solver_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Solver Version",
+      "type": "string"
+    },
+    "strategy_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Strategy Id",
+      "type": "string"
+    },
+    "suite_id": {
+      "enum": [
+        "ce",
+        "ops"
+      ],
+      "title": "Suite Id",
+      "type": "string"
+    },
+    "task_contract_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Task Contract Version",
+      "type": "string"
+    },
+    "trace_complete": {
+      "title": "Trace Complete",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "schema_version",
+    "case_id",
+    "suite_id",
+    "fixture_hash",
+    "case_contract_hash",
+    "task_contract_version",
+    "run_id",
+    "replicate_id",
+    "strategy_id",
+    "model_snapshot",
+    "profile_hash",
+    "prompt_hash",
+    "builder_version",
+    "solver_version",
+    "adapter_version",
+    "artifact_kind",
+    "attempted",
+    "trace_complete",
+    "run_status",
+    "response_text",
+    "observations",
+    "clarification_questions",
+    "followup_received",
+    "decision_errors",
+    "backend_blocks",
+    "actual_side_effects",
+    "calls",
+    "calls_complete",
+    "active_latency_ms",
+    "human_wait_ms"
+  ],
+  "title": "CaseTrace",
+  "type": "object"
+}
