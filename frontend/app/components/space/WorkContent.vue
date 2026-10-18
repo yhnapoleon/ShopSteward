@@ -101,7 +101,11 @@ async function surfaceAnswer(text: string) {
           @submit="surfaceAnswer"
         />
       </details>
-      <section v-else class="glass work-status-panel">
+      <section
+        v-else
+        class="glass work-status-panel"
+        :data-onboarding="item.result.calculation ? 'result' : undefined"
+      >
         <p v-if="stale" class="notice">{{ tr('这是之前的结果，尚未根据新要求更新。') }}</p>
         <WorkResult
           :result="item.result"
