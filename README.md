@@ -310,6 +310,7 @@ corepack pnpm --filter @shopsteward/frontend exec playwright test tests/forecast
 | 架构与数据边界 | [架构说明](docs/architecture.md)、[数据字典](docs/data-dictionary.md) |
 | 当前 API | [运行时 OpenAPI](docs/api/backend.runtime.openapi.json)、[实现清单](docs/api/implementation-status.json)、[契约说明](docs/api/README.md) |
 | 模块运行 | [Backend](backend/README.md)、[前端](frontend/README.md)、[Agent](agent/README.md)、[模拟器](simulation/README.md)、[ML](ml/README.md) |
+| 前端对接（改接口前先看） | [前端对接说明](frontend/docs/frontend-integration.md)：按板块写明前端调用哪些接口、依赖哪些字段和状态码，以及后端改动时要同步改哪里 |
 | 任务、事项与成果 | [事项协议](backend/app/work_items/README.md)、[任务工作区交付](docs/reports/agent-workspace-delivery.md) |
 | Knowledge | [完整部署与交接手册](docs/runbooks/knowledge-server-handoff.md) |
 | 开发与视觉规范 | [Backend 开发规范](docs/backend-development.md)、[前端视觉规范](frontend/style.md)、[macOS 环境](docs/local-macos-development.md) |

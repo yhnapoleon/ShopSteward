@@ -2,8 +2,12 @@
 // No source reports the goods of an order the owner sent by hand: the owner records them here.
 import { joinText, t as tr } from '~/i18n'
 import { when } from '~/utils/presentation'
+import { supplierDisplayName } from '~/utils/glossary'
+// `skip`: an order the emergency restock card is already showing (it records the arrival there).
+const props = defineProps<{ skip?: string | null }>()
 const shop = useShop()
 const { s, awaitingArrival, hasRole } = shop
+const arrivals = computed(() => awaitingArrival.value.filter((x) => x.action.id !== props.skip))
 const operator = computed(() => hasRole('operator'))
 const counts = reactive<Record<string, number>>({})
 const error = ref('')
@@ -25,7 +29,7 @@ async function record(id: string, outstanding: number) {
 </script>
 <template>
   <article
-    v-for="{ action, inbound } in awaitingArrival"
+    v-for="{ action, inbound } in arrivals"
     :key="action.id"
     class="arrival-card glass"
     data-arrival-card
@@ -42,7 +46,7 @@ async function record(id: string, outstanding: number) {
     <div class="arrival-facts">
       <div>
         <span>{{ tr('供应商') }}</span
-        ><b>{{ action.purchase_snapshot.supplier_id }}</b>
+        ><b>{{ supplierDisplayName(action.purchase_snapshot.supplier_id) }}</b>
       </div>
       <div>
         <span>{{ tr('到货进度') }}</span

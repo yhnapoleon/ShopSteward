@@ -1,9 +1,11 @@
 import { test, expect, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 
-// Real Vue UI with intercepted transport. No purchase is sent to a supplier. The owner reaches
-// the mission either from the work page (`?view=work`, the normal entry) or from the older task
-// page (`?view=task`), which stays reachable by link.
+// Real Vue UI with intercepted transport. No purchase is sent to a supplier. These cases drive the
+// supply disruption panel of the older task page (`?view=task`), which stays reachable by link;
+// on the work page (`?view=work`, the normal entry) the emergency restock flow replaced it and is
+// covered by recovery-flow.spec.ts. The work-page case below checks an order sent by hand that
+// belongs to no restock.
 type Options = {
   suppliers?: number
   entry?: 'task' | 'work'
@@ -228,8 +230,8 @@ async function setup(
   } else {
     await page.goto('/?view=task&mission=' + mission.id + '&store=' + mission.store_id)
     await expect(page.locator('.task-workspace')).toBeVisible()
+    await page.getByRole('button', { name: '供应异常应对', exact: true }).click({ timeout: 5000 })
   }
-  await page.getByRole('button', { name: '供应异常应对', exact: true }).click({ timeout: 5000 })
   return c
 }
 
@@ -364,24 +366,6 @@ test('超过三家报价时要求选择范围并传递供应商名单', async ({
   await page.getByRole('button', { name: '开始分析', exact: true }).click()
   await expect(page.locator('[data-recovery-candidate="b20"]')).toBeVisible()
   expect(c.writes[0].body.supplier_ids).toEqual(['supplier-1', 'supplier-3'])
-})
-
-test('从事项页进入：采用报价后方案卡只给已采纳的报价或本轮不补', async ({ page }) => {
-  const c = await setup(page, { entry: 'work' })
-  await page.getByLabel('本次应急预算（元）', { exact: true }).fill('300')
-  await page.getByRole('button', { name: '开始分析', exact: true }).click()
-  await page
-    .locator('[data-recovery-candidate="b20"]')
-    .getByRole('button', { name: '生成待确认方案' })
-    .click()
-  const card = page.locator('#space-plan .space-plan-card')
-  await expect(card).toContainText('这份待确认方案对应已采纳的报价', { timeout: 5000 })
-  // Two quotes share the quantity; the amounts are the adopted supplier's.
-  await expect(card.locator('.impact-value').nth(1)).toHaveText('¥240')
-  const options = card.getByRole('group', { name: '采购选项' }).getByRole('button')
-  await expect(options).toHaveCount(2)
-  await expect(options.nth(1)).toContainText('本轮暂不补货')
-  expect(c.writes.some((r) => r.path.endsWith('/decision'))).toBe(false)
 })
 
 test('从事项页进入：店主自己发出的订单在方案位置等待回复，状态写待供应商确认', async ({ page }) => {

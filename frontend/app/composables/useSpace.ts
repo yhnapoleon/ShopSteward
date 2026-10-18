@@ -28,7 +28,7 @@ export function needsOwner(item: Work) {
 }
 
 /** Status badge for a listed work item, from what the item itself carries (§6.2). */
-export function workBadge(item: Work, now = Date.now()): Badge {
+export function workBadge(item: Work, now = Date.now(), ownerRecordsArrival = false): Badge {
   const business = item.business
   const code = business?.code || ''
   const expired = !!business?.valid_until && Date.parse(business.valid_until) <= now
@@ -47,6 +47,7 @@ export function workBadge(item: Work, now = Date.now()): Badge {
     plan: code === 'PENDING_APPROVAL' ? 'PENDING_APPROVAL' : undefined,
     canDecide: !!business?.can_confirm && !expired,
     inTransit: code === 'IN_TRANSIT' ? 1 : 0,
+    ownerRecordsArrival,
     business,
   })
   // The backend says the owner is needed (stale data, a plan to re-check, another purchase
@@ -57,6 +58,17 @@ export function workBadge(item: Work, now = Date.now()): Badge {
 }
 
 type ShopState = ReturnType<typeof useShop>['s']
+
+/** Goods of an order the owner sent by hand are on the way: only the owner can record them. */
+export const awaitsOwnerArrival = (missionId: string | null | undefined, s: ShopState) =>
+  !!missionId &&
+  s.actions.some(
+    (a) =>
+      a.mission_id === missionId &&
+      a.channel === 'assisted' &&
+      a.status === 'SUCCEEDED' &&
+      s.inbounds.some((i) => i.action_id === a.id && i.remaining_quantity > 0),
+  )
 
 /**
  * A mission's latest change worth one line (§5): purchase orders, arrivals, the owner's own actions
@@ -171,6 +183,7 @@ export function useSpace() {
           inTransit: shop.stock.value?.in_transit,
           confirmationPending: confirmationPending.value,
           awaitingSupplier: shop.awaitingSupplier.value?.mission_id === m.id,
+          ownerRecordsArrival: shop.awaitingArrival.value.length > 0,
           business: current.business,
         })
       : confirmationPending.value

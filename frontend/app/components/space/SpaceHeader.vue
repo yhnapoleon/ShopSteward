@@ -8,6 +8,18 @@ const space = useSpace()
 const { item, linked, mission, ended } = space
 const badge = computed(() => space.badgeFor(props.issue))
 const error = ref('')
+// Emergency restock is started from here; while one is under way its card leads the page instead.
+const launcher = useRecoveryLaunch()
+const canRestock = computed(
+  () =>
+    !!s.session?.recoveryCases &&
+    hasRole('operator') &&
+    mission.value?.status === 'ACTIVE' &&
+    !launcher.inProgress(mission.value.id),
+)
+function restock() {
+  if (mission.value) launcher.request({ missionId: mission.value.id, reason: 'manual' })
+}
 async function resume() {
   error.value = ''
   try {
@@ -41,6 +53,9 @@ async function resume() {
     </div>
     <div class="task-heading-actions">
       <span class="tag" :class="badge.tone" role="status">{{ badge.label }}</span>
+      <button v-if="canRestock" type="button" class="rf-entry" data-recovery-entry @click="restock">
+        <AppIcon name="truck" />{{ tr('应急补货') }}
+      </button>
       <template v-if="mission"
         ><button class="text-link" aria-haspopup="dialog" @click="emit('open', 'mission')">
           {{ tr('委托详情') }}</button

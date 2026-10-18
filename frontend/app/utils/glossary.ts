@@ -1,3 +1,4 @@
+import { reactive } from 'vue'
 import { t } from '~/i18n'
 import { when } from '~/utils/presentation'
 
@@ -24,6 +25,8 @@ export type BadgeInput = {
   confirmationPending?: boolean
   /** An order the owner sends by hand waits for the supplier's reply to be pasted back. */
   awaitingSupplier?: boolean
+  /** Goods of an order the owner sent by hand are on the way; only the owner can record them. */
+  ownerRecordsArrival?: boolean
   /** Backend work-item summary, used only when nothing below matches. */
   business?: { code?: string | null; label?: string | null } | null
 }
@@ -45,7 +48,7 @@ export function statusBadge(input: BadgeInput): Badge {
   )
     return badge('正在核实采购', 'blue')
   if ((input.inTransit || 0) > 0 && input.plan !== 'PENDING_APPROVAL')
-    return badge('等待到货', 'blue')
+    return badge(input.ownerRecordsArrival ? '货到后请登记' : '等待到货', 'blue')
   if (input.work === 'PROCESSING') return badge('正在处理', 'blue')
   if (input.mission === 'PAUSED') return badge('已暂停', 'gray')
   if (['COMPLETED', 'CANCELLED'].includes(input.mission || '') || input.work === 'COMPLETED')
@@ -80,6 +83,8 @@ export function orderStatus(
   if (action.status === 'STALE') return { label: '原方案失效', tone: 'gray' }
   if (inbound?.arrival_status === 'RECEIVED') return { label: '已到货', tone: 'green' }
   if (inbound?.arrival_status === 'PARTIALLY_RECEIVED') return { label: '部分到货', tone: 'blue' }
+  // No source reports the goods of an order sent by hand: the owner records them on arrival.
+  if (action.channel === 'assisted') return { label: '货到后请登记', tone: 'blue' }
   return { label: '等待到货', tone: 'blue' }
 }
 
@@ -111,9 +116,27 @@ export function storeDisplayName(
   return t('店铺尾号 {0}', [store.store_id.slice(-8)])
 }
 
-/** Supplier label (§6.3): the catalog name when there is one, else "供应商 001" from `supplier_001`. */
+/**
+ * Supplier names the current store has on file (its supplier documents and sourcing runs), so a
+ * sourced supplier reads "百川批发" everywhere instead of its id "B". Cleared when the store changes.
+ */
+const knownSuppliers = reactive<Record<string, string>>({})
+export function rememberSupplierNames(
+  entries: { supplier_id: string; name?: string | null }[],
+  replace = false,
+) {
+  if (replace) for (const id of Object.keys(knownSuppliers)) delete knownSuppliers[id]
+  for (const entry of entries)
+    if (entry.name?.trim()) knownSuppliers[entry.supplier_id] = entry.name.trim()
+}
+
+/**
+ * Supplier label (§6.3): the given or known name when there is one, else "供应商 001" from
+ * `supplier_001`.
+ */
 export function supplierDisplayName(id: string | null | undefined, name?: string | null) {
   if (name?.trim()) return name.trim()
+  if (id && knownSuppliers[id]) return knownSuppliers[id]
   const number = /^supplier[_-]?(\d+)$/i.exec(id || '')?.[1]
   if (number) return t('供应商 {0}', [number.padStart(3, '0')])
   return id || t('未取得')

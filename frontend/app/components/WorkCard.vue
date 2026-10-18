@@ -3,12 +3,15 @@ import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { when } from '~/utils/presentation'
 import { workPresentation } from '~/utils/workPresentation'
-import { workBadge } from '~/composables/useSpace'
+import { awaitsOwnerArrival, workBadge } from '~/composables/useSpace'
 const props = defineProps<{ item: Schema<'WorkView'> }>()
 defineEmits<{ open: [] }>()
 const presentation = computed(() => workPresentation(props.item))
 // The badge uses the shared status vocabulary; the backend's own wording stays in the text.
-const badge = computed(() => workBadge(props.item))
+const { s } = useShop()
+const badge = computed(() =>
+  workBadge(props.item, Date.now(), awaitsOwnerArrival(props.item.mission_id, s)),
+)
 const state = computed(() => tr(presentation.value.label))
 const work = useWorkItems()
 </script>

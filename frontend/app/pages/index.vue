@@ -438,6 +438,27 @@ const issue = computed(() =>
 const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
 )
+// Emergency restock (§18): the today page offers it when the regular plan cannot cover the need,
+// and a stockout or cash reminder opens it with the gap filled in.
+const recoveryPrompt = useRecoveryPrompt()
+const recoveryLauncher = useRecoveryLaunch()
+const restockable = (a: Schema<'Alert'>) =>
+  !!s.session?.recoveryCases &&
+  work.s.available &&
+  hasRole('operator') &&
+  a.status !== 'RESOLVED' &&
+  ['STOCKOUT_RISK', 'CASH_CONSTRAINT'].includes(a.type) &&
+  s.missions.some((m) => m.id === a.mission_id && m.status === 'ACTIVE')
+async function restockFrom(a: Schema<'Alert'>) {
+  if (!a.mission_id) return
+  recoveryLauncher.request({
+    missionId: a.mission_id,
+    reason: a.type === 'CASH_CONSTRAINT' ? 'cash' : 'stockout',
+    gap: a.facts.shortage_qty ?? null,
+  })
+  dialog.value = ''
+  await openTask(a.mission_id)
+}
 // Demo mode (§10): plain store names and the demo badge; business rules and data stay the same.
 const { enabled: demoMode, saveFailed: demoSaveFailed, set: setDemo, storeLabel } = useDemoMode()
 const currentStore = computed(() => s.stores.find((st) => st.store_id === s.storeId))
@@ -454,7 +475,8 @@ const attention = computed(
 const decisionCount = computed(
   () =>
     decideWorks.value.length +
-    ((taskCardShown.value && canDecide.value) || attention.value ? 1 : 0),
+    ((taskCardShown.value && canDecide.value) || attention.value ? 1 : 0) +
+    (recoveryPrompt.shown.value ? 1 : 0),
 )
 const todayStarted = computed(() =>
   Boolean(s.storeId && (mission.value || activeWorks.value.length || issue.value)),
@@ -882,6 +904,7 @@ function briefing() {
                 :item="item"
                 @open="openWork(item.id)"
               />
+              <RecoveryPrompt @open="openTask" />
               <TaskCard v-if="taskCardShown" @open="openTask()" />
               <article
                 v-else-if="issue === 'stale' && firstSync(s.dashboard?.freshness)"
@@ -953,7 +976,10 @@ function briefing() {
                   }}
                 </button>
               </article>
-              <p v-if="!decideWorks.length && !taskCardShown && !issue" class="space-quiet">
+              <p
+                v-if="!decideWorks.length && !taskCardShown && !issue && !recoveryPrompt.shown.value"
+                class="space-quiet"
+              >
                 {{ tr('现在没有需要你拍板的事。') }}
               </p>
               <template v-if="work.s.available">
@@ -1904,14 +1930,23 @@ function briefing() {
             ])
           }}
         </p>
-        <button
-          v-if="a.status === 'OPEN'"
-          class="secondary"
-          :disabled="Boolean(s.busy) || !hasRole('operator')"
-          @click="act(() => shop.acknowledge(a.id))"
-        >
-          {{ tr('标记已知晓') }}
-        </button>
+        <div class="alert-actions">
+          <button
+            v-if="a.status === 'OPEN'"
+            class="secondary"
+            :disabled="Boolean(s.busy) || !hasRole('operator')"
+            @click="act(() => shop.acknowledge(a.id))"
+          >
+            {{ tr('标记已知晓') }}</button
+          ><button
+            v-if="restockable(a)"
+            class="primary"
+            data-recovery-from-alert
+            @click="restockFrom(a)"
+          >
+            {{ tr('找别家补') }}<AppIcon name="arrow-right" />
+          </button>
+        </div>
       </section>
       <p class="source-note">
         {{ tr('标记知晓不会解除风险；解除必须有新的业务证据。') }}

@@ -9,6 +9,8 @@ export function useRecoveryCase(missionId: () => string) {
   const items = ref<RecoveryCase[]>([])
   const busy = ref(false),
     error = ref(''),
+    // The backend's code for the last failed submission, so callers can say it in plain words.
+    errorCode = ref(''),
     syncError = ref(''),
     pending = ref<Submission | null>(null)
   const revoked = ref(false)
@@ -79,6 +81,7 @@ export function useRecoveryCase(missionId: () => string) {
       storedKey = storageKey()
     busy.value = true
     error.value = ''
+    errorCode.value = ''
     pending.value = request
     try {
       sessionStorage.setItem(storedKey, JSON.stringify(request))
@@ -92,6 +95,7 @@ export function useRecoveryCase(missionId: () => string) {
     } catch (e) {
       if (!current(n, key)) return
       error.value = (e as Error).message
+      errorCode.value = e instanceof ApiFailure ? e.code : ''
       if (e instanceof ApiFailure && e.status >= 400 && e.status < 500) {
         sessionStorage.removeItem(storedKey)
         pending.value = null
@@ -195,6 +199,7 @@ export function useRecoveryCase(missionId: () => string) {
       busy.value = false
       pending.value = null
       error.value = ''
+      errorCode.value = ''
       syncError.value = ''
       revoked.value = false
       drafting.value = false
@@ -235,6 +240,7 @@ export function useRecoveryCase(missionId: () => string) {
     items,
     busy,
     error,
+    errorCode,
     syncError,
     pending,
     revoked,
@@ -247,5 +253,6 @@ export function useRecoveryCase(missionId: () => string) {
     source,
     retry,
     newDraft,
+    apply,
   }
 }

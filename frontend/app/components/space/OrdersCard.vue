@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { t as tr } from '~/i18n'
-import { orderStatus } from '~/utils/glossary'
+import { orderStatus, supplierDisplayName } from '~/utils/glossary'
 import { money, when } from '~/utils/presentation'
 
 // Purchase orders of this mission, newest first: what was bought, where it stands, and how much
@@ -30,6 +30,31 @@ const orders = computed(() =>
       }
     }),
 )
+// The newest order failed or was declined and no emergency restock is under way: offer one (§18).
+const shop = useShop()
+const launcher = useRecoveryLaunch()
+const restockable = computed(() => {
+  const newest = orders.value[0]?.action
+  const mission = space.mission.value
+  return newest?.status === 'FAILED' &&
+    !!mission &&
+    mission.status === 'ACTIVE' &&
+    !!s.session?.recoveryCases &&
+    shop.hasRole('operator') &&
+    !launcher.inProgress(mission.id)
+    ? newest
+    : null
+})
+function restock() {
+  const failed = restockable.value
+  if (!failed) return
+  const declined = failed.supplier_reply?.outcome === 'declined'
+  launcher.request({
+    missionId: failed.mission_id,
+    reason: declined ? 'declined' : 'failed',
+    exclude: declined ? failed.purchase_snapshot.supplier_id : null,
+  })
+}
 // New orders slide in once; the list does not replay when the page refreshes in the background.
 const live = ref(false)
 onMounted(() => nextTick(() => (live.value = true)))
@@ -56,6 +81,9 @@ onMounted(() => nextTick(() => (live.value = true)))
               ><b>{{
                 `${tr('{0} 件', [o.action.quantity])} · ${tr(money(o.action.amount_minor))}`
               }}</b
+              ><span class="space-order-supplier">{{
+                supplierDisplayName(o.action.purchase_snapshot.supplier_id)
+              }}</span
               ><span class="tag" :class="o.status.tone">{{ tr(o.status.label) }}</span></span
             ><span v-if="o.tracked" class="space-order-meta">{{
               o.status.label === '已到货'
@@ -104,6 +132,15 @@ onMounted(() => nextTick(() => (live.value = true)))
             </div>
           </dl>
         </details>
+        <button
+          v-if="restockable?.id === o.action.id"
+          type="button"
+          class="text-link space-order-restock"
+          data-recovery-from-order
+          @click="restock"
+        >
+          {{ tr('找别家补') }}<AppIcon name="arrow-right" />
+        </button>
       </li>
     </TransitionGroup>
   </section>

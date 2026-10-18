@@ -2,6 +2,8 @@
 // The system reaches no supplier: the owner sends this message and pastes the reply back.
 import { joinText, locale, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
+import { supplierDisplayName } from '~/utils/glossary'
+import { partialReply } from '~/utils/recovery'
 const shop = useShop()
 const { s, awaitingSupplier, hasRole } = shop
 const action = awaitingSupplier
@@ -12,6 +14,33 @@ const reply = ref(''),
   copied = ref(false),
   confirmingWithdrawal = ref(false)
 const approver = computed(() => hasRole('approver'))
+// The supplier can supply only part of it: the backend cannot accept part of an order, so the
+// owner takes it back and compares other suppliers in an emergency restock (§18).
+const launcher = useRecoveryLaunch()
+const partial = computed(() => partialReply(action.value))
+const canSwitch = computed(
+  () =>
+    !!partial.value &&
+    !!s.session?.recoveryCases &&
+    approver.value &&
+    hasRole('operator') &&
+    !launcher.inProgress(action.value?.mission_id),
+)
+async function switchSupplier() {
+  const order = action.value
+  if (!order) return
+  error.value = ''
+  try {
+    await shop.withdrawOrder(order.id)
+    launcher.request({
+      missionId: order.mission_id,
+      reason: 'partial',
+      exclude: order.purchase_snapshot.supplier_id,
+    })
+  } catch (e) {
+    error.value = (e as Error).message
+  }
+}
 async function copy() {
   error.value = ''
   try {
@@ -58,7 +87,7 @@ async function withdraw() {
     <div class="assisted-facts">
       <div>
         <span>{{ tr('供应商') }}</span
-        ><b>{{ order.supplier_id }}</b>
+        ><b>{{ supplierDisplayName(order.supplier_id) }}</b>
       </div>
       <div>
         <span>{{ tr('数量') }}</span
@@ -118,12 +147,21 @@ async function withdraw() {
           {{ tr('先不撤回') }}
         </button></span
       ><button
-        class="primary"
+        :class="canSwitch ? 'secondary' : 'primary'"
         type="button"
         :disabled="Boolean(s.busy) || !approver || !reply.trim()"
         @click="submit"
       >
-        {{ tr(s.busy === '正在登记供应商回复' ? '正在读取回复…' : '登记回复') }}
+        {{ tr(s.busy === '正在登记供应商回复' ? '正在读取回复…' : '登记回复') }}</button
+      ><button
+        v-if="canSwitch && partial"
+        class="primary"
+        type="button"
+        :disabled="Boolean(s.busy)"
+        data-recovery-switch
+        @click="switchSupplier"
+      >
+        {{ tr('撤回这单，找别家补 {0} 件', [partial.ordered]) }}
       </button>
     </div>
   </article>

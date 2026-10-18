@@ -58,6 +58,16 @@ const checkResults: Record<string, string> = {
   PLAN_INPUT_EXPIRED: '检查完成：方案依据已过期，未能检查',
   'Inputs changed; a follow-up check was requested': '检查完成：经营情况有变化，已安排复查',
   'Previously rejected intent suppressed': '检查完成：沿用你上次不采购的决定',
+  // While an emergency restock holds the mission (backend/app/planning/jobs.py).
+  'Recovery plan awaits explicit approval': '检查完成：应急方案等你确认，本次跳过',
+  'Recovery purchase is unresolved': '检查完成：应急采购还没有结果，本次跳过',
+  // Why a check could not run (backend/app/planning/snapshot.py prepared.reason).
+  MISSION_INACTIVE_OR_ACTION_PENDING: '检查完成：有采购待核实，本次跳过',
+  MISSION_NOT_FOUND: '检查完成：找不到这项委托，未能检查',
+  FORECAST_UNAVAILABLE: '检查完成：需求预测暂不可用，未能检查',
+  INPUT_UNAVAILABLE: '检查完成：预测或报价数据缺失，未能检查',
+  INBOUND_STATE_MISMATCH: '检查完成：在途记录对不上，未能检查',
+  INVALID_FORECAST_OR_OFFER: '检查完成：预测或报价数据无法识别，未能检查',
 }
 // A risk a check finds is reported by its own "发现…" reminder row, which alone is amber.
 const checkTones: Record<string, TimelineTone> = {
@@ -270,7 +280,11 @@ export function timelineItems(entries: Entry[]): TimelineItem[] {
     items.push({
       entry,
       plan,
-      event: { ...describeEvent(plan), detail: t('由检查生成'), references: [...references.values()] },
+      event: {
+        ...describeEvent(plan),
+        detail: t('由检查生成'),
+        references: [...references.values()],
+      },
     })
   })
   return items
