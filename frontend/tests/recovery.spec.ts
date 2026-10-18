@@ -1,12 +1,45 @@
 import { test, expect, type Page } from '@playwright/test'
 import { readFileSync } from 'node:fs'
 
-// Real Vue UI with intercepted transport. No purchase is sent to a supplier.
-async function setup(page: Page, supplierCount?: number) {
+// Real Vue UI with intercepted transport. No purchase is sent to a supplier. The owner reaches
+// the mission either from the work page (`?view=work`, the normal entry) or from the older task
+// page (`?view=task`), which stays reachable by link.
+type Options = {
+  suppliers?: number
+  entry?: 'task' | 'work'
+  /** Changes the fixture before the page loads. */
+  prepare?: (f: any) => void
+}
+async function setup(
+  page: Page,
+  { suppliers: supplierCount, entry = 'task', prepare }: Options = {},
+) {
   const f = JSON.parse(
     readFileSync(new URL('./fixtures/overview-pending.json', import.meta.url), 'utf8'),
   )
   const mission = f.missions.items[0]
+  // The work item that carries this mission on the work page.
+  const work = {
+    id: 'work-one',
+    store_id: mission.store_id,
+    principal_id: 'test-owner',
+    title: mission.objective,
+    status: 'RESULT_READY',
+    version: 1,
+    summary: '',
+    next_step: '',
+    question: null,
+    result: null,
+    mission_id: mission.id,
+    mission_request: null,
+    demonstration: false,
+    processor_available: false,
+    processing_expires_at: null,
+    created_at: '2026-10-02T00:00:00Z',
+    updated_at: '2026-10-02T00:00:00Z',
+    mission,
+    business: null,
+  }
   if (supplierCount)
     f.catalog.offers = Array.from({ length: supplierCount }, (_, i) => ({
       ...f.catalog.offers[0],
@@ -66,7 +99,7 @@ async function setup(page: Page, supplierCount?: number) {
           roles: ['admin'],
           agentEnabled: false,
           devTools: false,
-          workIntake: false,
+          workIntake: entry === 'work',
           planRevision: true,
           recoveryCases: true,
         },
@@ -115,6 +148,35 @@ async function setup(page: Page, supplierCount?: number) {
         c.item.status = 'MONITORING'
         c.item.plan_status = 'PENDING_APPROVAL'
         c.item.plan_revision = c.item.current_revision
+        // The adopted quote becomes the mission's plan awaiting confirmation. Another
+        // supplier quoted the same quantity, so only the adopted id tells them apart.
+        f.plan = {
+          ...f.plan,
+          id: 'recovery-plan',
+          plan_kind: 'recovery_v1',
+          selected_candidate_id: 'b20',
+          proposed_purchase: {
+            ...f.plan.proposed_purchase,
+            supplier_id: 'supplier-b',
+            quantity: 20,
+            unit_price_minor: 1200,
+            total_minor: 24000,
+          },
+          input_snapshot: {
+            ...f.plan.input_snapshot,
+            offer: {
+              ...f.plan.input_snapshot.offer,
+              supplier_id: 'supplier-b',
+              unit_price_minor: 1200,
+            },
+          },
+          candidates: [
+            { ...candidate('a20', 20, 18000, 9), supplier_id: 'supplier-a', shortage_qty: 9 },
+            { ...candidate('b20', 20, 24000, 0), shortage_qty: 0 },
+            { ...candidate('wait', 0, 0, 20), shortage_qty: 20 },
+          ],
+        }
+        mission.current_plan_id = 'recovery-plan'
       } else if (path.endsWith('/control')) {
         if (body.operation === 'cancel') c.item.status = 'CANCELLED'
         if (body.operation === 'refresh') {
@@ -135,6 +197,11 @@ async function setup(page: Page, supplierCount?: number) {
     if (path === 'operations-cases')
       return route.fulfill({ json: { items: c.item ? [c.item] : [], next_cursor: null } })
     if (path === 'operations-cases/case-one') return route.fulfill({ json: c.item })
+    if (path === 'work-items')
+      return route.fulfill({
+        json: { items: [work], next_cursor: null, processor_available: false },
+      })
+    if (path === 'work-items/work-one') return route.fulfill({ json: { item: work, messages: [] } })
     if (path === 'stores')
       return route.fulfill({
         json: {
@@ -154,8 +221,14 @@ async function setup(page: Page, supplierCount?: number) {
       json: { error: { code: 'MISSING_TEST_READ', message: path } },
     })
   })
-  await page.goto('/?view=task&mission=' + mission.id + '&store=' + mission.store_id)
-  await expect(page.locator('.task-workspace')).toBeVisible()
+  prepare?.(f)
+  if (entry === 'work') {
+    await page.goto('/?view=work&item=' + work.id + '&store=' + mission.store_id)
+    await expect(page.locator('.space-workspace.task-workspace')).toBeVisible()
+  } else {
+    await page.goto('/?view=task&mission=' + mission.id + '&store=' + mission.store_id)
+    await expect(page.locator('.task-workspace')).toBeVisible()
+  }
   await page.getByRole('button', { name: '供应异常应对', exact: true }).click({ timeout: 5000 })
   return c
 }
@@ -281,7 +354,7 @@ test('结束事项后可新建独立事项，自动跟进由用户开启关闭',
 })
 
 test('超过三家报价时要求选择范围并传递供应商名单', async ({ page }) => {
-  const c = await setup(page, 4)
+  const c = await setup(page, { suppliers: 4 })
   await page.getByLabel('本次应急预算（元）', { exact: true }).fill('300')
   await page.getByRole('button', { name: '开始分析', exact: true }).click()
   await expect(page.locator('.recovery-workspace [role="alert"]')).toContainText('一至三家供应商')
@@ -291,4 +364,84 @@ test('超过三家报价时要求选择范围并传递供应商名单', async ({
   await page.getByRole('button', { name: '开始分析', exact: true }).click()
   await expect(page.locator('[data-recovery-candidate="b20"]')).toBeVisible()
   expect(c.writes[0].body.supplier_ids).toEqual(['supplier-1', 'supplier-3'])
+})
+
+test('从事项页进入：采用报价后方案卡只给已采纳的报价或本轮不补', async ({ page }) => {
+  const c = await setup(page, { entry: 'work' })
+  await page.getByLabel('本次应急预算（元）', { exact: true }).fill('300')
+  await page.getByRole('button', { name: '开始分析', exact: true }).click()
+  await page
+    .locator('[data-recovery-candidate="b20"]')
+    .getByRole('button', { name: '生成待确认方案' })
+    .click()
+  const card = page.locator('#space-plan .space-plan-card')
+  await expect(card).toContainText('这份待确认方案对应已采纳的报价', { timeout: 5000 })
+  // Two quotes share the quantity; the amounts are the adopted supplier's.
+  await expect(card.locator('.impact-value').nth(1)).toHaveText('¥240')
+  const options = card.getByRole('group', { name: '采购选项' }).getByRole('button')
+  await expect(options).toHaveCount(2)
+  await expect(options.nth(1)).toContainText('本轮暂不补货')
+  expect(c.writes.some((r) => r.path.endsWith('/decision'))).toBe(false)
+})
+
+test('从事项页进入：店主自己发出的订单在方案位置等待回复，状态写待供应商确认', async ({ page }) => {
+  const c = await setup(page, {
+    entry: 'work',
+    prepare: (f) => {
+      const mission = f.missions.items[0]
+      const order = {
+        reference: 'PO-1A2B3C4D',
+        supplier_id: 'supplier-b',
+        sku_id: mission.sku_id,
+        product_name: f.catalog.products[0].name,
+        quantity: 20,
+        unit_price_minor: 1200,
+        total_minor: 24000,
+        currency: 'CNY',
+        requested_delivery_date: '2026-10-05',
+        text: {
+          zh: '你好，订购 20 件，单价 12.00 元。订单编号 PO-1A2B3C4D',
+          en: 'Order 20 units.',
+        },
+        generated_at: '2026-10-02T00:00:00Z',
+      }
+      f.actions.items = [
+        {
+          id: 'action-by-hand',
+          mission_id: mission.id,
+          plan_id: f.plan.id,
+          approval_id: 'approval-one',
+          status: 'EXECUTING',
+          channel: 'assisted',
+          quantity: 20,
+          amount_minor: 24000,
+          currency: 'CNY',
+          external_order_id: null,
+          receipt: null,
+          last_error: null,
+          order_message: order,
+          supplier_reply: null,
+          created_at: '2026-10-02T00:00:00Z',
+          updated_at: '2026-10-02T00:00:00Z',
+          purchase_snapshot: {
+            ...f.plan.proposed_purchase,
+            quantity: 20,
+            total_minor: 24000,
+            expected_arrival_at: '2026-10-05T00:00:00Z',
+          },
+        },
+      ]
+      mission.current_action_id = 'action-by-hand'
+      f.plan.status = 'APPROVED'
+    },
+  })
+  const order = page.locator('#space-plan [data-assisted-order]')
+  await expect(order).toBeVisible({ timeout: 5000 })
+  await expect(order.locator('[data-order-message]')).toContainText('PO-1A2B3C4D')
+  await expect(page.locator('.space-workspace .tag.amber[role="status"]').first()).toHaveText(
+    '待供应商确认',
+  )
+  await expect(page.locator('.space-orders')).toContainText('待供应商确认')
+  await expect(page.locator('.space-orders')).not.toContainText('正在核实采购')
+  expect(c.writes).toHaveLength(0)
 })

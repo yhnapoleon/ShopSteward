@@ -22,6 +22,8 @@ export type BadgeInput = {
   inTransit?: number | null
   /** A confirmation was sent but its result has not been read back. */
   confirmationPending?: boolean
+  /** An order the owner sends by hand waits for the supplier's reply to be pasted back. */
+  awaitingSupplier?: boolean
   /** Backend work-item summary, used only when nothing below matches. */
   business?: { code?: string | null; label?: string | null } | null
 }
@@ -35,6 +37,8 @@ export function statusBadge(input: BadgeInput): Badge {
     return badge('需要处理', 'amber')
   if (input.plan === 'PENDING_APPROVAL' && input.canDecide) return badge('需要你拍板', 'amber')
   if (input.work === 'WAITING_INPUT') return badge('需要你补充', 'amber')
+  // The system does not reach the supplier: the owner sends the order and pastes the reply.
+  if (input.awaitingSupplier || code === 'AWAITING_SUPPLIER') return badge('待供应商确认', 'amber')
   if (
     actions.some((a) => ['QUEUED', 'EXECUTING'].includes(a)) ||
     ['QUEUED', 'EXECUTING'].includes(code)
@@ -60,9 +64,14 @@ export function statusBadge(input: BadgeInput): Badge {
  * it with t() and may compare it, as the orders card does for "已到货".
  */
 export function orderStatus(
-  action: { status: string },
+  action: { status: string; channel?: string },
   inbound?: { arrival_status?: string | null } | null,
 ): Badge {
+  // An order the owner sends by hand: the message is written, then it waits for the reply.
+  if (action.channel === 'assisted' && action.status === 'QUEUED')
+    return { label: '正在生成订单信息', tone: 'blue' }
+  if (action.channel === 'assisted' && action.status === 'EXECUTING')
+    return { label: '待供应商确认', tone: 'amber' }
   if (['QUEUED', 'EXECUTING'].includes(action.status))
     return { label: '正在核实采购', tone: 'blue' }
   if (action.status === 'UNKNOWN') return { label: '结果待核实', tone: 'amber' }
