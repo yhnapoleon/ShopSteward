@@ -895,6 +895,7 @@ API 路径 v1 表示兼容系列，info.version 表示发布版本；OpenAPI 的
 | SIMULATION_MODE | http | B0 联调使用单一持久 simulator；fake 仅测试装配 |
 | SIMULATION_BASE_URL | 本地 8001 | 必须配置可达地址及服务身份 |
 | PLAN_TTL_SECONDS / SOURCE_STALE_SECONDS | 900 / 60 | 方案有效期上限 / 成功追平同步的新鲜度上限 |
+| RECOVERY_TTL_SECONDS | 1800 | 应急方案比较完成后可采纳的时长；采纳后的待确认方案从采纳时起算同样时长，均不超过报价有效期 |
 | FORECAST_PROVIDER | fixed | B1 可切 http |
 | FORECAST_BASE_URL | 本地 8002 | B0 不要求可连通 |
 | AGENT_ENABLED | false | 关闭时不注册 B2 路由 |

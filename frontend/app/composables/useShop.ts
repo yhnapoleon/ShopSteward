@@ -455,6 +455,20 @@ export function useShop() {
       }
     })
   }
+  // The supplier confirmed fewer units: take that quantity; the rest of the hold is released.
+  async function acceptPartialSupply(actionId: string) {
+    return command('正在按对方数量成交', async () => {
+      try {
+        return await api<Schema<'Action'>>(
+          '/api/v1/actions/' + encodeURIComponent(actionId) + '/partial-acceptance',
+          'POST',
+          {},
+        )
+      } finally {
+        await refresh(true)
+      }
+    })
+  }
   async function recordArrival(actionId: string, quantity: number) {
     return command('正在登记到货', async () => {
       try {
@@ -527,6 +541,7 @@ export function useShop() {
     recoverApproval,
     recordSupplierReply,
     withdrawOrder,
+    acceptPartialSupply,
     recordArrival,
     advance,
     acknowledge,

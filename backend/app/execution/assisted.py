@@ -254,6 +254,23 @@ def differences(reading, order):
     ]
 
 
+def partly(reading, order, found):
+    """An accepting reply that only supplies fewer units, at the ordered price."""
+    quantity = reading["quantity"]
+    return (
+        reading["decision"] == "accepted"
+        and quantity is not None
+        and 0 < quantity < order["quantity"]
+        and all(
+            d["field"] == "quantity"
+            or (
+                d["field"] == "total_minor" and d["replied"] == quantity * order["unit_price_minor"]
+            )
+            for d in found
+        )
+    )
+
+
 def waiting(action):
     return action.channel == "assisted" and action.status == "EXECUTING"
 
@@ -275,6 +292,8 @@ async def record_reply(session, action_id, text, reading, read_by, principal, ke
         if reading["decision"] == "rejected"
         else "confirmed"
         if reading["decision"] == "accepted" and not found
+        else "partial"
+        if partly(reading, order, found)
         else "needs_attention"
     )
     day = reading["delivery_date"]
@@ -292,6 +311,18 @@ async def record_reply(session, action_id, text, reading, read_by, principal, ke
     }
     action.updated_at = now
     references = [{"type": "action", "id": action.id}]
+    if outcome == "partial":
+        await timeline(
+            session,
+            mission,
+            "SUPPLIER_REPLY_PARTIAL",
+            f"供应商只确认了 {reading['quantity']}/{order['quantity']} 件。"
+            "可以按对方数量成交，或撤回订单；在你决定前，订单保持待确认。",
+            actor=principal,
+            references=references,
+        )
+        receipt.response = {"action_id": action.id}
+        return action
     if outcome == "needs_attention":
         await timeline(
             session,
@@ -344,6 +375,75 @@ async def withdraw(session, action_id, principal, key):
     await close_action(session, store, mission, action, "CANCELLED", reason="WITHDRAWN_BY_OWNER")
     if mission.status == "ACTIVE":
         await queue_check(session, store, mission, key="withdrawn-" + action.id)
+    receipt.response = {"action_id": action.id}
+    return action
+
+
+async def accept_partial(session, action_id, principal, key):
+    """Take the quantity the supplier confirmed: only that is paid for and expected, the rest
+    of the reserved cash is released, and an emergency case records what is still missing."""
+    store, mission, plan, action = await lock_action(session, action_id)
+    receipt, replay = await command(
+        session, principal, "accept_partial_supply", key, {"action_id": action_id}
+    )
+    if replay:
+        return action
+    reply = action.supplier_reply or {}
+    if not waiting(action) or action.manual_review or reply.get("outcome") != "partial":
+        raise AppError(
+            409,
+            "PARTIAL_SUPPLY_NOT_OFFERED",
+            "Only a reply that confirms part of a waiting order can be accepted as it is",
+        )
+    now = await session.scalar(select(func.clock_timestamp()))
+    order, quantity = action.order_message, reply["quantity"]
+    raw = {
+        "action_id": action.id,
+        "status": "ACCEPTED",
+        "external_order_id": reply["supplier_order_ref"] or order["reference"],
+        "quantity": quantity,
+        "total_minor": quantity * order["unit_price_minor"],
+        "currency": order["currency"],
+        "recorded_at": now.isoformat(),
+        "reason": None,
+    }
+    wanted = datetime.fromisoformat(action.purchase_snapshot["expected_arrival_at"])
+    day = reply["delivery_date"] and date.fromisoformat(reply["delivery_date"])
+    if not await apply_receipt(
+        session,
+        store,
+        mission,
+        action,
+        raw,
+        expected_arrival_at=datetime.combine(day, wanted.timetz()) if day else None,
+        partial=True,
+    ):
+        receipt.response = {"action_id": action.id}
+        return action
+    missing = order["quantity"] - quantity
+    await timeline(
+        session,
+        mission,
+        "PURCHASE_PARTIALLY_ACCEPTED",
+        f"按供应商确认的 {quantity} 件成交，比订单少 {missing} 件；多预留的资金已释放。",
+        actor=principal,
+        references=[{"type": "action", "id": action.id}],
+    )
+    intent = plan.document.get("recovery_intent")
+    if intent:
+        from app.operations_cases.models import CaseRow
+        from app.operations_cases.repository import event as case_event
+
+        case = await session.get(CaseRow, intent["case_id"], with_for_update=True)
+        if case:
+            await case_event(
+                session,
+                case,
+                "RECOVERY_PARTIALLY_FILLED",
+                {"action_id": action.id, "accepted_qty": quantity, "missing_qty": missing},
+            )
+    if mission.status == "ACTIVE":
+        await queue_check(session, store, mission, key="partial-" + action.id)
     receipt.response = {"action_id": action.id}
     return action
 
@@ -407,6 +507,9 @@ async def record_arrival(session, action_id, quantity, principal, key):
     from app.learning.capture import mission_event
 
     await mission_event(session, mission, "PURCHASE_RECEIVED", effect_id, None, references)
+    from app.operations_cases.lifecycle import settle_mission
+
+    await settle_mission(session, mission)
     if mission.status == "ACTIVE":
         await queue_check(session, store, mission, key="arrival-" + effect_id)
     receipt.response = {"action_id": action.id}

@@ -179,6 +179,10 @@ async def decide(session, plan_id, body, principal, key, settings):
     await session.flush()
     if body.decision == "reject":
         row.status = "REJECTED"
+        if row.document.get("plan_kind") == "recovery_v1":
+            from app.operations_cases.lifecycle import rejected
+
+            await rejected(session, mission, row)
         response = DecisionRejected(
             plan_id=plan_id, decision="reject", action_id=None, job_run_id=None
         )

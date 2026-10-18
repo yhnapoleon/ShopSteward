@@ -160,6 +160,47 @@ const reasons: Record<string, string> = {
   UNKNOWN_ACTION: '原采购结果待核实',
   INFEASIBLE: '不满足当前约束',
 }
+// Why the case asks for a new analysis; the backend records one of these with the change.
+const recheckReasons: Record<string, string> = {
+  PLAN_EXPIRED: '待确认的应急方案已过期',
+  BUSINESS_STATE_CHANGED: '库存、现金或营业时间已变化',
+  MISSION_CHANGED: '备货委托的设置已变化',
+  OPTIONS_EXPIRED: '方案比较已过期',
+  SOURCE_STALE: '业务数据暂未同步',
+  PURCHASE_FAILED: '供应商没有接受这笔应急采购',
+  PURCHASE_CANCELLED: '这笔应急采购已撤回',
+  PURCHASE_STALE: '发出前依据已变化，这笔应急采购没有发出',
+  PLAN_STALE_OR_CLOSED: '应急方案已失效',
+}
+// The owner has decided: the options stay visible as a record, not as a choice.
+const decided = computed(() =>
+  ['MONITORING', 'RESOLVED', 'CLOSED', 'CANCELLED'].includes(detail.value?.status || ''),
+)
+// An accepted emergency purchase the supplier filled only in part, while the case follows it.
+const shortfall = computed(() => {
+  const value = detail.value,
+    last = value?.purchases?.at(-1)
+  if (value?.status !== 'MONITORING' || last?.status !== 'SUCCEEDED') return null
+  const accepted = last.accepted_qty ?? last.planned_qty
+  return accepted < last.planned_qty
+    ? { supplier: last.supplier_id, accepted, planned: last.planned_qty }
+    : null
+})
+const outcome = computed(() => (detail.value?.status === 'RESOLVED' ? detail.value.outcome : null))
+async function topUp() {
+  const missing = shortfall.value
+  if (!missing) return
+  notice.value = ''
+  // Compare the other suppliers; with none on file, analyze again over all of them.
+  const others = availableSuppliers.value.filter((s) => s !== missing.supplier).slice(0, 3)
+  const value = others.length
+    ? await recovery.revise({ supplier_ids: others })
+    : await recovery.control('refresh')
+  if (value) {
+    suppliers.value = others
+    editing.value = false
+  }
+}
 watch(
   () => props.missionId,
   () => {
@@ -408,6 +449,70 @@ function newCase() {
             tr('第 {0} 版 · {1}', [detail.current_revision, when(detail.updated_at)])
           }}</span>
         </div>
+        <section v-if="outcome" class="recovery-outcome" data-recovery-outcome>
+          <h4>{{ tr('这项事项的结果') }}</h4>
+          <dl>
+            <div>
+              <dt>{{ tr('补货') }}</dt>
+              <dd>
+                {{
+                  outcome.path === 'purchase'
+                    ? tr('{0} 件', [outcome.purchased_qty])
+                    : tr('未追加采购')
+                }}
+              </dd>
+            </div>
+            <div>
+              <dt>{{ tr('花费') }}</dt>
+              <dd>{{ money(outcome.spend_minor) }}</dd>
+            </div>
+            <div>
+              <dt>{{ tr('七日预计缺货') }}</dt>
+              <dd>
+                {{ tr('{0} 件 → {1} 件', [outcome.lost_qty_before, outcome.lost_qty_after]) }}
+              </dd>
+            </div>
+          </dl>
+          <p class="source-note">
+            {{
+              outcome.path === 'purchase'
+                ? tr('应急补货已全部到货。缺货按当时分析的七日需求、实际成交数量和预计到货日估算。')
+                : tr('原订单已全部到货，没有追加采购。')
+            }}
+          </p>
+          <p v-if="outcome.purchased_qty < outcome.planned_qty" class="source-note">
+            {{ tr('供应商只确认了 {0}/{1} 件。', [outcome.purchased_qty, outcome.planned_qty]) }}
+          </p>
+        </section>
+        <p
+          v-if="detail.status === 'RECHECK_REQUIRED' && detail.recheck_reason"
+          class="notice amber"
+          data-recheck-reason
+        >
+          {{
+            tr('需要重新分析：{0}。点“重新核对最新依据”按当前情况再比较一次。', [
+              tr(recheckReasons[detail.recheck_reason] || detail.recheck_reason),
+            ])
+          }}
+        </p>
+        <div v-if="shortfall" class="notice amber" data-recovery-shortfall>
+          <p>
+            {{
+              tr('{0} 只确认了 {1}/{2} 件，还缺 {3} 件。', [
+                shortfall.supplier,
+                shortfall.accepted,
+                shortfall.planned,
+                shortfall.planned - shortfall.accepted,
+              ])
+            }}
+          </p>
+          <button class="secondary" :disabled="disabled" @click="topUp">
+            {{ tr('缺的找别家补上') }}
+          </button>
+        </div>
+        <p v-if="detail.routine_paused" class="source-note" data-routine-paused>
+          {{ tr('你已在这项事项里做了决定，事项结束前例行检查不会另外建议下单。') }}
+        </p>
         <p v-if="prepared">{{ tr('已生成待确认计划，采购仍需你确认。') }}</p>
         <p v-else-if="detail.plan_id">
           {{
@@ -423,7 +528,10 @@ function newCase() {
         <ul v-if="detail.missing_inputs.length" class="notice amber">
           <li v-for="input in detail.missing_inputs" :key="input">{{ input }}</li>
         </ul>
-        <p v-if="detail.proposal && stale" class="notice amber">
+        <p v-if="detail.proposal && decided" class="source-note">
+          {{ tr('已按你的决定处理，下面的候选仅供回看。') }}
+        </p>
+        <p v-else-if="detail.proposal && stale" class="notice amber">
           {{ tr('当前候选尚未对应最新可执行条件，请重新分析或核对。') }}
         </p>
         <div v-if="detail.proposal" class="recovery-candidates">
@@ -578,7 +686,11 @@ function newCase() {
           </button>
         </div>
         <p v-if="detail.followup_enabled" class="source-note">
-          {{ tr('后台定期核对真实执行和到货状态；依据变化时会要求重新分析，采购仍需你确认。') }}
+          {{
+            tr(
+              '后台定期核对真实执行和到货状态；你做决定前依据变化会要求重新分析，全部到货后事项自动结束。',
+            )
+          }}
         </p>
         <div class="recovery-actions">
           <button class="text-link" :disabled="busy" @click="recovery.load(detail.id)">
@@ -693,6 +805,32 @@ function newCase() {
 }
 .recovery-candidate h4 {
   margin: 0 0 14px;
+}
+.recovery-outcome {
+  border: 1px solid #b9dcc4;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 14px 0;
+  background: #f2faf4;
+}
+.recovery-outcome h4 {
+  margin: 0 0 10px;
+}
+.recovery-outcome dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 0 0 8px;
+}
+.recovery-outcome dt {
+  color: #607468;
+  font-size: 0.85rem;
+}
+.recovery-outcome dd {
+  margin: 2px 0 0;
+  font-size: 1.15rem;
+  font-weight: 650;
+  font-variant-numeric: tabular-nums;
 }
 .recovery-candidate dl > div {
   display: flex;

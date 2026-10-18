@@ -88,8 +88,9 @@ class ReplyDifference(DTO):
 class SupplierReply(DTO):
     text: str
     read_by: Literal["model", "rules"]
-    # confirmed and declined close the order; needs_attention leaves it waiting.
-    outcome: Literal["confirmed", "declined", "needs_attention"]
+    # confirmed and declined close the order; needs_attention leaves it waiting, and so does
+    # partial (fewer units at the ordered price) until the owner accepts that quantity.
+    outcome: Literal["confirmed", "declined", "partial", "needs_attention"]
     decision: Literal["accepted", "rejected", "unclear"]
     quantity: int | None
     unit_price_minor: int | None

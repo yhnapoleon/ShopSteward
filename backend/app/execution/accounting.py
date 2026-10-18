@@ -57,7 +57,7 @@ async def close_action(session, store, mission, action, status, *, reason=None):
 
         case = await session.get(CaseRow, mission.planning_context["case_id"], with_for_update=True)
         if case:
-            if status == "SUCCEEDED" and case.status != "CANCELLED":
+            if status == "SUCCEEDED" and case.status not in {"CANCELLED", "RESOLVED", "CLOSED"}:
                 case.status = "MONITORING"
             await case_event(
                 session,
@@ -65,6 +65,14 @@ async def close_action(session, store, mission, action, status, *, reason=None):
                 "RECOVERY_ACTION_" + status,
                 {"action_id": action.id, "reason": reason},
             )
+            if (
+                status != "SUCCEEDED"
+                and mission.planning_context.get("revision") == case.current_revision
+            ):
+                # The decision could not be carried out: the owner decides again in the case.
+                from app.operations_cases.lifecycle import recheck
+
+                await recheck(session, case, mission, "PURCHASE_" + status)
         mission.planning_context = None
     if status == "SUCCEEDED" and mission.task_constraints:
         # This purchase round is over; a temporary quantity limit is not a lasting policy.
@@ -100,8 +108,13 @@ async def record_conflict(session, store, mission, action, raw, reason="RECEIPT_
     await action_alert(session, store, mission, action, reason)
 
 
-async def apply_receipt(session, store, mission, action, raw, *, expected_arrival_at=None):
-    """`expected_arrival_at` is the date the supplier itself gave, when it gave one."""
+async def apply_receipt(
+    session, store, mission, action, raw, *, expected_arrival_at=None, partial=False
+):
+    """`expected_arrival_at` is the date the supplier itself gave, when it gave one.
+
+    `partial`: the owner accepted fewer units than ordered, at the ordered unit price.
+    """
     try:
         receipt = PurchaseReceipt.model_validate(raw)
     except (ValidationError, TypeError, ValueError):
@@ -109,13 +122,15 @@ async def apply_receipt(session, store, mission, action, raw, *, expected_arriva
         return False
     purchase = action.purchase_snapshot
     accepted = receipt.status == "ACCEPTED"
+    quantity, total = (
+        (receipt.quantity, receipt.quantity * purchase["unit_price_minor"])
+        if partial and 0 < receipt.quantity < action.quantity
+        else (action.quantity, action.amount_minor)
+    )
     inconsistent = (
         receipt.action_id != action.id
         or receipt.currency != purchase["currency"]
-        or (
-            accepted
-            and (receipt.quantity != action.quantity or receipt.total_minor != action.amount_minor)
-        )
+        or (accepted and (receipt.quantity != quantity or receipt.total_minor != total))
     )
     if action.status == "SUCCEEDED":
         inconsistent |= not accepted or receipt.external_order_id != action.external_order_id

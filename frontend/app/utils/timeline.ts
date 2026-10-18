@@ -48,6 +48,7 @@ const proposal = /^推荐采购(\d+)件；预计支出(-?\d+)分，采购后可�
 const noProposal = '当前候选均不满足采购约束，未提出采购。'
 const checkLine = /^检查([A-Z_]+)：([\s\S]*)（任务[^（）]*）$/
 const savedComparison = 'Candidate comparison saved'
+const emergencyHolds = 'An emergency case holds this item until it ends'
 const checkResults: Record<string, string> = {
   [savedComparison]: '检查完成：已生成新方案',
   'Existing valid plan reused': '检查完成：方案无变化',
@@ -58,6 +59,16 @@ const checkResults: Record<string, string> = {
   PLAN_INPUT_EXPIRED: '检查完成：方案依据已过期，未能检查',
   'Inputs changed; a follow-up check was requested': '检查完成：经营情况有变化，已安排复查',
   'Previously rejected intent suppressed': '检查完成：沿用你上次不采购的决定',
+  'Recovery plan awaits explicit approval': '检查完成：应急方案等你确认，本次跳过',
+  [emergencyHolds]: '检查完成：应急事项处理中，例行补货暂停',
+}
+// Entries an emergency case writes; their sentences are translated as whole templates.
+const caseEntries: Record<string, { tone: TimelineTone; kind: TimelineKind }> = {
+  CASE_DECISION: { tone: 'gray', kind: 'other' },
+  CASE_RECHECK_REQUIRED: { tone: 'amber', kind: 'other' },
+  CASE_RESOLVED: { tone: 'green', kind: 'order' },
+  SUPPLIER_REPLY_PARTIAL: { tone: 'amber', kind: 'order' },
+  PURCHASE_PARTIALLY_ACCEPTED: { tone: 'blue', kind: 'order' },
 }
 // A risk a check finds is reported by its own "发现…" reminder row, which alone is amber.
 const checkTones: Record<string, TimelineTone> = {
@@ -166,7 +177,7 @@ export function describeEvent(entry: Entry): TimelineEvent {
         title: known ? t(known) : t('检查完成：{0}', [result.trim()]),
         tone: checkTones[status] || 'gray',
         kind: 'check',
-        routine: result.trim() === 'Existing valid plan reused',
+        routine: ['Existing valid plan reused', emergencyHolds].includes(result.trim()),
       }
     }
     case 'ALERT_OPENED':
@@ -201,6 +212,8 @@ export function describeEvent(entry: Entry): TimelineEvent {
     case 'ACTION_SUCCEEDED':
       return { ...base, title: t('供应商已受理采购'), tone: 'green', kind: 'order' }
     default: {
+      const written = caseEntries[entry.type]
+      if (written) return { ...base, ...written, title: t(summary) }
       const result = actionResults[entry.type]
       if (!result) return base
       const status = entry.type.slice('ACTION_'.length)

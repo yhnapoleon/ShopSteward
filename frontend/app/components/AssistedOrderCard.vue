@@ -33,6 +33,19 @@ async function submit() {
     error.value = (e as Error).message
   }
 }
+// A reply that confirms fewer units at the ordered price can be taken as it is.
+const partial = computed(() =>
+  action.value?.supplier_reply?.outcome === 'partial' ? action.value.supplier_reply : null,
+)
+async function acceptPartial() {
+  if (!action.value) return
+  error.value = ''
+  try {
+    await shop.acceptPartialSupply(action.value.id)
+  } catch (e) {
+    error.value = (e as Error).message
+  }
+}
 async function withdraw() {
   if (!action.value) return
   error.value = ''
@@ -87,6 +100,25 @@ async function withdraw() {
       </button>
     </div>
     <SupplierReceipt v-if="action.supplier_reply" :reply="action.supplier_reply" />
+    <div v-if="partial" class="assisted-partial" data-partial-supply>
+      <p>
+        {{
+          tr(
+            '供应商只能供 {0} 件。按这个数量成交：只付这 {0} 件的钱，其余预留资金释放；缺的部分可以在供应异常应对里找别家补上。',
+            [partial.quantity ?? ''],
+          )
+        }}
+      </p>
+      <button
+        class="primary"
+        type="button"
+        :disabled="Boolean(s.busy) || !approver"
+        data-accept-partial
+        @click="acceptPartial"
+      >
+        {{ tr('按对方数量成交（{0} 件）', [partial.quantity ?? '']) }}
+      </button>
+    </div>
     <label class="assisted-reply"
       >{{ tr('粘贴供应商的回复')
       }}<textarea
@@ -176,6 +208,18 @@ async function withdraw() {
   background: #fff;
   color: #203b31;
   font: inherit;
+}
+.assisted-partial {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+  border: 1px solid #e3c98b;
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: #fffaf0;
+}
+.assisted-partial p {
+  margin: 0;
 }
 .assisted-withdraw {
   display: flex;

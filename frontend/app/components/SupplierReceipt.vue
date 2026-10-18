@@ -7,6 +7,7 @@ const props = defineProps<{ reply: Schema<'SupplierReply'> }>()
 const outcomes: Record<string, string> = {
   confirmed: '供应商已确认',
   declined: '供应商未接单',
+  partial: '只确认了一部分',
   needs_attention: '还不能确认',
 }
 const names: Record<string, string> = {
@@ -86,7 +87,8 @@ const rows = computed(() =>
   margin: 12px 0;
   background: #ffffffa8;
 }
-.supplier-receipt[data-outcome='needs_attention'] {
+.supplier-receipt[data-outcome='needs_attention'],
+.supplier-receipt[data-outcome='partial'] {
   border-color: #e3c98b;
 }
 .supplier-receipt h4 {

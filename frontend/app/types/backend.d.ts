@@ -430,6 +430,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/actions/{action_id}/partial-acceptance": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Partial Acceptance
+         * @description The owner takes the smaller quantity the supplier confirmed; the rest is released.
+         */
+        post: operations["accept_partial_supply"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/actions/{action_id}/arrival": {
         parameters: {
             query?: never;
@@ -1974,6 +1994,16 @@ export interface components {
             } | null;
             /** Followup Enabled */
             followup_enabled: boolean;
+            /** Purchases */
+            purchases?: components["schemas"]["CasePurchase"][];
+            /**
+             * Routine Paused
+             * @default false
+             */
+            routine_paused: boolean;
+            /** Recheck Reason */
+            recheck_reason?: string | null;
+            outcome?: components["schemas"]["CaseOutcome"] | null;
             /**
              * Created At
              * Format: date-time
@@ -2047,6 +2077,49 @@ export interface components {
             expected_current_plan_id: string | null;
             /** Proposal Hash */
             proposal_hash: string;
+        };
+        /**
+         * CaseOutcome
+         * @description What a resolved case achieved; shortage is projected over the analyzed seven days.
+         */
+        CaseOutcome: {
+            /**
+             * Path
+             * @enum {string}
+             */
+            path: "purchase" | "waiting";
+            /** Planned Qty */
+            planned_qty: number;
+            /** Purchased Qty */
+            purchased_qty: number;
+            /** Received Qty */
+            received_qty: number;
+            /** Spend Minor */
+            spend_minor: number;
+            /** Lost Qty Before */
+            lost_qty_before: number;
+            /** Lost Qty After */
+            lost_qty_after: number;
+            /** Action Ids */
+            action_ids: string[];
+        };
+        /**
+         * CasePurchase
+         * @description An emergency purchase the case led to: approved, confirmed by the supplier, arrived.
+         */
+        CasePurchase: {
+            /** Action Id */
+            action_id: string;
+            /** Supplier Id */
+            supplier_id: string;
+            /** Status */
+            status: string;
+            /** Planned Qty */
+            planned_qty: number;
+            /** Accepted Qty */
+            accepted_qty: number | null;
+            /** Received Qty */
+            received_qty: number | null;
         };
         /** CaseRevise */
         CaseRevise: {
@@ -4552,7 +4625,7 @@ export interface components {
              * Outcome
              * @enum {string}
              */
-            outcome: "confirmed" | "declined" | "needs_attention";
+            outcome: "confirmed" | "declined" | "partial" | "needs_attention";
             /**
              * Decision
              * @enum {string}
@@ -7470,6 +7543,93 @@ export interface operations {
         };
     };
     withdraw_assisted_order: {
+        parameters: {
+            query?: never;
+            header: {
+                "Idempotency-Key": string;
+            };
+            path: {
+                action_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Action"];
+                };
+            };
+            /** @description Unauthorized */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not Found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Conflict */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Unprocessable Entity */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    accept_partial_supply: {
         parameters: {
             query?: never;
             header: {

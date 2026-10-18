@@ -110,6 +110,10 @@ export const backendRoutes = [
   ],
   [
     "POST",
+    "/api/v1/actions/{action_id}/partial-acceptance"
+  ],
+  [
+    "POST",
     "/api/v1/actions/{action_id}/arrival"
   ],
   [
