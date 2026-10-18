@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     simulation_token: SecretStr | None = Field(default=None, min_length=24)
     source_stale_seconds: int = Field(default=30, ge=1, le=3600)
     plan_ttl_seconds: int = Field(default=900, ge=1, le=86400)
+    # Emergency options stay open this long after analysis, and an adopted emergency plan
+    # this long after the owner adopts it; supplier offers and forecasts still bound both.
+    recovery_ttl_seconds: int = Field(default=1800, ge=60, le=86400)
     # How an approved purchase reaches the supplier. "assisted": the owner sends the
     # generated order message through their own channel and pastes the supplier's reply.
     purchase_channel: Literal["simulator", "assisted"] = "simulator"

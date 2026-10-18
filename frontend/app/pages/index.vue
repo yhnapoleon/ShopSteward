@@ -44,7 +44,7 @@ const dialog = ref(''),
   token = ref(''),
   scheduleSeconds = ref(30),
   recordFilter = ref('business')
-const approval = ref<{ plan: Schema<'Plan'>; quantity: number } | null>(null)
+const approval = ref<{ plan: PlanDocument; quantity: number } | null>(null)
 const onboarding = useOnboarding()
 const tourError = ref('')
 const tourReady = computed(() =>
@@ -95,7 +95,6 @@ watch(
   },
   { immediate: true },
 )
-const approval = ref<{ plan: PlanDocument; quantity: number } | null>(null)
 watch(
   () => s.storeId,
   (_id, previous) => {

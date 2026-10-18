@@ -9,7 +9,7 @@ from app.core.errors import AppError
 from app.core.hashing import digest
 from app.execution.models import ActionRow
 from app.missions.models import InboundRow, MissionRow, PlanRow
-from app.missions.repository import command, lock_mission, timeline
+from app.missions.repository import command, lock_mission, queue_check, timeline
 from app.operations.models import Store
 from app.operations_cases.models import CaseEventRow, CaseRevisionRow, CaseRow, RecoveryProposalRow
 from app.operations_cases.processor import capture_snapshot
@@ -92,8 +92,15 @@ async def detail(session, row):
         plan and plan.document.get("recovery_intent", {}).get("revision") == row.current_revision
     )
     source = plan.document["input_snapshot"] if current_plan_revision else revision.snapshot
+    from app.operations_cases.lifecycle import IN_FLIGHT, TERMINAL, purchases
+
+    # Once the owner has acted on these options, the purchase itself moves the state on.
+    acted = row.status == "MONITORING" or bool(
+        current_plan_revision and action and action.status in IN_FLIGHT | {"SUCCEEDED"}
+    )
     stale = bool(
         proposal
+        and not acted
         and (
             proposal.expires_at <= now
             or source is None
@@ -101,6 +108,29 @@ async def detail(session, row):
             or source["mission_version"] != mission.mission_version
         )
     )
+    bought = []
+    for purchase in await purchases(session, row):
+        inbound = await session.get(InboundRow, (purchase.id, row.sku_id))
+        bought.append(
+            {
+                "action_id": purchase.id,
+                "supplier_id": purchase.purchase_snapshot["supplier_id"],
+                "status": purchase.status,
+                "planned_qty": purchase.quantity,
+                "accepted_qty": inbound.ordered_qty if inbound else None,
+                "received_qty": inbound.received_qty if inbound else None,
+            }
+        )
+    note = await session.scalar(
+        select(CaseEventRow)
+        .where(
+            CaseEventRow.case_id == row.id,
+            CaseEventRow.kind.in_(["CASE_RESOLVED", "RECOVERY_RECHECK_REQUIRED"]),
+        )
+        .order_by(CaseEventRow.seq.desc())
+        .limit(1)
+    )
+    noted = note.kind if note else None
     values = revision.inputs
     sourcing = row.sourcing
     if sourcing and sourcing["status"] == "running" and now.timestamp() >= sourcing["deadline"]:
@@ -138,6 +168,13 @@ async def detail(session, row):
         expert_analysis=row.expert_analysis,
         sourcing=sourcing,
         followup_enabled=row.followup_enabled,
+        purchases=bought,
+        routine_paused=row.status not in TERMINAL
+        and (row.plan_id is not None or row.status == "MONITORING"),
+        recheck_reason=note.payload.get("reason")
+        if row.status == "RECHECK_REQUIRED" and noted == "RECOVERY_RECHECK_REQUIRED"
+        else None,
+        outcome=note.payload if row.status == "RESOLVED" and noted == "CASE_RESOLVED" else None,
         supplier_ids=revision.inputs.get("supplier_ids"),
         created_at=row.created_at,
         updated_at=row.updated_at,
@@ -255,7 +292,7 @@ async def solve_revision(session, row, settings):
         proposal_hash="",
         created_at=now,
         expires_at=min(
-            now + timedelta(seconds=settings.plan_ttl_seconds),
+            now + timedelta(seconds=settings.recovery_ttl_seconds),
             snapshot.forecast.valid_until,
         ),
     )
@@ -364,8 +401,11 @@ async def materialize(session, row, body, principal, key, settings):
             409, "ACTION_IN_PROGRESS", "Reconcile the current purchase before adopting another"
         )
     if row.plan_id:
+        from app.operations_cases.lifecycle import short
+
         previous = await session.scalar(select(ActionRow).where(ActionRow.plan_id == row.plan_id))
-        if previous and previous.status == "SUCCEEDED":
+        # A supplier that confirmed only part of the order leaves the rest to buy elsewhere.
+        if previous and previous.status == "SUCCEEDED" and not short(previous):
             raise AppError(
                 409,
                 "EMERGENCY_PURCHASE_ALREADY_ACCEPTED",
@@ -397,8 +437,14 @@ async def materialize(session, row, body, principal, key, settings):
     if old and old.status == "PENDING_APPROVAL":
         old.status = "SUPERSEDED"
     mission.mission_version += 1
+    # The approval window opens when the owner adopts, not when the options were computed.
     plan = build_recovery_plan(
-        mission, snapshot, proposal, selected.id, principal.principal_id, proposal.expires_at
+        mission,
+        snapshot,
+        proposal,
+        selected.id,
+        principal.principal_id,
+        now + timedelta(seconds=settings.recovery_ttl_seconds),
     )
     session.add(
         PlanRow(
@@ -472,11 +518,16 @@ async def control(session, row, body, principal, key):
                 await cancel_followup(session, row)
         elif body.operation == "cancel":
             await invalidate_pending(session, row, mission)
+            held = row.plan_id is not None or row.status == "MONITORING"
             row.status, row.followup_enabled = "CANCELLED", False
             row.expert_analysis = None
             from app.operations_cases.jobs import cancel_followup
 
             await cancel_followup(session, row)
+            if held and mission.status == "ACTIVE":
+                # Routine planning was held for this case; it looks at the item again now.
+                store = await session.get(Store, row.store_id)
+                await queue_check(session, store, mission, key="case-ended-" + row.id)
         else:
             if row.proposal_id is None:
                 raise AppError(
@@ -494,7 +545,24 @@ async def control(session, row, body, principal, key):
                     "An existing purchase must be reconciled before adopting waiting",
                 )
             await invalidate_pending(session, row, mission)
+            # Waiting is a decision not to buy now: a routine order waiting for approval goes too.
+            routine = (
+                await session.get(PlanRow, mission.current_plan_id, with_for_update=True)
+                if mission.current_plan_id
+                else None
+            )
+            if routine and routine.status == "PENDING_APPROVAL":
+                routine.status = "SUPERSEDED"
+                mission.current_plan_id = None
             row.status = "MONITORING"
+            await timeline(
+                session,
+                mission,
+                "CASE_DECISION",
+                "你选择等原订单；应急事项结束前，例行检查不会另外建议下单。",
+                actor=principal.principal_id,
+                references=[{"type": "artifact", "id": row.id}],
+            )
         await event(session, row, "CASE_" + body.operation.upper())
         await session.flush()
         response = await detail(session, row)

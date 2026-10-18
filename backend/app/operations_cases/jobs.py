@@ -171,6 +171,10 @@ def make_handlers(settings):
             await event(
                 session, case, "FOLLOWUP_OBSERVED", {"fingerprint": fingerprint, **observation}
             )
+        from app.operations_cases.lifecycle import recheck, settle
+
+        if await settle(session, case, mission):
+            return outcome
         revision = await session.get(CaseRevisionRow, (case.id, case.current_revision))
         horizon_end = (
             datetime.fromisoformat(revision.snapshot["forecast"]["horizon_end"])
@@ -189,8 +193,19 @@ def make_handlers(settings):
             )
         elif view.execution_status in {"EXECUTING", "UNKNOWN"}:
             case.status = "MONITORING"
-        elif view.stale or not observation["source_fresh"]:
-            case.status = "RECHECK_REQUIRED"
+        elif case.status != "MONITORING" and (view.stale or not observation["source_fresh"]):
+            # Only options the owner has not acted on go stale; a decision being carried out
+            # changes the state by itself.
+            await recheck(
+                session,
+                case,
+                mission,
+                "SOURCE_STALE"
+                if not observation["source_fresh"]
+                else "OPTIONS_EXPIRED"
+                if view.proposal and view.proposal.expires_at <= now
+                else "BUSINESS_STATE_CHANGED",
+            )
         return outcome
 
     async def after_complete(session, job, _):

@@ -36,8 +36,8 @@ async def validate_sources(session, store, mission, snapshot, settings, now):
     cursor = await session.scalar(select(SourceCursor).where(SourceCursor.store_id == store.id))
     if not source_fresh(cursor, now, settings.source_stale_seconds):
         changed("DATA_STALE", "Source must be current before adopting, approving or sending")
-    if snapshot.forecast.valid_until <= now:
-        changed("PLAN_EXPIRED", "Daily demand evidence expired")
+    # No clock of its own here: the options' window is checked on adoption, the plan's on
+    # approval, and a v6 forecast's own validity below.
     stock = await session.get(StockRow, (store.id, mission.sku_id))
     if (
         stock.forecast_version != snapshot.forecast.forecast_version
