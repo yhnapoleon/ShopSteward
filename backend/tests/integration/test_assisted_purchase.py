@@ -192,3 +192,26 @@ async def test_an_order_sent_to_the_simulator_takes_no_pasted_reply(db):
             f"/api/v1/actions/{action['id']}/arrival", json={}, headers=headers("operator")
         )
         assert arrival.status_code == 409
+
+
+async def test_the_work_item_says_the_next_step_of_an_order_sent_by_hand_is_the_owners(db):
+    async with environment(db) as (seed, client):
+        action = await sent(db, seed, client)
+        opened = await client.post(
+            f"/api/v1/missions/{action['mission_id']}/work-item", headers=headers()
+        )
+        assert opened.status_code == 200, opened.text
+        path = f"/api/v1/work-items/{opened.json()['item']['id']}"
+
+        async def business():
+            return (await client.get(path, headers=headers())).json()["item"]["business"]
+
+        waiting = await business()
+        assert (waiting["code"], waiting["tone"], waiting["needs_attention"]) == (
+            "AWAITING_SUPPLIER",
+            "amber",
+            True,
+        )
+        assert (await reply(client, action, "收到，确认40件，单价10.00元/件")).status_code == 200
+        confirmed = await business()
+        assert confirmed["code"] == "IN_TRANSIT" and "登记" in confirmed["detail"]
