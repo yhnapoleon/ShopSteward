@@ -8,7 +8,15 @@ from langchain_openai import ChatOpenAI
 
 class OpenAIModel:
     def __init__(
-        self, *, base_url, model, key=None, key_file=None, client=None, api_mode="chat_completions"
+        self,
+        *,
+        base_url,
+        model,
+        key=None,
+        key_file=None,
+        client=None,
+        api_mode="chat_completions",
+        reasoning_effort=None,
     ):
         if api_mode not in {"chat_completions", "responses"}:
             raise ValueError("unsupported API mode")
@@ -19,6 +27,7 @@ class OpenAIModel:
                 key = Path(key_file).read_text(encoding="utf-8").strip()
             if not key:
                 raise ValueError("model key required")
+            options = {"reasoning_effort": reasoning_effort} if reasoning_effort is not None else {}
             client = ChatOpenAI(
                 base_url=base_url,
                 model=model,
@@ -27,6 +36,7 @@ class OpenAIModel:
                 max_retries=0,
                 use_responses_api=api_mode == "responses",
                 max_completion_tokens=2048,
+                **options,
             )
         self.client = client
 

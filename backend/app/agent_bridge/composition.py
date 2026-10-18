@@ -188,6 +188,7 @@ async def execute(context):
                 model=settings.agent_model,
                 key_file=settings.agent_api_key_file,
                 api_mode=settings.agent_api_mode,
+                reasoning_effort=settings.agent_reasoning_effort,
             ),
             saver,
             schemas,

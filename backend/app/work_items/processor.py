@@ -356,6 +356,7 @@ class Processor:
                 model=self.settings.agent_model,
                 key_file=self.settings.agent_api_key_file,
                 api_mode=self.settings.agent_api_mode,
+                reasoning_effort=self.settings.agent_reasoning_effort,
             )
             runtime = Runtime(
                 model,
