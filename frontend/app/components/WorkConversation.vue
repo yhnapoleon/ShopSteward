@@ -5,9 +5,21 @@ const work = useWorkItems(),
   { s } = work
 const emit = defineEmits<{ changed: [] }>()
 const log = ref<HTMLElement>()
+// Item whose message was just saved while no assistant can process it. The receipt below the
+// messages appears once (240ms fade) and stays; further messages do not replay it.
+const saved = ref('')
+watch(
+  () => s.detail?.item.id,
+  (id) => {
+    if (id !== saved.value) saved.value = ''
+  },
+)
 async function send() {
+  const message = s.pending ? s.pending.path.endsWith('/messages') : !!s.input.trim()
   const d = await work.send()
-  if (d) emit('changed')
+  if (!d) return
+  if (message && !d.item.processor_available) saved.value = d.item.id
+  emit('changed')
 }
 async function resync() {
   await work.list()
@@ -83,6 +95,18 @@ watch(
           <WorkResult :result="message.result" :demonstration="message.demonstration" />
         </details>
       </article>
+    </div>
+    <div class="work-saved-slot" role="status">
+      <Transition name="space-appear">
+        <p
+          v-if="saved && saved === s.detail?.item.id && !s.detail?.item.processor_available"
+          class="work-saved"
+        >
+          <AppIcon name="check" /><span>{{
+            tr('已保存。助手启用后会处理；现在可以继续补充，或用卡片完成操作。')
+          }}</span>
+        </p>
+      </Transition>
     </div>
     <div class="work-composer">
       <QuotationUpload @changed="emit('changed')" />

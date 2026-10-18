@@ -196,7 +196,7 @@ async function submit() {
     </header>
     <div class="dc-scope">
       <AppIcon name="file-check-2" /><span>{{
-        tr('原件与版本可管理、下载。智能检索与 Agent 引用尚未接入。')
+        tr('原件与版本在此管理；检索与引用由 Agent 工具使用。')
       }}</span>
     </div>
     <div v-if="notice" class="dc-notice" role="status">

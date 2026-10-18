@@ -30,12 +30,16 @@ function template(node, file) {
   }
   for (const child of node.children || []) template(child, file)
 }
+// Components may live in sub-folders (for example components/space/); scan them all.
+function* vueFiles(dir) {
+  for (const entry of fs.readdirSync(new URL(dir + '/', root), { withFileTypes: true })) {
+    if (entry.isDirectory()) yield* vueFiles(dir + '/' + entry.name)
+    else if (entry.name.endsWith('.vue')) yield dir + '/' + entry.name
+  }
+}
 for (const dir of ['components', 'pages']) {
-  const location = new URL(dir + '/', root)
-  for (const name of fs.readdirSync(location)) {
-    if (!name.endsWith('.vue')) continue
-    const file = path.join(dir, name)
-    const { descriptor } = parse(fs.readFileSync(new URL(name, location), 'utf8'))
+  for (const file of vueFiles(dir)) {
+    const { descriptor } = parse(fs.readFileSync(new URL(file, root), 'utf8'))
     template(descriptor.template.ast, file)
     files++
   }

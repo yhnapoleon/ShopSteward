@@ -25,7 +25,12 @@ export default defineEventHandler(async (event) => {
       agentEnabled: config.agentEnabled,
       devTools: config.devTools && identity.roles.includes('admin'),
     }
-  } catch {
+  } catch (error) {
+    // 401/403 means the identity is unusable. No response, a timeout or a server-side failure
+    // means the backend could not answer; the page must not ask for a new identity then.
+    // Without a stored credential the backend was never asked, so no hint is given and the
+    // page checks /api/health itself.
+    const status = (error as { statusCode?: number } | null)?.statusCode
     return {
       quantitySimulation: false,
       workIntake: false,
@@ -35,6 +40,11 @@ export default defineEventHandler(async (event) => {
       principal_id: '',
       agentEnabled: false,
       devTools: false,
+      backend: !config.token
+        ? undefined
+        : !status || status >= 500
+          ? ('unreachable' as const)
+          : ('ok' as const),
     }
   }
 })

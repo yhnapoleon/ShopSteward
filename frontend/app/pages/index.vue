@@ -89,6 +89,14 @@ function open(name: string) {
   dialog.value = name
   scheduleSeconds.value = mission.value?.schedule.interval_seconds || 30
 }
+// After an outage, resume exactly like the first load so the open view comes back by itself.
+const { unreachable: backendDown, probe: retryBackend } = useBackendHealth(true, async () => {
+  await shop.init(typeof route.query.store === 'string' ? route.query.store : undefined)
+  if (view.value === 'task' && typeof route.query.mission === 'string')
+    await shop.selectMission(route.query.mission)
+  if (view.value === 'work' && typeof route.query.item === 'string')
+    await openWork(route.query.item)
+})
 async function navigate(next: string) {
   viewScroll[view.value] = window.scrollY
   dialog.value = ''
@@ -102,14 +110,23 @@ async function openWork(id: string) {
   await work.select(id)
   await syncWork()
 }
-async function syncWork() {
+async function syncWork(panel?: string) {
   const item = work.s.detail?.item,
     epoch = work.s.epoch
   if (!item || item.store_id !== s.storeId) return
   if (item.mission_id && s.missionId !== item.mission_id) await shop.selectMission(item.mission_id)
   if (epoch !== work.s.epoch || work.s.detail?.item.id !== item.id || item.store_id !== s.storeId)
     return
-  await router.push({ query: { view: 'work', item: item.id, store: item.store_id } })
+  // An explicit entry (the Agent buttons) chooses the panel; refreshes of the same item keep it.
+  const keep = panel ?? (route.query.item === item.id ? route.query.panel : undefined)
+  await router.push({
+    query: {
+      view: 'work',
+      item: item.id,
+      store: item.store_id,
+      ...(typeof keep === 'string' && keep !== 'result' ? { panel: keep } : {}),
+    },
+  })
 }
 watch(
   () => route.query.item,
@@ -133,7 +150,7 @@ async function openTask(id = mission.value?.id, panel = 'result') {
   if (!id) return
   if (work.s.available) {
     const d = await work.fromMission(id)
-    if (d) await syncWork()
+    if (d) await syncWork(panel)
     return
   }
   viewScroll[view.value] = window.scrollY
@@ -302,15 +319,42 @@ const issue = computed(() =>
 const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
 )
-const decisionCount = computed(() => (issue.value || canDecide.value ? 1 : 0))
+// Demo mode (§10): plain store names and the demo badge; business rules and data stay the same.
+const {
+  enabled: demoMode,
+  saveFailed: demoSaveFailed,
+  set: setDemo,
+  storeLabel,
+} = useDemoMode()
+const currentStore = computed(() => s.stores.find((st) => st.store_id === s.storeId))
+// Today (§5): what needs the owner comes first; everything else ongoing is "being watched".
+const decideWorks = computed(() => activeWorks.value.filter(needsOwner))
+const watchWorks = computed(() => activeWorks.value.filter((i) => !needsOwner(i)))
+const taskCardShown = computed(
+  () => !!mission.value && !work.s.items.some((i) => i.mission_id === mission.value?.id),
+)
+// The badge counts only the cards in "需要你拍板"; a new store's first sync is not a decision.
+const attention = computed(
+  () => !!issue.value && !(issue.value === 'stale' && firstSync(s.dashboard?.freshness)),
+)
+const decisionCount = computed(
+  () =>
+    decideWorks.value.length +
+    ((taskCardShown.value && canDecide.value) || attention.value ? 1 : 0),
+)
+const todayStarted = computed(() =>
+  Boolean(s.storeId && (mission.value || activeWorks.value.length || issue.value)),
+)
 const receiptActions = computed(() =>
   s.actions.filter((a) => !mission.value || a.mission_id === mission.value.id),
 )
-const recordItems = computed(() =>
-  recordFilter.value === 'decisions'
-    ? s.timeline.filter((t) => t.actor_type === 'USER')
-    : s.timeline,
+const decisions = useDecisionRecords(
+  () => view.value === 'journal' && recordFilter.value === 'decisions',
 )
+const recordItems = computed(() =>
+  recordFilter.value === 'decisions' ? decisions.items.value : s.timeline,
+)
+const recordRows = computed(() => groupTimeline(recordItems.value))
 const labels: Record<string, string> = {
   approval: '核对这笔采购',
   evidence: '当前选择的依据',
@@ -329,24 +373,93 @@ const labels: Record<string, string> = {
   alerts: '需要关注的事项',
 }
 function briefing() {
-  return [
+  const current = mission.value
+  const facts = [
     `ShopSteward｜经营简报`,
     `商品：${product.value?.name || '未取得'}`,
     `经营时点：${when(s.dashboard?.state.simulation_time)}`,
     `可用现金：${money(s.dashboard?.state.available_cash_minor)}`,
-    `在库：${number(stock.value?.on_hand)} 件；在途：${number(stock.value?.in_transit)} 件`,
+    // Translated by key: the generic "{0} 件" pattern would otherwise claim these lines first.
+    tr('在库：{0} 件；在途：{1} 件', [
+      number(stock.value?.on_hand),
+      number(stock.value?.in_transit),
+    ]),
     `待结算：${money(s.dashboard?.state.receivables_minor)}（未回款）`,
-    `剩余需求假设：${number(stock.value?.remaining_demand)} 件`,
-    `任务状态：${mission.value?.status || '尚未建立'}`,
+    tr('剩余需求假设：{0} 件', [number(stock.value?.remaining_demand)]),
+    `任务状态：${current ? statusBadge({ mission: current.status }).label : tr('尚未建立')}`,
     `最近检查：${when(s.dashboard?.last_check_at)}`,
-    `下一检查：${when(mission.value?.schedule.next_run_at)}`,
+    `下一检查：${when(current?.schedule.next_run_at)}`,
+  ].map((line) => tr(line))
+  // After the facts, five parts: what happened, what was done, what is pending, what comes next,
+  // and where it all comes from. These lines are written in the current language already.
+  const part = (title: string, lines: string[], empty: string) => [
     '',
-    ...s.timeline.map((t) => when(t.created_at) + ' ' + t.summary),
-    '',
-    '以上来源于业务API；当前为合成经营环境，备货到位不代表活动结束。',
+    tr(title),
+    ...(lines.length ? lines : [tr(empty)]).map((line) => `- ${line}`),
   ]
-    .map((line) => tr(line))
-    .join('\n')
+  const done = s.actions
+    .filter((a) => a.mission_id === current?.id)
+    .sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at))
+    .map((a) => {
+      const inbound = s.inbounds.find((i) => i.action_id === a.id)
+      const status = orderStatus(a, inbound).label
+      const arrived = [inbound?.received_quantity ?? 0, inbound?.ordered_quantity ?? a.quantity]
+      // Like the orders card: a failed or cancelled order brings nothing, so no arrival count.
+      if (!['QUEUED', 'EXECUTING', 'SUCCEEDED', 'UNKNOWN'].includes(a.status))
+        return tr('采购单 {0} 件 · {1} · {2}', [a.quantity, money(a.amount_minor), tr(status)])
+      return status === '已到货'
+        ? tr('采购单 {0} 件 · {1} · 已到货 {2}/{3}', [a.quantity, money(a.amount_minor), ...arrived])
+        : tr('采购单 {0} 件 · {1} · {2} · 已到货 {3}/{4}', [
+            a.quantity,
+            money(a.amount_minor),
+            tr(status),
+            ...arrived,
+          ])
+    })
+  const proposed =
+    plan.value?.status === 'PENDING_APPROVAL' ? plan.value.proposed_purchase?.quantity || 0 : 0
+  const arrivalTime = (at: string | null) => Date.parse(at || '') || Infinity
+  const waiting = [
+    ...s.inbounds
+      .filter((i) => i.mission_id === current?.id && i.remaining_quantity > 0)
+      .sort((a, b) => arrivalTime(a.expected_arrival_at) - arrivalTime(b.expected_arrival_at))
+      .map((i) =>
+        i.expected_arrival_at
+          ? tr('预计到货 {0} · {1} 件在途', [when(i.expected_arrival_at), i.remaining_quantity])
+          : tr('{0} 件在途，到货时间待供应商确认', [i.remaining_quantity]),
+      ),
+    ...(proposed
+      ? [
+          tr('待确认方案：建议补 {0} 件 · 支出 {1}', [
+            proposed,
+            money(plan.value?.proposed_purchase?.total_minor),
+          ]),
+        ]
+      : []),
+    ...work.s.items
+      .filter((i) => i.mission_id === current?.id && i.status === 'WAITING_INPUT' && i.question)
+      .map((i) => tr('需要你补充：{0}', [i.question || ''])),
+    ...(agent.s.run?.status === 'WAITING_INPUT' && agent.s.run.question
+      ? [tr('Agent 需要你补充：{0}', [agent.s.run.question])]
+      : []),
+  ]
+  const next = ['COMPLETED', 'CANCELLED'].includes(current?.status || '')
+    ? [tr('委托已结束')]
+    : [
+        current?.status === 'PAUSED'
+          ? tr('主动跟进已暂停')
+          : tr('下一次检查 {0}', [when(current?.schedule.next_run_at)]),
+        tr(proposed ? '核对方案' : '等待下一次经营变化'),
+      ]
+  return [
+    ...facts,
+    ...part('最近发生', timelineLines(s.timeline, 8), '暂无记录'),
+    ...part('已完成动作', done, '暂无采购单'),
+    ...part('等待事项', waiting, '暂无等待事项'),
+    ...part('下一步', next, '等待下一次经营变化'),
+    '',
+    tr('以上来源于业务API；当前为合成经营环境，备货到位不代表活动结束。'),
+  ].join('\n')
 }
 </script>
 <template>
@@ -372,16 +485,23 @@ function briefing() {
       <button
         v-if="mission"
         class="global-agent-entry"
-        :class="{ 'is-running': agent.running.value }"
+        :class="{ 'is-running': agent.running.value, 'is-off': agentDormant(s.session, agent.s) }"
         :aria-label="tr('查看Agent工作区')"
         @click="openTask(undefined, 'agent')"
       >
         <span class="agent-live-dot" /><span>{{
-          tr(agent.active.value || agent.s.syncError ? agent.status.value : 'Agent 工作区')
+          tr(
+            agentDormant(s.session, agent.s)
+              ? 'Agent 未启用'
+              : agent.active.value || agent.s.syncError
+                ? agent.status.value
+                : 'Agent 工作区',
+          )
         }}</span
         ><AppIcon name="arrow-up-right" />
       </button>
       <div class="header-store">
+        <MemoryEntry />
         <button class="icon-btn settings-entry" :aria-label="tr('设置')" @click="open('settings')">
           <AppIcon name="sliders-horizontal" />
         </button>
@@ -389,13 +509,15 @@ function briefing() {
           <span class="avatar">{{ tr('店') }}</span
           ><span
             ><strong>{{
-              tr(
-                s.storeId
-                  ? s.storeId === s.activeStoreId
-                    ? '当前经营环境'
-                    : '历史场景'
-                  : '选择店铺',
-              )
+              demoMode && currentStore
+                ? storeLabel(currentStore)
+                : tr(
+                    s.storeId
+                      ? s.storeId === s.activeStoreId
+                        ? '当前经营环境'
+                        : '历史场景'
+                      : '选择店铺',
+                  )
             }}</strong
             ><small>{{ tr('我的经营空间') }}</small></span
           ><AppIcon name="chevron-down" />
@@ -413,11 +535,18 @@ function briefing() {
       <button
         v-if="mission"
         class="mobile-agent-entry"
+        :class="{ 'is-off': agentDormant(s.session, agent.s) }"
         :aria-label="tr('移动端Agent工作区')"
         @click="openTask(undefined, 'agent')"
       >
         <span class="agent-live-dot" :class="{ 'is-running': agent.running.value }" />{{
-          tr(agent.active.value || agent.s.syncError ? agent.status.value : '查看任务与 Agent')
+          tr(
+            agentDormant(s.session, agent.s)
+              ? 'Agent 未启用'
+              : agent.active.value || agent.s.syncError
+                ? agent.status.value
+                : '查看任务与 Agent',
+          )
         }}<AppIcon name="arrow-up-right" />
       </button>
       <header v-if="!['overview', 'documents'].includes(view)" class="topbar">
@@ -439,7 +568,7 @@ function briefing() {
         </div>
         <div class="top-actions">
           <button class="demo-badge" @click="open('controls')">
-            {{ tr('联调控制 · 合成数据') }}</button
+            {{ tr(demoMode ? '演示 · 合成数据' : '联调控制 · 合成数据') }}</button
           ><span class="top-clock">{{ tr(when(s.dashboard?.state.simulation_time)) }}</span
           ><button class="icon-btn" :aria-label="tr('设置')" @click="open('settings')">
             <AppIcon name="sliders-horizontal" />
@@ -480,8 +609,31 @@ function briefing() {
           </button>
         </div>
       </div>
+      <section
+        v-if="
+          backendDown &&
+          s.session?.authenticated &&
+          !s.connected &&
+          !['overview', 'documents'].includes(view)
+        "
+        class="service-outage glass"
+        role="status"
+      >
+        <span class="tag amber">{{ tr('服务暂时中断') }}</span>
+        <h2>{{ tr('后端暂时无法连接，正在重试') }}</h2>
+        <p>
+          {{
+            s.dashboard?.freshness.last_sync_at
+              ? tr('页面保留 {0} 同步的数据；恢复后自动继续，期间不能确认采购。', [
+                  when(s.dashboard.freshness.last_sync_at),
+                ])
+              : tr('恢复后自动继续，期间不能确认采购。')
+          }}
+        </p>
+        <button class="text-link" @click="retryBackend()">{{ tr('立即重试') }}</button>
+      </section>
       <p
-        v-if="s.error && !dialog && !['overview', 'documents'].includes(view)"
+        v-if="s.error && !backendDown && !dialog && !['overview', 'documents'].includes(view)"
         class="notice amber"
         role="alert"
       >
@@ -491,13 +643,25 @@ function briefing() {
         </button>
       </p>
       <p
-        v-if="(work.s.syncError || work.s.listError || work.s.error) && view !== 'work'"
+        v-if="
+          (work.s.syncError || work.s.listError || work.s.error) && view !== 'work' && !backendDown
+        "
         class="notice amber"
         role="alert"
       >
         {{ tr(work.s.syncError || work.s.listError || work.s.error) }}
       </p>
-      <div v-if="s.loading" class="empty-decision glass" role="status">
+      <section
+        v-if="backendDown && !s.session?.authenticated"
+        class="start-card glass service-outage-start"
+        role="status"
+      >
+        <span class="tag amber">{{ tr('服务暂时中断') }}</span>
+        <h2>{{ tr('后端暂时无法连接，正在重试') }}</h2>
+        <p>{{ tr('每 5 秒自动重试，恢复后自动继续；不需要重新连接身份。') }}</p>
+        <button class="secondary" @click="retryBackend()">{{ tr('立即重试') }}</button>
+      </section>
+      <div v-else-if="s.loading" class="empty-decision glass" role="status">
         {{ tr('正在读取经营数据…') }}
       </div>
       <div v-else-if="!s.session?.authenticated" class="start-card glass">
@@ -562,40 +726,116 @@ function briefing() {
       <div v-else class="content-grid">
         <section class="main-column">
           <div v-if="view === 'today'" id="decision-zone">
-            <div class="section-label">
-              {{ tr(work.s.available ? '正在处理的事情' : '需要你决定')
-              }}<span class="small-count">{{
-                tr(
-                  work.s.available
-                    ? activeWorks.length +
-                        (mission && !work.s.items.some((i) => i.mission_id === mission?.id) ? 1 : 0)
-                    : decisionCount,
-                )
-              }}</span
-              ><span class="right">{{ tr('每笔采购单独确认') }}</span>
-            </div>
-            <template v-if="work.s.available">
-              <p v-if="work.s.syncError" class="notice amber" role="alert">
-                {{ tr(work.s.syncError) }}
-              </p>
+            <p v-if="work.s.available && work.s.syncError" class="notice amber" role="alert">
+              {{ tr(work.s.syncError) }}
+            </p>
+            <template v-if="todayStarted">
+              <div class="section-label">
+                {{ tr('需要你拍板') }}<span class="small-count">{{ tr(decisionCount) }}</span
+                ><span class="right">{{ tr('每笔采购单独确认') }}</span>
+              </div>
               <WorkCard
-                v-for="item in activeWorks"
+                v-for="item in decideWorks"
                 :key="item.id"
                 :item="item"
                 @open="openWork(item.id)"
               />
-              <div v-if="!mission && !activeWorks.length" class="work-intake-inline glass">
-                <WorkIntake @submitted="openWork" />
-              </div>
-              <button v-if="work.s.cursor" class="text-link" @click="work.list(true)">
-                {{ tr('查看更早事项') }}
-              </button>
+              <TaskCard v-if="taskCardShown" @open="openTask()" />
+              <article
+                v-else-if="issue === 'stale' && firstSync(s.dashboard?.freshness)"
+                class="attention-card glass"
+                role="status"
+              >
+                <span class="tag blue">{{ tr('正在同步') }}</span>
+                <h2>{{ tr('正在首次同步经营数据') }}</h2>
+                <p>{{ tr('几秒后自动更新，期间不能确认采购。') }}</p>
+                <button
+                  class="secondary"
+                  :disabled="Boolean(s.busy)"
+                  @click="act(() => shop.refresh(true))"
+                >
+                  {{ tr('刷新原记录') }}
+                </button>
+              </article>
+              <article v-else-if="issue" class="attention-card glass">
+                <span class="tag amber">{{ tr('需要处理') }}</span>
+                <h2>
+                  {{
+                    tr(
+                      issue === 'confirmation'
+                        ? s.pending?.storeId !== s.storeId
+                          ? '历史场景的确认结果尚未取得'
+                          : '确认结果尚未取得'
+                        : issue === 'unknown'
+                          ? '采购结果还没有核实'
+                          : issue === 'expired'
+                            ? '原方案已过期'
+                            : '暂时无法确认最新经营数据',
+                    )
+                  }}
+                </h2>
+                <p>
+                  {{
+                    tr(
+                      issue === 'confirmation'
+                        ? '可能已经受理。查询会沿用原确认编号，不创建另一笔采购。'
+                        : issue === 'unknown'
+                          ? '后台正在核实原采购。不要用新采购代替查询，现金预留与原动作仍保留。'
+                          : issue === 'expired'
+                            ? '先重新检查适用条件，再核对新方案。'
+                            : '保留上次结果供参考，恢复数据前不允许确认采购。',
+                    )
+                  }}
+                </p>
+                <button
+                  class="primary"
+                  :disabled="Boolean(s.busy)"
+                  @click="
+                    act(
+                      issue === 'confirmation'
+                        ? () => shop.recoverApproval()
+                        : issue === 'expired'
+                          ? () => shop.requestCheck()
+                          : () => shop.refresh(true),
+                    )
+                  "
+                >
+                  {{
+                    tr(
+                      issue === 'confirmation'
+                        ? '查询原确认结果'
+                        : issue === 'expired'
+                          ? '重新检查'
+                          : '刷新原记录',
+                    )
+                  }}
+                </button>
+              </article>
+              <p v-if="!decideWorks.length && !taskCardShown && !issue" class="space-quiet">
+                {{ tr('现在没有需要你拍板的事。') }}
+              </p>
+              <template v-if="work.s.available">
+                <div class="section-label">
+                  {{ tr('系统在盯') }}<span class="small-count">{{ tr(watchWorks.length) }}</span
+                  ><span class="right">{{ tr('到货与检查会自动更新') }}</span>
+                </div>
+                <SpaceWatchList :items="watchWorks" @open="openWork" />
+                <button v-if="work.s.cursor" class="text-link" @click="work.list(true)">
+                  {{ tr('查看更早事项') }}
+                </button>
+              </template>
             </template>
-            <TaskCard
-              v-if="mission && !work.s.items.some((i) => i.mission_id === mission?.id)"
-              @open="openTask()"
-            />
-            <article v-else-if="!s.storeId" class="start-card glass">
+            <!-- With the assistant available, telling it the task comes first. Without it the
+                 start card leads and the same intake folds into one line below the card. -->
+            <div
+              v-if="
+                work.s.available && work.s.processorAvailable && !mission && !activeWorks.length
+              "
+              class="work-intake-inline glass"
+            >
+              <WorkIntake @submitted="openWork" />
+            </div>
+            <article v-if="!s.storeId" class="start-card glass">
               <span class="tag">{{ tr('从示例店铺开始') }}</span>
               <h2>{{ tr('先准备这一轮经营资料。') }}</h2>
               <p>{{ tr('创建独立SC-01场景，或选择当前身份可以查看的已有店铺。不重置旧数据。') }}</p>
@@ -610,61 +850,7 @@ function briefing() {
                 {{ tr('创建场景不会产生采购。没有开发权限时请由管理员准备。') }}
               </p>
             </article>
-            <article v-else-if="issue" class="attention-card glass">
-              <span class="tag amber">{{ tr('需要处理') }}</span>
-              <h2>
-                {{
-                  tr(
-                    issue === 'confirmation'
-                      ? s.pending?.storeId !== s.storeId
-                        ? '历史场景的确认结果尚未取得'
-                        : '确认结果尚未取得'
-                      : issue === 'unknown'
-                        ? '采购结果还没有核实'
-                        : issue === 'expired'
-                          ? '原方案已过期'
-                          : '暂时无法确认最新经营数据',
-                  )
-                }}
-              </h2>
-              <p>
-                {{
-                  tr(
-                    issue === 'confirmation'
-                      ? '可能已经受理。查询会沿用原确认编号，不创建另一笔采购。'
-                      : issue === 'unknown'
-                        ? '后台正在核实原采购。不要用新采购代替查询，现金预留与原动作仍保留。'
-                        : issue === 'expired'
-                          ? '先重新检查适用条件，再核对新方案。'
-                          : '保留上次结果供参考，恢复数据前不允许确认采购。',
-                  )
-                }}
-              </p>
-              <button
-                class="primary"
-                :disabled="Boolean(s.busy)"
-                @click="
-                  act(
-                    issue === 'confirmation'
-                      ? () => shop.recoverApproval()
-                      : issue === 'expired'
-                        ? () => shop.requestCheck()
-                        : () => shop.refresh(true),
-                  )
-                "
-              >
-                {{
-                  tr(
-                    issue === 'confirmation'
-                      ? '查询原确认结果'
-                      : issue === 'expired'
-                        ? '重新检查'
-                        : '刷新原记录',
-                  )
-                }}
-              </button>
-            </article>
-            <article v-else-if="!mission && !work.s.available" class="start-card glass">
+            <article v-else-if="!mission && !issue" class="start-card glass">
               <span class="tag">{{ tr('从示例店铺开始') }}</span>
               <h2>{{ tr('先把这次备货交代清楚。') }}</h2>
               <p>
@@ -673,28 +859,45 @@ function briefing() {
               <div class="start-scope">
                 <b>{{ product?.name }}</b
                 ><span>{{
-                  joinText([
-                    tr('库存'),
-                    tr(number(stock?.on_hand)),
-                    tr('件 · 现金'),
-                    tr(money(s.dashboard?.state.available_cash_minor)),
-                  ])
+                  joinText(
+                    [
+                      tr('库存'),
+                      tr(number(stock?.on_hand)),
+                      tr('件 · 现金'),
+                      tr(money(s.dashboard?.state.available_cash_minor)),
+                    ],
+                    ' ',
+                  )
                 }}</span
-                ><span>{{ tr('建议现金底线¥300 · 采购条件来自当前场景') }}</span>
+                ><span>{{ tr('建议现金底线 ¥300 · 采购条件来自当前场景') }}</span>
               </div>
               <button class="primary" :disabled="!hasRole('operator')" @click="deck = true">
                 {{ tr('开始备货跟进') }}<AppIcon name="arrow-right" />
               </button>
               <p class="channel-note">{{ tr('尚未建立委托，也没有采购。') }}</p>
             </article>
+            <details
+              v-if="
+                work.s.available && !work.s.processorAvailable && !mission && !activeWorks.length
+              "
+              class="work-intake-fold"
+            >
+              <summary>
+                <AppIcon name="notebook-pen" /><span>{{ tr('也可以用一句话交代这件事') }}</span
+                ><AppIcon name="chevron-down" />
+              </summary>
+              <WorkIntake @submitted="openWork" />
+            </details>
           </div>
           <template v-if="work.s.available && view === 'following'"
-            ><WorkCard
-              v-for="item in activeWorks"
-              :key="item.id"
-              :item="item"
-              @open="openWork(item.id)"
-          /></template>
+            ><SpaceFollowingList :items="work.s.items" @open="openWork" /><button
+              v-if="work.s.cursor"
+              class="text-link"
+              @click="work.list(true)"
+            >
+              {{ tr('查看更早事项') }}
+            </button></template
+          >
           <template
             v-if="
               mission &&
@@ -709,15 +912,6 @@ function briefing() {
               @mission="openTask()"
               @check="act(() => shop.requestCheck())"
           /></template>
-          <ForecastPanel
-            v-if="s.storeId && stock?.sku_id && view !== 'journal'"
-            :key="s.storeId + ':' + stock.sku_id + ':' + s.session?.principal_id"
-            :store-id="s.storeId"
-            :sku-id="stock.sku_id"
-            :state-version="s.dashboard?.state.state_version"
-            :can-manage="hasRole('operator')"
-          />
-
           <template v-if="work.s.available && view === 'journal'"
             ><WorkCard
               v-for="item in work.s.items"
@@ -750,7 +944,7 @@ function briefing() {
             <section class="summary-card glass">
               <template v-if="recordFilter === 'ledger'"
                 ><div v-for="e in s.ledger" :key="e.id" class="activity-item">
-                  <time>{{ tr(when(e.simulation_time)) }}</time>
+                  <time>{{ tr(when(e.simulation_time || e.occurred_at)) }}</time>
                   <div>
                     <h3>
                       {{
@@ -786,21 +980,91 @@ function briefing() {
                 </div>
                 <p v-if="!s.ledger.length">{{ tr('暂无账本记录。') }}</p></template
               ><template v-else
-                ><div v-for="e in recordItems" :key="e.id" class="activity-item">
-                  <time>{{ tr(when(e.created_at)) }}</time
-                  ><span class="mini-icon"><AppIcon name="clock" /></span>
-                  <div>
-                    <h3>{{ e.summary }}</h3>
-                    <p>{{ tr(e.actor_type === 'USER' ? '用户决定' : '后台记录') }}</p>
-                  </div>
-                </div>
-                <p v-if="!recordItems.length">{{ tr('还没有这类记录。') }}</p>
+                ><template v-for="row in recordRows" :key="row.key"
+                  ><details v-if="row.kind === 'group'" class="activity-group">
+                    <summary class="activity-item">
+                      <time>{{ tr(when(row.earliest)) }}</time
+                      ><span class="mini-icon timeline-mark" :class="row.tone"
+                        ><span class="timeline-dot" aria-hidden="true" /></span
+                      ><span class="activity-copy"
+                        ><strong>{{ row.label }}</strong
+                        ><span>{{ tr('系统记录 · 展开查看每一条') }}</span></span
+                      ><AppIcon name="chevron-right" />
+                    </summary>
+                    <ol class="activity-group-items">
+                      <li v-for="item in row.items" :key="item.entry.id">
+                        <time>{{ tr(when(item.entry.created_at)) }}</time
+                        ><span>{{
+                          [item.event.title, item.event.detail].filter(Boolean).join(' · ')
+                        }}</span>
+                      </li>
+                    </ol>
+                  </details>
+                  <div v-else class="activity-item">
+                    <time>{{ tr(when(row.entry.created_at)) }}</time
+                    ><span class="mini-icon timeline-mark" :class="row.event.tone"
+                      ><AppIcon v-if="row.event.icon === 'user'" name="user" /><span
+                        v-else
+                        class="timeline-dot"
+                        aria-hidden="true"
+                    /></span>
+                    <div>
+                      <h3>{{ row.event.title }}</h3>
+                      <p>
+                        {{
+                          [
+                            row.event.detail,
+                            tr(row.event.icon === 'user' ? '用户决定' : '系统记录'),
+                          ]
+                            .filter(Boolean)
+                            .join(' · ')
+                        }}
+                      </p>
+                    </div>
+                  </div></template
+                >
+                <p
+                  v-if="recordFilter === 'decisions' && decisions.state.loading"
+                  class="source-note"
+                  role="status"
+                >
+                  {{ tr('正在读取你的决定…') }}
+                </p>
+                <p
+                  v-if="recordFilter === 'decisions' && decisions.state.error"
+                  class="notice amber"
+                  role="alert"
+                >
+                  {{ tr(decisions.state.error)
+                  }}<button class="text-link" @click="decisions.load()">
+                    {{ tr('重试读取') }}
+                  </button>
+                </p>
+                <p
+                  v-if="
+                    !recordItems.length &&
+                    !(recordFilter === 'decisions' && decisions.state.loading)
+                  "
+                >
+                  {{ tr('还没有这类记录。') }}
+                </p>
                 <button
-                  v-if="s.timelineCursor"
+                  v-if="recordFilter !== 'decisions' && s.timelineCursor"
                   class="text-link"
                   @click="act(() => shop.moreTimeline())"
                 >
                   {{ tr('加载更早记录') }}
+                </button>
+                <button
+                  v-if="
+                    recordFilter === 'decisions' &&
+                    decisions.state.cursor &&
+                    !decisions.state.loading
+                  "
+                  class="text-link"
+                  @click="decisions.more()"
+                >
+                  {{ tr('加载更早的决定') }}
                 </button></template
               >
             </section></template
@@ -838,10 +1102,13 @@ function briefing() {
           <div v-if="s.alerts.some((a) => a.status === 'OPEN')" class="risk-link">
             <button class="text-link" @click="open('alerts')">
               {{
-                joinText([
-                  tr(s.alerts.filter((a) => a.status === 'OPEN').length),
-                  tr('项经营提醒，查看依据'),
-                ])
+                joinText(
+                  [
+                    tr(s.alerts.filter((a) => a.status === 'OPEN').length),
+                    tr('项经营提醒，查看依据'),
+                  ],
+                  ' ',
+                )
               }}<AppIcon name="chevron-right" />
             </button>
           </div>
@@ -871,6 +1138,14 @@ function briefing() {
               ><AppIcon name="chevron-right" />
             </button>
           </div>
+          <ForecastPanel
+            v-if="s.storeId && stock?.sku_id && view !== 'journal'"
+            :key="s.storeId + ':' + stock.sku_id + ':' + s.session?.principal_id"
+            :store-id="s.storeId"
+            :sku-id="stock.sku_id"
+            :state-version="s.dashboard?.state.state_version"
+            :can-manage="hasRole('operator')"
+          />
         </section>
         <BusinessFacts
           @overview="navigate('overview')"
@@ -880,44 +1155,6 @@ function briefing() {
       </div>
     </main>
   </div>
-  <nav
-    v-if="!['task', 'work'].includes(view)"
-    class="workspace-dock"
-    :aria-label="tr('经营快捷入口')"
-  >
-    <button
-      v-if="mission"
-      class="dock-agent-entry"
-      :aria-label="tr('进入任务工作区')"
-      @click="openTask(undefined, 'agent')"
-    >
-      <span class="agent-live-dot" :class="{ 'is-running': agent.running.value }" /><span>{{
-        tr(agent.active.value || agent.s.syncError ? agent.status.value : '查看任务与 Agent')
-      }}</span>
-    </button>
-    <button :class="{ active: view === 'today' }" @click="navigate('today')">
-      <AppIcon name="panels-top-left" /><span>{{ tr('今日决策') }}</span>
-      <span v-if="decisionCount" class="small-count">{{ tr(decisionCount) }}</span>
-    </button>
-    <button :class="{ active: view === 'following' }" @click="navigate('following')">
-      <AppIcon name="orbit" /><span>{{ tr('持续跟进') }}</span>
-    </button>
-    <button :class="{ active: view === 'journal' }" @click="navigate('journal')">
-      <AppIcon name="notebook-pen" /><span>{{ tr('经营记录') }}</span>
-    </button>
-    <span class="dock-divider" aria-hidden="true" />
-    <button
-      class="dock-utility dock-overview"
-      :class="{ active: view === 'overview' }"
-      :aria-current="view === 'overview' ? 'page' : undefined"
-      @click="navigate('overview')"
-    >
-      <AppIcon name="chart-no-axes-combined" /><span>{{ tr('经营概览') }}</span>
-    </button>
-    <button class="dock-utility" :aria-label="tr('打开联调控制')" @click="open('controls')">
-      <AppIcon name="sliders-horizontal" /><span>{{ tr('联调控制') }}</span>
-    </button>
-  </nav>
   <nav class="mobile-nav" :aria-label="tr('移动端导航')">
     <button
       v-for="(label, id) in { today: '今日', following: '持续跟进', journal: '经营记录' }"
@@ -930,6 +1167,8 @@ function briefing() {
       />{{ tr(label) }}
     </button>
   </nav>
+  <LazyPresenterBar v-if="demoMode" @open="open" @navigate="navigate" />
+  <MemoryPanel />
   <div v-if="s.notice || s.busy" class="toast" role="status">
     {{ tr(s.busy || s.notice)
     }}<button v-if="!s.busy" :aria-label="tr('关闭提示')" @click="s.notice = ''">×</button>
@@ -974,18 +1213,28 @@ function briefing() {
         <div class="detail-row">
           <span>{{ tr('商品 / 供应商') }}</span
           ><b>{{
-            joinText([product?.name, '/', approval.plan.input_snapshot.offer.supplier_id])
+            joinText(
+              [
+                product?.name,
+                '/',
+                supplierDisplayName(approval.plan.input_snapshot.offer.supplier_id),
+              ],
+              ' ',
+            )
           }}</b>
         </div>
         <template v-if="approval.quantity"
           ><div class="detail-row">
             <span>{{ tr('数量与单价') }}</span
             ><b>{{
-              joinText([
-                tr(approval.quantity),
-                tr('件 ×'),
-                tr(money(approval.plan.proposed_purchase?.unit_price_minor)),
-              ])
+              joinText(
+                [
+                  tr(approval.quantity),
+                  tr('件 ×'),
+                  tr(money(approval.plan.proposed_purchase?.unit_price_minor)),
+                ],
+                ' ',
+              )
             }}</b>
           </div>
           <div class="detail-row">
@@ -1316,6 +1565,7 @@ function briefing() {
         </p>
         <p v-if="preferenceError" class="notice" role="alert">{{ tr(preferenceError) }}</p>
       </section>
+      <MemoryEntry variant="settings" />
       <section class="settings-section" aria-labelledby="schedule-heading">
         <h3 id="schedule-heading">{{ tr('跟进安排') }}</h3>
         <div v-if="mission" class="settings-group">
@@ -1396,6 +1646,31 @@ function briefing() {
                 : scheduleNotice || '选择即保存。经营检查和 Agent 对话分别运行。',
             )
           }}
+        </p>
+      </section>
+      <section class="settings-section" aria-labelledby="demo-heading">
+        <h3 id="demo-heading">{{ tr('演示') }}</h3>
+        <div class="settings-group">
+          <label class="settings-row settings-switch-row">
+            <span
+              ><strong id="demo-mode-name">{{ tr('演示模式') }}</strong
+              ><small id="demo-mode-hint">{{ tr('隐藏调试标识，显示演示条') }}</small></span
+            ><input
+              type="checkbox"
+              role="switch"
+              class="settings-switch"
+              aria-labelledby="demo-mode-name"
+              aria-describedby="demo-mode-hint"
+              :checked="demoMode"
+              @change="setDemo(($event.target as HTMLInputElement).checked)"
+            />
+          </label>
+        </div>
+        <p class="settings-footnote">
+          {{ tr('演示条在桌面宽度显示；不改变业务规则、经营时钟或数据。') }}
+        </p>
+        <p v-if="demoSaveFailed" class="notice" role="alert">
+          {{ tr('演示模式已切换，但浏览器无法保存，刷新后可能恢复。') }}
         </p>
       </section>
     </template>
@@ -1502,13 +1777,15 @@ function briefing() {
         <option v-if="!s.stores.length" value="">{{ tr('尚无场景') }}</option>
         <option v-for="st in s.stores" :key="st.store_id" :value="st.store_id">
           {{
-            joinText([
-              tr(st.store_id === s.activeStoreId ? '当前环境' : '历史场景'),
-              '·',
-              tr(st.store_id.slice(-8)),
-              '·',
-              tr(when(st.simulation_time)),
-            ])
+            demoMode
+              ? storeLabel(st) + (st.store_id === s.activeStoreId ? tr('（当前环境）') : '')
+              : joinText([
+                  tr(st.store_id === s.activeStoreId ? '当前环境' : '历史场景'),
+                  '·',
+                  tr(st.store_id.slice(-8)),
+                  '·',
+                  tr(when(st.simulation_time)),
+                ])
           }}
         </option>
       </select>

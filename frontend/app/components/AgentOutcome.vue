@@ -1,17 +1,27 @@
 <script setup lang="ts">
 import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
-import { money, when, reasonLabel } from '~/utils/presentation'
+import type { Block, Surface } from '~/surfaces/types'
+import { fromOutcome } from '~/surfaces/derive'
+import SurfaceRenderer from '~/components/surfaces/SurfaceRenderer.vue'
+import { money, when } from '~/utils/presentation'
 const props = defineProps<{ outcome: Schema<'BusinessOutcome'> }>()
 const shop = useShop()
-const selected = (p: Schema<'PlanComparison'>) =>
-  p.candidates.find((c) => c.id === p.recommended_candidate_id)
 const stale = computed(
   () =>
     props.outcome.after &&
     (props.outcome.after.state_version !== shop.s.dashboard?.state.state_version ||
       props.outcome.after.mission_version !== shop.mission.value?.mission_version),
 )
+// The outcome as surface blocks (redesign §9): the figures before → after stay in view, both
+// plans' candidates sit in the fold. An outcome never changes, so its id keys the entrance.
+const surface = computed(() => fromOutcome(props.outcome, { before: true }))
+function part(component: Block['component']): Surface | null {
+  const blocks = surface.value?.blocks.filter((b) => b.component === component) || []
+  return blocks.length ? { version: 1, blocks } : null
+}
+const figures = computed(() => part('MetricRow'))
+const tables = computed(() => part('PlanComparison'))
 </script>
 <template>
   <article class="agent-outcome" :data-outcome="outcome.invocation_id">
@@ -21,17 +31,11 @@ const stale = computed(
     </header>
     <p v-if="outcome.availability !== 'available'">{{ tr(outcome.reason) }}</p>
     <template v-else-if="outcome.before && outcome.after">
-      <p class="outcome-lead">
-        {{
-          joinText([
-            tr('推荐补货'),
-            tr(selected(outcome.before)?.quantity ?? '—'),
-            '→',
-            tr(selected(outcome.after)?.quantity ?? '—'),
-            tr('件'),
-          ])
-        }}
-      </p>
+      <SurfaceRenderer
+        v-if="figures"
+        :surface="figures"
+        :identity="outcome.invocation_id + ':figures'"
+      />
       <p>
         {{
           joinText([
@@ -65,54 +69,12 @@ const stale = computed(
       <details>
         <summary>{{ tr('比较数量、现金与缺货') }}</summary>
         <p class="source-note">{{ tr('表格可横向滚动，查看全部约束。') }}</p>
-        <div
-          v-for="(p, index) in [outcome.before, outcome.after]"
-          :key="index"
-          class="outcome-comparison"
-        >
-          <h4>
-            {{
-              tr(index === 0 ? '原方案' : outcome.kind === 'evaluation' ? '假设结果' : '修订方案')
-            }}
-          </h4>
-          <div
-            class="outcome-table"
-            tabindex="0"
-            :aria-label="tr(index === 0 ? '原方案候选比较' : '结果候选比较')"
-          >
-            <table>
-              <thead>
-                <tr>
-                  <th>{{ tr('补货') }}</th>
-                  <th>{{ tr('支出') }}</th>
-                  <th>{{ tr('采购后现金') }}</th>
-                  <th>{{ tr('预计缺货') }}</th>
-                  <th>{{ tr('约束判断') }}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  v-for="c in p.candidates"
-                  :key="c.id"
-                  :class="{ recommended: c.id === p.recommended_candidate_id }"
-                >
-                  <td>
-                    {{ joinText([tr(c.quantity), tr('件')])
-                    }}<span v-if="c.id === p.recommended_candidate_id">{{ tr('· 推荐') }}</span>
-                  </td>
-                  <td>{{ tr(money(c.spend_minor)) }}</td>
-                  <td>{{ tr(money(c.cash_after_minor)) }}</td>
-                  <td>{{ joinText([tr(c.shortage_qty), tr('件')]) }}</td>
-                  <td>
-                    {{
-                      tr(c.feasible ? '满足约束' : c.rejection_reasons.map(reasonLabel).join('；'))
-                    }}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <SurfaceRenderer
+          v-if="tables"
+          :surface="tables"
+          :identity="outcome.invocation_id + ':tables'"
+          :animate="false"
+        />
       </details>
       <p class="source-note">
         {{
