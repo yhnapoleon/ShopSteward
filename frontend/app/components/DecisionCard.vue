@@ -33,11 +33,11 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
     <div class="card-core">
       <h2>
         {{
-          tr(
-            changed
-              ? `你正在查看：${s.selected ? `补 ${s.selected} 件` : '本轮暂不补货'}`
-              : `建议补货 ${recommended} 件`,
-          )
+          changed
+            ? tr('你正在查看：{0}', [
+                s.selected ? tr('补 {0} 件', [s.selected]) : tr('本轮暂不补货'),
+              ])
+            : tr('建议补货 {0} 件', [recommended])
         }}
       </h2>
       <p class="decision-lead">
@@ -116,7 +116,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
         </button>
       </div>
       <p v-if="isRecoveryPlan(plan)" class="source-note">
-        这份待确认方案对应已采纳的报价。更换供应商或数量，请回到供应异常应对重新分析。
+        {{ tr('这份待确认方案对应已采纳的报价。更换供应商或数量，请回到供应异常应对重新分析。') }}
       </p>
       <details
         class="options-disclosure"
@@ -136,7 +136,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
           >
             <span class="option-top"
               ><span class="radio-dot" /><strong>{{
-                tr(c.quantity ? `补 ${c.quantity} 件` : '本轮暂不补货')
+                c.quantity ? tr('补 {0} 件', [c.quantity]) : tr('本轮暂不补货')
               }}</strong
               ><span v-if="c.quantity === recommended" class="recommended">{{
                 tr('推荐')
