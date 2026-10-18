@@ -1,4 +1,34 @@
-from app.agent_bridge.presentation import explicit_memory_intent, money_facts, unsupported_amounts
+import pytest
+
+from app.agent_bridge.presentation import (
+    explicit_memory_intent,
+    memory_write_denied,
+    money_facts,
+    unsupported_amounts,
+)
+
+
+@pytest.mark.parametrize("content", [
+    "请保存这个偏好，不要修改当前方案",
+    "请保存这个偏好，不需要修改当前方案",
+    "Please save this preference, do not update the plan",
+])
+def test_memory_save_authorization_is_independent_of_plan_change_prohibition(content):
+    assert not memory_write_denied(content)
+    assert explicit_memory_intent(content)
+
+
+@pytest.mark.parametrize("content", [
+    "请保存这个偏好，不需要保存这个偏好",
+    "请保存这个偏好，不用记下",
+    "请保存这个偏好，无需更新我的偏好",
+    "请保存这个偏好，别再修改我的偏好",
+    "Please save this preference, never update my preference",
+    "只试算，不要保存",
+])
+def test_memory_save_still_honors_explicit_memory_prohibition(content):
+    assert memory_write_denied(content)
+    assert not explicit_memory_intent(content)
 
 
 def test_money_conversion_uses_integer_minor_units_and_rejects_invented_yuan():

@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { joinText, t as tr } from '~/i18n'
 import { money, when } from '~/utils/presentation'
+import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 const { s, plan, product, mission, hasRole } = useShop()
 defineEmits<{ confirm: []; evidence: []; compare: []; mission: [] }>()
-const selected = computed(() => plan.value?.candidates.find((c) => c.quantity === s.selected))
+const selected = computed(() => selectedPlanCandidate(plan.value, s.selected))
 const recommended = computed(() => plan.value?.proposed_purchase?.quantity || 0)
 const options = computed(() => {
+  if (isRecoveryPlan(plan.value)) {
+    const adopted = plan.value.selected_candidate_id
+    return plan.value.candidates.filter((c) => c.id === adopted || c.quantity === 0)
+  }
   const order = [...new Set([recommended.value, 20, 40, 0])]
   return (plan.value?.candidates || [])
     .filter(
@@ -28,11 +33,11 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
     <div class="card-core">
       <h2>
         {{
-          tr(
-            changed
-              ? `你正在查看：${s.selected ? `补 ${s.selected} 件` : '本轮暂不补货'}`
-              : `建议补货 ${recommended} 件`,
-          )
+          changed
+            ? tr('你正在查看：{0}', [
+                s.selected ? tr('补 {0} 件', [s.selected]) : tr('本轮暂不补货'),
+              ])
+            : tr('建议补货 {0} 件', [recommended])
         }}
       </h2>
       <p class="decision-lead">
@@ -110,6 +115,9 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
           {{ tr('比较全部候选') }}<AppIcon name="chevron-right" />
         </button>
       </div>
+      <p v-if="isRecoveryPlan(plan)" class="source-note">
+        {{ tr('这份待确认方案对应已采纳的报价。更换供应商或数量，请回到供应异常应对重新分析。') }}
+      </p>
       <details
         class="options-disclosure"
         :open="expanded || changed"
@@ -128,7 +136,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
           >
             <span class="option-top"
               ><span class="radio-dot" /><strong>{{
-                tr(c.quantity ? `补 ${c.quantity} 件` : '本轮暂不补货')
+                c.quantity ? tr('补 {0} 件', [c.quantity]) : tr('本轮暂不补货')
               }}</strong
               ><span v-if="c.quantity === recommended" class="recommended">{{
                 tr('推荐')

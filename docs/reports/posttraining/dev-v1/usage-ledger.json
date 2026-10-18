@@ -1,0 +1,18 @@
+{
+  "formal_smoke_and_dev": {
+    "input": 369095,
+    "output": 36299
+  },
+  "six_warmups_and_one_probe": {
+    "input": 4938,
+    "output": 459
+  },
+  "total_observed": {
+    "input": 374033,
+    "output": 36758
+  },
+  "api_amount": null,
+  "reason": "price not configured; failed connection attempts returned no usage",
+  "formal_model_calls": 516,
+  "aux_model_calls": 7
+}

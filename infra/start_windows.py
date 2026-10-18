@@ -4,8 +4,12 @@ Run with .venv/Scripts/python.exe infra/start_windows.py. Migrate first; Docker
 Desktop must already be running. A healthy existing simulator is reused. Other
 occupied service ports are refused, and only newly created processes are cleaned
 up on failure. Secrets are passed in the environment, never command arguments.
+
+--overlay FILE lays one run's settings (other models, another database) over
+backend/.env without editing it; its SIM_ settings also reach the simulator.
 """
 
+import argparse
 import json
 import os
 import shutil
@@ -40,10 +44,20 @@ def main():
             raise SystemExit(
                 f"Port {port} is occupied. Verify its owner before restarting."
             )
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--overlay", type=Path, help="settings laid over backend/.env")
+    args = parser.parse_args()
     config = {
         k: v for k, v in dotenv_values(ROOT / "backend/.env").items() if v is not None
     }
-    env = {**os.environ, **config}
+    overlay = {}
+    if args.overlay:
+        if not args.overlay.is_file():
+            raise SystemExit(f"Overlay file not found: {args.overlay}")
+        overlay = {
+            k: v for k, v in dotenv_values(args.overlay).items() if v is not None
+        }
+    env = {**os.environ, **config, **overlay}
     grants = json.loads(env.get("AUTH_TOKENS", "[]"))
     admin = next(
         (
@@ -144,6 +158,7 @@ def main():
         if not listening(8001):
             sim_env = {
                 **os.environ,
+                **{k: v for k, v in overlay.items() if k.startswith("SIM_")},
                 "SIM_CONSOLE_ENABLED": "true",
                 "SIM_BACKEND_BASE_URL": "http://127.0.0.1:8000",
                 "SIM_BACKEND_TOKEN": admin["token"],
@@ -188,6 +203,18 @@ def main():
                 "backend",
                 env,
             )
+        # Each of these workers refuses to start unless its own switch is on.
+        for profile, switch in (
+            ("learning", "LEARNING_ENABLED"),
+            ("work", "WORK_PROCESSOR_ENABLED"),
+        ):
+            if env.get(switch, "false").lower() == "true":
+                spawn(
+                    profile + "-worker",
+                    [sys.executable, "-m", "app.worker", "--profile", profile],
+                    "backend",
+                    env,
+                )
         spawn(
             "frontend",
             [
@@ -243,6 +270,9 @@ def main():
             "agent_enabled": agent,
             "forecast_v6_enabled": forecast,
             "model": env.get("AGENT_MODEL") if agent else None,
+            "case_model": env.get("AGENT_CASE_MODEL"),
+            "sourcing_model": env.get("AGENT_SOURCING_MODEL"),
+            "overlay": str(args.overlay) if args.overlay else None,
             "processes": records,
             "logs": str(log_dir),
             "frontend": "http://127.0.0.1:3000",

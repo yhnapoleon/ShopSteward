@@ -11,13 +11,13 @@ const emit = defineEmits<{
   navigate: [view: string]
 }>()
 const shop = useShop()
-const { s, mission, plan, stock, product, canDecide, hasRole } = shop
+const { s, mission, plan, stock, product, canDecide, awaitingSupplier, hasRole } = shop
 const agent = useAgentConversation()
 const { status, actions, pending } = useTaskPresentation()
 const reduce = useReducedMotion()
 const target = ref('')
 let timer: ReturnType<typeof setTimeout> | undefined
-const previousPlan = ref<import('~/types/models').Schema<'Plan'> | null>(null)
+const previousPlan = ref<import('~/types/models').PlanDocument | null>(null)
 let receiptEpoch = 0
 const receiptError = ref('')
 async function loadReceipt() {
@@ -52,7 +52,7 @@ watch(
   (value) => (mobilePanel.value = value === 'agent' ? 'agent' : 'result'),
 )
 const localError = ref('')
-const historicalPlans = ref<import('~/types/models').Schema<'Plan'>[]>([])
+const historicalPlans = ref<import('~/types/models').PlanDocument[]>([])
 const historyLoaded = ref(false)
 const historyError = ref('')
 const historyCursor = ref<string | null>(null)
@@ -161,6 +161,7 @@ async function recover() {
         ><button class="text-link" @click="emit('open', 'mission')">{{ tr('委托详情') }}</button>
       </div>
     </header>
+    <RecoveryWorkspace v-if="s.session?.recoveryCases" :key="mission.id" :mission-id="mission.id" />
     <slot name="intake" />
     <div class="task-mobile-tabs" :aria-label="tr('任务内容切换')">
       <button :aria-pressed="mobilePanel === 'result'" @click="mobilePanel = 'result'">
@@ -234,6 +235,7 @@ async function recover() {
               </div>
             </div></Transition
           >
+          <ArrivalCard />
           <article v-if="issue && !ended" class="attention-card glass">
             <span class="tag amber">{{ tr('需要处理') }}</span>
             <h2>
@@ -273,6 +275,7 @@ async function recover() {
             </button>
             <p v-if="localError" class="notice amber" role="alert">{{ tr(localError) }}</p>
           </article>
+          <AssistedOrderCard v-else-if="awaitingSupplier && !ended" />
           <DecisionCard
             v-else-if="canDecide && !ended"
             @confirm="emit('confirm')"
@@ -444,7 +447,7 @@ async function recover() {
                 }}
               </p>
               <p v-for="a in actions.filter((a) => a.plan_id === p.id)" :key="a.id">
-                {{ joinText([tr('采购'), tr(a.quantity), tr('件 ·'), tr(actionLabel(a.status))]) }}
+                {{ joinText([tr('采购'), tr(a.quantity), tr('件 ·'), tr(actionLabel(a.status, a.channel))]) }}
               </p>
             </article>
             <p v-if="historyLoaded && !historicalPlans.length">{{ tr('暂无方案记录。') }}</p>

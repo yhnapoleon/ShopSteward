@@ -169,6 +169,48 @@ corresponding authorization. No embedding or paid provider call occurs in the
 bundle/rebuild tools. The example does not implement a separate cost-meter or
 billable-run switch.
 
+### Ollama embedding for local Knowledge
+
+Set these fields in the ignored `var/knowledge-precloud/private.env`, using the
+reachable Ollama host and a model installed on that host:
+
+```dotenv
+KNOWLEDGE_EMBEDDING_URL=http://<ollama-host>:11434/v1/embeddings
+KNOWLEDGE_EMBEDDING_API_KEY=ollama
+KNOWLEDGE_EMBEDDING_MODEL=qwen3-embedding:0.6b
+KNOWLEDGE_EMBEDDING_DIMENSIONS=1024
+KNOWLEDGE_EMBEDDING_PROVIDER=http-openai-compatible
+KNOWLEDGE_EMBEDDING_QUERY_INSTRUCTION="Instruct: Retrieve relevant retail documents.\nQuery: "
+KNOWLEDGE_EMBEDDING_DOCUMENT_INSTRUCTION=
+KNOWLEDGE_EMBEDDING_NORMALIZE=true
+KNOWLEDGE_EMBEDDING_DEADLINE_MS=60000
+```
+
+Set `KNOWLEDGE_EMBEDDING_REVISION` to the selected model's digest from `/api/tags`
+so model replacement produces a distinct embedding profile. Verify output
+dimensions with an actual request before changing an existing model. The local
+launcher decodes `\n` only in the two embedding instruction fields. Credentials
+and paths retain their literal values.
+
+The complete endpoint is required: the provider does not append a path.
+`ollama` is a non-secret placeholder for a server without authentication; use
+the server's actual credential if it has an authentication proxy. See
+[Ollama's OpenAI compatibility guide](https://docs.ollama.com/api/openai-compatibility)
+and the [Qwen model's query/document instruction guidance](https://huggingface.co/Qwen/Qwen3-Embedding-0.6B).
+
+Run `infra/knowledge_local.py start` again to apply the configuration to both API
+and worker. Test the actual provider from inside the containers, since Docker
+and the host may have different access to a VPN or LAN address. The 60-second
+embedding setting applies to ingestion batches. Online search retains its
+8-second total budget and falls back to lexical retrieval when embedding fails
+or times out. A slow or cold Ollama server can therefore degrade online search;
+verify representative query and chunk batch timings before bulk ingestion.
+
+Enabling embedding does not rebuild existing lexical generations, publish a new
+generation, or enable the business backend's Knowledge integration. Build and
+publish matching `hybrid-v1` generations before changing the backend retrieval
+profile. Retain the old published versions for rollback.
+
 ## Consistent export from dedicated test sources
 
 Prerequisites: local PostgreSQL client programs `pg_dump` and `pg_restore` on PATH

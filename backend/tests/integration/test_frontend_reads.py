@@ -66,8 +66,10 @@ async def test_identity_and_store_discovery_are_scoped(db):
             "capabilities": [
                 "work_intake",
                 "plan_revision",
+                "operations_cases",
                 "quantity_simulation",
                 "work_result_export",
+                "sourcing",
             ],
         }
         stores = await get(client, "stores")

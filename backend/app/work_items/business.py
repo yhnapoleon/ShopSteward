@@ -16,7 +16,17 @@ from app.work_items.schemas import WorkBusinessState
 
 
 def classify(
-    mission, plan_row, action, store, cursor, in_transit, now, settings, offer=None, stock=None
+    mission,
+    plan_row,
+    action,
+    store,
+    cursor,
+    in_transit,
+    now,
+    settings,
+    offer=None,
+    stock=None,
+    owner_records_arrival=False,
 ):
     base = dict(
         state_version=store.state_version,
@@ -59,6 +69,21 @@ def classify(
                 0,
                 "查看采购回执",
                 "amber",
+            )
+        # The owner carries this order to the supplier: until the reply is pasted back, the
+        # next step is theirs, not the system's.
+        if action.channel == "assisted" and action.status == "EXECUTING":
+            return status(
+                "AWAITING_SUPPLIER",
+                "待供应商确认",
+                "订单信息已生成，请用你自己的渠道发给供应商，收到回复后贴回这件事里。",
+                30,
+                "处理订单",
+                "amber",
+            )
+        if action.channel == "assisted":
+            return status(
+                "QUEUED", "正在生成订单信息", "确认已受理，订单信息生成后由你发给供应商。", 45
             )
         return status(
             action.status,
@@ -150,7 +175,8 @@ def classify(
         return status(
             "IN_TRANSIT",
             "等待到货",
-            f"本委托还有{in_transit}件在途，到货后更新。",
+            f"本委托还有{in_transit}件在途，"
+            + ("到货后请在这件事里登记。" if owner_records_arrival else "到货后更新。"),
             50,
             "查看到货进度",
         )
@@ -205,18 +231,23 @@ async def load(session, rows, settings):
         (s.store_id, s.sku_id): s
         for s in await session.scalars(select(StockRow).where(StockRow.store_id.in_(stores)))
     }
-    inbound = dict(
-        (
-            await session.execute(
-                select(
-                    ActionRow.mission_id, func.sum(InboundRow.ordered_qty - InboundRow.received_qty)
-                )
-                .join(InboundRow, InboundRow.action_id == ActionRow.id)
-                .where(ActionRow.mission_id.in_(ids))
-                .group_by(ActionRow.mission_id)
+    inbound, by_hand = {}, set()
+    for mission_id, channel, remaining in (
+        await session.execute(
+            select(
+                ActionRow.mission_id,
+                ActionRow.channel,
+                func.sum(InboundRow.ordered_qty - InboundRow.received_qty),
             )
-        ).all()
-    )
+            .join(InboundRow, InboundRow.action_id == ActionRow.id)
+            .where(ActionRow.mission_id.in_(ids))
+            .group_by(ActionRow.mission_id, ActionRow.channel)
+        )
+    ).all():
+        inbound[mission_id] = inbound.get(mission_id, 0) + remaining
+        # No source reports the goods of an order sent by hand; the owner records them.
+        if channel == "assisted" and remaining > 0:
+            by_hand.add(mission_id)
     now = await session.scalar(select(func.clock_timestamp()))
     return {
         m.id: (
@@ -232,6 +263,7 @@ async def load(session, rows, settings):
                 settings,
                 offers.get((m.store_id, m.sku_id, m.policy["supplier_id"])),
                 stocks.get((m.store_id, m.sku_id)),
+                m.id in by_hand,
             ),
         )
         for m, schedule in pairs

@@ -1,0 +1,2 @@
+﻿episode_id,task_type,request,expected,predicted,failure_tags,review_status
+repair-lower-revise-7,PT-07,请修改本次采购量至少7件，我要最低数量，不是上限。,"[{""allowed_actions"": [""clarify""], ""arguments"": {}, ""clarification_slot"": ""quantity_semantics""}]","[{""name"": ""handoff"", ""arguments"": {""reason"": ""unsupported_request""}}]",clarification_error,complete

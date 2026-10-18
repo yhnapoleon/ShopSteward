@@ -1,0 +1,104 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "case_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Case Hash",
+      "type": "string"
+    },
+    "case_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Case Id",
+      "type": "string"
+    },
+    "check_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Check Id",
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "minLength": 1,
+        "pattern": "\\S",
+        "type": "string"
+      },
+      "minItems": 1,
+      "title": "Evidence Refs",
+      "type": "array"
+    },
+    "reason": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Reason",
+      "type": "string"
+    },
+    "review_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Review Version",
+      "type": "string"
+    },
+    "reviewed_response_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Reviewed Response Hash",
+      "type": "string"
+    },
+    "reviewer_id": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Reviewer Id",
+      "type": "string"
+    },
+    "reviewer_kind": {
+      "enum": [
+        "agent_reviewed",
+        "human_reviewed"
+      ],
+      "title": "Reviewer Kind",
+      "type": "string"
+    },
+    "rubric_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Rubric Hash",
+      "type": "string"
+    },
+    "task_contract_version": {
+      "minLength": 1,
+      "pattern": "\\S",
+      "title": "Task Contract Version",
+      "type": "string"
+    },
+    "trace_hash": {
+      "pattern": "^[0-9a-f]{64}$",
+      "title": "Trace Hash",
+      "type": "string"
+    },
+    "verdict": {
+      "enum": [
+        "pass",
+        "fail"
+      ],
+      "title": "Verdict",
+      "type": "string"
+    }
+  },
+  "required": [
+    "case_id",
+    "case_hash",
+    "trace_hash",
+    "rubric_hash",
+    "reviewed_response_hash",
+    "task_contract_version",
+    "reviewer_kind",
+    "reviewer_id",
+    "review_version",
+    "check_id",
+    "verdict",
+    "reason",
+    "evidence_refs"
+  ],
+  "title": "SemanticReview",
+  "type": "object"
+}

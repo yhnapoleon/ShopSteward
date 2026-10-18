@@ -41,15 +41,10 @@ def memory_success_claim(content):
 
 
 def memory_write_denied(content):
-    return bool(
-        re.search(
-            r"(?:不要|不必|无需|不用|别|不想|不需要).{0,6}"
-            r"(?:记住|记下|保存|删除|修改|纠正|更正|更新|清除|忘记)|"
-            r"(?:don't|do not|never).{0,8}(?:remember|save|delete|remove|update|correct|forget)",
-            content,
-            re.I,
-        )
-    )
+    from shopsteward_agent.context.intent import classify_intent
+
+    intent = classify_intent([{"message_id": "current", "content": content}])
+    return "memory_edit" in intent["denied_tools"]
 
 
 def explicit_memory_intent(content):

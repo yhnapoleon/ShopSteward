@@ -1,0 +1,53 @@
+[
+  {
+    "stage": "explain",
+    "model": "gpt-6-luna",
+    "text": "seed",
+    "partition": "evo-val",
+    "runs": 36,
+    "items": 12,
+    "passed": 26,
+    "mean_score": 0.833,
+    "first_reading": null,
+    "failures": {
+      "AGENT_MODEL_INCOMPLETE": 1,
+      "gap-unstated": 6,
+      "candidate-unstated": 1,
+      "contradiction": 1,
+      "unsupported_claim": 2
+    },
+    "mean_model_calls": 1,
+    "median_latency_ms": 22069
+  },
+  {
+    "stage": "read",
+    "model": "deepseek-flash",
+    "text": "seed",
+    "partition": "evo-val",
+    "runs": 33,
+    "items": 33,
+    "passed": 32,
+    "mean_score": 0.97,
+    "first_reading": 30,
+    "failures": {
+      "minimum_order_quantity": 1,
+      "unit_price_minor": 1
+    },
+    "mean_model_calls": 2.21,
+    "median_latency_ms": 6406
+  },
+  {
+    "stage": "read",
+    "model": "deepseek-flash",
+    "text": "seed",
+    "partition": "smoke",
+    "runs": 42,
+    "items": 42,
+    "passed": 42,
+    "mean_score": 1.0,
+    "first_reading": 39,
+    "failures": {},
+    "mean_model_calls": 2.14,
+    "median_latency_ms": 6937
+  }
+]

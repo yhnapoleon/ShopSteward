@@ -1,0 +1,13 @@
+{
+  "pydantic": "2.13.5",
+  "pytest": "9.1.1",
+  "pytest-asyncio": "1.4.0",
+  "fastapi": "0.141.1",
+  "sqlalchemy": "2.0.52",
+  "asyncpg": "0.31.0",
+  "httpx": "0.28.1",
+  "langchain-openai": "1.6.0",
+  "openai": "3.8.0",
+  "alembic": "1.19.2",
+  "ruff": "0.16.6"
+}

@@ -170,6 +170,7 @@ export function useSpace() {
           actions: openActions.value.map((a) => a.status),
           inTransit: shop.stock.value?.in_transit,
           confirmationPending: confirmationPending.value,
+          awaitingSupplier: shop.awaitingSupplier.value?.mission_id === m.id,
           business: current.business,
         })
       : confirmationPending.value

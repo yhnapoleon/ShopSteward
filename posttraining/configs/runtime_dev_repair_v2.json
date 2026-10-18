@@ -1,0 +1,20 @@
+{
+  "app_env_file": "../../backend/.env",
+  "run_root": "../../var/posttraining/runs",
+  "frozen_contexts": "../datasets/frozen-dev-v1.json",
+  "concurrency": 1,
+  "warmup_episodes": 3,
+  "policies": {
+    "B1": {
+      "implementation": "RestrictedPolicy-v2",
+      "timeout_seconds": 60,
+      "max_output_tokens": 1024,
+      "price": null,
+      "model": "gpt-5.6-luna",
+      "base_url": "https://api.openai.com/v1",
+      "api_mode": "responses",
+      "prompt_version": "v2"
+    }
+  },
+  "B2_status": "unavailable: no local base or SFT model endpoint configured"
+}

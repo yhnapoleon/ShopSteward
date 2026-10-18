@@ -160,7 +160,7 @@ const planStatus: Record<string, string> = {
           }}
         </p>
         <p v-for="a in actions.filter((a) => a.plan_id === p.id)" :key="a.id">
-          {{ tr('采购单 {0} 件 · {1}', [a.quantity, tr(actionLabel(a.status))]) }}
+          {{ tr('采购单 {0} 件 · {1}', [a.quantity, tr(actionLabel(a.status, a.channel))]) }}
         </p>
       </article>
       <p v-if="plansLoaded && !plans.length">{{ tr('暂无方案记录。') }}</p>

@@ -1,0 +1,58 @@
+{
+  "app_env_file": "../../backend/.env",
+  "run_root": "../../var/posttraining/runs",
+  "frozen_contexts": "../datasets/frozen-smoke-v1.json",
+  "concurrency": 1,
+  "warmup_episodes": 0,
+  "policies": {
+    "B0": {"implementation": "RulePolicy-v1"},
+    "B1": {
+      "implementation": "RestrictedPolicy-v2",
+      "timeout_seconds": 60,
+      "max_output_tokens": 4096,
+      "price": null,
+      "model": "gpt-5.6-luna",
+      "base_url": "https://api.openai.com/v1",
+      "api_mode": "responses",
+      "key_file_env": "OPENAI_KEY_FILE",
+      "prompt_version": "v2"
+    },
+    "DS-FLASH": {
+      "implementation": "RestrictedPolicy-v2",
+      "timeout_seconds": 120,
+      "max_output_tokens": 4096,
+      "price": null,
+      "model": "deepseek-flash",
+      "tool_choice": "auto",
+      "base_url": "https://api.deepseek.com",
+      "api_mode": "chat_completions",
+      "key_file_env": "DEEPSEEK_KEY_FILE",
+      "prompt_version": "v2"
+    },
+    "DS-PRO": {
+      "implementation": "RestrictedPolicy-v2",
+      "timeout_seconds": 120,
+      "max_output_tokens": 4096,
+      "price": null,
+      "model": "deepseek-v4-pro",
+      "tool_choice": "auto",
+      "base_url": "https://api.deepseek.com",
+      "api_mode": "chat_completions",
+      "key_file_env": "DEEPSEEK_KEY_FILE",
+      "prompt_version": "v2"
+    },
+    "GPT-SOL": {
+      "implementation": "RestrictedPolicy-v2",
+      "timeout_seconds": 120,
+      "max_output_tokens": 4096,
+      "price": null,
+      "model": "gpt-6.1-sol",
+      "temperature": null,
+      "base_url": "https://api.openai.com/v1",
+      "api_mode": "responses",
+      "key_file_env": "OPENAI_KEY_FILE",
+      "prompt_version": "v2"
+    }
+  },
+  "B2_status": "no base or fine-tuned endpoint; for the demo the trained model is stood in for by the off-the-shelf models DS-FLASH, DS-PRO and GPT-SOL"
+}

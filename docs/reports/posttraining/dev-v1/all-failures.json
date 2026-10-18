@@ -1,0 +1,1560 @@
+[
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-006",
+    "task_type": "PT-02",
+    "family": "current-versus-historical-plan",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-008",
+    "task_type": "PT-03",
+    "family": "quantity-correction-eval",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt05-001",
+    "task_type": "PT-05",
+    "family": "unique-prior-evaluation",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-016",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-017",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-019",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-020",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-026",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-027",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-029",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-030",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-031",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-032",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-033",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-034",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-035",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-036",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-037",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-038",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-039",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt01-040",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-018",
+    "task_type": "PT-02",
+    "family": "revision-with-old-request-negation",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-020",
+    "task_type": "PT-02",
+    "family": "revision-with-old-request-negation",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-021",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-022",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-023",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-024",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-025",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-031",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-032",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-033",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-034",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-036",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-037",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-038",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-039",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt02-040",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-019",
+    "task_type": "PT-03",
+    "family": "revision-withdrawn-trial-remains",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-020",
+    "task_type": "PT-03",
+    "family": "revision-withdrawn-trial-remains",
+    "failure_tags": [
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-021",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-022",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-023",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-024",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt03-025",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-015",
+    "task_type": "PT-04",
+    "family": "missing-revision-target",
+    "failure_tags": [
+      "clarification_error",
+      "missing_decision"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-016",
+    "task_type": "PT-04",
+    "family": "missing-target-relative-or-written",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-017",
+    "task_type": "PT-04",
+    "family": "missing-target-relative-or-written",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-019",
+    "task_type": "PT-04",
+    "family": "missing-target-relative-or-written",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-027",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "clarification_error",
+      "missing_decision"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-028",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "clarification_error",
+      "missing_decision"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-029",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt04-030",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt05-004",
+    "task_type": "PT-05",
+    "family": "resolvable-history-reference",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt05-005",
+    "task_type": "PT-05",
+    "family": "resolvable-history-reference",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt05-006",
+    "task_type": "PT-05",
+    "family": "resolvable-history-reference",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt05-007",
+    "task_type": "PT-05",
+    "family": "resolvable-history-reference",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt05-008",
+    "task_type": "PT-05",
+    "family": "resolvable-history-reference",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt05-009",
+    "task_type": "PT-05",
+    "family": "resolvable-history-reference",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt06-004",
+    "task_type": "PT-06",
+    "family": "withdraw-request-preserve-mission",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt06-005",
+    "task_type": "PT-06",
+    "family": "withdraw-request-preserve-mission",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt06-006",
+    "task_type": "PT-06",
+    "family": "withdraw-request-preserve-mission",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt06-007",
+    "task_type": "PT-06",
+    "family": "withdraw-request-preserve-mission",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt06-008",
+    "task_type": "PT-06",
+    "family": "withdraw-request-preserve-mission",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt06-009",
+    "task_type": "PT-06",
+    "family": "withdraw-request-preserve-mission",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt06-010",
+    "task_type": "PT-06",
+    "family": "withdraw-request-preserve-mission",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt07-006",
+    "task_type": "PT-07",
+    "family": "illegal-cap-values",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt07-014",
+    "task_type": "PT-07",
+    "family": "unsupported-exact-or-lower-bound",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt07-015",
+    "task_type": "PT-07",
+    "family": "unsupported-exact-or-lower-bound",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt08-003",
+    "task_type": "PT-08",
+    "family": "outside-cap-policy-scope",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt08-005",
+    "task_type": "PT-08",
+    "family": "outside-cap-policy-scope",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt08-006",
+    "task_type": "PT-08",
+    "family": "outside-cap-policy-scope",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt08-007",
+    "task_type": "PT-08",
+    "family": "outside-cap-policy-scope",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt08-008",
+    "task_type": "PT-08",
+    "family": "outside-cap-policy-scope",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt08-009",
+    "task_type": "PT-08",
+    "family": "outside-cap-policy-scope",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt08-010",
+    "task_type": "PT-08",
+    "family": "outside-cap-policy-scope",
+    "failure_tags": [
+      "scope_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt10-002",
+    "task_type": "PT-10",
+    "family": "explicit-unbounded-versus-zero",
+    "failure_tags": [
+      "argument_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B0",
+    "episode_id": "dev-pt10-004",
+    "task_type": "PT-10",
+    "family": "explicit-unbounded-versus-zero",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B1",
+    "episode_id": "dev-pt07-011",
+    "task_type": "PT-07",
+    "family": "illegal-cap-values",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "decision/B1",
+    "episode_id": "dev-pt07-014",
+    "task_type": "PT-07",
+    "family": "unsupported-exact-or-lower-bound",
+    "failure_tags": [
+      "clarification_error"
+    ],
+    "decision_success": false,
+    "episode_success": null
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-006",
+    "task_type": "PT-02",
+    "family": "current-versus-historical-plan",
+    "failure_tags": [
+      "delivery_error",
+      "execution_error",
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-008",
+    "task_type": "PT-03",
+    "family": "quantity-correction-eval",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-016",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "delivery_error",
+      "execution_error",
+      "intent_error",
+      "unexpected_business_mutation"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-017",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "delivery_error",
+      "execution_error",
+      "intent_error",
+      "unexpected_business_mutation"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-019",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "backend_policy_mismatch",
+      "delivery_error",
+      "execution_error",
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-020",
+    "task_type": "PT-01",
+    "family": "trial-verb-paraphrases",
+    "failure_tags": [
+      "backend_policy_mismatch",
+      "delivery_error",
+      "execution_error",
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-026",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-027",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-029",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-030",
+    "task_type": "PT-01",
+    "family": "evaluation-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-031",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-032",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-033",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-034",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-035",
+    "task_type": "PT-01",
+    "family": "english-hypothetical-request",
+    "failure_tags": [
+      "backend_policy_mismatch",
+      "delivery_error",
+      "execution_error",
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-036",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-037",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-038",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-039",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt01-040",
+    "task_type": "PT-01",
+    "family": "relative-evaluation-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-018",
+    "task_type": "PT-02",
+    "family": "revision-with-old-request-negation",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-020",
+    "task_type": "PT-02",
+    "family": "revision-with-old-request-negation",
+    "failure_tags": [
+      "delivery_error",
+      "execution_error",
+      "intent_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-021",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-022",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-023",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-024",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-025",
+    "task_type": "PT-02",
+    "family": "revision-numeric-distractors",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-031",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-032",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-033",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-034",
+    "task_type": "PT-02",
+    "family": "english-explicit-revision",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-036",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-037",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-038",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-039",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt02-040",
+    "task_type": "PT-02",
+    "family": "relative-revision-from-visible-cap",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-019",
+    "task_type": "PT-03",
+    "family": "revision-withdrawn-trial-remains",
+    "failure_tags": [
+      "delivery_error",
+      "execution_error",
+      "intent_error",
+      "unexpected_business_mutation"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-020",
+    "task_type": "PT-03",
+    "family": "revision-withdrawn-trial-remains",
+    "failure_tags": [
+      "delivery_error",
+      "execution_error",
+      "intent_error",
+      "unexpected_business_mutation"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-021",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-022",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-023",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-024",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt03-025",
+    "task_type": "PT-03",
+    "family": "negated-trailing-quantity",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-015",
+    "task_type": "PT-04",
+    "family": "missing-revision-target",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error",
+      "missing_decision"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-016",
+    "task_type": "PT-04",
+    "family": "missing-target-relative-or-written",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-017",
+    "task_type": "PT-04",
+    "family": "missing-target-relative-or-written",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-019",
+    "task_type": "PT-04",
+    "family": "missing-target-relative-or-written",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-027",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error",
+      "missing_decision"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-028",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error",
+      "missing_decision"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-029",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B0",
+    "episode_id": "dev-pt04-030",
+    "task_type": "PT-04",
+    "family": "missing-trial-relative-or-corrected",
+    "failure_tags": [
+      "argument_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  },
+  {
+    "mode_policy": "execution/B1",
+    "episode_id": "dev-pt04-019",
+    "task_type": "PT-04",
+    "family": "missing-target-relative-or-written",
+    "failure_tags": [
+      "clarification_error",
+      "delivery_error",
+      "execution_error"
+    ],
+    "decision_success": false,
+    "episode_success": false
+  }
+]

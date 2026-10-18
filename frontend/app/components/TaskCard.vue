@@ -2,6 +2,7 @@
 import { joinText, t as tr } from '~/i18n'
 import { motion, useReducedMotion } from 'motion-v'
 import { money, when } from '~/utils/presentation'
+import { selectedPlanCandidate } from '~/utils/plans'
 const { s, mission, plan, product, canDecide } = useShop()
 const { status } = useTaskPresentation()
 const agent = useAgentConversation()
@@ -41,8 +42,7 @@ defineEmits<{ open: [] }>()
         ><b>{{
           tr(
             money(
-              plan.candidates.find((c) => c.quantity === plan?.proposed_purchase?.quantity)
-                ?.cash_after_minor,
+              selectedPlanCandidate(plan, plan.proposed_purchase.quantity)?.cash_after_minor,
             ),
           )
         }}</b>

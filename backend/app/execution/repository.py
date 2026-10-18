@@ -12,10 +12,11 @@ from app.missions.repository import command, lock_mission, timeline
 from app.operations.models import OfferRow, SourceCursor, StockRow
 from app.planning.canonical import canonical
 from app.planning.engine import build_plan, proposal_hash
-from app.planning.schemas import Plan
+from app.planning.schemas import parse_plan
 from app.planning.snapshot import source_fresh
 from app.scheduling.models import Job
 from app.scheduling.repository import enqueue
+from app.sourcing.models import SourcedOfferRow
 
 PENDING = {"QUEUED", "EXECUTING", "UNKNOWN"}
 
@@ -40,7 +41,11 @@ async def lock_action(session, action_id):
 
 
 async def validate_current(session, store, mission, row, settings):
-    plan = Plan.model_validate(row.document)
+    plan = parse_plan(row.document)
+    if getattr(plan, "plan_kind", None) == "recovery_v1":
+        from app.planning.recovery.validation import validate_recovery
+
+        return await validate_recovery(session, store, mission, row, plan, settings)
     snapshot = plan.input_snapshot
     now = await session.scalar(select(func.clock_timestamp()))
     if mission.status != "ACTIVE":
@@ -180,6 +185,10 @@ async def decide(session, plan_id, body, principal, key, settings):
     else:
         identifier = str(uuid4())
         purchase = plan.proposed_purchase
+        # A supplier known only from its documents has no ordering system to send to.
+        by_hand = await session.get(
+            SourcedOfferRow, (store.id, purchase.sku_id, purchase.supplier_id)
+        )
         request = PurchaseRequest(
             action_id=identifier,
             scenario_run_id=store.scenario_run_id,
@@ -197,6 +206,7 @@ async def decide(session, plan_id, body, principal, key, settings):
             plan_id=plan_id,
             approval_id=approval.id,
             status="QUEUED",
+            channel="assisted" if by_hand else body.channel or settings.purchase_channel,
             purchase_snapshot=purchase.model_dump(mode="json"),
             request_snapshot=request.model_dump(mode="json"),
             created_at=now,

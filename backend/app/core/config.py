@@ -33,6 +33,9 @@ class Settings(BaseSettings):
     simulation_token: SecretStr | None = Field(default=None, min_length=24)
     source_stale_seconds: int = Field(default=30, ge=1, le=3600)
     plan_ttl_seconds: int = Field(default=900, ge=1, le=86400)
+    # How an approved purchase reaches the supplier. "assisted": the owner sends the
+    # generated order message through their own channel and pastes the supplier's reply.
+    purchase_channel: Literal["simulator", "assisted"] = "simulator"
     fixed_forecast_ttl_seconds: int = Field(default=3600, ge=1, le=86400)
     forecast_v6_enabled: bool = False
     forecast_v6_url: str = "http://127.0.0.1:8053"
@@ -50,11 +53,49 @@ class Settings(BaseSettings):
     knowledge_delivery_lease_seconds: int = Field(default=30, ge=15, le=300)
     # External intake processor; independent of the existing mission Agent.
     work_processor_enabled: bool = False
+    learning_enabled: bool = False
+    learning_generation_enabled: bool = False
     agent_enabled: bool = False
     agent_base_url: str = "https://api.openai.com/v1"
     agent_model: str = "gpt-4.1-mini"
     agent_api_mode: Literal["chat_completions", "responses"] = "chat_completions"
-    agent_reasoning_effort: str | None = Field(default=None, min_length=1, max_length=32)
+    agent_context_enabled: bool = True
+    agent_profile_id: str = "mission-configured"
+    agent_reasoning_effort: str | None = None
+    agent_max_input_tokens: int = Field(default=24000, ge=256, le=1000000)
+    agent_max_output_tokens: int = Field(default=2048, ge=128, le=128000)
+    agent_model_timeout_seconds: float = Field(default=30, gt=0, le=120)
+    agent_case_experts_enabled: bool = False
+    agent_case_model: str | None = None
+    agent_case_api_mode: Literal["chat_completions", "responses"] = "responses"
+    # Every strategy shares evidence, solver output and root budget; research runs
+    # may force another one per call. One call did best in the 2026-10-08 comparison.
+    agent_case_strategy: Literal["fixed", "single", "static_multi", "adaptive_multi"] = "fixed"
+    # Optional role -> model ID, frozen per run; other roles use AGENT_CASE_MODEL.
+    agent_case_role_models: dict[
+        Literal["evidence", "impact", "options", "single", "fixed"], str
+    ] = Field(default_factory=dict)
+    # Released text artifact for Case strategies; only offline optimization adds revisions.
+    agent_case_text_bundle: str = Field(
+        default="seed", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+    )
+    # Sourcing: one reviewer per supplier reads its documents into an offer card.
+    # Unset models fall back to AGENT_CASE_MODEL; a rejected card may get a stronger second reader.
+    agent_sourcing_model: str | None = None
+    agent_sourcing_escalation_model: str | None = None
+    # Readers may run at another provider than the explanation, e.g. a cheaper model as the
+    # reading core. Unset: AGENT_BASE_URL, AGENT_API_KEY_FILE and AGENT_CASE_API_MODE.
+    agent_sourcing_base_url: str | None = None
+    agent_sourcing_api_mode: Literal["chat_completions", "responses"] | None = None
+    agent_sourcing_api_key_file: str | None = Field(default=None, repr=False)
+    # Released text artifacts for the reviewer and for explaining a sourced proposal. The
+    # explanation text is the one offline evolution produced; "seed" restores the original.
+    agent_sourcing_review_bundle: str = Field(
+        default="seed", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+    )
+    agent_sourcing_text_bundle: str = Field(
+        default="sourcing-r1-s1", pattern=r"^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$"
+    )
     agent_api_key_file: str | None = Field(default=None, repr=False)
     agent_backend_url: str = "http://127.0.0.1:8000"
     agent_worker_concurrency: int = Field(default=1, ge=1, le=8)

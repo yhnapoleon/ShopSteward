@@ -2,7 +2,7 @@
 
 ShopSteward 围绕门店备货，把经营数据、七日需求预测、方案比较、人工采购确认、执行回执和 Agent 对话放在同一工作区。后端负责库存、现金与采购规则；Agent 查询证据、解释方案并协助试算；模拟器提供可重复的经营事件与外部执行结果。
 
-**当前实现（2026-10-05）：** 已接通新事项处理者与服务端报价整理、版本化纠正和跨事项规则复用，基于 PR #18 继续开发。业务代码要求迁移头 **`0015_quotations`**；启用步骤与验证边界见[事项与报价接入](docs/work-intake-and-quotations.md)。
+**当前实现（2026-10-11）：** 在原 v6 预测与任务工作区基础上，本分支同时包含两条线。其一，新事项处理者与服务端报价整理、版本化纠正和跨事项规则复用，启用步骤与验证边界见[事项与报价接入](docs/work-intake-and-quotations.md)。其二，恢复 Case、Context Engineering、可选受限专家协作及独立评测口径，实现范围见[交付说明](docs/reports/2026-10-02-next-phase-delivery.md)，启用步骤见[下一阶段运行手册](docs/runbooks/next-phase-agent-recovery.md)。2026-10-12 起又加了两项：在恢复 Case 上从供应商资料寻源，以及由店主自己把订单发给供应商、再粘贴回复生成回执的“辅助发送”，见[寻源与辅助发送](docs/sourcing-and-assisted-purchase.md)。业务代码要求迁移头 **`0019_sourcing`**。
 
 [当前能力](#当前能力与边界) · [项目架构](#项目架构) · [首次安装](#首次安装) · [启动服务](#启动服务) · [可选能力](#启用可选能力) · [更新与验证](#更新与验证) · [文档导航](#文档导航)
 
@@ -13,6 +13,9 @@ ShopSteward 围绕门店备货，把经营数据、七日需求预测、方案�
 | 经营与备货 | 库存/现金账本、销售与收货查询、Mission、候选方案、警报、周期检查、审批采购及回执恢复 | 需要业务 API、业务 worker、PostgreSQL 和模拟器；采购逐笔确认 |
 | 前端工作区 | 今日、持续跟进、经营记录、经营概览、文档中心；同一任务的方案、对话、工具进度和结果 | Nuxt 同源代理访问后端，数据来自实际 API |
 | Mission Agent | LangGraph 工具循环、澄清与恢复、持久会话/检查点、记忆与任务 Skill、试算/方案修订、历史引用与成果 | 配置模型和独立 Agent worker 后启用；没有审批采购工具 |
+| Context Engineering | 输入准入、有限且带原句依据的 TaskFrame、上下文预算、冻结模型配置、调用账本及检查视图 | 不支持的自然语言保留原文；必需来源超预算明确失败；不是任意语义压缩 |
+| 供应异常应对 | 七日逐日恢复试算、多报价比较、修订、待确认 Plan、真实执行状态与显式开启自动跟进 | 绑定现有 Mission；每个 Case 最多一笔已受理应急采购；专家解释可选，计算与审批不依赖模型 |
+| 新版离线评测 | D1–D6 / Q1–Q6、关键失败覆盖、三态结果、证据绑定、未知用量及完整分母 | v0 不变；当前九个示例用于开发验证，正式 CE/OPS 与人工校准仍待进行 |
 | v6 七日预测 | 四组件推理、300 个支持系列、历史示例、观察历史导入、不可变预测证据、前端面板、Agent `get_forecast` | 模型包随 Git 提供，无需重训；历史演示标注“模型推演，仅供参考”，不能启用为实际规划需求 |
 | 知识检索 | 文档/版本/原件管理、解析索引、发布与重试、检索和证据展开、Agent 文档工具 | 检索需独立 Knowledge API/worker、PostgreSQL、OpenSearch；云 embedding/rerank 为可选配置 |
 | 主动事项办理 | 多轮澄清、真实查询、数量比较、原任务关联、明确修订/暂停、待接受的委托条件；租约与幂等回执保护 | 配置模型并启动 `--profile work`；接受委托与采购审批分开；真实模型质量待单独验证 |
@@ -146,7 +149,7 @@ Set-Location ../simulation
 Set-Location ..
 ```
 
-预期业务库为 `0015_quotations`，模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，已有任一版本均通过 `upgrade head` 合流。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
+预期业务库为 `0019_sourcing`（`0018_assisted_purchase` 与 `0019_sourcing` 接在 `0017_cases_quotations_merge` 之后），模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，经 `0014_forecast_work_merge` 合流；之后的报价分支 `0015_quotations` 与恢复 Case、学习分支（`0015_operations_cases`、`0016_learning_foundation`）经 `0017_cases_quotations_merge` 合流。已有任一版本均通过 `upgrade head` 升级。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
 
 ## 启动服务
 
@@ -158,7 +161,9 @@ Set-Location ..
 .venv/Scripts/python.exe infra/start_windows.py
 ```
 
-启动器读取 `backend/.env`，启动模拟器、业务 API、业务 worker 和前端；按开关增加 Agent worker 与 v6 ML 服务，并检查就绪状态。它不负责创建数据库、执行迁移或启动 Knowledge 服务。前端开发身份取自配置中的 admin 用户。
+启动器读取 `backend/.env`，启动模拟器、业务 API、业务 worker 和前端；按开关增加 Agent worker、学习 worker（`LEARNING_ENABLED`）、事项 worker（`WORK_PROCESSOR_ENABLED`）与 v6 ML 服务，并检查就绪状态。它不负责创建数据库、执行迁移或启动 Knowledge 服务。前端开发身份取自配置中的 admin 用户。
+
+想临时换一套配置而不改 `backend/.env`，加 `--overlay <文件>`：文件里的设置只对这一次启动生效，盖在 `backend/.env` 之上，其中 `SIM_` 开头的设置也会传给模拟器。[infra/demo-mature.env.example](infra/demo-mature.env.example) 是一份不做后训练、全部使用现成模型的演示配置。
 
 默认端口 3000/8000 必须空闲；8053 在启用预测时也必须空闲。已有 8001 模拟器会被复用并检查 ready，应确认它使用本项目配置。日志和本次创建的 PID 写入 `var/windows-stack-<时间>/` 的日志及 `processes.json`。启动成功后服务留在后台；脚本没有 `stop` 子命令，停止时根据该记录核对进程，或用下面的分终端方式管理生命周期。
 

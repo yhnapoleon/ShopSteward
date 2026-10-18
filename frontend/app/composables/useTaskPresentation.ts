@@ -47,10 +47,13 @@ export function useTaskPresentation() {
       }
     if (pending.value)
       return {
-        label: actionLabel(pending.value.status),
+        label: actionLabel(pending.value.status, pending.value.channel),
         tone: pending.value.status === 'UNKNOWN' ? 'amber' : 'blue',
         group: '进行中',
-        detail: '确认已受理，采购结果以回执为准。',
+        detail:
+          pending.value.channel === 'assisted'
+            ? '订单信息由你发给供应商；粘贴对方的回复后生成回执。'
+            : '确认已受理，采购结果以回执为准。',
       }
     if (!s.connected || s.dashboard?.freshness.status !== 'FRESH')
       return {

@@ -2,6 +2,8 @@ node_modules/
 .nuxt/
 .output/
 .venv/
+.venv-pt/
+.venv-evo/
 __pycache__/
 *.py[cod]
 *.egg-info/

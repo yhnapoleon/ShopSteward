@@ -4,7 +4,7 @@
 
 ## 启动
 
-使用仓库锁定依赖，在目标环境的backend目录运行`python -m alembic upgrade head`，数据库版本须为`0015_quotations`。迁移只新增报价原件和计算结果表，报价规则复用现有用户/店铺知识及修订记录。
+使用仓库锁定依赖，在目标环境的backend目录运行`python -m alembic upgrade head`，数据库版本须为`0017_cases_quotations_merge`（报价表由`0015_quotations`新增；2026-10-11与恢复Case、学习分支合流）。迁移只新增报价原件和计算结果表，报价规则复用现有用户/店铺知识及修订记录。
 
 报价上传、字段纠正、计算、规则保存及下载由已有业务API提供，不依赖模型。启用自然语言办理时，在API与事项worker的环境中设置：
 

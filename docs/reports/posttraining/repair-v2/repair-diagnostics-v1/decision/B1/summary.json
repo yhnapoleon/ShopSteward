@@ -1,0 +1,2323 @@
+{
+  "scheduled_episodes": 60,
+  "attempted_decisions": 72,
+  "responded_decisions": 72,
+  "environment_errors": 0,
+  "pending_reviews": 0,
+  "action_accuracy": {
+    "correct": 71,
+    "total": 72,
+    "rate": 0.9861111111111112
+  },
+  "effective_action_completion": {
+    "correct": 71,
+    "total": 72,
+    "rate": 0.9861111111111112
+  },
+  "arguments_accuracy": {
+    "correct": 30,
+    "total": 30,
+    "rate": 1.0
+  },
+  "format_validity": {
+    "correct": 72,
+    "total": 72,
+    "rate": 1.0
+  },
+  "decision_success": {
+    "correct": 59,
+    "total": 60,
+    "rate": 0.9833333333333333
+  },
+  "core_success": null,
+  "clarification_recall": {
+    "correct": 41,
+    "total": 42,
+    "rate": 0.9761904761904762
+  },
+  "unnecessary_clarification": {
+    "correct": 0,
+    "total": 18,
+    "rate": 0.0
+  },
+  "scope_routing": {
+    "handoff": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    },
+    "no_action": {
+      "correct": 0,
+      "total": 0,
+      "rate": null
+    }
+  },
+  "step_coverage": {
+    "correct": 72,
+    "total": 72,
+    "rate": 1.0
+  },
+  "wrong_write_attempts": 0,
+  "unexpected_business_mutations": 0,
+  "confusion_matrix": {
+    "clarify->clarify": 41,
+    "clarify->handoff": 1,
+    "evaluate_plan->evaluate_plan": 15,
+    "revise_plan->revise_plan": 15
+  },
+  "argument_errors": {},
+  "failure_counts": {
+    "clarification_error": 1
+  },
+  "latency_ms": {
+    "decision_p50": 2219.16285000043,
+    "decision_p95": 2758.348720009963,
+    "task_p50": 2338.8726499979384,
+    "task_p95": 4414.481990013154
+  },
+  "tokens": {
+    "input": 51385,
+    "output": 5171,
+    "missing_usage": 0
+  },
+  "cost": {
+    "amount": null,
+    "currency": null,
+    "missing_count": 60,
+    "per_success": null,
+    "success_basis": "decision_only"
+  },
+  "by_task": {
+    "PT-01": {
+      "scheduled_episodes": 9,
+      "attempted_decisions": 9,
+      "responded_decisions": 9,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 9,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "evaluate_plan->evaluate_plan": 9
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 1958.6882000148762,
+        "decision_p95": 2467.932099994505,
+        "task_p50": 1958.691000007093,
+        "task_p95": 2467.934499983676
+      },
+      "tokens": {
+        "input": 6363,
+        "output": 557,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 9,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "PT-02": {
+      "scheduled_episodes": 9,
+      "attempted_decisions": 9,
+      "responded_decisions": 9,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 9,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 9,
+        "total": 9,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "revise_plan->revise_plan": 9
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2205.1790000114124,
+        "decision_p95": 2460.758839995833,
+        "task_p50": 2205.182200006675,
+        "task_p95": 2460.763320000842
+      },
+      "tokens": {
+        "input": 6347,
+        "output": 697,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 9,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "PT-04": {
+      "scheduled_episodes": 12,
+      "attempted_decisions": 24,
+      "responded_decisions": 24,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 24,
+        "total": 24,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 12,
+        "evaluate_plan->evaluate_plan": 6,
+        "revise_plan->revise_plan": 6
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2003.8955000054557,
+        "decision_p95": 2689.373794994026,
+        "task_p50": 4119.268650014419,
+        "task_p95": 5052.797040004225
+      },
+      "tokens": {
+        "input": 17499,
+        "output": 1554,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 12,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "PT-07": {
+      "scheduled_episodes": 30,
+      "attempted_decisions": 30,
+      "responded_decisions": 30,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "effective_action_completion": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 30,
+        "total": 30,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 30,
+        "total": 30,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 29,
+        "clarify->handoff": 1
+      },
+      "argument_errors": {},
+      "failure_counts": {
+        "clarification_error": 1
+      },
+      "latency_ms": {
+        "decision_p50": 2320.945550003671,
+        "decision_p95": 2922.078990003501,
+        "task_p50": 2320.9485499974107,
+        "task_p95": 2922.0829049911113
+      },
+      "tokens": {
+        "input": 21176,
+        "output": 2363,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 30,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    }
+  },
+  "by_suite": {
+    "challenge": {
+      "scheduled_episodes": 30,
+      "attempted_decisions": 30,
+      "responded_decisions": 30,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "effective_action_completion": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 30,
+        "total": 30,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 29,
+        "total": 30,
+        "rate": 0.9666666666666667
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 30,
+        "total": 30,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 29,
+        "clarify->handoff": 1
+      },
+      "argument_errors": {},
+      "failure_counts": {
+        "clarification_error": 1
+      },
+      "latency_ms": {
+        "decision_p50": 2320.945550003671,
+        "decision_p95": 2922.078990003501,
+        "task_p50": 2320.9485499974107,
+        "task_p95": 2922.0829049911113
+      },
+      "tokens": {
+        "input": 21176,
+        "output": 2363,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 30,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "core": {
+      "scheduled_episodes": 30,
+      "attempted_decisions": 42,
+      "responded_decisions": 42,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 42,
+        "total": 42,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 42,
+        "total": 42,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 30,
+        "total": 30,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 42,
+        "total": 42,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 30,
+        "total": 30,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 12,
+        "total": 12,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 18,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 42,
+        "total": 42,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 12,
+        "evaluate_plan->evaluate_plan": 15,
+        "revise_plan->revise_plan": 15
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2038.1274999963352,
+        "decision_p95": 2675.423740000405,
+        "task_p50": 2396.741299991845,
+        "task_p95": 4889.285084996663
+      },
+      "tokens": {
+        "input": 30209,
+        "output": 2808,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 30,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    }
+  },
+  "by_family": {
+    "repair-exact-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2476.972799981013,
+        "decision_p95": 2954.24693999812,
+        "task_p50": 2476.976400008425,
+        "task_p95": 2954.249729993171
+      },
+      "tokens": {
+        "input": 2138,
+        "output": 227,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-exact-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2625.422899989644,
+        "decision_p95": 2701.169690009556,
+        "task_p50": 2625.4264999879524,
+        "task_p95": 2701.1733800085494
+      },
+      "tokens": {
+        "input": 2142,
+        "output": 263,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-followup_cn-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 6,
+      "responded_decisions": 6,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3,
+        "evaluate_plan->evaluate_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2195.7339999935357,
+        "decision_p95": 3132.3334500120836,
+        "task_p50": 4976.5611000184435,
+        "task_p95": 5129.032979990006
+      },
+      "tokens": {
+        "input": 4401,
+        "output": 354,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-followup_cn-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 6,
+      "responded_decisions": 6,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3,
+        "revise_plan->revise_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2093.0470999883255,
+        "decision_p95": 2257.1818249853095,
+        "task_p50": 3834.8180999746546,
+        "task_p95": 4314.6335699857445
+      },
+      "tokens": {
+        "input": 4351,
+        "output": 390,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-followup_en-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 6,
+      "responded_decisions": 6,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3,
+        "evaluate_plan->evaluate_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 1941.85460000881,
+        "decision_p95": 2204.7315500094555,
+        "task_p50": 4069.9156999762636,
+        "task_p95": 4158.7510100449435
+      },
+      "tokens": {
+        "input": 4373,
+        "output": 356,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-followup_en-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 6,
+      "responded_decisions": 6,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 6,
+        "total": 6,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3,
+        "revise_plan->revise_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2031.4266000059433,
+        "decision_p95": 2623.933599992597,
+        "task_p50": 4395.106600015424,
+        "task_p95": 4743.8636199745815
+      },
+      "tokens": {
+        "input": 4374,
+        "output": 454,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-lower-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2256.8567999987863,
+        "decision_p95": 2261.6391300049145,
+        "task_p50": 2256.859999994049,
+        "task_p95": 2261.6418799967505
+      },
+      "tokens": {
+        "input": 2125,
+        "output": 244,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-lower-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 2,
+        "total": 3,
+        "rate": 0.6666666666666666
+      },
+      "effective_action_completion": {
+        "correct": 2,
+        "total": 3,
+        "rate": 0.6666666666666666
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 2,
+        "total": 3,
+        "rate": 0.6666666666666666
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 2,
+        "total": 3,
+        "rate": 0.6666666666666666
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 2,
+        "clarify->handoff": 1
+      },
+      "argument_errors": {},
+      "failure_counts": {
+        "clarification_error": 1
+      },
+      "latency_ms": {
+        "decision_p50": 2221.786800015252,
+        "decision_p95": 2504.422799986787,
+        "task_p50": 2221.791199990548,
+        "task_p95": 2504.4265699834796
+      },
+      "tokens": {
+        "input": 2126,
+        "output": 253,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-negated_negative-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 3,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "evaluate_plan->evaluate_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2429.055699991295,
+        "decision_p95": 2487.3702999961097,
+        "task_p50": 2429.058099980466,
+        "task_p95": 2487.3726999852806
+      },
+      "tokens": {
+        "input": 2140,
+        "output": 191,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-negated_negative-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 3,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "revise_plan->revise_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 1581.433699990157,
+        "decision_p95": 1650.8049800002482,
+        "task_p50": 1581.4376999915112,
+        "task_p95": 1650.8090700022876
+      },
+      "tokens": {
+        "input": 2134,
+        "output": 221,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-negative_ascii-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2339.52790001058,
+        "decision_p95": 2597.511729996768,
+        "task_p50": 2339.5301999989897,
+        "task_p95": 2597.5149299920304
+      },
+      "tokens": {
+        "input": 2114,
+        "output": 239,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-negative_ascii-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2447.815699997591,
+        "decision_p95": 2780.934410006739,
+        "task_p50": 2447.8188999928534,
+        "task_p95": 2780.939589990885
+      },
+      "tokens": {
+        "input": 2109,
+        "output": 200,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-negative_chinese-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2254.373800009489,
+        "decision_p95": 2329.827820000355,
+        "task_p50": 2254.376200027764,
+        "task_p95": 2329.831209999975
+      },
+      "tokens": {
+        "input": 2114,
+        "output": 218,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-negative_chinese-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2303.679500008002,
+        "decision_p95": 3386.3243300147587,
+        "task_p50": 2303.6819999979343,
+        "task_p95": 3386.327730011544
+      },
+      "tokens": {
+        "input": 2105,
+        "output": 264,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-packaging-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2540.0590999925043,
+        "decision_p95": 2676.8942900002003,
+        "task_p50": 2540.0612999801524,
+        "task_p95": 2676.896939991275
+      },
+      "tokens": {
+        "input": 2107,
+        "output": 219,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-packaging-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "clarify->clarify": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2275.761099997908,
+        "decision_p95": 2435.4870700160973,
+        "task_p50": 2275.764399993932,
+        "task_p95": 2435.4907300148625
+      },
+      "tokens": {
+        "input": 2096,
+        "output": 236,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-positive-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 3,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "evaluate_plan->evaluate_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 1661.8019999878015,
+        "decision_p95": 1760.539739995147,
+        "task_p50": 1661.8055999861099,
+        "task_p95": 1760.5473899981007
+      },
+      "tokens": {
+        "input": 2109,
+        "output": 155,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-positive-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 3,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "revise_plan->revise_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2205.1790000114124,
+        "decision_p95": 2300.3151199925924,
+        "task_p50": 2205.182200006675,
+        "task_p95": 2300.3191299940227
+      },
+      "tokens": {
+        "input": 2111,
+        "output": 241,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-upper-eval": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 3,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "evaluate_plan->evaluate_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2039.1464999993332,
+        "decision_p95": 2114.39873999916,
+        "task_p50": 2039.1491999907885,
+        "task_p95": 2114.402429998154
+      },
+      "tokens": {
+        "input": 2114,
+        "output": 211,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    },
+    "repair-upper-revise": {
+      "scheduled_episodes": 3,
+      "attempted_decisions": 3,
+      "responded_decisions": 3,
+      "environment_errors": 0,
+      "pending_reviews": 0,
+      "action_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "effective_action_completion": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "arguments_accuracy": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "format_validity": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "decision_success": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "core_success": null,
+      "clarification_recall": {
+        "correct": 0,
+        "total": 0,
+        "rate": null
+      },
+      "unnecessary_clarification": {
+        "correct": 0,
+        "total": 3,
+        "rate": 0.0
+      },
+      "scope_routing": {
+        "handoff": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        },
+        "no_action": {
+          "correct": 0,
+          "total": 0,
+          "rate": null
+        }
+      },
+      "step_coverage": {
+        "correct": 3,
+        "total": 3,
+        "rate": 1.0
+      },
+      "wrong_write_attempts": 0,
+      "unexpected_business_mutations": 0,
+      "confusion_matrix": {
+        "revise_plan->revise_plan": 3
+      },
+      "argument_errors": {},
+      "failure_counts": {},
+      "latency_ms": {
+        "decision_p50": 2364.42050000187,
+        "decision_p95": 2508.9280099928146,
+        "task_p50": 2364.4245000032242,
+        "task_p95": 2508.932729999651
+      },
+      "tokens": {
+        "input": 2102,
+        "output": 235,
+        "missing_usage": 0
+      },
+      "cost": {
+        "amount": null,
+        "currency": null,
+        "missing_count": 3,
+        "per_success": null,
+        "success_basis": "decision_only"
+      }
+    }
+  }
+}

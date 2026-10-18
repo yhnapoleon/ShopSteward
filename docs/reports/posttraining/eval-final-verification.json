@@ -1,0 +1,20 @@
+{
+  "smoke_specs": {
+    "episodes": 50,
+    "sha256": "b43d8a393661afc2f204e20695e8c2e928f3a8a7436e3133c20c344ec8221164"
+  },
+  "smoke/decision/B0": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "smoke/decision/B1": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "smoke/execution/B0": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "smoke/execution/B1": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "dev_specs": {
+    "episodes": 200,
+    "sha256": "793be13d37609a0a5e438eee8a78e359a49207aef2f5ba2b5b1974517744de71"
+  },
+  "dev/decision/B0": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "dev/decision/B1": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "dev/execution/B0": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "dev/execution/B1": "offline_rescore_exact_match; zero_pending; zero_environment_errors",
+  "smoke_subset_unchanged": true,
+  "final_report_links_and_utf8": "pass"
+}

@@ -83,6 +83,13 @@ def read_private_env(path):
             value = value[1:-1]
         if "$" in value or "\x00" in value:
             raise ValueError("private configuration must use literal values")
+        if key in {
+            "KNOWLEDGE_EMBEDDING_QUERY_INSTRUCTION",
+            "KNOWLEDGE_EMBEDDING_DOCUMENT_INSTRUCTION",
+        }:
+            # Keep a model's multiline prefix on one env-file line. Do not
+            # decode credentials, URLs or paths as escaped Python strings.
+            value = value.replace(r"\n", "\n")
         if key in values:
             raise ValueError("duplicate private configuration key")
         values[key] = value

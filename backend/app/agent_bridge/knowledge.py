@@ -41,6 +41,10 @@ async def change(session, principal_id, store_id, body, key, *, source, allowed_
         )
     if not set(body.required_tools) <= set(allowed_tools):
         raise AppError(422, "SKILL_TOOL_UNAVAILABLE", "Skill requires an unavailable tool")
+    if session.info.get('learning_enabled'):
+        from app.learning.repository import policy
+        from app.learning.schemas import LearningScope
+        await policy(session,LearningScope(principal_id=principal_id,store_id=store_id),lock=True)
     scope_id = digest([principal_id, store_id, body.kind, body.task_type])
     await session.execute(
         insert(KnowledgeScope)
@@ -100,6 +104,12 @@ async def change(session, principal_id, store_id, body, key, *, source, allowed_
     if entries != scope.entries:
         scope.entries = entries
         scope.version += 1
+        from app.learning.capture import explicit_memory_change
+
+        await explicit_memory_change(session, principal_id, store_id)
+        if session.info.get('learning_enabled') and source.get('run_id'):
+            from app.learning.run_binding import reset_after_explicit_edit
+            await reset_after_explicit_edit(session,principal_id,store_id,source['run_id'])
         session.add(
             KnowledgeRevision(
                 scope_id=scope.id, version=scope.version, entries=entries, source=source

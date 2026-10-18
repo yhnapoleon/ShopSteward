@@ -1,0 +1,308 @@
+{
+  "schema_version": "eval-v0",
+  "release_status": "spec_validated_pending_execution",
+  "dataset_sha256": "17162e45e123dd7678eac408e8bf0ea9c53c4f9d3877fd266e35005a89ed8fc2",
+  "provenance": "Codex-authored synthetic diagnostics based on known dev failures; not independent test or training data.",
+  "episodes": [
+    {
+      "episode_id": "repair-negative_ascii-eval-7",
+      "scenario_family": "repair-negative_ascii-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_chinese-eval-7",
+      "scenario_family": "repair-negative_chinese-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-positive-eval-7",
+      "scenario_family": "repair-positive-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negated_negative-eval-7",
+      "scenario_family": "repair-negated_negative-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-upper-eval-7",
+      "scenario_family": "repair-upper-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-lower-eval-7",
+      "scenario_family": "repair-lower-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-exact-eval-7",
+      "scenario_family": "repair-exact-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_cn-eval-7",
+      "scenario_family": "repair-followup_cn-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_en-eval-7",
+      "scenario_family": "repair-followup_en-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-packaging-eval-7",
+      "scenario_family": "repair-packaging-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_ascii-revise-7",
+      "scenario_family": "repair-negative_ascii-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_chinese-revise-7",
+      "scenario_family": "repair-negative_chinese-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-positive-revise-7",
+      "scenario_family": "repair-positive-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negated_negative-revise-7",
+      "scenario_family": "repair-negated_negative-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-upper-revise-7",
+      "scenario_family": "repair-upper-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-lower-revise-7",
+      "scenario_family": "repair-lower-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-exact-revise-7",
+      "scenario_family": "repair-exact-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_cn-revise-7",
+      "scenario_family": "repair-followup_cn-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_en-revise-7",
+      "scenario_family": "repair-followup_en-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-packaging-revise-7",
+      "scenario_family": "repair-packaging-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_ascii-eval-19",
+      "scenario_family": "repair-negative_ascii-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_chinese-eval-19",
+      "scenario_family": "repair-negative_chinese-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-positive-eval-19",
+      "scenario_family": "repair-positive-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negated_negative-eval-19",
+      "scenario_family": "repair-negated_negative-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-upper-eval-19",
+      "scenario_family": "repair-upper-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-lower-eval-19",
+      "scenario_family": "repair-lower-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-exact-eval-19",
+      "scenario_family": "repair-exact-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_cn-eval-19",
+      "scenario_family": "repair-followup_cn-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_en-eval-19",
+      "scenario_family": "repair-followup_en-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-packaging-eval-19",
+      "scenario_family": "repair-packaging-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_ascii-revise-19",
+      "scenario_family": "repair-negative_ascii-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_chinese-revise-19",
+      "scenario_family": "repair-negative_chinese-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-positive-revise-19",
+      "scenario_family": "repair-positive-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negated_negative-revise-19",
+      "scenario_family": "repair-negated_negative-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-upper-revise-19",
+      "scenario_family": "repair-upper-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-lower-revise-19",
+      "scenario_family": "repair-lower-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-exact-revise-19",
+      "scenario_family": "repair-exact-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_cn-revise-19",
+      "scenario_family": "repair-followup_cn-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_en-revise-19",
+      "scenario_family": "repair-followup_en-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-packaging-revise-19",
+      "scenario_family": "repair-packaging-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_ascii-eval-42",
+      "scenario_family": "repair-negative_ascii-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_chinese-eval-42",
+      "scenario_family": "repair-negative_chinese-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-positive-eval-42",
+      "scenario_family": "repair-positive-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negated_negative-eval-42",
+      "scenario_family": "repair-negated_negative-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-upper-eval-42",
+      "scenario_family": "repair-upper-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-lower-eval-42",
+      "scenario_family": "repair-lower-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-exact-eval-42",
+      "scenario_family": "repair-exact-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_cn-eval-42",
+      "scenario_family": "repair-followup_cn-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_en-eval-42",
+      "scenario_family": "repair-followup_en-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-packaging-eval-42",
+      "scenario_family": "repair-packaging-eval",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_ascii-revise-42",
+      "scenario_family": "repair-negative_ascii-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negative_chinese-revise-42",
+      "scenario_family": "repair-negative_chinese-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-positive-revise-42",
+      "scenario_family": "repair-positive-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-negated_negative-revise-42",
+      "scenario_family": "repair-negated_negative-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-upper-revise-42",
+      "scenario_family": "repair-upper-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-lower-revise-42",
+      "scenario_family": "repair-lower-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-exact-revise-42",
+      "scenario_family": "repair-exact-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_cn-revise-42",
+      "scenario_family": "repair-followup_cn-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-followup_en-revise-42",
+      "scenario_family": "repair-followup_en-revise",
+      "split": "dev"
+    },
+    {
+      "episode_id": "repair-packaging-revise-42",
+      "scenario_family": "repair-packaging-revise",
+      "split": "dev"
+    }
+  ]
+}

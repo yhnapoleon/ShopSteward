@@ -3,7 +3,7 @@ from datetime import UTC, datetime, time, timedelta
 from pydantic import TypeAdapter, ValidationError
 
 from app.core.errors import AppError
-from app.execution.schemas import PurchaseReceipt
+from app.execution.schemas import PurchaseReceipt, RecordedArrival
 from app.operations.schemas import BusinessEvent, SaleEvent, State
 from app.reporting.read_schemas import (
     InboundItem,
@@ -204,6 +204,26 @@ def ledger_view(row, action_by_id: dict) -> LedgerEntryView:
                     receivables_delta_minor=0,
                     on_hand_delta=0,
                     in_transit_delta=receipt.quantity,
+                ),
+                opening_state=None,
+                remaining_demand_after=None,
+            )
+        if row.effect_type == "GOODS_RECEIVED" and row.source_event_id is None:
+            # Recorded by the owner for an order sent by hand; no source event stands behind it.
+            arrival = RecordedArrival.model_validate(row.document)
+            received = arrival.payload
+            _action_for(action_by_id, received.action_id, row.store_id, received.sku_id)
+            return LedgerEntryView(
+                **common,
+                sku_id=received.sku_id,
+                action_id=received.action_id,
+                occurred_at=arrival.occurred_at,
+                simulation_time=arrival.simulation_time,
+                changes=LedgerChanges(
+                    cash_delta_minor=0,
+                    receivables_delta_minor=0,
+                    on_hand_delta=received.quantity,
+                    in_transit_delta=-received.quantity,
                 ),
                 opening_state=None,
                 remaining_demand_after=None,

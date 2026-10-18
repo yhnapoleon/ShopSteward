@@ -1,0 +1,61 @@
+{
+  "schema_version": "text-bundle-v1",
+  "bundle_id": "case-experts",
+  "revision": "gepa-r1",
+  "parent_revision": "seed",
+  "components": {
+    "question.evidence": "Identify evidence coverage and missing source qualifications. Do not infer contract exceptions without a document. Treat absent documents or source qualifications as missing findings to report, not as questions to the user. Do not ask the user for missing evidence or documentation when it can simply be reported as missing. Ask a follow-up question only if a required decision input is absent from the supplied snapshot and cannot be handled by reporting missing; if the supplied facts are sufficient, ask no questions.",
+    "question.impact": "Explain the supplied daily impact and its assumptions using the authoritative solver output. Do not recompute amounts. Treat the solver output as authoritative and do not contradict it. If information is missing or unsupported, report it as missing rather than asking the user for it. Do not ask a follow-up question when the supplied case and solver output already contain the needed facts. Base every statement on the supplied solver output.",
+    "question.options": "Compare supplied solver candidates; cite their IDs and explain rejection reasons. Do not invent or modify candidate numbers.",
+    "guidance.evidence": "",
+    "guidance.impact": "",
+    "guidance.options": ""
+  },
+  "content_hash": "9dc7f6b38f545a9b14838845b8d8bdb430baf2a8117bee54c2c973340335784b",
+  "provenance": {
+    "origin": "gepa",
+    "optimizer_version": "0.1.4",
+    "seed": 0,
+    "strategy": "adaptive_multi",
+    "max_metric_calls": 100,
+    "task_profile": {
+      "schema_version": "context-v1",
+      "profile_id": "evolve-deepseek-flash",
+      "version": "1",
+      "provider": "openai",
+      "model_id": "deepseek-flash",
+      "api_mode": "chat_completions",
+      "reasoning_effort": null,
+      "reasoning_context_policy": "run_only",
+      "max_input_tokens": 128000,
+      "max_output_tokens": 2048,
+      "timeout_s": 60.0,
+      "capability_flags": [],
+      "price_version": null
+    },
+    "reflection_profile": {
+      "schema_version": "context-v1",
+      "profile_id": "evolve-deepseek-v4-pro",
+      "version": "1",
+      "provider": "openai",
+      "model_id": "deepseek-v4-pro",
+      "api_mode": "chat_completions",
+      "reasoning_effort": null,
+      "reasoning_context_policy": "run_only",
+      "max_input_tokens": 128000,
+      "max_output_tokens": 4096,
+      "timeout_s": 120.0,
+      "capability_flags": [],
+      "price_version": null
+    },
+    "val_score": {
+      "parent": 0.6666666666666666,
+      "this": 0.9166666666666666
+    },
+    "partitions": {
+      "feedback": "evo-train",
+      "selection": "evo-val"
+    }
+  },
+  "gate": null
+}

@@ -1,0 +1,58 @@
+{
+  "attempts": 553,
+  "budget": 600,
+  "formal_calls": 544,
+  "warmup_calls": 9,
+  "input_tokens": 511954,
+  "output_tokens": 39029,
+  "missing_usage": 0,
+  "amount": null,
+  "price_status": "unconfigured",
+  "runs": [
+    {
+      "run": "repair-diagnostics-v1",
+      "mode": "decision",
+      "policy": "B1",
+      "formal_calls": 72,
+      "warmup_calls": 3,
+      "formal_input_tokens": 51385,
+      "formal_output_tokens": 5171,
+      "warmup_input_tokens": 2114,
+      "warmup_output_tokens": 183
+    },
+    {
+      "run": "repair-diagnostics-v1",
+      "mode": "decision",
+      "policy": "B1_candidate",
+      "formal_calls": 72,
+      "warmup_calls": 3,
+      "formal_input_tokens": 68973,
+      "formal_output_tokens": 5155,
+      "warmup_input_tokens": 2846,
+      "warmup_output_tokens": 219
+    },
+    {
+      "run": "dev-repair-v2",
+      "mode": "decision",
+      "policy": "B1",
+      "formal_calls": 230,
+      "warmup_calls": 3,
+      "formal_input_tokens": 220860,
+      "formal_output_tokens": 16079,
+      "warmup_input_tokens": 2853,
+      "warmup_output_tokens": 203
+    },
+    {
+      "run": "dev-repair-v2",
+      "mode": "execution",
+      "policy": "B1",
+      "formal_calls": 170,
+      "warmup_calls": 0,
+      "formal_input_tokens": 162923,
+      "formal_output_tokens": 12019,
+      "warmup_input_tokens": 0,
+      "warmup_output_tokens": 0
+    }
+  ],
+  "failed_api_attempts": 0
+}

@@ -1,0 +1,79 @@
+{
+  "dataset_version": "ops-synthetic-v1",
+  "oracle": "recovery_solver_v1",
+  "partitions": {
+    "smoke": [
+      "smoke-cash_floor-03",
+      "smoke-cash_floor-11",
+      "smoke-late_cheap_offer-01",
+      "smoke-late_cheap_offer-09",
+      "smoke-moq_pack-04",
+      "smoke-no_action-06",
+      "smoke-partial_receipt-05",
+      "smoke-temporal_gap-00",
+      "smoke-temporal_gap-08",
+      "smoke-tight_budget-02",
+      "smoke-tight_budget-10",
+      "smoke-unverified_execution-07"
+    ],
+    "evo-train": [
+      "evo-train-cash_floor-03",
+      "evo-train-cash_floor-11",
+      "evo-train-late_cheap_offer-01",
+      "evo-train-late_cheap_offer-09",
+      "evo-train-moq_pack-04",
+      "evo-train-no_action-06",
+      "evo-train-partial_receipt-05",
+      "evo-train-temporal_gap-00",
+      "evo-train-temporal_gap-08",
+      "evo-train-tight_budget-02",
+      "evo-train-tight_budget-10",
+      "evo-train-unverified_execution-07"
+    ],
+    "evo-val": [
+      "evo-val-cash_floor-03",
+      "evo-val-cash_floor-11",
+      "evo-val-late_cheap_offer-01",
+      "evo-val-late_cheap_offer-09",
+      "evo-val-moq_pack-04",
+      "evo-val-no_action-06",
+      "evo-val-partial_receipt-05",
+      "evo-val-temporal_gap-00",
+      "evo-val-temporal_gap-08",
+      "evo-val-tight_budget-02",
+      "evo-val-tight_budget-10",
+      "evo-val-unverified_execution-07"
+    ],
+    "gate": [
+      "gate-cash_floor-03",
+      "gate-cash_floor-11",
+      "gate-cash_floor-19",
+      "gate-late_cheap_offer-01",
+      "gate-late_cheap_offer-09",
+      "gate-late_cheap_offer-17",
+      "gate-moq_pack-04",
+      "gate-moq_pack-12",
+      "gate-moq_pack-20",
+      "gate-no_action-06",
+      "gate-no_action-14",
+      "gate-no_action-22",
+      "gate-partial_receipt-05",
+      "gate-partial_receipt-13",
+      "gate-partial_receipt-21",
+      "gate-temporal_gap-00",
+      "gate-temporal_gap-08",
+      "gate-temporal_gap-16",
+      "gate-tight_budget-02",
+      "gate-tight_budget-10",
+      "gate-tight_budget-18",
+      "gate-unverified_execution-07",
+      "gate-unverified_execution-15",
+      "gate-unverified_execution-23"
+    ]
+  },
+  "sha256": {
+    "fixtures.jsonl": "4c3c7acac595176ab8d70a556d0598edf7fe46bec4e4fd842da8505a4c81ef97",
+    "cases.jsonl": "1bc8c96f34290d985acfced82cce19fe0cfcc48f32ca6171f02e4ee58d53385e"
+  },
+  "research_status": "synthetic development cases; no locked test set"
+}

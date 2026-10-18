@@ -1,0 +1,12 @@
+{
+  "app_env_file": "../../backend/.env",
+  "run_root": "../../var/posttraining/runs",
+  "frozen_contexts": "../datasets/frozen-smoke-v1.json",
+  "concurrency": 1,
+  "warmup_episodes": 3,
+  "policies": {
+    "B0": {"implementation": "RulePolicy-v1"},
+    "B1": {"implementation": "RestrictedPolicy-v1", "timeout_seconds": 60, "max_output_tokens": 1024, "price": null}
+  },
+  "B2_status": "unavailable: no local base or SFT model endpoint configured"
+}

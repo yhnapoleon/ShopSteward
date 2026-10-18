@@ -6,7 +6,7 @@ defineProps<{ conversation?: boolean }>()
 defineEmits<{ pause: []; resume: []; receipt: []; mission: []; check: [] }>()
 const waiting = computed(() =>
   unresolved.value
-    ? `原采购：${actionLabel(unresolved.value.status)}`
+    ? `原采购：${actionLabel(unresolved.value.status, unresolved.value.channel)}`
     : mission.value?.status === 'PAUSED'
       ? '你恢复主动跟进；已有订单仍更新事实'
       : canDecide.value

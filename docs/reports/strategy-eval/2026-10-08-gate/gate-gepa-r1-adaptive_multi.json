@@ -1,0 +1,37 @@
+{
+  "strategy": "adaptive_multi",
+  "baseline": "seed",
+  "candidate": "gepa-r1",
+  "paired_runs": 24,
+  "task_success": {
+    "baseline": 18,
+    "candidate": 22
+  },
+  "mean_score": {
+    "baseline": 0.708,
+    "candidate": 0.875
+  },
+  "mean_model_calls": {
+    "baseline": 7.833,
+    "candidate": 7
+  },
+  "gains": [
+    "gate-cash_floor-03",
+    "gate-cash_floor-19",
+    "gate-late_cheap_offer-09",
+    "gate-no_action-14",
+    "gate-temporal_gap-08",
+    "gate-unverified_execution-07"
+  ],
+  "losses": [
+    "gate-temporal_gap-00",
+    "gate-unverified_execution-23"
+  ],
+  "checks": {
+    "no_critical_failure_or_contradiction": false,
+    "no_observed_loss": false,
+    "improved": true
+  },
+  "verdict": "fail",
+  "note": "Demonstration-level paired check on synthetic cases; not a statistical proof."
+}
