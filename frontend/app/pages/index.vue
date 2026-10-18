@@ -44,7 +44,6 @@ const dialog = ref(''),
   token = ref(''),
   scheduleSeconds = ref(30),
   recordFilter = ref('business')
-const approval = ref<{ plan: Schema<'Plan'>; quantity: number } | null>(null)
 const onboarding = useOnboarding()
 const tourError = ref('')
 const tourReady = computed(() =>
