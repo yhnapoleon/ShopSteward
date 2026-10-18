@@ -16,7 +16,7 @@ const cashScale = computed(() => {
 })
 </script>
 <template>
-  <div class="fact-strip" :aria-label="tr('当前经营事实')">
+  <div class="fact-strip" data-onboarding="facts" :aria-label="tr('当前经营事实')">
     <span
       >{{ tr(s.connected ? '当前现金' : '上次现金')
       }}<b>{{ tr(money(s.dashboard?.state.available_cash_minor)) }}</b></span
@@ -36,7 +36,7 @@ const cashScale = computed(() => {
     </div>
   </div>
   <aside class="rail" :aria-label="tr('经营背景')">
-    <section class="rail-card glass">
+    <section class="rail-card glass" data-onboarding="facts">
       <div class="rail-title">
         {{ tr('店铺此刻')
         }}<button class="overview-entry" @click="$emit('overview')">

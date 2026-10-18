@@ -34,6 +34,7 @@ class OpenAIModel:
                 key = Path(key_file).read_text(encoding="utf-8").strip()
             if not key:
                 raise ValueError("model key required")
+            options = {"reasoning_effort": reasoning_effort} if reasoning_effort is not None else {}
             client = ChatOpenAI(
                 base_url=base_url,
                 model=self.profile.model_id,

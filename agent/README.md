@@ -37,6 +37,8 @@ AGENT_BACKEND_URL=http://127.0.0.1:8000
 AGENT_WORKER_CONCURRENCY=1
 ```
 
+可选 `AGENT_REASONING_EFFORT` 原样传给模型服务，不配置时保持服务默认行为。DeepSeek 的思考模式不接受指定工具调用；使用该服务时可设置 `AGENT_REASONING_EFFORT=none` 关闭思考，兼容本项目工具流程。此配置同时用于 Mission Agent 和事项 worker，需模型服务支持该参数。
+
 官方 `gpt-5.6-luna` 使用 `AGENT_API_MODE=responses`，由适配器将 Responses 文本块与函数调用转换为现有图协议。默认仍为 `chat_completions`，兼容此前模型配置。Luna 在 Chat Completions 中拒绝带推理的工具调用，本次按真实 API 错误与复测采用 Responses；无需改变业务工具或审批权限。
 
 继续使用现有 `DATABASE_URL`、`AUTH_TOKENS`、simulator 配置。切换到新版本前，在 backend 目录运行迁移；然后分别在三个终端启动 API、业务 worker 和 Agent worker：

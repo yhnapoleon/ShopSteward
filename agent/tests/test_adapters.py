@@ -59,6 +59,75 @@ def test_responses_api_is_explicitly_configurable():
     assert model.client.use_responses_api is True
 
 
+@pytest.mark.asyncio
+async def test_reasoning_effort_reaches_tool_call_request(monkeypatch):
+    import json
+
+    import httpx
+    from langchain_openai import ChatOpenAI
+
+    import shopsteward_agent.model as adapter
+
+    requests = []
+
+    def respond(request):
+        requests.append(json.loads(request.content))
+        return httpx.Response(
+            200,
+            json={
+                "id": "probe",
+                "object": "chat.completion",
+                "created": 0,
+                "model": "test",
+                "choices": [
+                    {
+                        "index": 0,
+                        "finish_reason": "tool_calls",
+                        "message": {
+                            "role": "assistant",
+                            "content": None,
+                            "tool_calls": [
+                                {
+                                    "id": "call_1",
+                                    "type": "function",
+                                    "function": {"name": "probe", "arguments": "{}"},
+                                }
+                            ],
+                        },
+                    }
+                ],
+            },
+        )
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as http_client:
+        monkeypatch.setattr(
+            adapter,
+            "ChatOpenAI",
+            lambda **kwargs: ChatOpenAI(http_async_client=http_client, **kwargs),
+        )
+        model = package.OpenAIModel(
+            base_url="https://example.invalid/v1",
+            model="test",
+            key="test-key",
+            reasoning_effort="none",
+        )
+        tool = {
+            "type": "function",
+            "function": {
+                "name": "probe",
+                "parameters": {"type": "object", "properties": {}},
+            },
+        }
+        result = await model.complete(
+            [{"role": "user", "content": "probe"}],
+            [tool],
+            tool_choice={"type": "function", "function": {"name": "probe"}},
+        )
+    assert requests[0]["reasoning_effort"] == "none"
+    assert requests[0]["tool_choice"]["function"]["name"] == "probe"
+    assert result["tool_calls"][0]["function"]["name"] == "probe"
+
+
 def test_memory_atomic_budget_duplicate_and_ambiguity():
     assert hasattr(package, "apply_memory_changes")
     policy = package.apply_memory_changes

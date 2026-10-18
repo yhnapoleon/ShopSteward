@@ -44,6 +44,57 @@ const dialog = ref(''),
   token = ref(''),
   scheduleSeconds = ref(30),
   recordFilter = ref('business')
+const approval = ref<{ plan: Schema<'Plan'>; quantity: number } | null>(null)
+const onboarding = useOnboarding()
+const tourError = ref('')
+const tourReady = computed(() =>
+  Boolean(s.storeId && s.connected && s.dashboard && stock.value && s.catalog),
+)
+const tourCanSimulate = computed(() =>
+  Boolean(
+    s.session?.quantitySimulation &&
+      hasRole('operator') &&
+      work.s.available &&
+      !work.s.accessRevoked,
+  ),
+)
+const existingSimulation = computed(() =>
+  work.s.items.find((i) => i.store_id === s.storeId && i.result?.calculation),
+)
+const showTour = computed(
+  () =>
+    !s.loading &&
+    s.session?.authenticated &&
+    !dialog.value &&
+    !deck.value &&
+    (onboarding.s.status === 'active' ||
+      onboarding.s.completedNow ||
+      (view.value === 'today' && ['new', 'paused'].includes(onboarding.s.status))),
+)
+const tourTarget = computed(() => {
+  const id = onboarding.s.resultId
+  return (
+    [
+      '',
+      '[data-onboarding="store"]',
+      '[data-onboarding="facts"]',
+      '[data-onboarding="simulation"]',
+      '[data-onboarding="result"]',
+      view.value === 'journal' && id
+        ? `[data-work-id="${CSS.escape(id)}"]`
+        : '[data-onboarding="journal"]',
+    ][onboarding.s.step] || ''
+  )
+})
+watch(
+  () => [s.loading, s.session?.authenticated, s.session?.principal_id, s.storeId] as const,
+  ([loading, authenticated, principal, store]) => {
+    if (loading) return
+    onboarding.initialize(authenticated ? principal || '' : '')
+    if (authenticated) onboarding.syncStore(store)
+  },
+  { immediate: true },
+)
 const approval = ref<{ plan: PlanDocument; quantity: number } | null>(null)
 watch(
   () => s.storeId,
@@ -104,11 +155,80 @@ async function navigate(next: string) {
   await nextTick()
   window.scrollTo({ top: viewScroll[next] || 0 })
 }
+async function showGuidedResult(id: string) {
+  if (!id) return
+  await openWork(id)
+  const item = work.s.detail?.item
+  if (item?.id !== id || item.store_id !== s.storeId || !item.result?.calculation) {
+    onboarding.forgetResult()
+    tourError.value = '之前的试算暂时无法读取，请重新选择或试算。'
+    await navigate('today')
+    return
+  }
+  if (onboarding.s.step === 3) onboarding.recordResult(id, item.store_id)
+}
+async function tourLocation() {
+  if (onboarding.s.step === 4 && onboarding.s.resultId)
+    await showGuidedResult(onboarding.s.resultId)
+  else await navigate(onboarding.s.step === 5 ? 'journal' : 'today')
+}
+async function tourAction(action: string) {
+  tourError.value = ''
+  if (action === 'start') {
+    onboarding.start()
+    await tourLocation()
+  } else if (action === 'resume') {
+    onboarding.resume()
+    await tourLocation()
+  } else if (action === 'pause') onboarding.pause()
+  else if (action === 'skip') onboarding.skip()
+  else if (action === 'dismiss') onboarding.s.completedNow = false
+  else if (action === 'store') open('controls')
+  else if (action === 'simulation' && tourReady.value && tourCanSimulate.value) open('simulation')
+  else if (action === 'existing' && existingSimulation.value)
+    await showGuidedResult(existingSimulation.value.id)
+  else if (action === 'result') await showGuidedResult(onboarding.s.resultId)
+  else if (action === 'journal') await navigate('journal')
+  else if (action === 'skip-simulation') {
+    onboarding.skipSimulation()
+    await tourLocation()
+  } else if (action === 'ask') {
+    onboarding.s.completedNow = false
+    deck.value = true
+  } else if (action === 'previous') {
+    if (onboarding.s.step === 1) onboarding.replay()
+    else onboarding.go(onboarding.s.step - 1)
+    await tourLocation()
+  } else if (action === 'next') {
+    const step = onboarding.s.step
+    if (step <= 2 && !tourReady.value) return
+    if (step === 5) {
+      if (onboarding.s.resultId && !onboarding.s.resultOpened) return
+      onboarding.finish()
+    } else if (step !== 3) {
+      onboarding.go(step + 1)
+      await tourLocation()
+    }
+  }
+}
+async function replayTour() {
+  dialog.value = ''
+  onboarding.replay()
+  await navigate('today')
+}
+async function simulationCreated(id: string) {
+  const item = work.s.detail?.item
+  if (item?.id === id && item.store_id === s.storeId && item.result?.calculation)
+    onboarding.recordResult(id, item.store_id)
+  await openWork(id)
+}
 async function openWork(id: string) {
   dialog.value = ''
   taskRouteError.value = ''
   await work.select(id)
   await syncWork()
+  const item = work.s.detail?.item
+  if (item?.id === id && item.result?.calculation) onboarding.openedResult(id, item.store_id)
 }
 async function syncWork(panel?: string) {
   const item = work.s.detail?.item,
@@ -320,12 +440,7 @@ const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
 )
 // Demo mode (§10): plain store names and the demo badge; business rules and data stay the same.
-const {
-  enabled: demoMode,
-  saveFailed: demoSaveFailed,
-  set: setDemo,
-  storeLabel,
-} = useDemoMode()
+const { enabled: demoMode, saveFailed: demoSaveFailed, set: setDemo, storeLabel } = useDemoMode()
 const currentStore = computed(() => s.stores.find((st) => st.store_id === s.storeId))
 // Today (§5): what needs the owner comes first; everything else ongoing is "being watched".
 const decideWorks = computed(() => activeWorks.value.filter(needsOwner))
@@ -408,7 +523,11 @@ function briefing() {
       if (!['QUEUED', 'EXECUTING', 'SUCCEEDED', 'UNKNOWN'].includes(a.status))
         return tr('采购单 {0} 件 · {1} · {2}', [a.quantity, money(a.amount_minor), tr(status)])
       return status === '已到货'
-        ? tr('采购单 {0} 件 · {1} · 已到货 {2}/{3}', [a.quantity, money(a.amount_minor), ...arrived])
+        ? tr('采购单 {0} 件 · {1} · 已到货 {2}/{3}', [
+            a.quantity,
+            money(a.amount_minor),
+            ...arrived,
+          ])
         : tr('采购单 {0} 件 · {1} · {2} · 已到货 {3}/{4}', [
             a.quantity,
             money(a.amount_minor),
@@ -463,7 +582,7 @@ function briefing() {
 }
 </script>
 <template>
-  <div class="app">
+  <div class="app" :class="{ 'onboarding-running': showTour && onboarding.s.status === 'active' }">
     <header class="app-header">
       <div class="brand">
         <span class="brand-mark"><AppIcon name="layers-2" /></span><span>ShopSteward</span>
@@ -474,6 +593,7 @@ function briefing() {
           :key="id"
           :class="{ active: view === id }"
           :aria-current="view === id ? 'page' : undefined"
+          :data-onboarding="id === 'journal' ? 'journal' : undefined"
           @click="navigate(id)"
         >
           <AppIcon
@@ -505,7 +625,7 @@ function briefing() {
         <button class="icon-btn settings-entry" :aria-label="tr('设置')" @click="open('settings')">
           <AppIcon name="sliders-horizontal" />
         </button>
-        <button class="store-switch" @click="open('controls')">
+        <button class="store-switch" data-onboarding="store" @click="open('controls')">
           <span class="avatar">{{ tr('店') }}</span
           ><span
             ><strong>{{
@@ -567,7 +687,7 @@ function briefing() {
           <span class="brand-mark"><AppIcon name="layers-2" /></span>ShopSteward
         </div>
         <div class="top-actions">
-          <button class="demo-badge" @click="open('controls')">
+          <button class="demo-badge" data-onboarding="store" @click="open('controls')">
             {{ tr(demoMode ? '演示 · 合成数据' : '联调控制 · 合成数据') }}</button
           ><span class="top-clock">{{ tr(when(s.dashboard?.state.simulation_time)) }}</span
           ><button class="icon-btn" :aria-label="tr('设置')" @click="open('settings')">
@@ -575,6 +695,28 @@ function briefing() {
           </button>
         </div>
       </header>
+      <OnboardingGuide
+        v-if="showTour"
+        :status="onboarding.s.status"
+        :step="onboarding.s.step"
+        :target="tourTarget"
+        :location="route.fullPath"
+        :ready="tourReady"
+        :can-simulate="tourCanSimulate"
+        :has-result="Boolean(onboarding.s.resultId)"
+        :result-opened="onboarding.s.resultOpened"
+        :simulation-skipped="onboarding.s.simulationSkipped"
+        :existing-result="Boolean(existingSimulation)"
+        :ai-available="work.s.available && work.s.processorAvailable"
+        :completed-now="onboarding.s.completedNow"
+        :storage-failed="onboarding.s.storageFailed"
+        :store-changed="onboarding.s.storeChanged"
+        :error="tourError"
+        :cash="s.dashboard?.state.available_cash_minor"
+        :on-hand="stock?.on_hand"
+        :in-transit="stock?.in_transit"
+        @action="tourAction"
+      />
       <div v-if="!['overview', 'documents', 'task', 'work'].includes(view)" class="page-head">
         <div>
           <div class="eyebrow">{{ tr(s.connected ? '业务接口已连接' : '经营空间') }}</div>
@@ -595,6 +737,7 @@ function briefing() {
           <button
             v-if="s.session?.quantitySimulation && s.storeId"
             class="secondary"
+            data-onboarding="simulation"
             @click="open('simulation')"
           >
             {{ tr('先试算补货') }}
@@ -841,6 +984,7 @@ function briefing() {
               <p>{{ tr('创建独立SC-01场景，或选择当前身份可以查看的已有店铺。不重置旧数据。') }}</p>
               <button
                 class="primary"
+                data-onboarding="store"
                 :disabled="!s.session.devTools || Boolean(s.busy)"
                 @click="act(() => shop.createScenario())"
               >
@@ -1160,6 +1304,7 @@ function briefing() {
       v-for="(label, id) in { today: '今日', following: '持续跟进', journal: '经营记录' }"
       :key="id"
       :class="{ active: view === id }"
+      :data-onboarding="id === 'journal' ? 'journal' : undefined"
       @click="navigate(id)"
     >
       <AppIcon
@@ -1565,6 +1710,18 @@ function briefing() {
         </p>
         <p v-if="preferenceError" class="notice" role="alert">{{ tr(preferenceError) }}</p>
       </section>
+      <section class="settings-section" aria-labelledby="onboarding-heading">
+        <h3 id="onboarding-heading">{{ tr('使用帮助') }}</h3>
+        <div class="settings-group">
+          <div class="settings-row">
+            <div>
+              <strong>{{ tr('新手指引') }}</strong>
+              <p>{{ tr('用一次不会下单的试算，认识店铺、结果和采购确认。') }}</p>
+            </div>
+            <button class="secondary" @click="replayTour">{{ tr('重新查看新手指引') }}</button>
+          </div>
+        </div>
+      </section>
       <MemoryEntry variant="settings" />
       <section class="settings-section" aria-labelledby="schedule-heading">
         <h3 id="schedule-heading">{{ tr('跟进安排') }}</h3>
@@ -1824,16 +1981,24 @@ function briefing() {
       </button></template
     >
     <QuotationPanel v-else-if="dialog === 'quote'" @submitted="openWork" />
-    <QuantitySimulationPanel
-      v-else-if="dialog === 'simulation'"
-      :initial="view === 'work' ? work.s.detail?.item.result?.calculation?.request : null"
-      :item-id="
-        view === 'work' && work.s.detail?.item.result?.calculation
-          ? work.s.detail.item.id
-          : undefined
-      "
-      :item-version="work.s.detail?.item.version"
-      @created="openWork"
-    />
+    <template v-else-if="dialog === 'simulation'">
+      <p
+        v-if="onboarding.s.status === 'active' && onboarding.s.step === 3"
+        class="notice"
+        role="status"
+      >
+        {{ tr('新手指引第 4 步：填写后亲自点击“比较并保存结果”。成功后继续，不会自动采购。') }}
+      </p>
+      <QuantitySimulationPanel
+        :initial="view === 'work' ? work.s.detail?.item.result?.calculation?.request : null"
+        :item-id="
+          view === 'work' && work.s.detail?.item.result?.calculation
+            ? work.s.detail.item.id
+            : undefined
+        "
+        :item-version="work.s.detail?.item.version"
+        @created="simulationCreated"
+      />
+    </template>
   </AppDialog>
 </template>
