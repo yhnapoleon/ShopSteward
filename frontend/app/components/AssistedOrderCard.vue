@@ -1,7 +1,12 @@
 <script setup lang="ts">
 // The system reaches no supplier: the owner sends this message and pastes the reply back.
-import { joinText, locale, t as tr } from '~/i18n'
+import { locale, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
+import { supplierDisplayName } from '~/utils/glossary'
+import { dayOf, named, partialReply, priceOf, unbroken } from '~/utils/recovery'
+// `quiet`: an emergency restock leads the page and holds its one primary action, so this order's
+// own steps step back to second buttons.
+defineProps<{ quiet?: boolean }>()
 const shop = useShop()
 const { s, awaitingSupplier, hasRole } = shop
 const action = awaitingSupplier
@@ -12,6 +17,46 @@ const reply = ref(''),
   copied = ref(false),
   confirmingWithdrawal = ref(false)
 const approver = computed(() => hasRole('approver'))
+// The supplier can supply only part of it. The owner takes that part as it is (only it is paid
+// for); taking the whole order back and comparing other suppliers stays a second way (§18).
+const launcher = useRecoveryLaunch()
+const partial = computed(() => partialReply(action.value))
+const supplier = computed(() => supplierDisplayName(order.value?.supplier_id))
+/** Said right above the button that takes the part: what is paid, released and still missing. */
+const consequence = computed(() => {
+  const a = action.value
+  const p = partial.value
+  if (!a || !p) return ''
+  const pay = p.offered * a.purchase_snapshot.unit_price_minor
+  return tr('只付 {0}，余下 {1} 释放；还缺 {2} 件。', [
+    money(pay),
+    money(Math.max(0, a.amount_minor - pay)),
+    p.ordered - p.offered,
+  ])
+})
+const canSwitch = computed(
+  () =>
+    !!partial.value &&
+    !!s.session?.recoveryCases &&
+    approver.value &&
+    hasRole('operator') &&
+    !launcher.inProgress(action.value?.mission_id),
+)
+async function switchSupplier() {
+  const order = action.value
+  if (!order) return
+  error.value = ''
+  try {
+    await shop.withdrawOrder(order.id)
+    launcher.request({
+      missionId: order.mission_id,
+      reason: 'partial',
+      exclude: order.purchase_snapshot.supplier_id,
+    })
+  } catch (e) {
+    error.value = (e as Error).message
+  }
+}
 async function copy() {
   error.value = ''
   try {
@@ -33,10 +78,6 @@ async function submit() {
     error.value = (e as Error).message
   }
 }
-// A reply that confirms fewer units at the ordered price can be taken as it is.
-const partial = computed(() =>
-  action.value?.supplier_reply?.outcome === 'partial' ? action.value.supplier_reply : null,
-)
 async function acceptPartial() {
   if (!action.value) return
   error.value = ''
@@ -60,172 +101,265 @@ async function withdraw() {
 <template>
   <article v-if="action && order" class="assisted-order glass" data-assisted-order>
     <span class="tag amber">{{ tr('待供应商确认') }}</span>
-    <h2>{{ tr('把这份订单发给供应商') }}</h2>
-    <p>
+    <h2>
       {{
-        tr(
-          '订单信息已按你确认的方案生成。用你自己的微信或 WhatsApp 发给供应商；收到回复后粘贴到下面，系统会整理成回执。供应商回复前，订单保持待确认，资金暂时预留。',
+        unbroken(
+          partial
+            ? named('{0}只能给 {1} 件，订单是 {2} 件', [supplier, partial.offered, partial.ordered])
+            : named('把订单发给{0}，收到回复后贴回来', [supplier]),
+        )
+      }}
+    </h2>
+    <p class="assisted-facts">
+      {{
+        unbroken(
+          tr('{0} 件 × {1} · 合计 {2} · 希望 {3} 送达', [
+            order.quantity,
+            priceOf(order.unit_price_minor),
+            money(order.total_minor),
+            dayOf(order.requested_delivery_date),
+          ]),
         )
       }}
     </p>
-    <div class="assisted-facts">
-      <div>
-        <span>{{ tr('供应商') }}</span
-        ><b>{{ order.supplier_id }}</b>
-      </div>
-      <div>
-        <span>{{ tr('数量') }}</span
-        ><b>{{ joinText([tr(order.quantity), tr('件')]) }}</b>
-      </div>
-      <div>
-        <span>{{ tr('单价') }}</span
-        ><b>{{ tr(money(order.unit_price_minor)) }}</b>
-      </div>
-      <div>
-        <span>{{ tr('合计') }}</span
-        ><b>{{ tr(money(order.total_minor)) }}</b>
-      </div>
-      <div>
-        <span>{{ tr('希望送达') }}</span
-        ><b>{{ order.requested_delivery_date }}</b>
-      </div>
-    </div>
-    <pre class="assisted-message" data-order-message>{{ message }}</pre>
-    <div class="action-row">
-      <span class="action-note">{{
-        joinText([tr('订单编号'), order.reference])
-      }}</span
-      ><button class="secondary" type="button" @click="copy">
-        {{ tr(copied ? '已复制' : '复制订单信息') }}
+    <div class="assisted-message">
+      <pre data-order-message>{{ message }}</pre>
+      <button class="secondary assisted-copy" type="button" @click="copy">
+        <AppIcon :name="copied ? 'check' : 'file-text'" />{{ tr(copied ? '已复制' : '复制') }}
       </button>
     </div>
     <SupplierReceipt v-if="action.supplier_reply" :reply="action.supplier_reply" />
-    <div v-if="partial" class="assisted-partial" data-partial-supply>
-      <p>
-        {{
-          tr(
-            '供应商只能供 {0} 件。按这个数量成交：只付这 {0} 件的钱，其余预留资金释放；缺的部分可以在供应异常应对里找别家补上。',
-            [partial.quantity ?? ''],
-          )
-        }}
-      </p>
-      <button
-        class="primary"
-        type="button"
-        :disabled="Boolean(s.busy) || !approver"
-        data-accept-partial
-        @click="acceptPartial"
-      >
-        {{ tr('按对方数量成交（{0} 件）', [partial.quantity ?? '']) }}
-      </button>
-    </div>
     <label class="assisted-reply"
-      >{{ tr('粘贴供应商的回复')
+      >{{ tr(action.supplier_reply ? '粘贴新的回复' : '粘贴供应商的回复')
       }}<textarea
         v-model="reply"
         maxlength="4000"
         :disabled="Boolean(s.busy) || !approver"
-        :placeholder="tr('例如：收到，40件没问题，单价10元，周四送到。')"
+        :placeholder="tr('例如：收到，{0}件没问题，周四送到。', [order.quantity])"
         data-supplier-reply
       />
     </label>
-    <p v-if="!approver" class="channel-note">
-      {{ tr('当前身份可查看订单，登记供应商回复需要审批权限。') }}
-    </p>
     <p v-if="error" class="notice amber" role="alert">{{ tr(error) }}</p>
-    <div class="action-row">
-      <button
-        v-if="!confirmingWithdrawal"
-        class="text-link"
-        type="button"
-        :disabled="Boolean(s.busy) || !approver"
-        @click="confirmingWithdrawal = true"
-      >
-        {{ tr('撤回这笔订单') }}</button
-      ><span v-else class="assisted-withdraw"
-        >{{ tr('撤回后预留资金释放，方案需要重新确认。')
-        }}<button class="text-link" type="button" :disabled="Boolean(s.busy)" @click="withdraw">
-          {{ tr('确认撤回') }}</button
-        ><button class="text-link" type="button" @click="confirmingWithdrawal = false">
-          {{ tr('先不撤回') }}
-        </button></span
+    <div v-if="partial && approver" class="assisted-next" data-partial-supply>
+      <p class="assisted-consequence">{{ unbroken(consequence) }}</p>
+      <div class="action-row">
+        <span class="assisted-links"
+          ><button
+            v-if="canSwitch"
+            class="text-link"
+            type="button"
+            :disabled="Boolean(s.busy)"
+            data-recovery-switch
+            @click="switchSupplier"
+          >
+            {{ tr('撤回整单，找别家补 {0} 件', [partial.ordered]) }}</button
+          ><template v-else
+            ><button
+              v-if="!confirmingWithdrawal"
+              class="text-link"
+              type="button"
+              :disabled="Boolean(s.busy)"
+              @click="confirmingWithdrawal = true"
+            >
+              {{ tr('撤回这笔订单') }}</button
+            ><span v-else class="assisted-withdraw"
+              >{{ tr('撤回后预留资金释放，方案需要重新确认。')
+              }}<button
+                class="text-link"
+                type="button"
+                :disabled="Boolean(s.busy)"
+                @click="withdraw"
+              >
+                {{ tr('确认撤回') }}</button
+              ><button class="text-link" type="button" @click="confirmingWithdrawal = false">
+                {{ tr('先不撤回') }}
+              </button></span
+            ></template
+          ><button
+            class="text-link"
+            type="button"
+            :disabled="Boolean(s.busy) || !reply.trim()"
+            @click="submit"
+          >
+            {{ tr(s.busy === '正在登记供应商回复' ? '正在读取回复…' : '登记新回复') }}
+          </button></span
+        ><button
+          :class="quiet ? 'secondary' : 'primary'"
+          type="button"
+          :disabled="Boolean(s.busy)"
+          data-accept-partial
+          @click="acceptPartial"
+        >
+          {{ tr('按对方数量成交（{0} 件）', [partial.offered]) }}
+        </button>
+      </div>
+    </div>
+    <div v-else-if="approver" class="action-row">
+      <span class="assisted-links"
+        ><button
+          v-if="!confirmingWithdrawal"
+          class="text-link"
+          type="button"
+          :disabled="Boolean(s.busy)"
+          @click="confirmingWithdrawal = true"
+        >
+          {{ tr('撤回这笔订单') }}</button
+        ><span v-else class="assisted-withdraw"
+          >{{ tr('撤回后预留资金释放，方案需要重新确认。')
+          }}<button class="text-link" type="button" :disabled="Boolean(s.busy)" @click="withdraw">
+            {{ tr('确认撤回') }}</button
+          ><button class="text-link" type="button" @click="confirmingWithdrawal = false">
+            {{ tr('先不撤回') }}
+          </button></span
+        ></span
       ><button
-        class="primary"
+        :class="quiet ? 'secondary' : 'primary'"
         type="button"
-        :disabled="Boolean(s.busy) || !approver || !reply.trim()"
+        :disabled="Boolean(s.busy) || !reply.trim()"
         @click="submit"
       >
         {{ tr(s.busy === '正在登记供应商回复' ? '正在读取回复…' : '登记回复') }}
       </button>
     </div>
+    <p v-else class="assisted-wait"><AppIcon name="user" />{{ tr('等有审批权限的人登记回复') }}</p>
   </article>
 </template>
 <style scoped>
 .assisted-order {
-  padding: 22px;
   display: grid;
   gap: 12px;
+  padding: 22px 26px 20px;
+  border-radius: 26px;
+}
+.assisted-order > .tag {
+  justify-self: start;
 }
 .assisted-order h2 {
   margin: 0;
+  font-size: 26px;
+  line-height: 1.38;
+  letter-spacing: -0.6px;
+  font-variant-numeric: tabular-nums;
+  text-wrap: pretty;
 }
 .assisted-facts {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: 10px;
-}
-.assisted-facts div {
-  display: grid;
-  gap: 2px;
-}
-.assisted-facts span {
-  font-size: 0.8rem;
-  color: #607468;
+  margin: -4px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
 }
 .assisted-message {
+  position: relative;
+  border: 1px solid #dde5ee;
+  border-radius: 14px;
+  background: #fff;
+}
+.assisted-message pre {
+  margin: 0;
+  padding: 14px 104px 14px 16px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-  border: 1px solid #d4dbd6;
-  border-radius: 12px;
-  padding: 14px;
-  background: #fff;
   font: inherit;
-  font-size: 0.92rem;
-  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: #2b4256;
   user-select: all;
+}
+.assisted-copy.secondary {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  min-height: 34px;
+  padding: 5px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  gap: 6px;
+}
+.assisted-copy .icon {
+  width: 14px;
+  height: 14px;
 }
 .assisted-reply {
   display: grid;
   gap: 6px;
-  font-size: 0.9rem;
+  font-size: 13px;
+  color: #42617a;
 }
 .assisted-reply textarea {
   min-height: 84px;
   resize: vertical;
-  border: 1px solid #d4dbd6;
-  border-radius: 10px;
-  padding: 10px;
-  background: #fff;
-  color: #203b31;
-  font: inherit;
-}
-.assisted-partial {
-  display: grid;
-  gap: 10px;
-  justify-items: start;
-  border: 1px solid #e3c98b;
+  border: 1px solid #cfddec;
   border-radius: 12px;
-  padding: 12px 14px;
-  background: #fffaf0;
+  padding: 10px 12px;
+  background: #fff;
+  color: #23394c;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.6;
 }
-.assisted-partial p {
-  margin: 0;
+.assisted-order .action-row {
+  margin-top: 4px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.assisted-next {
+  display: grid;
+  gap: 0;
+}
+.assisted-consequence {
+  margin: 0 0 -6px;
+  font-size: 13px;
+  color: #4f6478;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.assisted-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 18px;
+  margin-right: auto;
 }
 .assisted-withdraw {
   display: flex;
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
-  font-size: 0.85rem;
+  font-size: 13px;
+  color: #6b5730;
+}
+.assisted-wait {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  min-height: 46px;
+  font-size: 13px;
+  color: #5d7082;
+}
+.assisted-wait .icon {
+  width: 15px;
+  height: 15px;
+  color: #7b93ab;
+}
+@media (max-width: 580px) {
+  .assisted-order {
+    padding: 18px 18px 16px;
+    border-radius: 22px;
+  }
+  .assisted-order h2 {
+    font-size: 22px;
+  }
+  .assisted-message pre {
+    padding: 52px 14px 14px;
+  }
+  .assisted-consequence {
+    text-align: left;
+    margin-bottom: 0;
+  }
+  .assisted-order .action-row > .primary {
+    flex: 1 1 100%;
+  }
 }
 </style>

@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     '~/assets/css/work.css',
     '~/assets/css/settings.css',
     '~/assets/css/space.css',
+    '~/assets/css/recovery.css',
   ],
   typescript: { strict: true },
   runtimeConfig: {

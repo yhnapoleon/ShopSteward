@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
-import { watchSummary, workBadge } from '~/composables/useSpace'
+import { awaitsOwnerArrival, watchSummary, workBadge } from '~/composables/useSpace'
 
 // One line per work item: title, status, what happens next, the latest change, and "open".
 // It keeps the work-card identity (class and data-work-id) that lists and tests rely on.
 const props = defineProps<{ item: Schema<'WorkView'> }>()
 defineEmits<{ open: [] }>()
 const { s } = useShop()
-const badge = computed(() => workBadge(props.item))
+const badge = computed(() =>
+  workBadge(props.item, Date.now(), awaitsOwnerArrival(props.item.mission_id, s)),
+)
 const summary = computed(() => watchSummary(props.item, s))
 </script>
 <template>

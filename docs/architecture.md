@@ -203,6 +203,7 @@ v6 模型包由四个组件组成，随仓库分发。后端经 ML 服务刷新�
 ## 7. 契约、迁移与验证入口
 
 - 业务接口以 [`backend.runtime.openapi.json`](api/backend.runtime.openapi.json) 为准，当前 93 条路径、106 个操作。前端类型和代理白名单由它生成。
+- 改接口、字段或状态码之前，先查[前端对接说明](../frontend/docs/frontend-integration.md)：它按接口列出前端在哪些板块用到了它，并给出改动后的同步清单。
 - 业务迁移头 `0019_sourcing`，模拟器 `sim_0003_controls`，Knowledge `knowledge_0002`。更新代码不会自动迁移数据库或重启进程。
 - 寻源和辅助发送的启用、演示步骤和验证情况见[寻源与辅助发送](sourcing-and-assisted-purchase.md)。
 - 恢复 Case、Context Engineering 和专家解释见[下一阶段运行手册](runbooks/next-phase-agent-recovery.md)。

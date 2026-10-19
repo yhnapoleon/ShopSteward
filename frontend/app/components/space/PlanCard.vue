@@ -120,7 +120,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
         </button>
       </div>
       <p v-if="isRecoveryPlan(plan)" class="source-note">
-        {{ tr('这份待确认方案对应已采纳的报价。更换供应商或数量，请回到供应异常应对重新分析。') }}
+        {{ tr('这份待确认方案对应已采纳的报价。更换供应商或数量，请回到应急补货重新比价。') }}
       </p>
       <details
         class="options-disclosure"

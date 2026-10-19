@@ -1,6 +1,16 @@
-// Walks the sourcing and owner-sent purchase demo in a real browser against a running stack:
-// real HTTP, database and models, no request interception. It creates a synthetic SC01 store.
-// DEMO_FRONTEND must be a loopback URL; DEMO_OUTPUT, when set, receives screenshots and a record.
+// Walks the emergency restock demo (workspace §18) in a real browser against a running stack:
+// real HTTP, database and models, no request interception. It creates a synthetic SC01 store
+// and drives the flow on the work page: brief, sourcing, one-click adopt and confirm, the order
+// sent by hand with a partial and then a matching reply, the arrival and the result line.
+//
+// Before running:
+// - DEMO_FRONTEND: the frontend's loopback URL (http://127.0.0.1:3000), signed in to a backend
+//   identity with operator and approver rights (admin), so the confirmation opens at once.
+// - The backend offers sourcing (session.sourcing) with its document-reading model configured,
+//   and development tools (/dev/v1/scenarios) to create the SC01 store; the worker is running.
+// - The explanation model is optional: without it the walk records that none was written.
+// - DEMO_OUTPUT (optional) receives screenshots and walkthrough.json; DEMO_REPLY (optional) is
+//   the confirming reply, otherwise written from the order; DEMO_HEADED=1 shows the browser.
 import { chromium, expect } from '@playwright/test'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { randomUUID } from 'node:crypto'
@@ -47,6 +57,7 @@ const step = async (name, facts = {}) => {
     await page.screenshot({
       path: `${out}/${String(++shot).padStart(2, '0')}-${name}.png`,
       fullPage: true,
+      animations: 'disabled',
     })
 }
 const stockOf = async (store, sku) =>
@@ -74,45 +85,52 @@ try {
     check_interval_seconds: 30,
   })
   const before = await stockOf(store, sku)
-  // The owner works on the mission from its work item, as the today page opens it.
+  // The owner works on the mission from its work item, as the today page opens it. Demo mode
+  // keeps the sample supplier documents ready, as in the recording.
   const { item } = await write(`/api/v1/missions/${mission.id}/work-item`, {})
-  await page.goto(`${base}/?view=work&store=${store}&item=${item.id}`)
+  await page.goto(`${base}/?view=work&store=${store}&item=${item.id}&demo=1`)
   await expect(page.locator('.space-workspace')).toBeVisible({ timeout: 30000 })
-  await expect(page.getByRole('button', { name: '供应异常应对', exact: true })).toBeVisible({
-    timeout: 30000,
-  })
+  const entry = page.locator('[data-recovery-entry]')
+  await expect(entry).toBeVisible({ timeout: 30000 })
   await step('work-item', { store, on_hand: before.on_hand, in_transit: before.in_transit })
 
-  // 1. A recovery Case: seven days of demand the shelf cannot cover.
-  await page.getByRole('button', { name: '供应异常应对', exact: true }).click()
-  await page.getByLabel('本次应急预算（元）', { exact: true }).fill('300')
-  await page.getByText('补充七日需求情景（没有可用日预测时填写）').click()
-  await page.getByLabel('七日需求（件，逗号分隔）', { exact: true }).fill('10,10,10,10,10,10,10')
-  const clock = new Date((await read('/api/v1/dashboard?store_id=' + store)).state.simulation_time)
-  const first = new Date(clock.getTime() + 86400000 - 60000).toISOString().slice(0, 16)
-  await page.getByLabel('首日结算时间（UTC）', { exact: true }).fill(first)
-  await page.getByRole('button', { name: '开始分析', exact: true }).click()
+  // 1. The brief: everything is filled in from the store's facts; the owner only confirms.
+  const flow = page.locator('[data-recovery-flow]')
+  const next = flow.locator('[data-recovery-next]')
+  await entry.click()
+  await expect(flow).toHaveAttribute('data-stage', 'brief')
+  await expect(flow.locator('[data-fact="documents"] b')).toHaveText(/^[1-9]\d* 家$/, {
+    timeout: 30000,
+  })
+  // The first settlement follows the business clock; it shows only while editing.
+  await flow.getByRole('button', { name: '修改', exact: true }).click()
+  const firstSettlement = await flow.locator('[data-fact="settlement"] b').innerText()
+  await flow.getByRole('button', { name: '改好了', exact: true }).click()
+  await step('brief', {
+    budget: await flow.locator('[data-fact="budget"] b').innerText(),
+    demand: await flow.locator('[data-fact="demand"] b').innerText(),
+    first_settlement: firstSettlement,
+  })
+  // With no gap over the seven days, closing is the main action and comparing anyway a link.
+  const start = flow.locator('[data-recovery-start]')
+  if (await start.isVisible()) await start.click()
+  else await next.click()
   let detail
   await expect
     .poll(
       async () => {
         const list = await read('/api/v1/operations-cases?store_id=' + store)
         detail = list.items[0] && (await read('/api/v1/operations-cases/' + list.items[0].id))
-        return detail?.status
+        return detail?.sourcing?.status
       },
       { timeout: 60000 },
     )
-    .toBe('OPTIONS_READY')
+    .toBeTruthy()
   const casePath = '/api/v1/operations-cases/' + detail.id
-  await step('case-analysed', { case_id: detail.id, revision: detail.current_revision })
+  await step('case-sourcing', { case_id: detail.id, revision: detail.current_revision })
 
-  // 2. Sourcing: one reviewer per supplier reads the sample documents.
-  const panel = page.locator('[data-sourcing]')
-  await panel.getByRole('button', { name: '载入三家供应商的示例资料', exact: true }).click()
-  await expect(panel).toContainText('资料在档')
-  await step('sample-documents-loaded')
+  // 2. Sourcing: one reviewer per supplier reads the sample documents; the flow shows each one.
   const started = Date.now()
-  await panel.getByRole('button', { name: '开始寻源', exact: true }).click()
   await expect
     .poll(async () => (await read(casePath)).sourcing?.status, {
       timeout: 330000,
@@ -135,7 +153,9 @@ try {
   const recommended = detail.proposal.candidates.find(
     (c) => c.id === detail.proposal.recommended_candidate_id,
   )
-  await expect(panel.locator('[data-sourcing-review]').first()).toBeVisible()
+  await expect(flow.locator(`[data-recovery-option="${recommended.supplier_id}"]`)).toBeVisible({
+    timeout: 30000,
+  })
   await step('sourcing-finished', {
     seconds: Math.round((Date.now() - started) / 1000),
     sourcing: detail.sourcing.status,
@@ -148,13 +168,14 @@ try {
   })
   expect(recommended?.supplier_id, 'the solver should recommend a purchase').toBeTruthy()
 
-  // The explanation follows the solve; it may still be writing.
+  // The explanation follows the solve; it may still be writing. It stays folded on the page.
+  // Without an explanation model nothing is written ("none"), and the walk does not wait.
   await expect
-    .poll(async () => (await read(casePath)).expert_analysis?.status, {
+    .poll(async () => (await read(casePath)).expert_analysis?.status ?? 'none', {
       timeout: 180000,
       intervals: [3000],
     })
-    .toMatch(/^(complete|partial|failed|unavailable|disabled)$/)
+    .toMatch(/^(complete|partial|failed|unavailable|disabled|none)$/)
   detail = await read(casePath)
   const claims = (detail.expert_analysis?.subtasks || []).flatMap((t) => t.claims || [])
   await step('explanation', {
@@ -163,55 +184,60 @@ try {
     first_claim: claims[0]?.statement,
   })
 
-  // 3. Adopt the recommended candidate, then approve it: the order waits for the supplier.
-  await page
-    .locator(`[data-recovery-candidate="${recommended.id}"]`)
-    .getByRole('button', { name: '生成待确认方案' })
-    .click()
-  await expect.poll(async () => (await read(casePath)).plan_status).toBe('PENDING_APPROVAL')
-  await page
-    .getByRole('button', { name: `核对 ${recommended.quantity} 件采购`, exact: true })
-    .click()
+  // 3. One click adopts the recommendation and opens the confirmation; confirming sends the
+  // order to the owner (the supplier was read from documents, so the owner sends it).
+  await expect(next).toHaveText(new RegExp(`补 ${recommended.quantity} 件$`))
+  await next.click()
+  const dialog = page.getByRole('dialog')
+  await expect(dialog).toContainText('核对这笔采购', { timeout: 30000 })
   await step('confirmation-dialog')
-  await page
-    .getByRole('dialog')
+  await dialog
     .getByRole('button', { name: new RegExp(`^确认采购 ${recommended.quantity} 件`) })
     .click()
-  const card = page.locator('[data-assisted-order]')
-  await expect(card).toBeVisible({ timeout: 60000 })
-  const message = await card.locator('[data-order-message]').innerText()
+  await expect(flow).toHaveAttribute('data-stage', 'order', { timeout: 60000 })
+  const message = await flow.locator('[data-order-message]').innerText()
   expect(message).toContain(`${recommended.quantity} 件`)
   const held = (await read('/api/v1/dashboard?store_id=' + store)).state.reserved_cash_minor
   expect(held).toBe(recommended.spend_minor)
   await step('order-message', { reserved_cash_minor: held, message })
 
-  // 4. The owner pastes the supplier's reply. One that departs from the order confirms
-  // nothing; one that agrees with it becomes the receipt.
+  // 4. The owner pastes the supplier's reply. One that offers only part confirms nothing and
+  // offers to switch suppliers; one that agrees with the order becomes the receipt.
   const sent = async () =>
     (await read('/api/v1/actions?store_id=' + store + '&limit=100')).items.find(
       (a) => a.channel === 'assisted',
     )
   const order = (await sent()).order_message
-  await card.locator('[data-supplier-reply]').fill(`可以，但只有${order.quantity - 10}件`)
-  await card.getByRole('button', { name: '登记回复', exact: true }).click()
-  await expect.poll(async () => (await sent()).supplier_reply?.outcome, { timeout: 90000 }).toBe(
-    'needs_attention',
-  )
-  let action = await sent()
-  expect(action.status).toBe('EXECUTING')
-  await expect(card).toBeVisible()
-  await step('reply-differs', {
-    read_by: action.supplier_reply.read_by,
-    differences: action.supplier_reply.differences,
-  })
+  // Half the order (an order of one unit cannot be filled in part, so that step is skipped).
+  const part = Math.floor(order.quantity / 2)
   const price = (order.unit_price_minor / 100).toFixed(2)
-  await card
-    .locator('[data-supplier-reply]')
-    .fill(reply || `好嘞老板，${order.quantity}件没问题，还是${price}元一件，周四给你送过去`)
-  await card.getByRole('button', { name: '登记回复', exact: true }).click()
-  const arrival = page.locator('[data-arrival-card]')
-  await expect(arrival).toBeVisible({ timeout: 90000 })
-  action = await sent()
+  const confirming =
+    reply || `好嘞老板，${order.quantity}件没问题，还是${price}元一件，明天给你送过去`
+  if (part > 0) {
+    await flow.locator('[data-supplier-reply]').fill(`可以，但只有${part}件`)
+    await next.click()
+    await expect
+      .poll(async () => (await sent()).supplier_reply?.outcome, { timeout: 90000 })
+      .toBe('partial')
+    const partial = await sent()
+    expect(partial.status).toBe('EXECUTING')
+    // Taking the smaller quantity leads; withdrawing the whole order stays a second way.
+    await expect(flow.locator('[data-accept-partial]')).toBeVisible({ timeout: 30000 })
+    await expect(flow.locator('[data-recovery-switch]')).toBeVisible()
+    await step('reply-partial', {
+      read_by: partial.supplier_reply.read_by,
+      quantity: partial.supplier_reply.quantity,
+    })
+    // Beside a partial offer the reply box waits behind "登记新回复".
+    await flow.locator('[data-recovery-new-reply]').click()
+    await flow.locator('[data-supplier-reply]').fill(confirming)
+    await flow.locator('[data-recovery-submit-reply]').click()
+  } else {
+    await flow.locator('[data-supplier-reply]').fill(confirming)
+    await next.click()
+  }
+  await expect(flow).toHaveAttribute('data-stage', 'receive', { timeout: 90000 })
+  let action = await sent()
   expect(action.status).toBe('SUCCEEDED')
   let stock = await stockOf(store, sku)
   expect(stock.in_transit).toBe(before.in_transit + recommended.quantity)
@@ -223,9 +249,9 @@ try {
     in_transit: stock.in_transit,
   })
 
-  // 5. The goods arrive: the owner records them and they reach the shelf.
-  await arrival.locator('[data-record-arrival]').click()
-  await expect(arrival).toBeHidden({ timeout: 30000 })
+  // 5. The goods arrive: the owner records them, they reach the shelf, the card shows the result.
+  await flow.locator('[data-record-arrival]').click()
+  await expect(flow.locator('[data-recovery-summary]')).toBeVisible({ timeout: 30000 })
   stock = await stockOf(store, sku)
   expect([stock.on_hand, stock.in_transit]).toEqual([
     before.on_hand + recommended.quantity,
@@ -235,7 +261,11 @@ try {
     '/api/v1/ledger-entries?store_id=' + store + '&effect_type=GOODS_RECEIVED',
   )
   expect(ledger.items[0].changes.on_hand_delta).toBe(recommended.quantity)
-  await step('arrival-recorded', { on_hand: stock.on_hand, in_transit: stock.in_transit })
+  await step('arrival-recorded', {
+    on_hand: stock.on_hand,
+    in_transit: stock.in_transit,
+    summary: await flow.locator('[data-recovery-summary]').innerText(),
+  })
 
   // 6. The lineage of the prompt texts that ran.
   await page.goto(`${base}/?view=learning&store=${store}`)
@@ -253,7 +283,7 @@ try {
   console.error('Browser page errors:', errors)
   console.error((await page.locator('body').innerText()).slice(0, 3000))
   if (out) {
-    await page.screenshot({ path: out + '/failed.png', fullPage: true })
+    await page.screenshot({ path: out + '/failed.png', fullPage: true, animations: 'disabled' })
     await writeFile(
       out + '/walkthrough.json',
       JSON.stringify({ status: 'failed', steps, error: String(error) }, null, 2),
