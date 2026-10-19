@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { productDisplayName } from '~/utils/glossary'
 import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { api, query } from '~/utils/api'
@@ -21,7 +22,10 @@ const selectedSku = ref('')
 const stock = computed(
   () => state.value?.stocks.find((x) => x.sku_id === selectedSku.value) || state.value?.stocks[0],
 )
-const product = computed(() => s.catalog?.products.find((x) => x.sku_id === stock.value?.sku_id))
+const product = computed(() => {
+  const found = s.catalog?.products.find((x) => x.sku_id === stock.value?.sku_id)
+  return found && { ...found, name: productDisplayName(found) }
+})
 const floor = computed(() =>
   mission.value?.store_id === s.storeId ? mission.value.policy.cash_floor_minor : undefined,
 )
@@ -650,7 +654,11 @@ onUnmounted(() => {
         <template v-else-if="modal === 'stock'">
           <div v-for="item in state?.stocks" :key="item.sku_id" class="overview-detail-stock">
             <h3>
-              {{ s.catalog?.products.find((p) => p.sku_id === item.sku_id)?.name || item.sku_id }}
+              {{
+                productDisplayName(
+                  s.catalog?.products.find((p) => p.sku_id === item.sku_id) || item,
+                )
+              }}
             </h3>
             <div class="overview-source-list">
               <div>
@@ -757,7 +765,9 @@ onUnmounted(() => {
                   <td>{{ tr(utcTime(item.simulation_time)) }}</td>
                   <td>
                     {{
-                      s.catalog?.products.find((p) => p.sku_id === item.sku_id)?.name || item.sku_id
+                      productDisplayName(
+                        s.catalog?.products.find((p) => p.sku_id === item.sku_id) || item,
+                      )
                     }}
                   </td>
                   <td>{{ tr(number(item.quantity)) }}</td>

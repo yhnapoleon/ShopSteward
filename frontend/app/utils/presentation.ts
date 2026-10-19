@@ -5,8 +5,9 @@ export const money = (minor: number | undefined | null) =>
     : new Intl.NumberFormat(intlLocale(), {
         style: 'currency',
         currency: 'CNY',
+        // Whole amounts stay whole (¥1,000); any cents are written in full (¥9.50, never ¥9.5).
         maximumFractionDigits: 2,
-        minimumFractionDigits: 0,
+        minimumFractionDigits: minor % 100 ? 2 : 0,
         currencyDisplay: localeCurrencyDisplay(),
       }).format(minor / 100)
 export const number = (n: number | undefined | null) =>
@@ -29,7 +30,7 @@ const assistedLabels: Record<string, string> = {
 }
 export const actionLabel = (status: string, channel?: string) =>
   (channel === 'assisted' && assistedLabels[status]) ||
-  ({
+  {
     QUEUED: '等待提交',
     EXECUTING: '正在提交',
     SUCCEEDED: '采购已受理',
@@ -37,7 +38,7 @@ export const actionLabel = (status: string, channel?: string) =>
     FAILED: '未成功',
     STALE: '原方案失效',
     CANCELLED: '已取消',
-  })[status] ||
+  }[status] ||
   status
 export const reasonLabel = (r: string) =>
   ({

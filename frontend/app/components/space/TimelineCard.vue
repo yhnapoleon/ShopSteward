@@ -151,7 +151,7 @@ const planStatus: Record<string, string> = {
       <summary>{{ tr('历次方案与决定') }}</summary>
       <p v-if="plansError" role="alert">{{ tr(plansError) }}</p>
       <article v-for="p in plans" :key="p.id" class="task-plan-record">
-        <b>{{ tr('方案 v{0} · {1}', [p.plan_version, tr(planStatus[p.status] || p.status)]) }}</b>
+        <b>{{ tr('第 {0} 版 · {1}', [p.plan_version, tr(planStatus[p.status] || p.status)]) }}</b>
         <p>
           {{
             p.proposed_purchase?.quantity

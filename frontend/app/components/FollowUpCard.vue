@@ -72,18 +72,14 @@ const waiting = computed(() =>
     <p v-if="s.plan?.status === 'REJECTED'" class="notice amber">
       {{ tr('本轮不采购已记录。条件不变时不反复催促；后台会继续核对经营变化。') }}
     </p>
-    <p class="channel-note">
+    <!-- Only something out of the ordinary is said; the records above speak for themselves. -->
+    <p v-if="mission.status === 'PAUSED' || !s.connected" class="channel-note">
       {{
-        joinText([
-          tr(
-            mission.status === 'PAUSED'
-              ? '主动检查已暂停；已提交的动作仍需核实。'
-              : !s.connected
-                ? '当前连接不可用，无法确认新的检查结果。'
-                : '最近检查记录与已登记的下次计划如上。',
-          ),
-          tr('进展保存在应用内，不发送外部通知。'),
-        ])
+        tr(
+          mission.status === 'PAUSED'
+            ? '主动检查已暂停；已提交的动作仍需核实。'
+            : '当前连接不可用，无法确认新的检查结果。',
+        )
       }}
     </p>
     <div class="follow-links">

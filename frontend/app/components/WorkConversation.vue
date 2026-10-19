@@ -5,6 +5,10 @@ const work = useWorkItems(),
   { s } = work
 const emit = defineEmits<{ changed: [] }>()
 const log = ref<HTMLElement>()
+// An emergency restock under way on this item's mission leads the page with its own card.
+const { mission } = useSpace()
+const launcher = useRecoveryLaunch()
+const restocking = computed(() => launcher.inProgress(mission.value?.id))
 // Item whose message was just saved while no assistant can process it. The receipt below the
 // messages appears once (240ms fade) and stays; further messages do not replay it.
 const saved = ref('')
@@ -48,12 +52,14 @@ watch(
         <p>{{ tr('补充、追问与结果保留在这里') }}</p>
       </div>
     </header>
-    <p v-if="!s.detail?.item.processor_available" class="notice">
+    <!-- While an emergency restock leads the page its card says everything; the conversation
+         keeps quiet about what it cannot do. -->
+    <p v-if="!s.detail?.item.processor_available && !restocking" class="notice">
       {{
         tr(
           s.detail?.item.result?.calculation
-            ? '试算已完成，可以调整条件继续比较。对话助手暂不可用。'
-            : '助手暂不可用。要求已保存，可以继续补充；已有备货操作仍可使用。',
+            ? '试算已完成，可以调整条件继续比较；现在没有助手回复。'
+            : '现在没有助手回复。你写的内容会保存在这件事里，备货操作照常可用。',
         )
       }}
     </p>
@@ -109,7 +115,7 @@ watch(
       </Transition>
     </div>
     <div class="work-composer">
-      <QuotationUpload @changed="emit('changed')" />
+      <QuotationUpload v-if="!restocking" @changed="emit('changed')" />
       <label for="work-message">{{
         tr(s.detail?.item.status === 'WAITING_INPUT' ? '补充这件事需要的信息' : '继续说说你的要求')
       }}</label>
