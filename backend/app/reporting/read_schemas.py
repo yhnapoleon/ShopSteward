@@ -17,6 +17,9 @@ class CurrentUser(DTO):
     roles: list[Role] = Field(json_schema_extra={"uniqueItems": True})
     store_scope: Literal["ALL", "ASSIGNED"]
     capabilities: list[str] = Field(default_factory=list)
+    # How an approved purchase goes out when its supplier was not read from documents (those
+    # are always sent by the owner): `simulator` places it, `assisted` leaves it to the owner.
+    purchase_channel: Literal["simulator", "assisted"] = "simulator"
 
     @field_validator("roles")
     @classmethod

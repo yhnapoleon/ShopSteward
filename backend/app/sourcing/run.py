@@ -92,14 +92,21 @@ async def start(session, row, body, principal, key, settings):
     if not configured(settings):
         raise AppError(422, "SOURCING_MODEL_NOT_CONFIGURED", "No model is configured for reviewers")
     linked = await connected(session, row.store_id)
-    on_file = [
+    readable = [
         entry
         for entry in await suppliers(session, row.store_id)
         if entry["supplier_id"] not in linked
     ]
-    if not on_file:
+    if not readable:
         raise AppError(422, "SUPPLIER_DOCUMENTS_REQUIRED", "No supplier documents are on file")
     revision = await session.get(CaseRevisionRow, (row.id, row.current_revision))
+    from app.operations_cases.lifecycle import excluded
+
+    # A supplier this case already left out is not read again.
+    left_out = await excluded(session, row, revision.inputs)
+    on_file = [entry for entry in readable if entry["supplier_id"] not in left_out]
+    if not on_file:
+        raise AppError(422, "NO_OTHER_SUPPLIERS", "Every supplier on file is left out of this Case")
     mission = await session.get(MissionRow, row.mission_id)
     snapshot, _ = await capture_snapshot(
         session, row, revision, mission, settings, with_offers=False
@@ -126,6 +133,7 @@ async def start(session, row, body, principal, key, settings):
             }
             for entry in on_file
         ],
+        "excluded": sorted(left_out),
         "reviews": [],
         "started_at": now.isoformat(),
         "deadline": now.timestamp() + SECONDS,

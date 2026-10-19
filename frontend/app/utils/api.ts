@@ -26,6 +26,21 @@ const messages: Record<string, string> = {
   FORBIDDEN: '当前身份没有执行此操作的权限。',
   UNAUTHENTICATED: '后端身份不可用，请重新连接。',
   NO_PURCHASE_PROPOSED: '当前方案不需要采购。',
+  RESOURCE_NOT_FOUND: '没有找到这项内容，可能已被删除或不在当前门店。',
+  // Mission writes (missions/repository.py, planning/revisions.py).
+  MISSION_ALREADY_EXISTS: '这件商品已有一项进行中的备货委托。',
+  INVALID_MISSION_TRANSITION: '备货委托现在不能这样调整，正在取得最新状态。',
+  MISSION_TERMINAL: '备货委托已结束，不能再改跟进安排。',
+  MISSION_NOT_EDITABLE: '备货委托已暂停或有采购待处理，现在不能修改方案。',
+  SCHEDULE_VERSION_CONFLICT: '跟进安排刚被改过，请刷新后再改。',
+  RECOVERY_CASE_REVISION_REQUIRED: '这是应急方案，请回到应急补货重新比价。',
+  // Supplier documents (sourcing/repository.py).
+  SUPPLIER_CONNECTED: '这家供应商已经直接对接，报价来自经营数据，不用再放资料。',
+  DOCUMENT_ID_REPEATED: '每份资料需要不同的编号。',
+  // Emergency cases (operations_cases/repository.py, sourcing/run.py).
+  CASE_ALREADY_OPEN: '这件商品已有一次应急补货在进行，先处理完它。',
+  CASE_REFRESH_REQUIRED: '这次比价结果已不成立，请重新比价。',
+  NO_OTHER_SUPPLIERS: '在档的供应商都已排除，没有别家可以找。',
   // Order writes (execution/assisted.py).
   PARTIAL_SUPPLY_NOT_OFFERED: '这笔订单已经不是“对方只给一部分”的状态，正在取得最新状态。',
   GOODS_QUANTITY_CONFLICT: '到货件数超过这笔订单还没到的数量，请按实际到货重新登记。',

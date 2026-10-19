@@ -17,6 +17,8 @@ from app.planning.schemas import ForecastSnapshot, InboundSnapshot, Policy, Reco
 from app.planning.snapshot import source_fresh
 from app.sourcing.models import SourcedOfferRow
 
+DAY = timedelta(days=1)
+
 
 async def capture_snapshot(session, case, revision, mission, settings, *, with_offers=True):
     """`with_offers=False` freezes the same facts with no offer: what sourcing starts from."""
@@ -72,6 +74,11 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
         source, source_id = "forecast_v6", document["forecast_id"]
         valid_until = min(valid_until, datetime.fromisoformat(document["valid_until"]))
     daily = [DailyDemand.model_validate(d) for d in daily]
+    if source == "user_scenario":
+        # A scenario gives days 1 to 7; they are dated from the clock this analysis reads, so
+        # a clock that moved on since the scenario was written does not void it.
+        shift = timedelta(days=-((daily[0].settlement_at - state.simulation_time) // DAY))
+        daily = [d.model_copy(update={"settlement_at": d.settlement_at + shift}) for d in daily]
     evidence.append(
         {
             "id": source_id,
@@ -97,6 +104,10 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
         rows = [r for r in rows if r.supplier_id in selected_ids]
         if len(rows) != len(set(selected_ids)):
             raise AppError(422, "OFFER_UNAVAILABLE", "A selected supplier has no structured offer")
+    from app.operations_cases.lifecycle import excluded
+
+    left_out = await excluded(session, case, request)
+    rows = [r for r in rows if r.supplier_id not in left_out]
     if len(rows) > 3:
         raise AppError(422, "OFFER_SELECTION_REQUIRED", "Select at most three supplier offers")
     offers = [Offer.model_validate(r.document) for r in rows]

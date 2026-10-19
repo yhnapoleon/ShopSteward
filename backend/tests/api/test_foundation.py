@@ -361,3 +361,5 @@ async def test_intake_capabilities_remain_available_with_production_docs_disable
             "work_result_export",
             "sourcing",
         }
+        # The page says who sends an order before it exists (execution/repository.py decide).
+        assert response.json()["purchase_channel"] == "simulator"

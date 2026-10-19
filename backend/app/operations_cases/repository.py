@@ -92,7 +92,7 @@ async def detail(session, row):
         plan and plan.document.get("recovery_intent", {}).get("revision") == row.current_revision
     )
     source = plan.document["input_snapshot"] if current_plan_revision else revision.snapshot
-    from app.operations_cases.lifecycle import IN_FLIGHT, TERMINAL, purchases
+    from app.operations_cases.lifecycle import IN_FLIGHT, TERMINAL, excluded, purchases
 
     # Once the owner has acted on these options, the purchase itself moves the state on.
     acted = row.status == "MONITORING" or bool(
@@ -157,7 +157,7 @@ async def detail(session, row):
         if plan
         else None,
         plan_revision=plan.document.get("recovery_intent", {}).get("revision") if plan else None,
-        action_id=action.id if action else None,
+        action_id=action.id if action and action.status in IN_FLIGHT | {"SUCCEEDED"} else None,
         execution_status=execution_status,
         missing_inputs=row.missing_inputs,
         evidence=revision.evidence,
@@ -176,6 +176,7 @@ async def detail(session, row):
         else None,
         outcome=note.payload if row.status == "RESOLVED" and noted == "CASE_RESOLVED" else None,
         supplier_ids=revision.inputs.get("supplier_ids"),
+        excluded_supplier_ids=sorted(await excluded(session, row, values)),
         created_at=row.created_at,
         updated_at=row.updated_at,
     )
@@ -204,6 +205,16 @@ async def create(session, body, principal, key):
         return CaseDetail.model_validate(receipt.response)
     if mission.status != "ACTIVE":
         raise AppError(409, "MISSION_NOT_ACTIVE", "Recovery requires an active Mission")
+    # One emergency case per item at a time: adopting in a second one would void the first's plan.
+    if await session.scalar(
+        select(CaseRow.id).where(
+            CaseRow.mission_id == mission.id,
+            CaseRow.status.not_in(["CANCELLED", "RESOLVED", "CLOSED"]),
+        )
+    ):
+        raise AppError(
+            409, "CASE_ALREADY_OPEN", "This item already has an emergency case; end it first"
+        )
     now = await session.scalar(select(func.clock_timestamp()))
     row = CaseRow(
         id=str(uuid4()),
@@ -248,6 +259,15 @@ async def analyze(session, row, body, principal, key, settings):
     if replay:
         return CaseDetail.model_validate(receipt.response)
     check_revision(row, body.expected_revision)
+    # A revision is solved once; analyzing again needs new inputs (refresh or revise).
+    if row.proposal_id is not None and (
+        row.status == "RECHECK_REQUIRED" or (await detail(session, row)).stale
+    ):
+        raise AppError(
+            409,
+            "CASE_REFRESH_REQUIRED",
+            "This revision's comparison no longer holds; refresh or revise the Case to analyze",
+        )
     await solve_revision(session, row, settings)
     await session.flush()
     result = await detail(session, row)
@@ -555,15 +575,26 @@ async def control(session, row, body, principal, key):
                 routine.status = "SUPERSEDED"
                 mission.current_plan_id = None
             row.status = "MONITORING"
-            await timeline(
-                session,
-                mission,
-                "CASE_DECISION",
-                "你选择等原订单；应急事项结束前，例行检查不会另外建议下单。",
-                actor=principal.principal_id,
-                references=[{"type": "artifact", "id": row.id}],
-            )
-        await event(session, row, "CASE_" + body.operation.upper())
+            from app.operations_cases.lifecycle import settle
+
+            # Recorded before settling: it is also the owner's answer to a part-filled order.
+            await event(session, row, "CASE_ADOPT_WAITING")
+            if await settle(session, row, mission):
+                # Nothing left to wait for (no original order, or the goods are in already).
+                if mission.status == "ACTIVE":
+                    store = await session.get(Store, row.store_id)
+                    await queue_check(session, store, mission, key="case-settled-" + row.id)
+            else:
+                await timeline(
+                    session,
+                    mission,
+                    "CASE_DECISION",
+                    "你选择等原订单；应急事项结束前，例行检查不会另外建议下单。",
+                    actor=principal.principal_id,
+                    references=[{"type": "artifact", "id": row.id}],
+                )
+        if body.operation != "adopt_waiting":
+            await event(session, row, "CASE_" + body.operation.upper())
         await session.flush()
         response = await detail(session, row)
     receipt.response = response.model_dump(mode="json")
