@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { t as tr } from '~/i18n'
+import { workTitle } from '~/utils/workPresentation'
 const props = defineProps<{ issue: string | null }>()
 const emit = defineEmits<{ back: []; open: [name: string] }>()
 const shop = useShop()
@@ -49,7 +50,7 @@ async function resume() {
             : tr('我的事项')
         }}
       </div>
-      <h1>{{ item.title }}</h1>
+      <h1>{{ workTitle(item) }}</h1>
     </div>
     <div class="task-heading-actions">
       <span class="tag" :class="badge.tone" role="status">{{ badge.label }}</span>

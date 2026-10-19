@@ -222,7 +222,7 @@ async function removeRule() {
       <div v-if="result.issues.length" class="notice amber">
         <b>{{ tr('缺失或不能确定的内容') }}</b>
         <ul>
-          <li v-for="issue in result.issues" :key="issue">{{ issue }}</li>
+          <li v-for="issue in result.issues" :key="issue">{{ tr(issue) }}</li>
         </ul>
         <p>{{ tr('已知结果保留，缺失字段不猜测、不当成0。') }}</p>
       </div>
@@ -244,16 +244,16 @@ async function removeRule() {
               <td>{{ r.product }}</td>
               <td>
                 {{ r.unit_price === null ? tr('暂不能计算') : r.unit_price + ' CNY'
-                }}<small>{{ r.basis }}</small>
+                }}<small>{{ tr(r.basis) }}</small>
               </td>
               <td>
-                {{ r.moq ?? tr('未提供') }} {{ r.moq_unit
+                {{ r.moq ?? tr('未提供') }} {{ tr(r.moq_unit)
                 }}<small>{{
                   r.moq_pieces === null ? tr('折算件数暂缺') : tr('折合 {0} 件', [r.moq_pieces])
                 }}</small>
               </td>
               <td>
-                {{ r.price ?? tr('未提供') }} {{ r.currency }} / {{ r.unit
+                {{ r.price ?? tr('未提供') }} {{ r.currency }} / {{ tr(r.unit)
                 }}<small>{{ tr('包装件数') }}: {{ r.pack ?? tr('未提供') }}</small>
               </td>
               <td>{{ r.source || tr('未提供') }}</td>

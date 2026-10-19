@@ -4,6 +4,8 @@ import { t as tr } from '~/i18n'
 // The assistant asked the owner something. Common questions (budget, dates, quantity, supplier)
 // get quick fields; the answer is sent as one plain sentence through the item's conversation,
 // exactly as if it had been typed there. Anything else is answered in the conversation itself.
+// The question is the processor's own wording: an assistant's question (agent_bridge/jobs.py) or
+// the fixed request a quote result writes (quotations/repository.py), never the owner's text.
 const props = defineProps<{ question: string }>()
 const emit = defineEmits<{ changed: []; converse: [] }>()
 const work = useWorkItems()
@@ -66,7 +68,7 @@ async function submit() {
 <template>
   <section class="glass work-status-panel space-clarify">
     <h2>{{ tr('还需要你补充') }}</h2>
-    <p class="space-question">{{ question }}</p>
+    <p class="space-question">{{ tr(question) }}</p>
     <form v-if="kinds.length" class="space-clarify-form" @submit.prevent="submit">
       <div v-if="kinds.includes('money')" class="space-field">
         <label :for="id + '-money'">{{ tr('预算（元）') }}</label>

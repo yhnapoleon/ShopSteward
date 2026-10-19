@@ -18,6 +18,28 @@ watch(
     if (id !== saved.value) saved.value = ''
   },
 )
+// Lines the system wrote are fixed sentences and follow the language: its own notes, and the
+// request a quantity trial records just before its result. What the owner typed stays as written.
+const written = (index: number) => {
+  const messages = s.detail?.messages || []
+  const message = messages[index]
+  return (
+    message?.role === 'system' ||
+    (message?.role === 'user' && !!messages[index + 1]?.result?.calculation)
+  )
+}
+// Translated lines read naturally in English: a trial's quantities are listed with commas, not 、.
+const shown = (content: string) => {
+  const english = tr(content)
+  return english === content ? content : english.replace(/、/g, ', ')
+}
+// A quantity trial's explanation is the system's own text, read line by line as its result card
+// does (surfaces/derive.ts).
+const explained = (content: string) =>
+  content
+    .split('\n')
+    .map((line) => tr(line))
+    .join('\n')
 async function send() {
   const message = s.pending ? s.pending.path.endsWith('/messages') : !!s.input.trim()
   const d = await work.send()
@@ -75,7 +97,7 @@ watch(
       :aria-label="tr('这件事的对话')"
     >
       <article
-        v-for="message in s.detail?.messages"
+        v-for="(message, index) in s.detail?.messages"
         :key="message.id"
         class="agent-message"
         :class="{ 'is-user': message.role === 'user' }"
@@ -94,8 +116,13 @@ watch(
           }}<time>{{ tr(when(message.created_at)) }}</time>
         </div>
         <small v-if="message.demonstration" class="tag amber">{{ tr('模拟接入') }}</small>
-        <p v-if="message.role !== 'assistant'" class="agent-user-text">{{ message.content }}</p>
-        <MarkdownMessage v-else :content="message.content" />
+        <p v-if="message.role !== 'assistant'" class="agent-user-text">
+          {{ written(index) ? shown(message.content) : message.content }}
+        </p>
+        <MarkdownMessage
+          v-else
+          :content="message.result?.calculation ? explained(message.content) : message.content"
+        />
         <details v-if="message.result">
           <summary>{{ tr('查看这次交付的结果') }}</summary>
           <WorkResult :result="message.result" :demonstration="message.demonstration" />
