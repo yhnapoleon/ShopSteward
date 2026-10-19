@@ -44,9 +44,13 @@ async function sample(index: number) {
 </script>
 <template>
   <details class="quotation-attachment">
-    <summary>{{ tr('添加报价 CSV') }}</summary>
+    <summary>{{ tr('添加供应商报价') }}</summary>
     <p class="source-note">
-      {{ tr('原件保存在这件事中，最多 200KB。可以在下方对话补充字段或说明整理要求。') }}
+      {{
+        tr(
+          '报价表用 CSV 格式，最多 200KB；原件保存在这件事中，可以在下方对话补充字段或说明整理要求。',
+        )
+      }}
     </p>
     <input
       ref="input"
@@ -54,11 +58,11 @@ async function sample(index: number) {
       hidden
       accept=".csv,text/csv"
       :disabled="disabled"
-      :aria-label="tr('上传报价 CSV')"
+      :aria-label="tr('上传报价表')"
       @change="readFile"
     />
     <button class="secondary" :disabled="disabled" @click="input?.click()">
-      {{ tr('选择本地 CSV 文件') }}
+      {{ tr('选择报价表文件') }}
     </button>
     <div class="demo-actions">
       <button class="text-link" :disabled="disabled" @click="sample(0)">

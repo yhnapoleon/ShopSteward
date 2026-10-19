@@ -733,8 +733,11 @@ function briefing() {
           </button>
         </div>
       </header>
+      <!-- While something waits for the owner's decision, the invite keeps its words but not the
+           page's primary button: one primary action on the screen. -->
       <OnboardingGuide
         v-if="showTour"
+        :class="{ 'is-quiet': decisionCount > 0 }"
         :status="onboarding.s.status"
         :step="onboarding.s.step"
         :target="tourTarget"
@@ -994,7 +997,9 @@ function briefing() {
                 </button>
               </article>
               <p
-                v-if="!decideWorks.length && !taskCardShown && !issue && !recoveryPrompt.shown.value"
+                v-if="
+                  !decideWorks.length && !taskCardShown && !issue && !recoveryPrompt.shown.value
+                "
                 class="space-quiet"
               >
                 {{ tr('现在没有需要你拍板的事。') }}
@@ -1399,16 +1404,12 @@ function briefing() {
       <div class="detail-rows">
         <div class="detail-row">
           <span>{{ tr('商品 / 供应商') }}</span
-          ><b>{{
-            joinText(
-              [
-                product?.name,
-                '/',
-                supplierDisplayName(approval.plan.input_snapshot.offer.supplier_id),
-              ],
-              ' ',
-            )
-          }}</b>
+          ><b class="detail-pair"
+            ><span>{{ product?.name }}</span
+            ><span>{{
+              supplierDisplayName(approval.plan.input_snapshot.offer.supplier_id)
+            }}</span></b
+          >
         </div>
         <template v-if="approval.quantity"
           ><div class="detail-row">
@@ -1436,22 +1437,25 @@ function briefing() {
         <div class="detail-row">
           <span>{{ tr('现金变化') }}</span
           ><b>{{
-            joinText([
-              tr(money(approval.plan.input_snapshot.state.available_cash_minor)),
-              '→',
-              tr(
-                money(selectedPlanCandidate(approval.plan, approval.quantity)?.cash_after_minor),
-              ),
-            ])
+            joinText(
+              [
+                tr(money(approval.plan.input_snapshot.state.available_cash_minor)),
+                '→',
+                tr(
+                  money(selectedPlanCandidate(approval.plan, approval.quantity)?.cash_after_minor),
+                ),
+              ],
+              ' ',
+            )
           }}</b>
         </div>
         <div class="detail-row">
           <span>{{ tr('预计剩余缺货') }}</span
           ><b>{{
-            joinText([
-              tr(selectedPlanCandidate(approval.plan, approval.quantity)?.shortage_qty),
-              tr('件'),
-            ])
+            joinText(
+              [tr(selectedPlanCandidate(approval.plan, approval.quantity)?.shortage_qty), tr('件')],
+              ' ',
+            )
           }}</b>
         </div>
       </div>

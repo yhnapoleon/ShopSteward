@@ -42,7 +42,7 @@ async function create() {
 async function upload(filename, content) {
   await page.locator('.quotation-attachment summary').click()
   await page
-    .getByLabel('上传报价 CSV', { exact: true })
+    .getByLabel('上传报价表', { exact: true })
     .setInputFiles({ name: filename, mimeType: 'text/csv', buffer: Buffer.from(content) })
 }
 async function snapshot(name) {

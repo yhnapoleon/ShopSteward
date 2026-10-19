@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { productDisplayName } from '~/utils/glossary'
 import { joinText as joinLocalizedText, t as tr } from '~/i18n'
 const joinText = (parts: unknown[]) => joinLocalizedText(parts, ' ')
 import { api, ApiFailure, query } from '~/utils/api'
@@ -39,9 +40,10 @@ let poll: ReturnType<typeof setInterval> | undefined
 const forecast = computed(() => current.value?.forecast)
 // Owner-facing words (redesign §1): the product by name, the state and its reason in sentences.
 // Store, product and status codes stay in the traceable evidence at the end of the panel.
-const productName = computed(
-  () => s.catalog?.products.find((p) => p.sku_id === props.skuId)?.name || '',
-)
+const productName = computed(() => {
+  const found = s.catalog?.products.find((p) => p.sku_id === props.skuId)
+  return found ? productDisplayName(found) : ''
+})
 const statusLabel = computed(() =>
   loading.value
     ? '正在读取…'
@@ -86,9 +88,10 @@ const reason = computed(() => {
   const code = raw.split(':', 1)[0]!.trim()
   const known = reasons[code]
   // The demo-only code is never shown, not even folded: the sentence says all of it.
+  // A reason the page has no sentence for is said in general terms; its code goes to the evidence.
   return known
     ? { ...known, code: code === 'HISTORICAL_DEMO_ONLY' ? '' : code }
-    : { text: raw, quiet: false, code: '' }
+    : { text: '这份预测暂时不能作为当前依据，请重新运行。', quiet: false, code }
 })
 // Errors of the forecast endpoints in the owner's words; the code goes to the evidence.
 const failures: Record<string, string> = {
@@ -315,7 +318,6 @@ onUnmounted(() => {
   >
     <div class="forecast-header">
       <div>
-        <div class="eyebrow">SHOPSTEWARD V6</div>
         <h2>{{ tr('七日需求预测') }}</h2>
       </div>
       <span class="tag" :class="statusTone" role="status">{{ tr(statusLabel) }}</span>

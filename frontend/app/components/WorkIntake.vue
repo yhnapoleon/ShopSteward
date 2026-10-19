@@ -23,7 +23,7 @@ function keydown(e: KeyboardEvent) {
     <h2>{{ tr('今天想解决什么事？') }}</h2>
     <p>{{ tr('可以先问一问，也可以交代一件需要跟进的事情。') }}</p>
     <p v-if="!s.processorAvailable" class="source-note">
-      {{ tr('助手暂不可用，要求会先保存；已有经营安排仍可查看。') }}
+      {{ tr('现在没有助手回复，你交代的事会先保存下来。') }}
     </p>
     <label :for="inputId">{{ tr('把事情告诉我') }}</label
     ><textarea

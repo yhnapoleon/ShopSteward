@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { productDisplayName } from '~/utils/glossary'
 import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { money, when } from '~/utils/presentation'
@@ -137,7 +138,7 @@ async function simulate() {
           >{{ tr('商品')
           }}<select :id="prefix + '-sku'" v-model="sku" required>
             <option v-for="p in shop.s.catalog?.products" :key="p.sku_id" :value="p.sku_id">
-              {{ p.name }}
+              {{ productDisplayName(p) }}
             </option>
           </select></label
         >

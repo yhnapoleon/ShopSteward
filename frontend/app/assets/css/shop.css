@@ -1148,6 +1148,37 @@ dialog::backdrop {
   text-align: right;
   overflow-wrap: anywhere;
 }
+/* Product and supplier: one line with a slash where there is room, two lines on a phone. */
+.detail-row .detail-pair {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: 6px;
+}
+/* Not the row's label rule (.detail-row span): these are the value's two parts. */
+.detail-row .detail-pair span {
+  flex: 0 1 auto;
+  color: inherit;
+  overflow-wrap: normal;
+}
+.detail-pair span + span::before {
+  content: '/ ';
+  color: #8aa0b2;
+}
+/* The onboarding invite steps back while a decision card holds the page's primary action. */
+.onboarding-invite.is-quiet .onboarding-invite-actions .primary {
+  background: linear-gradient(145deg, #ffffffe0, #ffffff80);
+  border: 1px solid #fffffff0;
+  box-shadow:
+    inset 0 1px 0 #fff,
+    0 3px 10px rgb(69 88 108 / 7%);
+  color: #486078;
+}
+.onboarding-invite.is-quiet .onboarding-invite-actions .primary:hover {
+  filter: none;
+  background: #ffffffc9;
+}
 .modal-actions {
   display: flex;
   justify-content: flex-end;
@@ -1623,7 +1654,7 @@ button {
 }
 .primary:active:not(:disabled),
 .quiet-button:active:not(:disabled) {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 .quiet-button:hover:not(:disabled) {
   background: #ffffffc9;
@@ -2138,6 +2169,13 @@ dialog[open] {
   .detail-row {
     font-size: 13px;
     gap: 12px;
+  }
+  .detail-pair {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  .detail-pair span + span::before {
+    content: none;
   }
   .notice {
     font-size: 13px;

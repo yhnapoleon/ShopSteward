@@ -119,6 +119,20 @@ export function storeDisplayName(
 }
 
 /**
+ * Product label. The simulator's fixed scenarios seed one product named "SC01 sample product"
+ * (or "Sandbox sample product"): the page says "示例商品" for it; the seed's wording stays in the
+ * traceable evidence with the sku. Any other product is shown by its own name, else its sku.
+ */
+const seedProduct = /^(sc01|sandbox) sample product$/i
+export function productDisplayName(
+  product: { sku_id: string; name?: string | null } | null | undefined,
+) {
+  const name = product?.name?.trim() || ''
+  if (seedProduct.test(name)) return t('示例商品')
+  return name || product?.sku_id || t('未取得')
+}
+
+/**
  * Supplier names the current store has on file (its supplier documents and sourcing runs), so a
  * sourced supplier reads "百川批发" everywhere instead of its id "B". Cleared when the store changes.
  */

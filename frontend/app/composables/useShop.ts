@@ -2,7 +2,7 @@ import { t } from '~/i18n'
 import type { Schema, Session, PendingApproval, PlanDocument } from '~/types/models'
 import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 import { api, query, ApiFailure } from '~/utils/api'
-import { rememberSupplierNames, supplierDisplayName } from '~/utils/glossary'
+import { productDisplayName, rememberSupplierNames, supplierDisplayName } from '~/utils/glossary'
 import {
   DIRECTORY_STATE,
   emptyDirectory,
@@ -74,7 +74,11 @@ export function useShop() {
       s.dashboard?.state.stocks.find((x) => x.sku_id === mission.value?.sku_id) ||
       s.dashboard?.state.stocks[0],
   )
-  const product = computed(() => s.catalog?.products.find((x) => x.sku_id === stock.value?.sku_id))
+  // The product as the pages name it: the catalog entry with its display name (glossary).
+  const product = computed(() => {
+    const found = s.catalog?.products.find((x) => x.sku_id === stock.value?.sku_id)
+    return found && { ...found, name: productDisplayName(found) }
+  })
   const offer = computed(() => s.catalog?.offers.find((x) => x.sku_id === stock.value?.sku_id))
   const plan = computed(() => s.plan)
   const unresolved = computed(() =>

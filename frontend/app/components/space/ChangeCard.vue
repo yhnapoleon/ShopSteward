@@ -99,9 +99,7 @@ const gap = computed(() => {
     >
       <AppIcon name="check-check" />
       <div class="space-change-body">
-        <b>{{
-          tr('方案 v{0} → v{1} · {2}', [change.from.plan_version, change.to.plan_version, reason])
-        }}</b>
+        <b>{{ tr('方案更新了 · {0}', [reason]) }}</b>
         <dl class="space-change-grid">
           <div>
             <dt>{{ tr('建议补货') }}</dt>
@@ -130,10 +128,8 @@ const gap = computed(() => {
       </div>
     </section>
     <p v-else-if="change" :key="'same-' + change.to.id" class="source-note space-change-quiet">
-      <AppIcon name="check" />{{
-        tr('方案 v{0} → v{1} · {2}', [change.from.plan_version, change.to.plan_version, reason])
-      }}
-      · {{ tr('建议数量和剩余需求都没有变化。') }}
+      <AppIcon name="check" />{{ tr('方案重新核对过 · {0}', [reason]) }} ·
+      {{ tr('建议数量和剩余需求都没有变化。') }}
     </p>
   </Transition>
 </template>

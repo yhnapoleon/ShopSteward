@@ -214,7 +214,7 @@ test('报价服务器工具：实际文件输入、甲乙计算、原币种和�
   await panel.getByRole('link', { name: '下载此版本 CSV', exact: true }).click()
   await (await d).saveAs(info.outputPath('quote-B.csv'))
   expect(await fs.readFile(info.outputPath('quote-B.csv'), 'utf8')).toContain('12')
-  await page.getByLabel('上传报价 CSV', { exact: true }).setInputFiles({
+  await page.getByLabel('上传报价表', { exact: true }).setInputFiles({
     name: '美元报价.csv',
     mimeType: 'text/csv',
     buffer: Buffer.from(

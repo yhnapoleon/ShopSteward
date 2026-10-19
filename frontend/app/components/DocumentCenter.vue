@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { productDisplayName } from '~/utils/glossary'
 import { joinText, t as tr } from '~/i18n'
 import type { Schema, Session } from '~/types/models'
 import {
@@ -271,7 +272,7 @@ async function submit() {
               }}<select v-model="filters.sku_id" @change="search">
                 <option value="">{{ tr('全部商品') }}</option>
                 <option v-for="p in products" :key="p.sku_id" :value="p.sku_id">
-                  {{ p.name }}
+                  {{ productDisplayName(p) }}
                 </option>
               </select></label
             >
@@ -411,7 +412,7 @@ async function submit() {
               class="dc-associations"
             >
               <span v-for="id in selected.sku_ids" :key="id">{{
-                products.find((p) => p.sku_id === id)?.name || id
+                productDisplayName(products.find((p) => p.sku_id === id) || { sku_id: id })
               }}</span
               ><span v-for="id in selected.supplier_ids" :key="id">{{ tr(id) }}</span>
             </div>
@@ -579,7 +580,7 @@ async function submit() {
                 <span>{{ tr('商品') }}</span
                 ><label v-for="p in products" :key="p.sku_id"
                   ><input v-model="form.sku_ids" type="checkbox" :value="p.sku_id" />{{
-                    p.name
+                    productDisplayName(p)
                   }}</label
                 ><label
                   v-for="id in form.sku_ids.filter((id) => !products.some((p) => p.sku_id === id))"
