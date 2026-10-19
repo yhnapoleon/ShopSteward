@@ -1,6 +1,6 @@
 """Read-only business state for every card, independent of the open task/UI."""
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from sqlalchemy import func, select
 
@@ -10,9 +10,21 @@ from app.missions.repository import mission_dto
 from app.operations.models import OfferRow, SourceCursor, StockRow, Store
 from app.planning.canonical import canonical
 from app.planning.engine import proposal_hash
-from app.planning.schemas import Plan
+from app.planning.recovery.materialize import recovery_hash
+from app.planning.schemas import parse_plan
 from app.planning.snapshot import source_fresh
 from app.work_items.schemas import WorkBusinessState
+
+
+def recovering(plan_row):
+    return bool(plan_row) and plan_row.document.get("plan_kind") == "recovery_v1"
+
+
+def supplier_of(mission, plan_row):
+    """Whose offer the current plan was worked out on: an emergency plan's chosen supplier."""
+    if recovering(plan_row):
+        return plan_row.document["input_snapshot"]["offer"]["supplier_id"]
+    return mission.policy["supplier_id"]
 
 
 def classify(
@@ -73,6 +85,16 @@ def classify(
         # The owner carries this order to the supplier: until the reply is pasted back, the
         # next step is theirs, not the system's.
         if action.channel == "assisted" and action.status == "EXECUTING":
+            wanted = datetime.fromisoformat(action.purchase_snapshot["expected_arrival_at"])
+            if store.simulation_time and store.simulation_time >= wanted:
+                return status(
+                    "SUPPLIER_OVERDUE",
+                    "供应商逾期未回复",
+                    "已过希望送达的时间，还没有收到供应商的回复；请催问供应商，或撤回这笔订单。",
+                    5,
+                    "处理订单",
+                    "amber",
+                )
             return status(
                 "AWAITING_SUPPLIER",
                 "待供应商确认",
@@ -120,14 +142,18 @@ def classify(
         )
     fresh_until = cursor.last_success_at + timedelta(seconds=settings.source_stale_seconds)
     if plan_row and plan_row.status in {"PENDING_APPROVAL", "EXPIRED", "SUPERSEDED"}:
-        plan = Plan.model_validate(plan_row.document)
+        plan = parse_plan(plan_row.document)
         snapshot = plan.input_snapshot
+        recovery = recovering(plan_row)
+        # An emergency plan's window opens when it is adopted and its own hash covers the
+        # choice; approval checks it the same way (planning/recovery/validation.py).
         deadline = min(
             plan_row.expires_at,
             plan.expires_at,
-            snapshot.forecast.valid_until,
             snapshot.offer.valid_until,
+            *([] if recovery else [snapshot.forecast.valid_until]),
         )
+        fingerprint = recovery_hash if recovery else proposal_hash
         stale = (
             plan_row.status != "PENDING_APPROVAL"
             or deadline <= now
@@ -140,7 +166,7 @@ def classify(
             or canonical(offer.document) != canonical(snapshot.offer.model_dump(mode="json"))
             or stock is None
             or stock.forecast_version != plan.forecast_version
-            or proposal_hash(plan_row.document) != plan.proposal_hash
+            or fingerprint(plan_row.document) != plan.proposal_hash
         )
         if stale:
             return status(
@@ -261,7 +287,7 @@ async def load(session, rows, settings):
                 inbound.get(m.id, 0),
                 now,
                 settings,
-                offers.get((m.store_id, m.sku_id, m.policy["supplier_id"])),
+                offers.get((m.store_id, m.sku_id, supplier_of(m, plans.get(m.current_plan_id)))),
                 stocks.get((m.store_id, m.sku_id)),
                 m.id in by_hand,
             ),

@@ -5,18 +5,20 @@ system's own purchase changes the state as well; that is the decision being carr
 not a reason to analyze again. A decision stands until the case is resolved or ended.
 """
 
-from sqlalchemy import or_, select
+from sqlalchemy import func, or_, select
 
 from app.execution.models import ActionRow
 from app.missions.models import InboundRow, PlanRow
 from app.missions.repository import timeline
-from app.operations_cases.models import CaseRevisionRow, CaseRow
+from app.operations_cases.models import CaseEventRow, CaseRevisionRow, CaseRow
 from app.operations_cases.repository import event
 from app.planning.recovery.schemas import RecoveryArrival, RecoveryInput
 from app.planning.recovery.solver import trajectory
 
 TERMINAL = {"CANCELLED", "RESOLVED", "CLOSED"}
 IN_FLIGHT = {"QUEUED", "EXECUTING", "UNKNOWN"}
+# A supplier that declined, whose order failed or was taken back, is not asked again.
+NOT_BOUGHT = {"FAILED", "CANCELLED"}
 
 
 async def purchases(session, case):
@@ -38,6 +40,33 @@ def short(action):
     """An accepted purchase the supplier filled only in part."""
     accepted = (action.receipt or {}).get("quantity", action.quantity)
     return action.status == "SUCCEEDED" and accepted < action.quantity
+
+
+async def excluded(session, case, inputs):
+    """Suppliers this case does not compare: the owner's choice, and every supplier whose
+    order here declined, failed, was taken back or could be filled only in part."""
+    left_out = set(inputs.get("excluded_supplier_ids") or [])
+    for action in await purchases(session, case):
+        if action.status in NOT_BOUGHT or short(action):
+            left_out.add(action.purchase_snapshot["supplier_id"])
+    return left_out
+
+
+async def gap_open(session, case, actions):
+    """The latest purchase was filled in part and the owner has not yet decided about the
+    rest: buy it elsewhere (a newer purchase) or stop there (waiting chosen after it)."""
+    if not actions or not short(actions[-1]):
+        return False
+
+    async def last(kind):
+        return await session.scalar(
+            select(func.max(CaseEventRow.seq)).where(
+                CaseEventRow.case_id == case.id, CaseEventRow.kind == kind
+            )
+        )
+
+    filled, waited = await last("RECOVERY_PARTIALLY_FILLED"), await last("CASE_ADOPT_WAITING")
+    return filled is None or waited is None or waited < filled
 
 
 async def owning_case(session, mission):
@@ -106,6 +135,9 @@ async def settle(session, case, mission):
     actions = await purchases(session, case)
     if any(a.status in IN_FLIGHT for a in actions):
         return False
+    # Goods of a part-filled order settle nothing while the rest may still be bought.
+    if await gap_open(session, case, actions):
+        return False
     bought = [a for a in actions if a.status == "SUCCEEDED"]
     inbound = [await session.get(InboundRow, (a.id, case.sku_id)) for a in bought]
     if bought:
@@ -115,13 +147,12 @@ async def settle(session, case, mission):
         plan = await session.get(PlanRow, bought[0].plan_id)
         base = RecoveryInput.model_validate(plan.document["input_snapshot"]["recovery"])
     else:
-        # Waiting: the case waits for the original orders frozen in its analysis.
+        # Waiting: the case waits for the original orders frozen in its analysis. With none
+        # on the way, waiting was the decision not to restock, and it settles at once.
         revision = await session.get(CaseRevisionRow, (case.id, case.current_revision))
         if not revision.snapshot:
             return False
         base = RecoveryInput.model_validate(revision.snapshot["recovery"])
-        if not base.arrivals:
-            return False
         for arrival in base.arrivals:
             row = await session.get(InboundRow, (arrival.action_id, arrival.sku_id))
             if row is not None and row.received_qty < row.ordered_qty:
@@ -144,15 +175,28 @@ async def settle(session, case, mission):
             ]
         }
     )
+    each = [
+        {
+            "action_id": a.id,
+            "supplier_id": a.purchase_snapshot["supplier_id"],
+            "planned_qty": a.quantity,
+            "purchased_qty": row.ordered_qty,
+            "received_qty": row.received_qty,
+            "spend_minor": a.receipt["total_minor"],
+        }
+        for a, row in zip(bought, inbound, strict=True)
+    ]
     outcome = {
         "path": "purchase" if bought else "waiting",
-        "planned_qty": sum(a.quantity for a in bought),
-        "purchased_qty": sum(row.ordered_qty for row in inbound),
-        "received_qty": sum(row.received_qty for row in inbound),
-        "spend_minor": sum(a.receipt["total_minor"] for a in bought),
+        # Every order of the case together; `purchases` says what each one brought.
+        "planned_qty": sum(p["planned_qty"] for p in each),
+        "purchased_qty": sum(p["purchased_qty"] for p in each),
+        "received_qty": sum(p["received_qty"] for p in each),
+        "spend_minor": sum(p["spend_minor"] for p in each),
         "lost_qty_before": lost(base),
         "lost_qty_after": lost(after),
         "action_ids": [a.id for a in bought],
+        "purchases": each,
     }
     case.status, case.followup_enabled = "RESOLVED", False
     await event(session, case, "CASE_RESOLVED", outcome)
@@ -163,18 +207,28 @@ async def settle(session, case, mission):
         f"花费 {outcome['spend_minor'] / 100:.2f} 元",
         f"七日预计缺货从 {outcome['lost_qty_before']} 件降到 {outcome['lost_qty_after']} 件。",
     )
-    if bought and outcome["purchased_qty"] < outcome["planned_qty"]:
+    if len(each) > 1:
+        said = (
+            f"应急事项已解决：{len(each)} 笔应急补货共 {outcome['purchased_qty']} 件已全部到货，"
+            f"{spent}；{change}"
+        )
+    elif each and outcome["purchased_qty"] < outcome["planned_qty"]:
         said = (
             f"应急事项已解决：供应商确认的 {outcome['purchased_qty']} 件已全部到货"
             f"（订单 {outcome['planned_qty']} 件），{spent}；{change}"
         )
-    elif bought:
+    elif each:
         said = (
             f"应急事项已解决：应急补货 {outcome['purchased_qty']} 件已全部到货，{spent}；{change}"
         )
-    else:
+    elif base.arrivals:
         said = (
             "应急事项已解决：原订单已全部到货，没有追加采购；"
+            f"七日预计缺货 {outcome['lost_qty_before']} 件。"
+        )
+    else:
+        said = (
+            "应急事项已结束：没有在途的原订单，这次不补货；"
             f"七日预计缺货 {outcome['lost_qty_before']} 件。"
         )
     await timeline(

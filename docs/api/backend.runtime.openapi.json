@@ -15076,6 +15076,23 @@
               }
             ],
             "title": "Supplier Ids"
+          },
+          "excluded_supplier_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 20
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Excluded Supplier Ids"
           }
         },
         "additionalProperties": false,
@@ -15175,6 +15192,15 @@
               }
             ],
             "title": "Supplier Ids"
+          },
+          "excluded_supplier_ids": {
+            "items": {
+              "type": "string",
+              "maxLength": 128,
+              "minLength": 1
+            },
+            "type": "array",
+            "title": "Excluded Supplier Ids"
           },
           "proposal": {
             "anyOf": [
@@ -15635,6 +15661,13 @@
             },
             "type": "array",
             "title": "Action Ids"
+          },
+          "purchases": {
+            "items": {
+              "$ref": "#/components/schemas/CaseOutcomePurchase"
+            },
+            "type": "array",
+            "title": "Purchases"
           }
         },
         "additionalProperties": false,
@@ -15650,7 +15683,59 @@
           "action_ids"
         ],
         "title": "CaseOutcome",
-        "description": "What a resolved case achieved; shortage is projected over the analyzed seven days."
+        "description": "What a resolved case achieved; shortage is projected over the analyzed seven days.\n\nThe quantities add up every order of the case; `purchases` gives each one. `path` is\n`waiting` when nothing was bought: the original orders arrived, or with none on the way\nthe owner chose not to restock."
+      },
+      "CaseOutcomePurchase": {
+        "properties": {
+          "action_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Action Id"
+          },
+          "supplier_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Supplier Id"
+          },
+          "planned_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 1.0,
+            "title": "Planned Qty"
+          },
+          "purchased_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Purchased Qty"
+          },
+          "received_qty": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Received Qty"
+          },
+          "spend_minor": {
+            "type": "integer",
+            "maximum": 9.223372036854776e+18,
+            "minimum": 0.0,
+            "title": "Spend Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action_id",
+          "supplier_id",
+          "planned_qty",
+          "purchased_qty",
+          "received_qty",
+          "spend_minor"
+        ],
+        "title": "CaseOutcomePurchase",
+        "description": "What one emergency order brought: ordered, confirmed by the supplier, arrived, paid."
       },
       "CasePurchase": {
         "properties": {
@@ -15796,6 +15881,23 @@
               }
             ],
             "title": "Supplier Ids"
+          },
+          "excluded_supplier_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "maxLength": 128,
+                  "minLength": 1
+                },
+                "type": "array",
+                "maxItems": 20
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Excluded Supplier Ids"
           }
         },
         "additionalProperties": false,
@@ -16112,6 +16214,15 @@
             },
             "type": "array",
             "title": "Capabilities"
+          },
+          "purchase_channel": {
+            "type": "string",
+            "enum": [
+              "simulator",
+              "assisted"
+            ],
+            "title": "Purchase Channel",
+            "default": "simulator"
           }
         },
         "additionalProperties": false,

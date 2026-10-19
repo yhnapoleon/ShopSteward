@@ -40,6 +40,8 @@ export function statusBadge(input: BadgeInput): Badge {
     return badge('需要处理', 'amber')
   if (input.plan === 'PENDING_APPROVAL' && input.canDecide) return badge('需要你拍板', 'amber')
   if (input.work === 'WAITING_INPUT') return badge('需要你补充', 'amber')
+  // Past the date the order asked for and still no reply: chase the supplier or take it back.
+  if (code === 'SUPPLIER_OVERDUE') return badge('供应商逾期未回复', 'amber')
   // The system does not reach the supplier: the owner sends the order and pastes the reply.
   if (input.awaitingSupplier || code === 'AWAITING_SUPPLIER') return badge('待供应商确认', 'amber')
   if (

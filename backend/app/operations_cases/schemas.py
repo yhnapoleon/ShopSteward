@@ -12,8 +12,11 @@ class CaseCreate(DTO):
     objective: str = Field(min_length=1, max_length=2000)
     budget_minor: Nonnegative
     max_purchase_qty: Nonnegative | None = None
+    # Seven days of demand, read as days 1 to 7 from the business clock when analyzed.
     daily_demand: list[DailyDemand] | None = Field(default=None, min_length=7, max_length=7)
     supplier_ids: list[Identifier] | None = Field(default=None, min_length=1, max_length=3)
+    # Suppliers the owner does not want asked in this case; neither read nor compared.
+    excluded_supplier_ids: list[Identifier] | None = Field(default=None, max_length=20)
 
 
 class CaseAnalyze(DTO):
@@ -26,6 +29,7 @@ class CaseRevise(CaseAnalyze):
     max_purchase_qty: Nonnegative | None = None
     daily_demand: list[DailyDemand] | None = Field(default=None, min_length=7, max_length=7)
     supplier_ids: list[Identifier] | None = Field(default=None, min_length=1, max_length=3)
+    excluded_supplier_ids: list[Identifier] | None = Field(default=None, max_length=20)
 
 
 class CaseSource(CaseAnalyze):
@@ -65,8 +69,24 @@ class CasePurchase(DTO):
     received_qty: Nonnegative | None
 
 
+class CaseOutcomePurchase(DTO):
+    """What one emergency order brought: ordered, confirmed by the supplier, arrived, paid."""
+
+    action_id: Identifier
+    supplier_id: Identifier
+    planned_qty: Positive
+    purchased_qty: Nonnegative
+    received_qty: Nonnegative
+    spend_minor: Nonnegative
+
+
 class CaseOutcome(DTO):
-    """What a resolved case achieved; shortage is projected over the analyzed seven days."""
+    """What a resolved case achieved; shortage is projected over the analyzed seven days.
+
+    The quantities add up every order of the case; `purchases` gives each one. `path` is
+    `waiting` when nothing was bought: the original orders arrived, or with none on the way
+    the owner chose not to restock.
+    """
 
     path: Literal["purchase", "waiting"]
     planned_qty: Nonnegative
@@ -76,6 +96,7 @@ class CaseOutcome(DTO):
     lost_qty_before: Nonnegative
     lost_qty_after: Nonnegative
     action_ids: list[Identifier]
+    purchases: list[CaseOutcomePurchase] = Field(default_factory=list)
 
 
 class CaseDetail(DTO):
@@ -90,10 +111,15 @@ class CaseDetail(DTO):
     max_purchase_qty: Nonnegative | None
     daily_demand: list[DailyDemand] | None
     supplier_ids: list[Identifier] | None = None
+    # Who this case leaves out: the owner's choice and the suppliers whose order here
+    # declined, failed, was taken back or was filled only in part.
+    excluded_supplier_ids: list[Identifier] = Field(default_factory=list)
     proposal: RecoveryProposal | None
     plan_id: Identifier | None
     plan_status: str | None
     plan_revision: Positive | None
+    # The order the current plan led to, while it stands; one that bought nothing (declined,
+    # withdrawn, failed, void) is no longer the case's order and stays in `purchases`.
     action_id: Identifier | None
     execution_status: str | None
     missing_inputs: list[str]

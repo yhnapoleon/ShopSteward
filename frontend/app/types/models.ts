@@ -10,6 +10,8 @@ export type Session = {
   workIntake?: boolean
   recoveryCases?: boolean
   sourcing?: boolean
+  /** How an approved purchase goes out unless its supplier was read from documents. */
+  purchase_channel?: 'simulator' | 'assisted'
   quantitySimulation?: boolean
   planRevision: boolean
 }

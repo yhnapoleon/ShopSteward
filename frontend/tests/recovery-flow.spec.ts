@@ -573,7 +573,7 @@ test('键盘：比较是一个单选组，方向键移动选择，回车打开�
   await expect(page.getByRole('dialog')).toContainText('核对这笔采购')
 })
 
-test('这次不补：没有原订单时停在这一步，如实说明，结束后例行检查恢复', async ({ page }) => {
+test('这次不补：没有原订单时选等待就是这次不补，后端当场结束，例行检查恢复', async ({ page }) => {
   const m = await setupRecovery(page, { documents: true })
   const flow = flowCard(page)
   await toComparison(page)
@@ -581,17 +581,15 @@ test('这次不补：没有原订单时停在这一步，如实说明，结束�
   await expect(next(page)).toHaveText('这次不补')
   await next(page).click()
   expect(m.writes.at(-1)!.body).toMatchObject({ operation: 'adopt_waiting' })
-  // The backend holds such a Case open (routine checks paused) until the owner ends it.
-  await expect(flow).toHaveAttribute('data-stage', 'receive')
-  await expect(flow.locator('.flow-step[aria-current="step"]')).toContainText('决定这次不补')
-  await expect(flow.locator('.rf-title')).toHaveText('这次不补')
-  await expect(flow.locator('.rf-sub')).toHaveText(
-    '没有在途的原订单。结束后，系统恢复每天的补货建议。',
-  )
-  await expect(next(page)).toHaveText('结束这次应急补货')
-  await next(page).click()
-  expect(m.writes.at(-1)!.body).toMatchObject({ operation: 'cancel' })
-  await expect(flow.locator('[data-recovery-summary]')).toContainText('应急补货已结束')
+  // Nothing to wait for: the backend settles the Case at once (lifecycle.settle), so the item
+  // is not held and no "end" step is left for the owner.
+  expect(m.item.status).toBe('RESOLVED')
+  expect(m.item.outcome).toMatchObject({ path: 'waiting', action_ids: [] })
+  expect(m.item.routine_paused).toBe(false)
+  const summary = flow.locator('[data-recovery-summary]')
+  await expect(summary).toContainText('应急补货已结束')
+  await expect(summary).toContainText('这次不补')
+  expect(m.writes.some((w) => w.body?.operation === 'cancel')).toBe(false)
 })
 
 test.describe('手机 390 宽', () => {
@@ -718,21 +716,28 @@ test('部分成交后采用第二家：两笔都到齐才结算，到货只在�
   ])
 })
 
-test('部分成交阶段登记那几件到货：先说明会结束这次应急补货，再登记', async ({ page }) => {
+test('部分成交后先登记那几件到货：这次应急补货不结束，缺的仍可找别家补', async ({ page }) => {
   const m = await setupRecovery(page, { documents: true })
   const flow = flowCard(page)
   await toShort(page)
-  // Not offered on the page's arrival card; in the card, the consequence comes first.
+  // Not offered on the page's arrival card; recorded in the card, with no warning to give.
   await expect(page.locator('[data-arrival-card]')).toHaveCount(0)
   const row = flow.locator('[data-purchase="action-one"]')
   await row.locator('[data-purchase-record]').click()
-  await expect(row.locator('.rf-consequence')).toBeVisible()
-  expect(writes(m).some((p) => p.endsWith('/arrival'))).toBe(false)
+  await expect(row.locator('.rf-consequence')).toHaveCount(0)
   await row.locator('[data-purchase-arrival]').click()
-  // As said: with everything bought in, the backend settles the Case at 10.
+  await expect(row).toHaveCount(0)
+  // The rest is still to be decided (lifecycle.gap_open): the Case stays open.
+  expect(m.item.status).toBe('MONITORING')
+  await expect(flow).toHaveAttribute('data-stage', 'compare')
+  await expect(next(page)).toHaveText('缺的找别家补上')
+  // Comparing again, the owner may also stop at what arrived: that settles it.
+  await next(page).click()
+  await flow.locator('[data-recovery-option="wait"]').click()
+  await next(page).click()
   await expect(flow).toHaveAttribute('data-stage', 'summary')
   expect(m.item.status).toBe('RESOLVED')
-  expect(m.item.outcome).toMatchObject({ purchased_qty: 10, planned_qty: 40 })
+  expect(m.item.outcome).toMatchObject({ path: 'purchase', purchased_qty: 10, planned_qty: 40 })
 })
 
 test('两次拒单：两家都不再出现在比较里', async ({ page }) => {

@@ -71,6 +71,7 @@ async def test_identity_and_store_discovery_are_scoped(db):
                 "work_result_export",
                 "sourcing",
             ],
+            "purchase_channel": "simulator",
         }
         stores = await get(client, "stores")
         assert [item["store_id"] for item in stores["items"]] == [seed["store_id"]]

@@ -577,6 +577,16 @@ async def test_case_resolves_with_its_outcome_once_the_emergency_goods_arrive(db
             "lost_qty_before": candidates["wait"]["lost_qty"],
             "lost_qty_after": candidates["B_20"]["lost_qty"],
             "action_ids": [accepted["action_id"]],
+            "purchases": [
+                {
+                    "action_id": accepted["action_id"],
+                    "supplier_id": "B",
+                    "planned_qty": 20,
+                    "purchased_qty": 20,
+                    "received_qty": 20,
+                    "spend_minor": 24000,
+                }
+            ],
         }
         assert candidates["wait"]["lost_qty"] > candidates["B_20"]["lost_qty"]
         assert "CASE_RESOLVED" in await timeline_types(client, case)
@@ -736,3 +746,220 @@ async def test_routine_check_settles_a_case_whose_goods_arrived_before_it_could(
         await check_again(db, seed, client, case)
         assert (await case_view(client, case))["status"] == "RESOLVED"
         assert await current_plan(client, case) not in (None, plan["id"])
+
+
+async def timeline_said(client, case, kind):
+    response = await client.get(
+        f"/api/v1/missions/{case['mission_id']}/timeline",
+        params={"limit": 100},
+        headers=headers(),
+    )
+    return [entry["summary"] for entry in response.json()["items"] if entry["type"] == kind]
+
+
+async def sent_by_hand(db, seed, client, reply):
+    """The adopted plan approved as an order the owner sends; the supplier's reply pasted back."""
+    from test_execution import Supplier, decision, execute
+
+    case, plan = await adopted_case(db, seed, client)
+    response = await client.post(
+        f"/api/v1/plans/{plan['id']}/decision",
+        json=decision(plan) | {"channel": "assisted"},
+        headers=headers("approver"),
+    )
+    assert response.status_code == 202, response.text
+    action_id = response.json()["action_id"]
+    await execute(db, seed, Supplier())
+    replied = await client.post(
+        f"/api/v1/actions/{action_id}/supplier-reply",
+        json={"text": reply},
+        headers=headers("approver"),
+    )
+    assert replied.status_code == 200, replied.text
+    return case, action_id, replied.json()["supplier_reply"]["outcome"]
+
+
+async def taken_in_part(db, seed, client):
+    """B confirms 10 of the 20 ordered; the owner takes them and records them arriving."""
+    case, action_id, outcome = await sent_by_hand(db, seed, client, "可以，但只有10件")
+    assert outcome == "partial"
+    taken = await client.post(
+        f"/api/v1/actions/{action_id}/partial-acceptance", headers=headers("approver")
+    )
+    assert taken.status_code == 200, taken.text
+    arrived = await client.post(f"/api/v1/actions/{action_id}/arrival", json={}, headers=headers())
+    assert arrived.status_code == 200, arrived.text
+    return case
+
+
+async def test_goods_of_a_part_filled_order_leave_the_case_open_until_the_rest_is_decided(db):
+    from test_execution import Supplier, approve, execute
+    from test_operations import event, ingest
+
+    async with environment(db) as (seed, client):
+        case = await taken_in_part(db, seed, client)
+        current = await case_view(client, case)
+        # Everything bought is in, yet the rest may still be bought: nothing settles.
+        assert (current["status"], current["outcome"]) == ("MONITORING", None)
+        assert current["excluded_supplier_ids"] == ["B"]
+        refreshed = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/control",
+            json={"expected_revision": 1, "operation": "refresh"},
+            headers=headers(),
+        )
+        options = await analyze(client, refreshed.json())
+        assert "B" not in {c["supplier_id"] for c in options["proposal"]["candidates"]}
+        rest = next(
+            c for c in options["proposal"]["candidates"] if c["executable"] and c["quantity"]
+        )
+        adopted = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/materialize",
+            json=adopt_body(options) | {"candidate_id": rest["id"]},
+            headers=headers(),
+        )
+        assert adopted.status_code == 200, adopted.text
+        plan = (
+            await client.get(f"/api/v1/plans/{adopted.json()['plan_id']}", headers=headers())
+        ).json()
+        second = await approve(client, plan)
+        await execute(db, seed, Supplier())
+        received = event(
+            seed, 1, "GOODS_RECEIVED", action_id=second["action_id"], quantity=rest["quantity"]
+        )
+        await ingest(db, seed, [received])
+        current = await case_view(client, case)
+        assert current["status"] == "RESOLVED"
+        each = current["outcome"]["purchases"]
+        assert [(p["supplier_id"], p["planned_qty"], p["purchased_qty"]) for p in each] == [
+            ("B", 20, 10),
+            (rest["supplier_id"], rest["quantity"], rest["quantity"]),
+        ]
+        total = 10 + rest["quantity"]
+        assert current["outcome"]["purchased_qty"] == total
+        said = await timeline_said(client, case, "CASE_RESOLVED")
+        assert said and said[0].startswith(f"应急事项已解决：2 笔应急补货共 {total} 件已全部到货")
+
+
+async def test_stopping_after_a_part_filled_order_settles_with_what_arrived(db):
+    async with environment(db) as (seed, client):
+        case = await taken_in_part(db, seed, client)
+        path = f"/api/v1/operations-cases/{case['id']}/control"
+        refreshed = await client.post(
+            path, json={"expected_revision": 1, "operation": "refresh"}, headers=headers()
+        )
+        await analyze(client, refreshed.json())
+        waited = await client.post(
+            path, json={"expected_revision": 2, "operation": "adopt_waiting"}, headers=headers()
+        )
+        assert waited.status_code == 200, waited.text
+        current = waited.json()
+        assert (current["status"], current["routine_paused"]) == ("RESOLVED", False)
+        outcome = current["outcome"]
+        assert (outcome["path"], outcome["planned_qty"], outcome["purchased_qty"]) == (
+            "purchase",
+            20,
+            10,
+        )
+        assert outcome["received_qty"] == 10
+
+
+async def test_a_declined_order_is_no_longer_the_case_order_and_its_supplier_is_left_out(db):
+    async with environment(db) as (seed, client):
+        case, action_id, outcome = await sent_by_hand(db, seed, client, "抱歉，这批没货了")
+        assert outcome == "declined"
+        current = await case_view(client, case)
+        assert (current["action_id"], current["execution_status"]) == (None, "FAILED")
+        assert [(p["action_id"], p["status"]) for p in current["purchases"]] == [
+            (action_id, "FAILED")
+        ]
+        assert current["status"] == "RECHECK_REQUIRED"
+        assert current["excluded_supplier_ids"] == ["B"]
+        path = f"/api/v1/operations-cases/{case['id']}"
+        # Analyzing the same revision again would change nothing; the Case says what to do.
+        again = await client.post(
+            path + "/analyze", json={"expected_revision": 1}, headers=headers()
+        )
+        assert again.status_code == 409
+        assert again.json()["error"]["code"] == "CASE_REFRESH_REQUIRED"
+        # The owner also leaves C out; the choice carries over to later revisions.
+        await client.post(
+            path + "/revise",
+            json={"expected_revision": 1, "excluded_supplier_ids": ["C"]},
+            headers=headers(),
+        )
+        revised = await client.post(
+            path + "/revise",
+            json={"expected_revision": 2, "budget_minor": 25000},
+            headers=headers(),
+        )
+        options = await analyze(client, revised.json())
+        assert options["excluded_supplier_ids"] == ["B", "C"]
+        offered = {c["supplier_id"] for c in options["proposal"]["candidates"]}
+        assert offered <= {None, "supplier_001"}
+
+
+async def test_waiting_with_no_original_order_on_the_way_ends_the_case_at_once(db):
+    from app.missions.models import InboundRow
+    from app.operations.models import StockRow
+
+    async with environment(db) as (seed, client):
+        case = await recovery_case(db, seed, client)
+        async with db.session() as session, session.begin():
+            original = await session.get(InboundRow, ("original-" + seed["store_id"], "sku_001"))
+            await session.delete(original)
+            stock = await session.get(StockRow, (seed["store_id"], "sku_001"))
+            stock.in_transit = 0
+        case = await analyze(client, case)
+        waited = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/control",
+            json={"expected_revision": 1, "operation": "adopt_waiting"},
+            headers=headers(),
+        )
+        assert waited.status_code == 200, waited.text
+        current = waited.json()
+        assert (current["status"], current["routine_paused"]) == ("RESOLVED", False)
+        outcome = current["outcome"]
+        assert outcome["path"] == "waiting"
+        assert outcome["lost_qty_after"] == outcome["lost_qty_before"]
+        said = await timeline_said(client, case, "CASE_RESOLVED")
+        assert said and said[0].startswith("应急事项已结束：没有在途的原订单，这次不补货")
+        assert "CASE_DECISION" not in await timeline_types(client, case)
+        # Daily suggestions come back without the owner ending anything.
+        await run_check(db, seed)
+        assert await current_plan(client, case) is not None
+
+
+async def test_one_open_emergency_case_per_item(db):
+    async with environment(db) as (seed, client):
+        case = await recovery_case(db, seed, client)
+        body = {"mission_id": case["mission_id"], "objective": "再开一件", "budget_minor": 1000}
+        second = await client.post("/api/v1/operations-cases", json=body, headers=headers())
+        assert second.status_code == 409
+        assert second.json()["error"]["code"] == "CASE_ALREADY_OPEN"
+        ended = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/control",
+            json={"expected_revision": 1, "operation": "cancel"},
+            headers=headers(),
+        )
+        assert ended.status_code == 200, ended.text
+        again = await client.post("/api/v1/operations-cases", json=body, headers=headers())
+        assert again.status_code == 201, again.text
+
+
+async def test_a_scenario_written_before_the_clock_moved_is_dated_from_the_analysis(db):
+    from app.operations.models import Store
+
+    async with environment(db) as (seed, client):
+        case = await recovery_case(db, seed, client)
+        async with db.session() as session, session.begin():
+            store = await session.get(Store, seed["store_id"])
+            store.simulation_time += timedelta(days=1, hours=2)
+            store.state_version += 1
+            clock = store.simulation_time
+        current = await analyze(client, case)
+        assert current["status"] == "OPTIONS_READY", current["missing_inputs"]
+        days = current["proposal"]["candidates"][0]["daily"]
+        first = datetime.fromisoformat(days[0]["settlement_at"])
+        assert clock <= first < clock + timedelta(days=1)
+        # The quantities stay the owner's, day by day.
+        assert [d["demand_qty"] for d in days] == [10] * 7

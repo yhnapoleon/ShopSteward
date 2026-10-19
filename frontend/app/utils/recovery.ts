@@ -96,11 +96,9 @@ export const flowSteps = (variant: FlowVariant, originals = true): FlowStep[] =>
 /**
  * One purchase the Case led to, oldest first (the backend's `purchases`, joined with the shop's
  * order list for whatever it has read more recently). `accepted` is what the supplier confirmed,
- * `received` what has arrived of it. `endsCaseIfReceived`: the supplier filled the Case's latest
- * order only in part and the rest is still to be found ("缺的找别家补上"), yet receiving the rest
- * of this purchase would have the backend settle the Case (lifecycle.settle: nothing in flight,
- * everything bought is in), closing the restock with that gap unfilled. Receiving the last goods
- * of a restock that bought what it needed ends it as planned and is not flagged.
+ * `received` what has arrived of it. Receiving goods never closes a restock whose latest order
+ * was filled only in part: the backend settles it only once the rest was bought elsewhere or the
+ * owner chose to stop there (lifecycle.gap_open).
  */
 export type Purchase = {
   actionId: string
@@ -113,7 +111,6 @@ export type Purchase = {
   arrivalAt?: string
   /** The Case's current order (the one its latest adopted plan led to). */
   current: boolean
-  endsCaseIfReceived: boolean
   /** Sent by the owner: its goods are recorded by hand, nothing reports them. */
   byHand: boolean
 }
@@ -253,7 +250,7 @@ export function purchasesOf(
       accepted_qty: null,
       received_qty: null,
     })
-  const list: Purchase[] = rows.map((p) => {
+  return rows.map((p) => {
     const a = actions.find((x) => x.id === p.action_id) || null
     const inbound = inbounds.find((i) => i.action_id === p.action_id) || null
     const status =
@@ -280,30 +277,13 @@ export function purchasesOf(
       received,
       ...(arrivalAt ? { arrivalAt } : {}),
       current: p.action_id === latestId && fresh,
-      endsCaseIfReceived: false,
       // Only an order sent by hand can be taken in part (execution/assisted.py accept_partial).
       byHand: a
         ? a.channel === 'assisted'
         : readable(p.supplier_id) || (bought && accepted < p.planned_qty),
     }
   })
-  // lifecycle.settle: a monitored Case resolves once nothing is in flight and all goods are in.
-  const settles = d.status === 'MONITORING' && !list.some((p) => IN_FLIGHT.includes(p.status))
-  // The latest order was filled in part and nothing newer was decided: a gap is still open.
-  const own = list.find((p) => p.current)
-  const gapOpen = !!own && own.status === 'SUCCEEDED' && own.accepted < own.planned
-  for (const p of list)
-    p.endsCaseIfReceived =
-      settles &&
-      gapOpen &&
-      p.status === 'SUCCEEDED' &&
-      p.received < p.accepted &&
-      list.every((o) => o === p || o.status !== 'SUCCEEDED' || o.received >= o.accepted)
-  return list
 }
-/** Whether recording `quantity` units of this purchase closes the restock with its gap open. */
-export const endsCaseWith = (purchase: Purchase, quantity: number) =>
-  purchase.endsCaseIfReceived && quantity >= purchase.accepted - purchase.received
 
 /**
  * Where the Case stands, read from the backend's facts. The backend settles a Case itself
@@ -323,7 +303,9 @@ export function flowState(facts: FlowFacts): FlowState {
     actor === 'you' && allowed === false ? 'other' : actor
   if (d.status === 'RESOLVED') return state(waited ? 'wait' : variant, 'result', 'done', true)
   const own = purchases.find((p) => p.current)
-  const status = d.action_id || a ? (own?.status ?? a?.status ?? caseOrderStatus(d)) : null
+  // An order that bought nothing is no longer the Case's (`action_id` is cleared), yet the Case
+  // still reports how it ended, which says why it compares again.
+  const status = own?.status ?? a?.status ?? caseOrderStatus(d)
   if (status) {
     // Revised since this order was placed: the newer revision decides the stage, not the order.
     const current = (d.plan_revision ?? d.current_revision) >= d.current_revision
@@ -977,7 +959,10 @@ export function caseProblem(code: string, message: string) {
     CASE_INPUT_CHANGED: '读资料期间条件改了，读出的报价没有登记，请重新找货。',
     // Comparing again fills in the mission's demand assumption day by day (useRecoveryFlow.again).
     DAILY_DEMAND_REQUIRED: '没有可用的日预测；重新比价会按当前需求假设逐日计算。',
-    RECOVERY_INPUT_INVALID: '经营时钟已经往前走了，需求日期要按现在重排，请重新比价。',
+    RECOVERY_INPUT_INVALID: '比价条件不完整或有误，请重新比价。',
+    CASE_ALREADY_OPEN: '这件商品已有一次应急补货在进行，先处理完它。',
+    CASE_REFRESH_REQUIRED: '这次比价结果已不成立，请重新比价。',
+    NO_OTHER_SUPPLIERS: '在档的供应商都已排除，没有别家可以找。',
     OFFER_SELECTION_REQUIRED: '能比的报价超过三家；重新比价会取最便宜的三家。',
     FORECAST_UNAVAILABLE: '当前预测不可用；重新比价会按当前需求假设逐日计算。',
     DATA_STALE: '经营数据还未同步完成，稍后再比价。',

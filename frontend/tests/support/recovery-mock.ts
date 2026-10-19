@@ -99,6 +99,12 @@ export function createMock(options: Options = {}) {
     releaseRead: null as null | (() => void),
     /** Ids for the orders approved here, in order. */
     actionCount: 0,
+    /** Suppliers the owner left out of the Case (its `excluded_supplier_ids` input). */
+    excludedInputs: [] as string[],
+    /** Order of the Case's events: when a part was taken, and when waiting was chosen. */
+    seq: 0,
+    filledAt: 0,
+    waitedAt: 0,
     session: {
       authenticated: true,
       principal_id: 'test-owner',
@@ -169,9 +175,33 @@ export function createMock(options: Options = {}) {
       }
     })
   }
+  /** The Case's own purchases, oldest first. */
+  const purchasesOf = (c: any) =>
+    f.actions.items
+      .filter((a: any) => m.plans[a.plan_id]?.recovery_intent?.case_id === c.id)
+      .sort((a: any, b: any) => a.created_at.localeCompare(b.created_at))
+  const shortOf = (a: any) =>
+    a.status === 'SUCCEEDED' && (a.receipt?.quantity ?? a.quantity) < a.quantity
+  /**
+   * Who the Case leaves out (operations_cases/lifecycle.py excluded): the owner's choice, and
+   * every supplier whose order here declined, failed, was taken back or was filled in part.
+   */
+  function excluded(): string[] {
+    const c = m.item
+    if (!c) return []
+    const ids = new Set<string>(m.excludedInputs)
+    for (const a of purchasesOf(c))
+      if (['FAILED', 'CANCELLED'].includes(a.status) || shortOf(a))
+        ids.add(a.purchase_snapshot.supplier_id)
+    return [...ids].sort()
+  }
   function solve(c: any) {
+    const left = excluded()
     const offers = f.catalog.offers.filter(
-      (o: any) => o.sku_id === sku && (!c.supplier_ids || c.supplier_ids.includes(o.supplier_id)),
+      (o: any) =>
+        o.sku_id === sku &&
+        (!c.supplier_ids || c.supplier_ids.includes(o.supplier_id)) &&
+        !left.includes(o.supplier_id),
     )
     const cash = f.dashboard.state.available_cash_minor
     const floor = mission.policy.cash_floor_minor
@@ -279,7 +309,9 @@ export function createMock(options: Options = {}) {
   function revise(changes: any) {
     const c = m.item
     invalidatePending()
-    Object.assign(c, changes)
+    const { excluded_supplier_ids: left, ...rest } = changes
+    if (left) m.excludedInputs = left
+    Object.assign(c, rest)
     c.current_revision++
     c.status = 'OPEN'
     c.recheck_reason = null
@@ -343,7 +375,8 @@ export function createMock(options: Options = {}) {
       })
       return
     }
-    const registered = SUPPLIERS.filter((s) => !('noOffer' in s))
+    const read = c.sourcing.suppliers.map((s: any) => s.supplier_id)
+    const registered = SUPPLIERS.filter((s) => !('noOffer' in s) && read.includes(s.id))
       .sort((a, b) => a.price - b.price)
       .map((s) => s.id)
     // Reading the documents again registers the current quote in place of an older one.
@@ -378,6 +411,7 @@ export function createMock(options: Options = {}) {
       }
   }
   function caseOf(body: any): any {
+    m.excludedInputs = body.excluded_supplier_ids ?? []
     return {
       id: 'case-one',
       mission_id: mission.id,
@@ -390,6 +424,7 @@ export function createMock(options: Options = {}) {
       max_purchase_qty: body.max_purchase_qty ?? null,
       daily_demand: body.daily_demand ?? null,
       supplier_ids: body.supplier_ids ?? null,
+      excluded_supplier_ids: [...m.excludedInputs].sort(),
       proposal: null,
       plan_id: null,
       plan_status: null,
@@ -415,16 +450,23 @@ export function createMock(options: Options = {}) {
   }
   // What the backend derives whenever the Case is read (operations_cases/lifecycle.py): its
   // purchases, whether it holds the item off routine checks, and settling it once everything it
-  // decided on has arrived. Waiting with no original order on the way never settles.
+  // decided on has arrived. A part-filled order settles nothing until the owner decides about
+  // the rest; waiting with no original order on the way settles at once.
   function sync() {
     const c = m.item
     if (!c) return
     const inboundOf = (a: any) => f.inbounds.items.find((i: any) => i.action_id === a.id)
-    const mine = f.actions.items
-      .filter((a: any) => m.plans[a.plan_id]?.recovery_intent?.case_id === c.id)
-      .sort((a: any, b: any) => a.created_at.localeCompare(b.created_at))
+    const mine = purchasesOf(c)
     const accepted = (a: any) =>
       a.status === 'SUCCEEDED' ? (a.receipt?.quantity ?? a.quantity) : 0
+    c.excluded_supplier_ids = excluded()
+    // The Case's order is the one its plan led to while it stands; one that bought nothing
+    // keeps its status in `execution_status` only (operations_cases/repository.py detail).
+    const ordered = mine.find((a: any) => a.plan_id === c.plan_id)
+    if (ordered && ['FAILED', 'CANCELLED', 'STALE'].includes(ordered.status)) {
+      c.action_id = null
+      c.execution_status = ordered.status
+    }
     c.purchases = mine.map((a: any) => ({
       action_id: a.id,
       supplier_id: a.purchase_snapshot.supplier_id,
@@ -454,6 +496,7 @@ export function createMock(options: Options = {}) {
     c.routine_paused = !terminal && (c.plan_id != null || c.status === 'MONITORING')
     if (c.status !== 'MONITORING') return
     if (mine.some((a: any) => ['QUEUED', 'EXECUTING', 'UNKNOWN'].includes(a.status))) return
+    if (mine.length && shortOf(mine.at(-1)) && !(m.waitedAt > m.filledAt)) return
     const bought = mine.filter((a: any) => a.status === 'SUCCEEDED')
     const wait = c.proposal?.candidates.find((x: any) => x.quantity === 0)
     let path: 'purchase' | 'waiting', after: number
@@ -471,7 +514,6 @@ export function createMock(options: Options = {}) {
         : (chosen?.lost_qty ?? 0)
     } else {
       const originals = c.evidence.filter((e: any) => e.kind === 'inbound_order')
-      if (!originals.length) return
       if (
         originals.some(
           (e: any) =>
@@ -497,6 +539,14 @@ export function createMock(options: Options = {}) {
       lost_qty_before: wait?.lost_qty ?? 0,
       lost_qty_after: after,
       action_ids: bought.map((a: any) => a.id),
+      purchases: bought.map((a: any) => ({
+        action_id: a.id,
+        supplier_id: a.purchase_snapshot.supplier_id,
+        planned_qty: a.quantity,
+        purchased_qty: accepted(a),
+        received_qty: inboundOf(a)?.received_quantity ?? 0,
+        spend_minor: accepted(a) * a.purchase_snapshot.unit_price_minor,
+      })),
     }
     c.status = 'RESOLVED'
     c.routine_paused = false
@@ -536,6 +586,7 @@ export function createMock(options: Options = {}) {
     })
     mission.current_action_id = null
     if (m.item?.action_id === action.id) m.item.execution_status = 'ACCEPTED'
+    m.filledAt = ++m.seq
     monitor(action)
     return action
   }
@@ -746,6 +797,7 @@ export function createMock(options: Options = {}) {
     sampleDocuments,
     nameOf,
     offerFor,
+    excluded,
     solve,
     analyze,
     revise,
@@ -869,6 +921,10 @@ export async function setupRecovery(page: Page, options: Options = {}) {
         const { expected_revision: _, ...changes } = body
         m.revise(changes)
       } else if (op === 'source') {
+        // sourcing/run.py start: a supplier the Case left out is not read again.
+        const left = m.excluded()
+        const readable = SUPPLIERS.filter((s) => !left.includes(s.id))
+        if (!readable.length) return fail(422, 'NO_OTHER_SUPPLIERS')
         c.sourcing = {
           status: 'running',
           run_id: 'run-one',
@@ -880,14 +936,15 @@ export async function setupRecovery(page: Page, options: Options = {}) {
             shortfall_qty: c.proposal?.candidates.find((x: any) => x.id === 'wait')?.lost_qty ?? 0,
             short_from: '2026-09-10',
           },
-          suppliers: SUPPLIERS.map((s) => ({
+          suppliers: readable.map((s) => ({
             supplier_id: s.id,
             name: m.nameOf(s),
             documents: [{ doc_id: `${s.id}-quote`, kind: 'quote' }],
           })),
+          excluded: left,
           reviews: [],
         }
-        m.reviewing = SUPPLIERS.map((s) => s.id)
+        m.reviewing = readable.map((s) => s.id)
       } else if (op === 'materialize') {
         const refused = m.refuseAdoption(body)
         if (refused) return fail(409, refused)
@@ -910,6 +967,8 @@ export async function setupRecovery(page: Page, options: Options = {}) {
             mission.current_plan_id = null
           }
           c.status = 'MONITORING'
+          // Also the owner's answer to a part-filled order: the rest is not bought.
+          m.waitedAt = ++m.seq
         }
         if (body.operation === 'refresh') m.revise({})
       } else return fail(409, 'BLOCKED_TEST_WRITE')
