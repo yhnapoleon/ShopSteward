@@ -318,6 +318,53 @@ async def test_a_card_the_gate_rejects_twice_leaves_that_supplier_out_and_says_w
         assert done["expert_analysis"] is None
 
 
+async def test_a_supplier_the_case_left_out_is_not_read_again(db, monkeypatch):
+    import shopsteward_agent
+
+    async with environment(db) as (seed, client):
+        app = client._transport.app
+        settings = app.state.settings
+        settings.agent_sourcing_model = "test-reader"
+        settings.agent_sourcing_api_key_file = "test-provider-does-not-read-this"
+        settings.agent_max_input_tokens = 64000
+        case = await short_case(db, seed, client)
+        documents = f"/api/v1/stores/{seed['store_id']}/supplier-documents"
+        loaded = await client.post(
+            documents + "/sample", json={"sku_id": "sku_001"}, headers=headers()
+        )
+        answers = cards(loaded.json()["suppliers"])
+        monkeypatch.setattr(shopsteward_agent, "OpenAIModel", lambda **kwargs: Desk(answers))
+        path = f"/api/v1/operations-cases/{case['id']}"
+
+        async def leave_out(revision, suppliers):
+            response = await client.post(
+                path + "/revise",
+                json={"expected_revision": revision, "excluded_supplier_ids": suppliers},
+                headers=headers(),
+            )
+            assert response.status_code == 200, response.text
+            return response.json()
+
+        assert (await leave_out(1, ["A", "B", "C"]))["excluded_supplier_ids"] == ["A", "B", "C"]
+        nobody = await client.post(
+            path + "/source", json={"expected_revision": 2}, headers=headers()
+        )
+        assert nobody.json()["error"]["code"] == "NO_OTHER_SUPPLIERS"
+        await leave_out(2, ["B"])
+        started = await client.post(
+            path + "/source", json={"expected_revision": 3}, headers=headers()
+        )
+        assert started.status_code == 200, started.text
+        running = started.json()["sourcing"]
+        assert [s["supplier_id"] for s in running["suppliers"]] == ["A", "C"]
+        assert running["excluded"] == ["B"]
+        await asyncio.gather(*list(app.state.sourcing_tasks))
+        done = (await client.get(path, headers=headers())).json()
+        assert done["sourcing"]["registered"] == ["A"]
+        assert done["excluded_supplier_ids"] == ["B"]
+        assert {c["supplier_id"] for c in done["proposal"]["candidates"]} <= {None, "A"}
+
+
 async def test_text_bundles_list_what_evolution_changed_and_where_each_runs(db):
     async with environment(db) as (seed, client):
         listed = (await client.get("/api/v1/text-bundles", headers=headers("viewer"))).json()

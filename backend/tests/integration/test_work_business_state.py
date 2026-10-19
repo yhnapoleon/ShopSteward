@@ -76,3 +76,56 @@ async def test_expiry_without_a_work_version_change_removes_confirmation(db):
         assert current["code"] == "PLAN_STALE" and not current["can_confirm"]
         detail = (await client.get(f"/api/v1/work-items/{item['id']}", headers=headers())).json()
         assert detail["item"]["version"] == item["version"]
+
+
+async def test_an_emergency_plan_awaiting_confirmation_reads_like_any_pending_plan(db):
+    from test_operations_cases import adopted_case
+
+    from app.operations.models import Store
+
+    async with environment(db) as (seed, client):
+        case, plan = await adopted_case(db, seed, client)
+        item = await open_work(client, {"id": case["mission_id"]})
+        state = await read(client, item)
+        assert (state["code"], state["plan_id"]) == ("PENDING_APPROVAL", plan["id"])
+        assert state["can_confirm"]
+        sent = await client.post(
+            f"/api/v1/work-items/{item['id']}/messages",
+            json={"content": "这份应急方案先别动"},
+            headers=headers(),
+        )
+        assert sent.status_code == 200, sent.text
+        # Its own inputs decide when it can no longer be confirmed, as approval checks them.
+        async with db.session() as session, session.begin():
+            store = await session.get(Store, case["store_id"])
+            store.state_version += 1
+        state = await read(client, item)
+        assert state["code"] == "PLAN_STALE" and not state["can_confirm"]
+
+
+async def test_an_order_sent_by_hand_with_no_reply_past_its_date_is_overdue(db):
+    from datetime import datetime
+
+    from test_execution import decision
+
+    from app.operations.models import Store
+
+    async with environment(db) as (seed, client):
+        mission, plan = await planned(db, seed, client)
+        response = await client.post(
+            f"/api/v1/plans/{plan['id']}/decision",
+            json=decision(plan) | {"channel": "assisted"},
+            headers=headers("approver"),
+        )
+        assert response.status_code == 202, response.text
+        await execute(db, seed, Supplier())
+        item = await open_work(client, mission)
+        assert (await read(client, item))["code"] == "AWAITING_SUPPLIER"
+        async with db.session() as session, session.begin():
+            action = await session.get(ActionRow, response.json()["action_id"])
+            store = await session.get(Store, mission["store_id"])
+            store.simulation_time = datetime.fromisoformat(
+                action.purchase_snapshot["expected_arrival_at"]
+            )
+        state = await read(client, item)
+        assert (state["code"], state["needs_attention"]) == ("SUPPLIER_OVERDUE", True)

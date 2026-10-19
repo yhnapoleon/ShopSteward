@@ -38,6 +38,7 @@ async def current_user(request: Request, principal: User):
             "work_result_export",
             "sourcing",
         ],
+        purchase_channel=request.app.state.settings.purchase_channel,
     )
 
 
