@@ -28,7 +28,7 @@ defineEmits<{ open: [] }>()
       {{
         canDecide && plan?.proposed_purchase
           ? tr('建议补货 {0} 件', [plan.proposed_purchase.quantity])
-          : mission.objective
+          : tr(mission.objective)
       }}
     </h2>
     <p class="task-card-context">{{ product?.name }}<span>·</span>{{ tr(status.detail) }}</p>

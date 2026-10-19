@@ -46,6 +46,8 @@ const missionControls: Record<string, string> = {
 }
 const proposal = /^推荐采购(\d+)件；预计支出(-?\d+)分，采购后可用现金(-?\d+)分，剩余缺口(\d+)件。$/
 const noProposal = '当前候选均不满足采购约束，未提出采购。'
+// The emergency plan the owner adopts (planning/recovery/materialize.py); the spend is in fen.
+const emergencyPlan = /^应急补购 (\d+) 件，支出 (\d+) 分；七日预测缺货 (\d+) 件。原订单保留。$/
 const checkLine = /^检查([A-Z_]+)：([\s\S]*)（任务[^（）]*）$/
 const savedComparison = 'Candidate comparison saved'
 const emergencyHolds = 'An emergency case holds this item until it ends'
@@ -200,6 +202,17 @@ function planTitle(summary: string, revised: boolean) {
     return {
       title: t(revised ? '方案已修订：没有可行的采购' : '新方案：没有可行的采购'),
       tone: 'amber' as const,
+      quiet: false,
+    }
+  const emergency = emergencyPlan.exec(summary)
+  if (emergency)
+    return {
+      title: t('应急补购 {0} 件，支出 {1}；七日预测缺货 {2} 件。原订单保留。', [
+        emergency[1]!,
+        money(Number(emergency[2])),
+        emergency[3]!,
+      ]),
+      tone: 'gray' as const,
       quiet: false,
     }
   const m = proposal.exec(summary)

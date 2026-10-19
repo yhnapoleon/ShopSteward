@@ -1279,7 +1279,7 @@ function briefing() {
               @click="openTask(m.id)"
             >
               <span
-                >{{ m.objective
+                >{{ tr(m.objective)
                 }}<small>{{
                   joinText([
                     tr(m.id.slice(-8)),
@@ -1631,7 +1631,7 @@ function briefing() {
     >
     <template v-else-if="dialog === 'mission' && mission"
       ><h3>{{ joinText([product?.name, tr('· 活动备货')]) }}</h3>
-      <p>{{ mission.objective }}</p>
+      <p>{{ tr(mission.objective) }}</p>
       <div class="detail-row">
         <span>{{ tr('现金底线') }}</span
         ><b>{{ tr(money(mission.policy.cash_floor_minor)) }}</b>
@@ -1664,7 +1664,7 @@ function briefing() {
         {{
           joinText([
             tr('结束「'),
-            mission.objective,
+            tr(mission.objective),
             tr('」的主动跟进。方案、决定和采购记录保留，可随时回看。'),
           ])
         }}
@@ -1940,7 +1940,7 @@ function briefing() {
             )
           }}
         </h3>
-        <p>{{ a.summary }}</p>
+        <p>{{ tr(a.summary) }}</p>
         <p>
           {{
             joinText([

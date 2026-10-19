@@ -2,7 +2,7 @@
 import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { when } from '~/utils/presentation'
-import { workPresentation } from '~/utils/workPresentation'
+import { workPresentation, workTitle } from '~/utils/workPresentation'
 import { awaitsOwnerArrival, workBadge } from '~/composables/useSpace'
 const props = defineProps<{ item: Schema<'WorkView'> }>()
 defineEmits<{ open: [] }>()
@@ -21,7 +21,7 @@ const work = useWorkItems()
       <span class="tag">{{ tr(item.mission_id ? '备货事项' : '我的事项') }}</span
       ><span class="tag" :class="badge.tone">{{ badge.label }}</span>
     </div>
-    <h2>{{ item.title }}</h2>
+    <h2>{{ workTitle(item) }}</h2>
     <p>
       <b v-if="state !== badge.label" class="work-card-state">{{ state }} · </b
       >{{ presentation.detailIsOriginal ? presentation.detail : tr(presentation.detail) }}

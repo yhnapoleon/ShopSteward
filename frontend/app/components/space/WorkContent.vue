@@ -82,8 +82,8 @@ async function surfaceAnswer(text: string) {
           )
         }}
       </h2>
-      <p>{{ item.question || item.summary || tr('原始要求已保存，可以在右侧继续补充。') }}</p>
-      <p>{{ item.result?.calculation ? tr(item.next_step) : item.next_step }}</p>
+      <p>{{ tr(item.question || item.summary || '原始要求已保存，可以在右侧继续补充。') }}</p>
+      <p>{{ tr(item.next_step) }}</p>
       <small>{{ joinText([tr('最近更新：'), tr(when(item.updated_at))]) }}</small>
       <p v-if="expired" class="notice amber">
         {{ tr('本轮处理未按时返回，可以重试；已保存的内容仍保留。') }}
@@ -126,7 +126,7 @@ async function surfaceAnswer(text: string) {
     </template>
     <section v-if="item.mission_request && !linked" class="glass work-status-panel space-request">
       <h2>{{ tr('开始持续跟进这项备货') }}</h2>
-      <p>{{ item.mission_request.objective }}</p>
+      <p>{{ tr(item.mission_request.objective) }}</p>
       <p v-if="item.result?.calculation" class="source-note">
         {{ tr('按这里的现金底线和候选数量建立委托，业务系统会用最新有效需求重新生成方案。') }}
       </p>

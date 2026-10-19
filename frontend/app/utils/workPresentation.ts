@@ -1,3 +1,4 @@
+import { t } from '~/i18n'
 import type { Schema } from '~/types/models'
 
 export function newerWork(left: Schema<'WorkView'>, right: Schema<'WorkView'>) {
@@ -10,6 +11,14 @@ export function newerWork(left: Schema<'WorkView'>, right: Schema<'WorkView'>) {
       : right
   return { ...current, business: freshest.business, mission: freshest.mission }
 }
+
+/**
+ * A work item's title for display. Titles the system wrote are fixed sentences and follow the
+ * language: a restocking mission's objective and a quantity trial's "{product} · 补货数量试算".
+ * A title taken from the owner's own first message is shown exactly as written.
+ */
+export const workTitle = (item: Schema<'WorkView'>) =>
+  item.result?.calculation || item.title === item.mission?.objective ? t(item.title) : item.title
 
 export function workPresentation(item: Schema<'WorkView'>, now = Date.now()) {
   const processing =
@@ -75,7 +84,10 @@ export function workPresentation(item: Schema<'WorkView'>, now = Date.now()) {
       item.question && item.status === 'WAITING_INPUT'
         ? item.question
         : item.summary || '要求已保存，可以继续补充。',
-    detailIsOriginal: !!(item.question && item.status === 'WAITING_INPUT') || !!item.summary,
+    // Neither field is the owner's own words: a question is written by the assistant or the quote
+    // service (agent_bridge/jobs.py, quotations/repository.py) and a summary is a status sentence,
+    // so both follow the interface language.
+    detailIsOriginal: false,
     action: item.status === 'WAITING_INPUT' ? '补充信息' : item.result ? '查看结果' : '继续这件事',
     tone: ['WAITING_INPUT', 'BLOCKED'].includes(item.status) ? 'amber' : 'gray',
     priority: item.status === 'WAITING_INPUT' ? 30 : item.status === 'BLOCKED' ? 32 : 75,
