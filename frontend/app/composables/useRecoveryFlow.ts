@@ -90,12 +90,14 @@ export function useRecoveryFlow(missionId: () => string) {
   )
   /**
    * Who sends an order to this supplier, before any order exists: one read from documents always
-   * gets it from the owner (execution/repository.py); otherwise an earlier order to it tells.
-   * Null when nothing does (the deployment's purchase channel decides).
+   * gets it from the owner (execution/repository.py); any other goes out the deployment's way,
+   * which the session reports. Without that, an earlier order to it tells; null when nothing does.
    */
   function channelFor(supplierId: string | null | undefined): Channel | null {
     if (!supplierId) return null
     if (fromDocuments(supplierId)) return 'assisted'
+    const deployed = s.session?.purchase_channel
+    if (deployed) return deployed === 'assisted' ? 'assisted' : 'direct'
     const earlier = s.actions.find((a) => a.purchase_snapshot.supplier_id === supplierId)
     return earlier ? (earlier.channel === 'assisted' ? 'assisted' : 'direct') : null
   }
@@ -124,6 +126,7 @@ export function useRecoveryFlow(missionId: () => string) {
   /**
    * Who stays out of this Case's comparisons: every supplier whose order failed, was taken back
    * or could be filled only in part, and every one the owner chose not to ask again ("不找…").
+   * The backend keeps the same list (`excluded_supplier_ids`) and neither reads nor compares them.
    */
   const excludedIds = computed(() => {
     const ids = new Set<string>()
@@ -133,6 +136,7 @@ export function useRecoveryFlow(missionId: () => string) {
     }
     const value = detail.value
     if (!value) return ids
+    for (const id of value.excluded_supplier_ids || []) ids.add(id)
     for (const id of stored.value[value.id] || []) ids.add(id)
     for (const p of purchases.value)
       if (
@@ -359,6 +363,7 @@ export function useRecoveryFlow(missionId: () => string) {
         max_purchase_qty: null,
         supplier_ids: suppliersFor(new Set(exclude ? [exclude] : [])),
       }
+      if (exclude) body.excluded_supplier_ids = [exclude]
       if (input.demand.source !== 'forecast') {
         const daily = dated(input.demand.values)
         if (!daily) throw new Error('经营时钟还没有同步，稍后再试。')

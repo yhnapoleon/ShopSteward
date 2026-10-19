@@ -110,9 +110,15 @@ const caseSentences: { pattern: RegExp; title: string; detail?: string; yuan?: n
   { pattern: /^你选择等原订单；/, title: '你选择等原订单', detail: HELD },
   {
     pattern:
+      /^应急事项已解决：(\d+) 笔应急补货共 (\d+) 件已全部到货，花费 ([\d.]+) 元；七日预计缺货从 (\d+) 件降到 (\d+) 件。$/,
+    title: '应急补货完成：分 {0} 笔补到 {1} 件，已全部到货',
+    detail: '花了 {2} · 7 天预计缺货 {3} → {4} 件',
+    yuan: 2,
+  },
+  {
+    pattern:
       /^应急事项已解决：供应商确认的 (\d+) 件已全部到货（订单 (\d+) 件），花费 ([\d.]+) 元；七日预计缺货从 (\d+) 件降到 (\d+) 件。$/,
-    // The backend's order total adds every order of the restock (a partial one and the one
-    // that filled the rest), so the row says what arrived, not what was ordered.
+    // One order the supplier filled in part: the row says what arrived, not what was ordered.
     title: '应急补货完成：补到 {0} 件，已全部到货',
     detail: '花了 {2} · 7 天预计缺货 {3} → {4} 件',
     yuan: 2,
@@ -128,6 +134,11 @@ const caseSentences: { pattern: RegExp; title: string; detail?: string; yuan?: n
     pattern: /^应急事项已解决：原订单已全部到货，没有追加采购；七日预计缺货 (\d+) 件。$/,
     title: '应急补货结束：原订单已全部到货，没有追加采购',
     detail: '7 天预计缺货 {0} 件',
+  },
+  {
+    pattern: /^应急事项已结束：没有在途的原订单，这次不补货；七日预计缺货 (\d+) 件。$/,
+    title: '应急补货结束：这次不补',
+    detail: '没有在途的原订单 · 7 天预计缺货 {0} 件；系统恢复每天的补货建议',
   },
   {
     pattern: /^供应商只确认了 (\d+)\/(\d+) 件。/,

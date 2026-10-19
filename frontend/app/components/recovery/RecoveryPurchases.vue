@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { t as tr } from '~/i18n'
 import { supplierDisplayName } from '~/utils/glossary'
-import { dayOf, endsCaseWith, named, unbroken, type Purchase } from '~/utils/recovery'
+import { dayOf, named, unbroken, type Purchase } from '~/utils/recovery'
 import { useFlow } from '~/composables/useRecoveryFlow'
 
 // Goods already bought in this restock that have not all arrived (a supplier that confirmed only
 // part, while the rest is found elsewhere): one line each, "百川批发 10 件 · 9/8 到", with a link to
-// record the arrival. When recording it would end the restock with its gap still open (everything
-// bought is then in), that consequence is said once, at that moment, before anything is sent.
+// record the arrival. Recording never ends the restock while the rest is still to be decided.
 /** `others`: leave out the Case's current purchase, which the stage itself is showing. */
 const props = defineProps<{ others?: boolean }>()
 const flow = useFlow()
@@ -15,10 +14,6 @@ const rows = computed(() =>
   flow.purchases.value.filter(
     (p) => p.accepted > 0 && p.received < p.accepted && !(props.others && p.current),
   ),
-)
-/** Everything this restock bought, which is what it ends with when recording closes it. */
-const bought = computed(() =>
-  flow.purchases.value.filter((p) => p.status === 'SUCCEEDED').reduce((n, p) => n + p.accepted, 0),
 )
 const open = ref<string | null>(null)
 const counts = reactive<Record<string, number>>({})
@@ -76,9 +71,6 @@ async function record(p: Purchase) {
         {{ tr('登记到货') }}
       </button>
       <div v-if="open === p.actionId" class="rf-purchase-record">
-        <p v-if="endsCaseWith(p, counted(p))" class="rf-consequence" role="status">
-          {{ tr('登记后，这次应急补货按 {0} 件结束；要补缺口先点「缺的找别家补上」。', [bought]) }}
-        </p>
         <label class="rf-count"
           >{{ tr('这次到了')
           }}<input

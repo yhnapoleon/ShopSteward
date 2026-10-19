@@ -1936,6 +1936,8 @@ export interface components {
             daily_demand?: components["schemas"]["DailyDemand"][] | null;
             /** Supplier Ids */
             supplier_ids?: string[] | null;
+            /** Excluded Supplier Ids */
+            excluded_supplier_ids?: string[] | null;
         };
         /** CaseDetail */
         CaseDetail: {
@@ -1961,6 +1963,8 @@ export interface components {
             daily_demand: components["schemas"]["DailyDemand"][] | null;
             /** Supplier Ids */
             supplier_ids?: string[] | null;
+            /** Excluded Supplier Ids */
+            excluded_supplier_ids?: string[];
             proposal: components["schemas"]["RecoveryProposal"] | null;
             /** Plan Id */
             plan_id: string | null;
@@ -2081,6 +2085,10 @@ export interface components {
         /**
          * CaseOutcome
          * @description What a resolved case achieved; shortage is projected over the analyzed seven days.
+         *
+         *     The quantities add up every order of the case; `purchases` gives each one. `path` is
+         *     `waiting` when nothing was bought: the original orders arrived, or with none on the way
+         *     the owner chose not to restock.
          */
         CaseOutcome: {
             /**
@@ -2102,6 +2110,26 @@ export interface components {
             lost_qty_after: number;
             /** Action Ids */
             action_ids: string[];
+            /** Purchases */
+            purchases?: components["schemas"]["CaseOutcomePurchase"][];
+        };
+        /**
+         * CaseOutcomePurchase
+         * @description What one emergency order brought: ordered, confirmed by the supplier, arrived, paid.
+         */
+        CaseOutcomePurchase: {
+            /** Action Id */
+            action_id: string;
+            /** Supplier Id */
+            supplier_id: string;
+            /** Planned Qty */
+            planned_qty: number;
+            /** Purchased Qty */
+            purchased_qty: number;
+            /** Received Qty */
+            received_qty: number;
+            /** Spend Minor */
+            spend_minor: number;
         };
         /**
          * CasePurchase
@@ -2135,6 +2163,8 @@ export interface components {
             daily_demand?: components["schemas"]["DailyDemand"][] | null;
             /** Supplier Ids */
             supplier_ids?: string[] | null;
+            /** Excluded Supplier Ids */
+            excluded_supplier_ids?: string[] | null;
         };
         /** CaseSource */
         CaseSource: {
@@ -2260,6 +2290,12 @@ export interface components {
             store_scope: "ALL" | "ASSIGNED";
             /** Capabilities */
             capabilities?: string[];
+            /**
+             * Purchase Channel
+             * @default simulator
+             * @enum {string}
+             */
+            purchase_channel: "simulator" | "assisted";
         };
         /** DailyBalance */
         DailyBalance: {
