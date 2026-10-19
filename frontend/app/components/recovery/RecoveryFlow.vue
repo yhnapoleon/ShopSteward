@@ -14,21 +14,20 @@ provide(recoveryFlowKey, flow)
 flow.onConfirm(() => emit('confirm'))
 const reduce = useReducedMotion()
 const state = computed(() => flow.flow.value)
-/** Our own calls in flight are the system working too; an unconfirmed submission waits on the owner. */
-const actor = computed(() =>
-  flow.working.value ? 'system' : flow.unconfirmed.value ? 'you' : state.value.actor,
-)
+/** A slow call of ours is the system working too; an unconfirmed submission waits on the owner. */
+const actor = computed(() => flow.actor.value)
 const stage = computed(() =>
   state.value.stage === 'confirm' && flow.revisiting.value ? 'compare' : state.value.stage,
 )
-const steps = computed(() => flowSteps(state.value.variant, flow.originals.value.length > 0))
+const steps = computed(() => flowSteps(state.value.variant, flow.hasOriginals.value))
 const current = computed(() =>
   Math.max(
     0,
     steps.value.findIndex((s) => s.key === state.value.stage),
   ),
 )
-const visible = computed(() => !!flow.brief.value || !!flow.detail.value)
+// A creation whose answer was lost shows too, even with no Case read yet: it waits to be verified.
+const visible = computed(() => !!flow.brief.value || !!flow.detail.value || flow.unconfirmed.value)
 const expanded = ref(false)
 watch(
   () => flow.detail.value?.id,
@@ -43,16 +42,20 @@ watch(
     root.value?.scrollIntoView({ behavior: reduce.value ? 'auto' : 'smooth', block: 'start' })
   },
 )
-// The page's regular plan line offers the same "重新比价" when the adopted plan has lapsed.
-defineExpose({
-  again: () => {
-    flow.focus.value++
-    return flow.again()
-  },
-})
-// A stage that changes while the page is open swaps in place; loading the page does not animate.
+/** The stage that leaves goes at once (removed now, never kept beside the next one). */
+const leaveNow = (_el: Element, done: () => void) => done()
+// A stage that changes while the page is open swaps in place; loading the page does not animate:
+// the swap is armed only once the first complete state (the Case and its purchases) is shown.
 const live = ref(false)
-onMounted(() => requestAnimationFrame(() => (live.value = true)))
+watch(
+  () => flow.loaded.value,
+  async (loaded) => {
+    if (!loaded || live.value) return
+    await nextTick()
+    requestAnimationFrame(() => (live.value = true))
+  },
+  { immediate: true },
+)
 </script>
 <template>
   <section
@@ -83,7 +86,8 @@ onMounted(() => requestAnimationFrame(() => (live.value = true)))
         :actor="actor"
         :label="tr('应急补货进度')"
       />
-      <Transition :name="live ? 'rf-swap' : 'rf-still'" mode="out-in">
+      <!-- No out-in: the stage that leaves goes at once, the next one enters in its place. -->
+      <Transition :name="live ? 'rf-swap' : 'rf-still'" @leave="leaveNow">
         <RecoveryUnconfirmed v-if="flow.unconfirmed.value" key="unconfirmed" />
         <RecoveryBrief v-else-if="stage === 'brief'" key="brief" />
         <RecoveryCompare v-else-if="stage === 'compare'" key="compare" />

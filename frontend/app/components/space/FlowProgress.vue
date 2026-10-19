@@ -2,12 +2,14 @@
 import { t as tr } from '~/i18n'
 
 // One progress line for a piece of work that moves through fixed stages (workspace §18). The
-// current stage says who it waits on: the owner ("等你") or the system ("系统在做"). Labels are
-// catalog keys. Reusable by any flow: the emergency restock now, the regular restock later.
+// current stage says who it waits on: the owner ("等你"), the system ("系统在做") or someone with
+// the approval right ("等审批"). Labels are catalog keys. Reusable by any flow: the emergency
+// restock now, the regular restock later.
+type Actor = 'you' | 'system' | 'other' | 'done'
 const props = defineProps<{
   steps: { key: string; label: string }[]
   current: number
-  actor: 'you' | 'system' | 'done'
+  actor: Actor
   /** Accessible name of the step list. */
   label: string
 }>()
@@ -15,9 +17,14 @@ const last = computed(() => Math.max(1, props.steps.length - 1))
 const ratio = computed(() =>
   Math.min(1, Math.max(0, (props.actor === 'done' ? last.value : props.current) / last.value)),
 )
-const actorText = computed(() =>
-  tr(props.actor === 'you' ? '等你' : props.actor === 'system' ? '系统在做' : '已完成'),
-)
+const words: Record<Actor, string> = {
+  you: '等你',
+  system: '系统在做',
+  other: '等审批',
+  done: '已完成',
+}
+const icons: Record<Actor, string> = { you: 'hand', system: 'orbit', other: 'user', done: 'check' }
+const actorText = computed(() => tr(words[props.actor]))
 const stateOf = (index: number) =>
   props.actor === 'done' || index < props.current
     ? 'done'
@@ -64,7 +71,7 @@ onMounted(() => requestAnimationFrame(() => (live.value = true)))
             class="flow-actor"
             :class="actor"
             aria-hidden="true"
-            ><AppIcon :name="actor === 'you' ? 'hand' : 'orbit'" />{{ actorText }}</span
+            ><AppIcon :name="icons[actor]" />{{ actorText }}</span
           >
         </li>
       </ol>
@@ -75,9 +82,7 @@ onMounted(() => requestAnimationFrame(() => (live.value = true)))
       }}</span
       ><b>{{ tr(steps[Math.min(current, steps.length - 1)]?.label || '') }}</b
       ><span class="flow-actor" :class="actor"
-        ><AppIcon :name="actor === 'you' ? 'hand' : actor === 'system' ? 'orbit' : 'check'" />{{
-          actorText
-        }}</span
+        ><AppIcon :name="icons[actor]" />{{ actorText }}</span
       >
     </p>
   </div>

@@ -4,7 +4,9 @@ import { firstSync } from '~/utils/glossary'
 
 // Something blocks a decision: same meaning, words and recovery as the task workspace card.
 // A new store's first sync is the one exception: it is said in blue, as information.
-const props = defineProps<{ issue: string }>()
+// `quiet`: another card on the page (the emergency restock) holds the one primary action, so
+// this card's way out steps down to a secondary button.
+const props = defineProps<{ issue: string; quiet?: boolean }>()
 const shop = useShop()
 const { s } = shop
 const error = ref('')
@@ -57,7 +59,11 @@ async function recover() {
         )
       }}
     </p>
-    <button :class="syncing ? 'secondary' : 'primary'" :disabled="Boolean(s.busy)" @click="recover">
+    <button
+      :class="syncing || quiet ? 'secondary' : 'primary'"
+      :disabled="Boolean(s.busy)"
+      @click="recover"
+    >
       {{
         tr(
           issue === 'confirmation'

@@ -16,6 +16,11 @@ export function useRecoveryCase(missionId: () => string) {
   const revoked = ref(false)
   const drafting = ref(false)
   let epoch = 0
+  // Reads and writes are numbered in the order they start (a write: when its answer arrives).
+  // A read that started before the value on screen was taken is older and is dropped: a write
+  // such as adopting does not raise the Case revision, so the revision alone cannot tell.
+  let stamp = 0,
+    shown = 0
   const scope = computed(() =>
     [
       shop.s.session?.principal_id || '',
@@ -26,10 +31,14 @@ export function useRecoveryCase(missionId: () => string) {
   )
   const storageKey = () => 'ss.recovery.pending:' + scope.value
   const current = (n: number, key: string) => n === epoch && key === scope.value
-  function apply(value: RecoveryCase) {
+  function apply(value: RecoveryCase, at = ++stamp) {
     if (value.mission_id !== missionId() || value.store_id !== shop.s.storeId) return
-    if (detail.value?.id === value.id && detail.value.current_revision > value.current_revision)
+    if (
+      detail.value?.id === value.id &&
+      (detail.value.current_revision > value.current_revision || at < shown)
+    )
       return
+    shown = at
     detail.value = value
     items.value = [value, ...items.value.filter((c) => c.id !== value.id)]
   }
@@ -45,13 +54,14 @@ export function useRecoveryCase(missionId: () => string) {
   async function load(id?: string) {
     if (!missionId() || revoked.value) return
     const n = epoch,
-      key = scope.value
+      key = scope.value,
+      at = ++stamp
     try {
       if (id) {
         const value = await api<RecoveryCase>('/api/v1/operations-cases/' + encodeURIComponent(id))
         if (current(n, key)) {
           drafting.value = false
-          apply(value)
+          apply(value, at)
         }
       } else {
         const page = await api<{ items: RecoveryCase[] }>(
@@ -59,9 +69,11 @@ export function useRecoveryCase(missionId: () => string) {
         )
         if (!current(n, key)) return
         items.value = page.items.filter((c) => c.mission_id === missionId())
+        // The newest Case still open; a settled one is shown only when none is.
         const latest =
-          items.value.find((c) => !['CLOSED', 'CANCELLED'].includes(c.status)) || items.value[0]
-        if (latest && !drafting.value) apply(latest)
+          items.value.find((c) => !['CLOSED', 'CANCELLED', 'RESOLVED'].includes(c.status)) ||
+          items.value[0]
+        if (latest && !drafting.value) apply(latest, at)
       }
       if (current(n, key)) syncError.value = ''
     } catch (e) {

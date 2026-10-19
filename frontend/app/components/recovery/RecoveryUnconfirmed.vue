@@ -15,18 +15,20 @@ async function retry() {
 
 <template>
   <div class="rf-stage" data-recovery-unconfirmed>
-    <h3 class="rf-title" aria-live="polite">
-      {{ tr('{0}的结果还没确认', [tr(flow.unconfirmedStep.value)]) }}
-    </h3>
-    <p class="notice amber rf-banner" role="status">
-      {{
-        tr(
-          tried && !busy
-            ? '这次核实还没有回音，稍后再试。'
-            : '网络中断或服务出错时，这一步可能已经生效。核实会按原来的提交再发一次，不会重复。',
-        )
-      }}
-    </p>
+    <div class="rf-head-copy">
+      <h3 class="rf-title" aria-live="polite">
+        {{ tr('{0}的结果还没确认', [tr(flow.unconfirmedStep.value)]) }}
+      </h3>
+      <p class="rf-sub" role="status">
+        {{
+          tr(
+            tried && !busy
+              ? '这次还是没有收到回音，稍后再试。'
+              : '没有收到回音，这一步可能已经生效。再试一次会沿用刚才的提交，不会重复。',
+          )
+        }}
+      </p>
+    </div>
     <footer class="rf-next">
       <button
         type="button"
@@ -36,7 +38,7 @@ async function retry() {
         data-recovery-retry
         @click="retry"
       >
-        {{ tr(busy ? '正在核实…' : '核实并重试原提交') }}<AppIcon name="arrow-right" />
+        {{ tr(busy ? '正在确认…' : '再试一次（沿用刚才的提交）') }}<AppIcon name="arrow-right" />
       </button>
     </footer>
   </div>

@@ -1,6 +1,34 @@
+import { t } from '~/i18n'
 import type { Schema, Session, PendingApproval, PlanDocument } from '~/types/models'
 import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 import { api, query, ApiFailure } from '~/utils/api'
+import { rememberSupplierNames, supplierDisplayName } from '~/utils/glossary'
+import {
+  DIRECTORY_STATE,
+  emptyDirectory,
+  fetchDirectory,
+  type DirectoryState,
+} from '~/composables/useSupplierDirectory'
+
+/**
+ * A write to an order (supplier reply, withdrawal, partial acceptance, arrival) whose answer has
+ * not come back. `mark` is the order as it stood when the write went out: while the order still
+ * reads the same, the write may or may not have taken effect, and the same write is sent again
+ * under its first key, so the backend answers with what it did the first time and nothing counts
+ * twice. Once the order reads differently, the write (or another) took effect and is let go.
+ */
+type OrderWrite = {
+  storeId: string
+  actionId: string
+  path: string
+  body: Record<string, unknown>
+  key: string
+  mark: string
+}
+const ORDER_WRITES = 'ss.order-writes'
+/** Names this page gave suppliers that have none on file, so a later real name can replace them. */
+const fallbackNames = new Map<string, string>()
+
 export function useShop() {
   const s = useState('shop', () => ({
     session: null as Session | null,
@@ -32,8 +60,14 @@ export function useShop() {
     requestSeq: 0,
     storeVersion: 0,
     pending: null as PendingApproval | null,
+    /** The last plan decided here (an emergency restock reads its Case again at once). */
+    decided: null as { planId: string; at: number } | null,
+    /** Order writes whose answer has not come back, by request path. */
+    orderWrites: {} as Record<string, OrderWrite>,
     runs: {} as Record<string, string>,
   })).value
+  const directory = useState<DirectoryState>(DIRECTORY_STATE, emptyDirectory)
+  const launcher = useRecoveryLaunch()
   const mission = computed(() => s.missions.find((m) => m.id === s.missionId) || null)
   const stock = computed(
     () =>
@@ -53,7 +87,7 @@ export function useShop() {
       : null,
   )
   // Confirmed, but no source reports the goods of an order sent by hand: the owner records them.
-  const awaitingArrival = computed(() =>
+  const arrivalsToRecord = computed(() =>
     s.actions.flatMap((action) => {
       const inbound = s.inbounds.find((i) => i.action_id === action.id)
       return action.channel === 'assisted' &&
@@ -64,6 +98,12 @@ export function useShop() {
         ? [{ action, inbound }]
         : []
     }),
+  )
+  // The ones the page's arrival card records. An emergency restock under way records its own
+  // purchases in its card, which says when recording one would end the restock (recording the
+  // last of them settles it), so they are not offered a second time elsewhere.
+  const awaitingArrival = computed(() =>
+    arrivalsToRecord.value.filter(({ action }) => !launcher.holds(action.mission_id, action.id)),
   )
   const currentCandidate = computed(() => selectedPlanCandidate(s.plan, s.selected))
   const canDecide = computed(
@@ -97,6 +137,8 @@ export function useShop() {
         s.runs = JSON.parse(localStorage.getItem('ss.scenarios') || '{}')
         const pending = JSON.parse(sessionStorage.getItem('ss.approval') || 'null')
         if (pending?.key && pending?.body) s.pending = pending
+        const writes = JSON.parse(sessionStorage.getItem(ORDER_WRITES) || '{}')
+        if (writes && typeof writes === 'object') s.orderWrites = writes
       } catch {}
       const saved = localStorage.getItem('ss.store')
       await selectStore(
@@ -167,6 +209,10 @@ export function useShop() {
     const id = s.storeId,
       seq = ++s.requestSeq
     s.refreshing = true
+    // The suppliers' names are read beside the store's data, without holding it up (§6.3).
+    void readDirectory(id).then(() => {
+      if (id === s.storeId) nameSuppliers()
+    })
     try {
       const [dashboard, catalog, missions, actions, inbounds, alerts, ledger] = await Promise.all([
         api<Schema<'Dashboard'>>('/api/v1/dashboard' + query({ store_id: id })),
@@ -230,6 +276,8 @@ export function useShop() {
         s.pending = null
         sessionStorage.removeItem('ss.approval')
       }
+      settleOrderWrites(id)
+      nameSuppliers()
     } catch (e) {
       if (seq === s.requestSeq) {
         s.connected = false
@@ -238,6 +286,114 @@ export function useShop() {
     } finally {
       if (seq === s.requestSeq) s.refreshing = false
     }
+  }
+  async function readDirectory(store: string) {
+    if (!s.session?.sourcing) return
+    await fetchDirectory(directory, store, () => s.storeId)
+  }
+  /**
+   * Every supplier the page names gets a name (§6.3). One with no name on file is called by what
+   * it is to this mission: its usual supplier ("原供应商", the one the original orders went to) or
+   * another connected one ("已对接的供应商"). The id stays in each record's traceable details.
+   * Names on file (documents, sourcing runs) always replace these.
+   */
+  function nameSuppliers() {
+    // Until the documents are read, only the usual supplier is named; another one may still get
+    // its real name from them.
+    const settled = !s.session?.sourcing || directory.value.loaded || !!directory.value.error
+    const usual = new Set(s.missions.map((m) => m.policy.supplier_id))
+    const ids = new Set([
+      ...usual,
+      ...(s.catalog?.offers || []).map((o) => o.supplier_id),
+      ...s.actions.map((a) => a.purchase_snapshot.supplier_id),
+    ])
+    const entries: { supplier_id: string; name: string }[] = []
+    for (const id of ids) {
+      if (!settled && !usual.has(id)) continue
+      const label = supplierDisplayName(id)
+      const number = /^supplier[_-]?(\d+)$/i.exec(id)?.[1]
+      const unnamed = number ? t('供应商 {0}', [number.padStart(3, '0')]) : id
+      if (label !== unnamed && label !== fallbackNames.get(id)) continue
+      const name = t(usual.has(id) ? '原供应商' : '已对接的供应商')
+      fallbackNames.set(id, name)
+      if (label !== name) entries.push({ supplier_id: id, name })
+    }
+    if (entries.length) rememberSupplierNames(entries)
+  }
+  /** The order as it stands now, to tell whether an unconfirmed write to it took effect. */
+  function orderMark(actionId: string) {
+    const action = s.actions.find((a) => a.id === actionId)
+    const inbound = s.inbounds.find((i) => i.action_id === actionId)
+    return [
+      action?.status || '',
+      action?.supplier_reply?.recorded_at || '',
+      inbound?.received_quantity ?? 0,
+    ].join('|')
+  }
+  function keepWrites(next: Record<string, OrderWrite>) {
+    s.orderWrites = next
+    try {
+      if (Object.keys(next).length) sessionStorage.setItem(ORDER_WRITES, JSON.stringify(next))
+      else sessionStorage.removeItem(ORDER_WRITES)
+    } catch {}
+  }
+  function dropWrite(path: string) {
+    const { [path]: _, ...rest } = s.orderWrites
+    keepWrites(rest)
+  }
+  /** Unconfirmed writes to orders that have changed since took effect (or were overtaken). */
+  function settleOrderWrites(store: string) {
+    const kept = Object.fromEntries(
+      Object.entries(s.orderWrites).filter(
+        ([, w]) => w.storeId !== store || orderMark(w.actionId) === w.mark,
+      ),
+    )
+    if (Object.keys(kept).length !== Object.keys(s.orderWrites).length) keepWrites(kept)
+  }
+  /**
+   * One write to an order, safe to repeat: while an earlier attempt is unconfirmed, the same
+   * write goes out under the earlier key; a different one waits until that is settled.
+   */
+  async function orderWrite(
+    name: string,
+    actionId: string,
+    segment: 'supplier-reply' | 'withdrawal' | 'partial-acceptance' | 'arrival',
+    body: Record<string, unknown>,
+  ) {
+    return command(name, async () => {
+      const path = '/api/v1/actions/' + encodeURIComponent(actionId) + '/' + segment
+      const held = s.orderWrites[path]?.storeId === s.storeId ? s.orderWrites[path] : undefined
+      const same = !!held && JSON.stringify(held.body) === JSON.stringify(body)
+      if (held && !same)
+        throw new Error(
+          segment === 'arrival'
+            ? '上一次登记到货的结果还没确认；先按上次的件数再登记一次核实，不会重复入账。'
+            : '上一次提交的结果还没确认；先按原来的内容再提交一次核实，不会重复。',
+        )
+      const write: OrderWrite =
+        held && same
+          ? held
+          : {
+              storeId: s.storeId,
+              actionId,
+              path,
+              body,
+              key: crypto.randomUUID(),
+              mark: orderMark(actionId),
+            }
+      keepWrites({ ...s.orderWrites, [path]: write })
+      try {
+        const value = await api<Schema<'Action'>>(path, 'POST', body, write.key)
+        dropWrite(path)
+        return value
+      } catch (e) {
+        // Refused outright: it did not take effect. A lost answer or a 5xx may have.
+        if (e instanceof ApiFailure && e.status >= 400 && e.status < 500) dropWrite(path)
+        throw e
+      } finally {
+        await refresh(true)
+      }
+    })
   }
   async function command<T>(name: string, fn: () => Promise<T>) {
     if (s.busy) throw new Error('请等待当前操作完成')
@@ -352,8 +508,7 @@ export function useShop() {
       if (!canDecide.value || !s.plan || !mission.value)
         throw new Error('当前方案不可确认，请刷新或重新检查。')
       if (s.selected !== 0 && s.selected !== s.plan.proposed_purchase?.quantity) {
-        if (isRecoveryPlan(s.plan))
-          throw new Error('请在供应异常应对中重新选择报价并生成待确认方案。')
+        if (isRecoveryPlan(s.plan)) throw new Error('请在应急补货里重新选择报价，再确认。')
         if (!s.session?.planRevision)
           throw new Error(
             '当前后端尚未提供数量修订接口，可以比较候选，但本次只能确认后端推荐数量。',
@@ -402,6 +557,7 @@ export function useShop() {
         )
         s.pending = null
         sessionStorage.removeItem('ss.approval')
+        s.decided = { planId: pending.planId, at: Date.now() }
         notify(
           snapshot.quantity === 0
             ? '本轮取舍已记录，条件变化后再检查。'
@@ -425,63 +581,23 @@ export function useShop() {
       await api('/api/v1/plans/' + p.planId + '/decision', 'POST', p.body, p.key)
       s.pending = null
       sessionStorage.removeItem('ss.approval')
+      s.decided = { planId: p.planId, at: Date.now() }
       await refresh(true)
     })
   }
   // An order the owner sends by hand: the pasted reply becomes its receipt, or it keeps waiting.
-  async function recordSupplierReply(actionId: string, text: string) {
-    return command('正在登记供应商回复', async () => {
-      try {
-        return await api<Schema<'Action'>>(
-          '/api/v1/actions/' + encodeURIComponent(actionId) + '/supplier-reply',
-          'POST',
-          { text } satisfies Schema<'SupplierReplyText'>,
-        )
-      } finally {
-        await refresh(true)
-      }
-    })
-  }
-  async function withdrawOrder(actionId: string) {
-    return command('正在撤回订单', async () => {
-      try {
-        return await api<Schema<'Action'>>(
-          '/api/v1/actions/' + encodeURIComponent(actionId) + '/withdrawal',
-          'POST',
-          {},
-        )
-      } finally {
-        await refresh(true)
-      }
-    })
-  }
+  const recordSupplierReply = (actionId: string, text: string) =>
+    orderWrite('正在登记供应商回复', actionId, 'supplier-reply', {
+      text,
+    } satisfies Schema<'SupplierReplyText'>)
+  const withdrawOrder = (actionId: string) => orderWrite('正在撤回订单', actionId, 'withdrawal', {})
   // The supplier confirmed fewer units: take that quantity; the rest of the hold is released.
-  async function acceptPartialSupply(actionId: string) {
-    return command('正在按对方数量成交', async () => {
-      try {
-        return await api<Schema<'Action'>>(
-          '/api/v1/actions/' + encodeURIComponent(actionId) + '/partial-acceptance',
-          'POST',
-          {},
-        )
-      } finally {
-        await refresh(true)
-      }
-    })
-  }
-  async function recordArrival(actionId: string, quantity: number) {
-    return command('正在登记到货', async () => {
-      try {
-        return await api<Schema<'Action'>>(
-          '/api/v1/actions/' + encodeURIComponent(actionId) + '/arrival',
-          'POST',
-          { quantity } satisfies Schema<'ArrivalRecord'>,
-        )
-      } finally {
-        await refresh(true)
-      }
-    })
-  }
+  const acceptPartialSupply = (actionId: string) =>
+    orderWrite('正在按对方数量成交', actionId, 'partial-acceptance', {})
+  const recordArrival = (actionId: string, quantity: number) =>
+    orderWrite('正在登记到货', actionId, 'arrival', {
+      quantity,
+    } satisfies Schema<'ArrivalRecord'>)
   async function advance() {
     return command('正在推进经营事件', async () => {
       const run = s.runs[s.storeId]
@@ -523,6 +639,7 @@ export function useShop() {
     plan,
     unresolved,
     awaitingSupplier,
+    arrivalsToRecord,
     awaitingArrival,
     currentCandidate,
     canDecide,

@@ -183,7 +183,8 @@ export function useSpace() {
           inTransit: shop.stock.value?.in_transit,
           confirmationPending: confirmationPending.value,
           awaitingSupplier: shop.awaitingSupplier.value?.mission_id === m.id,
-          ownerRecordsArrival: shop.awaitingArrival.value.length > 0,
+          // Every order whose goods the owner records, wherever the page records them.
+          ownerRecordsArrival: shop.arrivalsToRecord.value.length > 0,
           business: current.business,
         })
       : confirmationPending.value

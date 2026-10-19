@@ -2,11 +2,24 @@
 import { t as tr } from '~/i18n'
 import { orderStatus, supplierDisplayName } from '~/utils/glossary'
 import { money, when } from '~/utils/presentation'
+import { shortfall } from '~/utils/recovery'
+import type { Schema } from '~/types/models'
 
 // Purchase orders of this mission, newest first: what was bought, where it stands, and how much
 // has actually arrived. Identifiers stay inside each row's disclosure. The status words are
 // shared with the business brief (utils/glossary.ts).
 const emit = defineEmits<{ open: [name: string] }>()
+// A supplier that confirmed only part of an order: the row shows what was taken (the receipt) and
+// names the quantity first ordered beside the supplier.
+function taken(a: Schema<'Action'>) {
+  const short = shortfall(a)
+  if (!short) return null
+  return {
+    quantity: short.accepted,
+    total: a.receipt?.total_minor ?? short.accepted * a.purchase_snapshot.unit_price_minor,
+    ordered: short.ordered,
+  }
+}
 const { s } = useShop()
 const space = useSpace()
 const { actions } = space
@@ -20,6 +33,7 @@ const orders = computed(() =>
       return {
         action,
         inbound,
+        taken: taken(action),
         ordered,
         received,
         ratio: ordered ? Math.min(1, received / ordered) : 0,
@@ -79,10 +93,14 @@ onMounted(() => nextTick(() => (live.value = true)))
           <summary>
             <span class="space-order-main"
               ><b>{{
-                `${tr('{0} 件', [o.action.quantity])} · ${tr(money(o.action.amount_minor))}`
+                `${tr('{0} 件', [o.taken?.quantity ?? o.action.quantity])} · ${tr(
+                  money(o.taken?.total ?? o.action.amount_minor),
+                )}`
               }}</b
               ><span class="space-order-supplier">{{
-                supplierDisplayName(o.action.purchase_snapshot.supplier_id)
+                o.taken
+                  ? `${supplierDisplayName(o.action.purchase_snapshot.supplier_id)} · ${tr('订单 {0} 件', [o.taken.ordered])}`
+                  : supplierDisplayName(o.action.purchase_snapshot.supplier_id)
               }}</span
               ><span class="tag" :class="o.status.tone">{{ tr(o.status.label) }}</span></span
             ><span v-if="o.tracked" class="space-order-meta">{{

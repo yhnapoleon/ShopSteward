@@ -29,15 +29,19 @@ const sentByHand = computed(
 const launcher = useRecoveryLaunch()
 const owned = computed(() => launcher.owned(mission.value?.id))
 const restocking = computed(() => launcher.inProgress(mission.value?.id))
-// The emergency plan the owner adopted ran out or a regular check replaced it (§18.3).
-const lapsed = computed(() => !!owned.value?.lapsed)
-const restock = ref<{ again: () => Promise<unknown> } | null>(null)
 const flowOwnsSlot = computed(() => {
   if (!owned.value) return false
   // The restock card already says what the mission waits for; only another decision (a regular
   // plan, an order outside the restock) still earns the plan slot.
   const ownPlan = !!owned.value.planId && shop.plan.value?.id === owned.value.planId
-  const ownOrder = !!owned.value.actionId && awaitingSupplier.value?.id === owned.value.actionId
+  // Its order: the one it shows, any of its purchases, or the one its plan just led to (the
+  // backend creates it as the plan is confirmed, before the card has read the Case again).
+  const waiting = awaitingSupplier.value
+  const ownOrder =
+    !!waiting &&
+    (waiting.id === owned.value.actionId ||
+      !!owned.value.actionIds?.includes(waiting.id) ||
+      (!!owned.value.planId && waiting.plan_id === owned.value.planId))
   const otherOrder = sentByHand.value && !ownOrder
   const otherPlan = !!mission.value && canDecide.value && !ownPlan
   return !otherOrder && !otherPlan
@@ -185,14 +189,20 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
           </div>
           <RecoveryFlow
             v-if="mission && s.session?.recoveryCases"
-            ref="restock"
             :key="mission.id"
             :mission-id="mission.id"
             @confirm="emit('confirm')"
           />
           <SpaceSyncStrip />
-          <ArrivalCard v-if="mission" :skip="owned?.actionId" />
-          <SpaceIssueCard v-if="issue && !ended" :issue="issue" />
+          <!-- The arrival card leaves out every purchase of a restock under way: its card records
+               them and says when recording the last one ends the restock (useShop.awaitingArrival).
+               A plan to confirm keeps the one primary action; recording then steps back. -->
+          <ArrivalCard
+            v-if="mission"
+            :quiet="restocking || (!!mission && canDecide && !ended && !!shop.plan.value)"
+          />
+          <!-- While a restock leads the page its card holds the one primary action. -->
+          <SpaceIssueCard v-if="issue && !ended" :issue="issue" :quiet="restocking" />
           <SpaceChangeCard v-if="mission" />
           <div v-if="mission" class="space-agent-hint-slot" role="status">
             <Transition name="space-rise">
@@ -230,40 +240,25 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
             :class="{ 'target-active': space.isTarget('plan') }"
           >
             <!-- An order the owner sends by hand waits here for the supplier's reply. -->
-            <AssistedOrderCard v-if="sentByHand && !ended" />
-            <!-- One primary per screen: while an emergency restock leads the page, a regular plan
-                 that can still be confirmed steps back to one line. When it took the place of the
-                 emergency plan the owner adopted, the line says so and offers the comparison again. -->
+            <AssistedOrderCard v-if="sentByHand && !ended" :quiet="restocking" />
+            <!-- One primary per screen: while an emergency restock leads the page (before a plan
+                 is adopted from it), a regular plan that can still be confirmed steps back to one
+                 line. Once the owner decides in the restock, routine checks leave the item alone. -->
             <p
               v-else-if="restocking && mission && canDecide && !ended && shop.plan.value"
               class="rf-regular-plan"
-              :class="{ 'is-lapsed': lapsed }"
               data-regular-plan-line
             >
               <span>{{
-                tr(
-                  lapsed
-                    ? '应急方案已失效，现在是常规方案：建议补 {0} 件 · {1}'
-                    : '常规方案：建议补 {0} 件 · {1}',
-                  [
-                    shop.plan.value.proposed_purchase?.quantity ?? 0,
-                    money(shop.plan.value.proposed_purchase?.total_minor),
-                  ],
-                )
+                tr('常规方案：建议补 {0} 件 · {1}', [
+                  shop.plan.value.proposed_purchase?.quantity ?? 0,
+                  money(shop.plan.value.proposed_purchase?.total_minor),
+                ])
               }}</span
-              ><span class="rf-regular-actions"
-                ><button class="text-link" @click="emit('confirm')">
-                  {{ tr('核对 {0} 件采购', [shop.plan.value.proposed_purchase?.quantity ?? 0])
-                  }}<AppIcon name="chevron-right" /></button
-                ><button
-                  v-if="lapsed"
-                  class="text-link"
-                  data-regular-plan-again
-                  @click="restock?.again()"
-                >
-                  {{ tr('重新比价') }}
-                </button></span
-              >
+              ><button class="text-link" @click="emit('confirm')">
+                {{ tr('核对 {0} 件采购', [shop.plan.value.proposed_purchase?.quantity ?? 0])
+                }}<AppIcon name="chevron-right" />
+              </button>
             </p>
             <SpacePlanCard
               v-else-if="mission && canDecide && !ended"

@@ -62,7 +62,7 @@ const checkResults: Record<string, string> = {
   // While an emergency case holds the item (backend/app/planning/jobs.py); the last one only
   // appears in timelines written before cases held the item.
   'Recovery plan awaits explicit approval': '检查完成：应急方案等你确认，本次跳过',
-  [emergencyHolds]: '检查完成：应急事项处理中，例行补货暂停',
+  [emergencyHolds]: '检查完成：应急补货进行中，每天的补货建议暂停',
   'Recovery purchase is unresolved': '检查完成：应急采购还没有结果，本次跳过',
   // Why a check could not run (backend/app/planning/snapshot.py prepared.reason).
   MISSION_INACTIVE_OR_ACTION_PENDING: '检查完成：有采购待核实，本次跳过',
@@ -72,13 +72,97 @@ const checkResults: Record<string, string> = {
   INBOUND_STATE_MISMATCH: '检查完成：在途记录对不上，未能检查',
   INVALID_FORECAST_OR_OFFER: '检查完成：预测或报价数据无法识别，未能检查',
 }
-// Entries an emergency case writes; their sentences are translated as whole templates.
+// Entries an emergency case writes; their sentences are said in the product's words below.
 const caseEntries: Record<string, { tone: TimelineTone; kind: TimelineKind }> = {
   CASE_DECISION: { tone: 'gray', kind: 'other' },
   CASE_RECHECK_REQUIRED: { tone: 'amber', kind: 'other' },
   CASE_RESOLVED: { tone: 'green', kind: 'order' },
   SUPPLIER_REPLY_PARTIAL: { tone: 'amber', kind: 'order' },
   PURCHASE_PARTIALLY_ACCEPTED: { tone: 'blue', kind: 'order' },
+}
+// The backend's fixed sentences about an emergency restock and its orders (planning/jobs.py,
+// operations_cases/lifecycle.py and repository.py, execution/assisted.py). The owner knows it as
+// 应急补货, analyzing again as 重新比价 and ending it as 结束这次应急补货, so the rows say that;
+// the numbers are read from the sentence. A sentence not listed is shown as written.
+const AGAIN = '可以重新比价，或结束这次应急补货、恢复每天的补货建议。'
+const HELD = '这次应急补货结束前，不会另给每天的补货建议。'
+const caseSentences: { pattern: RegExp; title: string; detail?: string; yuan?: number }[] = [
+  {
+    pattern: /^待确认的应急方案已过期，没有换成常规方案。/,
+    title: '待确认的应急方案已过期，没有换成常规方案',
+    detail: AGAIN,
+  },
+  {
+    pattern: /^库存、现金或营业时间已变化，待确认的应急方案不再成立/,
+    title: '库存、现金或营业时间变了，待确认的应急方案不再成立',
+    detail: AGAIN,
+  },
+  {
+    pattern: /^备货委托的设置已变化，待确认的应急方案不再成立/,
+    title: '备货委托的设置变了，待确认的应急方案不再成立',
+    detail: AGAIN,
+  },
+  {
+    pattern: /^应急方案未采用；/,
+    title: '应急方案未采用',
+    detail: '这次应急补货结束前，不会另给每天的补货建议；可以重新比价改选，或结束这次应急补货。',
+  },
+  { pattern: /^你选择等原订单；/, title: '你选择等原订单', detail: HELD },
+  {
+    pattern:
+      /^应急事项已解决：供应商确认的 (\d+) 件已全部到货（订单 (\d+) 件），花费 ([\d.]+) 元；七日预计缺货从 (\d+) 件降到 (\d+) 件。$/,
+    // The backend's order total adds every order of the restock (a partial one and the one
+    // that filled the rest), so the row says what arrived, not what was ordered.
+    title: '应急补货完成：补到 {0} 件，已全部到货',
+    detail: '花了 {2} · 7 天预计缺货 {3} → {4} 件',
+    yuan: 2,
+  },
+  {
+    pattern:
+      /^应急事项已解决：应急补货 (\d+) 件已全部到货，花费 ([\d.]+) 元；七日预计缺货从 (\d+) 件降到 (\d+) 件。$/,
+    title: '应急补货完成：{0} 件已全部到货',
+    detail: '花了 {1} · 7 天预计缺货 {2} → {3} 件',
+    yuan: 1,
+  },
+  {
+    pattern: /^应急事项已解决：原订单已全部到货，没有追加采购；七日预计缺货 (\d+) 件。$/,
+    title: '应急补货结束：原订单已全部到货，没有追加采购',
+    detail: '7 天预计缺货 {0} 件',
+  },
+  {
+    pattern: /^供应商只确认了 (\d+)\/(\d+) 件。/,
+    title: '供应商只确认了 {0}/{1} 件',
+    detail: '可以按对方数量成交，或撤回订单；决定前订单保持待确认。',
+  },
+  {
+    pattern: /^按供应商确认的 (\d+) 件成交，比订单少 (\d+) 件；/,
+    title: '按供应商确认的 {0} 件成交，比订单少 {1} 件',
+    detail: '多预留的资金已释放。',
+  },
+  {
+    pattern: /^店主登记到货 (\d+) 件，累计 (\d+)\/(\d+) 件。$/,
+    title: '登记到货 {0} 件 · 累计 {1}/{2} 件',
+  },
+  {
+    pattern: /^供应商的回复还不能确认这笔订单/,
+    title: '供应商的回复还不能确认这笔订单',
+    detail: '订单保持待确认。',
+  },
+]
+/** A fixed backend sentence in the product's words, or null when it is not one of them. */
+function caseSentence(summary: string) {
+  for (const sentence of caseSentences) {
+    const match = sentence.pattern.exec(summary)
+    if (!match) continue
+    const values = match
+      .slice(1)
+      .map((value, i) => (i === sentence.yuan ? money(Math.round(Number(value) * 100)) : value))
+    return {
+      title: t(sentence.title, values),
+      detail: sentence.detail ? t(sentence.detail, values) : undefined,
+    }
+  }
+  return null
 }
 // A risk a check finds is reported by its own "发现…" reminder row, which alone is amber.
 const checkTones: Record<string, TimelineTone> = {
@@ -223,7 +307,11 @@ export function describeEvent(entry: Entry): TimelineEvent {
       return { ...base, title: t('供应商已受理采购'), tone: 'green', kind: 'order' }
     default: {
       const written = caseEntries[entry.type]
-      if (written) return { ...base, ...written, title: t(summary) }
+      const said = caseSentence(summary)
+      if (written) return { ...base, ...written, ...(said || { title: t(summary) }) }
+      // Orders sent by hand: what the owner recorded, in the same words as the card.
+      if (said && ['PURCHASE_RECEIVED', 'SUPPLIER_REPLY_UNCLEAR'].includes(entry.type))
+        return { ...base, ...said }
       const result = actionResults[entry.type]
       if (!result) return base
       const status = entry.type.slice('ACTION_'.length)

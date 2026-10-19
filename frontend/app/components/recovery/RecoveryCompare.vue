@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { joinText, t as tr } from '~/i18n'
+import { joinText, locale, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
 import { supplierDisplayName } from '~/utils/glossary'
 import {
   arrivalOf,
   blockedReason,
-  candidateDays,
   caseProblem,
   conclusion,
   dayOf,
   named,
   priceOf,
+  shortfall,
+  type SupplierOption,
   unbroken,
 } from '~/utils/recovery'
 import type { RecoveryCandidate, SupplierReview } from '~/types/recovery'
@@ -18,7 +19,8 @@ import { useFlow } from '~/composables/useRecoveryFlow'
 
 // Step 2, "找货比价": reviewers read each supplier's documents, then the solver compares the
 // quotes with waiting for the original order. The owner sees one row per supplier (its best
-// quantity), picks one, and the button says exactly what will be bought.
+// quantity) in the plan card's light slot, a plate sliding to the pick; the picked supplier's
+// neighbouring quantities sit under the slot, and the button says exactly what will be bought.
 const flow = useFlow()
 const shop = useShop()
 const { s } = shop
@@ -26,7 +28,26 @@ const state = computed(() => flow.flow.value)
 const sourcing = computed(() => flow.sourcing.value)
 const cmp = computed(() => flow.cmp.value)
 const reading = computed(() => sourcing.value?.status === 'running')
-const busy = computed(() => !!flow.working.value || state.value.actor === 'system')
+// Comparing is under way (suppliers being read, the analysis running, or a comparison of ours
+// that has become slow): the choice steps aside. Adopting, waiting, ending or recording keep the
+// choice in place; only the button waits, saying what it is doing.
+const ANALYSING = ['again', 'exclude', 'start', 'source']
+const busy = computed(
+  () =>
+    state.value.actor === 'system' ||
+    (flow.actor.value === 'system' && ANALYSING.includes(flow.working.value)),
+)
+const waiting = computed(() => !!flow.working.value)
+const doing: Record<string, string> = {
+  adopt: '正在采用…',
+  wait: '正在记录…',
+  stop: '正在结束…',
+  arrive: '正在登记…',
+  again: '正在重新比价…',
+  exclude: '正在重新比价…',
+  source: '正在找货…',
+}
+const waitingLabel = computed(() => doing[flow.working.value] || '')
 const name = (id: string | null | undefined) => supplierDisplayName(id)
 
 // The owner's pick: a supplier (and one of its quantities) or waiting. Defaults to the
@@ -54,15 +75,39 @@ const selected = computed(() =>
   pick.value === 'wait' ? cmp.value.wait : pick.value ? chosenOf(pick.value) : null,
 )
 const recommendedId = computed(() => cmp.value.recommended?.id)
-/** Waiting means waiting for an original order only when one is still on the way. */
-const originals = computed(() => flow.originals.value.some((i) => i.remaining_quantity > 0))
+/** The supplier recommended, whichever of its quantities is picked. */
+const recommendedSupplier = computed(() => cmp.value.recommended?.supplier_id ?? null)
+/** Waiting means waiting for an original order only when the analysis counted on one. */
+const originals = computed(() => flow.hasOriginals.value)
 const waitName = computed(() => tr(originals.value ? '等原订单' : '这次不补'))
+const feasibleOptions = computed(() => cmp.value.options.filter((o) => o.feasible.length))
+
+/** The supplier's best quantity with one step either side: the trade-off without a long row. */
+function tiersOf(option: SupplierOption) {
+  const list = option.feasible
+  const at = Math.max(
+    0,
+    list.findIndex((c) => c.id === option.best.id),
+  )
+  const start = Math.min(Math.max(0, at - 1), Math.max(0, list.length - 3))
+  return list.slice(start, start + 3)
+}
+const picked = computed(() =>
+  pick.value && pick.value !== 'wait' ? optionOf(pick.value) || null : null,
+)
+const tiers = computed(() => (picked.value ? tiersOf(picked.value) : []))
+const tierIndex = computed(() =>
+  Math.max(
+    0,
+    tiers.value.findIndex((c) => c.id === selected.value?.id),
+  ),
+)
 
 // Suppliers the reviewers read that offer nothing for this store, or could not be read.
 const unread = computed(() =>
   (sourcing.value?.reviews || []).filter(
     (r) =>
-      r.supplier_id !== flow.excluded.value &&
+      !flow.isExcluded(r.supplier_id) &&
       (!r.card || r.card.status === 'no_offer') &&
       !optionOf(r.supplier_id),
   ),
@@ -72,11 +117,8 @@ const noOffer: Record<string, string> = {
   STORE_NOT_SERVED: '不配送到门店所在区域',
   SUPPLY_WITHDRAWN: '已通知暂停供应',
 }
-const readerState = (supplierId: string) => {
-  const review = sourcing.value?.reviews.find((r) => r.supplier_id === supplierId)
-  if (!review) return { tone: 'reading', text: tr('正在读资料…') }
-  return verdict(review)
-}
+const reviewOf = (supplierId: string) =>
+  sourcing.value?.reviews.find((r) => r.supplier_id === supplierId)
 function verdict(review: SupplierReview) {
   if (!review.card) return { tone: 'off', text: tr('资料没读明白，这家不参与比较') }
   if (review.card.status === 'no_offer' || !review.card.offer)
@@ -97,6 +139,22 @@ function verdict(review: SupplierReview) {
 }
 const gap = computed(() => sourcing.value?.request)
 
+/**
+ * The day a quote's goods arrive, written as the confirmation dialog writes it ("9/8 到"): the
+ * business clock plus the supplier's lead time when the documents give it. Without a lead time
+ * only the settlement day is known, so the row says "9/9 前到".
+ */
+const DAY = 86_400_000
+function arrivalText(c: RecoveryCandidate) {
+  const settled = arrivalOf(c)
+  if (!settled) return tr('7 天内到不了')
+  const lead = c.supplier_id ? reviewOf(c.supplier_id)?.card?.offer?.lead_time_days : undefined
+  const clock = s.dashboard?.state.simulation_time
+  if (lead != null && clock)
+    return tr('{0} 到', [dayOf(new Date(Date.parse(clock) + lead * DAY).toISOString())])
+  return tr('{0} 前到', [dayOf(settled)])
+}
+
 const again = computed(() => state.value.again)
 const offersExpired = computed(
   () =>
@@ -106,42 +164,98 @@ const offersExpired = computed(
 const canSource = computed(
   () => !!s.session?.sourcing && flow.directory.readable.value.length > 0 && flow.operator.value,
 )
+/** Every supplier that could still be compared was left out of this restock. */
+const noOthers = computed(
+  () =>
+    !again.value &&
+    flow.excludedIds.value.size > 0 &&
+    !cmp.value.options.some((o) => o.feasible.length),
+)
 const declinedName = computed(() => name(flow.action.value?.purchase_snapshot.supplier_id))
-const banner = computed(() => {
-  const value = again.value
-  if (!value) return ''
-  if (value === 'declined') return named('{0}拒单，预留资金已释放。', [declinedName.value])
-  if (value === 'withdrawn')
-    return named('给{0}的订单已撤回，预留资金已释放。', [declinedName.value])
-  if (value === 'failed') return tr('这笔采购没有成功，预留资金已释放。')
-  if (value === 'expired') return tr('待确认的应急方案已过期。')
-  if (value === 'superseded') return tr('待确认的应急方案被常规检查换掉了。')
-  if (value === 'pending') return tr('还没有比价结果。')
-  if (value === 'input')
-    return caseProblem(flow.detail.value?.missing_inputs[0] || '', tr('比价缺少条件。'))
-  return tr('比价结果已超过有效期，或经营数据已变化。')
+const short = computed(() => shortfall(flow.action.value))
+const released = computed(() =>
+  tr('预留的 {0} 已退回 · 还缺 {1} 件', [
+    money(flow.action.value?.amount_minor),
+    flow.action.value?.quantity ?? 0,
+  ]),
+)
+/** What happened, said about the thing it happened to; the reason or consequence below it. */
+const head = computed<{ title: string; sub: string }>(() => {
+  const gapLine = gap.value
+    ? gap.value.short_from
+      ? tr('缺 {0} 件 · 最早 {1} 缺货', [gap.value.shortfall_qty, dayOf(gap.value.short_from)])
+      : tr('缺 {0} 件', [gap.value.shortfall_qty])
+    : ''
+  if (busy.value && (flow.working.value === 'again' || flow.working.value === 'exclude'))
+    return { title: tr('正在重新比价'), sub: '' }
+  if (busy.value && flow.working.value === 'start')
+    return { title: tr('正在建立这次应急补货'), sub: '' }
+  if (reading.value)
+    return {
+      title: tr('正在读 {0} 家供应商的资料', [sourcing.value?.suppliers.length || 0]),
+      sub: gapLine,
+    }
+  if (state.value.actor === 'system') return { title: tr('正在比价'), sub: gapLine }
+  const reason = flow.detail.value?.recheck_reason
+  const detail = flow.againDetail.value
+  switch (again.value) {
+    case 'declined':
+      return { title: named('{0}拒单了', [declinedName.value]), sub: released.value }
+    case 'withdrawn':
+      return { title: named('给{0}的订单已撤回', [declinedName.value]), sub: released.value }
+    case 'failed':
+      return { title: tr('这笔采购没有成功'), sub: released.value }
+    case 'short':
+      return short.value
+        ? {
+            title: named('{0}只确认了 {1} 件', [declinedName.value, short.value.accepted]),
+            sub: tr('已按 {0} 件成交 · 还缺 {1} 件', [short.value.accepted, short.value.missing]),
+          }
+        : { title: tr('找别家补上这个缺口'), sub: '' }
+    case 'rejected':
+      return {
+        title: tr('你没有采用这份应急方案'),
+        sub: tr('结束这次应急补货后，系统才恢复每天的补货建议'),
+      }
+    case 'expired':
+      return { title: tr('应急方案已过期'), sub: tr('重新比价后再确认') }
+    case 'recheck':
+      if (reason === 'PLAN_EXPIRED')
+        return { title: tr('应急方案已过期'), sub: tr('重新比价后再确认') }
+      return { title: tr('比价结果需要更新'), sub: detail }
+    case 'stale':
+      return { title: tr('比价结果需要更新'), sub: detail }
+    case 'pending':
+      // The reason the analysis did not run is the failure notice below; no second sentence.
+      return { title: tr('还没有比价结果'), sub: '' }
+    case 'input':
+      return { title: tr('比价缺少条件'), sub: detail }
+  }
+  if (noOthers.value) return { title: tr('没有别的供应商可比'), sub: '' }
+  const r = cmp.value.recommended
+  const before = cmp.value.wait?.lost_qty ?? 0
+  if (before && r && r.quantity > 0)
+    return {
+      title: named('{0}补 {1} 件最合适', [name(r.supplier_id), r.quantity]),
+      sub: tr('7 天缺货 {0} → {1} 件 · 花 {2}', [before, r.lost_qty, money(r.spend_minor)]),
+    }
+  return { title: conclusion(cmp.value, originals.value), sub: '' }
 })
-const headline = computed(() => {
-  if (flow.working.value === 'again' || flow.working.value === 'exclude') return tr('正在重新比价')
-  if (flow.working.value === 'start') return tr('正在建立这次应急补货')
-  if (reading.value) return tr('正在向 {0} 家供应商要报价', [sourcing.value?.suppliers.length || 0])
-  if (state.value.actor === 'system') return tr('正在比价')
-  if (again.value && ['declined', 'withdrawn', 'failed'].includes(again.value))
-    return tr('找别家补上这个缺口')
-  if (again.value) return tr('比价结果需要更新')
-  return conclusion(cmp.value, originals.value)
-})
+/** Keeps "40 → 0 件" and every number with its unit on one line. */
+const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a0')
 
 const primary = computed<{ label: string; run: () => Promise<unknown> } | null>(() => {
   if (busy.value) return null
   const value = again.value
   if (value === 'declined' || value === 'withdrawn')
     return { label: named('不找{0}，重新比价', [declinedName.value]), run: flow.again }
+  if (value === 'short') return { label: tr('缺的找别家补上'), run: flow.again }
   if (value) {
     if (offersExpired.value && canSource.value) return { label: tr('重新找货'), run: flow.resource }
     return { label: tr('重新比价'), run: flow.again }
   }
-  if (offersExpired.value && canSource.value) return { label: tr('重新找货'), run: flow.resource }
+  if ((offersExpired.value || noOthers.value) && canSource.value)
+    return { label: tr('重新找货'), run: flow.resource }
   const candidate = selected.value
   if (!candidate) return null
   if (candidate.quantity === 0)
@@ -167,23 +281,39 @@ const sourcingMissing = computed(() =>
   (sourcing.value?.missing || []).map((code) => caseProblem(code, code)),
 )
 
+// The model's explanation, folded. A Chinese page shows only Chinese statements, and supplier
+// codes inside them ("B 的单价最低") read as the suppliers' names.
 type Analysis = {
   status?: string
   subtasks?: { subtask_id: string; status: string; claims?: { statement: string }[] }[]
 }
 const analysis = computed(() => flow.detail.value?.expert_analysis as Analysis | null)
+const han = /[㐀-鿿]/
+const codes = computed(() => [
+  ...new Set([
+    ...cmp.value.options.map((o) => o.supplierId),
+    ...(sourcing.value?.reviews || []).map((r) => r.supplier_id),
+  ]),
+])
+const escapeRe = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+const withNames = (text: string) =>
+  codes.value.reduce(
+    (out, id) =>
+      out.replace(new RegExp(`(?<![A-Za-z0-9_])${escapeRe(id)}(?![A-Za-z0-9_])`, 'g'), name(id)),
+    text,
+  )
 const claims = computed(() =>
-  (analysis.value?.subtasks || []).flatMap((t) => (t.claims || []).map((c) => c.statement)),
+  (analysis.value?.subtasks || [])
+    .flatMap((t) => (t.claims || []).map((c) => c.statement))
+    .filter((text) => locale.value === 'en' || han.test(text))
+    .map(withNames),
 )
 const analysisStatus: Record<string, string> = {
   running: '正在写',
-  complete: '已完成',
-  partial: '部分完成',
-  failed: '未完成',
-  disabled: '未启用',
-  unavailable: '尚未配置',
-  needs_input: '需要补充',
+  partial: '只写了一部分',
+  failed: '没写成',
 }
+const explained = computed(() => claims.value.length > 0 || analysis.value?.status === 'running')
 const fields: Record<string, string> = {
   unit_price_minor: '单价',
   minimum_order_quantity: '起订量',
@@ -192,24 +322,54 @@ const fields: Record<string, string> = {
   status: '不供货的依据',
   pack_size: '装箱',
 }
-function choose(id: string) {
-  pick.value = id
+/** A quote that already names its field ("单价 10.20 元") is not labelled again. */
+const labelOf = (field: string, quote: string) => {
+  const label = fields[field]
+  return label && quote.includes(label) ? '' : tr(label || field)
 }
+
 // The options form one radio group: Tab enters at the chosen row, arrow keys move the choice.
+// A plate slides to the chosen row on a pointer; anything done from the keyboard switches it
+// instantly, and the first placement is never animated.
 const group = ref<HTMLElement | null>(null)
 const choices = computed(() => [
-  ...cmp.value.options.filter((o) => o.feasible.length).map((o) => o.supplierId),
+  ...feasibleOptions.value.map((o) => o.supplierId),
   ...(cmp.value.wait ? ['wait'] : []),
 ])
-// Keyboard moves are not animated (selection highlights switch instantly); a pointer brings
-// the short highlight transition back.
 const keying = ref(false)
+const plate = ref<{ y: number; h: number } | null>(null)
+const plateLive = ref(false)
+function place() {
+  const row = group.value?.querySelector<HTMLElement>('[role="radio"][aria-checked="true"]')
+  plate.value = row ? { y: row.offsetTop, h: row.offsetHeight } : null
+}
+watch(
+  group,
+  (el, _old, onCleanup) => {
+    plateLive.value = false
+    if (!el) return
+    place()
+    const observer = new ResizeObserver(() => place())
+    observer.observe(el)
+    const frame = requestAnimationFrame(() => (plateLive.value = true))
+    onCleanup(() => {
+      observer.disconnect()
+      cancelAnimationFrame(frame)
+    })
+  },
+  { flush: 'post' },
+)
+watch([pick, () => choices.value.join()], () => nextTick(place))
+function choose(id: string, event?: MouseEvent) {
+  if (event?.detail === 0) keying.value = true
+  pick.value = id
+}
 function move(event: KeyboardEvent) {
+  keying.value = true
   const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[event.key]
   const list = choices.value
   if (!step || !list.length) return
   event.preventDefault()
-  keying.value = true
   const next = list[(list.indexOf(pick.value) + step + list.length) % list.length]!
   pick.value = next
   nextTick(() =>
@@ -218,42 +378,60 @@ function move(event: KeyboardEvent) {
       ?.focus(),
   )
 }
-function chooseQuantity(id: string, candidate: RecoveryCandidate) {
+// Quantities: the same slot, sideways. A new supplier brings its own quantities without a slide.
+const qtyLive = ref(false)
+const qtyKeyed = ref(false)
+let qtyFrame = 0
+watch(
+  pick,
+  () => {
+    qtyLive.value = false
+    cancelAnimationFrame(qtyFrame)
+    qtyFrame = requestAnimationFrame(() => (qtyLive.value = true))
+  },
+  { immediate: true },
+)
+onUnmounted(() => cancelAnimationFrame(qtyFrame))
+function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseEvent) {
+  qtyKeyed.value = event?.detail === 0
   pick.value = id
   quantities.value = { ...quantities.value, [id]: candidate.id }
 }
 </script>
 <template>
   <div class="rf-stage rf-compare">
-    <h3 class="rf-title" aria-live="polite">{{ unbroken(headline) }}</h3>
-    <p v-if="gap && (reading || busy)" class="rf-sub">
-      {{
-        gap.short_from
-          ? tr('缺 {0} 件 · 最早 {1} 缺货', [gap.shortfall_qty, dayOf(gap.short_from)])
-          : tr('缺 {0} 件', [gap.shortfall_qty])
-      }}
-    </p>
-    <p v-if="banner" class="notice amber rf-banner">{{ banner }}</p>
+    <div class="rf-head-copy">
+      <h3 class="rf-title" aria-live="polite">{{ tight(head.title) }}</h3>
+      <p v-if="head.sub" class="rf-sub">{{ tight(head.sub) }}</p>
+    </div>
+
+    <!-- Goods already bought in this restock, with their own way to record the arrival. -->
+    <RecoveryPurchases v-if="!reading" />
 
     <!-- Reviewers at work: one line per supplier, filled in as each one finishes. -->
     <ul v-if="reading" class="rf-readers" :aria-label="tr('读资料的进度')">
       <li
         v-for="supplier in sourcing!.suppliers"
         :key="supplier.supplier_id"
-        :data-tone="readerState(supplier.supplier_id).tone"
+        :data-tone="
+          reviewOf(supplier.supplier_id) ? verdict(reviewOf(supplier.supplier_id)!).tone : 'reading'
+        "
       >
         <span class="rf-reader-mark" aria-hidden="true"
           ><AppIcon
             :name="
-              readerState(supplier.supplier_id).tone === 'reading'
+              !reviewOf(supplier.supplier_id)
                 ? 'loader-circle'
-                : readerState(supplier.supplier_id).tone === 'ok'
+                : verdict(reviewOf(supplier.supplier_id)!).tone === 'ok'
                   ? 'check'
                   : 'x'
             "
         /></span>
         <b>{{ name(supplier.supplier_id) }}</b>
-        <span>{{ readerState(supplier.supplier_id).text }}</span>
+        <span v-if="reviewOf(supplier.supplier_id)">{{
+          verdict(reviewOf(supplier.supplier_id)!).text
+        }}</span>
+        <span v-else class="rf-skeleton" />
       </li>
     </ul>
 
@@ -262,68 +440,48 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate) {
       <div
         ref="group"
         class="rf-options"
-        :class="{ 'is-keying': keying }"
+        :class="{ 'is-live': plateLive && !keying }"
         role="radiogroup"
         :aria-label="tr('补货选项')"
         @keydown="move"
         @pointerdown="keying = false"
       >
-        <div
-          v-for="option in cmp.options.filter((o) => o.feasible.length)"
+        <span
+          class="rf-plate"
+          aria-hidden="true"
+          :style="
+            plate
+              ? { transform: `translateY(${plate.y}px)`, height: plate.h + 'px' }
+              : { display: 'none' }
+          "
+        />
+        <button
+          v-for="option in feasibleOptions"
           :key="option.supplierId"
-          class="rf-option-slot"
-          :class="{ 'is-picked': pick === option.supplierId }"
+          type="button"
+          role="radio"
+          class="rf-option"
+          :aria-checked="pick === option.supplierId"
+          :tabindex="pick === option.supplierId ? 0 : -1"
+          :data-recovery-option="option.supplierId"
+          @click="choose(option.supplierId, $event)"
         >
-          <button
-            type="button"
-            role="radio"
-            class="rf-option"
-            :aria-checked="pick === option.supplierId"
-            :tabindex="pick === option.supplierId ? 0 : -1"
-            :data-recovery-option="option.supplierId"
-            @click="choose(option.supplierId)"
+          <span class="rf-radio" aria-hidden="true" />
+          <span class="rf-option-name"
+            >{{ name(option.supplierId)
+            }}<span v-if="option.supplierId === recommendedSupplier" class="tag rf-recommended">{{
+              tr('推荐')
+            }}</span></span
           >
-            <span class="rf-radio" aria-hidden="true" />
-            <span class="rf-option-name"
-              >{{ name(option.supplierId)
-              }}<span
-                v-if="chosenOf(option.supplierId)?.id === recommendedId"
-                class="tag rf-recommended"
-                >{{ tr('推荐') }}</span
-              ></span
-            >
-            <span class="rf-option-figures">
-              <span>{{ tr('补 {0} 件', [chosenOf(option.supplierId)!.quantity]) }}</span>
-              <span>{{ tr(money(chosenOf(option.supplierId)!.spend_minor)) }}</span>
-              <span :class="{ 'is-short': chosenOf(option.supplierId)!.lost_qty > 0 }">{{
-                tr('缺 {0} 件', [chosenOf(option.supplierId)!.lost_qty])
-              }}</span>
-              <span>{{
-                arrivalOf(chosenOf(option.supplierId))
-                  ? tr('{0} 前到', [dayOf(arrivalOf(chosenOf(option.supplierId)))])
-                  : tr('7 天内到不了')
-              }}</span>
-            </span>
-          </button>
-          <!-- The chosen supplier's other quantities sit right under its row. -->
-          <div
-            v-if="pick === option.supplierId && option.feasible.length > 1"
-            class="rf-quantities"
-            role="group"
-            :aria-label="named('{0}的数量', [name(option.supplierId)])"
-          >
-            <button
-              v-for="candidate in option.feasible"
-              :key="candidate.id"
-              type="button"
-              class="rf-chip"
-              :aria-pressed="selected?.id === candidate.id"
-              @click="chooseQuantity(option.supplierId, candidate)"
-            >
-              {{ tr('{0} 件', [candidate.quantity]) }}
-            </button>
-          </div>
-        </div>
+          <span class="rf-option-figures">
+            <span>{{ unbroken(tr('补 {0} 件', [chosenOf(option.supplierId)!.quantity])) }}</span>
+            <span>{{ tr(money(chosenOf(option.supplierId)!.spend_minor)) }}</span>
+            <span :class="chosenOf(option.supplierId)!.lost_qty > 0 ? 'is-short' : 'is-zero'">{{
+              unbroken(tr('缺 {0} 件', [chosenOf(option.supplierId)!.lost_qty]))
+            }}</span>
+            <span>{{ unbroken(arrivalText(chosenOf(option.supplierId)!)) }}</span>
+          </span>
+        </button>
         <button
           v-if="cmp.wait"
           type="button"
@@ -332,7 +490,7 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate) {
           :aria-checked="pick === 'wait'"
           :tabindex="pick === 'wait' ? 0 : -1"
           data-recovery-option="wait"
-          @click="choose('wait')"
+          @click="choose('wait', $event)"
         >
           <span class="rf-radio" aria-hidden="true" />
           <span class="rf-option-name"
@@ -342,46 +500,66 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate) {
             }}</span></span
           >
           <span class="rf-option-figures">
-            <span>{{ tr('不补') }}</span>
-            <span>{{ tr(money(0)) }}</span>
-            <span :class="{ 'is-short': cmp.wait.lost_qty > 0 }">{{
-              tr('缺 {0} 件', [cmp.wait.lost_qty])
+            <span class="is-zero">{{ tr('不补') }}</span>
+            <span class="is-zero">{{ tr(money(0)) }}</span>
+            <span :class="cmp.wait.lost_qty > 0 ? 'is-short' : 'is-zero'">{{
+              unbroken(tr('缺 {0} 件', [cmp.wait.lost_qty]))
             }}</span>
             <span />
           </span>
         </button>
-        <div
+      </div>
+      <!-- The picked supplier's quantities: its best one with one step either side. -->
+      <div v-if="picked && tiers.length > 1" :key="pick" class="rf-qty-row">
+        <span class="rf-qty-label" aria-hidden="true">{{ tr('数量') }}</span
+        ><span
+          class="rf-seg rf-qty"
+          :class="{ 'is-live': qtyLive && !qtyKeyed }"
+          role="group"
+          :aria-label="named('{0}的数量', [name(pick)])"
+          :style="{ '--seg-count': tiers.length, '--seg-index': tierIndex }"
+          @pointerdown="qtyKeyed = false"
+        >
+          <button
+            v-for="candidate in tiers"
+            :key="candidate.id"
+            type="button"
+            class="rf-seg-item"
+            :aria-pressed="selected?.id === candidate.id"
+            @click="chooseQuantity(pick, candidate, $event)"
+          >
+            <b>{{ unbroken(tr('{0} 件', [candidate.quantity])) }}</b
+            ><small>{{
+              unbroken(tr('{0} · 缺 {1}', [money(candidate.spend_minor), candidate.lost_qty]))
+            }}</small
+            ><span v-if="candidate.id === recommendedId" class="rf-tier-recommended">{{
+              tr('推荐')
+            }}</span>
+          </button>
+        </span>
+      </div>
+      <!-- Suppliers that cannot be chosen, and why; outside the choice itself. -->
+      <ul
+        v-if="cmp.options.some((o) => !o.feasible.length) || unread.length"
+        class="rf-unavailable"
+      >
+        <li
           v-for="option in cmp.options.filter((o) => !o.feasible.length)"
           :key="option.supplierId"
-          class="rf-option is-blocked"
           :data-recovery-option="option.supplierId"
         >
-          <span class="rf-radio" aria-hidden="true" />
-          <span class="rf-option-name">{{ name(option.supplierId) }}</span>
-          <span class="rf-option-reason">{{
-            option.blocked.map(blockedReason).join(tr('；'))
-          }}</span>
-        </div>
-        <div
+          <span>{{ name(option.supplierId) }}</span
+          ><span>{{ option.blocked.map(blockedReason).join(tr('；')) }}</span>
+        </li>
+        <li
           v-for="review in unread"
           :key="review.supplier_id"
-          class="rf-option is-blocked"
           :data-recovery-option="review.supplier_id"
         >
-          <span class="rf-radio" aria-hidden="true" />
-          <span class="rf-option-name">{{ name(review.supplier_id) }}</span>
-          <span class="rf-option-reason">{{ verdict(review).text }}</span>
-        </div>
-      </div>
-      <RecoveryDays
-        v-if="selected"
-        :days="candidateDays(selected)"
-        :label="
-          selected.quantity
-            ? named('用{0}补 {1} 件的七天', [name(selected.supplier_id), selected.quantity])
-            : tr(originals ? '等原订单的七天' : '不补货的七天')
-        "
-      />
+          <span>{{ name(review.supplier_id) }}</span
+          ><span>{{ verdict(review).text }}</span>
+        </li>
+      </ul>
     </template>
 
     <p v-for="text in sourcingMissing" :key="text" class="notice amber" role="status">
@@ -389,13 +567,15 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate) {
     </p>
     <p v-if="failure" class="notice" :class="{ amber: !quiet }" role="status">{{ failure }}</p>
 
-    <details v-if="analysis && !busy && !again" class="rf-more">
+    <details v-if="analysis && explained && !busy && !again" class="rf-more">
       <summary>
         {{
           joinText(
             [
               tr('为什么这样比'),
-              tr(analysisStatus[analysis.status || ''] || analysis.status || ''),
+              analysisStatus[analysis.status || '']
+                ? tr(analysisStatus[analysis.status || ''])
+                : '',
               claims.length ? tr('{0} 条', [claims.length]) : '',
             ].filter(Boolean),
             ' · ',
@@ -419,7 +599,9 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate) {
         <p>{{ verdict(review).text }}</p>
         <ul v-if="review.card?.citations.length" class="rf-citations">
           <li v-for="(citation, index) in review.card.citations" :key="index">
-            <b>{{ tr(fields[citation.field] || citation.field) }}</b
+            <b v-if="labelOf(citation.field, citation.quote)">{{
+              labelOf(citation.field, citation.quote)
+            }}</b
             ><q>{{ citation.quote }}</q>
           </li>
         </ul>
@@ -441,7 +623,14 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate) {
           class="text-link"
           @click="flow.stop()"
         >
-          {{ tr('结束这次应急补货') }}
+          {{ tr('结束这次应急补货') }}</button
+        ><button
+          v-if="flow.canReturnToConfirm.value && !busy"
+          type="button"
+          class="text-link"
+          @click="flow.backToConfirm()"
+        >
+          {{ tr('不换了，回去确认') }}
         </button></span
       ><span v-if="!primary && (reading || busy)" class="rf-quiet"
         ><AppIcon name="orbit" />{{
@@ -451,11 +640,12 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate) {
         v-else
         type="button"
         class="primary"
-        :disabled="!primary || !flow.operator.value"
+        :disabled="!primary || !flow.operator.value || waiting"
         data-recovery-next
         @click="primary?.run()"
       >
-        {{ primary?.label || tr('先选一个补货选项') }}<AppIcon v-if="primary" name="arrow-right" />
+        {{ waiting && waitingLabel ? tr(waitingLabel) : primary?.label || tr('先选一个补货选项')
+        }}<AppIcon v-if="primary && !waiting" name="arrow-right" />
       </button>
     </footer>
   </div>

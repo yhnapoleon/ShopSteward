@@ -2,54 +2,94 @@
 import { joinText, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
 import { supplierDisplayName } from '~/utils/glossary'
-import { outcomeOf } from '~/utils/recovery'
+import { named, outcomeOf, unbroken } from '~/utils/recovery'
 import { useFlow } from '~/composables/useRecoveryFlow'
 
-// Step 6, "结果": what the restock achieved. Shortages are the plan's projection (the backend
-// records no observed outcome for a Case), so they read "预计". When the restock is over the card
-// shows only this, as one line that opens on demand.
+// Step 6, "结果": what the restock achieved, as the backend recorded when it settled the Case
+// (shortages are the analysis's projection, so they read "预计"). A Case ended by hand has no
+// outcome; it shows what was bought, if anything. When over, the card shows only this, as one
+// line that opens on demand.
 defineProps<{ compact?: boolean }>()
 const emit = defineEmits<{ expand: [] }>()
 const flow = useFlow()
-const state = computed(() => flow.flow.value)
 const action = computed(() => flow.action.value)
 const outcome = computed(() =>
-  outcomeOf(flow.casePlan.value, action.value, flow.inbound.value, flow.cmp.value.wait),
+  outcomeOf(
+    flow.detail.value,
+    flow.casePlan.value,
+    action.value,
+    flow.inbound.value,
+    flow.cmp.value.wait,
+  ),
 )
-const bought = computed(() => action.value?.status === 'SUCCEEDED')
-const arrived = computed(() => bought.value && state.value.stage === 'result')
-const waited = computed(() => state.value.variant === 'wait' && state.value.stage === 'result')
+const settled = computed(() => flow.detail.value?.status === 'RESOLVED')
+const bought = computed(() => settled.value && outcome.value.path === 'purchase')
+const waited = computed(() => settled.value && outcome.value.path === 'waiting')
 const originalsIn = computed(() =>
   flow.originals.value.reduce((n, i) => n + i.received_quantity, 0),
 )
 // Waiting with no original order on the way was a decision not to restock.
 const hadOriginals = computed(() => flow.originals.value.length > 0)
+const names = computed(() =>
+  outcome.value.suppliers.map((id) => supplierDisplayName(id)).join(tr('、')),
+)
+// One supplier that confirmed less than ordered; with several purchases the units add up per
+// supplier instead (the backend's planned total is every order together).
+const partial = computed(
+  () =>
+    outcome.value.parts.length < 2 &&
+    outcome.value.planned != null &&
+    outcome.value.ordered < outcome.value.planned,
+)
+/** "百川批发 10 + 安和商贸 30" */
+const parts = computed(() =>
+  outcome.value.parts
+    .map((p) => joinText([supplierDisplayName(p.supplierId), tr(p.quantity)], ' '))
+    .join(' + '),
+)
+const change = computed(() =>
+  outcome.value.before != null && outcome.value.after != null
+    ? tr('预计缺货 {0} → {1} 件', [outcome.value.before, outcome.value.after])
+    : '',
+)
 const title = computed(() =>
   tr(
-    arrived.value
+    bought.value
       ? '应急补货完成'
       : waited.value && hadOriginals.value
         ? '已等到原订单'
         : '应急补货已结束',
   ),
 )
+/** Numbers stay with their units and "40 → 0 件" stays whole wherever the line wraps. */
+const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a0')
 const facts = computed(() => {
   const o = outcome.value
-  const name = supplierDisplayName(o.supplierId)
-  if (arrived.value)
+  if (bought.value)
     return [
-      tr('{0} {1} 件已到货', [name, o.received]),
-      o.before != null && o.after != null ? tr('预计缺货 {0} → {1} 件', [o.before, o.after]) : '',
+      o.parts.length > 1
+        ? tr('补到 {0} 件（{1}）', [o.received, parts.value])
+        : partial.value
+          ? named('{0}确认的 {1} 件已到货（订单 {2} 件）', [
+              names.value,
+              o.received,
+              o.planned ?? 0,
+            ])
+          : named('{0} {1} 件已到货', [names.value, o.received]),
+      change.value,
       tr('花了 {0}', [money(o.spend)]),
     ].filter(Boolean)
   if (waited.value)
     return [
       originalsIn.value ? tr('原订单 {0} 件已到', [originalsIn.value]) : tr('这次不补'),
-      o.before != null ? tr('预计缺货 {0} 件', [o.before]) : '',
+      change.value,
     ].filter(Boolean)
-  if (bought.value)
+  // Ended by hand: what was bought, if anything, and whether it is still on the way.
+  if (action.value?.status === 'SUCCEEDED')
     return [
-      tr('{0} 件在途，货到后请登记', [o.ordered - o.received]),
+      o.ordered > o.received
+        ? tr('{0} 件在途，货到后请登记', [o.ordered - o.received])
+        : named('{0} {1} 件已到货', [names.value, o.received]),
       tr('花了 {0}', [money(o.spend)]),
     ]
   return [tr('没有补货')]
@@ -64,38 +104,46 @@ const facts = computed(() => {
     data-recovery-summary
     @click="emit('expand')"
   >
-    <span class="rf-summary-mark" :class="{ done: arrived || waited }" aria-hidden="true"
-      ><AppIcon :name="arrived || waited ? 'check' : 'truck'"
+    <span class="rf-summary-mark" :class="{ done: settled }" aria-hidden="true"
+      ><AppIcon :name="settled ? 'check' : 'truck'"
     /></span>
     <b>{{ title }}</b>
-    <span class="rf-summary-facts">{{ facts.join(' · ') }}</span>
+    <span class="rf-summary-facts"
+      ><span v-for="(fact, index) in facts" :key="index" class="rf-summary-fact">{{
+        tight(fact)
+      }}</span></span
+    >
     <AppIcon name="chevron-down" />
   </button>
   <div v-else class="rf-stage rf-outcome">
     <h3 class="rf-title">{{ title }}</h3>
-    <dl v-if="arrived" class="rf-figures">
+    <dl v-if="bought" class="rf-figures">
       <div>
         <dt>{{ tr('预计缺货') }}</dt>
         <dd>
           {{
             outcome.before != null && outcome.after != null
-              ? tr('{0} → {1} 件', [outcome.before, outcome.after])
+              ? tight(tr('{0} → {1} 件', [outcome.before, outcome.after]))
               : tr('尚未取得')
           }}
         </dd>
-        <small>{{ tr('7 天合计，按方案推演') }}</small>
+        <small>{{ tr('7 天合计（预计）') }}</small>
       </div>
       <div>
         <dt>{{ tr('花了') }}</dt>
         <dd>{{ tr(money(outcome.spend)) }}</dd>
-        <small>{{ supplierDisplayName(outcome.supplierId) }}</small>
+        <small>{{ names }}</small>
       </div>
       <div>
         <dt>{{ tr('到货') }}</dt>
-        <dd>{{ tr('{0}/{1} 件', [outcome.received, outcome.ordered]) }}</dd>
-        <small>{{ tr('已计入在库') }}</small>
+        <dd>{{ tight(tr('{0}/{1} 件', [outcome.received, outcome.ordered])) }}</dd>
+        <small>{{
+          partial
+            ? tr('订单 {0} 件，供应商只确认了一部分', [outcome.planned ?? 0])
+            : tr('已计入在库')
+        }}</small>
       </div>
     </dl>
-    <p v-else class="rf-sub">{{ facts.join(' · ') }}</p>
+    <p v-else class="rf-sub">{{ tight(facts.join(' · ')) }}</p>
   </div>
 </template>

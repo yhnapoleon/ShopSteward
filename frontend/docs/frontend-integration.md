@@ -4,7 +4,7 @@
 
 - **改后端**（接口、字段、枚举值、状态码、错误码、返回给界面的中文）：先在 §2.0 按路径找到用到它的板块和文件，再读该板块的"依赖与解释"和"后端改动会影响"，最后按 §3 的顺序同步。
 - **改前端**：在同一个 PR 里更新本文对应板块和 §2.0 索引；新增的后端依赖或绕行写进 §4。
-- **代码基线**：jeffrey 上引入本文的提交，即 main `3079693` + `ad6a74e` + 应急补货前端（2026-10-18）。本文只写代码现在的行为；与代码不符时以代码为准，并修正本文。
+- **代码基线**：jeffrey 本地提交 `8a7566c`（应急补货前端第一轮）+ 合并提交 `c79e101`（合并 main `11c84d2`，含 YH 的 #25）；合并后的调整与第二轮改动（2026-10-19，redesign §18.11、§18.12）在工作区，待提交。本文只写代码现在的行为；与代码不符时以代码为准，并修正本文。
 - **路径写法**：
   - `app/`、`server/`、`scripts/`、`tests/`、`nuxt.config.ts`、`playwright.config.ts` 都在 `frontend/` 下。
   - 短写的 `pages/…`、`components/…`、`composables/…`、`utils/…`、`types/…`、`surfaces/…`、`assets/…` 都在 `frontend/app/` 下；`useXxx` 在 `frontend/app/composables/`。
@@ -65,7 +65,7 @@
 角色：`useShop().hasRole(r)` 在 `roles` 含 `r` 或 `admin` 时为真；文档中心另用 `roles` 含 `operator` 或 `admin` 判断可写（`useDocuments.ts canWrite`）。
 
 - 需要 `operator`：建立委托（今日开始卡、`GoalDeck` 新建）；改跟进间隔、暂停/恢复主动跟进、重新检查；标记提醒已知晓；应急补货的一切写入（`useRecoveryCase.submit` 直接拦截）；登记到货；接受事项里的委托条件；改选非推荐数量（另需 `planRevision`）；预测刷新；学习操作；Agent 主动解读开关；载入示例供应商资料。
-- 需要 `approver`：确认采购（方案卡、应急确认步）；结束委托；登记供应商回复；撤回店主发出的订单。部分回复后的"撤回这单，找别家补"同时要求 `operator` 和 `approver`。
+- 需要 `approver`：确认采购（方案卡、应急确认步）；结束委托；登记供应商回复；按对方数量成交；撤回店主发出的订单。部分回复后的"撤回整单，找别家补"同时要求 `operator` 和 `approver`。应急卡在当前身份缺少某一步所需的权限时，进度标"等审批"，右下写等有相应权限的人来做。
 - 试算（`QuantitySimulationPanel.vue`）和记忆修改不检查角色，由后端决定。
 
 ### 1.3 健康探测与中断
@@ -114,10 +114,10 @@
 失败时抛 `ApiFailure(code, message, status, requestId)`：
 
 - `code`：响应体的 `error.code`；没有时为 `CONNECTION_ERROR`。Nitro 自己报的错（404 `Unknown operation`、401 无凭证、403、413、415）没有 `error.code`，也落到 `CONNECTION_ERROR`，但 `status` 是真实状态码。
-- `message`：先查 `utils/api.ts` 的 `messages` 表，再用后端 `error.message`，再用 Nitro 的 `statusMessage`，最后是"连接中断，未能取得最新结果。"。
+- `message`：先查 `utils/api.ts` 的 `messages` 表，再用后端 `error.message`（只是错误码本身、不成句时不用）；有错误码而没有可用的句子时写"暂时没能完成，稍后再试。"；没有错误码时再用 Nitro 的 `statusMessage`，最后是"连接中断，未能取得最新结果。"。
 - `status`：HTTP 状态，没有响应时为 0。`requestId` 取响应体 `error.request_id`，界面不显示。`error.retryable`、`error.details` 不读。
 
-`messages` 表用前端文案替换这些错误码的后端文案：`LEARNING_CONTEXT_CHANGED`、`LEARNING_QUALITY_REQUIRED`、`LEARNING_FORGOTTEN`、`STATE_VERSION_CONFLICT`、`PLAN_INPUT_STALE`、`PLAN_VERSION_CONFLICT`、`PLAN_ALREADY_DECIDED`、`PLAN_EXPIRED`、`DATA_STALE`、`ACTION_IN_PROGRESS`、`ACTION_NOT_WAITING`、`MISSION_NOT_ACTIVE`、`CASH_FLOOR_VIOLATION`、`AGENT_NOT_CONFIGURED`、`FORBIDDEN`、`UNAUTHENTICATED`、`NO_PURCHASE_PROPOSED`。各板块另有错误码表：`utils/recovery.ts caseProblem()`、`useDocuments.ts documentError()`、`ForecastPanel.vue failures`、`useAgentKnowledge.ts reasons`。
+`messages` 表用前端文案替换这些错误码的后端文案：`LEARNING_CONTEXT_CHANGED`、`LEARNING_QUALITY_REQUIRED`、`LEARNING_FORGOTTEN`、`STATE_VERSION_CONFLICT`、`PLAN_INPUT_STALE`、`PLAN_VERSION_CONFLICT`、`PLAN_ALREADY_DECIDED`、`PLAN_EXPIRED`、`DATA_STALE`、`ACTION_IN_PROGRESS`、`ACTION_NOT_WAITING`、`MISSION_NOT_ACTIVE`、`CASH_FLOOR_VIOLATION`、`AGENT_NOT_CONFIGURED`、`FORBIDDEN`、`UNAUTHENTICATED`、`NO_PURCHASE_PROPOSED`；订单写入的 `PARTIAL_SUPPLY_NOT_OFFERED`、`GOODS_QUANTITY_CONFLICT`、`ARRIVAL_NOT_EXPECTED`、`IDEMPOTENCY_KEY_REUSED`；`INVALID_STORED_DATA`（"这件事的方案正等待确认，刷新前先确认或拒绝它。"，§4 第 1 项）、`FORECAST_NOT_FOUND`；应急方案依据变化的 `MISSION_VERSION_CONFLICT`、`OFFER_VERSION_CONFLICT`、`INBOUND_VERSION_CONFLICT`、`FORECAST_VERSION_CONFLICT`、`RECOVERY_INTENT_STALE`（都写"…刚变了，重新比价后再采用。"一类的句子）。各板块另有错误码表：`utils/recovery.ts caseProblem()`、`useDocuments.ts documentError()`、`ForecastPanel.vue failures`、`useAgentKnowledge.ts reasons`。
 
 状态码的通用解读（各 composable 一致）：
 
@@ -129,7 +129,8 @@
 |---|---|---|---|
 | 采购确认 `POST /api/v1/plans/{plan_id}/decision` | sessionStorage `ss.approval`：`{ storeId, planId, body, key }`（`useShop.decide`，发送前写入） | "查询原确认结果" → `useShop.recoverApproval()`，同 body 同 key | 成功；4xx；刷新时出现 `plan_id` 相同的采购单 |
 | 事项写入（新建、消息、控制、接受委托、报价三类、试算） | sessionStorage `ss.work.pending:<principal>:<roles>:<store>`（`useWorkItems.submit`） | "恢复原提交""查询并重试原提交""查询并重试原试算"；存在时拒绝别的事项写入 | 成功；4xx（401/403/404 时同时 `revoke()`） |
-| 应急补货 Case 写入（create/analyze/revise/materialize/control） | sessionStorage `ss.recovery.pending:<principal>:<roles>:<store>:<mission>`（`useRecoveryCase.submit`） | "核实并重试原提交"：事项页应急卡（`recovery/RecoveryUnconfirmed.vue` → `useRecoveryFlow.retry()`，§2.6"写入结果不明"）与旧面板（§2.16）都有；存在时拒绝别的 Case 写入 | 成功；4xx |
+| 应急补货 Case 写入（create/analyze/revise/materialize/control） | sessionStorage `ss.recovery.pending:<principal>:<roles>:<store>:<mission>`（`useRecoveryCase.submit`） | 事项页应急卡"再试一次（沿用刚才的提交）"（`recovery/RecoveryUnconfirmed.vue` → `useRecoveryFlow.retry()`，§2.6"写入结果不明"）与旧面板"核实并重试原提交"（§2.16）；存在时拒绝别的 Case 写入 | 成功；4xx |
+| 订单写入：登记回复 `POST /api/v1/actions/{action_id}/supplier-reply`、撤回 `…/withdrawal`、按对方数量成交 `…/partial-acceptance`、登记到货 `…/arrival` | sessionStorage `ss.order-writes`：按请求路径记 `{ storeId, actionId, path, body, key, mark }`，`mark` 是发出时订单的状态、回复时间与到货数（`useShop.orderWrite()`，发送前写入） | 再做同一操作：内容相同时沿用原 key 重发，后端按第一次的结果答复，不会重复入账；内容不同时报"上一次…的结果还没确认"，要先按原内容再提交一次 | 成功；4xx；刷新时订单的 `mark` 已变（写入已生效或被别的写入超过） |
 | 文档上传、新版本、编辑、归档/恢复 | sessionStorage `ss.documents.<principal>.<store>`，含文件名、大小、SHA-256（`useDocuments.save`）；浏览器不能写 sessionStorage 时拒绝提交 | "核实原提交"；刷新后要重新选择同一文件（三项都要一致） | 成功；除 401/403/404/408/429 以外的 4xx |
 | Agent 消息与补充回答 | 内存 `useState('agent-workspace').submission`，刷新即失 | "查询或重试原消息" | 成功；4xx |
 | 学习操作 | 内存 `useLearning().pending` | "核实并重试" | 成功；4xx |
@@ -143,10 +144,10 @@
 | 谁 | 节奏 | 读什么 |
 |---|---|---|
 | `pages/index.vue` → `useShop.pollEnvironment()` | 每 2.5 s（已认证、没有命令在执行） | `GET /api/v1/stores?limit=100`；`active_store` 变了就切店并提示"模拟器已切换经营环境…"，否则 `refresh()` |
-| `useShop.refresh()` | 每次轮询、每个命令之后 | 并行：`dashboard`、`catalog`、`missions`（100）、`actions`（100）、`inbounds`（100）、`alerts`（100）、`ledger-entries`（30）；再读选中委托的 `GET /api/v1/plans/{plan_id}`（`plan_id` 取委托的 `current_plan_id`）与 `GET /api/v1/missions/{mission_id}/timeline?limit=30` |
+| `useShop.refresh()` | 每次轮询、每个命令之后 | 并行：`dashboard`、`catalog`、`missions`（100）、`actions`（100）、`inbounds`（100）、`alerts`（100）、`ledger-entries`（30）；再读选中委托的 `GET /api/v1/plans/{plan_id}`（`plan_id` 取委托的 `current_plan_id`）与 `GET /api/v1/missions/{mission_id}/timeline?limit=30`；同时读供应商资料 `GET /api/v1/stores/{store_id}/supplier-documents`（有 `sourcing` 时，每店一次，不阻塞刷新；失败后从 5 s 起翻倍退避，最多 5 分钟），读完给没有名称的供应商登记名称（§1.7） |
 | `useWorkItems(true)` | 每 2.5 s | 已加载的每一页 `GET /api/v1/work-items`（每页 30），加上选中事项 `GET /api/v1/work-items/{item_id}` |
 | `useAgentConversation(true)` | 页面隐藏 20 s；SSE 在线 10 s；本轮进行中 2.5 s；其余 5 s；另开 SSE | 会话、消息、运行（§2.5） |
-| `useRecoveryFlow` | 2 s 一拍：系统在做、寻源中或专家分析中每拍都读，否则每 3 拍读一次；卡片结束后停 | `GET /api/v1/operations-cases/{case_id}` |
+| `useRecoveryFlow` | 每 2 s 检查一次：寻源中、专家分析中、货已到齐等结算、或系统在做（到货步除外）时每次都读，否则每 6 s 读一次；卡片结束后停；页面确认弹窗确认了 Case 的方案后立即读一次 | `GET /api/v1/operations-cases/{case_id}` |
 | `useOverview` | 12 s（页面可见时） | §2.12 |
 | `ForecastPanel.vue` | 30 s；看板 `state_version` 变化时 | `GET /api/v1/stores/{store_id}/forecast?sku_id=` |
 | `PresenterBar.vue` 过一天 | 推进后每 1.2 s，最多 90 s | `GET /api/v1/dashboard`，直到 `state_version` 变化 |
@@ -156,7 +157,7 @@
 
 能否确认采购 `useShop().canDecide`：已连接；没有待核实确认（`s.pending`）；门店内没有未决采购单（任一 `QUEUED`/`EXECUTING`/`UNKNOWN`，不分委托）；委托 `ACTIVE`；方案 `PENDING_APPROVAL` 且有 `proposed_purchase`；`dashboard.freshness.status === 'FRESH'`；方案 `state_version` 等于看板 `state.state_version`；未过 `expires_at`。
 
-页面的 `issue`（`pages/index.vue`，按顺序取第一个）：`confirmation`（有待核实确认）→ `unknown`（未决采购单为 `UNKNOWN`）→ `offline`（已选店但读取失败）→ `stale`（`freshness.status` 不是 `FRESH`）→ `expired`（方案 `EXPIRED`）→ `changed`（方案待确认但 `state_version` 落后，且没有未决采购单）。`utils/glossary.ts firstSync()`：`freshness.status` 不是 `FRESH` 且 `last_sync_at` 为空，视为新店首次同步：用蓝色"正在首次同步"提示，不计入"需要你拍板"。
+页面的 `issue`（`pages/index.vue`，按顺序取第一个）：`confirmation`（有待核实确认）→ `unknown`（未决采购单为 `UNKNOWN`）→ `offline`（已选店但读取失败）→ `stale`（`freshness.status` 不是 `FRESH`）→ `expired`（方案 `EXPIRED`）→ `changed`（方案待确认但 `state_version` 落后，且没有未决采购单）。当前方案属于进行中的应急补货（待确认或已过期的应急方案，或应急卡占用的方案，`restockOwnsPlan`）时不报 `expired`、`changed`，由应急卡自己说明；`stale` 照常报。`utils/glossary.ts firstSync()`：`freshness.status` 不是 `FRESH` 且 `last_sync_at` 为空，视为新店首次同步：用蓝色"正在首次同步"提示，不计入"需要你拍板"。
 
 ### 1.7 状态词在哪里翻译
 
@@ -165,12 +166,12 @@
 | `utils/glossary.ts` | `statusBadge(input)` | 事项状态、委托状态、方案状态、未决采购单、在途、`business.code` → `{ label, tone }`（下表） |
 | | `orderStatus(action, inbound)` | 一笔采购单的状态词（下表） |
 | | `alertName(type)` | `STOCKOUT_RISK` 缺货风险、`CASH_CONSTRAINT` 现金约束、`ACTION_EXCEPTION` 采购需核实、`DATA_STALE` 数据未更新；其他原样 |
-| | `storeDisplayName()`、`supplierDisplayName()`、`rememberSupplierNames()` | 店铺名（演示模式按创建时点，否则 id 尾 8 位）；供应商名（传入的名称 → 本店已登记的名称 → `supplier_001` 写成"供应商 001" → 原 id） |
+| | `storeDisplayName()`、`supplierDisplayName()`、`rememberSupplierNames()` | 店铺名（演示模式按创建时点，否则 id 尾 8 位）；供应商名（传入的名称 → 本店已登记的名称 → `supplier_001` 写成"供应商 001" → 原 id）。登记的名称来自供应商资料与寻源记录（`useShop.refresh`、`useSupplierDirectory`、`useRecoveryPrompt`）；没有名称的供应商由 `useShop.nameSuppliers()` 按角色登记为"原供应商"（委托的默认供应商）或"已对接的供应商"，资料里有真名时替换，所以"供应商 001"只在名称还没读到时短暂出现 |
 | `composables/useSpace.ts` | `workBadge()`、`needsOwner()`、`watchSummary()`、`awaitsOwnerArrival()`、`agentDormant()` | 列表里一件事项的徽章、是否需要店主、一行摘要 |
 | `utils/workPresentation.ts` | `workPresentation(item)`、`newerWork()` | 事项卡的状态句、说明、按钮文字、颜色、排序优先级；列表与详情按 `version` 和 `business.observed_at` 合并 |
 | `utils/presentation.ts` | `actionLabel(status, channel)`、`reasonLabel(code)`、`money()`、`number()`、`when()` | 采购记录弹层、跟进卡、时间线里的采购状态；方案候选的约束原因 |
 | `utils/timeline.ts` | `describeEvent()`、`timelineItems()`、`groupTimeline()`、`timelineLines()` | 委托时间线（§2.4） |
-| `utils/recovery.ts` | `flowState()`、`blockedReason()`、`caseProblem()` | 应急补货（§2.6） |
+| `utils/recovery.ts` | `flowState()`、`purchasesOf()`、`againDetail()`、`blockedReason()`、`caseProblem()` | 应急补货（§2.6） |
 | `utils/agent.ts` | `describeTool(name)` | Agent 工具名 → 标题、完成语、类别、要高亮的卡片 |
 
 `statusBadge` 规则（自上而下取第一个命中）：
@@ -215,7 +216,7 @@
 
 ### 1.8 中英文
 
-- 代码里的界面文字写中文原文；`app/i18n/en.json` 以中文原文为键、英文为值（当前 2269 条）。`t(source, values)`（`app/i18n/index.ts`）：英文界面下按去掉多余空白后的原文查表；查不到且含汉字时，再用带 `{0}` 占位的键整句匹配（给后端生成的固定句式用，只匹配整句，不替换片段）；最后代入 `values`。中文界面直接代入 `values`。`joinText(parts, 分隔)` 在英文下用空格连接。`intlLocale()` 为 `zh-CN` 或 `en-SG`。
+- 代码里的界面文字写中文原文；`app/i18n/en.json` 以中文原文为键、英文为值（当前 2463 条）。`t(source, values)`（`app/i18n/index.ts`）：英文界面下按去掉多余空白后的原文查表；查不到且含汉字时，再用带 `{0}` 占位的键整句匹配（给后端生成的固定句式用，只匹配整句，不替换片段）；最后代入 `values`。中文界面直接代入 `values`。`joinText(parts, 分隔)` 在英文下用空格连接。`intlLocale()` 为 `zh-CN` 或 `en-SG`。
 - 语言保存在 localStorage `shopsteward.locale.v1`，其他标签页通过 `storage` 事件同步（`app/plugins/locale.client.ts`）。
 - `node scripts/check-i18n.mjs` 只扫描 `app/components/**` 与 `app/pages/**` 的 `.vue` **模板**：模板文字、属性值、表达式里含汉字的字符串字面量必须在 `app/i18n/en.json` 里，键值占位符必须一致。`<script>` 里和 `.ts`（composables、utils）里的中文不检查，要自己加进 `app/i18n/en.json`。
 - 后端返回、界面经 `t()` 显示的中文同样靠 `app/i18n/en.json`：`business.label/detail/action_label`、后端错误 `message`、时间线 `summary` 的固定句式、试算结果的正文行与 `next_step`。后端改了这些中文，英文界面就显示中文原文。`backend/app/work_items/business.py` 里的中文目前都有英文（含 `AWAITING_SUPPLIER` 的说明与 `action_label`"处理订单"、店主登记到货时的在途说明），后端新增或改写时要同步 `app/i18n/en.json`。
@@ -243,7 +244,7 @@
 - 店铺名写成"示例店铺 · {时点}"：时点取该店账本 `INIT` 条目的 `simulation_time`（或 `occurred_at`），记在 `ss.store-created.v1`（`StoreSummary` 没有创建时间）；没有记录的店用 `simulation_time`。
 - 顶栏按钮写"演示 · 合成数据"（关闭时"联调控制 · 合成数据"）。
 - 显示演示条 `PresenterBar.vue`（§2.1）。
-- 应急补货说明步：没有资料时自动 `POST /api/v1/stores/{store_id}/supplier-documents/sample`，并隐藏"载入示例资料"链接。
+- 应急补货说明步：没有资料时自动 `POST /api/v1/stores/{store_id}/supplier-documents/sample`；自动载入失败时才出现"载入示例资料"链接。非演示模式不载入示例资料，也没有这个链接。
 - 预测面板标题下的商品名后加"示例店铺"。
 
 业务规则、经营时钟和数据不因开关改变；"过一天"调用的是开发推进接口。
@@ -257,8 +258,8 @@
 | `ss.demo.v1`、`ss.store-created.v1` | localStorage | 演示模式开关；示例店铺的创建时点 |
 | `shopsteward.locale.v1` | localStorage | 语言 |
 | `shopsteward.onboarding.v1:<principal>` | localStorage | 新手指引进度 |
-| `ss.approval`、`ss.work.pending:*`、`ss.recovery.pending:*`、`ss.documents.*` | sessionStorage | 待核实写入（§1.5） |
-| `ss.recovery.excluded:<case_id>` | sessionStorage | 应急补货排除的供应商（§2.6） |
+| `ss.approval`、`ss.work.pending:*`、`ss.recovery.pending:*`、`ss.order-writes`、`ss.documents.*` | sessionStorage | 待核实写入（§1.5） |
+| `ss.recovery.excluded:<case_id>` | sessionStorage | 应急补货排除的供应商列表（JSON 数组；旧版本存的单个 id 也认；§2.6） |
 
 凭证只在 HttpOnly cookie 里，不进浏览器存储。
 
@@ -283,7 +284,7 @@
 | `GET /api/v1/plans/{plan_id}` | `useShop.refresh`；`useRecoveryFlow`（Case 的方案） | 2.5、2.6 |
 | `POST /api/v1/plans/{plan_id}/revision` | `useShop.prepareDecision` | 2.5 |
 | `POST /api/v1/plans/{plan_id}/decision` | `useShop.decide/recoverApproval` | 2.5、2.6 |
-| `POST /api/v1/actions/{action_id}/supplier-reply`、`/withdrawal`、`/arrival` | `useShop.recordSupplierReply/withdrawOrder/recordArrival`（`AssistedOrderCard.vue`、`ArrivalCard.vue`、`recovery/RecoveryOrder.vue`、`recovery/RecoveryReceive.vue`） | 2.5、2.6 |
+| `POST /api/v1/actions/{action_id}/supplier-reply`、`/withdrawal`、`/partial-acceptance`、`/arrival` | `useShop.recordSupplierReply/withdrawOrder/acceptPartialSupply/recordArrival`，都经 `orderWrite()`（§1.5）（`AssistedOrderCard.vue`、`ArrivalCard.vue`、`recovery/RecoveryOrder.vue`、`recovery/RecoveryReceive.vue`、`recovery/RecoveryPurchases.vue`） | 2.5、2.6 |
 | `GET /api/v1/inbounds` | `useShop.refresh`；`useOverview` | 全局、2.12 |
 | `POST /api/v1/alerts/{alert_id}/acknowledgement` | `useShop.acknowledge`（提醒弹层） | 2.2 |
 | `GET /api/v1/ledger-entries` | `useShop.refresh`（30 条）；`useOverview`（全量） | 2.4、2.12 |
@@ -299,8 +300,8 @@
 | `GET /api/v1/work-items/{item_id}/results/{result_id}` | `WorkResult.vue`（保存结果） | 2.5、2.7 |
 | `POST /api/v1/stores/{store_id}/simulations` | `QuantitySimulationPanel.vue` | 2.7 |
 | `GET/POST /api/v1/operations-cases`、`GET …/{case_id}`、`POST …/{case_id}/analyze`、`/revise`、`/materialize`、`/control`、`/source` | `useRecoveryCase`、`useRecoveryPrompt`、`useRecoveryFlow`、`RecoveryWorkspace.vue` | 2.6、2.2、2.16 |
-| `GET /api/v1/stores/{store_id}/supplier-documents`、`POST …/sample` | `useSupplierDirectory`、`SourcingPanel.vue` | 2.6、2.16 |
-| `GET /api/v1/stores/{store_id}/forecast` | `ForecastPanel.vue`；`useRecoveryFlow.open()` | 2.10、2.6 |
+| `GET /api/v1/stores/{store_id}/supplier-documents`、`POST …/sample` | `useShop.refresh`（经 `fetchDirectory`）、`useSupplierDirectory`、`SourcingPanel.vue` | 全局、2.6、2.16 |
+| `GET /api/v1/stores/{store_id}/forecast` | `ForecastPanel.vue`；`useRecoveryFlow.open()`；`useRecoveryPrompt`（每店每商品一次） | 2.10、2.6、2.2 |
 | `GET /api/v1/stores/{store_id}/forecast/model` | `ForecastPanel.vue`；`useServiceStatus` | 2.10、2.2 |
 | `POST /api/v1/stores/{store_id}/forecast/refresh` | `ForecastPanel.vue` | 2.10 |
 | `GET/POST /api/v1/stores/{store_id}/agent-knowledge` | `useAgentKnowledge` | 2.9 |
@@ -387,8 +388,8 @@
 - 行内摘要 `watchSummary()`：有委托时，时间取最早一笔在途的 `expected_arrival_at`（没有到货时间写"到货时间待供应商确认"）、暂停、或 `schedule.next_run_at`；"最近变化"只对 `useShop` 当前选中的委托计算（时间线里非例行的用户动作、采购、提醒，与账本 `GOODS_RECEIVED` 按采购单 id 匹配的到货比新旧）。没有委托时写"最近更新"与 `workPresentation()` 的说明。徽章 `workBadge(item, now, awaitsOwnerArrival())`（§1.7）。
 - 委托卡 `TaskCard`：只在当前委托没有对应事项时显示；状态来自 `useTaskPresentation()`；可确认时显示建议数量、支出、采购后现金、预计到货。
 - "需要处理"卡按 `issue`：`confirmation` → 查询原确认结果；`expired` → 重新检查；其余 → 刷新原记录。首次同步（`firstSync`）显示蓝色卡。
-- 应急卡 `RecoveryPrompt`：需要 `recoveryCases`、`operator`、`work.s.available`，`utils/recovery.ts recoveryTrigger()` 给出原因，且店里没有这项委托的未结束 Case（与 §2.6 同一个 `flowState().ended` 判断）。标题是原因句加缺口（`trigger.gap`，没有时用 `projectWithout()` 推演七天缺口）。点"找别家补"把请求交给 `useRecoveryLaunch` 并打开事项页。
-- 提醒弹层：列出非 `RESOLVED` 的提醒（标题按 `type`，正文 `summary`，`last_seen_at`，`ACKNOWLEDGED` 写"已知晓，尚未解除"）；`OPEN` 的可标记已知晓（`operator`）；`STOCKOUT_RISK`/`CASH_CONSTRAINT` 且委托 `ACTIVE` 时可"找别家补"（原因 `stockout`/`cash`，缺口取 `facts.shortage_qty`）。链接上的计数只数 `OPEN`。
+- 应急卡 `RecoveryPrompt`：需要 `recoveryCases`、`operator`、`work.s.available`，`utils/recovery.ts recoveryTrigger()` 给出原因，且店里没有这项委托的未结束 Case（与 §2.6 同一个 `flowState().ended` 判断）。标题是"{原因}：不补的话 7 天缺 N 件"：缺口用 `projectWithout()` 推演不补货的七天，需求与说明步相同（`demandFrom()`，有可用日预测时用日预测；预测由 `GET /api/v1/stores/{store_id}/forecast?sku_id=` 每店每商品读一次），推演不了时用 `trigger.gap`；标签与标题同词（如"现金不够""常规方案买不了"）。读 Case 列表时也登记寻源读出的供应商名称。点"找别家补"把请求交给 `useRecoveryLaunch` 并打开事项页。
+- 提醒弹层：列出非 `RESOLVED` 的提醒（标题按 `type`，正文 `summary`，`last_seen_at`，`ACKNOWLEDGED` 写"已知晓，尚未解除"）；`OPEN` 的可标记已知晓（`operator`）；`STOCKOUT_RISK`/`CASH_CONSTRAINT` 且委托 `ACTIVE` 时可"找别家补"（次按钮；原因 `stockout`/`cash`，缺口取 `facts.shortage_qty`）。链接上的计数只数 `OPEN`。
 - 经营简报：浏览器里用已读取的数据拼成文本（看板、库存、本委托的采购单与到货、待确认方案、事项与 Agent 的待补充问题、最近 8 行时间线），可保存为 txt，不调接口。
 - 右栏底线刻度用 `mission.policy.cash_floor_minor`，没有委托时按 30000 分；有未决采购单时写"采购正在核实"。
 
@@ -476,12 +477,12 @@
 | 事实摘要 | `space/SpaceWorkspace.vue` | 可用现金（断线时"上次现金"）、在库/在途、查看来源 |
 | 应急补货卡 | `recovery/RecoveryFlow.vue` | §2.6 |
 | 同步条 | `space/SyncStrip.vue` | 经营时点、数据同步时间、"已同步/后台正在同步/连接中断，显示上次数据" |
-| 到货登记 | `ArrivalCard.vue` | 店主自己发出、供应商已确认、还有未到数量的订单：登记本次到货件数 |
-| 需要处理 | `space/IssueCard.vue` | 有 `issue` 且委托未结束时；查询原确认结果、重新检查（`expired`、`changed`）或刷新 |
+| 到货登记 | `ArrivalCard.vue` | 店主自己发出、供应商已确认、还有未到数量的订单（进行中的应急补货持有的采购除外，由应急卡登记）：标签"货到后请登记"，标题"{供应商} N 件"，预计到货与到货进度，填本次到货件数后"登记到货"；没有操作权限时写"等有操作权限的人登记到货" |
+| 需要处理 | `space/IssueCard.vue` | 有 `issue` 且委托未结束时；查询原确认结果、重新检查（`expired`、`changed`）或刷新；应急补货进行中（`quiet`）按钮降为次按钮 |
 | 方案变化 | `space/ChangeCard.vue` | 方案 vN → vN+1 · 原因；建议补货与剩余需求的前后值、已执行采购、这次只补缺口 |
 | Agent 结果提示 | `space/SpaceWorkspace.vue` | 页面打开期间 Agent 新给出的试算/修订结果；"查看结果"跳到对话区 |
-| 方案位 | `AssistedOrderCard.vue`、常规方案一行、`space/PlanCard.vue`、`space/OutcomeCard.vue` | 有 `issue` 时不显示。依次为：店主待发的订单（复制订单信息、粘贴回复、撤回）；应急补货进行中时的常规方案一行；可确认的方案（选数量、比较全部候选、查看依据、核对采购）；都没有时写委托在等什么 |
-| 采购与到货 | `space/OrdersCard.vue` | 每笔采购单（新的在上）：件数·金额·供应商·状态·预计到货（逾期标注）·到货进度；展开看编号、提交时间、供应商回执、原因；最新一笔 `FAILED` 时"找别家补" |
+| 方案位 | `AssistedOrderCard.vue`、常规方案一行、`space/PlanCard.vue`、`space/OutcomeCard.vue` | 有 `issue` 时不显示。依次为：店主待发的订单（复制订单信息、粘贴回复、撤回；应急补货进行中按钮降为次按钮）；应急补货进行中时的常规方案一行；可确认的方案（选数量、比较全部候选、查看依据、核对采购）；都没有时写委托在等什么 |
+| 采购与到货 | `space/OrdersCard.vue` | 每笔采购单（新的在上）：件数·金额·供应商·状态·预计到货（逾期标注）·到货进度；部分成交（`SUCCEEDED` 且 `receipt.quantity < quantity`）时件数与金额取回执，供应商后注明"订单 n 件"；展开看编号、提交时间、供应商回执、原因；最新一笔 `FAILED` 时"找别家补" |
 | 经营事实 | `space/FactsCard.vue` | 可用现金、在库、采购在途、待结算、同步时间 |
 | 跟进安排 | `FollowUpCard.vue` | 同 §2.3 |
 | 事项内容 | `space/WorkContent.vue` | 报价（§2.8）、澄清卡、进展说明、结果（`WorkResult.vue`；关联委托时折叠为"这次讨论的结果"）、"开始持续跟进这项备货"（委托条件） |
@@ -509,6 +510,7 @@
 | POST | `/api/v1/missions/{mission_id}/checks` | 重新检查 | `{}` |
 | POST | `/api/v1/actions/{action_id}/supplier-reply` | 登记供应商回复 | `{ text }` → `Action`（含 `supplier_reply`） |
 | POST | `/api/v1/actions/{action_id}/withdrawal` | 撤回订单 | `{}` → `Action` |
+| POST | `/api/v1/actions/{action_id}/partial-acceptance` | 按对方数量成交（需要 `approver`） | `{}`，必须带幂等键 → `Action` |
 | POST | `/api/v1/actions/{action_id}/arrival` | 登记到货 | `{ quantity }`（1 至未到数量）→ `Action` |
 | GET | `/api/v1/missions/{mission_id}/conversations?limit=100&after=` | 找默认 Agent 会话 | `items[].{is_default, active_run_id, followup_enabled, followup_version}`、`next_cursor` |
 | POST | `/api/v1/missions/{mission_id}/conversations` | 第一次发送前建会话 | `{ is_default: true, title: '活动备货' }`；成功前沿用同一 key |
@@ -529,9 +531,9 @@
 - **确认流程**：`prepareDecision()` 检查 `canDecide`；数量变了先调 revision，刷新后新方案的 `proposed_purchase.quantity` 必须等于所选，否则报"新方案的数量已变化，请重新查看并选择。"；应急方案不允许改数量。弹窗用 `structuredClone` 冻结方案快照。提交前写 `ss.approval`；4xx 清除并显示原因；5xx、502、断线时保留记录并关闭弹窗，页面转成"确认结果尚未取得"。冲突类错误码的文字见 `utils/api.ts`。
 - **方案变化卡**：前一版取 `plan_version - 1`；原因取两版 `state_version` 之间、同商品的账本条目（`DEMAND_REVISED` 需求修订、`GOODS_RECEIVED` 到货、`SALE_RECORDED` 销售、`PURCHASE_ACCEPTED` 采购受理），没有时比较 `task_constraints.max_purchase_qty`（"你调整了采购数量"），再没有写"依据更新"；建议数量与剩余需求都没变时只写一行。"这次只补缺口"取新方案 0 件候选的 `shortage_qty`。
 - **采购与到货**：状态词 `orderStatus()`；回执 `receipt.status`（`ACCEPTED` 已受理、`REJECTED` 已拒绝、`PENDING` 尚未答复）与 `receipt.recorded_at`；原因 `last_error`；编号 `external_order_id`，没有时用 `id`；到货进度来自同 `action_id` 的 `InboundItem`；只对 `QUEUED`/`EXECUTING`/`SUCCEEDED`/`UNKNOWN` 显示到货信息。
-- **店主发单** `AssistedOrderCard.vue`：`useShop().awaitingSupplier` = 门店里第一笔未决采购单是 `channel === 'assisted'` 且 `EXECUTING`。订单信息读 `order_message`（按界面语言取 `text.zh` 或 `text.en`、`reference`、`supplier_id`、`quantity`、`unit_price_minor`、`total_minor`、`requested_delivery_date`）。回执 `SupplierReceipt.vue` 读 `supplier_reply`（`outcome`：`confirmed`/`declined`/`needs_attention`；`differences[]`；`quotes{字段: 原话}`；`read_by`：`model`/`rules`；`text`；数量、单价、金额、交期、供应商单号）。回复只接受一部分（`utils/recovery.ts partialReply()`：`outcome === 'needs_attention'`、`decision === 'accepted'`、`differences` 里 `quantity` 的 `replied < ordered`），且有 `recoveryCases`、`operator` 与 `approver`、没有进行中的应急补货时，给"撤回这单，找别家补 N 件"：先撤回，再以原因 `partial` 发起应急补货并排除这家。
-- **到货登记** `ArrivalCard.vue`：`useShop().awaitingArrival` = 当前委托里 `assisted`、`SUCCEEDED`、到货 `remaining_quantity > 0` 的订单；应急卡自己的订单跳过（`useRecoveryLaunch().owned().actionId`）。
-- **方案位让给应急卡**：应急补货进行中（`useRecoveryLaunch().inProgress()`）且没有别的决定（另一份可确认的常规方案、另一笔店主待回复订单）时，方案位整个不显示；有可确认的常规方案时收成一行"常规方案：建议补 N 件 · ¥"；Case 的应急方案过期或被常规检查换掉时这一行改写为"应急方案已失效，现在是常规方案…"，并多一个"重新比价"（与应急卡的同一动作）。
+- **店主发单** `AssistedOrderCard.vue`：`useShop().awaitingSupplier` = 门店里第一笔未决采购单是 `channel === 'assisted'` 且 `EXECUTING`。订单信息读 `order_message`（按界面语言取 `text.zh` 或 `text.en`、`reference`、`supplier_id`、`quantity`、`unit_price_minor`、`total_minor`、`requested_delivery_date`）。回执 `SupplierReceipt.vue` 读 `supplier_reply`（`outcome`：`confirmed`/`declined`/`needs_attention`；`differences[]`；`quotes{字段: 原话}`；`read_by`：`model`/`rules`；`text`；数量、单价、金额、交期、供应商单号）。回复只给一部分（`utils/recovery.ts partialReply()`：`supplier_reply.outcome === 'partial'` 且回复数量小于订单数量）时，标题"{供应商}只能给 x 件，订单是 n 件"，上方一行后果"只付 ¥…，余下 ¥… 释放；还缺 m 件。"，主按钮"按对方数量成交（x 件）"（`useShop.acceptPartialSupply` → `POST /api/v1/actions/{action_id}/partial-acceptance`），文字链接"登记新回复"；有 `recoveryCases`、`operator` 与 `approver`、没有进行中的应急补货时另给文字链接"撤回整单，找别家补 n 件"（先撤回，再以原因 `partial` 发起应急补货并排除这家），否则为"撤回这笔订单"。应急补货进行中（`quiet`）主按钮降为次按钮。登记回复、撤回、成交都经 `orderWrite()`，回音丢失后可安全重试（§1.5）。
+- **到货登记** `ArrivalCard.vue`：`useShop().arrivalsToRecord` = 当前委托里 `assisted`、`SUCCEEDED`、到货 `remaining_quantity > 0` 的订单；`awaitingArrival` 再去掉进行中的应急补货持有的采购（`useRecoveryLaunch().holds()`：应急卡进行中时登记它的全部采购 `owned().actionIds`，并在登记会结案时先说明），到货卡只列 `awaitingArrival`；页头徽章的"货到后请登记"按 `arrivalsToRecord` 算。应急补货进行中、或页面上有可确认的方案时（`quiet`），"登记到货"降为次按钮。
+- **方案位让给应急卡**：应急补货进行中（`useRecoveryLaunch().inProgress()`）且没有别的决定（另一份可确认的常规方案、另一笔店主待回复订单）时，方案位整个不显示；有可确认的常规方案时收成一行"常规方案：建议补 N 件 · ¥"加文字链接"核对 N 件采购"。店主待回复的订单若是应急卡正在显示的那笔、它的任一采购，或由它的方案刚生成的订单（`plan_id` 相同，确认后 Case 还没重读时），算作应急卡自己的，不占方案位。
 - **事项内容**：`WAITING_INPUT` 且有 `question` → 澄清卡；关联委托且为 `RECEIVED`/`PROCESSING`/`BLOCKED` 或处理超时 → 进展说明（`question`/`summary`/`next_step`/`updated_at`）；没有委托时，没有试算结果或状态不是 `RESULT_READY` → 进展说明。`WorkResult` 在 `result.kind !== 'quotation'` 时显示，块由 `surfaces/derive.ts` 推导（§2.7）；"下一步"块只能打开现有弹层或视图（`surfaces/types.ts NEXT_STEP_TARGETS`），快捷回答走事项消息。委托条件卡读 `item.mission_request.objective/policy.cash_floor_minor/check_interval_seconds`；`demonstration`、试算已过时（`calculation.input.state.state_version` 不等于当前、过了 `valid_until` 或数据不新鲜）、非 `operator` 时禁用。
 - **澄清卡** `space/ClarificationCard.vue`：按问题文字里的关键词决定快捷字段——含"预算/金额/现金/多少钱/资金"给金额；含"日期/到货/哪天/哪几天/几号/什么时候/何时/时间"给日期区间；含"数量/多少件/几件/件数"给数量区间；含"供应商"给供应商。填写后拼成一句中文"补充：预算 X 元；日期 …；数量 …；供应商 …。"作为事项消息发出；没有命中时引导到对话里回答。
 - **事项对话**：消息 `role`（`user` 你、`system` 事项进展、`assistant` 助手或试算结果）、`demonstration`、`result`；`item.processor_available` 为否时写"助手暂不可用…"，保存成功后提示"已保存。助手启用后会处理…"。
@@ -547,15 +549,15 @@
 - 后端 `question` 的措辞决定澄清卡出现哪些快捷字段。
 
 **已知限制或待后端配合**
-- 委托当前方案是应急方案时事项列表与详情会 503（§4 第 1 项），事项页可能只剩错误文字。
+- 委托当前方案是待确认的应急方案时，事项列表与详情会 503（§4 第 1 项），事项页可能只剩一句错误"这件事的方案正等待确认，刷新前先确认或拒绝它。"。
 - 结束委托的前提之一是 `mission.current_action_id` 为空（弹层）或本委托没有未结采购单（页脚）。
 - `useShop` 一次只持有一个委托的方案、时间线和 Agent 会话；打开另一件事项会切换委托。
 
 ### 2.6 应急补货（恢复事项）
 
-对用户叫"应急补货"；代码和接口里是恢复事项（operations case，`CaseDetail`）。事项页的卡片 `recovery/RecoveryFlow.vue` 只在委托已读到且有 `recoveryCases` 时挂载；`?view=task` 的旧面板见 §2.16。前端不保存进度，阶段每次都从 Case、它的方案和它的采购单推导。
+对用户叫"应急补货"；代码和接口里是恢复事项（operations case，`CaseDetail`）。事项页的卡片 `recovery/RecoveryFlow.vue` 只在委托已读到且有 `recoveryCases` 时挂载；`?view=task` 的旧面板见 §2.16。前端不保存进度，阶段每次都从 Case、它的方案和它的全部采购推导。
 
-**组件与状态**：`recovery/RecoveryFlow.vue`（容器，`provide(recoveryFlowKey)`）、`recovery/RecoveryBrief.vue`、`recovery/RecoveryCompare.vue`、`recovery/RecoveryConfirm.vue`、`recovery/RecoveryOrder.vue`、`recovery/RecoveryReceive.vue`、`recovery/RecoveryOutcome.vue`、`recovery/RecoveryUnconfirmed.vue`（写入结果不明）、`recovery/RecoveryDays.vue`（七天条）、`recovery/RecoveryPrompt.vue`（今日卡）、`space/FlowProgress.vue`（进度条）；`composables/useRecoveryFlow.ts`（流程动作与轮询）、`useRecoveryCase.ts`（Case 读写与待核实记录）、`useRecoveryLaunch.ts`（入口请求、进行中标记、应急卡占用的方案与订单）、`useRecoveryPrompt.ts`、`useSupplierDirectory.ts`（供应商资料与名称登记）；`utils/recovery.ts`；`types/recovery.ts`；样式 `assets/css/recovery.css`。
+**组件与状态**：`recovery/RecoveryFlow.vue`（容器，`provide(recoveryFlowKey)`）、`recovery/RecoveryBrief.vue`、`recovery/RecoveryCompare.vue`、`recovery/RecoveryConfirm.vue`、`recovery/RecoveryOrder.vue`、`recovery/RecoveryReceive.vue`、`recovery/RecoveryOutcome.vue`、`recovery/RecoveryUnconfirmed.vue`（写入结果不明）、`recovery/RecoveryPurchases.vue`（本次已买到、未到齐的采购行与卡内登记到货）、`recovery/RecoveryDays.vue`（七天条）、`recovery/RecoveryPrompt.vue`（今日卡）、`space/FlowProgress.vue`（进度条）；`composables/useRecoveryFlow.ts`（流程动作与轮询）、`useRecoveryCase.ts`（Case 读写与待核实记录）、`useRecoveryLaunch.ts`（入口请求、进行中标记、应急卡占用的方案、订单与全部采购）、`useRecoveryPrompt.ts`、`useSupplierDirectory.ts`（供应商资料与名称登记）；`utils/recovery.ts`；`types/recovery.ts`；样式 `assets/css/recovery.css`。
 
 **入口来源**（都调用 `useRecoveryLaunch().request()`；事项页的卡在挂载或请求变化时 `take()` 它；该委托已有进行中的应急补货时只滚到卡片处）
 
@@ -565,83 +567,92 @@
 | 今日"需要你拍板"的应急卡 | `recovery/RecoveryPrompt.vue` | §2.2 | `reason` 来自 `recoveryTrigger()`；拒单时 `exclude` 为该供应商；`gap` |
 | 提醒弹层"找别家补" | `pages/index.vue restockable()` | `recoveryCases`、`work.s.available`、`operator`、提醒未解除、`STOCKOUT_RISK`/`CASH_CONSTRAINT`、委托 `ACTIVE` | `reason: 'stockout' \| 'cash'`，`gap: facts.shortage_qty` |
 | 采购与到货"找别家补" | `space/OrdersCard.vue` | 最新一笔采购单 `FAILED`、委托 `ACTIVE`、`recoveryCases`、`operator`、没有进行中的 | `declined`（`supplier_reply.outcome === 'declined'`，排除该供应商）或 `failed` |
-| 订单卡"撤回这单，找别家补 N 件" | `AssistedOrderCard.vue` | 部分回复、`recoveryCases`、`operator` 与 `approver`、没有进行中的 | 先撤回订单，再 `reason: 'partial'` 并排除该供应商 |
+| 订单卡"撤回整单，找别家补 N 件" | `AssistedOrderCard.vue` | 部分回复、`recoveryCases`、`operator` 与 `approver`、没有进行中的 | 先撤回订单，再 `reason: 'partial'` 并排除该供应商 |
 
 `recoveryTrigger()` 按顺序判断：本委托最新一笔采购单 `FAILED` → `declined` 或 `failed`；最新一笔仍未决 → 不触发；有逾期在途（`remaining_quantity > 0` 且 `is_overdue`）→ `late`；常规方案待确认、没有采购建议而 0 件候选有缺口 → `infeasible`；有采购建议但所选数量的候选仍有缺口 → `stockout`；有未解除的 `CASH_CONSTRAINT` → `cash`。
 
-**进度条：阶段怎样从数据推导**（`utils/recovery.ts flowState()`；输入为 Case `d`、Case 的采购单 `a`（按 `d.action_id` 在 `useShop().s.actions` 里找）、`a` 的到货、Case 证据中 `kind === 'inbound_order'` 的原订单到货）
+**进度条：阶段怎样从数据推导**（`utils/recovery.ts flowState()`。输入：Case `d`；Case 的订单 `a`（`caseAction()`：先按 `d.action_id`、再按 `plan_id` 在 `useShop().s.actions` 里找，所以确认后 Case 还没重读时也能找到）与它的到货；Case 的全部采购（`purchasesOf()`：Case 的 `purchases[]` 加上店铺列表里已有而 Case 还没带上的那笔，状态取较新的一份、到货取较大值；"当前这笔"只认当前版本的采购）；Case 证据中 `kind === 'inbound_order'`、且不是本次采购的原订单到货；当前身份的 `approver`/`operator`；发单方式 `channel`）
 
 | 顺序 | 条件 | 阶段 · 谁在做 |
 |---|---|---|
 | 0 | 说明步打开，还没有 Case | 说明情况 · 等你 |
-| 1 | `a.status === 'SUCCEEDED'` | 全部到货（到货 `remaining_quantity === 0`；读不到到货时看 `d.execution_status === 'RECEIVED'`）→ 结果（结束）；否则 → 登记到货（店主发单为"等你"，系统下单为"系统在做"；Case 已终止时直接收成摘要）。`a.channel === 'assisted'` 为店主发单变体，否则为系统下单变体 |
-| 2 | `a.status === 'EXECUTING'` 且店主发单 | 发单并登记回复 · 等你 |
-| 3 | `a.status` 为 `QUEUED`/`EXECUTING`/`UNKNOWN` | 下单 · 系统在做 |
-| 4 | `a` 为其他状态（`FAILED`/`CANCELLED`/`STALE`）、Case 未终止，且 Case 在那之后没有新版本（`(d.plan_revision ?? d.current_revision) >= d.current_revision`）；Case 已有新版本时继续往下判断 | 找货比价 · 等你，原因 `withdrawn`（`CANCELLED`）、`declined`（回复拒单）或 `failed` |
-| 5 | Case 为 `CANCELLED`/`CLOSED`/`RESOLVED` | 结果（结束） |
-| 6 | Case 为 `MONITORING` 且方案不是 `PENDING_APPROVAL` | 原订单还有未到 → 等原订单到货 · 系统在做；否则 → 结果（结束）。属于"等原订单"变体 |
-| 7 | 有 `d.plan_id` 且 `d.plan_revision === d.current_revision` | `plan_status` 为 `PENDING_APPROVAL` → 采用并确认 · 等你；为 `EXPIRED`/`SUPERSEDED` → 找货比价 · 等你（原因 `expired`/`superseded`） |
-| 8 | `sourcing.status === 'running'` | 找货比价 · 系统在做 |
-| 9 | `OPTIONS_READY` 且有 `proposal` | 找货比价 · 等你（`d.stale` 时原因 `stale`） |
-| 10 | `NEEDS_INPUT`/`BLOCKED` | 找货比价 · 等你（原因 `input`） |
-| 11 | `RECHECK_REQUIRED` | 找货比价 · 等你（原因 `stale`） |
-| 12 | 其余（建了或改了但没有分析成） | 找货比价 · 等你（原因 `pending`） |
+| 1 | Case 为 `RESOLVED`（后端在全部采购到货时自己结算，带 `outcome`） | 结果（结束）；`outcome.path === 'waiting'` 为等原订单变体 |
+| 2 | Case 有订单（`d.action_id` 或已找到 `a`）；订单状态取当前这笔采购的、否则 `a.status`、否则由 `d.execution_status` 推出；为 `SUCCEEDED` 且全部成交，或 Case 已终止 | 所有已成交的采购都到齐（没有采购记录时看 `a` 的到货，读不到再看 `d.execution_status === 'RECEIVED'`）→ 未终止时登记到货 · 系统在做（"货已到齐，正在结算结果"，等后端置 `RESOLVED`），已终止时结果（结束）；否则 → 登记到货，还有店主发的单没到齐为"等你"，否则"系统在做"，已终止时收成摘要。`a.channel === 'assisted'` 为店主发单变体，否则为系统下单变体；订单还没读到时按 `channel` |
+| 3 | 同上，但当前这笔只成交了一部分（成交数小于订单数）、Case 未终止且在那之后没有新版本 | 找货比价 · 等你（原因 `short`）；Case 已有新版本时继续往下判断 |
+| 4 | 订单为 `QUEUED`/`EXECUTING`/`UNKNOWN` | 发单并登记回复（系统下单变体为"系统下单"）：店主发单且 `EXECUTING` 为"等你"，否则"系统在做" |
+| 5 | 订单为 `FAILED`/`CANCELLED`/`STALE`：Case 已终止 → 结果（结束）；在那之后没有新版本（`(d.plan_revision ?? d.current_revision) >= d.current_revision`）→ 找货比价 · 等你，原因 `withdrawn`（`CANCELLED`）、`recheck`（`STALE`）、`declined`（回复拒单）或 `failed`；否则继续往下判断 | 见左 |
+| 6 | Case 为 `CANCELLED`/`CLOSED` | 结果（结束） |
+| 7 | 当前版本的方案已 `APPROVED`，订单还没读到 | 下单 · 系统在做 |
+| 8 | Case 为 `MONITORING` 且方案不是 `PENDING_APPROVAL` | 等原订单变体的到货步：本次已有成交的采购时按它们判断（还有店主发的单没到齐为"等你"，否则"系统在做"）；否则有原订单 → 等原订单到货 · 系统在做（到齐后等后端结算）；没有原订单 → 决定这次不补 · 等你（后端一直保持 `MONITORING`、`routine_paused`，直到店主结束） |
+| 9 | 有 `d.plan_id` 且 `d.plan_revision === d.current_revision` | `plan_status` 为 `PENDING_APPROVAL` → 采用并确认 · 等你；为 `REJECTED` → 找货比价 · 等你（原因 `rejected`）；为 `EXPIRED`/`SUPERSEDED` → 找货比价 · 等你（`RECHECK_REQUIRED` 时原因 `recheck`，否则 `expired`） |
+| 10 | `sourcing.status === 'running'` | 找货比价 · 系统在做 |
+| 11 | `OPTIONS_READY` 且有 `proposal` | 找货比价 · 等你（`d.stale` 时原因 `stale`） |
+| 12 | `NEEDS_INPUT`/`BLOCKED` | 找货比价 · 等你（原因 `input`） |
+| 13 | `RECHECK_REQUIRED` | 找货比价 · 等你（原因 `recheck`，副句取 `recheck_reason`） |
+| 14 | 其余（建了或改了但没有分析成） | 找货比价 · 等你（原因 `pending`） |
 
-步骤（`flowSteps()`）：店主发单为 说明情况 → 找货比价 → 采用并确认 → 发单并登记回复 → 登记到货 → 结果；系统下单把第 4、5 步换成"系统下单""等待到货"；等原订单为五步（第 3、4 步"决定等原订单""等原订单到货"）；没有原订单时等待就是不补，四步（第 3 步"决定这次不补"）。前端自己的调用进行中时，"谁在做"也显示"系统在做"。结束（`ended`）后卡片收成一行结果，可展开。
+"等你"的这一步当前身份没有所需权限时改为"等审批"（`other`）：确认与登记回复看 `approver`，登记到货与"这次不补"看 `operator`。
+
+步骤（`flowSteps()`）：店主发单为 说明情况 → 找货比价 → 采用并确认 → 发单并登记回复 → 登记到货 → 结果；系统下单把第 4、5 步换成"系统下单""等待到货"；等原订单为五步（第 3、4 步"决定等原订单""等原订单到货"）；没有原订单时等待就是不补，四步（第 3 步"决定这次不补"，停在这一步直到店主结束）。前端自己的调用超过 300 ms 时，"谁在做"显示"系统在做"；写入结果不明时为"等你"。结束（`ended`）后卡片收成一行结果，可展开。
 
 **各步骤的数据与接口**
 
 | 步骤 | 组件 | 读 | 写 |
 |---|---|---|---|
 | 说明情况（发起与预填） | `recovery/RecoveryBrief.vue` | 看板 `simulation_time`、`available_cash_minor`；委托 `policy.cash_floor_minor`；`stock.on_hand/remaining_demand`；在途；当前方案 `input_snapshot.forecast`；`GET /api/v1/stores/{store_id}/forecast?sku_id=`；`GET /api/v1/stores/{store_id}/supplier-documents` | `POST /api/v1/operations-cases`，成功后立即 `POST …/{case_id}/analyze`；有可读资料且有 `sourcing` 时再 `POST …/{case_id}/source` |
-| 找货比价 | `recovery/RecoveryCompare.vue` | `GET /api/v1/operations-cases/{case_id}`：`proposal`、`sourcing`、`expert_analysis`、`missing_inputs`、`stale` | 重新比价：`POST …/revise` 后 `POST …/analyze`；重新找货：`POST …/source`；等原订单/这次不补：`POST …/control`（`adopt_waiting`）；结束：`POST …/control`（`cancel`）；采用：`POST …/materialize` |
-| 采用并确认 | `recovery/RecoveryConfirm.vue` | Case 的方案：与当前方案同 id 时用 `useShop().plan`，否则 `GET /api/v1/plans/{plan_id}` | 页面确认弹窗 `POST /api/v1/plans/{plan_id}/decision`（§2.5） |
-| 发单并登记回复 | `recovery/RecoveryOrder.vue` | 采购单的 `order_message`、`supplier_reply` | `POST /api/v1/actions/{action_id}/supplier-reply`；`POST …/withdrawal`；部分回复时撤回后 `POST …/revise` 与 `analyze` |
-| 登记到货 | `recovery/RecoveryReceive.vue` | 到货 `remaining_quantity/received_quantity/ordered_quantity/expected_arrival_at/is_overdue`、回复的 `delivery_date`、`purchase_snapshot.expected_arrival_at` | `POST /api/v1/actions/{action_id}/arrival { quantity }` |
-| 结果 | `recovery/RecoveryOutcome.vue` | 方案候选、采购单、到货 | — |
+| 找货比价 | `recovery/RecoveryCompare.vue` | `GET /api/v1/operations-cases/{case_id}`：`proposal`、`sourcing`、`expert_analysis`、`missing_inputs`、`stale`、`purchases[]` | 重新比价：`POST …/revise` 后 `POST …/analyze`；重新找货：`POST …/source`；等原订单/这次不补：`POST …/control`（`adopt_waiting`）；结束：`POST …/control`（`cancel`）；采用：`POST …/materialize`。"换一家"之后的采用与等待先重新比价 |
+| 采用并确认 | `recovery/RecoveryConfirm.vue` | Case 的方案：与当前方案同 id 时用 `useShop().plan`，否则 `GET /api/v1/plans/{plan_id}`；发单方式 `channelFor()` | 页面确认弹窗 `POST /api/v1/plans/{plan_id}/decision`（§2.5） |
+| 发单并登记回复 | `recovery/RecoveryOrder.vue` | 采购单的 `order_message`、`supplier_reply`、`receipt`、`amount_minor` | `POST /api/v1/actions/{action_id}/supplier-reply`；`POST …/partial-acceptance`（按对方数量成交）；`POST …/withdrawal`；撤回整单找别家时撤回后 `POST …/revise` 与 `analyze` |
+| 登记到货 | `recovery/RecoveryReceive.vue`、`recovery/RecoveryPurchases.vue` | 到货 `remaining_quantity/received_quantity/ordered_quantity/expected_arrival_at/is_overdue`、回复的 `delivery_date`、`purchase_snapshot.expected_arrival_at`；Case 的 `purchases[]` | `POST /api/v1/actions/{action_id}/arrival { quantity }`（当前这笔，或本次任一笔店主发的采购）；这次不补：`POST …/control`（`cancel`） |
+| 结果 | `recovery/RecoveryOutcome.vue` | `outcome`、`purchases[]`；手动结束时方案候选、当前订单与到货 | — |
 
 请求体：
-- 建 Case：`{ mission_id, objective, budget_minor, max_purchase_qty: null, supplier_ids, daily_demand? }`。`supplier_ids`（`useRecoveryFlow suppliersFor()`）：同商品的在档报价去掉排除的那家，按单价、供应商 id 排序取前三；没有报价，或没有排除且不超过三家时传 `null`（由后端比较全部）。需求用已启用的日预测时不传 `daily_demand`（后端自己读预测），否则传七天 `[{ settlement_at, demand_qty }]`。
+- 建 Case：`{ mission_id, objective, budget_minor, max_purchase_qty: null, supplier_ids, daily_demand? }`。`supplier_ids`（`useRecoveryFlow suppliersFor()`）：同商品的在档报价去掉排除的供应商，按单价、供应商 id 排序取前三；没有报价，或没有排除且不超过三家时传 `null`（由后端比较全部）。需求用已启用的日预测时不传 `daily_demand`（后端自己读预测），否则传七天 `[{ settlement_at, demand_qty }]`。
 - 分析 `{ expected_revision }`；修订 `{ expected_revision, daily_demand?, supplier_ids? }`；寻源 `{ expected_revision, district: '滨江区' }`（`useSupplierDirectory.ts SAMPLE_DISTRICT`）；控制 `{ expected_revision, operation }`。
 - 采用：`{ expected_revision, proposal_id, candidate_id, expected_mission_version: current_mission_version, expected_state_version: current_state_version, expected_current_plan_id: current_plan_id, proposal_hash }`。
 
-**发起与预填**：问题句 `objectiveFor(reason, projection, supplier)`，可改写，提交为 `objective`。预算 = 可用现金 − 现金底线（不小于 0；可改，最多两位小数，不超过 1,000,000,000 分）。需求 `demandFrom()`：预测 `usable_for_planning` 且有 7 天 `daily_predictions` 与 `predicted_quantity` 时，按后端的取整规则（`allocateDaily()`）分到 7 天；否则把方案的 `remaining_demand` 按 `horizon_start`–`horizon_end` 折成 7 天均摊；再否则用 `stock.remaining_demand` 均摊；可切成"每天 N 件"。七天推演 `projectWithout()` 用求解器的日结规则：原订单按 `expected_arrival_at` 计入当天，已逾期的不计。首日结算 = 经营时钟 + 24 h − 1 s。"先不补"关闭说明，回到原来的 Case。
+**发起与预填**：问题句 `objectiveFor(reason, projection, supplier)`，在"修改"里可改写，提交为 `objective`。预算 = 可用现金 − 现金底线（不小于 0；在"修改"里可改，最多两位小数，不超过 1,000,000,000 分）。需求 `demandFrom()`：预测 `usable_for_planning` 且有 7 天 `daily_predictions` 与 `predicted_quantity` 时，按后端的取整规则（`allocateDaily()`）分到 7 天（分段控件第一项写"按预测"）；否则把方案的 `remaining_demand` 按 `horizon_start`–`horizon_end` 折成 7 天均摊，再否则用 `stock.remaining_demand` 均摊（写"按估算"）；分段的另一项是"每天 N 件"。七天推演 `projectWithout()` 用求解器的日结规则：原订单按 `expected_arrival_at` 计入当天，已逾期的不计；七天条只在推演仍有缺口时显示。首日结算 = 经营时钟 + 24 h − 1 s，只在"修改"里显示。推演七天不缺货时主按钮是"关闭"（`data-recovery-close`），比价降为文字链接"仍要比价"（`data-recovery-start`）；有缺口时左下的"关闭"关掉说明，回到原来的 Case。
 
-**寻源与示例资料**：资料来自 `GET /api/v1/stores/{store_id}/supplier-documents`，`connected === true` 的供应商不读；名称登记到 `utils/glossary.ts rememberSupplierNames()`，寻源结果的 `sourcing.suppliers[].name` 也登记。没有资料时，演示模式自动、非演示模式点"载入示例资料"调用 `POST …/supplier-documents/sample { sku_id, district: '滨江区' }`。寻源中逐家显示：`sourcing.reviews[]` 的 `card.status`（`offer`/`no_offer`）、`card.reason`（`SKU_NOT_COVERED`、`STORE_NOT_SERVED`、`SUPPLY_WITHDRAWN`）、`card.offer.{unit_price_minor, minimum_order_quantity, pack_size, lead_time_days}`、`card.citations[].{field, quote}`；缺口取 `sourcing.request.shortfall_qty/short_from`；`sourcing.missing[]` 的码经 `caseProblem()` 显示。寻源从 `running` 变为其他状态后刷新经营数据（新报价进 `catalog`）。
+**寻源与示例资料**：资料来自 `GET /api/v1/stores/{store_id}/supplier-documents`（`useShop.refresh` 读店铺数据时就读一次），`connected === true` 的供应商不读；名称登记到 `utils/glossary.ts rememberSupplierNames()`，寻源结果的 `sourcing.suppliers[].name` 也登记。没有资料时，只在演示模式下自动调用 `POST …/supplier-documents/sample { sku_id, district: '滨江区' }`，失败后才出现"载入示例资料"链接；非演示模式不载入。寻源中标题"正在读 N 家供应商的资料"，逐家显示（读完前是灰色占位条）：`sourcing.reviews[]` 的 `card.status`（`offer`/`no_offer`）、`card.reason`（`SKU_NOT_COVERED`、`STORE_NOT_SERVED`、`SUPPLY_WITHDRAWN`）、`card.offer.{unit_price_minor, minimum_order_quantity, pack_size, lead_time_days}`、`card.citations[].{field, quote}`；缺口取 `sourcing.request.shortfall_qty/short_from`；`sourcing.missing[]` 的码经 `caseProblem()` 显示。寻源从 `running` 变为其他状态后刷新经营数据（新报价进 `catalog`）。
 
-**比价与采用**：`comparison(proposal)` 按供应商归并候选：每家一行显示它的最佳候选（依次比 `lost_qty`、`spend_minor`、`end_stock`、`quantity`），可行（`feasible && executable`）的其他数量列在下面；`quantity === 0` 的候选是"等原订单"（没有原订单时"这次不补"）；推荐取 `recommended_candidate_id`；全部不可行的供应商写 `rejection_reasons` 经 `blockedReason()` 的原因；读不出报价的供应商写读取原因。标题 `conclusion()` 由候选数字确定生成；"为什么这样比"折叠显示 `expert_analysis.subtasks[].claims[].statement`。主按钮"用{供应商}补 N 件"：`materialize` → 刷新 → 当前方案就是 Case 的方案且 `canDecide` 时直接打开确认弹窗（需要 `approver`，否则停在确认步）。`SOURCING_MODEL_NOT_CONFIGURED`、`SUPPLIER_DOCUMENTS_REQUIRED`、`NO_SHORTFALL` 用普通提示，其余失败用琥珀色。
+**比价与采用**：`comparison(proposal)` 按供应商归并候选：每家一行显示它的最佳候选（依次比 `lost_qty`、`spend_minor`、`end_stock`、`quantity`），选中那家的可行（`feasible && executable`）数量按最佳档前后各一档列成数量档（每档带金额与缺货，推荐的那一档另标）；`quantity === 0` 的候选是"等原订单"（没有原订单时"这次不补"）；推荐取 `recommended_candidate_id`，"推荐"标在它的供应商上；全部不可行的供应商在选项下方写 `rejection_reasons` 经 `blockedReason()` 的原因；读不出报价的供应商写读取原因。排除的供应商（见下文"重新比价"）不出现，推荐按剩下的选项重算（`withoutSuppliers()`），全都排除时标题写"没有别的供应商可比"。标题与副句由候选数字确定生成（"{供应商}补 N 件最合适" / "7 天缺货 a → b 件 · 花 ¥…"；没有缺口或买了也赶不上时用 `conclusion()` 的一句）；"为什么这样比"折叠显示 `expert_analysis.subtasks[].claims[].statement`，中文界面只显示含汉字的条目，条目里的供应商 id 换成名称。主按钮"用{供应商}补 N 件"：`materialize` → 刷新 → 当前方案就是 Case 的方案且 `canDecide` 时直接打开确认弹窗（需要 `approver`，否则停在确认步）；调用期间选项不收起，主按钮显示"正在采用…"。"换一家"之后再采用时先 `revise` + `analyze`（第一次采用已让委托版本加一），再采用新比较里同一家同数量的候选，没有就请店主重选；`materialize` 遇 `PLAN_VERSION_CONFLICT`、而 Case 重读后候选仍在且未过期时再试一次。`SOURCING_MODEL_NOT_CONFIGURED`、`SUPPLIER_DOCUMENTS_REQUIRED`、`NO_SHORTFALL` 用普通提示，其余失败用琥珀色。
 
-**确认**：显示 `proposed_purchase.{quantity, unit_price_minor, total_minor, expected_arrival_at, supplier_id}`、所选候选的 `cash_after_minor/shortage_qty`、0 件候选的 `shortage_qty`（前 → 后）、`input_snapshot.policy.cash_floor_minor`。只在该供应商是资料供应商（资料目录里 `connected === false`；它的报价只能由寻源登记，后端一律走 `assisted`）时写"确认后由你把订单发给供应商"；其他供应商的发单方式取决于部署的 `PURCHASE_CHANNEL`，前端读不到，确认步不作说明。数据不新鲜、门店有未决采购单或状态版本变化时按钮不可用并写原因。"换一家"回到比较。
+**确认**：标题"核对后确认：用{供应商}补 N 件"，副句"N 件 × 单价 · 预计 M/D 到"（`proposed_purchase.{quantity, unit_price_minor, expected_arrival_at, supplier_id}`）；三格：本次支出 `total_minor`、采购后现金（所选候选的 `cash_after_minor`，下注 `input_snapshot.policy.cash_floor_minor`）、预计缺货（0 件候选的 `shortage_qty` → 所选候选的 `shortage_qty`，7 天合计）。主按钮"核对 N 件采购"旁写由谁发单，按 `useRecoveryFlow.channelFor()`：资料或寻源读出的供应商（它的报价只能由寻源登记，后端一律走 `assisted`）写"确认后由你把订单发给{供应商}"；其他供应商看之前给它下过的订单的 `channel`，`assisted` 同上，否则写"确认后系统直接下单"；推不出时（取决于部署的 `PURCHASE_CHANNEL`）不写。没有 `approver` 时不放按钮，右下状态字"等有审批权限的人确认"，进度"等审批"。暂时不能确认时只写当前成立的一条原因（`unavailableReason`：待核实的确认、断线、数据未同步、门店有未决采购单、方案已过期、委托暂停或结束、方案还在读取、状态版本变化）。"换一家"回到比较，比较里有"不换了，回去确认"（`canReturnToConfirm`）。弹窗确认成功后 `useShop` 记下 `s.decided`，卡片立即重读 Case。
 
-**店主发单与登记回复**：订单与回执字段同 §2.5；`UNKNOWN` 时写"后台正在核实原采购"；`needs_attention` 时标题写回复还不能确认；部分回复时主按钮"撤回这单，找别家补 N 件"（`withdrawAndSwitch()`：撤回 → 记下排除 → 重读 Case → 用重排的 `daily_demand` 与新的 `supplier_ids` 修订 → 分析）。登记回复与撤回需要 `approver`。
+**店主发单与登记回复**：订单与回执字段同 §2.5。标题"把订单发给{供应商}，收到回复后贴回来"，副句"N 件 × 单价 · 合计 · 希望 M/D 送达"；回复前显示订单消息与"复制"，有回复后收成一行"订单已发"（可展开）加"复制"；`UNKNOWN` 时标题"采购结果还没有核实"，并提示确认前不要另下一单；`needs_attention` 时标题写回复还不能确认这笔订单。回复 `outcome === 'partial'`（`partialOf()` / `partialReply()`：回复数量小于订单数量）时：标题"{供应商}只能给 x 件，订单是 n 件"，副句"订单 n 件 · 对方给 x 件"，回复框收在"登记新回复"后面（展开后提交按钮"登记回复"为次按钮），主按钮上方一行后果"只付 ¥…，余下 ¥… 释放；还缺 m 件，之后可以找别家补。"，主按钮"按对方数量成交（x 件）"→ `useRecoveryFlow.acceptPartial()` → `POST /api/v1/actions/{action_id}/partial-acceptance`（`useShop.acceptPartialSupply`，需要 `approver`）→ 重读 Case，进入原因 `short`：标题"{供应商}只确认了 x 件"，副句"已按 x 件成交 · 还缺 m 件"，主按钮"缺的找别家补上"（`again()`：排除这家后 `revise` + `analyze`，在同一个 Case 里再采用一家；后端允许已部分成交的 Case 再采用）。文字链接"撤回整单，找别家补 n 件"（`withdrawAndSwitch()`：撤回 → 记下排除 → 重读 Case → 用重排的 `daily_demand` 与新的 `supplier_ids` 修订 → 分析）。不是部分回复时，撤回用文字链接"撤回这笔订单…"再确认。登记回复、成交与撤回需要 `approver`，没有时右下写"等有审批权限的人登记回复"。
 
-**登记到货**：店主发单可分次登记，数量为 1 至未到数量（需要 `operator`）；系统下单与等原订单只显示状态；等原订单时可"改主意，找别家补"（`again()`）。
+**登记到货**：店主发单可分次登记，数量为 1 至未到数量（需要 `operator`，没有时写"等有操作权限的人登记到货"）；系统下单与等原订单只显示状态；等原订单时可"改主意，找别家补"（`again()`）。本次应急补货里已买到、未到齐的其他采购由 `recovery/RecoveryPurchases.vue` 列成一行"{供应商} N 件 · M/D 到"，在找货比价、确认、发单、到货各步都显示（确认、发单、到货三步不列当前这笔）；店主发的单带文字链接"登记到货"（`useRecoveryFlow.recordArrival()` → `POST /api/v1/actions/{action_id}/arrival`）。这次登记会让后端在缺口还没补上时结案（`purchasesOf()` 的 `endsCaseIfReceived` 加上输入件数，`endsCaseWith()`：Case 为 `MONITORING`、没有在途采购、当前这笔只成交了一部分、其余已成交的都已到齐）时，登记前先写"登记后，这次应急补货按 {本次已买到的全部件数} 件结束；要补缺口先点「缺的找别家补上」。"。结算要等所有已成交的采购到齐（`settling`）：全部到齐写"货已到齐，正在结算结果"，等后端置 `RESOLVED`；当前这笔到齐、另一笔没登记写"还有一笔货没登记"；部分成交后选了等待写"等已买到的货到齐"。没有原订单、本次也没买到货时的"这次不补"：标题"这次不补"，副句"没有在途的原订单。结束后，系统恢复每天的补货建议。"（`routine_paused` 时；否则只有第一句），主按钮"结束这次应急补货"（`control cancel`）。应急补货进行中，卡片持有它的方案、正在显示的订单和全部采购（`useRecoveryLaunch().own()` 的 `planId`、`actionId`、`actionIds`），页面到货卡不再列这些采购（§2.5）。
 
-**结果**：`outcomeOf()`：前 = 方案 0 件候选的 `shortage_qty`（没有方案时用比较里等待候选的 `lost_qty`）；后 = 采购 `SUCCEEDED` 时所选候选的 `shortage_qty`；花费 = `SUCCEEDED` 时的 `amount_minor`；到货 x/n。缺货数都是方案推演值，写"预计"。
+**结果**：Case 为 `RESOLVED` 时用后端的 `outcome`（`path`、`planned_qty`、`purchased_qty`、`received_qty`、`spend_minor`、`lost_qty_before`、`lost_qty_after`、`action_ids`；各笔的供应商与成交数取 `purchases[]` 中对应的 `supplier_id`、`accepted_qty`）：购买路径"应急补货完成 · {供应商} x 件已到货 · 预计缺货 a → b 件 · 花了 ¥…"；两笔以上采购时写"补到 x 件（{供应商} 10 + {供应商} 30）"（后端 `planned_qty` 是所有订单之和，不当作订单量）；只有一笔且只成交一部分时写"{供应商}确认的 x 件已到货（订单 n 件）"；等待路径"已等到原订单 · 原订单 x 件已到"（没有原订单时"应急补货已结束 · 这次不补"）。展开后三格：预计缺货（"7 天合计（预计）"）、花了、到货 x/n。店主手动结束（`CANCELLED`，没有 `outcome`）时只按当前这笔订单显示买了什么、是否在途。缺货数是后端按同一套七天推演的值，写"预计"。
 
-**写入结果不明**：Case 写入遇 5xx 或断线时，`useRecoveryCase` 把这次提交（路径、请求体、幂等键、步骤）留在 `pending` 和 sessionStorage `ss.recovery.pending:<身份:角色:店铺:委托>`。卡片换成 `recovery/RecoveryUnconfirmed.vue`："{步骤}的结果还没确认"（建立这次应急补货 / 比价 / 重新比价 / 采用这份报价 / 找货 / 结束这次应急补货 / 就等原订单 / 这次不补），进度标"等你"，唯一主按钮"核实并重试原提交"：`useRecoveryFlow.retry()` → `useRecoveryCase.retry()` 用**原幂等键**重发，后端对重复的键返回第一次的结果；成功后按原步骤继续（建 Case → 关闭说明并寻源；采用 → 刷新并打开确认弹窗；建、修订、复查后照常分析）。4xx 视为明确答复，清掉 `pending` 并重读 Case。期间卡片停止轮询，其他 Case 写入与新的应急补货入口都不可用；刷新页面后从 sessionStorage 恢复，仍可重试。
+**写入结果不明**：Case 写入遇 5xx 或断线时，`useRecoveryCase` 把这次提交（路径、请求体、幂等键、步骤）留在 `pending` 和 sessionStorage `ss.recovery.pending:<身份:角色:店铺:委托>`。回音确实丢失后（请求在途时不算），卡片换成 `recovery/RecoveryUnconfirmed.vue`：标题"{步骤}的结果还没确认"（建立这次应急补货 / 比价 / 重新比价 / 采用这份报价 / 找货 / 结束这次应急补货 / 就等原订单 / 这次不补），副句"没有收到回音，这一步可能已经生效。再试一次会沿用刚才的提交，不会重复。"，进度标"等你"，唯一主按钮"再试一次（沿用刚才的提交）"：`useRecoveryFlow.retry()` → `useRecoveryCase.retry()` 用**原幂等键**重发，后端对重复的键返回第一次的结果；成功后按原步骤继续（建 Case → 关闭说明并寻源；采用 → 刷新并打开确认弹窗；建、修订、复查后照常分析）；再次没有回音时副句改为"这次还是没有收到回音，稍后再试。"。4xx 视为明确答复，清掉 `pending` 并重读 Case。期间卡片停止轮询，其他 Case 写入与新的应急补货入口都不可用；刷新页面后从 sessionStorage 恢复，仍可重试。
 
-**失效与重新比价**（找货比价阶段的原因 `again`）
+**失效与重新比价**（找货比价阶段的原因 `again`；卡片写一个标题加一句副句）
 
-| 原因 | 横幅 | 主按钮 |
-|---|---|---|
-| `declined` | {供应商}拒单，预留资金已释放。 | 不找{供应商}，重新比价（排除后修订） |
-| `withdrawn` | 给{供应商}的订单已撤回，预留资金已释放。 | 同上 |
-| `failed` | 这笔采购没有成功，预留资金已释放。 | 重新比价 |
-| `expired`、`superseded` | 待确认的应急方案已过期 / 被常规检查换掉了。 | 重新比价；事项页的常规方案一行同时写"应急方案已失效" |
-| `stale` | 比价结果已超过有效期，或经营数据已变化。 | 重新比价 |
-| `input` | `missing_inputs[0]` 经 `caseProblem()` | 重新比价 |
-| `pending` | 还没有比价结果。 | 重新比价 |
-| （所有报价都因 `OFFER_EXPIRED` 不可行且能寻源） | — | 重新找货 |
+| 原因 | 标题 | 副句 | 主按钮 |
+|---|---|---|---|
+| `declined` | {供应商}拒单了 | 预留的 ¥… 已退回 · 还缺 n 件（n 为那笔订单的件数） | 不找{供应商}，重新比价（排除后修订） |
+| `withdrawn` | 给{供应商}的订单已撤回 | 同上 | 同上 |
+| `failed` | 这笔采购没有成功 | 同上 | 重新比价 |
+| `short` | {供应商}只确认了 x 件 | 已按 x 件成交 · 还缺 m 件 | 缺的找别家补上（排除后修订） |
+| `rejected` | 你没有采用这份应急方案 | 结束这次应急补货后，系统才恢复每天的补货建议 | 重新比价；文字链接"结束这次应急补货" |
+| `expired`，或 `recheck` 且 `recheck_reason === 'PLAN_EXPIRED'` | 应急方案已过期 | 重新比价后再确认 | 重新比价 |
+| `recheck`（其他原因） | 比价结果需要更新 | `recovery.ts recheckReason(d.recheck_reason)`：`OPTIONS_EXPIRED`、`BUSINESS_STATE_CHANGED`、`MISSION_CHANGED`、`SOURCE_STALE`、`PURCHASE_FAILED`、`PURCHASE_CANCELLED`、`PURCHASE_STALE` 各有一句（订单 `STALE` 而没有 `recheck_reason` 时按 `PURCHASE_STALE`）；其他写"比价结果需要更新。" | 重新比价 |
+| `stale` | 比价结果需要更新 | `proposal.expires_at` 已过时"比价结果已超过有效期。"，否则"比价之后经营数据有变化，比价结果不再成立。" | 重新比价 |
+| `input` | 比价缺少条件 | `missing_inputs[0]` 经 `caseProblem()` | 重新比价 |
+| `pending` | 还没有比价结果 | 不写（原因在下方的失败提示里） | 重新比价 |
+| （所有报价都因 `OFFER_EXPIRED` 不可行且能寻源） | — | — | 重新找货 |
 
-重新比价 `again()`：按当前经营时钟重排 Case 自带的 `daily_demand`（Case 没有自带需求时不传），拒单或撤回时排除该供应商，然后 `revise` + `analyze`。排除记录存在 sessionStorage `ss.recovery.excluded:<case_id>`；Case 的 id、版本或寻源状态变化后，若 Case 为 `OPTIONS_READY`、不在寻源中，而 `supplier_ids` 包含被排除的那家（寻源会把读出的供应商都放回来），自动再修订一次把它去掉。
+比价进行中（建 Case、重新比价、寻源、分析）标题写"正在建立这次应急补货""正在重新比价""正在读 N 家供应商的资料"或"正在比价"，右下是状态字，不放按钮。
+
+重新比价 `again()`：按当前经营时钟重排 Case 自带的 `daily_demand`（Case 没有自带需求、而缺的是日预测时，按委托的需求假设逐日补上），拒单、撤回、部分成交或失败时把当前这家记入排除，然后 `revise` + `analyze`。排除的供应商（`excludedIds`）有两类：Case 采购记录里 `FAILED`、`CANCELLED` 或只成交一部分的供应商；sessionStorage `ss.recovery.excluded:<case_id>` 列表里的供应商（从入口带来的、店主选了"不找…"的）。修订时 `supplier_ids` 去掉它们，最多取最便宜的三家。Case 的 id、版本或寻源状态变化后，若 Case 为 `OPTIONS_READY`、不在寻源中，而 `supplier_ids` 包含被排除的供应商（寻源会把读出的供应商都放回来），自动再修订一次把它们去掉。
 
 **提醒入口**：见入口表"提醒弹层"一行。
 
 **依赖与解释**
-- `CaseDetail`：`status`、`current_revision`、`plan_id`、`plan_status`、`plan_revision`、`action_id`、`execution_status`、`proposal.{id, proposal_hash, candidates[], recommended_candidate_id}`、`stale`、`missing_inputs`、`evidence[].{kind, id}`、`daily_demand`、`supplier_ids`、`current_mission_version`、`current_state_version`、`current_plan_id`、`sourcing`、`expert_analysis`、`mission_id`、`store_id`。
+- `CaseDetail`：`status`、`current_revision`、`plan_id`、`plan_status`、`plan_revision`、`action_id`、`execution_status`、`proposal.{id, proposal_hash, candidates[], recommended_candidate_id}`、`stale`、`missing_inputs`、`evidence[].{kind, id}`、`daily_demand`、`supplier_ids`、`current_mission_version`、`current_state_version`、`current_plan_id`、`sourcing`、`expert_analysis`、`mission_id`、`store_id`、`purchases[].{action_id, supplier_id, status, planned_qty, accepted_qty, received_qty}`、`outcome`、`recheck_reason`、`routine_paused`、`proposal.expires_at`。
 - `RecoveryCandidate`：`id`、`supplier_id`、`quantity`、`spend_minor`、`cash_after_minor`、`shortage_qty`、`lost_qty`、`end_stock`、`feasible`、`executable`、`rejection_reasons`、`daily[].{settlement_at, demand_qty, proposed_arrivals, lost_qty}`。
-- 错误码文案 `caseProblem()`：`CASE_REVISION_CONFLICT`、`CASE_TERMINAL`、`PROPOSAL_STALE`、`PROPOSAL_HASH_CONFLICT`、`PROPOSAL_INVALID`、`PROPOSAL_REQUIRED`、`PLAN_EXPIRED`、`OFFER_EXPIRED`、`OFFER_UNAVAILABLE`、`EMERGENCY_PURCHASE_ALREADY_ACCEPTED`、`CANDIDATE_NOT_EXECUTABLE`、`SOURCING_MODEL_NOT_CONFIGURED`、`SUPPLIER_DOCUMENTS_REQUIRED`、`NO_SHORTFALL`、`SOURCING_IN_PROGRESS`、`SOURCING_INTERRUPTED`、`SOURCING_UNAVAILABLE`、`CASE_INPUT_CHANGED`、`DAILY_DEMAND_REQUIRED`、`RECOVERY_INPUT_INVALID`、`OFFER_SELECTION_REQUIRED`、`FORECAST_UNAVAILABLE`、`BUSINESS_TIME_REQUIRED`、`INBOUND_STATE_MISMATCH`、`SEARCH_SPACE_EXCEEDED`、`MISSION_NOT_ACTIVE`；未列出的显示后端 `message`。候选约束 `blockedReason()`：`BUDGET_EXCEEDED`、`CASH_FLOOR_VIOLATION`、`OFFER_EXPIRED`、`MINIMUM_ORDER_QUANTITY`、`PACK_SIZE_MISMATCH`、`ARRIVAL_WINDOW_MISSED`、`ACTION_IN_PROGRESS`、`EMERGENCY_PURCHASE_ALREADY_ACCEPTED`、`TASK_QUANTITY_LIMIT`、`OFFER_SCOPE_MISMATCH`、`UNVERIFIED_EXECUTION_INPUT`、`MONEY_OVERFLOW`。
+- 错误码文案 `caseProblem()`：`CASE_REVISION_CONFLICT`、`CASE_TERMINAL`、`PROPOSAL_STALE`、`PROPOSAL_HASH_CONFLICT`、`PROPOSAL_INVALID`、`PROPOSAL_REQUIRED`、`PLAN_EXPIRED`、`OFFER_EXPIRED`、`OFFER_UNAVAILABLE`、`EMERGENCY_PURCHASE_ALREADY_ACCEPTED`、`CANDIDATE_NOT_EXECUTABLE`、`SOURCING_MODEL_NOT_CONFIGURED`、`SUPPLIER_DOCUMENTS_REQUIRED`、`NO_SHORTFALL`、`SOURCING_IN_PROGRESS`、`SOURCING_INTERRUPTED`、`SOURCING_UNAVAILABLE`、`CASE_INPUT_CHANGED`、`DAILY_DEMAND_REQUIRED`、`RECOVERY_INPUT_INVALID`、`OFFER_SELECTION_REQUIRED`、`FORECAST_UNAVAILABLE`、`BUSINESS_TIME_REQUIRED`、`INBOUND_STATE_MISMATCH`、`SEARCH_SPACE_EXCEEDED`、`MISSION_NOT_ACTIVE`、`DATA_STALE`、`ACTION_IN_PROGRESS`、`PLAN_VERSION_CONFLICT`、`STATE_VERSION_CONFLICT`（"经营数据刚变了，重新比价后再采用。"）；未列出的用 `utils/api.ts` 给出的句子（§1.5）。候选约束 `blockedReason()`：`BUDGET_EXCEEDED`、`CASH_FLOOR_VIOLATION`、`OFFER_EXPIRED`、`MINIMUM_ORDER_QUANTITY`、`PACK_SIZE_MISMATCH`、`ARRIVAL_WINDOW_MISSED`、`ACTION_IN_PROGRESS`、`EMERGENCY_PURCHASE_ALREADY_ACCEPTED`、`TASK_QUANTITY_LIMIT`、`OFFER_SCOPE_MISMATCH`、`UNVERIFIED_EXECUTION_INPUT`、`MONEY_OVERFLOW`。
 - 寻源遇 `CASE_REVISION_CONFLICT` 重读 Case；其他 Case 写入的 4xx 都重读 Case。
 
 **后端改动会影响**
@@ -654,10 +665,14 @@
 
 **已知限制或待后端配合**
 - 卡片不显示 `useRecoveryCase` 的同步错误（读 Case 失败的 `syncError`）；写入结果不明见上文"写入结果不明"。
-- 只读 `GET /api/v1/operations-cases` 的第一页（后端默认 20 条，按创建时间倒序），再按委托筛选。
-- 确认前不知道非资料供应商的发单方式（后端按部署的 `purchase_channel` 决定，接口不下发），确认步对它不作说明；进度条在下单前按"店主发单"的步骤显示，下单后按 `Action.channel` 换成实际的变体。
-- 排除的供应商只记在本浏览器的 sessionStorage。
-- 其余后端缺口见 §4（结果、应急方案被替换、有效期、部分成交、排除、绝对日期、建议、英文错误）。
+- 只读 `GET /api/v1/operations-cases` 的第一页（后端默认 20 条，按创建时间倒序），再按委托筛选；同一委托有多件 Case 时只显示最新一件未结束的（排除 `CLOSED`、`CANCELLED`、`RESOLVED`，都结束了才显示最新一件）。
+- 确认前接口不下发发单方式；前端只对资料或寻源读出的供应商、或之前下过单的供应商推得出（`channelFor()`），推不出时确认步不作说明，进度条在下单前按"店主发单"的步骤显示，下单后按 `Action.channel` 换成实际的变体。
+- 从入口带来、或店主选了"不找…"的排除只记在本浏览器的 sessionStorage；从采购记录推出的排除在任何浏览器都生效。
+- 事项持有期间（已采用方案或选择等待，`routine_paused`）常规检查一律跳过，事项页不会再出现可确认的常规方案；常规方案收成一行只发生在采用之前。
+- 按对方数量成交后，若先登记那几件到货，后端会直接结案（§4 第 23 项）；卡片把这几件的登记收在自己里面，并在登记前说明。
+- 店主手动结束、且有多笔采购时，结果只写当前这一笔。
+- 原订单判定依赖 `GET /api/v1/inbounds?limit=100`，在途单很多时可能截掉原订单。
+- 其余后端缺口见 §4（503、店主发单无超时、"这次不补"不会自行结束、排除、绝对日期、建议、英文错误、确认前的发单方式、多件 Case、结算件数）。
 
 ### 2.7 先试算补货
 
@@ -910,18 +925,18 @@
 
 | # | 后端现状 | 核对 | 前端目前的做法 | 前端代码 |
 |---|---|---|---|---|
-| 1 | 委托当前方案是应急方案且状态为 `PENDING_APPROVAL`/`EXPIRED`/`SUPERSEDED` 时，`backend/app/work_items/business.py classify()` 用 `Plan.model_validate()` 校验它；`Plan` 继承 `extra="forbid"` 的 `DTO`（`backend/app/api/schemas.py`），应急方案多出的字段使校验失败，`read_transaction`（`backend/app/reporting/read_router.py`）转成 503 `INVALID_STORED_DATA`，事项列表和详情都读不出（redesign §18.7 第 1 项） | 代码 | 一键"采用并确认"缩短这段时间；列表报错显示为琥珀色提示，已打开的事项保留旧数据，刷新后只剩错误文字 | `useRecoveryFlow.adopt()`、`useWorkItems.list/load` |
-| 2 | Case 不会自动完成，也不记录结果：`backend/app/operations_cases/` 里 `RESOLVED` 只出现在终止集合中，没有赋值（§18.7 第 2 项） | 代码 | 应急采购全部到货（或等原订单全部到货）就判为结果并收起；结果数字用方案推演值，写"预计" | `utils/recovery.ts flowState()`、`outcomeOf()` |
-| 3 | 常规检查只在应急方案 `PENDING_APPROVAL`、未过期、状态版本与委托版本都没变时跳过（`backend/app/planning/jobs.py`）；其余情况清掉应急上下文，转入常规规划，可能生成新方案取代它（§18.7 第 3 项）。"等原订单"的决定不被常规检查尊重（第 7 项） | 第 3 项代码；第 7 项文档 | 识别 Case 方案的 `SUPERSEDED`/`EXPIRED`，卡片回到比价；常规方案一行写"应急方案已失效"并给"重新比价" | `flowState()`、`space/SpaceWorkspace.vue` |
-| 4 | 比价结果有效期从分析时刻起算：`expires_at = min(now + plan_ttl_seconds, forecast.valid_until)`，`plan_ttl_seconds` 默认 900（`backend/app/operations_cases/repository.py`、`backend/app/core/config.py`；§18.7 第 4 项） | 代码 | 过期或 `stale` 时主按钮"重新比价"，按当前时钟重排需求再分析 | `useRecoveryFlow.again()` |
-| 5 | 不能只收下一部分订单（§18.7 第 5 项） | 文档 | 撤回整单，在同一个 Case 里排除这家重新比价 | `useRecoveryFlow.withdrawAndSwitch()`、`AssistedOrderCard.vue switchSupplier()` |
+| 1 | 委托当前方案是应急方案且状态为 `PENDING_APPROVAL`/`EXPIRED`/`SUPERSEDED` 时，`backend/app/work_items/business.py classify()` 用 `Plan.model_validate()` 校验它；`Plan` 继承 `extra="forbid"` 的 `DTO`（`backend/app/api/schemas.py`），应急方案多出的字段使校验失败，`read_transaction`（`backend/app/reporting/read_router.py`）转成 503 `INVALID_STORED_DATA`，事项列表和详情都读不出；在事项里发消息、控制、接受委托等返回 `WorkDetail` 的写入会变成 500，事项处理者的 `/internal/v1/work-items` 也读不出。从采用开始，到确认、拒绝、作废或例行检查清掉当前方案为止；#25 后有效期从采用起算 30 分钟（演示配置 2 小时）。修法不能只换成 `parse_plan`：常规方案的过期判断对应急方案必然判为"方案待更新"，要按应急方案的有效期、状态版本、委托版本与 `recovery_hash` 判断（redesign §18.7 第 1 项、§18.12） | 代码 | 一键"采用并确认"缩短这段时间；`INVALID_STORED_DATA` 显示为"这件事的方案正等待确认，刷新前先确认或拒绝它。"；列表报错显示为琥珀色提示，已打开的事项保留旧数据，刷新后只剩这句 | `useRecoveryFlow.adopt()`、`useWorkItems.list/load`、`utils/api.ts` |
+| 2 | 已由 #25 修复：全部到货时 `backend/app/operations_cases/lifecycle.py settle()` 把 Case 置 `RESOLVED` 并写 `outcome`（店主登记到货与系统到货都会触发）；等原订单的 Case 在原订单到齐时同样结算 | 代码 | 结果以 `RESOLVED` + `outcome` 为准；所有已成交的采购都到齐、但还没读到 `RESOLVED` 时写"货已到齐，正在结算结果" | `utils/recovery.ts flowState()`、`outcomeOf()`、`recovery/RecoveryOutcome.vue` |
+| 3 | 已由 #25 修复：Case 持有委托（已采用方案或选择等待）时例行检查一律跳过（`EMERGENCY_HOLDS`），应急方案不再被常规方案替换；方案过期或状态变化时 Case 转 `RECHECK_REQUIRED` 并带 `recheck_reason`；"等原订单"被尊重 | 代码 | 按 `recheck_reason` 写原因并给"重新比价"；常规方案收成一行只在采用之前出现 | `flowState()`、`recheckReason()`、`recovery/RecoveryCompare.vue` |
+| 4 | 已由 #25 修复：有效期 `RECOVERY_TTL_SECONDS`（默认 1800 秒），采用后从采用时刻起算 | 代码 | 过期或 `stale` 时主按钮"重新比价"，按当前时钟重排需求再分析 | `useRecoveryFlow.again()` |
+| 5 | 已由 #25 支持部分成交：回复 `outcome: 'partial'`；`POST /api/v1/actions/{action_id}/partial-acceptance`（`approver`，幂等键）按回复数量成交并释放余额；`CaseDetail.purchases[]` 记录各笔；部分成交后同一 Case 可再采用一家 | 代码 | 主按钮"按对方数量成交"，成交后"缺的找别家补上"；撤回整单降为文字链接；已成交的那部分在应急卡里登记到货 | `useRecoveryFlow.acceptPartial()`、`recovery/RecoveryOrder.vue`、`recovery/RecoveryPurchases.vue`、`AssistedOrderCard.vue` |
 | 6 | 店主发出的订单没有超时（§18.7 第 6 项） | 文档 | 一直显示"待供应商确认"（业务码 `AWAITING_SUPPLIER` 优先级 30，进"需要你拍板"），可撤回 | `utils/glossary.ts statusBadge()` |
-| 7 | 撤回、拒单后 Case 仍指向旧订单：`CaseDetail.action_id` 取 `plan_id` 对应的采购单，`plan_revision` 取方案 `recovery_intent.revision`（`backend/app/operations_cases/repository.py`；§18.7 第 8 项） | 代码 | 用"Case 在那之后有没有新版本"（`plan_revision` 对比 `current_revision`）判断旧订单是否还决定阶段 | `flowState()` |
-| 8 | 寻源不认排除：`CaseSource` 只有 `expected_revision`、`district`，寻源读全部在档供应商（§18.7 第 9 项） | 契约；寻源行为为文档 | 寻源后 Case 的 `supplier_ids` 又包含被排除的那家时，自动再修订一次去掉它；排除记录存 sessionStorage | `useRecoveryFlow.ts`（`excludes` 与对应 `watch`） |
+| 7 | 撤回、拒单后 Case 仍指向旧订单：`CaseDetail.action_id` 取 `plan_id` 对应的采购单，`plan_revision` 取方案 `recovery_intent.revision`（`backend/app/operations_cases/repository.py`；§18.7 第 8 项）。#25 已加 `CaseDetail.purchases[]`（各笔状态、计划数、成交数、到货数），采购历史这一半已有 | 代码 | `purchasesOf()` 合并采购记录，"当前这笔"只认当前版本的采购；仍用"Case 在那之后有没有新版本"（`plan_revision` 对比 `current_revision`）判断旧订单是否还决定阶段 | `purchasesOf()`、`flowState()` |
+| 8 | 寻源不认排除：`CaseSource` 只有 `expected_revision`、`district`，寻源读全部在档供应商（§18.7 第 9 项） | 契约；寻源行为为文档 | 比较里去掉被排除的供应商并重算推荐；寻源后 Case 的 `supplier_ids` 又包含被排除的供应商时，自动再修订一次去掉它们。排除从采购记录推出（拒单、撤回、部分成交），另加 sessionStorage 里的列表 | `useRecoveryFlow.ts`（`excludedIds` 与对应 `watch`）、`withoutSuppliers()` |
 | 9 | 情景需求只收绝对结算时间（`DailyDemand.settlement_at` 为 date-time；§18.7 第 10 项） | 契约 | 每次建 Case 或修订都按当前经营时钟生成七个结算时刻 | `settlements()`、`useRecoveryFlow.dated()/redated()` |
 | 10 | 事项业务摘要不带应急补货建议（`WorkBusinessState` 没有相应字段；§18.7 第 11 项） | 契约 | 前端按方案、提醒、采购单与在途推断原因，并按求解器规则推演缺口 | `recoveryTrigger()`、`projectWithout()`、`demandFrom()` |
-| 11 | Case 错误信息是英文，例如 `CASE_REVISION_CONFLICT` 的 "The Case has newer inputs; refresh before continuing"（§18.7 第 12 项） | 代码 | 按错误码换成中文；未登记的码显示原文 | `caseProblem()` |
-| 12 | 方案确认前不告诉前端订单会走哪种发单方式；`backend/app/execution/repository.py` 在批准时决定 `channel`：寻源登记的报价一律 `assisted`，其余取请求体 `channel` 或部署配置 `purchase_channel` | 代码 | 只在资料供应商（`connected === false`）时写"确认后由你把订单发给供应商"，与后端第一条规则一致；其余不作说明；下单前进度条按店主发单显示，下单后以 `Action.channel` 为准（§2.6） | `recovery/RecoveryConfirm.vue`（`byHand`）、`utils/recovery.ts flowState()` |
+| 11 | Case 错误信息是英文，例如 `CASE_REVISION_CONFLICT` 的 "The Case has newer inputs; refresh before continuing"（§18.7 第 12 项） | 代码 | 按错误码换成中文；未登记的码显示后端原句，后端只给编码时写"暂时没能完成，稍后再试。" | `caseProblem()`、`utils/api.ts` |
+| 12 | 方案确认前不告诉前端订单会走哪种发单方式；`backend/app/execution/repository.py` 在批准时决定 `channel`：寻源登记的报价一律 `assisted`，其余取请求体 `channel` 或部署配置 `purchase_channel` | 代码 | `channelFor()`：资料或寻源读出的供应商写"确认后由你把订单发给{供应商}"，与后端第一条规则一致；之前下过单的供应商按那笔订单的渠道写（系统直接下单时"确认后系统直接下单"）；推不出时不作说明；下单前进度条按推出的渠道（推不出按店主发单）显示，下单后以 `Action.channel` 为准（§2.6） | `useRecoveryFlow.channelFor()`、`recovery/RecoveryConfirm.vue`、`utils/recovery.ts flowState()` |
 | 13 | 时间线条目没有结构化参数，只有 `summary` 字符串（§16 第 2 项） | 契约 | 正则解析固定句式，读不出时原样显示（§2.4 列出了未登记的检查结果） | `utils/timeline.ts` |
 | 14 | 委托时间线没有到货事件（§17.6 第 9 项） | 文档 | "最近变化"从店铺账本按采购单 id 匹配 `GOODS_RECEIVED`，只覆盖最近 30 条账本 | `useSpace.ts latestChange()` |
 | 15 | 账本 `DEMAND_REVISED` 的四项变化为 0，只带 `remaining_demand_after`（§16 第 3 项） | 文档；字段为契约 | 演示条用推进前后的看板 `remaining_demand` 说明需求变化 | `PresenterBar.vue describe()` |
@@ -931,3 +946,8 @@
 | 19 | 后台任务失败没有可区分的原因（§17.6 第 7 项）。`JobRun.error_code` 已在契约里，后端是否为推进失败填写可区分的码：待核实 | 文档 | 演示条按 `last_error` 文字推断原因 | `PresenterBar.vue failure()`、`useShop.waitJob()` |
 | 20 | `job_runs` 表缺索引或保留策略，看板读取变慢（§17.6 第 10 项） | 文档 | 无绕行 | — |
 | 21 | 没有表示"Agent 可用"的后端能力 | 代码 | 由前端环境变量 `NUXT_AGENT_ENABLED` 决定；记忆写入遇 503 / `AGENT_NOT_CONFIGURED` 转为只读 | `server/utils/backend.ts`、`useAgentKnowledge.edit()` |
+| 22 | 没有原订单时选择等待（"这次不补"）：Case 一直停在 `MONITORING`、`routine_paused`，后端不会自行结算或结束（`settle()` 在没有原订单时直接返回） | 代码 | 停在"决定这次不补"：标题"这次不补"，副句"没有在途的原订单。结束后，系统恢复每天的补货建议。"，主按钮"结束这次应急补货" | `flowState()`、`recovery/RecoveryReceive.vue` |
+| 23 | 按对方数量成交后 Case 置 `MONITORING`；店主这时先登记这几件到货，`backend/app/operations_cases/lifecycle.py settle()` 判定全部到货，直接置 `RESOLVED`，剩下的缺口无法再补（再修订报 `CASE_TERMINAL`） | 代码 | 应急补货进行中，这些采购只在应急卡里登记；会结案时登记前写"登记后，这次应急补货按 N 件结束；要补缺口先点「缺的找别家补上」。" | `purchasesOf()`（`endsCaseIfReceived`）、`endsCaseWith()`、`recovery/RecoveryPurchases.vue`、`useShop.awaitingArrival` |
+| 24 | 同一委托可同时有多件进行中的 Case（`backend/app/operations_cases/repository.py` 不限制）；在一件里采用会作废另一件的待确认方案 | 代码 | 只显示最新一件未结束的 Case（排除 `CLOSED`、`CANCELLED`、`RESOLVED`） | `useRecoveryCase.load()` |
+| 25 | `RECHECK_REQUIRED` 时直接调 `analyze` 不生效，要先 `control`（`refresh`）或 `revise` | 代码 | 重新比价走 `revise` + `analyze`（旧面板走 `refresh` + `analyze`），不直接调 `analyze` | `useRecoveryFlow.again()`、`useRecoveryCase.control()` |
+| 26 | 结算的 `outcome.planned_qty` 是所有订单数量之和（部分成交的 40 件订单加第二家 30 件 = 70），时间线结算句写"（订单 70 件）" | 代码 | 两笔以上采购时按 `purchases[].accepted_qty` 写"补到 40 件（百川批发 10 + 安和商贸 30）"；时间线结算句改写为"应急补货完成：补到 40 件，已全部到货" | `outcomeOf()`、`recovery/RecoveryOutcome.vue`、`utils/timeline.ts` |

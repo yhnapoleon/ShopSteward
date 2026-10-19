@@ -79,10 +79,26 @@ export function createMock(options: Options = {}) {
     explanation: true,
     /** Analyses still to fail with DATA_STALE, as when the business data is not synced yet. */
     failAnalyze: 0,
-    /** Case writes that take effect but whose answer is lost (a 503 afterwards), once per entry. */
+    /**
+     * Writes that take effect but whose answer is lost (a 503 afterwards), once per entry: a Case
+     * operation ('create', 'analyze', 'materialize', …) or an order write ('arrival', …).
+     */
     loseReply: [] as string[],
-    /** Answers already given, by idempotency key: a repeated key gets the first answer back. */
-    replies: {} as Record<string, any>,
+    /** Creations that fail before taking effect (a 503 with nothing written), once per entry. */
+    dropCreate: 0,
+    /** Order writes ('arrival', …) that fail before taking effect, once per entry. */
+    dropWrite: [] as string[],
+    /**
+     * Answers already given, by idempotency key: a repeated key with the same body gets the first
+     * answer back; a different body under it is refused (IDEMPOTENCY_KEY_REUSED).
+     */
+    replies: {} as Record<string, { body: string; response: any }>,
+    /** The next read of the Case is answered late, with the Case as it was when it was asked. */
+    holdRead: false,
+    /** Set once a held read has started; call it to let that read answer. */
+    releaseRead: null as null | (() => void),
+    /** Ids for the orders approved here, in order. */
+    actionCount: 0,
     session: {
       authenticated: true,
       principal_id: 'test-owner',
@@ -95,6 +111,8 @@ export function createMock(options: Options = {}) {
       sourcing: true,
     },
   }
+  /** The mission version each Case revision was analyzed on. */
+  const frozen: Record<number, number> = {}
   const sampleDocuments = () =>
     SUPPLIERS.map((s) => ({
       supplier_id: s.id,
@@ -242,23 +260,48 @@ export function createMock(options: Options = {}) {
       }))
   function analyze() {
     const c = m.item
+    // The analysis freezes the mission it was made on (the backend's revision snapshot).
+    frozen[c.current_revision] = mission.mission_version
     c.proposal = solve(c)
     c.status = 'OPTIONS_READY'
     c.stale = false
     c.evidence = evidence()
     c.missing_inputs = []
   }
+  // A pending plan of the Case gives way (operations_cases/repository.py invalidate_pending).
+  function invalidatePending() {
+    const c = m.item
+    if (c.plan_status !== 'PENDING_APPROVAL') return
+    c.plan_status = 'SUPERSEDED'
+    if (m.plans[c.plan_id]) m.plans[c.plan_id].status = 'SUPERSEDED'
+    if (mission.current_plan_id === c.plan_id) mission.current_plan_id = null
+  }
   function revise(changes: any) {
     const c = m.item
-    if (c.plan_status === 'PENDING_APPROVAL') {
-      c.plan_status = 'SUPERSEDED'
-      if (f.plan.id === c.plan_id) f.plan.status = 'SUPERSEDED'
-    }
+    invalidatePending()
     Object.assign(c, changes)
     c.current_revision++
     c.status = 'OPEN'
+    c.recheck_reason = null
     c.proposal = null
     c.expert_analysis = null
+  }
+  /** The Case's adopted plan for its current revision led to this order. */
+  const decidesNow = (action: any) =>
+    m.item?.plan_id === action.plan_id &&
+    m.plans[action.plan_id]?.recovery_intent?.revision === m.item.current_revision
+  // An order that bought nothing: the owner decides again in the Case (execution/accounting.py).
+  function recheck(action: any, reason: string) {
+    const c = m.item
+    if (!c || ['CANCELLED', 'RESOLVED', 'CLOSED'].includes(c.status) || !decidesNow(action)) return
+    c.status = 'RECHECK_REQUIRED'
+    c.recheck_reason = reason
+  }
+  // A bought order: the decision is being carried out, so the Case monitors it.
+  function monitor(action: any) {
+    const c = m.item
+    if (c?.plan_id === action.plan_id && !['CANCELLED', 'RESOLVED', 'CLOSED'].includes(c.status))
+      c.status = 'MONITORING'
   }
   // One reviewer finishes per read of the Case, then the readable offers are registered.
   function advanceSourcing() {
@@ -325,16 +368,16 @@ export function createMock(options: Options = {}) {
             status: 'partial',
             claims: [
               {
-                statement: 'B offers the lowest unit price among the readable quotes.',
+                statement: 'B 的单价在能读到的报价里最低。',
                 support: [],
               },
-              { statement: 'C does not deliver to the store district.', support: [] },
+              { statement: 'C 不配送到门店所在区域。', support: [] },
             ],
           },
         ],
       }
   }
-  function caseOf(body: any) {
+  function caseOf(body: any): any {
     return {
       id: 'case-one',
       mission_id: mission.id,
@@ -362,9 +405,158 @@ export function createMock(options: Options = {}) {
       expert_analysis: null,
       sourcing: null,
       followup_enabled: false,
+      purchases: [],
+      routine_paused: false,
+      recheck_reason: null,
+      outcome: null,
       created_at: nowIso(),
       updated_at: nowIso(),
     }
+  }
+  // What the backend derives whenever the Case is read (operations_cases/lifecycle.py): its
+  // purchases, whether it holds the item off routine checks, and settling it once everything it
+  // decided on has arrived. Waiting with no original order on the way never settles.
+  function sync() {
+    const c = m.item
+    if (!c) return
+    const inboundOf = (a: any) => f.inbounds.items.find((i: any) => i.action_id === a.id)
+    const mine = f.actions.items
+      .filter((a: any) => m.plans[a.plan_id]?.recovery_intent?.case_id === c.id)
+      .sort((a: any, b: any) => a.created_at.localeCompare(b.created_at))
+    const accepted = (a: any) =>
+      a.status === 'SUCCEEDED' ? (a.receipt?.quantity ?? a.quantity) : 0
+    c.purchases = mine.map((a: any) => ({
+      action_id: a.id,
+      supplier_id: a.purchase_snapshot.supplier_id,
+      status: a.status,
+      planned_qty: a.quantity,
+      accepted_qty: a.status === 'SUCCEEDED' ? accepted(a) : null,
+      received_qty: inboundOf(a)?.received_quantity ?? null,
+    }))
+    // Read live, as the backend reads them for every answer.
+    c.current_plan_id = mission.current_plan_id
+    c.current_mission_version = mission.mission_version
+    c.current_state_version = f.dashboard.state.state_version
+    const current = mine.find((a: any) => a.id === c.action_id)
+    if (current) {
+      const inbound = inboundOf(current)
+      c.execution_status =
+        current.status !== 'SUCCEEDED'
+          ? current.status
+          : !inbound || !inbound.received_quantity
+            ? 'ACCEPTED'
+            : inbound.remaining_quantity
+              ? 'PARTIALLY_RECEIVED'
+              : 'RECEIVED'
+    }
+    if (c.status !== 'RECHECK_REQUIRED') c.recheck_reason = null
+    const terminal = ['CANCELLED', 'RESOLVED', 'CLOSED'].includes(c.status)
+    c.routine_paused = !terminal && (c.plan_id != null || c.status === 'MONITORING')
+    if (c.status !== 'MONITORING') return
+    if (mine.some((a: any) => ['QUEUED', 'EXECUTING', 'UNKNOWN'].includes(a.status))) return
+    const bought = mine.filter((a: any) => a.status === 'SUCCEEDED')
+    const wait = c.proposal?.candidates.find((x: any) => x.quantity === 0)
+    let path: 'purchase' | 'waiting', after: number
+    if (bought.length) {
+      if (bought.some((a: any) => (inboundOf(a)?.remaining_quantity ?? 1) > 0)) return
+      path = 'purchase'
+      const plan = m.plans[bought.at(-1).plan_id]
+      const chosen = plan?.candidates.find((x: any) => x.id === plan.selected_candidate_id)
+      const short = bought.some((a: any) => accepted(a) < a.quantity)
+      after = short
+        ? Math.max(
+            0,
+            (wait?.lost_qty ?? 0) - bought.reduce((n: number, a: any) => n + accepted(a), 0),
+          )
+        : (chosen?.lost_qty ?? 0)
+    } else {
+      const originals = c.evidence.filter((e: any) => e.kind === 'inbound_order')
+      if (!originals.length) return
+      if (
+        originals.some(
+          (e: any) =>
+            (f.inbounds.items.find((i: any) => i.action_id === e.id)?.remaining_quantity ?? 0) > 0,
+        )
+      )
+        return
+      path = 'waiting'
+      after = wait?.lost_qty ?? 0
+    }
+    c.outcome = {
+      path,
+      planned_qty: bought.reduce((n: number, a: any) => n + a.quantity, 0),
+      purchased_qty: bought.reduce((n: number, a: any) => n + accepted(a), 0),
+      received_qty: bought.reduce(
+        (n: number, a: any) => n + (inboundOf(a)?.received_quantity ?? 0),
+        0,
+      ),
+      spend_minor: bought.reduce(
+        (n: number, a: any) => n + accepted(a) * a.purchase_snapshot.unit_price_minor,
+        0,
+      ),
+      lost_qty_before: wait?.lost_qty ?? 0,
+      lost_qty_after: after,
+      action_ids: bought.map((a: any) => a.id),
+    }
+    c.status = 'RESOLVED'
+    c.routine_paused = false
+  }
+  // The owner takes the smaller quantity the supplier confirmed (execution/assisted.py
+  // accept_partial): only it is paid for and expected; the rest of the reserved cash is released.
+  function acceptPartial(action: any) {
+    const quantity = action.supplier_reply?.quantity
+    if (action.supplier_reply?.outcome !== 'partial' || !(quantity < action.quantity)) return null
+    const price = action.purchase_snapshot.unit_price_minor
+    action.receipt = {
+      action_id: action.id,
+      status: 'ACCEPTED',
+      external_order_id: 'SUP-1',
+      quantity,
+      total_minor: quantity * price,
+      currency: 'CNY',
+      recorded_at: nowIso(),
+      reason: null,
+    }
+    action.status = 'SUCCEEDED'
+    f.dashboard.state.reserved_cash_minor -= action.amount_minor
+    f.dashboard.state.available_cash_minor += action.amount_minor - quantity * price
+    f.dashboard.state.cash_minor -= quantity * price
+    stock().in_transit += quantity
+    f.inbounds.items.push({
+      action_id: action.id,
+      mission_id: mission.id,
+      sku_id: sku,
+      external_order_id: 'SUP-1',
+      ordered_quantity: quantity,
+      received_quantity: 0,
+      remaining_quantity: quantity,
+      expected_arrival_at: action.purchase_snapshot.expected_arrival_at,
+      arrival_status: 'NOT_RECEIVED',
+      is_overdue: false,
+    })
+    mission.current_action_id = null
+    if (m.item?.action_id === action.id) m.item.execution_status = 'ACCEPTED'
+    monitor(action)
+    return action
+  }
+  /** What the backend refuses before adopting a quote (operations_cases/repository.py). */
+  /** The mission changed since this revision was analyzed (adopting raises its version). */
+  const missionMoved = () => frozen[m.item.current_revision] !== mission.mission_version
+  function refuseAdoption(body: any) {
+    const c = m.item
+    if (
+      body.expected_current_plan_id !== mission.current_plan_id ||
+      body.expected_mission_version !== mission.mission_version
+    )
+      return 'PLAN_VERSION_CONFLICT'
+    if (body.proposal_id !== c.proposal?.id) return 'PROPOSAL_STALE'
+    // planning/recovery/validation.py: the frozen analysis must still match the mission.
+    if (missionMoved()) return 'MISSION_VERSION_CONFLICT'
+    if (mission.current_action_id) return 'ACTION_IN_PROGRESS'
+    const previous = f.actions.items.find((a: any) => a.plan_id === c.plan_id)
+    const short = previous && (previous.receipt?.quantity ?? previous.quantity) < previous.quantity
+    if (previous?.status === 'SUCCEEDED' && !short) return 'EMERGENCY_PURCHASE_ALREADY_ACCEPTED'
+    return null
   }
   function materialize(candidateId: string) {
     const c = m.item
@@ -401,9 +593,12 @@ export function createMock(options: Options = {}) {
       input_snapshot: { ...f.plan.input_snapshot, offer },
       expires_at: '2099-01-01T00:00:00Z',
     }
+    // A pending regular plan gives way to the adopted emergency one.
+    if (f.plan.status === 'PENDING_APPROVAL' && f.plan.id !== id) f.plan.status = 'SUPERSEDED'
     m.plans[id] = plan
     f.plan = plan
     mission.current_plan_id = id
+    mission.mission_version++
     c.plan_id = id
     c.plan_status = 'PENDING_APPROVAL'
     c.plan_revision = c.current_revision
@@ -414,7 +609,8 @@ export function createMock(options: Options = {}) {
     const assisted = SUPPLIERS.some((s) => s.id === p.supplier_id)
     const reference = 'PO-1A2B3C4D'
     const action = {
-      id: 'action-one',
+      id:
+        ['action-one', 'action-two', 'action-three'][m.actionCount++] ?? `action-${m.actionCount}`,
       mission_id: mission.id,
       plan_id: plan.id,
       approval_id: 'approval-one',
@@ -453,6 +649,8 @@ export function createMock(options: Options = {}) {
     f.actions.items = [action, ...f.actions.items]
     f.dashboard.state.reserved_cash_minor += p.total_minor
     f.dashboard.state.available_cash_minor -= p.total_minor
+    // Approving does not change the Case's status: only a purchase that succeeds makes it
+    // monitor (execution/accounting.py close_action).
     if (m.item?.plan_id === plan.id) {
       m.item.plan_status = 'APPROVED'
       m.item.action_id = action.id
@@ -465,6 +663,13 @@ export function createMock(options: Options = {}) {
     f.dashboard.state.reserved_cash_minor -= action.amount_minor
     f.dashboard.state.available_cash_minor += action.amount_minor
     mission.current_action_id = null
+  }
+  function withdraw(action: any) {
+    action.status = 'CANCELLED'
+    release(action)
+    if (m.item?.action_id === action.id) m.item.execution_status = 'CANCELLED'
+    recheck(action, 'PURCHASE_CANCELLED')
+    return action
   }
   function accept(action: any) {
     action.status = 'SUCCEEDED'
@@ -486,15 +691,18 @@ export function createMock(options: Options = {}) {
     })
     mission.current_action_id = null
     if (m.item?.action_id === action.id) m.item.execution_status = 'ACCEPTED'
+    monitor(action)
   }
   function reply(action: any, text: string) {
     const replied = Number(/(\d+)\s*件/.exec(text)?.[1] ?? action.quantity)
     const declined = /抱歉|没货|不能|无法/.test(text)
     const outcome = declined
       ? 'declined'
-      : replied !== action.quantity
-        ? 'needs_attention'
-        : 'confirmed'
+      : replied < action.quantity
+        ? 'partial'
+        : replied > action.quantity
+          ? 'needs_attention'
+          : 'confirmed'
     action.supplier_reply = {
       text,
       read_by: 'rules',
@@ -517,6 +725,7 @@ export function createMock(options: Options = {}) {
       action.status = 'FAILED'
       release(action)
       if (m.item?.action_id === action.id) m.item.execution_status = 'FAILED'
+      recheck(action, 'PURCHASE_FAILED')
     } else if (outcome === 'confirmed') accept(action)
     return action
   }
@@ -542,12 +751,19 @@ export function createMock(options: Options = {}) {
     revise,
     advanceSourcing,
     caseOf,
+    sync,
+    acceptPartial,
+    refuseAdoption,
+    missionMoved,
     materialize,
+    invalidatePending,
     approve,
     accept,
     reply,
     arrive,
     release,
+    withdraw,
+    recheck,
   })
 }
 
@@ -567,38 +783,83 @@ export async function setupRecovery(page: Page, options: Options = {}) {
       route.fulfill({ status, json: { error: { code, message: code } } })
     if (r.method() !== 'GET') {
       const body = r.postDataJSON() || {}
-      m.writes.push({ path, key: r.headers()['idempotency-key'], body })
+      const key = r.headers()['idempotency-key']
+      m.writes.push({ path, key, body })
       if (path === `missions/${mission.id}/work-item`) return json({ item: m.work, messages: [] })
       if (path.endsWith('/supplier-documents/sample')) {
         m.documents = m.sampleDocuments()
         return json({ store_id: m.store, suppliers: m.documents })
       }
+      // A key seen before: the first answer again for the same request, a refusal otherwise.
+      if (key && m.replies[key])
+        return m.replies[key].body === JSON.stringify([path, body])
+          ? json(m.replies[key].response)
+          : fail(409, 'IDEMPOTENCY_KEY_REUSED')
+      const remember = (op: string, response: any, status = 200) => {
+        if (key) m.replies[key] = { body: JSON.stringify([path, body]), response }
+        const lost = m.loseReply.indexOf(op)
+        if (lost >= 0) {
+          m.loseReply.splice(lost, 1)
+          return fail(503, 'SERVICE_UNAVAILABLE')
+        }
+        return json(response, status)
+      }
       if (path === 'operations-cases') {
+        if (m.dropCreate > 0) {
+          m.dropCreate--
+          return fail(503, 'SERVICE_UNAVAILABLE')
+        }
         m.item = m.caseOf(body)
-        return json(m.item, 201)
+        return remember('create', structuredClone(m.item), 201)
       }
       const action = f.actions.items.find((a: any) => path.startsWith(`actions/${a.id}/`))
-      if (action && path.endsWith('/supplier-reply')) return json(m.reply(action, body.text))
-      if (action && path.endsWith('/withdrawal')) {
-        action.status = 'CANCELLED'
-        m.release(action)
-        if (m.item?.action_id === action.id) m.item.execution_status = 'CANCELLED'
-        return json(action)
+      const op = path.split('/').at(-1)!
+      const dropped = action ? m.dropWrite.indexOf(op) : -1
+      if (dropped >= 0) {
+        m.dropWrite.splice(dropped, 1)
+        return fail(503, 'SERVICE_UNAVAILABLE')
       }
-      if (action && path.endsWith('/arrival')) return json(m.arrive(action, body.quantity))
+      if (action && op === 'supplier-reply') {
+        if (action.status !== 'EXECUTING') return fail(409, 'ACTION_NOT_WAITING')
+        return remember(op, structuredClone(m.reply(action, body.text)))
+      }
+      if (action && op === 'withdrawal') {
+        if (action.status !== 'EXECUTING') return fail(409, 'ACTION_NOT_WAITING')
+        return remember(op, structuredClone(m.withdraw(action)))
+      }
+      if (action && op === 'arrival') {
+        const inbound = f.inbounds.items.find((i: any) => i.action_id === action.id)
+        if (action.status !== 'SUCCEEDED' || !inbound) return fail(409, 'ARRIVAL_NOT_EXPECTED')
+        if (!(body.quantity > 0 && body.quantity <= inbound.remaining_quantity))
+          return fail(409, 'GOODS_QUANTITY_CONFLICT')
+        return remember(op, structuredClone(m.arrive(action, body.quantity)))
+      }
+      if (action && op === 'partial-acceptance') {
+        // execution/router.py: taking part of an order needs the approval right.
+        if (!m.session.roles.some((role: string) => ['approver', 'admin'].includes(role)))
+          return fail(403, 'FORBIDDEN')
+        const taken = m.acceptPartial(action)
+        return taken
+          ? remember(op, structuredClone(taken))
+          : fail(409, 'PARTIAL_SUPPLY_NOT_OFFERED')
+      }
       if (/^plans\/[^/]+\/decision$/.test(path)) {
         if (body.decision === 'approve') m.approve()
-        else f.plan.status = 'REJECTED'
-        return json({ plan_id: f.plan.id, status: 'APPROVED' })
+        else {
+          f.plan.status = 'REJECTED'
+          // An emergency plan turned down: the Case goes on holding the item until it is ended.
+          if (m.item?.plan_id === f.plan.id) m.item.plan_status = 'REJECTED'
+        }
+        return remember('decision', {
+          plan_id: f.plan.id,
+          status: body.decision === 'approve' ? 'APPROVED' : 'REJECTED',
+        })
       }
       const c = m.item
       if (!c || !path.startsWith(`operations-cases/${c.id}/`))
         return fail(409, 'BLOCKED_TEST_WRITE')
-      const key = r.headers()['idempotency-key']
-      if (key && m.replies[key]) return json(m.replies[key])
       if (body.expected_revision !== undefined && body.expected_revision !== c.current_revision)
         return fail(409, 'CASE_REVISION_CONFLICT')
-      const op = path.split('/').at(-1)
       if (op === 'analyze' && m.failAnalyze > 0) {
         m.failAnalyze--
         return fail(409, 'DATA_STALE')
@@ -627,28 +888,50 @@ export async function setupRecovery(page: Page, options: Options = {}) {
           reviews: [],
         }
         m.reviewing = SUPPLIERS.map((s) => s.id)
-      } else if (op === 'materialize') m.materialize(body.candidate_id)
-      else if (op === 'control') {
-        if (body.operation === 'cancel') c.status = 'CANCELLED'
+      } else if (op === 'materialize') {
+        const refused = m.refuseAdoption(body)
+        if (refused) return fail(409, refused)
+        m.materialize(body.candidate_id)
+      } else if (op === 'control') {
+        if (body.operation === 'cancel') {
+          // Ending the Case also ends the plan still waiting for confirmation.
+          m.invalidatePending()
+          c.status = 'CANCELLED'
+        }
         if (body.operation === 'adopt_waiting') {
+          // operations_cases/repository.py control: a fresh analysis, and no purchase in flight.
+          if (!c.proposal) return fail(409, 'PROPOSAL_REQUIRED')
+          if (c.stale || m.missionMoved()) return fail(409, 'PROPOSAL_STALE')
+          if (mission.current_action_id) return fail(409, 'ACTION_IN_PROGRESS')
+          m.invalidatePending()
+          // Waiting is a decision not to buy now: a regular plan waiting for approval goes too.
+          if (f.plan.status === 'PENDING_APPROVAL' && mission.current_plan_id === f.plan.id) {
+            f.plan.status = 'SUPERSEDED'
+            mission.current_plan_id = null
+          }
           c.status = 'MONITORING'
-          if (c.plan_status === 'PENDING_APPROVAL') c.plan_status = 'SUPERSEDED'
         }
         if (body.operation === 'refresh') m.revise({})
       } else return fail(409, 'BLOCKED_TEST_WRITE')
       c.updated_at = nowIso()
-      if (key) m.replies[key] = structuredClone(c)
-      const lost = m.loseReply.indexOf(op!)
-      if (lost >= 0) {
-        m.loseReply.splice(lost, 1)
-        return fail(503, 'SERVICE_UNAVAILABLE')
-      }
-      return json(c)
+      // Every Case answer carries what the backend derives (purchases, routine_paused, outcome).
+      m.sync()
+      return remember(op, structuredClone(c))
     }
-    if (path === 'operations-cases')
+    if (path === 'operations-cases') {
+      m.sync()
       return json({ items: m.item ? [m.item] : [], next_cursor: null })
+    }
     if (m.item && path === `operations-cases/${m.item.id}`) {
       m.advanceSourcing()
+      m.sync()
+      if (m.holdRead) {
+        // Asked now, answered later: the Case as it was when this read was asked.
+        m.holdRead = false
+        const asked = structuredClone(m.item)
+        await new Promise<void>((resolve) => (m.releaseRead = resolve))
+        return json(asked)
+      }
       return json(m.item)
     }
     if (path === `stores/${m.store}/supplier-documents`)

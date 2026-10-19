@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { joinText, t as tr } from '~/i18n'
+import { t as tr } from '~/i18n'
 import { money, when } from '~/utils/presentation'
 import { supplierDisplayName } from '~/utils/glossary'
 import {
@@ -17,7 +17,9 @@ import { useFlow } from '~/composables/useRecoveryFlow'
 // Step 1, "说明情况": everything is filled in from the shop's own facts, so the owner only
 // confirms. The problem sentence is written from what triggered the restock and the projected
 // gap; the budget is what the cash floor leaves; demand is the enabled daily forecast or the
-// mission's current assumption; the first settlement follows the business clock.
+// mission's current assumption; the first settlement follows the business clock (shown only
+// under "修改": the owner never has to decide it). When the seven days hold no gap, closing is
+// the main action and comparing anyway steps back to a link.
 const flow = useFlow()
 const shop = useShop()
 const { s, mission, stock } = shop
@@ -85,21 +87,25 @@ const budgetMinor = computed(() => {
   const minor = Number(whole) * 100 + Number(decimal.padEnd(2, '0'))
   return Number.isSafeInteger(minor) && minor <= 1_000_000_000 ? minor : null
 })
-const sourceLabel = computed(() =>
-  tr(
-    {
-      forecast: '按已启用的日预测',
-      assumption: '按当前需求假设',
-      daily: '按你填的每天件数',
-    }[demand.value.source],
-  ),
-)
 const readable = computed(() => flow.directory.readable.value)
 const sourcingOn = computed(() => !!s.session?.sourcing)
 const names = computed(() =>
   readable.value.map((x) => supplierDisplayName(x.supplier_id, x.name)).join(tr('、')),
 )
+// Demo mode loads the sample documents by itself; the link is only there when that did not work.
 const demo = useDemoMode()
+const canSample = computed(
+  () =>
+    demo.enabled.value &&
+    flow.operator.value &&
+    !readable.value.length &&
+    !flow.directory.state.value.loading,
+)
+/** No gap in the seven days without a purchase: nothing needs restocking. */
+const noGap = computed(() => !!projection.value && projection.value.lost === 0)
+const startLabel = computed(() =>
+  tr(readable.value.length && sourcingOn.value ? '确认，开始找货' : '确认，开始比价'),
+)
 const error = ref('')
 const failure = computed(() =>
   flow.recovery.error.value
@@ -143,7 +149,12 @@ async function confirm() {
     demand: demand.value,
   })
 }
-function useFlat(on: boolean) {
+// The demand switch slides its plate on a pointer; a key press switches it instantly.
+const keyed = ref(false)
+const demandLive = ref(false)
+onMounted(() => requestAnimationFrame(() => (demandLive.value = true)))
+function useFlat(on: boolean, event?: MouseEvent) {
+  keyed.value = event?.detail === 0
   flat.value = on
   if (on && !perDayText.value) perDayText.value = String(perDayDefault.value)
 }
@@ -162,7 +173,7 @@ function useFlat(on: boolean) {
       />
     </label>
     <RecoveryDays
-      v-if="projection"
+      v-if="projection && projection.lost > 0"
       :days="projection.days"
       :label="tr('不补货的七天')"
       :arrival="'原订单到货'"
@@ -187,17 +198,35 @@ function useFlat(on: boolean) {
         </dd>
       </div>
       <div class="rf-fact" data-fact="demand">
-        <dt>{{ tr('需求') }}</dt>
+        <dt>{{ tr('7 天需求') }}</dt>
         <dd>
-          <b>{{ tr('7 天共 {0} 件', [sum(demand.values)]) }}</b>
-          <small>{{ sourceLabel }}</small>
-          <span class="rf-demand-choice" role="group" :aria-label="tr('需求按什么填')"
-            ><button type="button" class="rf-chip" :aria-pressed="!flat" @click="useFlat(false)">
-              {{ tr(base.source === 'forecast' ? '按日预测' : '按需求假设') }}</button
-            ><button type="button" class="rf-chip" :aria-pressed="flat" @click="useFlat(true)">
-              {{ flat ? tr('每天') : tr('每天 {0} 件', [perDayDefault]) }}
-            </button>
-            <span v-if="flat" class="rf-perday"
+          <b
+            >{{ sum(demand.values) }}<span class="rf-unit">{{ ' ' + tr('件') }}</span></b
+          >
+          <span class="rf-demand"
+            ><span
+              class="rf-seg"
+              :class="{ 'is-live': demandLive && !keyed }"
+              role="group"
+              :aria-label="tr('需求按什么填')"
+              :style="{ '--seg-count': 2, '--seg-index': flat ? 1 : 0 }"
+              @pointerdown="keyed = false"
+              ><button
+                type="button"
+                class="rf-seg-item"
+                :aria-pressed="!flat"
+                @click="useFlat(false, $event)"
+              >
+                {{ tr(base.source === 'forecast' ? '按预测' : '按估算') }}</button
+              ><button
+                type="button"
+                class="rf-seg-item"
+                :aria-pressed="flat"
+                @click="useFlat(true, $event)"
+              >
+                {{ flat ? tr('每天') : tr('每天 {0} 件', [perDayDefault]) }}
+              </button></span
+            ><span v-if="flat" class="rf-perday"
               ><input
                 v-model="perDayText"
                 inputmode="numeric"
@@ -208,51 +237,63 @@ function useFlat(on: boolean) {
           >
         </dd>
       </div>
-      <div class="rf-fact" data-fact="settlement">
-        <dt>{{ tr('首日结算') }}</dt>
-        <dd>
-          <b>{{ dates[0] ? tr(when(dates[0])) : tr('尚未取得') }}</b
-          ><small>{{ tr('按经营时钟，之后每天一次') }}</small>
-        </dd>
-      </div>
       <div v-if="sourcingOn" class="rf-fact" data-fact="documents">
         <dt>{{ tr('资料在档') }}</dt>
         <dd>
-          <b>{{ tr('{0} 家', [readable.length]) }}</b
+          <b
+            >{{ readable.length }}<span class="rf-unit">{{ ' ' + tr('家') }}</span></b
           ><small v-if="readable.length">{{ names }}</small
           ><small v-else-if="flow.directory.state.value.loading">{{ tr('正在读取…') }}</small
-          ><button
-            v-else-if="!demo.enabled.value && flow.operator.value"
-            type="button"
-            class="text-link"
-            @click="sample"
-          >
+          ><button v-else-if="canSample" type="button" class="text-link" @click="sample">
             {{ tr('载入示例资料') }}
           </button>
         </dd>
       </div>
     </dl>
+    <p v-if="editing" class="rf-settle" data-fact="settlement">
+      {{ tr('首日结算') }}<b>{{ dates[0] ? tr(when(dates[0])) : tr('尚未取得') }}</b
+      ><small>{{ tr('按经营时钟，之后每天一次') }}</small>
+    </p>
     <p v-if="error || failure" class="notice amber" role="alert">{{ tr(error) || failure }}</p>
     <footer class="rf-next">
       <span class="rf-links"
-        ><button type="button" class="text-link" @click="flow.close()">{{ tr('先不补') }}</button
+        ><button v-if="!noGap" type="button" class="text-link" @click="flow.close()">
+          {{ tr('关闭') }}</button
         ><button
           type="button"
           class="text-link"
           :aria-pressed="editing"
           @click="editing = !editing"
         >
-          {{ tr(editing ? '改好了' : '修改') }}
+          {{ tr(editing ? '改好了' : '修改') }}</button
+        ><button
+          v-if="noGap"
+          type="button"
+          class="text-link"
+          :disabled="Boolean(flow.working.value) || !flow.operator.value"
+          data-recovery-start
+          @click="confirm"
+        >
+          {{ tr('仍要比价') }}
         </button></span
       ><button
+        v-if="noGap"
+        type="button"
+        class="primary"
+        data-recovery-next
+        data-recovery-close
+        @click="flow.close()"
+      >
+        {{ tr('关闭') }}</button
+      ><button
+        v-else
         type="button"
         class="primary"
         :disabled="Boolean(flow.working.value) || !flow.operator.value"
         data-recovery-next
         @click="confirm"
       >
-        {{ joinText([tr(readable.length && sourcingOn ? '确认，开始找货' : '确认，开始比价')])
-        }}<AppIcon name="arrow-right" />
+        {{ startLabel }}<AppIcon name="arrow-right" />
       </button>
     </footer>
   </div>

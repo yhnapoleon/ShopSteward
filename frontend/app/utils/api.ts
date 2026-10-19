@@ -26,7 +26,24 @@ const messages: Record<string, string> = {
   FORBIDDEN: '当前身份没有执行此操作的权限。',
   UNAUTHENTICATED: '后端身份不可用，请重新连接。',
   NO_PURCHASE_PROPOSED: '当前方案不需要采购。',
+  // Order writes (execution/assisted.py).
+  PARTIAL_SUPPLY_NOT_OFFERED: '这笔订单已经不是“对方只给一部分”的状态，正在取得最新状态。',
+  GOODS_QUANTITY_CONFLICT: '到货件数超过这笔订单还没到的数量，请按实际到货重新登记。',
+  ARRIVAL_NOT_EXPECTED: '这笔订单现在不用登记到货：只有供应商已确认、由你发出的订单才需要。',
+  IDEMPOTENCY_KEY_REUSED: '这次提交和上一次的内容不同，请刷新后再试。',
+  // A stored emergency plan the backend cannot read back while it waits (work_items/business.py).
+  INVALID_STORED_DATA: '这件事的方案正等待确认，刷新前先确认或拒绝它。',
+  FORECAST_NOT_FOUND: '这件商品还没有预测。',
+  // What an emergency plan was worked out on changed before it was adopted or confirmed
+  // (planning/recovery/validation.py): it is worked out again on the current facts.
+  MISSION_VERSION_CONFLICT: '备货委托的设置刚变了，重新比价后再采用。',
+  OFFER_VERSION_CONFLICT: '供应商的报价刚变了，重新比价后再采用。',
+  INBOUND_VERSION_CONFLICT: '在途订单刚有变化，重新比价后再采用。',
+  FORECAST_VERSION_CONFLICT: '需求预测刚有变化，重新比价后再采用。',
+  RECOVERY_INTENT_STALE: '这份应急方案已经不是当前方案，请重新比价。',
 }
+/** A message that is only the code itself (no sentence was sent) says what happened instead. */
+const bare = /^[A-Z][A-Z0-9_]+$/
 export async function api<T>(
   path: string,
   method: 'GET' | 'POST' | 'PATCH' = 'GET',
@@ -51,10 +68,12 @@ export async function api<T>(
       }
     }
     const error = f.data?.error
+    const sent = error?.message && !bare.test(error.message) ? error.message : ''
     throw new ApiFailure(
       error?.code || 'CONNECTION_ERROR',
       messages[error?.code || ''] ||
-        error?.message ||
+        sent ||
+        (error?.code ? '暂时没能完成，稍后再试。' : '') ||
         f.data?.statusMessage ||
         '连接中断，未能取得最新结果。',
       f.statusCode || f.status || 0,

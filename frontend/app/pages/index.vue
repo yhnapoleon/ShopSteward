@@ -417,6 +417,25 @@ const title = computed(
       work: '事项工作区',
     })[view.value],
 )
+// Emergency restock (§18): the today page offers it when the regular plan cannot cover the need,
+// and a stockout or cash reminder opens it with the gap filled in.
+const recoveryPrompt = useRecoveryPrompt()
+const recoveryLauncher = useRecoveryLaunch()
+// The mission's current plan was adopted in an emergency restock still under way. That restock's
+// card says when its plan expires or the facts under it change, with its own next step, so the
+// page raises no second card about the same plan. Data that is not synced is about the whole
+// store, not the plan: it is still said (the work page lowers that card's button while the
+// restock holds the primary action).
+const restockOwnsPlan = computed(() => {
+  const current = plan.value
+  if (!current) return false
+  // A pending (or lapsed) emergency plan always belongs to an open restock: ending one
+  // supersedes its pending plan. The work page's card also reports the plan it holds.
+  return (
+    (isRecoveryPlan(current) && ['PENDING_APPROVAL', 'EXPIRED'].includes(current.status)) ||
+    recoveryLauncher.owned(current.mission_id)?.planId === current.id
+  )
+})
 const issue = computed(() =>
   s.pending
     ? 'confirmation'
@@ -426,22 +445,20 @@ const issue = computed(() =>
         ? 'offline'
         : s.dashboard && s.dashboard.freshness.status !== 'FRESH'
           ? 'stale'
-          : plan.value?.status === 'EXPIRED'
-            ? 'expired'
-            : plan.value?.status === 'PENDING_APPROVAL' &&
-                s.dashboard &&
-                plan.value.state_version !== s.dashboard.state.state_version &&
-                !unresolved.value
-              ? 'changed'
-              : null,
+          : restockOwnsPlan.value
+            ? null
+            : plan.value?.status === 'EXPIRED'
+              ? 'expired'
+              : plan.value?.status === 'PENDING_APPROVAL' &&
+                  s.dashboard &&
+                  plan.value.state_version !== s.dashboard.state.state_version &&
+                  !unresolved.value
+                ? 'changed'
+                : null,
 )
 const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
 )
-// Emergency restock (§18): the today page offers it when the regular plan cannot cover the need,
-// and a stockout or cash reminder opens it with the gap filled in.
-const recoveryPrompt = useRecoveryPrompt()
-const recoveryLauncher = useRecoveryLaunch()
 const restockable = (a: Schema<'Alert'>) =>
   !!s.session?.recoveryCases &&
   work.s.available &&
@@ -1940,7 +1957,7 @@ function briefing() {
             {{ tr('标记已知晓') }}</button
           ><button
             v-if="restockable(a)"
-            class="primary"
+            class="secondary"
             data-recovery-from-alert
             @click="restockFrom(a)"
           >

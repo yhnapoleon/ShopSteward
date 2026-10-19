@@ -4,15 +4,19 @@ import type { RecoveryLaunch } from '~/utils/recovery'
 // header, a reminder, the today page or an order the supplier declined. The flow on the mission's
 // work page takes the request and opens its brief; the header reads whether one is in progress.
 
-type Owned = { planId: string | null; actionId: string | null; lapsed: boolean }
+/**
+ * What an in-progress restock shows itself, so the page does not repeat it: its plan, the order
+ * its card is handling (sending, replying, receiving), and every purchase it led to (their
+ * arrivals are recorded in the card, which knows when recording one ends the restock).
+ */
+type Owned = { planId: string | null; actionId: string | null; actionIds?: string[] }
 
 export function useRecoveryLaunch() {
   const state = useState('recovery-launch', () => ({
     request: null as RecoveryLaunch | null,
     /** Missions whose emergency restock is in progress, as the flow on the work page sees it. */
     inProgress: {} as Record<string, boolean>,
-    /** The plan and order an in-progress restock shows itself, so the page does not repeat them;
-     * lapsed: the plan it adopted ran out or a regular check replaced it. */
+    /** The plan and orders an in-progress restock shows itself, so the page does not repeat them. */
     owned: {} as Record<string, Owned | null>,
   }))
   function request(launch: Omit<RecoveryLaunch, 'at'>) {
@@ -35,5 +39,8 @@ export function useRecoveryLaunch() {
   }
   const owned = (missionId: string | null | undefined) =>
     (missionId && state.value.owned[missionId]) || null
-  return { state, request, take, report, inProgress, own, owned }
+  /** Whether an in-progress restock of this mission holds this order (records its arrival). */
+  const holds = (missionId: string | null | undefined, actionId: string) =>
+    !!owned(missionId)?.actionIds?.includes(actionId)
+  return { state, request, take, report, inProgress, own, owned, holds }
 }

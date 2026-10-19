@@ -2,7 +2,15 @@
 // real HTTP, database and models, no request interception. It creates a synthetic SC01 store
 // and drives the flow on the work page: brief, sourcing, one-click adopt and confirm, the order
 // sent by hand with a partial and then a matching reply, the arrival and the result line.
-// DEMO_FRONTEND must be a loopback URL; DEMO_OUTPUT, when set, receives screenshots and a record.
+//
+// Before running:
+// - DEMO_FRONTEND: the frontend's loopback URL (http://127.0.0.1:3000), signed in to a backend
+//   identity with operator and approver rights (admin), so the confirmation opens at once.
+// - The backend offers sourcing (session.sourcing) with its document-reading model configured,
+//   and development tools (/dev/v1/scenarios) to create the SC01 store; the worker is running.
+// - The explanation model is optional: without it the walk records that none was written.
+// - DEMO_OUTPUT (optional) receives screenshots and walkthrough.json; DEMO_REPLY (optional) is
+//   the confirming reply, otherwise written from the order; DEMO_HEADED=1 shows the browser.
 import { chromium, expect } from '@playwright/test'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { randomUUID } from 'node:crypto'
@@ -94,12 +102,19 @@ try {
   await expect(flow.locator('[data-fact="documents"] b')).toHaveText(/^[1-9]\d* 家$/, {
     timeout: 30000,
   })
+  // The first settlement follows the business clock; it shows only while editing.
+  await flow.getByRole('button', { name: '修改', exact: true }).click()
+  const firstSettlement = await flow.locator('[data-fact="settlement"] b').innerText()
+  await flow.getByRole('button', { name: '改好了', exact: true }).click()
   await step('brief', {
     budget: await flow.locator('[data-fact="budget"] b').innerText(),
     demand: await flow.locator('[data-fact="demand"] b').innerText(),
-    first_settlement: await flow.locator('[data-fact="settlement"] b').innerText(),
+    first_settlement: firstSettlement,
   })
-  await next.click()
+  // With no gap over the seven days, closing is the main action and comparing anyway a link.
+  const start = flow.locator('[data-recovery-start]')
+  if (await start.isVisible()) await start.click()
+  else await next.click()
   let detail
   await expect
     .poll(
@@ -154,12 +169,13 @@ try {
   expect(recommended?.supplier_id, 'the solver should recommend a purchase').toBeTruthy()
 
   // The explanation follows the solve; it may still be writing. It stays folded on the page.
+  // Without an explanation model nothing is written ("none"), and the walk does not wait.
   await expect
-    .poll(async () => (await read(casePath)).expert_analysis?.status, {
+    .poll(async () => (await read(casePath)).expert_analysis?.status ?? 'none', {
       timeout: 180000,
       intervals: [3000],
     })
-    .toMatch(/^(complete|partial|failed|unavailable|disabled)$/)
+    .toMatch(/^(complete|partial|failed|unavailable|disabled|none)$/)
   detail = await read(casePath)
   const claims = (detail.expert_analysis?.subtasks || []).flatMap((t) => t.claims || [])
   await step('explanation', {
@@ -192,25 +208,36 @@ try {
       (a) => a.channel === 'assisted',
     )
   const order = (await sent()).order_message
-  await flow.locator('[data-supplier-reply]').fill(`可以，但只有${order.quantity - 10}件`)
-  await next.click()
-  await expect
-    .poll(async () => (await sent()).supplier_reply?.outcome, { timeout: 90000 })
-    .toBe('needs_attention')
-  let action = await sent()
-  expect(action.status).toBe('EXECUTING')
-  await expect(flow.locator('[data-recovery-switch]')).toBeVisible({ timeout: 30000 })
-  await step('reply-differs', {
-    read_by: action.supplier_reply.read_by,
-    differences: action.supplier_reply.differences,
-  })
+  // Half the order (an order of one unit cannot be filled in part, so that step is skipped).
+  const part = Math.floor(order.quantity / 2)
   const price = (order.unit_price_minor / 100).toFixed(2)
-  await flow
-    .locator('[data-supplier-reply]')
-    .fill(reply || `好嘞老板，${order.quantity}件没问题，还是${price}元一件，明天给你送过去`)
-  await flow.getByRole('button', { name: '登记新回复', exact: true }).click()
+  const confirming =
+    reply || `好嘞老板，${order.quantity}件没问题，还是${price}元一件，明天给你送过去`
+  if (part > 0) {
+    await flow.locator('[data-supplier-reply]').fill(`可以，但只有${part}件`)
+    await next.click()
+    await expect
+      .poll(async () => (await sent()).supplier_reply?.outcome, { timeout: 90000 })
+      .toBe('partial')
+    const partial = await sent()
+    expect(partial.status).toBe('EXECUTING')
+    // Taking the smaller quantity leads; withdrawing the whole order stays a second way.
+    await expect(flow.locator('[data-accept-partial]')).toBeVisible({ timeout: 30000 })
+    await expect(flow.locator('[data-recovery-switch]')).toBeVisible()
+    await step('reply-partial', {
+      read_by: partial.supplier_reply.read_by,
+      quantity: partial.supplier_reply.quantity,
+    })
+    // Beside a partial offer the reply box waits behind "登记新回复".
+    await flow.locator('[data-recovery-new-reply]').click()
+    await flow.locator('[data-supplier-reply]').fill(confirming)
+    await flow.locator('[data-recovery-submit-reply]').click()
+  } else {
+    await flow.locator('[data-supplier-reply]').fill(confirming)
+    await next.click()
+  }
   await expect(flow).toHaveAttribute('data-stage', 'receive', { timeout: 90000 })
-  action = await sent()
+  let action = await sent()
   expect(action.status).toBe('SUCCEEDED')
   let stock = await stockOf(store, sku)
   expect(stock.in_transit).toBe(before.in_transit + recommended.quantity)

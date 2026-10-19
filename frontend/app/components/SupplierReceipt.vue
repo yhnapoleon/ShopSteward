@@ -1,7 +1,9 @@
 <script setup lang="ts">
-// What was read from the reply the owner pasted, each value beside the words it came from.
+// What was read from the reply the owner pasted, each value beside the words it came from. A
+// quote that only repeats the value ("10件" beside "10 件") is not shown again.
 import { joinText, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
+import { priceOf } from '~/utils/recovery'
 import type { Schema } from '~/types/models'
 const props = defineProps<{ reply: Schema<'SupplierReply'> }>()
 const outcomes: Record<string, string> = {
@@ -15,9 +17,25 @@ const names: Record<string, string> = {
   unit_price_minor: '单价',
   total_minor: '合计',
 }
+// Quantities are written "10 件" and unit prices "¥9.50", as everywhere else in the restock.
 const shown = (field: string, value: number) =>
-  field === 'quantity' ? joinText([tr(value), tr('件')]) : tr(money(value))
+  field === 'quantity'
+    ? joinText([tr(value), tr('件')], ' ')
+    : field === 'unit_price_minor'
+      ? priceOf(value)
+      : tr(money(value))
 const amount = (field: string, value: number | null) => (value == null ? '' : shown(field, value))
+const bare = (text: string) => text.replace(/[\s¥￥,，元]/g, '')
+const quoteOf = (field: string, value: string) => {
+  const quote = props.reply.quotes[field]
+  return quote && bare(quote) !== bare(value) ? quote : ''
+}
+// A partial reply is a smaller quantity by definition: the receipt does not list it as a mismatch.
+const differences = computed(() =>
+  props.reply.differences.filter(
+    (d) => !(props.reply.outcome === 'partial' && d.field === 'quantity'),
+  ),
+)
 const rows = computed(() =>
   [
     { field: 'quantity', label: '确认数量', value: amount('quantity', props.reply.quantity) },
@@ -37,25 +55,25 @@ const rows = computed(() =>
       label: '供应商单号',
       value: props.reply.supplier_order_ref || '',
     },
-  ].filter((row) => row.value),
+  ]
+    .filter((row) => row.value)
+    .map((row) => ({ ...row, quote: quoteOf(row.field, row.value) })),
 )
 </script>
 <template>
   <section class="supplier-receipt" :data-outcome="reply.outcome">
     <h4>
-      {{ joinText([tr('回执 ·'), tr(outcomes[reply.outcome] || reply.outcome)]) }}
+      {{ tr('回执 · {0}', [tr(outcomes[reply.outcome] || reply.outcome)]) }}
     </h4>
-    <p v-if="reply.outcome === 'needs_attention' && !reply.differences.length" class="notice amber">
+    <p v-if="reply.outcome === 'needs_attention' && !differences.length" class="notice amber">
       {{ tr('这条回复里没有读到明确的接受或拒绝，订单保持待确认。') }}
     </p>
-    <ul v-if="reply.differences.length" class="notice amber">
-      <li v-for="difference in reply.differences" :key="difference.field">
+    <ul v-if="differences.length" class="notice amber">
+      <li v-for="difference in differences" :key="difference.field">
         {{
-          joinText([
+          tr('{0}与订单不一致：订单 {1}，回复 {2}', [
             tr(names[difference.field] || difference.field),
-            tr('与订单不一致：订单'),
             shown(difference.field, difference.ordered),
-            tr('，回复'),
             shown(difference.field, difference.replied),
           ])
         }}
@@ -64,10 +82,7 @@ const rows = computed(() =>
     <div v-for="row in rows" :key="row.field" class="detail-row">
       <span>{{ tr(row.label) }}</span
       ><b
-        >{{ row.value
-        }}<small v-if="reply.quotes[row.field]">{{
-          joinText([tr('原话：'), reply.quotes[row.field]])
-        }}</small></b
+        >{{ row.value }}<small v-if="row.quote">{{ joinText([tr('原话：'), row.quote]) }}</small></b
       >
     </div>
     <details>
