@@ -18,10 +18,13 @@ class OpenAIModel:
         api_mode="chat_completions",
         profile=None,
         responses_client=None,
+        reasoning_effort=None,
     ):
         from .context import ModelProfile
 
-        self.profile = profile or ModelProfile(model_id=model, api_mode=api_mode)
+        self.profile = profile or ModelProfile(
+            model_id=model, api_mode=api_mode, reasoning_effort=reasoning_effort
+        )
         api_mode = self.profile.api_mode
         self.api_mode = api_mode
         self.responses_client = responses_client
@@ -34,7 +37,6 @@ class OpenAIModel:
                 key = Path(key_file).read_text(encoding="utf-8").strip()
             if not key:
                 raise ValueError("model key required")
-            options = {"reasoning_effort": reasoning_effort} if reasoning_effort is not None else {}
             client = ChatOpenAI(
                 base_url=base_url,
                 model=self.profile.model_id,
