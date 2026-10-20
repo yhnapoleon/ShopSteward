@@ -19,7 +19,7 @@ const summary = computed(() => watchSummary(props.item, s))
     <div class="space-row-copy">
       <div class="space-row-title">
         <span class="space-row-kind">{{ tr(item.mission_id ? '备货委托' : '我的事项') }}</span
-        ><b>{{ workTitle(item) }}</b>
+        ><b :title="workTitle(item)">{{ workTitle(item) }}</b>
       </div>
       <p v-if="summary.timing || summary.change" class="space-row-meta">
         <span v-if="summary.timing">{{ summary.timing }}</span

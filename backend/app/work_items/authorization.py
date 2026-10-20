@@ -120,16 +120,25 @@ def grounded_period(args, messages):
 def grounded_cash_floor(value, messages, *, required=False):
     from decimal import Decimal
 
+    number = r"((?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d{1,2})?)"
     for message in reversed(messages):
-        matches = re.findall(
-            r"(?:现金(?:底线|至少|最少)?|至少(?:保留|留)|保留|留|"
-            r"cash floor|keep(?: at least)?)\D{0,8}"
-            r"(\d+(?:\.\d{1,2})?)\s*(万元|千元|块钱|元|块|分|CNY|yuan)",
-            message.content,
-            re.I,
-        )
+        # The currency may lead, as the interface shows it ("CNY 300"), or follow the amount;
+        # a bare number is no floor, nor is one cut short of its digits or 万/千 scale.
+        matches = [
+            match
+            for match in re.findall(
+                r"(?:现金(?:底线|至少|最少)?|至少(?:保留|留)|保留|留|"
+                r"cash floor|keep(?: at least)?)\D{0,8}?"
+                rf"(?:(CNY|RMB|¥|￥)\s*)?{number}(?![.,]?\d|\s*[万千](?!元))"
+                r"\s*(万元|千元|块钱|元|块|分|CNY|RMB|yuan)?",
+                message.content,
+                re.I,
+            )
+            if match[0] or match[2]
+        ]
         if matches:
-            amount, unit = matches[-1]
+            _, amount, unit = matches[-1]
+            amount = amount.replace(",", "")
             multiplier = {"万元": 1000000, "千元": 100000, "分": 1}.get(unit, 100)
             expected = int(Decimal(amount) * multiplier)
             if value != expected:

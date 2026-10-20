@@ -821,7 +821,7 @@ export type Outcome = {
   planned: number | null
   supplierId: string | null
   suppliers: string[]
-  /** What each purchase brought, in order: "百川批发 10 + 安和商贸 30". */
+  /** What each purchase brought, in order: "Baichuan Wholesale 10 + Anhe Trading 30". */
   parts: { supplierId: string; quantity: number }[]
   path: 'purchase' | 'waiting' | null
 }

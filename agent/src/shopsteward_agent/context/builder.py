@@ -18,6 +18,11 @@ from .contracts import (
 )
 from .frame import extract_frame
 
+# Required parts may use 90% of the budget; optional history stops at half of it,
+# leaving the rest for this run's tool results.
+REQUIRED_SHARE = 0.9
+HISTORY_SHARE = 0.5
+
 
 class ContextOverflow(ValueError):
     def __init__(self):
@@ -45,9 +50,9 @@ class ContextBuilder:
     def __init__(self, profile: ModelProfile):
         self.profile = profile
 
-    def check_budget(self, messages, tools):
+    def check_budget(self, messages, tools, share=REQUIRED_SHARE):
         estimate = estimate_tokens({"messages": messages, "tools": tools})
-        if estimate > int(self.profile.max_input_tokens * 0.9):
+        if estimate > int(self.profile.max_input_tokens * share):
             raise ContextOverflow()
         return estimate
 
@@ -157,6 +162,7 @@ class ContextBuilder:
                         *(active_messages or []),
                     ],
                     tools,
+                    HISTORY_SHARE,
                 )
             except ContextOverflow:
                 omitted.append({"source_id": source.message_id, "reason": "budget"})

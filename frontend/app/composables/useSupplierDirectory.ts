@@ -4,8 +4,8 @@ import { rememberSupplierNames } from '~/utils/glossary'
 import type { Schema } from '~/types/models'
 
 // The suppliers the current store has documents for (sourcing reads them). Read once per store,
-// together with the store's own data (useShop.refresh), so every card says "百川批发" instead of
-// the supplier id from its first paint.
+// together with the store's own data (useShop.refresh), so every card says "Baichuan Wholesale"
+// instead of the supplier id from its first paint.
 
 /** The district the sample documents are written for; a place name, so it is not translated. */
 export const SAMPLE_DISTRICT = '滨江区'

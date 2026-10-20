@@ -88,10 +88,31 @@ def test_demo_guard_labels_historical_evidence_and_preserves_clarification():
     guarded = forecast_answer_guard(
         answer("historical_demo"), required=True, current=current("historical_demo")
     )
-    assert "模型推演，仅供参考" in guarded["content"]
+    assert guarded["content"] == "模型推演，仅供参考。\n\n预计七天销售 12 件。"
     assert "历史演示" not in guarded["content"]
     paused = dict(status="WAITING_INPUT", content="需要哪些数据？")
     assert forecast_answer_guard(paused, required=True, current=None) == paused
+
+
+def test_demo_guard_writes_in_the_interface_language_and_labels_once():
+    demo = current("historical_demo")
+    english = answer("historical_demo") | dict(content="About 12 units over seven days.")
+    guarded = forecast_answer_guard(english, required=True, current=demo, language="en")
+    assert guarded["content"] == (
+        "Model projection, for reference only.\n\nAbout 12 units over seven days."
+    )
+    for labelled in [guarded, answer("historical_demo") | dict(content="模型推演，仅供参考：12件")]:
+        assert forecast_answer_guard(labelled, required=True, current=demo, language="en") == (
+            labelled
+        )
+    stale = forecast_answer_guard(
+        english, required=True, current=demo | dict(status="STALE"), language="en"
+    )
+    assert stale["content"].startswith("The forecast evidence has changed")
+    missing = forecast_answer_guard(
+        dict(content="12", references=[]), required=True, current=demo, language="en"
+    )
+    assert missing["content"].startswith("No valid v6 forecast evidence")
 
 
 async def test_forecast_tool_is_read_only_mission_scoped_and_no_reference_on_failure(monkeypatch):
@@ -121,6 +142,32 @@ async def test_forecast_tool_is_read_only_mission_scoped_and_no_reference_on_fai
     )
     assert result["ok"] is False and result["references"] == []
     assert result["data"]["reason"] == "HISTORY_REQUIRED"
+
+
+async def test_unavailable_forecast_is_as_slim_as_a_ready_one(monkeypatch):
+    expired = dict(
+        status="STALE",
+        reason="FORECAST_EXPIRED",
+        mode="historical_demo",
+        forecast=None,
+        history=[{"date": "2016-03-27", "sold_quantity": 2, "complete": True}] * 374,
+        model={"supported_series": [{"series_id": "x"}] * 300, "model_version": "v6"},
+    )
+    monkeypatch.setattr("app.forecast_v6.repository.read_current", AsyncMock(return_value=expired))
+    mission, store = SimpleNamespace(sku_id="k"), SimpleNamespace(id="s")
+    result = await execute_tool(
+        None, object(), None, None, None, mission, store, "get_forecast", Empty(), "call"
+    )
+    assert result["ok"] is False and result["references"] == []
+    assert result["error"]["code"] == "FORECAST_UNAVAILABLE"
+    data = result["data"]
+    assert "history" not in data and data["model"] == {"model_version": "v6"}
+    assert data["input_coverage"]["days"] == 374
+    assert (data["status"], data["reason"], data["mode"]) == (
+        "STALE",
+        "FORECAST_EXPIRED",
+        "historical_demo",
+    )
 
 
 def test_forecast_tool_cannot_accept_llm_scope_or_series():

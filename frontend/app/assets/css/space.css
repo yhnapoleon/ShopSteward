@@ -298,6 +298,10 @@
   letter-spacing: -0.6px;
   text-wrap: balance;
   max-width: 860px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .space-workspace .space-heading .task-heading-actions {
   gap: 6px 16px;
@@ -773,6 +777,10 @@
   font-weight: 560;
   color: #2a3e50;
   overflow-wrap: anywhere;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .space-row-kind {
   font-size: 11px;

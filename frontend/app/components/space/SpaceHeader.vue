@@ -50,7 +50,7 @@ async function resume() {
             : tr('我的事项')
         }}
       </div>
-      <h1>{{ workTitle(item) }}</h1>
+      <h1 :title="workTitle(item)">{{ workTitle(item) }}</h1>
     </div>
     <div class="task-heading-actions">
       <span class="tag" :class="badge.tone" role="status">{{ badge.label }}</span>

@@ -1,7 +1,8 @@
-"""Mission admission is resolved before context selection; no last-N truncation.
+"""Mission admission is resolved before context selection; user messages are never cut.
 
-A background follow-up is the exception: it explains business changes, so it
-carries only the latest turns, as optional context (see ContextBuilder).
+A user's run keeps every user message but only the latest assistant answers. A
+background follow-up explains business changes, so it carries only the latest
+turns, as optional context (see ContextBuilder).
 """
 
 from sqlalchemy import select
@@ -9,6 +10,8 @@ from sqlalchemy import select
 from app.agent_bridge.models import AgentRun, Message
 
 FOLLOWUP_HISTORY = 6
+# Proactive answers accumulate quickly; a user's run keeps only the latest ones.
+ASSISTANT_HISTORY = 12
 
 
 def requested_effect(messages):
@@ -37,6 +40,10 @@ def admitted_history(
     allowed.sort(key=lambda row: (anchors[row.run_id or row.id], row.seq))
     if kind == "followup":
         allowed = allowed[-FOLLOWUP_HISTORY:]
+    else:
+        answers = [row.id for row in allowed if row.role == "assistant"]
+        dropped = set(answers[:-ASSISTANT_HISTORY])
+        allowed = [row for row in allowed if row.id not in dropped]
     return (
         [
             {

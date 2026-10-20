@@ -2,7 +2,7 @@ from types import SimpleNamespace
 
 
 def test_mission_sources_preserve_old_constraints_without_admitting_future_turns():
-    from app.agent_bridge.context_sources import admitted_history
+    from app.agent_bridge.context_sources import ASSISTANT_HISTORY, admitted_history
 
     rows = [
         SimpleNamespace(
@@ -31,6 +31,18 @@ def test_mission_sources_preserve_old_constraints_without_admitting_future_turns
     assert not any(m["message_id"] in {"m101", "future-answer"} for m in history)
     assert admission["admitted_resume_message_ids"] == ["resume"]
     assert history[1]["message_id"] == "old-answer"
+    # Later proactive answers push out the oldest answer, never a user message.
+    rows += [
+        SimpleNamespace(id=f"f{i}", seq=105 + i, run_id=f"f{i}", role="assistant", content="")
+        for i in range(1, ASSISTANT_HISTORY + 1)
+    ]
+    prior = ["r1", *(f"f{i}" for i in range(1, ASSISTANT_HISTORY + 1))]
+    history, _ = admitted_history(
+        rows, run_id="r100", conversation_id="c", input_through_seq=100, prior_run_ids=prior
+    )
+    assert [m["role"] for m in history].count("user") == 101
+    assert "old-answer" not in [m["message_id"] for m in history]
+    assert history[-1]["message_id"] == f"f{ASSISTANT_HISTORY}"
 
 
 def test_explicit_no_save_survives_clarification_and_can_be_replaced_by_explicit_save():

@@ -430,7 +430,10 @@ async def execute(context):
                 session, conversation.store_id, mission.sku_id, settings
             )
             result = forecast_answer_guard(
-                result, required=requires_forecast, current=current_forecast
+                result,
+                required=requires_forecast,
+                current=current_forecast,
+                language=context.get("ui_language"),
             )
     result.update(
         evidence_policy=policy,

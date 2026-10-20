@@ -41,7 +41,7 @@ const partial = computed(
     outcome.value.planned != null &&
     outcome.value.ordered < outcome.value.planned,
 )
-/** "百川批发 10 + 安和商贸 30" */
+/** "Baichuan Wholesale 10 + Anhe Trading 30" */
 const parts = computed(() =>
   outcome.value.parts
     .map((p) => joinText([supplierDisplayName(p.supplierId), tr(p.quantity)], ' '))

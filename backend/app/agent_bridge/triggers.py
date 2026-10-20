@@ -7,9 +7,10 @@ from sqlalchemy.dialects.postgresql import insert
 
 from app.agent_bridge.models import AgentRun, Conversation, Trigger
 from app.agent_bridge.repository import promote
+from app.alerts.models import AlertRow
 from app.core.hashing import digest
-from app.missions.models import MissionRow
-from app.operations.models import Store
+from app.execution.models import ActionRow
+from app.missions.models import InboundRow, MissionRow, PlanRow
 
 logger = logging.getLogger("shopsteward")
 # A burst of changes (a synced day, then the Mission check it wakes) is explained once.
@@ -108,8 +109,24 @@ async def dispatch_followups(db, settings):
         ).all()
         for conversation in conversations:
             conversation.next_due = now + timedelta(seconds=conversation.followup_interval)
+            if conversation.active_run_id:
+                continue
             mission = await session.get(MissionRow, conversation.mission_id)
-            store = await session.get(Store, conversation.store_id)
+            plan = mission.current_plan_id and await session.get(PlanRow, mission.current_plan_id)
+            action = mission.current_action_id and await session.get(
+                ActionRow, mission.current_action_id
+            )
+            received = await session.execute(
+                select(InboundRow.action_id, InboundRow.sku_id, InboundRow.received_qty)
+                .join(ActionRow, ActionRow.id == InboundRow.action_id)
+                .where(ActionRow.mission_id == mission.id)
+                .order_by(InboundRow.action_id, InboundRow.sku_id)
+            )
+            alerts = await session.execute(
+                select(AlertRow.id, AlertRow.severity)
+                .where(AlertRow.mission_id == mission.id, AlertRow.status != "RESOLVED")
+                .order_by(AlertRow.id)
+            )
             watermark = (
                 await session.scalar(
                     select(func.max(Trigger.seq)).where(
@@ -119,23 +136,27 @@ async def dispatch_followups(db, settings):
                 )
                 or 0
             )
+            # Everything a follow-up would explain; row identity of the plan is not part of it.
             fingerprint = digest(
                 [
-                    store.state_version,
                     mission.mission_version,
-                    mission.current_plan_id,
-                    mission.current_action_id,
                     mission.status,
+                    plan.input_hash if plan else None,
+                    plan.status if plan else None,
+                    mission.current_action_id,
+                    action.status if action else None,
+                    [list(row) for row in received],
+                    [list(row) for row in alerts],
                 ]
             )
-            if conversation.active_run_id:
-                continue
-            if fingerprint == conversation.last_fingerprint and not watermark:
+            if fingerprint == conversation.last_fingerprint:
+                # Triggers that left the business unchanged are handled without a run.
+                conversation.consumed_trigger = max(conversation.consumed_trigger, watermark)
                 continue
             if mission.status != "ACTIVE" and not watermark:
                 continue
-            # The event watermark is consumed only when the run ends: published,
-            # or given up (followup_closed), never at dispatch.
+            # A queued run's event watermark is consumed only when the run ends:
+            # published, or given up (followup_closed).
             run = AgentRun(
                 id=str(uuid4()),
                 conversation_id=conversation.id,

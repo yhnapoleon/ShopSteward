@@ -10,9 +10,9 @@ import { expect, type Page } from '@playwright/test'
 const DAY = 86_400_000
 const nowIso = () => new Date().toISOString()
 export const SUPPLIERS = [
-  { id: 'A', name: '安和商贸', price: 1020, lead: 2 },
-  { id: 'B', name: '百川批发', price: 950, lead: 1 },
-  { id: 'C', name: '诚达供应链', price: 860, lead: 0, noOffer: 'STORE_NOT_SERVED' },
+  { id: 'A', name: 'Anhe Trading', price: 1020, lead: 2 },
+  { id: 'B', name: 'Baichuan Wholesale', price: 950, lead: 1 },
+  { id: 'C', name: 'Chengda Supply', price: 860, lead: 0, noOffer: 'STORE_NOT_SERVED' },
 ] as const
 
 export type Options = {

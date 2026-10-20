@@ -66,7 +66,7 @@ def test_followup_keeps_its_instruction_and_drops_old_turns_that_do_not_fit():
         message_id="followup:f", run_id="f", seq=5, role="user", content="Background follow-up"
     )
     admission = Admission(kind="followup", run_id="f", conversation_id="c", input_through_seq=5)
-    view = Builder(Profile(model_id="test", max_input_tokens=3000)).build(
+    view = Builder(Profile(model_id="test", max_input_tokens=5000)).build(
         admission=admission,
         messages=[*history, instruction],
         system="rules",
@@ -87,6 +87,44 @@ def test_followup_keeps_its_instruction_and_drops_old_turns_that_do_not_fit():
             tools=[],
             current_context="current",
         )
+
+
+def test_long_history_leaves_room_for_a_tool_result_on_the_next_call():
+    Admission, Builder, Message, Profile = contracts()
+    history = []
+    for turn in range(1, 31):
+        history += [
+            Message(
+                message_id=f"q{turn}", run_id=f"r{turn}", seq=2 * turn - 1, role="user", content="q"
+            ),
+            Message(
+                message_id=f"a{turn}",
+                run_id=f"r{turn}",
+                seq=2 * turn,
+                role="assistant",
+                content="解读" * 500,
+            ),
+        ]
+    question = Message(message_id="q31", run_id="r31", seq=61, role="user", content="q")
+    builder = Builder(Profile(model_id="test", max_input_tokens=64000))
+    view = builder.build(
+        admission=Admission(
+            run_id="r31",
+            conversation_id="c",
+            input_through_seq=61,
+            prior_run_dependencies=[f"r{turn}" for turn in range(1, 31)],
+        ),
+        messages=[*history, question],
+        system="rules",
+        tools=[],
+        current_context="current",
+    )
+    assert view.manifest["selected_source_ids"][-2:] == ["a30", "q31"]
+    assert {"source_id": "a1", "reason": "budget"} in view.manifest["omitted"]
+    # The first call's view is frozen as the base; a later tool result must still fit.
+    builder.check_budget(
+        [*view.messages, {"role": "tool", "tool_call_id": "t", "content": "x" * 12000}], []
+    )
 
 
 def test_frame_patch_preserves_unmentioned_constraint_and_validates_exact_quote():

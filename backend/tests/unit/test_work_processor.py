@@ -14,6 +14,7 @@ from app.work_items.processor import (
     delivery,
     internal_service,
     stable_command,
+    unfinished,
     validate_lease,
 )
 from app.work_items.processor_tools import (
@@ -164,11 +165,44 @@ def test_floor_colloquial_and_currency_units(content):
         grounded_cash_floor(500, [message(content)], required=True)
 
 
-def test_unspecified_floor_requires_clarification():
+@pytest.mark.parametrize(
+    ("content", "minor"),
+    [
+        ("Keep at least CNY 300 cash", 30000),
+        ("keep at least ¥300 in cash", 30000),
+        ("现金至少留￥300", 30000),
+        ("keep at least RMB 300", 30000),
+        ("keep at least CNY 1,000 cash", 100000),
+        ("keep at least 1,000 yuan", 100000),
+        ("keep at least 300 yuan in cash", 30000),
+        ("keep at least ¥3万元", 3000000),
+    ],
+)
+def test_floor_currency_may_lead_or_follow_the_amount(content, minor):
     from app.work_items.authorization import grounded_cash_floor
 
-    with pytest.raises(AppError):
-        grounded_cash_floor(0, [message("帮我跟进备货")], required=True)
+    grounded_cash_floor(minor, [message(content)], required=True)
+    with pytest.raises(AppError) as error:
+        grounded_cash_floor(minor // 100, [message(content)], required=True)
+    assert error.value.code == "CASH_FLOOR_SOURCE_MISMATCH"
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "帮我跟进备货",
+        "keep at least 300 in cash",
+        "keep at least CNY 1,0000",
+        "keep at least CNY 3.456",
+        "keep at least ¥3万",
+    ],
+)
+def test_unspecified_floor_requires_clarification(content):
+    from app.work_items.authorization import grounded_cash_floor
+
+    with pytest.raises(AppError) as error:
+        grounded_cash_floor(30000, [message(content)], required=True)
+    assert error.value.code == "CASH_FLOOR_CLARIFICATION_REQUIRED"
 
 
 def test_deterministic_quotation_does_not_validate_unused_model_money():
@@ -326,3 +360,41 @@ async def test_rewrite_names_unsupported_amounts_and_returns_the_rewrite():
     assert (
         await rewrite_amounts(failing, [], "花费450元。", records, model_timeout=5) == "花费450元。"
     )
+
+
+def test_a_question_to_the_owner_outranks_a_failed_tool():
+    asked = {"status": "WAITING_INPUT", "question": "How much cash should stay?"}
+    waiting = unfinished(asked, {"compare_quantities"}, "en")
+    assert waiting["status"] == "WAITING_INPUT"
+    assert waiting["question"] == "How much cash should stay?"
+    answered = {"status": "SUCCEEDED", "content": "Stock covers next week."}
+    assert unfinished(answered, set(), "en") is None
+    blocked = unfinished(answered, {"compare_quantities"}, "en")
+    assert blocked["status"] == "BLOCKED"
+    assert blocked["answer"].startswith("The required tools did not succeed")
+    # Missing required evidence still blocks, whatever else the run did.
+    unread = unfinished({**asked, "evidence_unavailable": True}, set(), None)
+    assert unread["status"] == "BLOCKED" and unread["answer"].startswith("所需工具尚未成功")
+
+
+def test_fallback_answer_follows_the_interface_language():
+    english = delivery({"content": ""}, [], "en")
+    assert english["answer"] == "Processing is complete. See the result."
+    assert delivery({"content": ""}, [])["answer"] == "处理已完成，请查看结果。"
+
+
+def test_long_titles_end_at_a_word_or_clause_break():
+    from app.work_items.repository import short_title
+
+    english = (
+        "Keep an eye on Fresh milk 1L for me: avoid running out, keep at least 300 yuan in "
+        "cash, confirm each purchase."
+    )
+    assert short_title(english) == (
+        "Keep an eye on Fresh milk 1L for me: avoid running out, keep at least 300 yuan…"
+    )
+    assert short_title("  可乐40件够卖吗？ ") == "可乐40件够卖吗？"
+    chinese = "帮我盯着鲜牛奶" * 12 + "吧"
+    assert len(chinese) == 85 and short_title(chinese) == chinese[:79] + "…"
+    clauses = "帮我盯着鲜牛奶，" * 11
+    assert short_title(clauses) == "帮我盯着鲜牛奶，" * 9 + "帮我盯着鲜牛奶…"
