@@ -30,6 +30,15 @@ def _checked_product(left: int, right: int) -> int:
     return value
 
 
+def _accepted_terms_match(snapshot, quantity, total_minor) -> bool:
+    """The whole order as approved, or fewer units at the approved unit price when the owner
+    accepted what the supplier could confirm (see `apply_receipt(partial=True)`)."""
+    ordered = snapshot.get("quantity")
+    if quantity == ordered:
+        return total_minor == snapshot.get("total_minor")
+    return 0 < quantity < ordered and total_minor == quantity * snapshot.get("unit_price_minor")
+
+
 def sale_view(row) -> SaleRecord:
     try:
         event = SaleEvent.model_validate(row.document)
@@ -95,13 +104,16 @@ def day_buckets(start: datetime, end: datetime, records: list[SaleRecord]) -> li
 def inbound_view(inbound, action, simulation_time: datetime | None) -> InboundItem:
     try:
         snapshot = action.purchase_snapshot
+        # The inbound row holds the quantity the supplier accepted, which the receipt records.
+        accepted = (action.receipt or {}).get("quantity", snapshot.get("quantity"))
         if (
             inbound.action_id != action.id
             or inbound.store_id != action.store_id
             or inbound.sku_id != snapshot["sku_id"]
             or not isinstance(snapshot.get("quantity"), int)
             or isinstance(snapshot.get("quantity"), bool)
-            or inbound.ordered_qty != snapshot["quantity"]
+            or inbound.ordered_qty != accepted
+            or inbound.ordered_qty > snapshot["quantity"]
             or not isinstance(inbound.ordered_qty, int)
             or isinstance(inbound.ordered_qty, bool)
             or not isinstance(inbound.received_qty, int)
@@ -188,8 +200,9 @@ def ledger_view(row, action_by_id: dict) -> LedgerEntryView:
                 raise ValueError("purchase action association mismatch")
             sku_id = action.purchase_snapshot["sku_id"]
             if (
-                action.purchase_snapshot.get("quantity") != receipt.quantity
-                or action.purchase_snapshot.get("total_minor") != receipt.total_minor
+                not _accepted_terms_match(
+                    action.purchase_snapshot, receipt.quantity, receipt.total_minor
+                )
                 or action.purchase_snapshot.get("currency") != receipt.currency
             ):
                 raise ValueError("purchase receipt mismatch")

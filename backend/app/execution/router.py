@@ -79,7 +79,7 @@ async def supplier_reply(
     reading, read_by = await assisted.read_reply(
         body.text,
         order,
-        clock.date(),
+        clock.astimezone(assisted.BUSINESS_ZONE).date(),
         model=assisted.reader(state.settings),
     )
     async with state.db.session() as session, session.begin():

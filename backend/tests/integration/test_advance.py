@@ -32,7 +32,11 @@ async def test_advance_requires_admin_and_replays_original_job_for_exact_path_an
             job = await session.get(Job, receipt["job_run_id"])
             assert job.job_type == "advance_scenario"
             assert job.store_id == seed["store_id"]
-            assert job.payload == {"scenario_run_id": seed["scenario_run_id"], "steps": 1}
+            assert job.payload == {
+                "scenario_run_id": seed["scenario_run_id"],
+                "steps": 1,
+                "skip_empty_delivery": False,
+            }
             job.status = "SUCCEEDED"
         assert (
             await client.post(path, json={"steps": 1}, headers=command_headers)

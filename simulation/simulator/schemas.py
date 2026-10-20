@@ -24,6 +24,11 @@ class Product(DTO):
 
 class Offer(DTO):
     supplier_id: Identifier
+    # What the owner calls the supplier; the id stays the key everywhere. Left out when
+    # absent, so an unnamed offer keeps the document (and hashes) it always had.
+    supplier_name: str | None = Field(
+        default=None, min_length=1, max_length=64, exclude_if=lambda name: name is None
+    )
     sku_id: Identifier
     unit_price_minor: Positive
     minimum_order_quantity: Positive
@@ -277,6 +282,9 @@ class PurchaseReceipt(DTO):
 
 class ScenarioAdvance(DTO):
     steps: Annotated[int, Field(strict=True, ge=1, le=100)]
+    # The owner sends some orders by hand and records their arrival; the simulator never sees
+    # them. A delivery step with nothing of its own to deliver then passes as a day.
+    skip_empty_delivery: Annotated[bool, Field(strict=True)] = False
 
 
 class AdvanceResult(DTO):

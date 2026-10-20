@@ -4260,6 +4260,20 @@
             "minLength": 1,
             "maxLength": 128
           },
+          "supplier_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "供应商名称；没有时界面按它对委托的角色称呼"
+          },
           "sku_id": {
             "type": "string",
             "description": "不透明资源 ID",

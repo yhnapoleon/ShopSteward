@@ -18968,6 +18968,19 @@
             "minLength": 1,
             "title": "Supplier Id"
           },
+          "supplier_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier Name"
+          },
           "sku_id": {
             "type": "string",
             "maxLength": 128,

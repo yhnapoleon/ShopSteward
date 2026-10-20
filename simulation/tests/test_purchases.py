@@ -186,6 +186,30 @@ async def test_full_sc01_advance_is_atomic_replayable_and_uses_actual_orders():
         ).status_code == 201
 
 
+async def test_an_empty_delivery_day_passes_when_the_owner_sends_orders_by_hand():
+    async with client_app() as (client, app):
+        seed = await seed_run(client)
+        run_id = seed["scenario_run_id"]
+        path = f"/sim/v1/runs/{run_id}/advance"
+        by_hand = {"steps": 1, "skip_empty_delivery": True}
+        start = datetime.fromisoformat(seed["simulation_time"])
+        # The delivery day passes and that day's sale follows in the same advance.
+        sold = await post(client, path, by_hand)
+        assert sold.status_code == 200, sold.text
+        assert datetime.fromisoformat(sold.json()["simulation_time"]) == start + timedelta(
+            days=1, hours=1
+        )
+        revised = await post(client, path, by_hand)
+        assert revised.status_code == 200, revised.text
+        page = (await client.get(f"{path.removesuffix('/advance')}/events?after_sequence=0")).json()
+        assert [e["event_type"] for e in page["events"]] == ["SALE_RECORDED", "DEMAND_REVISED"]
+        state, head, step = await world(app, run_id)
+        assert (state["stocks"][0]["on_hand"], head, step) == (10, 2, 3)
+        # Nothing of the simulator's own is on the way, so the last delivery has nothing to do.
+        last = await post(client, path, by_hand)
+        assert last.json()["error"]["code"] == "SCENARIO_STEP_BLOCKED"
+
+
 async def test_receipt_stage_sorts_orders_and_receives_actual_quantity_with_concurrent_advance():
     async with client_app() as (client, app):
         seed = await seed_run(client)

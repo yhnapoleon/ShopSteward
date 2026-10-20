@@ -16,6 +16,11 @@ class Product(DTO):
 
 class Offer(DTO):
     supplier_id: Identifier
+    # What the owner calls the supplier; the id stays the key everywhere. Left out when
+    # absent, so an unnamed offer keeps the document (and hashes) it always had.
+    supplier_name: str | None = Field(
+        default=None, min_length=1, max_length=64, exclude_if=lambda name: name is None
+    )
     sku_id: Identifier
     unit_price_minor: Positive
     minimum_order_quantity: Positive
