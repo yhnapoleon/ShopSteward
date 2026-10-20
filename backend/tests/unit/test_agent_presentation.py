@@ -55,3 +55,20 @@ def test_read_questions_and_one_off_constraints_do_not_authorize_memory_mutation
     assert not explicit_memory_intent("Can you show what you remember?")
     assert explicit_memory_intent("请长期记住我的通用偏好：先结论")
     assert explicit_memory_intent("纠正刚才保存的偏好：改成先风险")
+
+
+def test_unsupported_amount_removes_its_sentence_and_keeps_the_rest():
+    from app.agent_bridge.presentation import without_unsupported_amounts
+
+    allowed = {100000, 40000}
+    content = "| 数量 | 支出 |\n| 40件 | 400.00元 |\n| 80件 | 900元 |\n建议买40件；现金余600元。"
+    kept = without_unsupported_amounts(content, allowed)
+    assert "| 40件 | 400.00元 |" in kept and "900元" not in kept
+    assert "建议买40件；" in kept and "600元" not in kept
+    assert kept.endswith("金额以业务记录为准。）")
+    english = "Buy 40 units. That costs 450元. Cash stays safe."
+    english = without_unsupported_amounts(english, allowed)
+    assert english.startswith("Buy 40 units. Cash stays safe.")
+    assert "not found in the business records" in english
+    assert without_unsupported_amounts("可用现金1,000元。", allowed) == "可用现金1,000元。"
+    assert without_unsupported_amounts("现金余600元。", allowed) == ""

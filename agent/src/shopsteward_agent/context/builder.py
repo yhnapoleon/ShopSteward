@@ -2,7 +2,9 @@
 
 V1 intentionally keeps every admitted user source instead of claiming an untested
 semantic extractor can discard old constraints. Optional assistant turns may be
-omitted. Required overflow fails closed and names the limitation.
+omitted. Required overflow fails closed and names the limitation. A background
+follow-up requires only its own instruction; the conversation it carries is
+optional, newest first, so a long conversation cannot overflow it.
 """
 
 import json
@@ -72,7 +74,9 @@ class ContextBuilder:
                 )
             elif not admitted(source, admission):
                 omitted.append({"source_id": source.message_id, "reason": "admission"})
-            elif source.role == "user":
+            elif source.role == "user" and (
+                admission.kind != "followup" or source.run_id == admission.run_id
+            ):
                 required.append(source)
             else:
                 optional.append(source)
@@ -111,7 +115,12 @@ class ContextBuilder:
             anchors[key] = min(anchors.get(key, source.seq), source.seq)
 
         def order(source):
-            return (anchors[source.run_id or source.message_id], source.seq)
+            # A follow-up instruction shares the last admitted seq; the run's own input is last.
+            return (
+                anchors[source.run_id or source.message_id],
+                source.seq,
+                source.run_id == admission.run_id,
+            )
 
         included = list(required)
         try:

@@ -105,6 +105,7 @@ async def analyze_case_experts(
 async def attach_case_experts(db, settings, principal, case_id, revision, proposal_id):
     """Persist before send; concurrent/replayed analyze requests cannot double-spend."""
     from app.agent_bridge.models import Receipt
+    from app.agent_bridge.tools import product_names
     from app.operations_cases import repository as repo
     from app.operations_cases.models import CaseRevisionRow, RecoveryProposalRow
     from app.sourcing.run import notes
@@ -147,6 +148,11 @@ async def attach_case_experts(db, settings, principal, case_id, revision, propos
         sourced = notes(case, snapshot)
         if sourced:
             snapshot = {**snapshot, "sourcing": sourced}
+        # Experts name the product as the UI does; the stored revision snapshot is unchanged.
+        snapshot = {
+            **snapshot,
+            "product_names": await product_names(session, case.store_id, snapshot["recovery"]),
+        }
         case.expert_analysis = {
             "status": "running",
             "revision": revision,

@@ -1,8 +1,14 @@
-"""Mission admission is resolved before context selection; no last-N truncation."""
+"""Mission admission is resolved before context selection; no last-N truncation.
+
+A background follow-up is the exception: it explains business changes, so it
+carries only the latest turns, as optional context (see ContextBuilder).
+"""
 
 from sqlalchemy import select
 
 from app.agent_bridge.models import AgentRun, Message
+
+FOLLOWUP_HISTORY = 6
 
 
 def requested_effect(messages):
@@ -14,7 +20,9 @@ def requested_effect(messages):
                             for index, content in enumerate(messages)])["requested_effect"]
 
 
-def admitted_history(rows, *, run_id, conversation_id, input_through_seq, prior_run_ids):
+def admitted_history(
+    rows, *, run_id, conversation_id, input_through_seq, prior_run_ids, kind="mission"
+):
     prior = set(prior_run_ids)
     allowed = [
         row
@@ -27,6 +35,8 @@ def admitted_history(rows, *, run_id, conversation_id, input_through_seq, prior_
         key = row.run_id or row.id
         anchors[key] = min(anchors.get(key, row.seq), row.seq)
     allowed.sort(key=lambda row: (anchors[row.run_id or row.id], row.seq))
+    if kind == "followup":
+        allowed = allowed[-FOLLOWUP_HISTORY:]
     return (
         [
             {
@@ -39,7 +49,7 @@ def admitted_history(rows, *, run_id, conversation_id, input_through_seq, prior_
             for row in allowed
         ],
         {
-            "kind": "mission",
+            "kind": kind,
             "run_id": run_id,
             "conversation_id": conversation_id,
             "input_through_seq": input_through_seq,
@@ -81,4 +91,5 @@ async def load_history(session, conversation, run):
         conversation_id=conversation.id,
         input_through_seq=run.input_through_seq,
         prior_run_ids=prior,
+        kind="followup" if run.trigger == "FOLLOWUP" else "mission",
     )

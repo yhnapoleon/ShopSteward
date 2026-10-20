@@ -8,6 +8,7 @@ import asyncio
 import hashlib
 import json
 import logging
+import re
 import secrets
 from dataclasses import dataclass
 from uuid import uuid4
@@ -113,6 +114,16 @@ def tool_parameters(schema):
     return parameters
 
 
+def invalid_arguments(exc):
+    """Name each failing field so the model can correct its next call."""
+    problems = []
+    for error in exc.errors(include_url=False, include_context=False, include_input=False)[:5]:
+        field = ".".join(str(part) for part in error["loc"])
+        reason = error["msg"].removeprefix("Value error, ")
+        problems.append(f"{field}: {reason}" if field else reason)
+    return "工具参数不完整或格式错误：" + "；".join(problems)
+
+
 class Processor:
     def __init__(self, db, settings, *, model=None):
         self.db, self.settings, self.model = db, settings, model
@@ -216,6 +227,10 @@ class Processor:
                 snapshot.response = {"rule_version": state.version, "completed_tools": []}
             snapshot_id = snapshot.id
             rule_version = snapshot.response["rule_version"]
+            from app.agent_bridge.language import directive, recall
+
+            # Answers follow the owner's interface language, not the Chinese policy text.
+            language = directive(await recall(session, principal.principal_id))
             successful.extend(
                 {**entry["result"], "_tool": entry["tool"]}
                 for entry in snapshot.response["completed_tools"]
@@ -231,7 +246,8 @@ class Processor:
                 row, _ = await fenced(session, self.settings, lease)
                 snapshot = await session.get(Command, snapshot_id)
                 return (
-                    POLICY
+                    language
+                    + POLICY
                     + "\n"
                     + json.dumps(
                         {
@@ -336,7 +352,7 @@ class Processor:
                         "code": exc.code if isinstance(exc, AppError) else "INVALID_ARGUMENTS",
                         "message": exc.message
                         if isinstance(exc, AppError)
-                        else "工具参数不完整或格式错误，请补充有效参数。",
+                        else invalid_arguments(exc),
                     },
                     "references": [],
                 }
@@ -358,20 +374,21 @@ class Processor:
                 api_mode=self.settings.agent_api_mode,
                 reasoning_effort=self.settings.agent_reasoning_effort,
             )
+            specs = [
+                {
+                    "type": "function",
+                    "function": {
+                        "name": name,
+                        "description": description,
+                        "parameters": tool_parameters(schema),
+                    },
+                }
+                for name, (schema, description) in definitions.items()
+            ]
             runtime = Runtime(
                 model,
                 InMemorySaver(),
-                [
-                    {
-                        "type": "function",
-                        "function": {
-                            "name": name,
-                            "description": description,
-                            "parameters": tool_parameters(schema),
-                        },
-                    }
-                    for name, (schema, description) in definitions.items()
-                ],
+                specs,
                 call_tool,
                 load_context,
                 required_tools=["get_work_context"],
@@ -392,6 +409,16 @@ class Processor:
                     "next_step": "请补充这项信息，随后继续同一事项。",
                 }
             else:
+                if not special_result(successful):
+                    from app.agent_bridge.presentation import rewrite_amounts
+
+                    outcome["content"] = await rewrite_amounts(
+                        model,
+                        specs,
+                        outcome.get("content") or "",
+                        [{"tool": r.get("_tool"), "data": r.get("data", {})} for r in successful],
+                        model_timeout=30,
+                    )
                 update = delivery(outcome, successful)
             if any(result.get("stop_analysis") for result in successful):
                 async with self.db.session() as session, session.begin():
@@ -472,16 +499,9 @@ class Processor:
                 pass
 
 
-def delivery(outcome, results):
-    from app.agent_bridge.presentation import money_facts, unsupported_amounts
-    from app.work_items.authorization import unsupported_success
-
-    references = []
-    for result in results:
-        for ref in result.get("references", []):
-            if ref not in references:
-                references.append(ref)
-    special = next(
+def special_result(results):
+    """A deterministic tool result is published as is, not the model's narration."""
+    return next(
         (
             r.get("work_result") or r.get("data", {}).get("work_result")
             for r in reversed(results)
@@ -489,6 +509,22 @@ def delivery(outcome, results):
         ),
         None,
     )
+
+
+def delivery(outcome, results):
+    from app.agent_bridge.presentation import (
+        money_facts,
+        unsupported_amounts,
+        without_unsupported_amounts,
+    )
+    from app.work_items.authorization import unsupported_success
+
+    references = []
+    for result in results:
+        for ref in result.get("references", []):
+            if ref not in references:
+                references.append(ref)
+    special = special_result(results)
     text = outcome.get("content") or "处理已完成，请查看结果。"
     if not special and unsupported_success(text, {result.get("_tool") for result in results}):
         return {
@@ -497,18 +533,29 @@ def delivery(outcome, results):
         }
     amounts = {fact["minor"] for result in results for fact in money_facts(result.get("data", {}))}
     if not special and amounts and unsupported_amounts(text, amounts):
-        return {
-            "status": "BLOCKED",
-            "next_step": "文字金额与真实工具结果不一致，已保留原结果，请重新请求解释。",
-        }
-    forecast = [
-        r.get("data", {}) for r in results if "usable_for_requested_period" in r.get("data", {})
-    ]
-    if forecast and not all(r["usable_for_requested_period"] for r in forecast):
-        text = (
-            "现有预测不适用于请求期间，暂不能判断该期间需求或承诺库存足够。"
-            "请补充对应期间的有效依据；人工假设可以独立比较，不能建立正式委托。"
+        # Only the sentences carrying an unrecorded figure go; the rest of the answer stays.
+        text = without_unsupported_amounts(text, amounts)
+        if not text:
+            return {
+                "status": "BLOCKED",
+                "next_step": "文字金额与真实工具结果不一致，已保留原结果，请重新请求解释。",
+            }
+    # The latest read per product counts: a model may re-read with the right dates.
+    forecast = {}
+    for data in (r.get("data", {}) for r in results):
+        if "usable_for_requested_period" in data:
+            forecast[(data.get("forecast") or {}).get("sku_id")] = data
+    if not all(data["usable_for_requested_period"] for data in forecast.values()):
+        # The answer stays readable; the caveat comes first so it cannot be missed.
+        caveat = (
+            "注意：现有预测不覆盖所请求的期间，以下内容不能证明该期间需求或库存足够；"
+            "人工假设只能独立比较，不能建立正式委托。"
+            if re.search(r"[一-鿿]", text)
+            else "Note: the current forecast does not cover the requested period, so the "
+            "answer below cannot show that demand or stock for that period is covered; "
+            "a manual assumption can be compared but cannot back a standing delegation."
         )
+        text = caveat + "\n\n" + text
     result = WorkResultInput.model_validate(
         special
         or {

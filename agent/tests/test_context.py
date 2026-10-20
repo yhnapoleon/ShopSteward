@@ -54,6 +54,41 @@ def test_required_content_overflow_is_not_silently_truncated():
         )
 
 
+def test_followup_keeps_its_instruction_and_drops_old_turns_that_do_not_fit():
+    Admission, Builder, Message, Profile = contracts()
+    from shopsteward_agent.context import ContextOverflow
+
+    history = [
+        Message(message_id=f"m{i}", run_id=f"r{i}", seq=i, role="user", content="限制" * 100)
+        for i in range(1, 6)
+    ]
+    instruction = Message(
+        message_id="followup:f", run_id="f", seq=5, role="user", content="Background follow-up"
+    )
+    admission = Admission(kind="followup", run_id="f", conversation_id="c", input_through_seq=5)
+    view = Builder(Profile(model_id="test", max_input_tokens=3000)).build(
+        admission=admission,
+        messages=[*history, instruction],
+        system="rules",
+        tools=[],
+        current_context="current",
+    )
+    selected = view.manifest["selected_source_ids"]
+    # Newest turns that fit come first in, in conversation order; the rest are named.
+    assert selected[-1] == "followup:f" and "m5" in selected and "m1" not in selected
+    assert {"source_id": "m1", "reason": "budget"} in view.manifest["omitted"]
+    assert view.frame.source_message_ids == ["followup:f"]
+    # The same history is required for a user's own turn, so it still fails closed.
+    with pytest.raises(ContextOverflow):
+        Builder(Profile(model_id="test", max_input_tokens=3000)).build(
+            admission=admission.model_copy(update={"kind": "mission"}),
+            messages=[*history, instruction],
+            system="rules",
+            tools=[],
+            current_context="current",
+        )
+
+
 def test_frame_patch_preserves_unmentioned_constraint_and_validates_exact_quote():
     from shopsteward_agent.context import TaskFrame, apply_patch
 

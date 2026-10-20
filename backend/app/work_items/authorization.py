@@ -17,6 +17,16 @@ NO_PURCHASE = (
     r"(?:不要|不用|不必|别|先不)(?:下单|采购|购买)|"
     r"(?:do not|don't|do n't) (?:order|buy|purchase)"
 )
+# Ways an owner asks someone to keep watching a product, as opposed to a one-off question.
+FOLLOW_UP = (
+    r"跟进|委托|盯|看着(?!办)|关注|留意|照看|看管|管着|帮我管|替我管|"
+    r"follow|monitor|keep track|watch|keep an eye|look after|take care of"
+)
+# A standing Mission is proposed only when the quoted request is about continuing.
+ONGOING = (
+    FOLLOW_UP + r"|持续|一直|长期|以后|往后|今后|定期|自动|交给你|"
+    r"ongoing|from now on|going forward|regularly|automatically|always|long[- ]term"
+)
 
 
 def require_explicit_revision(content):
@@ -35,8 +45,7 @@ def authorize_action(name, args, messages):
         if re.search(NEGATED, current, re.I) or re.search(HYPOTHETICAL, current, re.I):
             raise AppError(422, "EXPLICIT_ACTION_REQUIRED", "本条要求没有授权实际改变跟进或方案。")
         if name == "propose_mission":
-            source = args.source_quote
-            allowed = re.search(r"跟进|委托|持续|follow|monitor|keep track", source, re.I)
+            allowed = re.search(ONGOING, args.source_quote, re.I)
         elif name == "request_check":
             allowed = re.search(
                 r"重新检查|重新计算|重新算|刷新|重算|再检查|refresh|recheck|recalculate",
@@ -54,7 +63,7 @@ def authorize_action(name, args, messages):
                 else r"恢复|继续|resume|restart"
             )
             allowed = re.search(action, current, re.I) and re.search(
-                r"跟进|备货|委托|mission|follow|replenish", current, re.I
+                FOLLOW_UP + r"|备货|补货|mission|replenish|restock", current, re.I
             )
         if not allowed:
             raise AppError(

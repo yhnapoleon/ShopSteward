@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, model_validator
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator, model_validator
 from sqlalchemy import func, select
 
 from app.api.dependencies import require_role, visible_mission
@@ -59,9 +59,20 @@ class ComparisonArgs(ForecastArgs):
     expected_state_version: int = Field(ge=1)
     supplier_id: str = Field(min_length=1, max_length=128)
     cash_floor_minor: int = Field(strict=True, ge=0, le=10**12)
-    candidate_quantities: list[int] = Field(min_length=2, max_length=20)
+    candidate_quantities: list[int] = Field(
+        min_length=1,
+        max_length=20,
+        description="要比较的采购件数；系统自动加入0件（不买）作为基线并去重排序。",
+    )
     remaining_demand: int | None = Field(default=None, strict=True, ge=0, le=1000000)
     horizon_days: int | None = Field(default=None, strict=True, ge=1, le=90)
+
+    @field_validator("candidate_quantities")
+    @classmethod
+    def with_no_purchase(cls, quantities):
+        # Every comparison and proposed policy keeps "buy nothing" as its baseline.
+        # Adding it only widens the options, so a model that omits it is not refused.
+        return sorted({0, *quantities})
 
     @model_validator(mode="after")
     def window(self):
@@ -97,11 +108,15 @@ DEFINITIONS = {
     ),
     "compare_quantities": (
         ComparisonArgs,
-        "只读数量比较，不修改业务或建立委托。必须明确实际起止日期；人工需求假设只用于比较。金额为分。",
+        "只读数量比较，不修改业务或建立委托。必须明确实际起止日期；人工需求假设只用于比较。金额为分。"
+        "候选件数总含0件（不买），未给出时系统自动加入。",
     ),
     "propose_mission": (
         ProposalArgs,
-        "用户明确要求持续跟进时提出待用户接受的委托条件；不会建立Mission或采购。source_quote逐字引用用户要求，金额为分。禁止人工需求假设。",
+        "用户明确要求持续跟进（如帮我盯着、以后都看着、keep an eye on it）时"
+        "提出待用户接受的委托条件；不会建立Mission或采购。"
+        "source_quote逐字引用用户要求，金额为分。禁止人工需求假设。"
+        "候选件数总含0件（不买），未给出时系统自动加入。",
     ),
     "evaluate_plan": (
         PlanArgs,

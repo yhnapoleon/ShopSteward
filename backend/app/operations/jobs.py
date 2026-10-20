@@ -90,11 +90,17 @@ def make_handlers(settings, *, client=None):
         cursor = await session.get(SourceCursor, store.scenario_run_id)
         now = await session.scalar(select(func.clock_timestamp()))
         was_fresh = source_fresh(cursor, now, settings.source_stale_seconds)
+        version = store.state_version
         outcome = await apply_page(
             session, job.payload["scenario_run_id"], after, page, job.id, receipts
         )
         if not was_fresh and not page.has_more:
             await wake_store_missions(session, store, key="source-recovered:" + job.id)
+        if outcome["output_state_version"] != version:
+            # Agent follow-up explains the new day now, not at its next interval.
+            from app.agent_bridge.triggers import record_store_change
+
+            await record_store_change(session, store)
         return outcome
 
     async def after_sync(session, job, outcome):
@@ -157,7 +163,10 @@ def make_handlers(settings, *, client=None):
         # Simulator command id is the persistent job id, including retries after
         # a lost response or expired lease. No backend transaction spans this call.
         run_id = job.payload["scenario_run_id"]
-        result = await client.advance(run_id, job.id, {"steps": job.payload["steps"]})
+        command = {"steps": job.payload["steps"]}
+        if job.payload.get("skip_empty_delivery"):
+            command["skip_empty_delivery"] = True
+        result = await client.advance(run_id, job.id, command)
         if result.scenario_run_id != run_id:
             raise AppError(
                 503, "INVALID_SOURCE_RESPONSE", "Advance result belongs to another source run"
