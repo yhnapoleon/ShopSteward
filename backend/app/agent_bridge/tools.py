@@ -263,6 +263,18 @@ async def execute_tool(
         from app.forecast_v6.repository import read_current
 
         value = await read_current(session, store.id, mission.sku_id, settings)
+        history = value.get("history", [])
+        model = value.get("model") or {}
+        # The product keeps complete input for inspection. The Agent only needs the
+        # seven predictions, or why there are none, and input coverage; not 300
+        # series or 374 rows, which alone would overflow its context.
+        value = {k: v for k, v in value.items() if k not in {"history", "model"}}
+        value["input_coverage"] = {
+            "days": len(history),
+            "start": history[0]["date"] if history else None,
+            "end": history[-1]["date"] if history else None,
+        }
+        value["model"] = {k: v for k, v in model.items() if k != "supported_series"}
         if value["status"] != "READY" or not value.get("forecast"):
             return {
                 "ok": False,
@@ -284,17 +296,6 @@ async def execute_tool(
                 "mode": value["mode"],
             }
         ]
-        history = value.get("history", [])
-        model = value.get("model") or {}
-        # The product keeps complete input for inspection. The Agent only needs
-        # the seven predictions and input coverage, not 300 series or 374 rows.
-        value = {k: v for k, v in value.items() if k not in {"history", "model"}}
-        value["input_coverage"] = {
-            "days": len(history),
-            "start": history[0]["date"] if history else None,
-            "end": history[-1]["date"] if history else None,
-        }
-        value["model"] = {k: v for k, v in model.items() if k != "supported_series"}
     elif name == "get_action":
         action = await session.get(ActionRow, args.action_id)
         if action is None or action.mission_id != mission.id:

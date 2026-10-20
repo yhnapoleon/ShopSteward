@@ -120,6 +120,7 @@ async def test_followup_events_survive_running_and_unchanged_tick_is_silent(db):
     from app.agent_bridge.jobs import make_handlers
     from app.agent_bridge.models import AgentRun, Conversation, Trigger
     from app.agent_bridge.triggers import dispatch_followups, record_event
+    from app.missions.models import MissionRow
     from app.scheduling.runner import Runner
 
     app, client, mission = await setup_agent(db)
@@ -129,7 +130,9 @@ async def test_followup_events_survive_running_and_unchanged_tick_is_silent(db):
         nonlocal calls
         calls += 1
         if calls == 1:
+            # A real business change, with its event, lands while run 1 is running.
             async with db.session() as session, session.begin():
+                (await session.get(MissionRow, mission["id"])).mission_version += 1
                 await record_event(
                     session,
                     mission["id"],

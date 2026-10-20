@@ -55,6 +55,7 @@ async def test_gateway_saves_explicit_preference_while_denied_plan_stays_unchang
 
 async def test_worker_admission_retains_early_constraint_and_inspector_is_owner_scoped(db):
     from app.agent_bridge.context_repository import save_call
+    from app.agent_bridge.context_sources import ASSISTANT_HISTORY
     from app.agent_bridge.jobs import make_handlers
     from app.agent_bridge.models import AgentRun, Conversation, Message
     from app.scheduling.runner import Runner
@@ -142,7 +143,8 @@ async def test_worker_admission_retains_early_constraint_and_inspector_is_owner_
         await runner.run_once()
         assert seen and seen[0]["messages"][0]["content"] == "预算最多200元"
         assert "FUTURE SECRET" not in str(seen[0]["messages"])
-        assert len(seen[0]["messages"]) == 163
+        # Every user message is kept; only the latest answers are.
+        assert len(seen[0]["messages"]) == 82 + ASSISTANT_HISTORY
         endpoint = f"/api/v1/agent-runs/{first['agent_run_id']}/context"
         response = await client.get(endpoint, headers=headers())
         assert response.status_code == 200, response.text

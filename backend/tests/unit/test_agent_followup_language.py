@@ -12,7 +12,11 @@ TOKEN = "operator-token-for-language-tests"
 
 
 def test_followup_carries_only_the_latest_turns_and_says_so():
-    from app.agent_bridge.context_sources import FOLLOWUP_HISTORY, admitted_history
+    from app.agent_bridge.context_sources import (
+        ASSISTANT_HISTORY,
+        FOLLOWUP_HISTORY,
+        admitted_history,
+    )
 
     rows = []
     for turn in range(1, 21):
@@ -37,11 +41,13 @@ def test_followup_carries_only_the_latest_turns_and_says_so():
     )
     assert [m["message_id"] for m in history] == ["q18", "a18", "q19", "a19", "q20", "a20"]
     assert len(history) == FOLLOWUP_HISTORY and admission["kind"] == "followup"
-    # A user's own run keeps every admitted turn.
+    # A user's own run keeps every question but only the latest answers.
     full, mission = admitted_history(
         rows, run_id="r21", conversation_id="c", input_through_seq=40, prior_run_ids=prior
     )
-    assert len(full) == 40 and mission["kind"] == "mission"
+    answers = [m["message_id"] for m in full if m["role"] == "assistant"]
+    assert answers == [f"a{turn}" for turn in range(21 - ASSISTANT_HISTORY, 21)]
+    assert len(full) == 20 + ASSISTANT_HISTORY and mission["kind"] == "mission"
 
 
 def test_english_followup_needs_the_same_evidence_as_chinese():
@@ -147,6 +153,119 @@ async def test_store_change_records_one_trigger_per_active_mission(monkeypatch):
         ("m1", "store-state:s:12", [{"type": "store", "id": "s", "version": "12"}]),
         ("m2", "store-state:s:12", [{"type": "store", "id": "s", "version": "12"}]),
     ]
+
+
+async def dispatch_with_pending_trigger(
+    monkeypatch, plan, action, last_fingerprint=None, received=(), alerts=()
+):
+    from app.agent_bridge import triggers
+    from app.execution.models import ActionRow
+    from app.missions.models import MissionRow
+
+    monkeypatch.setattr(triggers, "promote", AsyncMock())
+    conversation = SimpleNamespace(
+        id="c",
+        mission_id="m",
+        followup_interval=900,
+        active_run_id=None,
+        consumed_trigger=3,
+        last_fingerprint=last_fingerprint,
+        next_seq=10,
+    )
+    mission = SimpleNamespace(
+        id="m", mission_version=2, current_plan_id=plan.id, current_action_id="a", status="ACTIVE"
+    )
+    added = []
+
+    class Session:
+        async def scalar(self, statement):
+            # The clock, then the newest pending trigger.
+            return datetime.now(UTC) if "clock_timestamp" in str(statement) else 7
+
+        async def scalars(self, statement):
+            return SimpleNamespace(all=lambda: [conversation])
+
+        async def execute(self, statement):
+            return received if "inbound_items" in str(statement) else alerts
+
+        async def get(self, model, key):
+            return {MissionRow: mission, ActionRow: action}.get(model, plan)
+
+        def add(self, row):
+            added.append(row)
+
+        async def flush(self):
+            pass
+
+        def begin(self):
+            return self
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *error):
+            return False
+
+    await triggers.dispatch_followups(
+        SimpleNamespace(session=Session), SimpleNamespace(agent_enabled=True)
+    )
+    return conversation, added
+
+
+async def explained(monkeypatch, plan, action, **rows):
+    _, [run] = await dispatch_with_pending_trigger(monkeypatch, plan, action, **rows)
+    return run.trigger_fingerprint
+
+
+def pending_plan(identifier, input_hash):
+    return SimpleNamespace(id=identifier, input_hash=input_hash, status="PENDING_APPROVAL")
+
+
+async def test_replan_with_the_same_inputs_consumes_triggers_without_a_run(monkeypatch):
+    action = SimpleNamespace(status="EXECUTING")
+    last = await explained(monkeypatch, pending_plan("p1", "h"), action)
+    # The plan expired and was re-created as a new row with the same inputs.
+    conversation, added = await dispatch_with_pending_trigger(
+        monkeypatch, pending_plan("p2", "h"), action, last
+    )
+    assert added == [] and conversation.consumed_trigger == 7
+
+
+async def test_replan_with_new_inputs_queues_a_followup(monkeypatch):
+    action = SimpleNamespace(status="EXECUTING")
+    last = await explained(monkeypatch, pending_plan("p1", "h"), action)
+    conversation, [run] = await dispatch_with_pending_trigger(
+        monkeypatch, pending_plan("p2", "new"), action, last
+    )
+    assert (run.trigger, run.trigger_watermark) == ("FOLLOWUP", 7)
+    assert run.trigger_fingerprint != last and conversation.consumed_trigger == 3
+
+
+async def test_failed_action_on_the_same_plan_queues_a_followup(monkeypatch):
+    executing = SimpleNamespace(status="EXECUTING")
+    last = await explained(monkeypatch, pending_plan("p1", "h"), executing)
+    _, [run] = await dispatch_with_pending_trigger(
+        monkeypatch, pending_plan("p1", "h"), SimpleNamespace(status="FAILED"), last
+    )
+    assert run.trigger_fingerprint != last
+
+
+async def test_goods_received_on_the_same_action_queues_a_followup(monkeypatch):
+    plan, action = pending_plan("p1", "h"), SimpleNamespace(status="SUCCEEDED")
+    last = await explained(monkeypatch, plan, action, received=[("a", "k", 4)])
+    _, [run] = await dispatch_with_pending_trigger(
+        monkeypatch, plan, action, last, received=[("a", "k", 10)]
+    )
+    assert run.trigger_fingerprint != last
+
+
+async def test_new_alert_on_the_same_plan_queues_a_followup(monkeypatch):
+    plan, action = pending_plan("p1", "h"), SimpleNamespace(status="SUCCEEDED")
+    last = await explained(monkeypatch, plan, action)
+    _, [run] = await dispatch_with_pending_trigger(
+        monkeypatch, plan, action, last, alerts=[("alert", "WARNING")]
+    )
+    assert run.trigger_fingerprint != last
 
 
 def test_interface_language_header_and_prompt_directive():
