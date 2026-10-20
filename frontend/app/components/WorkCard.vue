@@ -23,7 +23,7 @@ const work = useWorkItems()
       <span class="tag">{{ tr(item.mission_id ? '备货事项' : '我的事项') }}</span
       ><span class="tag" :class="badge.tone">{{ badge.label }}</span>
     </div>
-    <h2>{{ workTitle(item) }}</h2>
+    <h2 :title="workTitle(item)">{{ workTitle(item) }}</h2>
     <p>
       <b v-if="state !== badge.label" class="work-card-state">{{ state }} · </b
       >{{ presentation.detailIsOriginal ? presentation.detail : tr(presentation.detail) }}

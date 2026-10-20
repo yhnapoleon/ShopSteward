@@ -134,7 +134,8 @@ export function productDisplayName(
 
 /**
  * Supplier names the current store has on file (its supplier documents and sourcing runs), so a
- * sourced supplier reads "百川批发" everywhere instead of its id "B". Cleared when the store changes.
+ * sourced supplier reads "Baichuan Wholesale" everywhere instead of its id "B". Cleared when the
+ * store changes.
  */
 const knownSuppliers = reactive<Record<string, string>>({})
 export function rememberSupplierNames(

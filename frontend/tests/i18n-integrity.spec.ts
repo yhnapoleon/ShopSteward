@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { locale, t } from '../app/i18n'
-import { resultFile } from '../app/utils/workResultExport'
+import { resultFile, resultTitle } from '../app/utils/workResultExport'
 import { describeTool, sourceLabel } from '../app/utils/agent'
 
 test.afterEach(() => {
@@ -27,10 +27,23 @@ test('external result assumptions, cells and source labels are not rewritten', (
     is_latest_result: true,
   }
   const output = resultFile(input, 'txt').text
+  expect(resultTitle(input.result)).toBe('库存')
+  expect(output.split('\n')[0]).toBe('库存')
   expect(output).toContain('现金底线')
   expect(output).toContain('查看来源')
   expect(output).toContain('来源 | store:x')
   expect(resultFile(input, 'csv').text).toContain('"商品"')
+})
+test("the backend's own result title follows the language", () => {
+  locale.value = 'en'
+  const input: any = {
+    result: { kind: 'answer', title: '事项处理结果', content: '现金', provenance: {} },
+    is_latest_result: true,
+  }
+  expect(resultTitle(input.result)).toBe('Work item result')
+  const output = resultFile(input, 'txt').text
+  expect(output.split('\n')[0]).toBe('Work item result')
+  expect(output).toContain('Title：Work item result')
 })
 test('Agent tool records and their sources read in English', () => {
   locale.value = 'en'

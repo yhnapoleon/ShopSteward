@@ -6,7 +6,7 @@ import { contentKey, resultSurface } from '~/surfaces/derive'
 import SurfaceRenderer from '~/components/surfaces/SurfaceRenderer.vue'
 import { downloadFile } from '~/utils/quotations'
 import { api } from '~/utils/api'
-import { resultFile, type ResultFileFormat } from '~/utils/workResultExport'
+import { resultFile, resultTitle, type ResultFileFormat } from '~/utils/workResultExport'
 import { money, when } from '~/utils/presentation'
 const props = defineProps<{
   result: Schema<'WorkResult'>
@@ -60,7 +60,7 @@ async function download(format: ResultFileFormat = 'txt') {
 <template>
   <section class="work-result">
     <div class="work-card-top">
-      <h3>{{ result.calculation ? tr(result.title) : result.title }}</h3>
+      <h3>{{ resultTitle(result) }}</h3>
       <button class="text-link" :disabled="saving" @click="download('txt')">
         {{ tr(saving ? '正在读取结果…' : '保存结果') }}
       </button>

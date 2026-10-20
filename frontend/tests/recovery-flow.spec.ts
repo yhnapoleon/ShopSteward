@@ -93,23 +93,23 @@ test('入口与预填：问题、预算、需求和首日结算都已填好，�
   await expect(flow.locator('.flow-steps .flow-actor')).toHaveText('系统在做')
   // The comparison names the suppliers and says what the button buys.
   const best = flow.locator('[data-recovery-option="B"]')
-  await expect(best).toContainText('百川批发', { timeout: 20000 })
+  await expect(best).toContainText('Baichuan Wholesale', { timeout: 20000 })
   await expect(best).toContainText('推荐')
   await expect(best).toHaveAttribute('aria-checked', 'true')
   await expect(flow.locator('[data-recovery-option="C"]')).toContainText('不配送到门店所在区域')
   await expect(flow.locator('.flow-steps .flow-actor')).toHaveText('等你')
   // 63 units against 20 in stock: 40 would still leave 3 short, so 50 is the recommendation.
-  await expect(next(page)).toHaveText('用百川批发补 50 件')
-  await expect(flow.locator('.rf-title')).toHaveText('百川批发补 50 件最合适')
+  await expect(next(page)).toHaveText('用 Baichuan Wholesale 补 50 件')
+  await expect(flow.locator('.rf-title')).toHaveText('Baichuan Wholesale 补 50 件最合适')
   await expect(flow.locator('.rf-sub')).toHaveText('7 天缺货 43 → 0 件 · 花 ¥475')
   // Another supplier and another quantity change the button, not the recommendation.
   await flow.locator('[data-recovery-option="A"]').click()
-  await expect(next(page)).toHaveText('用安和商贸补 50 件')
+  await expect(next(page)).toHaveText('用 Anhe Trading 补 50 件')
   await flow
-    .getByRole('group', { name: '安和商贸的数量' })
+    .getByRole('group', { name: 'Anhe Trading 的数量' })
     .getByRole('button', { name: '60 件' })
     .click()
-  await expect(next(page)).toHaveText('用安和商贸补 60 件')
+  await expect(next(page)).toHaveText('用 Anhe Trading 补 60 件')
   await expect(best).toContainText('推荐')
   expect(writes(m).some((p) => p.endsWith('/materialize') || p.endsWith('/decision'))).toBe(false)
 })
@@ -122,7 +122,7 @@ test('采用与确认合并；之后发单、登记回复、登记到货，最�
   // One click: the plan is written and the approval dialog opens with the supplier's name.
   const dialog = page.getByRole('dialog')
   await expect(dialog).toContainText('核对这笔采购')
-  await expect(dialog).toContainText('百川批发')
+  await expect(dialog).toContainText('Baichuan Wholesale')
   expect(writes(m).at(-1)).toBe('operations-cases/case-one/materialize')
   expect(writes(m).some((p) => p.endsWith('/decision'))).toBe(false)
   await dialog.getByRole('button', { name: '确认采购 40 件 · ¥380' }).click()
@@ -133,19 +133,23 @@ test('采用与确认合并；之后发单、登记回复、登记到货，最�
   await expect(page.locator('.task-result-column .primary:visible')).toHaveCount(1)
   await expect(flow.locator('.flow-step[aria-current="step"]')).toContainText('发单并登记回复')
   await expect(flow.locator('.flow-steps .flow-actor')).toHaveText('等你')
-  await expect(flow.locator('.rf-title')).toHaveText('把订单发给百川批发，收到回复后贴回来')
+  await expect(flow.locator('.rf-title')).toHaveText(
+    '把订单发给 Baichuan Wholesale，收到回复后贴回来',
+  )
   await expect(flow.locator('[data-order-message]')).toContainText('PO-1A2B3C4D')
   await expect(page.locator('[data-assisted-order]')).toHaveCount(0)
   await expect(page.locator('.space-workspace .tag[role="status"]').first()).toHaveText(
     '待供应商确认',
   )
-  await expect(page.locator('.space-orders')).toContainText('百川批发')
+  await expect(page.locator('.space-orders')).toContainText('Baichuan Wholesale')
 
   await flow.locator('[data-supplier-reply]').fill('收到，40件没问题，周四送到')
   await next(page).click()
   await expect(flow).toHaveAttribute('data-stage', 'receive')
   await expect(flow.locator('.flow-step[aria-current="step"]')).toContainText('登记到货')
-  await expect(flow.locator('.rf-title')).toHaveText('百川批发已确认 40 件，货到后请登记')
+  await expect(flow.locator('.rf-title')).toHaveText(
+    'Baichuan Wholesale 已确认 40 件，货到后请登记',
+  )
   await expect(page.locator('.space-workspace .tag[role="status"]').first()).toHaveText(
     '货到后请登记',
   )
@@ -156,7 +160,7 @@ test('采用与确认合并；之后发单、登记回复、登记到货，最�
   await expect(flow).toHaveAttribute('data-stage', 'summary')
   const summary = flow.locator('[data-recovery-summary]')
   await expect(summary).toContainText('应急补货完成')
-  await expect(summary).toContainText('百川批发 40 件已到货')
+  await expect(summary).toContainText('Baichuan Wholesale 40 件已到货')
   await expect(summary).toContainText('预计缺货 40 → 0 件')
   await expect(summary).toContainText('花了 ¥380')
   await expect(page.locator('[data-recovery-entry]')).toBeVisible()
@@ -174,7 +178,7 @@ test('只有操作权限：采用后不弹确认，等有审批权限的人确�
   await next(page).click()
   await expect(flow).toHaveAttribute('data-stage', 'confirm')
   await expect(page.getByRole('dialog')).toHaveCount(0)
-  await expect(flow.locator('.rf-title')).toHaveText('核对后确认：用百川批发补 40 件')
+  await expect(flow.locator('.rf-title')).toHaveText('核对后确认：用 Baichuan Wholesale 补 40 件')
   // No disabled button: the card waits for someone who may approve, and says so in its place.
   await expect(flow.locator('[data-recovery-waiting]')).toHaveText('等有审批权限的人确认')
   await expect(next(page)).toHaveCount(0)
@@ -195,21 +199,23 @@ test('只给一部分：先按对方数量成交，缺的在同一事项里找�
   await toOrder(page)
   await flow.locator('[data-supplier-reply]').fill('可以，但只有10件')
   await next(page).click()
-  await expect(flow.locator('.rf-title')).toHaveText('百川批发只能给 10 件，订单是 40 件')
+  await expect(flow.locator('.rf-title')).toHaveText(
+    'Baichuan Wholesale 只能给 10 件，订单是 40 件',
+  )
   await expect(flow).toHaveAttribute('data-stage', 'order')
   await expect(next(page)).toHaveText('按对方数量成交（10 件）')
   await expect(flow.locator('[data-recovery-switch]')).toHaveText('撤回整单，找别家补 40 件')
   await next(page).click()
   // Taken at 10: the rest is found elsewhere in this Case while those 10 are on their way.
   await expect(flow).toHaveAttribute('data-stage', 'compare')
-  await expect(flow.locator('.rf-title')).toHaveText('百川批发只确认了 10 件')
+  await expect(flow.locator('.rf-title')).toHaveText('Baichuan Wholesale 只确认了 10 件')
   await expect(flow.locator('.rf-sub')).toHaveText('已按 10 件成交 · 还缺 30 件')
   await expect(next(page)).toHaveText('缺的找别家补上')
   // The 10 taken are recorded in the card, not on the page's arrival card: there recording them
   // would end the restock before the rest is found.
   await expect(page.locator('[data-arrival-card]')).toHaveCount(0)
   await expect(flow.locator('.rf-purchase[data-purchase="action-one"]')).toContainText(
-    '百川批发 10 件',
+    'Baichuan Wholesale 10 件',
   )
   await expect(page.locator('.task-result-column .primary:visible')).toHaveCount(1)
   await expect(page.locator('.space-order-list')).toContainText('10 件 · ¥95')
@@ -233,7 +239,7 @@ test('只给一部分时也可以撤回整单，在同一事项里排除这家�
   await expect(flow).toHaveAttribute('data-stage', 'compare')
   await expect(flow.locator('[data-recovery-option="A"]')).toBeVisible()
   await expect(flow.locator('[data-recovery-option="B"]')).toHaveCount(0)
-  await expect(next(page)).toHaveText('用安和商贸补 40 件')
+  await expect(next(page)).toHaveText('用 Anhe Trading 补 40 件')
   expect(writes(m)).toContain('actions/action-one/withdrawal')
   const revision = m.writes.filter((w) => w.path.endsWith('/revise')).at(-1)!
   expect(revision.body.supplier_ids).not.toContain('B')
@@ -247,9 +253,9 @@ test('拒单：预留资金释放，一键不找这家重新比价', async ({ pa
   await flow.locator('[data-supplier-reply]').fill('抱歉，这批没货了')
   await next(page).click()
   await expect(flow).toHaveAttribute('data-stage', 'compare')
-  await expect(flow.locator('.rf-title')).toHaveText('百川批发拒单了')
+  await expect(flow.locator('.rf-title')).toHaveText('Baichuan Wholesale 拒单了')
   await expect(flow.locator('.rf-sub')).toHaveText('预留的 ¥380 已退回 · 还缺 40 件')
-  await expect(next(page)).toHaveText('不找百川批发，重新比价')
+  await expect(next(page)).toHaveText('不找 Baichuan Wholesale，重新比价')
   await next(page).click()
   await expect(flow.locator('[data-recovery-option="A"]')).toBeVisible()
   await expect(flow.locator('[data-recovery-option="B"]')).toHaveCount(0)
@@ -382,7 +388,7 @@ test('订单卡：被拒的采购在采购行给出找别家补，说明里排�
   await link.click()
   const flow = flowCard(page)
   await expect(flow).toHaveAttribute('data-stage', 'brief')
-  await expect(flow.locator('.rf-title')).toContainText('百川批发拒单，找别家补上')
+  await expect(flow.locator('.rf-title')).toContainText('Baichuan Wholesale 拒单，找别家补上')
   await next(page).click()
   // The declined supplier is left out once the reviewers have read it again.
   await expect(flow.locator('[data-recovery-option="A"]')).toBeVisible({ timeout: 20000 })
@@ -401,7 +407,7 @@ test('比价过期：主按钮变成重新比价，按当前时钟重排需求',
   await expect(flowCard(page).locator('.rf-title')).toHaveText('比价结果需要更新')
   await expect(flowCard(page).locator('.rf-sub')).toHaveText('比价结果已超过有效期。')
   await next(page).click()
-  await expect(next(page)).toHaveText('用百川批发补 40 件')
+  await expect(next(page)).toHaveText('用 Baichuan Wholesale 补 40 件')
   expect(writes(m).slice(-2)).toEqual([
     'operations-cases/case-one/revise',
     'operations-cases/case-one/analyze',
@@ -468,7 +474,7 @@ test('报价全部过期：主按钮变成重新找货，重新读资料后可�
   m.analyze()
   await expect(next(page)).toHaveText('重新找货')
   await next(page).click()
-  await expect(next(page)).toHaveText('用百川批发补 40 件', { timeout: 30000 })
+  await expect(next(page)).toHaveText('用 Baichuan Wholesale 补 40 件', { timeout: 30000 })
   expect(writes(m).some((path) => path.endsWith('/source'))).toBe(true)
 })
 
@@ -514,7 +520,7 @@ test('供应商名称以字母或数字结尾时，与中文之间留一个空�
   await expect(next(page)).toHaveText('用 Metro 补 40 件')
   await expect(flowCard(page).locator('.rf-title')).toHaveText('Metro 补 40 件最合适')
   await expect(flowCard(page).locator('.rf-sub')).toHaveText('7 天缺货 40 → 0 件 · 花 ¥380')
-  await expect(flowCard(page).locator('[data-recovery-option="A"]')).toContainText('安和商贸')
+  await expect(flowCard(page).locator('[data-recovery-option="A"]')).toContainText('Anhe Trading')
 })
 
 test('英文界面：入口、进度与按钮都有英文', async ({ page }) => {
@@ -532,7 +538,7 @@ test('英文界面：入口、进度与按钮都有英文', async ({ page }) => 
   await expect(next(page)).toHaveText('Confirm and find suppliers')
   await next(page).click()
   await expect(flow.locator('[data-recovery-option="B"]')).toBeVisible({ timeout: 20000 })
-  await expect(next(page)).toHaveText('Restock 40 units from 百川批发')
+  await expect(next(page)).toHaveText('Restock 40 units from Baichuan Wholesale')
   await expect(flow).not.toContainText('等你')
 })
 
@@ -562,12 +568,12 @@ test('键盘：比较是一个单选组，方向键移动选择，回车打开�
   await page.keyboard.press('ArrowDown')
   await expect(flow.locator('[data-recovery-option="A"]')).toBeFocused()
   await expect(flow.locator('[data-recovery-option="A"]')).toHaveAttribute('aria-checked', 'true')
-  await expect(next(page)).toHaveText('用安和商贸补 40 件')
+  await expect(next(page)).toHaveText('用 Anhe Trading 补 40 件')
   await page.keyboard.press('ArrowDown')
   await expect(flow.locator('[data-recovery-option="wait"]')).toBeFocused()
   await page.keyboard.press('ArrowDown')
   await expect(recommended).toBeFocused()
-  await expect(next(page)).toHaveText('用百川批发补 40 件')
+  await expect(next(page)).toHaveText('用 Baichuan Wholesale 补 40 件')
   await next(page).focus()
   await page.keyboard.press('Enter')
   await expect(page.getByRole('dialog')).toContainText('核对这笔采购')
@@ -658,7 +664,7 @@ test('分析失败：卡片说明原因，一键重新比价，不会停在“�
   ])
 })
 
-/** From the partial reply to "缺的找别家补上": 百川批发 gives 10 of 40, taken at 10. */
+/** From the partial reply to "缺的找别家补上": Baichuan Wholesale gives 10 of 40, taken at 10. */
 async function toShort(page: Page) {
   const flow = flowCard(page)
   await toOrder(page)
@@ -707,7 +713,7 @@ test('部分成交后采用第二家：两笔都到齐才结算，到货只在�
   expect(m.item.outcome.action_ids).toEqual(['action-one', 'action-two'])
   // The result adds the units up per supplier; the orders' own total (40 + the second) is not it.
   await expect(flow.locator('[data-recovery-summary]')).toContainText(
-    `补到 ${10 + second.quantity} 件（百川批发 10 + 安和商贸 ${second.quantity}）`,
+    `补到 ${10 + second.quantity} 件（Baichuan Wholesale 10 + Anhe Trading ${second.quantity}）`,
   )
   const arrivals = m.writes.filter((w) => w.path.endsWith('/arrival'))
   expect(arrivals.map((w) => w.path)).toEqual([
@@ -746,10 +752,10 @@ test('两次拒单：两家都不再出现在比较里', async ({ page }) => {
   await toOrder(page)
   await flow.locator('[data-supplier-reply]').fill('抱歉，这批没货了')
   await next(page).click()
-  await expect(next(page)).toHaveText('不找百川批发，重新比价')
+  await expect(next(page)).toHaveText('不找 Baichuan Wholesale，重新比价')
   await next(page).click()
   await flow.locator('[data-recovery-option="A"]').click()
-  await expect(next(page)).toHaveText(/^用安和商贸补 \d+ 件$/)
+  await expect(next(page)).toHaveText(/^用 Anhe Trading 补 \d+ 件$/)
   await next(page).click()
   await page
     .getByRole('dialog')
@@ -758,7 +764,7 @@ test('两次拒单：两家都不再出现在比较里', async ({ page }) => {
   await expect(flow).toHaveAttribute('data-stage', 'order')
   await flow.locator('[data-supplier-reply]').fill('抱歉，没货')
   await next(page).click()
-  await expect(next(page)).toHaveText('不找安和商贸，重新比价')
+  await expect(next(page)).toHaveText('不找 Anhe Trading，重新比价')
   await next(page).click()
   await expect(flow.locator('[data-recovery-option="A"]')).toHaveCount(0)
   await expect(flow.locator('[data-recovery-option="B"]')).toHaveCount(0)
@@ -810,7 +816,7 @@ test('换一家后再采用：先按当前情况重新比价，再采用新选�
   await flow.locator('[data-recovery-option="A"]').click()
   await next(page).click()
   const dialog = page.getByRole('dialog')
-  await expect(dialog).toContainText('安和商贸')
+  await expect(dialog).toContainText('Anhe Trading')
   // Adopting raised the mission's version, so the comparison is made again before adopting.
   const sent = writes(m)
   const last = sent.lastIndexOf('operations-cases/case-one/materialize')

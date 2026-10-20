@@ -5,8 +5,9 @@ import { dayOf, named, unbroken, type Purchase } from '~/utils/recovery'
 import { useFlow } from '~/composables/useRecoveryFlow'
 
 // Goods already bought in this restock that have not all arrived (a supplier that confirmed only
-// part, while the rest is found elsewhere): one line each, "百川批发 10 件 · 9/8 到", with a link to
-// record the arrival. Recording never ends the restock while the rest is still to be decided.
+// part, while the rest is found elsewhere): one line each, "Baichuan Wholesale 10 件 · 9/8 到", with
+// a link to record the arrival. Recording never ends the restock while the rest is still to be
+// decided.
 /** `others`: leave out the Case's current purchase, which the stage itself is showing. */
 const props = defineProps<{ others?: boolean }>()
 const flow = useFlow()

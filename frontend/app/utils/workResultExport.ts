@@ -10,6 +10,15 @@ const kinds: Record<string, string> = {
   brief: '简报',
 }
 const missing = '未记录'
+/** Result titles the backend writes itself (work_items/processor.py) rather than the owner. */
+const systemTitles = ['事项处理结果']
+
+/**
+ * A result's title for display: a calculation's and the backend's own titles follow the language;
+ * any other title is shown exactly as written.
+ */
+export const resultTitle = (r: Schema<'WorkResult'>) =>
+  r.calculation || systemTitles.includes(r.title) ? t(r.title) : r.title
 
 function rawMetadata(value: Schema<'WorkResultExport'>): [string, string][] {
   const r = value.result,
@@ -68,7 +77,8 @@ function rawMetadata(value: Schema<'WorkResultExport'>): [string, string][] {
 export function resultMetadata(value: Schema<'WorkResultExport'>): [string, string][] {
   const r = value.result
   return rawMetadata(value).map(([key, content]) => {
-    if (['标题', '正文', '输入假设'].includes(key) && !r.calculation) return [t(key), content]
+    if (key === '标题') return [t(key), resultTitle(r)]
+    if (['正文', '输入假设'].includes(key) && !r.calculation) return [t(key), content]
     if (key === '局限' && !r.calculation)
       return [
         t(key),
@@ -90,7 +100,7 @@ export function resultMetadata(value: Schema<'WorkResultExport'>): [string, stri
       ]
     const systemFields = ['结果类型', '经营来源', '适用性', '表格单位', '需求提供者']
     const localize =
-      (!!r.calculation && ['标题', '正文', '输入假设', '局限'].includes(key)) ||
+      (!!r.calculation && ['正文', '输入假设', '局限'].includes(key)) ||
       systemFields.includes(key) ||
       content === missing ||
       content === '用户独立假设'
@@ -142,7 +152,7 @@ export function resultFile(value: Schema<'WorkResultExport'>, format: ResultFile
     name,
     mime: 'text/plain;charset=utf-8',
     text: [
-      r.calculation ? t(r.title) : r.title,
+      resultTitle(r),
       '',
       ...metadata.map(([key, value]) => `${key}：${value}`),
       '',
