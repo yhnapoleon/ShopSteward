@@ -241,6 +241,8 @@ Windows 统一启动器会增加 Agent worker；手动启动则另开 `python -m
 
 Knowledge 的 API、worker、PostgreSQL、OpenSearch 和存储有单独部署流程，使用 [Knowledge 完整部署手册](docs/runbooks/knowledge-server-handoff.md)及 [Compose 配置](infra/compose.knowledge.yaml)。后端设置 `KNOWLEDGE_SERVICE_ENABLED=true`、`KNOWLEDGE_SERVICE_URL`、`KNOWLEDGE_SERVICE_KEY`，服务端 key 与后端一致。后端还需在独立终端运行 `python -m app.knowledge.publisher` 交付 outbox；它不属于业务 worker，也不会被 Windows 总启动器自动启动。不要只打开开关而省略服务、索引与发布流程。
 
+使用本机或局域网 Ollama 提供 embedding 时，先看 [模型部署与联调](docs/runbooks/ollama-embedding.md)和 [embedding 接口](docs/ollama-embedding-api.md)。模型来源声明在 [infra/Modelfile](infra/Modelfile)，基础设施入口见 [infra 说明](infra/README.md)。
+
 新事项处理者复用 `/internal/v1/work-items` 的领取/回传语义。API和worker均配置 `WORK_PROCESSOR_ENABLED=true`，并独立启动 `python -m app.worker --profile work`；该开关不会启动进程，模型未配置时保持false。详情见[事项与报价接入](docs/work-intake-and-quotations.md)。
 
 ## 更新与验证
@@ -313,6 +315,7 @@ corepack pnpm --filter @shopsteward/frontend exec playwright test tests/forecast
 | 前端对接（改接口前先看） | [前端对接说明](frontend/docs/frontend-integration.md)：按板块写明前端调用哪些接口、依赖哪些字段和状态码，以及后端改动时要同步改哪里 |
 | 任务、事项与成果 | [事项协议](backend/app/work_items/README.md)、[任务工作区交付](docs/reports/agent-workspace-delivery.md) |
 | Knowledge | [完整部署与交接手册](docs/runbooks/knowledge-server-handoff.md) |
+| Ollama embedding | [部署与版本约定](docs/runbooks/ollama-embedding.md)、[调用接口](docs/ollama-embedding-api.md)、[Modelfile](infra/Modelfile) |
 | 开发与视觉规范 | [Backend 开发规范](docs/backend-development.md)、[前端视觉规范](frontend/style.md)、[macOS 环境](docs/local-macos-development.md) |
 | 历史决策与实验 | [项目上下文](PROJECT_CONTEXT.md)、[交接记录](HANDOVER.md)、[v6 接入报告](docs/reports/forecast-v6-product-integration.md) |
 
