@@ -1,6 +1,7 @@
 """Durable intake, optimistic handoff and links; no intent classifier or model calls."""
 
 import hashlib
+import re
 import secrets
 from datetime import timedelta
 from uuid import uuid4
@@ -16,6 +17,18 @@ from app.missions.models import MissionRow, PlanRow
 from app.missions.schemas import MissionCreate
 from app.work_items.models import WorkItem, WorkMessageRow
 from app.work_items.schemas import WorkDetail, WorkMessage, WorkView
+
+
+def short_title(content, limit=80):
+    """The request as a list title, shortened at a word or clause break where one is near."""
+    text = content.strip()
+    if len(text) <= limit:
+        return text
+    # ASCII punctuation is no break: it sits inside numbers ("1,000", "1.5L"), and in prose
+    # a space follows it anyway.
+    breaks = [m.start() for m in re.finditer(r"[\s，。；：！？、]", text[:limit])]
+    cut = next((i for i in reversed(breaks) if i >= limit // 2), limit - 1)
+    return re.sub(r"[\s,.;:!?，。；：！？、]+$", "", text[:cut]) + "…"
 
 
 def unavailable():
@@ -180,7 +193,7 @@ async def create(session, principal, body, key, settings):
         id=str(uuid4()),
         principal_id=principal.principal_id,
         store_id=body.store_id,
-        title=body.content.strip()[:80],
+        title=short_title(body.content),
         next_step="等待助手处理；你可以继续补充要求。",
     )
     session.add(row)

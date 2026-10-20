@@ -43,6 +43,14 @@ source_quote必须逐字引用当前用户明确授权；持续跟进提案可�
 已完成工具的系统回执是实际发生的事实；重启后先利用回执，不能重复修改。需要条件时只问最少的一项。
 """
 
+# Answers written by the processor itself; the frontend shows answer text as stored.
+BLOCKED_ANSWER = {
+    "zh": "所需工具尚未成功，无法确认本轮处理完成；已有结果保留。",
+    "en": "The required tools did not succeed, so this run cannot be confirmed as complete; "
+    "existing results are kept.",
+}
+DONE_ANSWER = {"zh": "处理已完成，请查看结果。", "en": "Processing is complete. See the result."}
+
 
 @dataclass
 class Lease:
@@ -230,7 +238,7 @@ class Processor:
             from app.agent_bridge.language import directive, recall
 
             # Answers follow the owner's interface language, not the Chinese policy text.
-            language = directive(await recall(session, principal.principal_id))
+            language = await recall(session, principal.principal_id)
             successful.extend(
                 {**entry["result"], "_tool": entry["tool"]}
                 for entry in snapshot.response["completed_tools"]
@@ -246,7 +254,7 @@ class Processor:
                 row, _ = await fenced(session, self.settings, lease)
                 snapshot = await session.get(Command, snapshot_id)
                 return (
-                    language
+                    directive(language)
                     + POLICY
                     + "\n"
                     + json.dumps(
@@ -396,19 +404,8 @@ class Processor:
                 run_timeout=90,
             )
             outcome = await runtime.execute(f"work:{lease.item_id}:{lease.version}", messages)
-            if outcome.get("evidence_unavailable") or failed:
-                update = {
-                    "status": "BLOCKED",
-                    "next_step": "本次所需工具未完成，既有结果已保留。请补充条件或稍后重试。",
-                    "answer": "所需工具尚未成功，无法确认本轮处理完成；已有结果保留。",
-                }
-            elif outcome["status"] == "WAITING_INPUT":
-                update = {
-                    "status": "WAITING_INPUT",
-                    "question": outcome["question"],
-                    "next_step": "请补充这项信息，随后继续同一事项。",
-                }
-            else:
+            update = unfinished(outcome, failed, language)
+            if update is None:
                 if not special_result(successful):
                     from app.agent_bridge.presentation import rewrite_amounts
 
@@ -419,7 +416,7 @@ class Processor:
                         [{"tool": r.get("_tool"), "data": r.get("data", {})} for r in successful],
                         model_timeout=30,
                     )
-                update = delivery(outcome, successful)
+                update = delivery(outcome, successful, language)
             if any(result.get("stop_analysis") for result in successful):
                 async with self.db.session() as session, session.begin():
                     row, principal = await fenced(session, self.settings, lease)
@@ -499,6 +496,24 @@ class Processor:
                 pass
 
 
+def unfinished(outcome, failed, language):
+    """The update for a run that asked the owner or lacks a tool it needed, else None."""
+    # A question is the owner's next step even when a tool failed for want of that answer.
+    if outcome["status"] == "WAITING_INPUT" and not outcome.get("evidence_unavailable"):
+        return {
+            "status": "WAITING_INPUT",
+            "question": outcome["question"],
+            "next_step": "请补充这项信息，随后继续同一事项。",
+        }
+    if outcome.get("evidence_unavailable") or failed:
+        return {
+            "status": "BLOCKED",
+            "next_step": "本次所需工具未完成，既有结果已保留。请补充条件或稍后重试。",
+            "answer": BLOCKED_ANSWER.get(language, BLOCKED_ANSWER["zh"]),
+        }
+    return None
+
+
 def special_result(results):
     """A deterministic tool result is published as is, not the model's narration."""
     return next(
@@ -511,7 +526,7 @@ def special_result(results):
     )
 
 
-def delivery(outcome, results):
+def delivery(outcome, results, language=None):
     from app.agent_bridge.presentation import (
         money_facts,
         unsupported_amounts,
@@ -525,7 +540,7 @@ def delivery(outcome, results):
             if ref not in references:
                 references.append(ref)
     special = special_result(results)
-    text = outcome.get("content") or "处理已完成，请查看结果。"
+    text = outcome.get("content") or DONE_ANSWER.get(language, DONE_ANSWER["zh"])
     if not special and unsupported_success(text, {result.get("_tool") for result in results}):
         return {
             "status": "BLOCKED",
