@@ -142,7 +142,7 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
                               : 'clock'
                     " /></span
                 ><span class="tool-step-name"
-                  >{{ describeTool(tool.tool).title
+                  >{{ tr(describeTool(tool.tool).title)
                   }}<small>{{ tr(describeTool(tool.tool).kind) }}</small></span
                 ><span class="tool-state">{{
                   tr(

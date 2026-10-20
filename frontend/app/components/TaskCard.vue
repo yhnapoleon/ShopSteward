@@ -8,6 +8,8 @@ const { status } = useTaskPresentation()
 const agent = useAgentConversation()
 const reduce = useReducedMotion()
 defineEmits<{ open: [] }>()
+// `quiet`: the emergency restock holds the page's one primary action (see WorkCard).
+defineProps<{ quiet?: boolean }>()
 </script>
 <template>
   <motion.article
@@ -62,7 +64,7 @@ defineEmits<{ open: [] }>()
           )
         }}</span>
       </div>
-      <button class="primary" @click="$emit('open')">
+      <button :class="quiet ? 'secondary' : 'primary'" @click="$emit('open')">
         {{
           tr(
             status.group === '已完成' || status.group === '已结束'

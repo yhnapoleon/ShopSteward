@@ -253,7 +253,8 @@
 
 | 键 | 存储 | 内容 |
 |---|---|---|
-| `ss.store` | localStorage | 上次选中的店铺 |
+| `ss.store` | localStorage | 上次选中的店铺；打开页面时回到这家，除非之后又建了新的经营环境 |
+| `ss.store.environment` | localStorage | 选店时的最新经营环境（`active_store`），用来判断之后是否建了新环境 |
 | `ss.scenarios` | localStorage | 本浏览器创建的场景：店铺 id → 场景 run id（推进只能用这些） |
 | `ss.demo.v1`、`ss.store-created.v1` | localStorage | 演示模式开关；示例店铺的创建时点 |
 | `shopsteward.locale.v1` | localStorage | 语言 |

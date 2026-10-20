@@ -18,6 +18,8 @@ export default defineEventHandler(async (event) => {
     return agentProgressStream(event, config.url + path, config.token)
   if (isKnowledgeTransfer(method, path)) return knowledgeTransfer(event, path)
   const headers: Record<string, string> = { Authorization: 'Bearer ' + config.token }
+  const language = getHeader(event, 'x-ui-language')
+  if (language === 'en' || language === 'zh') headers['X-UI-Language'] = language
   let body: string | undefined
   if (method !== 'GET') {
     sameOrigin(event)

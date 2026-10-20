@@ -384,10 +384,18 @@
   pointer-events: none;
 }
 
-/* Suppliers, one row each; the plate slides to the chosen row (measured, transform only). */
+/* Suppliers, one row each; the plate slides to the chosen row (measured, transform only). The
+   rows share the list's columns (subgrid): each figure column is as wide as its longest entry in
+   the page's language, so the figures line up from row to row and a long English label never
+   runs into the amount beside it. The card's own width, not the screen's, decides when the
+   figures move under the name: the work page's left column is narrow on laptop screens too. */
+.rf-compare {
+  container: rf-compare / inline-size;
+}
 .rf-options {
   display: grid;
-  gap: 2px;
+  grid-template-columns: auto minmax(7em, 1fr) repeat(4, auto);
+  gap: 2px 14px;
   padding: 5px;
   border-radius: 21px;
 }
@@ -407,8 +415,9 @@
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 14px minmax(0, 1fr) auto;
-  gap: 4px 14px;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  row-gap: 4px;
   align-items: center;
   width: 100%;
   min-height: 58px;
@@ -444,21 +453,37 @@
   padding: 2px 7px;
   font-size: 11px;
 }
+/* The four figures are cells of the row itself; this wrapper only passes on their type. */
 .rf-option-figures {
-  display: grid;
-  grid-template-columns: 4.4em 4.4em 4.4em 5.8em;
-  gap: 14px;
+  display: contents;
   font-size: 15px;
   color: #28343e;
   text-align: right;
   font-variant-numeric: tabular-nums;
-  white-space: nowrap;
 }
 .rf-option-figures .is-zero {
   color: #8796a5;
 }
 .rf-option-figures .is-short {
   color: #8a5a17;
+}
+/* Too narrow for one line per supplier: the figures go under the name and wrap as whole labels. */
+@container rf-compare (max-width: 640px) {
+  .rf-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .rf-option {
+    grid-template-columns: 14px minmax(0, 1fr);
+    column-gap: 14px;
+  }
+  .rf-option-figures {
+    grid-column: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    text-align: left;
+    white-space: nowrap;
+  }
 }
 
 /* A segmented slot (demand basis, quantities): the same plate, sideways, by index. */
@@ -1183,16 +1208,6 @@
   }
   .rf-figures-compact dd {
     font-size: 20px;
-  }
-  .rf-option {
-    grid-template-columns: 14px minmax(0, 1fr);
-  }
-  .rf-option-figures {
-    grid-column: 2;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px 16px;
-    text-align: left;
   }
 }
 @media (max-width: 580px) {

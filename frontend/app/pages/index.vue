@@ -311,6 +311,22 @@ async function prepare() {
     open('approval')
   })
 }
+// Who sends the approved order, said in the dialog where the owner approves it. In assisted mode
+// (the deployment's channel), and always for a supplier known only from its documents
+// (execution/repository.py), approving writes an order message the owner sends from their own
+// WeChat or WhatsApp; nothing goes out by itself.
+const directory = useSupplierDirectory()
+/** The supplier the owner sends this order to; empty when the system sends it. */
+const ownerSendsTo = computed(() => {
+  const supplier = approval.value?.quantity
+    ? approval.value.plan.proposed_purchase?.supplier_id
+    : undefined
+  if (!supplier) return ''
+  return s.session?.purchase_channel === 'assisted' ||
+    directory.readable.value.some((x) => x.supplier_id === supplier)
+    ? supplier
+    : ''
+})
 async function submit() {
   if (!approval.value) return
   try {
@@ -485,6 +501,16 @@ const watchWorks = computed(() => activeWorks.value.filter((i) => !needsOwner(i)
 const taskCardShown = computed(
   () => !!mission.value && !work.s.items.some((i) => i.mission_id === mission.value?.id),
 )
+// One primary action on the page. Once the usual supplier has declined, finding another one is
+// the owner's next step: the restock card leads, and the mission's regular plan, which would
+// order from the same supplier again, follows it with a secondary button.
+const restockLeads = computed(
+  () => recoveryPrompt.shown.value && recoveryPrompt.trigger.value?.reason === 'declined',
+)
+const behindRestock = (item: Schema<'WorkView'>) =>
+  restockLeads.value && !!item.mission_id && item.mission_id === mission.value?.id
+const leadingWorks = computed(() => decideWorks.value.filter((i) => !behindRestock(i)))
+const trailingWorks = computed(() => decideWorks.value.filter(behindRestock))
 // The badge counts only the cards in "需要你拍板"; a new store's first sync is not a decision.
 const attention = computed(
   () => !!issue.value && !(issue.value === 'stale' && firstSync(s.dashboard?.freshness)),
@@ -919,13 +945,20 @@ function briefing() {
                 ><span class="right">{{ tr('每笔采购单独确认') }}</span>
               </div>
               <WorkCard
-                v-for="item in decideWorks"
+                v-for="item in leadingWorks"
                 :key="item.id"
                 :item="item"
                 @open="openWork(item.id)"
               />
               <RecoveryPrompt @open="openTask" />
-              <TaskCard v-if="taskCardShown" @open="openTask()" />
+              <WorkCard
+                v-for="item in trailingWorks"
+                :key="item.id"
+                :item="item"
+                quiet
+                @open="openWork(item.id)"
+              />
+              <TaskCard v-if="taskCardShown" :quiet="restockLeads" @open="openTask()" />
               <article
                 v-else-if="issue === 'stale' && firstSync(s.dashboard?.freshness)"
                 class="attention-card glass"
@@ -1402,12 +1435,17 @@ function briefing() {
         }}
       </p>
       <div class="detail-rows">
+        <!-- The supplier the order goes to: an emergency plan's snapshot offer is still the
+             usual supplier's, its purchase names the one chosen in the restock. -->
         <div class="detail-row">
           <span>{{ tr('商品 / 供应商') }}</span
           ><b class="detail-pair"
             ><span>{{ product?.name }}</span
             ><span>{{
-              supplierDisplayName(approval.plan.input_snapshot.offer.supplier_id)
+              supplierDisplayName(
+                approval.plan.proposed_purchase?.supplier_id ||
+                  approval.plan.input_snapshot.offer.supplier_id,
+              )
             }}</span></b
           >
         </div>
@@ -1459,6 +1497,13 @@ function briefing() {
           }}</b>
         </div>
       </div>
+      <p v-if="ownerSendsTo" class="notice" data-owner-sends>
+        {{
+          tr('确认后系统写好订单消息，由你用自己的微信或 WhatsApp 发给{0}；不会自动发送。', [
+            supplierDisplayName(ownerSendsTo),
+          ])
+        }}
+      </p>
       <p class="notice">
         {{
           tr(

@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { locale, t } from '../app/i18n'
 import { resultFile } from '../app/utils/workResultExport'
+import { describeTool, sourceLabel } from '../app/utils/agent'
 
 test.afterEach(() => {
   locale.value = 'zh-CN'
@@ -30,4 +31,38 @@ test('external result assumptions, cells and source labels are not rewritten', (
   expect(output).toContain('查看来源')
   expect(output).toContain('来源 | store:x')
   expect(resultFile(input, 'csv').text).toContain('"商品"')
+})
+test('Agent tool records and their sources read in English', () => {
+  locale.value = 'en'
+  // The Mission Agent's tools (backend agent_bridge/tools.py and document_evidence.py), plus one
+  // the page does not know, which falls back to a generic step.
+  const tools = [
+    'get_dashboard',
+    'get_mission',
+    'get_plan',
+    'evaluate_plan',
+    'revise_plan',
+    'search_documents',
+    'read_document_evidence',
+    'memory_edit',
+    'request_check',
+    'read_sales_summary',
+    'read_timeline',
+    'read_experiences',
+    'get_action',
+    'get_forecast',
+    'get_recovery_cases',
+    'get_recovery_case',
+    'analyze_recovery_case',
+    'some_future_tool',
+  ]
+  const han = /[㐀-鿿]/
+  for (const tool of tools) {
+    const { title, done, kind } = describeTool(tool)
+    for (const text of [title, done, kind]) expect(t(text), `${tool}: ${text}`).not.toMatch(han)
+  }
+  expect(t(describeTool('get_plan').title)).toBe('Read current plan')
+  expect(t(describeTool('get_dashboard').title)).toBe('Check cash, stock and arrivals')
+  const sources = [null, { chunk_id: 'c' }, { type: 'plan' }, { type: 'action' }, { type: 'x' }]
+  for (const source of sources) expect(t(sourceLabel(source))).not.toMatch(han)
 })
