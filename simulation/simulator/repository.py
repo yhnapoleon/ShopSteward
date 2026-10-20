@@ -109,10 +109,11 @@ def initial_snapshot(request=None):
     catalog = {
         "store_id": store_id,
         "currency": "CNY",
-        "products": [{"sku_id": "sku_001", "name": "SC01 sample product", "unit": "piece"}],
+        "products": [{"sku_id": "sku_001", "name": "Fresh milk 1L", "unit": "piece"}],
         "offers": [
             {
                 "supplier_id": "supplier_001",
+                "supplier_name": "Huaxin Dairy",
                 "sku_id": "sku_001",
                 "unit_price_minor": 1000,
                 "minimum_order_quantity": 20,
@@ -365,10 +366,13 @@ async def advance_run(session, run_id, key, request):
         raise HTTPException(409, "SCENARIO_FINISHED")
     horizon_end = datetime.fromisoformat(run.initial_snapshot["initial_forecast"]["horizon_end"])
     for _ in range(request["steps"]):
+        if run.step_index >= 4:
+            raise HTTPException(409, "SCENARIO_FINISHED")
         now = datetime.now(UTC)
         state = deepcopy(run.world)
         sim_time = datetime.fromisoformat(state["simulation_time"])
         stock = state["stocks"][0]
+        pending = None
         if run.step_index in (0, 3):
             pending = list(
                 await session.scalars(
@@ -380,6 +384,13 @@ async def advance_run(session, run_id, key, request):
                     .order_by(Purchase.action_id)
                 )
             )
+            if not pending and request.get("skip_empty_delivery") and run.step_index == 0:
+                # The first order went out by hand: its delivery day passes here and the
+                # script goes on to that day's sale, so the advance still shows an event.
+                sim_time += timedelta(days=1)
+                run.step_index += 1
+                pending = None
+        if pending is not None:
             if not pending:
                 raise HTTPException(409, "SCENARIO_STEP_BLOCKED")
             sim_time = max([sim_time] + [p.eta for p in pending])

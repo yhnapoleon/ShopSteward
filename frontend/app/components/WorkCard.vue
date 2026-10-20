@@ -4,7 +4,9 @@ import type { Schema } from '~/types/models'
 import { when } from '~/utils/presentation'
 import { workPresentation, workTitle } from '~/utils/workPresentation'
 import { awaitsOwnerArrival, workBadge } from '~/composables/useSpace'
-const props = defineProps<{ item: Schema<'WorkView'> }>()
+// `quiet`: another card on the page (the emergency restock) holds the one primary action, so
+// this card's way in steps down to a secondary button.
+const props = defineProps<{ item: Schema<'WorkView'>; quiet?: boolean }>()
 defineEmits<{ open: [] }>()
 const presentation = computed(() => workPresentation(props.item))
 // The badge uses the shared status vocabulary; the backend's own wording stays in the text.
@@ -37,7 +39,7 @@ const work = useWorkItems()
     }}</small>
     <div class="work-card-bottom">
       <span>{{ tr(when(item.updated_at)) }}</span
-      ><button class="primary" @click="$emit('open')">
+      ><button :class="quiet ? 'secondary' : 'primary'" @click="$emit('open')">
         {{ tr(presentation.action) }}<AppIcon name="arrow-up-right" />
       </button>
     </div>

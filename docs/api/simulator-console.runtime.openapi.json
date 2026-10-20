@@ -1448,6 +1448,19 @@
             "minLength": 1,
             "title": "Supplier Id"
           },
+          "supplier_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supplier Name"
+          },
           "sku_id": {
             "type": "string",
             "maxLength": 128,
@@ -2289,6 +2302,11 @@
             "maximum": 100.0,
             "minimum": 1.0,
             "title": "Steps"
+          },
+          "skip_empty_delivery": {
+            "type": "boolean",
+            "title": "Skip Empty Delivery",
+            "default": false
           }
         },
         "additionalProperties": false,

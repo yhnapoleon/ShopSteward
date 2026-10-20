@@ -1,6 +1,7 @@
 from typing import Annotated
 
 from fastapi import Path, Query, Request
+from sqlalchemy import exists, select
 
 from app.api.dependencies import Admin, Key, Service, User, authorize_store
 from app.api.routing import B0Router, errors
@@ -100,14 +101,29 @@ async def advance_scenario(
     body: ScenarioAdvance,
     key: Key,
 ):
+    from app.execution.models import ActionRow
+
     async with request.app.state.db.session() as session, session.begin():
         store = await repository.store_for_run(session, run_id)
+        # Orders the owner sends by hand never reach the simulator, so its delivery day must
+        # not wait for them. Fixed here, so every retry of the job sends the same command.
+        by_hand = request.app.state.settings.purchase_channel == "assisted" or bool(
+            await session.scalar(
+                select(
+                    exists().where(ActionRow.store_id == store.id, ActionRow.channel == "assisted")
+                )
+            )
+        )
         job = await enqueue(
             session,
             job_type="advance_scenario",
             store_id=store.id,
             dedup_key=digest(["advance_dev_scenario", principal.principal_id, key]),
-            payload={"scenario_run_id": run_id, **body.model_dump()},
+            payload={
+                "scenario_run_id": run_id,
+                **body.model_dump(),
+                "skip_empty_delivery": by_hand,
+            },
         )
         # The acceptance response is immutable even after the job completes.
         return JobAccepted(job_run_id=job.id, status="READY", merged=False)

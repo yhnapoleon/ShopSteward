@@ -7,12 +7,20 @@ from app.agent_bridge import progress
 from app.agent_bridge import repository as repo
 from app.agent_bridge.context_repository import freeze_config
 from app.agent_bridge.context_sources import load_history
+from app.agent_bridge.language import recall
 from app.agent_bridge.models import AgentRun, Conversation
 from app.api.dependencies import authorize_store
 from app.core.errors import AppError
 from app.scheduling.handlers import Handler
 from app.scheduling.models import Job
 from app.scheduling.repository import owned
+
+# "current plan" keeps the English request under the same evidence policy (get_plan).
+FOLLOWUP = {
+    "zh": "后台跟进：检查最新经营变化，解释新增风险、方案或行动结果；没有变化时简短说明。",
+    "en": "Background follow-up: check the latest business changes and explain new risks, "
+    "changes to the current plan or action results; if nothing changed, say so briefly.",
+}
 
 
 def current_principal(settings, conversation):
@@ -74,6 +82,7 @@ def make_handlers(settings, *, executor=None):
             item.token_hash = hashlib.sha256(token.encode()).hexdigest()
             item.token_job_lease = job.lease_token
             history, admission = await load_history(session, conversation, item)
+            language = await recall(session, conversation.principal_id)
             context = {
                 "db": db,
                 "settings": settings,
@@ -90,14 +99,11 @@ def make_handlers(settings, *, executor=None):
                 "message_envelopes": history,
                 "admission": admission,
                 "context_config": context_config,
+                "ui_language": language,
             }
             if item.trigger == "FOLLOWUP":
                 context["messages"].append(
-                    {
-                        "role": "user",
-                        "content": "后台跟进：检查最新经营变化，解释新增风险、方案或行动结果；"
-                        "没有变化时简短说明。",
-                    }
+                    {"role": "user", "content": FOLLOWUP.get(language, FOLLOWUP["zh"])}
                 )
                 context["message_envelopes"].append(
                     {

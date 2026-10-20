@@ -3235,6 +3235,8 @@ export interface components {
         Offer: {
             /** Supplier Id */
             supplier_id: string;
+            /** Supplier Name */
+            supplier_name?: string | null;
             /** Sku Id */
             sku_id: string;
             /** Unit Price Minor */

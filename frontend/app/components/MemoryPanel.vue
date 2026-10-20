@@ -36,7 +36,6 @@ const taskOrder = (type: string) => (type in tasks ? Object.keys(tasks).indexOf(
 // Tools a skill may depend on that the Agent progress catalog does not describe.
 const otherTools: Record<string, string> = {
   process_quotation: '整理报价',
-  get_forecast: '读取需求预测',
 }
 const toolName = (name: string) => {
   const known = describeTool(name)

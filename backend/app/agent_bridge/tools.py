@@ -24,6 +24,7 @@ from app.execution.schemas import Action
 from app.missions import repository as missions
 from app.missions.models import PlanRow
 from app.missions.schemas import CheckRequest
+from app.operations.models import ProductRow
 from app.planning.revisions import evaluate
 from app.reporting import read_repository as reads
 from app.reporting import repository as reporting
@@ -397,7 +398,30 @@ async def execute_tool(
         raise AppError(403, "TOOL_NOT_ALLOWED", "Tool is not registered")
     if name not in {"memory_edit", "read_experiences"}:
         value["money_display"] = money_facts(value)
+        value["product_names"] = await product_names(session, store.id, value)
     return {"ok": True, "data": value, "references": references}
+
+
+def sku_ids(value):
+    if isinstance(value, dict):
+        found = {value["sku_id"]} if isinstance(value.get("sku_id"), str) else set()
+        return found.union(*(sku_ids(item) for item in value.values()))
+    if isinstance(value, list):
+        return set().union(*(sku_ids(item) for item in value))
+    return set()
+
+
+async def product_names(session, store_id, value):
+    """The name for every SKU a tool result mentions, so the model names products as the UI does."""
+    skus = sku_ids(value)
+    if not skus:
+        return {}
+    rows = await session.execute(
+        select(ProductRow.sku_id, ProductRow.document).where(
+            ProductRow.store_id == store_id, ProductRow.sku_id.in_(sorted(skus))
+        )
+    )
+    return {sku: document["name"] for sku, document in rows if (document or {}).get("name")}
 
 
 @router.post(

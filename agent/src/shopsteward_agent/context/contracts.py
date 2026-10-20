@@ -36,7 +36,9 @@ class ModelProfile(Contract):
 
 
 class AdmissionBoundary(Contract):
-    kind: Literal["mission", "case"] = "mission"
+    # A follow-up answers business changes, not the conversation: its admitted
+    # history is optional context and only its own instruction is required.
+    kind: Literal["mission", "followup", "case"] = "mission"
     run_id: str
     conversation_id: str | None = None
     input_through_seq: int = Field(default=0, ge=0)

@@ -26,6 +26,8 @@ type OrderWrite = {
   mark: string
 }
 const ORDER_WRITES = 'ss.order-writes'
+/** The newest environment (`active_store`) when the page last chose a store. */
+const SEEN_ENVIRONMENT = 'ss.store.environment'
 /** Names this page gave suppliers that have none on file, so a later real name can replace them. */
 const fallbackNames = new Map<string, string>()
 
@@ -144,11 +146,19 @@ export function useShop() {
         const writes = JSON.parse(sessionStorage.getItem(ORDER_WRITES) || '{}')
         if (writes && typeof writes === 'object') s.orderWrites = writes
       } catch {}
+      // Reopen the store the page last showed, so a reload or a new identity never moves the
+      // owner (and the next new work item) to another store. Only an environment created since
+      // then takes over, as it does while the page is open (pollEnvironment).
       const saved = localStorage.getItem('ss.store')
+      const keep =
+        !!saved &&
+        s.stores.some((x) => x.store_id === saved) &&
+        (!s.activeStoreId || localStorage.getItem(SEEN_ENVIRONMENT) === s.activeStoreId)
       await selectStore(
         (preferredStore && s.stores.some((st) => st.store_id === preferredStore)
           ? preferredStore
           : '') ||
+          (keep ? saved! : '') ||
           s.activeStoreId ||
           (s.stores.some((x) => x.store_id === saved) ? saved! : s.stores[0]?.store_id || ''),
       )
@@ -205,7 +215,10 @@ export function useShop() {
     s.alerts = []
     s.error = ''
     s.connected = false
-    if (id) localStorage.setItem('ss.store', id)
+    if (id) {
+      localStorage.setItem('ss.store', id)
+      if (s.activeStoreId) localStorage.setItem(SEEN_ENVIRONMENT, s.activeStoreId)
+    }
     await refresh(true)
   }
   async function refresh(force = false) {
@@ -299,9 +312,12 @@ export function useShop() {
    * Every supplier the page names gets a name (§6.3). One with no name on file is called by what
    * it is to this mission: its usual supplier ("原供应商", the one the original orders went to) or
    * another connected one ("已对接的供应商"). The id stays in each record's traceable details.
-   * Names on file (documents, sourcing runs) always replace these.
+   * Names on file (the catalog's offers, documents, sourcing runs) always replace these.
    */
   function nameSuppliers() {
+    rememberSupplierNames(
+      (s.catalog?.offers || []).map((o) => ({ supplier_id: o.supplier_id, name: o.supplier_name })),
+    )
     // Until the documents are read, only the usual supplier is named; another one may still get
     // its real name from them.
     const settled = !s.session?.sourcing || directory.value.loaded || !!directory.value.error

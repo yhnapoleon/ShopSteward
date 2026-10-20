@@ -143,6 +143,7 @@ def test_inbound_view_derives_partial_and_strict_overdue_status():
         mission_id="mission-1",
         external_order_id="order-1",
         purchase_snapshot={"sku_id": "sku-1", "quantity": 10},
+        receipt=None,
     )
 
     at_eta = inbound_view(inbound, action, T0)
@@ -163,6 +164,7 @@ def test_inbound_view_returns_false_for_received_and_null_for_unknown_clock():
         mission_id="mission-1",
         external_order_id=None,
         purchase_snapshot={"sku_id": "sku-1", "quantity": 10},
+        receipt=None,
     )
     complete = SimpleNamespace(
         action_id="action-1",
@@ -193,9 +195,35 @@ def test_inbound_view_rejects_ordered_quantity_different_from_action_snapshot():
         mission_id="mission-1",
         external_order_id="order-1",
         purchase_snapshot={"sku_id": "sku-1", "quantity": 10},
+        receipt=None,
     )
 
     assert_stored_data_error(lambda: inbound_view(inbound, action, None))
+
+
+@pytest.mark.parametrize("ordered_qty,valid", [(6, True), (5, False)])
+def test_inbound_view_follows_the_quantity_accepted_in_part(ordered_qty, valid):
+    inbound = SimpleNamespace(
+        action_id="action-1",
+        store_id="store-1",
+        sku_id="sku-1",
+        ordered_qty=ordered_qty,
+        received_qty=0,
+        expected_arrival_at=None,
+    )
+    action = SimpleNamespace(
+        id="action-1",
+        store_id="store-1",
+        mission_id="mission-1",
+        external_order_id="order-1",
+        purchase_snapshot={"sku_id": "sku-1", "quantity": 10},
+        receipt={"quantity": 6},
+    )
+
+    if valid:
+        assert inbound_view(inbound, action, None).remaining_quantity == 6
+    else:
+        assert_stored_data_error(lambda: inbound_view(inbound, action, None))
 
 
 @pytest.mark.parametrize(
@@ -216,6 +244,7 @@ def test_inbound_view_rejects_mismatched_associations(field, value):
         mission_id="mission-1",
         external_order_id=None,
         purchase_snapshot={"sku_id": "sku-1", "quantity": 10},
+        receipt=None,
     )
     setattr(inbound, field, value)
     assert_stored_data_error(lambda: inbound_view(inbound, action, None))
@@ -290,6 +319,47 @@ def test_ledger_view_maps_receipt_and_uses_no_simulation_time():
         "on_hand_delta": 0,
         "in_transit_delta": 10,
     }
+
+
+@pytest.mark.parametrize(
+    "quantity,total,valid", [(6, 180, True), (6, 300, False), (12, 360, False)]
+)
+def test_ledger_view_accepts_a_receipt_taken_in_part_at_the_ordered_price(quantity, total, valid):
+    receipt = {
+        "action_id": "action-1",
+        "status": "ACCEPTED",
+        "external_order_id": "order-1",
+        "quantity": quantity,
+        "total_minor": total,
+        "currency": "CNY",
+        "recorded_at": "2026-09-07T03:00:00Z",
+        "reason": None,
+    }
+    row = SimpleNamespace(
+        id="ledger-2",
+        store_id="store-1",
+        state_version=2,
+        effect_type="PURCHASE_ACCEPTED",
+        source_event_id=None,
+        document=receipt,
+    )
+    action = SimpleNamespace(
+        id="action-1",
+        store_id="store-1",
+        purchase_snapshot={
+            "sku_id": "sku-1",
+            "quantity": 10,
+            "unit_price_minor": 30,
+            "total_minor": 300,
+            "currency": "CNY",
+        },
+    )
+
+    if valid:
+        result = ledger_view(row, {"action-1": action})
+        assert (result.changes.cash_delta_minor, result.changes.in_transit_delta) == (-180, 6)
+    else:
+        assert_stored_data_error(lambda: ledger_view(row, {"action-1": action}))
 
 
 @pytest.mark.parametrize(

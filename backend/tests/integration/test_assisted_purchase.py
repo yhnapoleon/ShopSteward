@@ -153,6 +153,20 @@ async def test_a_partial_confirmation_is_taken_at_the_suppliers_quantity(db):
             current["reserved_cash_minor"],
             current["stocks"][0]["in_transit"],
         ) == (70000, 0, 30)
+        # The store stays readable: the inbound row and the ledger carry the accepted 30.
+        scope = {"store_id": seed["store_id"]}
+        inbound = await client.get("/api/v1/inbounds", params=scope, headers=headers("viewer"))
+        assert inbound.status_code == 200, inbound.text
+        assert [item["ordered_quantity"] for item in inbound.json()["items"]] == [30]
+        ledger = await client.get(
+            "/api/v1/ledger-entries",
+            params=scope | {"effect_type": "PURCHASE_ACCEPTED"},
+            headers=headers("viewer"),
+        )
+        assert ledger.status_code == 200, ledger.text
+        assert [entry["changes"]["cash_delta_minor"] for entry in ledger.json()["items"]] == [
+            -30000
+        ]
         assert (await client.post(path, headers=key)).json()["status"] == "SUCCEEDED"
         assert (await client.post(path, headers=headers("approver"))).status_code == 409
 
@@ -210,6 +224,22 @@ async def test_goods_of_a_confirmed_order_reach_stock_when_the_owner_records_the
         ] == [(action["id"], None, 25), (action["id"], None, 15)]
         inbound = await client.get("/api/v1/inbounds", params=scope, headers=headers("viewer"))
         assert [item["arrival_status"] for item in inbound.json()["items"]] == ["RECEIVED"]
+
+
+async def test_next_day_does_not_wait_for_an_order_sent_by_hand(db):
+    from app.scheduling.models import Job
+
+    async with environment(db) as (seed, client):
+        await sent(db, seed, client)
+        response = await client.post(
+            f"/dev/v1/scenarios/{seed['scenario_run_id']}/advance",
+            json={"steps": 1},
+            headers=headers("admin"),
+        )
+        assert response.status_code == 202, response.text
+        async with db.session() as session:
+            job = await session.get(Job, response.json()["job_run_id"])
+            assert job.payload["skip_empty_delivery"] is True
 
 
 async def test_an_order_sent_to_the_simulator_takes_no_pasted_reply(db):

@@ -585,7 +585,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ScenarioAdvance"
+                "$ref": "#/components/schemas/SimulationAdvance"
               },
               "example": {
                 "steps": 1
@@ -3091,6 +3091,25 @@
         ],
         "additionalProperties": false
       },
+      "SimulationAdvance": {
+        "type": "object",
+        "properties": {
+          "steps": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100
+          },
+          "skip_empty_delivery": {
+            "type": "boolean",
+            "default": false,
+            "description": "Set when the owner sends orders by hand: a delivery step with no simulator order of its own passes as a day and the next scripted event follows."
+          }
+        },
+        "required": [
+          "steps"
+        ],
+        "additionalProperties": false
+      },
       "ScenarioCreate": {
         "properties": {
           "scenario": {
@@ -3326,6 +3345,20 @@
             "description": "不透明资源 ID",
             "minLength": 1,
             "maxLength": 128
+          },
+          "supplier_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 64
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "供应商名称；没有时界面按它对委托的角色称呼"
           },
           "sku_id": {
             "type": "string",

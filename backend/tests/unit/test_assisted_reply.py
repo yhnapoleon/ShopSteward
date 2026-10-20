@@ -34,6 +34,21 @@ def test_the_order_message_states_what_was_approved_in_both_languages():
         assert part in message["text"]["zh"]
     for part in ("PO-1A2B3C4D", "40 units", "CNY 10.50", "CNY 420.00", "2026-10-15"):
         assert part in message["text"]["en"]
+    # 20:00 UTC is the next morning for the owner: the wanted-by day is the local one.
+    action.purchase_snapshot["expected_arrival_at"] = "2026-10-15T20:00:00+00:00"
+    late = order_message(action, "矿泉水 550ml", datetime(2026, 10, 12, tzinfo=UTC))
+    assert late["requested_delivery_date"] == "2026-10-16"
+
+
+def test_a_supplier_date_is_a_local_day_at_the_planned_local_time():
+    from datetime import UTC, datetime
+
+    from app.execution.assisted import supplier_arrival
+
+    action = SimpleNamespace(purchase_snapshot={"expected_arrival_at": "2026-10-15T20:00:00+00:00"})
+    arrival = supplier_arrival(action, date(2026, 10, 17))
+    assert arrival.astimezone(UTC) == datetime(2026, 10, 16, 20, tzinfo=UTC)
+    assert supplier_arrival(action, None) is None
 
 
 def test_rules_read_a_plain_reply_and_leave_mixed_wording_to_a_person():
@@ -105,6 +120,26 @@ async def test_a_model_reading_keeps_only_what_it_can_quote_from_the_reply():
     # An acceptance the model cannot quote is not an acceptance.
     unquoted = Model({"decision": "accepted", "quotes": {"decision": "confirmed"}})
     assert (await read_reply(text, ORDER, TODAY, model=unquoted))[0]["decision"] == "unclear"
+    # Null stands for "not stated", also in place of an excerpt; the stated fields are kept.
+    nulls = Model(
+        {
+            "decision": "accepted",
+            "quantity": 40,
+            "unit_price_minor": None,
+            "delivery_date": "2026-10-15",
+            "supplier_order_ref": "",
+            "quotes": {
+                "decision": "没问题",
+                "quantity": "四十件",
+                "unit_price_minor": None,
+                "delivery_date": "周四给你送过去",
+                "supplier_order_ref": None,
+            },
+        }
+    )
+    reading, read_by = await read_reply(text, ORDER, TODAY, model=nulls)
+    assert (read_by, reading["decision"], reading["quantity"]) == ("model", "accepted", 40)
+    assert reading["delivery_date"] == date(2026, 10, 15) and reading["unit_price_minor"] is None
     # A model that fails or answers with something else leaves the rules reading.
     plain = "确认40件"
     for broken in (Model(RuntimeError("down")), Model({"decision": "maybe"})):

@@ -1,7 +1,8 @@
+import logging
 from datetime import timedelta
 from uuid import uuid4
 
-from sqlalchemy import func, select
+from sqlalchemy import exists, func, select
 from sqlalchemy.dialects.postgresql import insert
 
 from app.agent_bridge.models import AgentRun, Conversation, Trigger
@@ -10,8 +11,15 @@ from app.core.hashing import digest
 from app.missions.models import MissionRow
 from app.operations.models import Store
 
+logger = logging.getLogger("shopsteward")
+# A burst of changes (a synced day, then the Mission check it wakes) is explained once.
+FOLLOWUP_SETTLE_SECONDS = 5
+FOLLOWUP_FAILURE_LIMIT = 3
+
 
 async def record_event(session, mission_id, source_key, references):
+    # Inserting a trigger only key-share locks the conversation, so business
+    # transactions holding store/Mission locks never wait on an Agent run.
     conversations = (
         await session.scalars(
             select(Conversation.id).where(
@@ -27,15 +35,73 @@ async def record_event(session, mission_id, source_key, references):
         )
 
 
+async def record_store_change(session, store):
+    """Synced business events moved the store (a new day of sales) without a Mission event."""
+    missions = (
+        await session.scalars(
+            select(MissionRow.id).where(
+                MissionRow.store_id == store.id, MissionRow.status == "ACTIVE"
+            )
+        )
+    ).all()
+    for mission_id in missions:
+        await record_event(
+            session,
+            mission_id,
+            f"store-state:{store.id}:{store.state_version}",
+            [{"type": "store", "id": store.id, "version": str(store.state_version)}],
+        )
+
+
+async def followup_closed(session, conversation, run):
+    """A follow-up that ended without publishing is not redone for the same state.
+
+    Its triggers and fingerprint count as handled, so only a later business change
+    starts another one. Consecutive failures pause follow-up; the failed runs keep
+    the error codes, and turning follow-up on again allows one more attempt.
+    """
+    conversation.consumed_trigger = max(conversation.consumed_trigger, run.trigger_watermark)
+    if run.trigger_fingerprint:
+        conversation.last_fingerprint = run.trigger_fingerprint
+    if run.status != "FAILED":
+        return
+    recent = (
+        await session.scalars(
+            select(AgentRun.status)
+            .where(AgentRun.conversation_id == conversation.id, AgentRun.trigger == "FOLLOWUP")
+            .order_by(AgentRun.created_at.desc(), AgentRun.id.desc())
+            .limit(FOLLOWUP_FAILURE_LIMIT)
+        )
+    ).all()
+    if len(recent) == FOLLOWUP_FAILURE_LIMIT and set(recent) == {"FAILED"}:
+        conversation.followup_enabled = False
+        conversation.followup_version += 1
+        logger.warning(
+            "agent_followup_paused",
+            extra={"conversation_id": conversation.id, "error_code": run.error_code},
+        )
+
+
 async def dispatch_followups(db, settings):
     if not settings.agent_enabled:
         return
     async with db.session() as session, session.begin():
         now = await session.scalar(select(func.clock_timestamp()))
+        # A recorded business change makes an idle conversation due once it has
+        # settled; the interval remains the fallback for unrecorded changes.
+        changed = exists().where(
+            Trigger.conversation_id == Conversation.id,
+            Trigger.seq > Conversation.consumed_trigger,
+            Trigger.created_at <= now - timedelta(seconds=FOLLOWUP_SETTLE_SECONDS),
+        )
         conversations = (
             await session.scalars(
                 select(Conversation)
-                .where(Conversation.followup_enabled.is_(True), Conversation.next_due <= now)
+                .where(
+                    Conversation.followup_enabled.is_(True),
+                    (Conversation.next_due <= now)
+                    | (Conversation.active_run_id.is_(None) & changed),
+                )
                 .with_for_update(skip_locked=True, key_share=True)
                 .limit(50)
             )
@@ -68,7 +134,8 @@ async def dispatch_followups(db, settings):
                 continue
             if mission.status != "ACTIVE" and not watermark:
                 continue
-            # Do not consume event watermark until response is durably published.
+            # The event watermark is consumed only when the run ends: published,
+            # or given up (followup_closed), never at dispatch.
             run = AgentRun(
                 id=str(uuid4()),
                 conversation_id=conversation.id,

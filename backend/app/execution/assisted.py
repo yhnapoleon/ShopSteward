@@ -11,6 +11,7 @@ import json
 import re
 from datetime import date, datetime, timedelta
 from typing import Literal
+from zoneinfo import ZoneInfo
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 from sqlalchemy import func, select
@@ -25,6 +26,8 @@ from app.missions.repository import command, queue_check, timeline
 from app.operations.models import LedgerEntry, ProductRow, StockRow
 from app.sourcing.provider import configured, provider
 
+# The owner and supplier talk in local dates; stored times are UTC.
+BUSINESS_ZONE = ZoneInfo("Asia/Shanghai")
 FIELDS = ("quantity", "unit_price_minor", "total_minor", "delivery_date", "supplier_order_ref")
 INSTRUCTION = (
     "You read a supplier's reply to a purchase order. Return one JSON object {decision, "
@@ -57,7 +60,12 @@ def order_message(action, product_name, now):
     """What was approved, as a message a person can send as it is."""
     purchase = action.purchase_snapshot
     reference = "PO-" + action.id.replace("-", "")[:8].upper()
-    wanted = datetime.fromisoformat(purchase["expected_arrival_at"]).date().isoformat()
+    wanted = (
+        datetime.fromisoformat(purchase["expected_arrival_at"])
+        .astimezone(BUSINESS_ZONE)
+        .date()
+        .isoformat()
+    )
     name = product_name or purchase["sku_id"]
     unit, total = _yuan(purchase["unit_price_minor"]), _yuan(purchase["total_minor"])
     return {
@@ -157,6 +165,13 @@ def read_by_rules(text, today):
 
 def gated(raw, text):
     """A reading whose every kept field quotes the reply; anything unquoted is dropped."""
+    if isinstance(raw, dict):
+        # A model writes null (or "") for what the reply does not state, excerpts included.
+        raw = {name: value for name, value in raw.items() if value not in (None, "")}
+        if isinstance(raw.get("quotes"), dict):
+            raw["quotes"] = {
+                name: value for name, value in raw["quotes"].items() if value not in (None, "")
+            }
     try:
         reading = _Reading.model_validate(raw)
     except ValidationError:
@@ -271,6 +286,14 @@ def partly(reading, order, found):
     )
 
 
+def supplier_arrival(action, day):
+    """The supplier's local delivery day, at the local time of day the plan expected."""
+    if not day:
+        return None
+    wanted = datetime.fromisoformat(action.purchase_snapshot["expected_arrival_at"])
+    return datetime.combine(day, wanted.astimezone(BUSINESS_ZONE).timetz())
+
+
 def waiting(action):
     return action.channel == "assisted" and action.status == "EXECUTING"
 
@@ -346,15 +369,9 @@ async def record_reply(session, action_id, text, reading, read_by, principal, ke
         "recorded_at": now.isoformat(),
         "reason": None if outcome == "confirmed" else "Supplier declined in the pasted reply",
     }
-    wanted = datetime.fromisoformat(action.purchase_snapshot["expected_arrival_at"])
     # The supplier's own date replaces the planned one; the next check plans around it.
     await apply_receipt(
-        session,
-        store,
-        mission,
-        action,
-        raw,
-        expected_arrival_at=datetime.combine(day, wanted.timetz()) if day else None,
+        session, store, mission, action, raw, expected_arrival_at=supplier_arrival(action, day)
     )
     if mission.status == "ACTIVE":
         await queue_check(session, store, mission, key="supplier-reply-" + action.id)
@@ -407,7 +424,6 @@ async def accept_partial(session, action_id, principal, key):
         "recorded_at": now.isoformat(),
         "reason": None,
     }
-    wanted = datetime.fromisoformat(action.purchase_snapshot["expected_arrival_at"])
     day = reply["delivery_date"] and date.fromisoformat(reply["delivery_date"])
     if not await apply_receipt(
         session,
@@ -415,7 +431,7 @@ async def accept_partial(session, action_id, principal, key):
         mission,
         action,
         raw,
-        expected_arrival_at=datetime.combine(day, wanted.timetz()) if day else None,
+        expected_arrival_at=supplier_arrival(action, day),
         partial=True,
     ):
         receipt.response = {"action_id": action.id}

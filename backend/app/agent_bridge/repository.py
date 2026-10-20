@@ -143,4 +143,8 @@ async def close_run(session, conversation, run, status, error_code=None):
         {"status": status, "error_code": error_code, "finished_at": run.finished_at.isoformat()},
     )
     await session.flush()
+    if run.trigger == "FOLLOWUP" and status != "SUCCEEDED":
+        from app.agent_bridge.triggers import followup_closed
+
+        await followup_closed(session, conversation, run)
     await promote(session, conversation)

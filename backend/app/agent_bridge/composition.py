@@ -11,11 +11,14 @@ from app.agent_bridge.evidence_policy import document_answer_guard, evidence_pol
 from app.agent_bridge.forecast_evidence import forecast_answer_guard
 from app.agent_bridge.jobs import assert_lease, current_principal
 from app.agent_bridge.knowledge import read
+from app.agent_bridge.language import directive as language_directive
 from app.agent_bridge.models import AgentRun, Conversation, Message, ToolInvocation
 from app.agent_bridge.presentation import (
     memory_success_claim,
     money_facts,
+    rewrite_amounts,
     unsupported_amounts,
+    without_unsupported_amounts,
 )
 from app.agent_bridge.tools import catalog, tool_schemas
 from app.core.errors import AppError
@@ -168,7 +171,7 @@ async def execute(context):
                 if message["message_id"] in invalid_answers:
                     message["unavailable_reason"] = "permission"
             await assert_lease(session, job)
-            rendered_context = (
+            rendered_context = language_directive(context.get("ui_language")) + (
                 "使用当前用户消息的语言回答；用户明确指定语言时遵循其要求，没有用户语言线索时默认中文。历史消息的语言不覆盖当前请求。业务金额是整数分，显示元时直接复制工具money_display的yuan字符串，不自行换算。每次经营提问先读真实业务工具，不凭历史数值下结论。"
                 "当前Mission已绑定，get_plan不需要用户提供plan_id；用户询问当前方案时必须调用get_plan，不能要求用户重新提供方案。"
                 "get_forecast为空参数只读工具，返回当前任务同门店商品已保存的v6预测；预测和补货问题先读取库存、预测，再读取方案。"
@@ -271,14 +274,15 @@ async def execute(context):
                 await assert_lease(session, job)
                 await save_call(session, run.id, record)
 
+        model = OpenAIModel(
+            base_url=settings.agent_base_url,
+            model=settings.agent_model,
+            key_file=settings.agent_api_key_file,
+            api_mode=settings.agent_api_mode,
+            profile=profile,
+        )
         runtime = Runtime(
-            OpenAIModel(
-                base_url=settings.agent_base_url,
-                model=settings.agent_model,
-                key_file=settings.agent_api_key_file,
-                api_mode=settings.agent_api_mode,
-                profile=profile,
-            ),
+            model,
             saver,
             schemas,
             call_tool,
@@ -309,22 +313,29 @@ async def execute(context):
         except RuntimeFailure as exc:
             raise AppError(422, exc.code, "Agent execution did not complete") from None
     # Product cards are authoritative objects, never model-produced amounts or IDs.
+    english = context.get("ui_language") == "en"
     if result.get("evidence_unavailable"):
-        result["content"] = "本次必需的信息读取失败，暂不能给出可靠结论，请稍后重试。"
+        result["content"] = (
+            "Required business data could not be read this time, so no reliable conclusion "
+            "can be given. Please try again shortly."
+            if english
+            else "本次必需的信息读取失败，暂不能给出可靠结论，请稍后重试。"
+        )
         result["validation_warnings"] = ["REQUIRED_EVIDENCE_UNAVAILABLE"]
     cards = []
+    explanation = None
     async with db.session() as session:
         calls = (
             await session.scalars(
                 select(ToolInvocation).where(ToolInvocation.run_id == context["run_id"])
             )
         ).all()
-        amounts = {
-            fact["minor"]
+        records = [
+            {"tool": call.tool, "data": call.result.get("data", {})}
             for call in calls
             if call.result.get("ok")
-            for fact in money_facts(call.result.get("data", {}))
-        }
+        ]
+        amounts = {fact["minor"] for record in records for fact in money_facts(record)}
         memory_calls = [call for call in calls if call.tool == "memory_edit"]
         if (
             memory_calls
@@ -352,19 +363,30 @@ async def execute(context):
                             "proposed_purchase": plan.document["proposed_purchase"],
                         }
                     )
-        if amounts and unsupported_amounts(result.get("content", ""), amounts):
-            result["validation_warnings"] = ["UNSUPPORTED_MONEY_IN_MODEL_TEXT"]
-            if cards:
-                latest = max(cards, key=lambda card: card["plan_version"])
-                plan = await session.get(PlanRow, latest["plan_id"])
-                result["content"] = (
-                    plan.document["explanation"]
-                    + " 请查看方案卡片中的完整候选比较；采购仍需用户确认。"
-                )
-            else:
-                result["content"] = (
-                    "业务结果已读取，但本次文字解释未通过金额校验。请以业务记录为准，重新请求解释。"
-                )
+        if cards:
+            latest = max(cards, key=lambda card: card["plan_version"])
+            explanation = (await session.get(PlanRow, latest["plan_id"])).document["explanation"]
+    if amounts and unsupported_amounts(result.get("content", ""), amounts):
+        # One rewrite naming the unrecorded figures, then only sentences that still carry
+        # one are dropped. Outside the session: no connection is held across a model call.
+        result["validation_warnings"] = [
+            *result.get("validation_warnings", []),
+            "UNSUPPORTED_MONEY_IN_MODEL_TEXT",
+        ]
+        content = await rewrite_amounts(
+            model, schemas, result["content"], records, model_timeout=profile.timeout_s
+        )
+        if unsupported_amounts(content, amounts):
+            content = without_unsupported_amounts(content, amounts)
+        if not content and explanation and not english:
+            content = explanation + " 请查看方案卡片中的完整候选比较；采购仍需用户确认。"
+        result["content"] = content or (
+            "The business records were read, but this explanation stated amounts they do not "
+            "contain. Rely on the records and ask again for an explanation."
+            if english
+            else "业务结果已读取，但本次文字解释未通过金额校验。请以业务记录为准，重新请求解释。"
+        )
+    async with db.session() as session:
         document_refs = [r for r in result.get("references", []) if r.get("type") == "document"]
         used_chunks = {r.get("chunk_id") for r in document_refs}
         paths = [

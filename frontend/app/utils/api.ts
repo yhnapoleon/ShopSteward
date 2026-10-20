@@ -1,3 +1,5 @@
+import { locale } from '~/i18n'
+
 export class ApiFailure extends Error {
   constructor(
     public code: string,
@@ -69,7 +71,11 @@ export async function api<T>(
     return (await $fetch<T>('/api/backend' + path, {
       method,
       body: body as Record<string, unknown> | undefined,
-      headers: method === 'GET' ? undefined : { 'Idempotency-Key': key || crypto.randomUUID() },
+      // The backend tells the model which language to write text the owner reads later.
+      headers: {
+        'X-UI-Language': locale.value === 'en' ? 'en' : 'zh',
+        ...(method === 'GET' ? {} : { 'Idempotency-Key': key || crypto.randomUUID() }),
+      },
       retry: 0,
       timeout: 25000,
     })) as T

@@ -103,13 +103,15 @@ async def test_forecast_tool_is_read_only_mission_scoped_and_no_reference_on_fai
         }
     )
     monkeypatch.setattr("app.forecast_v6.repository.read_current", read)
-    session, settings = object(), object()
+    session = SimpleNamespace(execute=AsyncMock(return_value=[("k", {"name": "Fresh milk 1L"})]))
+    settings = object()
     mission, store = SimpleNamespace(sku_id="k"), SimpleNamespace(id="s")
     result = await execute_tool(
         session, settings, None, None, None, mission, store, "get_forecast", Empty(), "call"
     )
     read.assert_awaited_once_with(session, "s", "k", settings)
     assert result["ok"] and result["references"] == answer("historical_demo")["references"]
+    assert result["data"]["product_names"] == {"k": "Fresh milk 1L"}
     assert "history" not in result["data"]
     assert "supported_series" not in result["data"]["model"]
     assert result["data"]["input_coverage"]["days"] == 1
