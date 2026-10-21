@@ -159,11 +159,19 @@ async def test_a_partial_confirmation_is_taken_at_the_suppliers_quantity(db):
         path = f"/api/v1/actions/{action['id']}/partial-acceptance"
         # Nothing was offered in part yet.
         assert (await client.post(path, headers=headers("approver"))).status_code == 409
+        short = (await reply(client, action, "Sure, but only 10 units")).json()["supplier_reply"]
+        assert (short["outcome"], short["quantity"]) == ("partial", 10)
         partial = (await reply(client, action, "可以，但只有30件")).json()
         assert (partial["status"], partial["supplier_reply"]["outcome"]) == ("EXECUTING", "partial")
         assert partial["supplier_reply"]["differences"] == [
             {"field": "quantity", "ordered": 40, "replied": 30}
         ]
+        # The reply names no price or day: the receipt keeps the order's.
+        wanted = action["order_message"]["requested_delivery_date"]
+        assert (
+            partial["supplier_reply"]["unit_price_minor"],
+            partial["supplier_reply"]["delivery_date"],
+        ) == (1000, wanted)
         assert (await state(db, seed))["reserved_cash_minor"] == 40000
         assert (await client.post(path, headers=headers("operator"))).status_code == 403
         key = headers("approver")

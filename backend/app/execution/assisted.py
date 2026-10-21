@@ -32,8 +32,9 @@ FIELDS = ("quantity", "unit_price_minor", "total_minor", "delivery_date", "suppl
 INSTRUCTION = (
     "You read a supplier's reply to a purchase order. Return one JSON object {decision, "
     "quantity, unit_price_minor, total_minor, delivery_date, supplier_order_ref, quotes}. "
-    "decision is accepted when the supplier agrees to supply the order, rejected when it "
-    "declines, unclear otherwise. quantity is in units; money is in fen (1 yuan = 100 fen); "
+    "decision is accepted when the supplier agrees to supply the order or only part of it "
+    "(then quantity is the part it will supply), rejected when it declines all of it, unclear "
+    "otherwise. quantity is in units; money is in fen (1 yuan = 100 fen); "
     "delivery_date is YYYY-MM-DD, resolved against the business date given; "
     "supplier_order_ref is the supplier's own order number. Use null for anything the reply "
     "does not state; never fill a value from the order. quotes maps decision and every "
@@ -106,7 +107,9 @@ NO = re.compile(
     re.IGNORECASE,
 )
 YES = re.compile(
-    r"确认|收到|可以|没问题|好的|安排|\bok\b|\bokay\b|confirm|will deliver|\byes\b", re.IGNORECASE
+    r"确认|收到|可以|没问题|好的|安排|\bok\b|\bokay\b|confirm|will deliver|\byes\b|\bsure\b|"
+    r"no problem|can do",
+    re.IGNORECASE,
 )
 AMOUNT = r"(\d+(?:\.\d{1,2})?)"
 PATTERNS = {
@@ -230,8 +233,28 @@ def reader(settings):
     )
 
 
+def in_part(reading, text, order):
+    """A reply that agrees to fewer units than ordered ("Sure, but only 10 units") accepts that
+    part, however its reader judged the decision; a refusal word leaves the reading as it is."""
+    agreed, quantity = YES.search(text), reading["quantity"]
+    if (
+        reading["decision"] == "accepted"
+        or not agreed
+        or NO.search(text)
+        or quantity is None
+        or not 0 < quantity < order["quantity"]
+    ):
+        return reading
+    return {
+        **reading,
+        "decision": "accepted",
+        "quotes": {**reading["quotes"], "decision": agreed.group(0)},
+    }
+
+
 async def read_reply(text, order, today, model=None):
     """(reading, who read it). A model that fails or cites nothing falls back to the rules."""
+    reading = None
     if model is not None:
         try:
             answer = await model.complete(
@@ -253,11 +276,12 @@ async def read_reply(text, order, today, model=None):
             )
             content = answer["content"]
             reading = gated(json.loads(content[content.find("{") : content.rfind("}") + 1]), text)
-            if reading is not None:
-                return reading, "model"
         except Exception:  # noqa: BLE001 - any reader failure leaves the rules reading
             pass
-    return gated(read_by_rules(text, today), text) or gated({}, text), "rules"
+    read_by = "model" if reading is not None else "rules"
+    if reading is None:
+        reading = gated(read_by_rules(text, today), text) or gated({}, text)
+    return in_part(reading, text, order), read_by
 
 
 def differences(reading, order):
@@ -284,6 +308,17 @@ def partly(reading, order, found):
             for d in found
         )
     )
+
+
+def as_ordered(reading, order):
+    """A partial reply is fewer units at the ordered price: a price or a day it leaves out is the
+    order's."""
+    wanted = order.get("requested_delivery_date")
+    return {
+        **reading,
+        "unit_price_minor": reading["unit_price_minor"] or order["unit_price_minor"],
+        "delivery_date": reading["delivery_date"] or (wanted and date.fromisoformat(wanted)),
+    }
 
 
 def supplier_arrival(action, day):
@@ -356,6 +391,8 @@ async def record_reply(session, action_id, text, reading, read_by, principal, ke
         if partly(reading, order, found)
         else "needs_attention"
     )
+    if outcome == "partial":
+        reading = as_ordered(reading, order)
     day = reading["delivery_date"]
     action.supplier_reply = {
         "text": text,
