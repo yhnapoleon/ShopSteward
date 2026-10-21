@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { t as tr, joinText } from '~/i18n'
+import { t as tr, intlLocale, joinText } from '~/i18n'
 import { api } from '~/utils/api'
 import { when } from '~/utils/presentation'
 import type { QuotationFile, QuotationResult, QuotationRule } from '~/utils/quotationApi'
@@ -55,6 +55,33 @@ const ruleOrigin = computed(() => {
 const disabled = computed(
   () => loading.value || work.s.busy || !!work.s.pending || work.s.accessRevoked,
 )
+// Amounts read as everywhere else, "CNY 120" in English and "¥120" in Chinese, with any cents in
+// full; a unit price keeps the decimals the calculation kept. Another currency stays as quoted.
+function amount(value: string, currency = 'CNY') {
+  const n = Number(value)
+  if (!['CNY', '人民币', '元'].includes(currency) || !Number.isFinite(n))
+    return `${value} ${currency}`
+  return new Intl.NumberFormat(intlLocale(), {
+    style: 'currency',
+    currency: 'CNY',
+    currencyDisplay: intlLocale() === 'en-SG' ? 'code' : 'symbol',
+    minimumFractionDigits: Number.isInteger(n) ? 0 : 2,
+    maximumFractionDigits: 8,
+  }).format(n)
+}
+// The basis shows the division; how many decimals the result keeps is not the owner's concern.
+const basis = (text: string) => text.replace('（单件价保留最多8位小数）', '')
+const counted: Record<string, [string, string]> = {
+  件: ['1 件', '{0} 件'],
+  箱: ['1 箱', '{0} 箱'],
+  包: ['1 包', '{0} 包'],
+}
+function minimumOrder(row: QuotationResult['rows'][number]) {
+  if (row.moq === null) return tr('未提供')
+  const forms = counted[row.moq_unit]
+  if (!forms) return `${row.moq} ${tr(row.moq_unit)}`
+  return Number(row.moq) === 1 ? tr(forms[0]) : tr(forms[1], [row.moq])
+}
 const base = computed(() => '/api/v1/work-items/' + work.s.selected)
 let request = 0
 async function refresh() {
@@ -172,11 +199,13 @@ async function removeRule() {
     <select :id="inputId + '-file'" v-model="selectedFile" :disabled="disabled">
       <option v-for="f in files" :key="f.id" :value="f.id">{{ f.filename }}</option>
     </select>
+    <!-- The file is named in the picker above; its upload clock time is on hover, so the business
+         time stays the page's only visible time. -->
     <p v-if="file" class="source-note">
-      {{ joinText([file.filename, tr('· 上传于'), tr(when(file.created_at))]) }}
       <a
         class="text-link"
         :href="'/api/backend' + base + '/quotation-files/' + file.id + '/download'"
+        :title="joinText([file.filename, tr('· 上传于'), tr(when(file.created_at))])"
         download
         >{{ tr('下载原件') }}</a
       >
@@ -185,7 +214,8 @@ async function removeRule() {
       <summary>{{ tr('原件校验信息') }}</summary>
       <p class="source-note quotation-hash">SHA-256: {{ file.sha256 }}</p>
     </details>
-    <div v-if="versions.length">
+    <!-- Earlier results are a choice only once there is more than one. -->
+    <div v-if="versions.length > 1">
       <label :for="inputId + '-version'">{{ tr('结果版本') }}</label>
       <select :id="inputId + '-version'" v-model="selectedResult" :disabled="disabled">
         <option value="">{{ tr('最新结果') }}</option>
@@ -203,8 +233,7 @@ async function removeRule() {
       >
         {{ tr('这是已保存的报价版本；新要求尚未完成时请先核对更新状态。') }}
       </p>
-      <div class="quotation-result-head">
-        <p class="source-note">{{ tr('服务器结果 · 版本 {0}', [result.version]) }}</p>
+      <div v-if="appliedRule" class="quotation-result-head">
         <NuxtLink
           v-if="appliedRule && ruleOrigin"
           class="tag green quotation-rule-badge"
@@ -243,17 +272,17 @@ async function removeRule() {
               <td>{{ r.record }}</td>
               <td>{{ r.product }}</td>
               <td>
-                {{ r.unit_price === null ? tr('暂不能计算') : r.unit_price + ' CNY'
-                }}<small>{{ tr(r.basis) }}</small>
+                {{ r.unit_price === null ? tr('暂不能计算') : amount(r.unit_price)
+                }}<small>{{ tr(basis(r.basis)) }}</small>
               </td>
               <td>
-                {{ r.moq ?? tr('未提供') }} {{ tr(r.moq_unit)
+                {{ minimumOrder(r)
                 }}<small>{{
                   r.moq_pieces === null ? tr('折算件数暂缺') : tr('折合 {0} 件', [r.moq_pieces])
                 }}</small>
               </td>
               <td>
-                {{ r.price ?? tr('未提供') }} {{ r.currency }} / {{ tr(r.unit)
+                {{ r.price === null ? tr('未提供') : amount(r.price, r.currency) }} / {{ tr(r.unit)
                 }}<small>{{ tr('包装件数') }}: {{ r.pack ?? tr('未提供') }}</small>
               </td>
               <td>{{ r.source || tr('未提供') }}</td>

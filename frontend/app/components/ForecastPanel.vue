@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { productDisplayName } from '~/utils/glossary'
-import { joinText as joinLocalizedText, t as tr } from '~/i18n'
+import { intlLocale, joinText as joinLocalizedText, t as tr } from '~/i18n'
 const joinText = (parts: unknown[]) => joinLocalizedText(parts, ' ')
 import { api, ApiFailure, query } from '~/utils/api'
+import { when } from '~/utils/presentation'
 import type {
   ForecastCurrent,
   ForecastHistory,
@@ -106,13 +107,28 @@ function failure(e: unknown) {
     code: e.code === 'CONNECTION_ERROR' ? '' : e.code,
   }
 }
-/** A stored timestamp as "2026-09-11 08:00" in local time: the year stays visible. */
-function stamp(value: string) {
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return value
-  const two = (n: number) => String(n).padStart(2, '0')
-  return `${date.getFullYear()}-${two(date.getMonth() + 1)}-${two(date.getDate())} ${two(date.getHours())}:${two(date.getMinutes())}`
+/** A forecast day ("2016-03-28") in the interface's order without the year: 28/03 in English. */
+function day(value: string) {
+  const time = Date.parse(value.slice(0, 10) + 'T00:00:00Z')
+  if (Number.isNaN(time)) return value
+  return new Intl.DateTimeFormat(intlLocale(), {
+    timeZone: 'UTC',
+    day: '2-digit',
+    month: '2-digit',
+  }).format(time)
 }
+// When the forecast was made and how long it stays valid are clock times, not business time: they
+// sit behind the status tag, so the business time stays the only time on the page.
+const validity = computed(() =>
+  forecast.value
+    ? joinText([
+        tr('生成于'),
+        tr(when(forecast.value.generated_at)),
+        tr('· 有效至'),
+        tr(when(forecast.value.valid_until)),
+      ])
+    : undefined,
+)
 const referenceId = computed(() =>
   requested.value?.storeId === props.storeId && requested.value?.skuId === props.skuId
     ? requested.value.id
@@ -121,13 +137,23 @@ const referenceId = computed(() =>
 // The panel starts as one line, the title and the latest result; an Agent reference opens it.
 const expanded = ref(Boolean(referenceId.value))
 const bodyId = useId()
+// A projection on the model's reference series (historical_demo) is not this store's demand, and
+// no plan rests on it. Its line names the product only, so no 7-day total stands beside the plan's;
+// folded, the tag says what it is, with no warning when its validity lapses. Open, the panel says
+// its total and its state as they are.
+const referenceOnly = computed(() => current.value?.mode === 'historical_demo' && !!forecast.value)
 const brief = computed(() =>
   joinText([
     productName.value || tr('当前商品'),
-    ...(forecast.value
+    ...(forecast.value && !referenceOnly.value
       ? ['·', tr('七日需求合计 {0} 件', [forecast.value.predicted_quantity])]
       : []),
   ]),
+)
+const statusTag = computed(() =>
+  referenceOnly.value && !expanded.value
+    ? { label: '模型推演，仅供参考', tone: 'gray' }
+    : { label: statusLabel.value, tone: statusTone.value },
 )
 const referenceChanged = computed(() =>
   Boolean(referenceId.value && !loading.value && referenceId.value !== forecast.value?.forecast_id),
@@ -341,13 +367,12 @@ onUnmounted(() => {
         </h2>
         <p class="forecast-brief">{{ brief }}</p>
       </div>
-      <span class="tag" :class="statusTone" role="status">{{ tr(statusLabel) }}</span>
+      <span class="tag" :class="statusTag.tone" role="status" :title="validity">{{
+        tr(statusTag.label)
+      }}</span>
     </div>
     <div v-show="expanded" :id="bodyId" class="forecast-body">
       <p v-if="error" class="notice amber" role="alert">{{ tr(error) }}</p>
-      <p v-if="referenceId" class="source-note">
-        {{ joinLocalizedText([tr('正在核对引用：'), tr(referenceId)]) }}
-      </p>
       <p v-if="referenceChanged" class="notice amber" role="alert">
         {{ tr('该引用已被更新或当前不可用。下方仅展示当前保存的预测，不能作为原引用的复核结果。') }}
       </p>
@@ -423,7 +448,7 @@ onUnmounted(() => {
             </thead>
             <tbody>
               <tr v-for="row in forecast.daily_predictions" :key="row.date">
-                <th scope="row">{{ tr(row.date.slice(5, 10)) }}</th>
+                <th scope="row">{{ day(row.date) }}</th>
                 <td>{{ tr(row.quantity.toFixed(2)) }}</td>
               </tr>
             </tbody>
@@ -457,16 +482,6 @@ onUnmounted(() => {
                 tr(forecast.model_version),
                 tr('· 系列'),
                 tr(forecast.series_id),
-              ])
-            }}
-          </p>
-          <p>
-            {{
-              joinText([
-                tr('生成于'),
-                stamp(forecast.generated_at),
-                tr('· 有效至'),
-                stamp(forecast.valid_until),
               ])
             }}
           </p>

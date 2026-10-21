@@ -26,8 +26,11 @@ const tables = computed(() => part('PlanComparison'))
 <template>
   <article class="agent-outcome" :data-outcome="outcome.invocation_id">
     <header>
-      <b>{{ tr(outcome.kind === 'evaluation' ? '试算结果 · 未修改方案' : '方案修订回执') }}</b
-      ><time>{{ tr(when(outcome.recorded_at)) }}</time>
+      <!-- The record's clock time is on hover, as for messages: the business time is the page's
+           only visible time. -->
+      <b :title="tr(when(outcome.recorded_at))">{{
+        tr(outcome.kind === 'evaluation' ? '试算结果 · 未修改方案' : '方案修订回执')
+      }}</b>
     </header>
     <p v-if="outcome.availability !== 'available'">{{ tr(outcome.reason) }}</p>
     <template v-else-if="outcome.before && outcome.after">
@@ -36,15 +39,7 @@ const tables = computed(() => part('PlanComparison'))
         :surface="figures"
         :identity="outcome.invocation_id + ':figures'"
       />
-      <p>
-        {{
-          tr(
-            outcome.kind === 'evaluation'
-              ? `基于方案 v${outcome.before.plan_version} 的假设比较`
-              : `方案 v${outcome.before.plan_version} → v${outcome.after.plan_version}`,
-          )
-        }}
-      </p>
+      <p v-if="outcome.kind === 'evaluation'">{{ tr('基于当前方案的假设比较') }}</p>
       <p>
         {{
           joinText([

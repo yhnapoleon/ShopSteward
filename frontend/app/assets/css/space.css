@@ -90,11 +90,12 @@
   font-size: 13px;
   color: var(--muted);
 }
+/* The items line up with the group's text, after its 36px mark and 14px gap. */
 .activity-group-items {
   display: grid;
   gap: 8px;
   margin: -4px 0 0;
-  padding: 0 0 18px 129px;
+  padding: 0 0 18px 50px;
   list-style: none;
 }
 .activity-group-items li {
@@ -104,13 +105,6 @@
   line-height: 1.6;
   color: #405569;
   overflow-wrap: anywhere;
-}
-.activity-group-items time {
-  flex-shrink: 0;
-  min-width: 76px;
-  font-size: 12px;
-  color: #596c7d;
-  font-variant-numeric: tabular-nums;
 }
 
 /* Hand me a task: the structured restocking entry under the free-text intake. */
@@ -176,9 +170,6 @@
 @media (max-width: 580px) {
   .activity-group-items {
     padding-left: 0;
-  }
-  .activity-group-items time {
-    min-width: 64px;
   }
   .service-outage {
     padding: 18px;
@@ -374,6 +365,18 @@
   font-size: 13px;
   color: var(--blue);
 }
+/* On a today-page card the line takes the description's place, at its size, so nothing moves. */
+.work-card p.space-recheck {
+  margin: 0;
+  font-size: inherit;
+  color: var(--blue);
+}
+/* So it does on the work page's outcome card, which has no plan to keep while it is re-checked. */
+.space-outcome p.space-recheck {
+  margin: 0 0 16px;
+  font-size: inherit;
+  color: var(--blue);
+}
 .space-sync-state.is-off {
   color: #805316;
 }
@@ -459,6 +462,10 @@
 /* Plan card: the slot carries the highlight ring; options give press feedback. */
 .space-slot {
   border-radius: 26px;
+}
+/* A regular plan said in one line under the card that leads (a supplier's decline). */
+.space-slot > article + .rf-regular-plan {
+  margin-top: 12px;
 }
 .space-workspace .option:active:not(:disabled) {
   transform: scale(0.98);
@@ -1672,8 +1679,18 @@ a.quotation-rule-badge:focus-visible {
   body:has(.presenter-bar) .workspace {
     padding-bottom: 136px;
   }
-  /* The bar shows the business time; the page does not repeat it as a second clock. */
-  body:has(.presenter-bar) :is(.top-clock, .overview-clock) {
+  /* A long conversation scrolls inside its own box, whose bottom edge can sit behind the bar: its
+     end keeps the bar's footprint (48px tall, 22px up) free, so the last line scrolls clear of it
+     within the box. A conversation that fits its box ends where it ends, with no blank below;
+     scrolling the page moves it clear (useOverflowing). */
+  body:has(.presenter-bar) :is(.agent-thread, .work-message-log).is-overflowing {
+    padding-bottom: 70px;
+  }
+  /* The bar shows the business time; the page does not repeat it as a second clock. The work
+     page's sync strip keeps only whether the data is synced; the today page's side column, whose
+     strip would be left with that one word, drops it (the bar reports its own syncing). */
+  body:has(.presenter-bar)
+    :is(.top-clock, .overview-clock, .space-sync-item, .space-sync.is-compact) {
     display: none;
   }
 }

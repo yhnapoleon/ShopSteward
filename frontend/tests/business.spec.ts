@@ -209,7 +209,7 @@ test('报价服务器工具：实际文件输入、甲乙计算、原币种和�
   await expect(panel.getByLabel('报价原件', { exact: true })).toContainText('示例报价_乙.csv')
   await panel.getByRole('button', { name: '仅更新本次结果', exact: true }).click()
   await expect(panel).toContainText('折合 45 件')
-  await expect(panel).toContainText('12 CNY')
+  await expect(panel).toContainText('¥12')
   const d = page.waitForEvent('download')
   await panel.getByRole('link', { name: '下载此版本 CSV', exact: true }).click()
   await (await d).saveAs(info.outputPath('quote-B.csv'))

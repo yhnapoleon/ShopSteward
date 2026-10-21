@@ -6,7 +6,8 @@ import { firstSync } from '~/utils/glossary'
 // One line on how current the facts are. Routine polling is quick and stays silent; the pulse
 // appears only for a slow refresh, or after a simulated event until the state version moves.
 // The strip names one time, the business time; when the data was last synced sits behind the
-// state (hover) and on the facts card's note, so the two are never read as one clock.
+// state (hover), so the two are never read as one clock. With the presenter bar on screen the
+// bar is the one place for the business time, and the strip keeps only the state (space.css).
 // `compact` is the today page's side column.
 defineProps<{ compact?: boolean }>()
 const { s } = useShop()

@@ -6,7 +6,8 @@ import { supplierDisplayName } from '~/utils/glossary'
 import { dayOf, named, unbroken } from '~/utils/recovery'
 // Orders an emergency restock under way records in its own card are not listed here
 // (useShop.awaitingArrival). `quiet`: another card (the restock, or a plan to confirm) holds the
-// page's one primary action, so recording steps back.
+// page's one primary action, so recording steps back and the card stays compact. Otherwise the
+// order's step is this one: the supplier's reply, as read, heads the card (as in the restock).
 defineProps<{ quiet?: boolean }>()
 const shop = useShop()
 const { s, awaitingArrival, hasRole } = shop
@@ -48,6 +49,7 @@ async function record(id: string, outstanding: number) {
         )
       }}
     </h2>
+    <SupplierReceipt v-if="!quiet && action.supplier_reply" :reply="action.supplier_reply" />
     <dl class="arrival-facts">
       <div>
         <dt>{{ tr('预计到货') }}</dt>

@@ -453,6 +453,33 @@ test('结束委托绑定原任务，刷新可回看；未知采购阻止结束',
   expect(c.writes[0]!.body.operation).toBe('complete')
 })
 
+test('对话里的表格在栏宽内完整可读：说明换行，金额不拆行', async ({ page }) => {
+  const c = await setup(page)
+  c.messages.push({
+    id: 'table',
+    seq: 4,
+    role: 'assistant',
+    content: [
+      '| Quantity | Cost | Cash after | Shortage |',
+      '| --- | --- | --- | --- |',
+      '| 40 units | CNY 400.00 | CNY 600.00 | none |',
+      '| 80 units | CNY 800.00 | CNY 200.00 | rejected — would break your CNY 300 cash floor |',
+    ].join('\n'),
+    run_id: c.run.id,
+    references: [],
+    created_at: new Date().toISOString(),
+  })
+  const table = page.locator('.agent-markdown table').last()
+  await expect(table).toContainText('cash floor')
+  expect(await table.evaluate((t) => t.scrollWidth <= t.clientWidth)).toBe(true)
+  const whiteSpace = (name: string) =>
+    table
+      .getByRole('cell', { name, exact: true })
+      .evaluate((cell) => getComputedStyle(cell).whiteSpace)
+  expect(await whiteSpace('CNY 800.00')).toBe('nowrap')
+  expect(await whiteSpace('rejected — would break your CNY 300 cash floor')).toBe('normal')
+})
+
 test('手机任务工作区、长表格不溢出，减少动效生效', async ({ page }, info) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 390, height: 844 })

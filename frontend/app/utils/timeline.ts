@@ -190,11 +190,42 @@ const actionResults: Record<string, { title: string; tone: TimelineTone }> = {
   ACTION_CANCELLED: { title: '采购已取消', tone: 'gray' },
   ACTION_STALE: { title: '原方案失效', tone: 'gray' },
 }
+// Why an order stopped or needs checking: the codes backend/app/execution writes to an order's
+// last_error, its ACTION_* timeline rows and "采购结果需要核对：{code}" reminders. An order that
+// was about to go out but whose plan no longer held (execution/repository.py validate_current)
+// is said by what changed.
+const changedBeforeSending = '发出前情况已变化，原方案不再适用'
 const actionReasons: Record<string, string> = {
   SUPPLIER_REJECTED: '供应商拒绝了这笔采购',
   SUPPLIER_PENDING: '供应商尚未给出结果',
   RECEIPT_CONFLICT: '回执与原采购不一致',
   INVALID_SOURCE_RESPONSE: '供应商回执无法识别',
+  ACCOUNTING_CONFLICT: '回执与账目对不上',
+  QUANTITY_OUT_OF_RANGE: '到货数量超出订单',
+  WITHDRAWN_BY_OWNER: '你撤回了这笔订单',
+  MISSION_CANCELLED: '委托已取消，订单没有发出',
+  SIMULATION_UNAVAILABLE: '暂时连不上供应商',
+  DEPENDENCY_UNAVAILABLE: '暂时连不上供应商',
+  PLAN_EXPIRED: '发出前方案已过期',
+  DATA_STALE: '发出前经营数据未同步',
+  CASH_FLOOR_VIOLATION: '低于现金底线',
+  ARRIVAL_WINDOW_MISSED: '不能在需求周期内到货',
+  STATE_VERSION_CONFLICT: changedBeforeSending,
+  MISSION_VERSION_CONFLICT: changedBeforeSending,
+  PROPOSAL_HASH_CONFLICT: changedBeforeSending,
+  PROPOSAL_INVALID: changedBeforeSending,
+  NO_PURCHASE_PROPOSED: changedBeforeSending,
+  MISSION_NOT_ACTIVE: changedBeforeSending,
+  ACTION_IN_PROGRESS: changedBeforeSending,
+}
+/**
+ * An order's reason in the owner's words. A code with no wording is left out (null) rather than
+ * shown raw; anything that is not a code is shown as written.
+ */
+export function purchaseReason(reason: string | null | undefined) {
+  if (!reason) return null
+  if (actionReasons[reason]) return t(actionReasons[reason])
+  return /^[A-Z][A-Z0-9_]+$/.test(reason) ? null : t(reason)
 }
 
 function planTitle(summary: string, revised: boolean) {
@@ -302,9 +333,15 @@ export function describeEvent(entry: Entry): TimelineEvent {
     case 'ALERT_ESCALATED': {
       const m = /^([A-Z_]+)：([\s\S]*)$/.exec(summary)
       if (!m) return { ...base, kind: 'alert' }
+      // "采购结果需要核对：SUPPLIER_REJECTED": the reminder already says the purchase needs
+      // checking, so the row names the reason itself.
+      const code = /^采购结果需要核对：([A-Z][A-Z0-9_]+)$/.exec(m[2]!.trim())?.[1]
       return {
         ...base,
-        title: t('发现{0}：{1}', [alertName(m[1]!), t(m[2]!.trim())]),
+        title: t('发现{0}：{1}', [
+          alertName(m[1]!),
+          (code && purchaseReason(code)) || t(m[2]!.trim()),
+        ]),
         tone: 'amber',
         kind: 'alert',
       }
@@ -345,7 +382,7 @@ export function describeEvent(entry: Entry): TimelineEvent {
         title: t(result.title),
         tone: result.tone,
         kind: 'order',
-        detail: reason ? (actionReasons[reason] ? t(actionReasons[reason]) : reason) : undefined,
+        detail: purchaseReason(reason) || undefined,
       }
     }
   }
@@ -452,15 +489,17 @@ export function groupTimeline(entries: Entry[]): TimelineRow[] {
   let run: TimelineItem[] = []
   let mode: 'routine' | 'repeat' | null = null
   // Checks and plans without a purchase read "无需采购" only when that holds at the run's newest
-  // row; while a purchase plan stays in force the checks merely left it unchanged.
-  const routineLabel = (latest: string) => {
+  // row; while a purchase plan stays in force the checks merely left it unchanged. Entries carry
+  // only the real-world time they were recorded, not the business time the page shows, so a label
+  // names no time; the views show it on hover (row.earliest / row.latest).
+  const routineLabel = () => {
     const head = run[0]!
     const checks = run.every((i) => i.event.kind === 'check' || i.event.kind === 'plan')
     if (checks && (head.event.kind === 'plan' || settled.has(head)))
-      return t('{0} 次检查，无需采购 · 最近 {1}', [run.length, when(latest)])
+      return t('{0} 次检查，无需采购', [run.length])
     if (run.every((i) => i.event.kind === 'check'))
-      return t('{0} 次例行检查，方案无变化 · 最近 {1}', [run.length, when(latest)])
-    return t('{0} 条例行记录，无需处理 · 最近 {1}', [run.length, when(latest)])
+      return t('{0} 次例行检查，方案无变化', [run.length])
+    return t('{0} 条例行记录，无需处理', [run.length])
   }
   const flush = () => {
     if (run.length === 1) {
@@ -470,8 +509,8 @@ export function groupTimeline(entries: Entry[]): TimelineRow[] {
       const { earliest, latest } = span(run)
       const label =
         mode === 'repeat'
-          ? t('{0} · 连续 {1} 次 · 最近 {2}', [run[0]!.event.title, run.length, when(latest)])
-          : routineLabel(latest)
+          ? t('{0} · 连续 {1} 次', [run[0]!.event.title, run.length])
+          : routineLabel()
       rows.push({
         kind: 'group',
         key: 'group:' + run[0]!.entry.id,

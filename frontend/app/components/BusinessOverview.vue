@@ -3,7 +3,7 @@ import { productDisplayName } from '~/utils/glossary'
 import { joinText, t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { api, query } from '~/utils/api'
-import { money, number } from '~/utils/presentation'
+import { money, number, when } from '~/utils/presentation'
 import {
   cashHistory,
   matchesState,
@@ -74,6 +74,26 @@ const salesStamp = computed(() => {
   if (!summary.value) return ''
   const last = new Date(Date.parse(summary.value.to) - 1).toISOString()
   return `${utcDate(summary.value.from)} — ${utcDate(last)}`
+})
+// The sales chart counts UTC calendar days (backend day_buckets), while the page reads local
+// time. For an instant whose local date is not its UTC date (local 00:00–08:00 at UTC+8), a bar
+// would carry the wrong local date. Only then does the range say "UTC": when the business clock
+// or any recorded sale is such an instant, or when that cannot be known (the ledger not fully
+// read, or read at another state than the sales). Otherwise UTC and local dates name the same
+// days and the note would only add a second clock.
+const otherDay = (at: string | null | undefined) => {
+  const d = new Date(at || '')
+  return !Number.isFinite(d.getTime()) || d.getDate() !== d.getUTCDate()
+}
+const utcNote = computed(() => {
+  if (!summary.value) return false
+  const book = ledger.value
+  if (!book?.complete || book.context.state_version !== summary.value.context.state_version)
+    return true
+  return (
+    otherDay(state.value?.simulation_time) ||
+    book.items.some((e) => e.effect_type === 'SALE_RECORDED' && otherDay(e.simulation_time))
+  )
 })
 const modal = ref('')
 const details = ref<HTMLDialogElement>()
@@ -231,7 +251,7 @@ onUnmounted(() => {
         <h1 id="overview-title">{{ tr('经营概览') }}<span class="overview-title-dot" /></h1>
       </div>
       <div class="overview-meta">
-        <span v-if="state" class="overview-clock">{{ tr(utcTime(state.simulation_time)) }}</span>
+        <span v-if="state" class="overview-clock">{{ tr(when(state.simulation_time)) }}</span>
         <button class="overview-icon" :aria-label="tr('查看概览数据来源')" @click="open('source')">
           <AppIcon name="info" />
         </button>
@@ -402,7 +422,7 @@ onUnmounted(() => {
             }}</span>
           </div>
           <div class="overview-chart-footer">
-            <span>{{ tr(salesStamp) }} <span v-if="summary">· UTC</span></span
+            <span>{{ tr(salesStamp) }} <span v-if="utcNote">· UTC</span></span
             ><button :disabled="!summary" @click="showSales()">
               {{ tr('销售明细') }}<AppIcon name="arrow-up-right" />
             </button>
@@ -514,7 +534,7 @@ onUnmounted(() => {
               }}<b v-if="item.is_overdue">{{ tr('已超过预计到货时点') }}</b></span
             >
             <span v-if="item.arrival_status !== 'RECEIVED'" class="overview-order-date"
-              >{{ tr(item.expected_arrival_at ? utcTime(item.expected_arrival_at) : '到货时间未知')
+              >{{ tr(item.expected_arrival_at ? when(item.expected_arrival_at) : '到货时间未知')
               }}<small v-if="item.expected_arrival_at">{{ tr('预计') }}</small></span
             ><AppIcon name="chevron-right" />
           </button>
@@ -722,7 +742,7 @@ onUnmounted(() => {
                       tr('已超预计时点')
                     }}</strong>
                   </td>
-                  <td>{{ tr(utcTime(item.expected_arrival_at)) }}</td>
+                  <td>{{ tr(when(item.expected_arrival_at)) }}</td>
                 </tr>
               </tbody>
             </table>

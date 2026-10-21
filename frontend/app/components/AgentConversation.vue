@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { joinText, t as tr } from '~/i18n'
+import { t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import type { ForecastReference } from '~/types/forecast'
 import { when } from '~/utils/presentation'
@@ -25,6 +25,8 @@ async function openForecast(reference: Record<string, unknown>) {
 }
 const thread = ref<HTMLElement | null>(null),
   composer = ref<HTMLTextAreaElement | null>(null)
+// Only a thread that scrolls in its own box gets room at its end in demo mode (space.css).
+const overflowing = useOverflowing(thread)
 const newContent = ref(false),
   copied = ref('')
 let copyTimer: ReturnType<typeof setTimeout> | undefined
@@ -113,17 +115,13 @@ onUnmounted(() => clearTimeout(copyTimer))
     <div
       ref="thread"
       class="agent-thread"
+      :class="{ 'is-overflowing': overflowing }"
       role="log"
       :aria-label="tr('任务对话')"
       aria-live="polite"
       aria-relevant="additions"
       @scroll.passive="recordScroll"
     >
-      <div v-if="!s.messages.length && !s.pending" class="agent-chat-empty">
-        <AppIcon name="sparkles" />
-        <p>{{ tr('可以问依据，也可以说出你的取舍。') }}</p>
-        <span>{{ tr('试算、调整方案与实际采购会分别呈现。') }}</span>
-      </div>
       <article
         v-for="m in s.messages"
         :key="m.id"
@@ -145,7 +143,7 @@ onUnmounted(() => clearTimeout(copyTimer))
             class="text-link"
             @click="openForecast(reference)"
           >
-            {{ joinText([tr('查看预测依据 ·'), tr(reference.version || reference.id)], ' ') }}
+            {{ tr('查看预测依据') }}
           </button>
         </div>
         <AgentReferences

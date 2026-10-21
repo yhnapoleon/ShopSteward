@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { t as tr } from '~/i18n'
+import { joinText, t as tr } from '~/i18n'
 import { orderStatus, supplierDisplayName } from '~/utils/glossary'
 import { money, when } from '~/utils/presentation'
 import { shortfall } from '~/utils/recovery'
+import { purchaseReason } from '~/utils/timeline'
 import type { Schema } from '~/types/models'
 
 // Purchase orders of this mission, newest first: what was bought, where it stands, and how much
@@ -45,6 +46,24 @@ const orders = computed(() =>
         arrival: inbound?.expected_arrival_at || action.purchase_snapshot.expected_arrival_at,
         // A failed or cancelled order brings nothing; arrival is only tracked for live ones.
         tracked: ['QUEUED', 'EXECUTING', 'SUCCEEDED', 'UNKNOWN'].includes(action.status),
+        // The number the supplier knows the order by: theirs once confirmed, else the one on the
+        // order message the owner sent. An order with neither has no number worth showing.
+        number: action.external_order_id || action.order_message?.reference || null,
+        // A decline is already said by the tag and the reply; the reason row adds only news.
+        reason:
+          action.supplier_reply?.outcome === 'declined' && action.last_error === 'SUPPLIER_REJECTED'
+            ? null
+            : purchaseReason(action.last_error),
+        // When the order and the reply were recorded: real-world times, not the business time,
+        // so they stay behind the row (hover) instead of beside the business clock.
+        recorded: joinText(
+          [
+            tr('提交时间'),
+            when(action.created_at),
+            ...(action.receipt ? ['·', tr('供应商回执'), when(action.receipt.recorded_at)] : []),
+          ],
+          ' ',
+        ),
       }
     }),
 )
@@ -122,35 +141,28 @@ onMounted(() => nextTick(() => (live.value = true)))
               ><small>{{ tr('{0}/{1} 件已到货', [o.received, o.ordered]) }}</small></span
             ><AppIcon name="chevron-down" />
           </summary>
-          <dl class="space-order-detail">
-            <div>
+          <dl class="space-order-detail" :title="o.recorded">
+            <div v-if="o.number">
               <dt>{{ tr('采购编号') }}</dt>
-              <dd>{{ tr(o.action.external_order_id || o.action.id) }}</dd>
-            </div>
-            <div>
-              <dt>{{ tr('提交时间') }}</dt>
-              <dd>{{ tr(when(o.action.created_at)) }}</dd>
+              <dd>{{ o.number }}</dd>
             </div>
             <div>
               <dt>{{ tr('供应商回执') }}</dt>
               <dd>
                 {{
                   o.action.receipt
-                    ? tr('{0} · {1}', [
-                        tr(
-                          { ACCEPTED: '已受理', REJECTED: '已拒绝', PENDING: '尚未答复' }[
-                            o.action.receipt.status
-                          ],
-                        ),
-                        when(o.action.receipt.recorded_at),
-                      ])
+                    ? tr(
+                        { ACCEPTED: '已受理', REJECTED: '已拒绝', PENDING: '尚未答复' }[
+                          o.action.receipt.status
+                        ],
+                      )
                     : tr('尚未取得')
                 }}
               </dd>
             </div>
-            <div v-if="o.action.last_error">
+            <div v-if="o.reason">
               <dt>{{ tr('原因') }}</dt>
-              <dd>{{ tr(o.action.last_error) }}</dd>
+              <dd>{{ o.reason }}</dd>
             </div>
           </dl>
         </details>

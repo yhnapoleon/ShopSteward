@@ -16,6 +16,7 @@ const agent = useAgentConversation(true)
 const work = useWorkItems(true)
 const activeWorks = computed(() =>
   work.s.items
+    .map(keptLine)
     .filter(
       (i) =>
         i.business?.needs_attention ||
@@ -305,13 +306,23 @@ async function act(fn: () => Promise<unknown>, close = false) {
     modalError.value = (e as Error).message
   }
 }
-// Reviewing a plan opens its dialog a moment later; the disabled review button says it is under way.
-const toast = computed(() => (s.busy === '正在核对方案' ? '' : s.busy) || s.notice)
+// Steps whose progress is said where the owner acted: reviewing a plan (its dialog opens a moment
+// later, the review button disabled meanwhile), reading a pasted reply ("正在读取回复…"), taking
+// part of an order ("正在成交…") and recording an arrival ("正在登记…"), on the order card and in
+// the emergency restock alike. A toast would only repeat them, over the card being worked on.
+const saidInline = ['正在核对方案', '正在登记供应商回复', '正在按对方数量成交', '正在登记到货']
+const toast = computed(() => (saidInline.includes(s.busy) ? '' : s.busy) || s.notice)
 async function prepare() {
   await act(async () => {
     approval.value = await shop.prepareDecision()
     open('approval')
   })
+}
+// The today page's folded plan line does what the work page's same line does: the review of the
+// purchase opens, over the item it belongs to.
+async function reviewFolded(id: string) {
+  await openWork(id)
+  if (work.s.detail?.item.id === id && canDecide.value) await prepare()
 }
 // Who sends the approved order, said in the dialog where the owner approves it. In assisted mode
 // (the deployment's channel), and always for a supplier known only from its documents
@@ -474,6 +485,49 @@ const issue = computed(() =>
                 ? 'changed'
                 : null,
 )
+// "Next day" and the owner's own order writes outdate the plan on purpose; the new one follows in
+// seconds (useSpace.usePlanRecheck). The today page keeps what it showed meanwhile, as the work
+// page does: `blocking` raises the "needs attention" card only past that window. The mission's
+// item keeps the line it had too: until the new plan arrives the backend calls the plan "to be
+// updated" (PLAN_STALE), the expected step, not a problem; its card says it is being re-checked.
+const recheck = usePlanRecheck(() => issue.value)
+const blocking = recheck.blocking
+const lines = new Map<string, Schema<'WorkView'>['business']>()
+watch(
+  () => work.s.items,
+  (items) => {
+    for (const i of items)
+      if (i.business && !(recheck.open.value && i.business.code === 'PLAN_STALE'))
+        lines.set(i.id, i.business)
+  },
+  { immediate: true, flush: 'sync' },
+)
+const rechecked = (item: Schema<'WorkView'>) =>
+  recheck.open.value &&
+  item.business?.code === 'PLAN_STALE' &&
+  !!item.mission_id &&
+  item.mission_id === mission.value?.id &&
+  !!lines.get(item.id) &&
+  lines.get(item.id)!.code !== 'PLAN_STALE'
+function keptLine(item: Schema<'WorkView'>): Schema<'WorkView'> {
+  return rechecked(item) ? { ...item, business: lines.get(item.id)! } : item
+}
+/** The mission's plan card, while its plan is re-checked (by the item's line or the page's own). */
+const heldWorks = computed(
+  () =>
+    new Set(
+      work.s.items
+        .filter(
+          (i) =>
+            rechecked(i) ||
+            (recheck.rechecking.value &&
+              i.business?.code === 'PENDING_APPROVAL' &&
+              !!i.mission_id &&
+              i.mission_id === mission.value?.id),
+        )
+        .map((i) => i.id),
+    ),
+)
 const working = computed(
   () => unresolved.value && ['QUEUED', 'EXECUTING'].includes(unresolved.value.status),
 )
@@ -503,23 +557,52 @@ const watchWorks = computed(() => activeWorks.value.filter((i) => !needsOwner(i)
 const taskCardShown = computed(
   () => !!mission.value && !work.s.items.some((i) => i.mission_id === mission.value?.id),
 )
-// One primary action on the page. Once the usual supplier has declined, finding another one is
-// the owner's next step: the restock card leads, and the mission's regular plan, which would
-// order from the same supplier again, follows it with a secondary button.
+// One primary action on the page. When the usual supplier declined the mission's order, or the
+// order failed, finding another supplier is the owner's next step: the restock card leads. The
+// mission's regular plan, which would order from the same supplier again, is no second card
+// beside it: it folds into one line under the restock card (as on the work page while the
+// decline's receipt is there); anything else of the mission follows quietly. For any other reason
+// (the plan cannot cover the gap, cash is short, an order is late) the regular plan can still be
+// carried out: it stays a full card and leads, as on the work page, and the restock card steps
+// back to a secondary button.
 const restockLeads = computed(
-  () => recoveryPrompt.shown.value && recoveryPrompt.trigger.value?.reason === 'declined',
+  () =>
+    recoveryPrompt.shown.value &&
+    ['declined', 'failed'].includes(recoveryPrompt.trigger.value?.reason || ''),
 )
 const behindRestock = (item: Schema<'WorkView'>) =>
   restockLeads.value && !!item.mission_id && item.mission_id === mission.value?.id
 const leadingWorks = computed(() => decideWorks.value.filter((i) => !behindRestock(i)))
-const trailingWorks = computed(() => decideWorks.value.filter(behindRestock))
+/** The mission's regular plan to confirm, once its figures are loaded: said in that one line. */
+const foldedWork = computed(() => {
+  const current = plan.value
+  const item = decideWorks.value.find(
+    (i) => behindRestock(i) && i.business?.code === 'PENDING_APPROVAL',
+  )
+  return item &&
+    current?.status === 'PENDING_APPROVAL' &&
+    current.id === item.business?.plan_id &&
+    current.proposed_purchase
+    ? { item, purchase: current.proposed_purchase }
+    : null
+})
+const trailingWorks = computed(() =>
+  decideWorks.value.filter((i) => behindRestock(i) && i !== foldedWork.value?.item),
+)
+const planLeads = computed(
+  () =>
+    !restockLeads.value &&
+    (leadingWorks.value.some((i) => !!i.mission_id && i.mission_id === mission.value?.id) ||
+      (taskCardShown.value && canDecide.value)),
+)
 // The badge counts only the cards in "需要你拍板"; a new store's first sync is not a decision.
 const attention = computed(
-  () => !!issue.value && !(issue.value === 'stale' && firstSync(s.dashboard?.freshness)),
+  () => !!blocking.value && !(blocking.value === 'stale' && firstSync(s.dashboard?.freshness)),
 )
 const decisionCount = computed(
   () =>
-    decideWorks.value.length +
+    decideWorks.value.length -
+    (foldedWork.value ? 1 : 0) +
     ((taskCardShown.value && canDecide.value) || attention.value ? 1 : 0) +
     (recoveryPrompt.shown.value ? 1 : 0),
 )
@@ -529,6 +612,59 @@ const todayStarted = computed(() =>
 const receiptActions = computed(() =>
   s.actions.filter((a) => !mission.value || a.mission_id === mission.value.id),
 )
+// Each record says its order as the purchase rows do (space/OrdersCard.vue, TimelineCard.vue):
+// the number the supplier knows it by (an order with none shows none), a decline or a partly
+// confirmed order named as such, and a reason only when it adds news, in the owner's words. Only
+// a live order has an arrival to follow, counted against what the supplier took. When it was
+// submitted and answered are real-world times: they stay on the heading's hover. A partly
+// confirmed order is headed by what the supplier took, then the quantity first ordered, as its row.
+const receipts = computed(() =>
+  receiptActions.value.map((a) => {
+    const declined = a.supplier_reply?.outcome === 'declined'
+    const short = shortfall(a)
+    const inbound = s.inbounds.find((i) => i.action_id === a.id)
+    return {
+      a,
+      quantity: short?.accepted ?? a.quantity,
+      amount: short
+        ? (a.receipt?.total_minor ?? short.accepted * a.purchase_snapshot.unit_price_minor)
+        : a.amount_minor,
+      arrival: ['QUEUED', 'EXECUTING', 'SUCCEEDED', 'UNKNOWN'].includes(a.status)
+        ? {
+            at: inbound?.expected_arrival_at || a.purchase_snapshot.expected_arrival_at,
+            received: inbound?.received_quantity || 0,
+            ordered: inbound?.ordered_quantity || short?.accepted || a.quantity,
+          }
+        : null,
+      number: a.external_order_id || a.order_message?.reference || null,
+      outcome: declined
+        ? tr('供应商拒单')
+        : short
+          ? joinText([tr('只确认了一部分'), '·', tr('订单 {0} 件', [short.ordered])], ' ')
+          : tr(actionLabel(a.status, a.channel)),
+      reason:
+        declined && a.last_error === 'SUPPLIER_REJECTED' ? null : purchaseReason(a.last_error),
+      recorded: joinText(
+        [
+          tr('提交时间'),
+          when(a.created_at),
+          ...(a.receipt ? ['·', tr('供应商回执'), when(a.receipt.recorded_at)] : []),
+        ],
+        ' ',
+      ),
+    }
+  }),
+)
+// A reminder's sentence. The backend writes one about a purchase as "采购结果需要核对：{code}"
+// (execution/accounting.py): the heading already says the purchase needs checking, so the line
+// gives the reason in the owner's words, as the timeline does; a code with no wording is left out.
+function alertSummary(a: Schema<'Alert'>) {
+  const code =
+    a.type === 'ACTION_EXCEPTION'
+      ? a.facts?.reason || /^采购结果需要核对：(.+)$/.exec(a.summary)?.[1]
+      : null
+  return code ? purchaseReason(code.trim()) : tr(a.summary)
+}
 const decisions = useDecisionRecords(
   () => view.value === 'journal' && recordFilter.value === 'decisions',
 )
@@ -941,15 +1077,34 @@ function briefing() {
                 :key="item.id"
                 :item="item"
                 in-decisions
+                :held="heldWorks.has(item.id)"
                 @open="openWork(item.id)"
               />
-              <RecoveryPrompt @open="openTask" />
+              <RecoveryPrompt :quiet="planLeads" @open="openTask" />
+              <p
+                v-if="foldedWork"
+                class="rf-regular-plan today-regular-plan"
+                :data-work-id="foldedWork.item.id"
+                data-regular-plan-line
+              >
+                <span>{{
+                  tr('常规方案：建议补 {0} 件 · {1}', [
+                    foldedWork.purchase.quantity,
+                    money(foldedWork.purchase.total_minor),
+                  ])
+                }}</span
+                ><button class="text-link" @click="reviewFolded(foldedWork.item.id)">
+                  {{ tr('核对 {0} 件采购', [foldedWork.purchase.quantity])
+                  }}<AppIcon name="chevron-right" />
+                </button>
+              </p>
               <WorkCard
                 v-for="item in trailingWorks"
                 :key="item.id"
                 :item="item"
                 quiet
                 in-decisions
+                :held="heldWorks.has(item.id)"
                 @open="openWork(item.id)"
               />
               <TaskCard v-if="taskCardShown" :quiet="restockLeads" @open="openTask()" />
@@ -969,7 +1124,7 @@ function briefing() {
                   {{ tr('刷新原记录') }}
                 </button>
               </article>
-              <article v-else-if="issue" class="attention-card glass">
+              <article v-else-if="blocking" class="attention-card glass">
                 <span class="tag amber">{{ tr('需要处理') }}</span>
                 <h2>
                   {{
@@ -1025,7 +1180,7 @@ function briefing() {
               </article>
               <p
                 v-if="
-                  !decideWorks.length && !taskCardShown && !issue && !recoveryPrompt.shown.value
+                  !decideWorks.length && !taskCardShown && !blocking && !recoveryPrompt.shown.value
                 "
                 class="space-quiet"
               >
@@ -1041,16 +1196,9 @@ function briefing() {
                 </button>
               </template>
             </template>
-            <!-- With the assistant available, telling it the task comes first. Without it the
-                 start card leads and the same intake folds into one line below the card. -->
-            <div
-              v-if="
-                work.s.available && work.s.processorAvailable && !mission && !activeWorks.length
-              "
-              class="work-intake-inline glass"
-            >
-              <WorkIntake @submitted="openWork" />
-            </div>
+            <!-- The start card leads: its button is the page's one primary action, within the
+                 first screen. Telling the assistant follows right below it (open when the
+                 assistant is available, folded into one line when it is not). -->
             <article v-if="!s.storeId" class="start-card glass">
               <span class="tag">{{ tr('从示例店铺开始') }}</span>
               <h2>{{ tr('先准备这一轮经营资料。') }}</h2>
@@ -1093,6 +1241,14 @@ function briefing() {
               </button>
               <p class="channel-note">{{ tr('尚未建立委托，也没有采购。') }}</p>
             </article>
+            <div
+              v-if="
+                work.s.available && work.s.processorAvailable && !mission && !activeWorks.length
+              "
+              class="work-intake-inline glass"
+            >
+              <WorkIntake @submitted="openWork" />
+            </div>
             <details
               v-if="
                 work.s.available && !work.s.processorAvailable && !mission && !activeWorks.length
@@ -1159,9 +1315,16 @@ function briefing() {
               </button>
             </div>
             <section class="summary-card glass">
+              <!-- The ledger reads in the order the entries changed the books (newest first), each
+                   dated by its business time. An accepted purchase carries no business time yet,
+                   only a real-world one: it stays undated rather than out of step. The other two
+                   views list mission records, which carry only the real-world time they were
+                   recorded: newest first, that time on hover. -->
               <template v-if="recordFilter === 'ledger'"
                 ><div v-for="e in s.ledger" :key="e.id" class="activity-item">
-                  <time>{{ tr(when(e.simulation_time || e.occurred_at)) }}</time>
+                  <time :datetime="e.simulation_time || undefined">{{
+                    e.simulation_time ? tr(when(e.simulation_time)) : ''
+                  }}</time>
                   <div>
                     <h3>
                       {{
@@ -1199,9 +1362,8 @@ function briefing() {
               ><template v-else
                 ><template v-for="row in recordRows" :key="row.key"
                   ><details v-if="row.kind === 'group'" class="activity-group">
-                    <summary class="activity-item">
-                      <time>{{ tr(when(row.earliest)) }}</time
-                      ><span class="mini-icon timeline-mark" :class="row.tone"
+                    <summary class="activity-item" :title="tr(when(row.latest))">
+                      <span class="mini-icon timeline-mark" :class="row.tone"
                         ><span class="timeline-dot" aria-hidden="true" /></span
                       ><span class="activity-copy"
                         ><strong>{{ row.label }}</strong
@@ -1209,17 +1371,19 @@ function briefing() {
                       ><AppIcon name="chevron-right" />
                     </summary>
                     <ol class="activity-group-items">
-                      <li v-for="item in row.items" :key="item.entry.id">
-                        <time>{{ tr(when(item.entry.created_at)) }}</time
-                        ><span>{{
+                      <li
+                        v-for="item in row.items"
+                        :key="item.entry.id"
+                        :title="tr(when(item.entry.created_at))"
+                      >
+                        <span>{{
                           [item.event.title, item.event.detail].filter(Boolean).join(' · ')
                         }}</span>
                       </li>
                     </ol>
                   </details>
-                  <div v-else class="activity-item">
-                    <time>{{ tr(when(row.entry.created_at)) }}</time
-                    ><span class="mini-icon timeline-mark" :class="row.event.tone"
+                  <div v-else class="activity-item" :title="tr(when(row.entry.created_at))">
+                    <span class="mini-icon timeline-mark" :class="row.event.tone"
                       ><AppIcon v-if="row.event.icon === 'user'" name="user" /><span
                         v-else
                         class="timeline-dot"
@@ -1610,52 +1774,31 @@ function briefing() {
     >
     <template v-else-if="dialog === 'receipt'"
       ><p v-if="!receiptActions.length">{{ tr('尚无已记录采购。') }}</p>
-      <section v-for="a in receiptActions" :key="a.id" class="receipt">
-        <h3>
-          {{
-            joinText([
-              tr(a.quantity),
-              tr('件 ·'),
-              tr(money(a.amount_minor)),
-              '·',
-              tr(actionLabel(a.status, a.channel)),
-            ])
-          }}
+      <section
+        v-for="{ a, quantity, amount, number, outcome, reason, recorded, arrival } in receipts"
+        :key="a.id"
+        class="receipt"
+      >
+        <h3 :title="recorded">
+          {{ joinText([tr(quantity), tr('件 ·'), tr(money(amount)), '·', outcome]) }}
         </h3>
-        <div class="detail-row">
+        <div v-if="number" class="detail-row">
           <span>{{ tr('采购编号') }}</span
-          ><b>{{ tr(a.external_order_id || a.id) }}</b>
+          ><b>{{ number }}</b>
         </div>
-        <div class="detail-row">
-          <span>{{ tr('提交记录') }}</span
-          ><b>{{ tr(when(a.created_at)) }}</b>
-        </div>
-        <div class="detail-row">
-          <span>{{ tr('预计到货') }}</span
-          ><b>{{
-            tr(
-              when(
-                s.inbounds.find((i) => i.action_id === a.id)?.expected_arrival_at ||
-                  a.purchase_snapshot.expected_arrival_at,
-              ),
-            )
-          }}</b>
-        </div>
-        <div class="detail-row">
-          <span>{{ tr('到货进度') }}</span
-          ><b>{{
-            joinText([
-              tr(s.inbounds.find((i) => i.action_id === a.id)?.received_quantity || 0),
-              '/',
-              tr(a.quantity),
-              tr('件已到货'),
-            ])
-          }}</b>
-        </div>
-        <p v-if="a.last_error" class="notice amber">{{ tr(a.last_error) }}</p>
+        <template v-if="arrival"
+          ><div class="detail-row">
+            <span>{{ tr('预计到货') }}</span
+            ><b>{{ tr(when(arrival.at)) }}</b>
+          </div>
+          <div class="detail-row">
+            <span>{{ tr('到货进度') }}</span
+            ><b>{{ joinText([tr(arrival.received), '/', tr(arrival.ordered), tr('件已到货')]) }}</b>
+          </div></template
+        >
+        <p v-if="reason" class="notice amber">{{ reason }}</p>
         <SupplierReceipt v-if="a.supplier_reply" :reply="a.supplier_reply" />
       </section>
-      <p class="notice">{{ tr('采购已受理不等于到货。进度以回执与实际到货记录为准。') }}</p>
       <button class="secondary" @click="act(() => shop.refresh(true))">
         {{ tr('查询原动作') }}
       </button></template
@@ -1957,7 +2100,7 @@ function briefing() {
         :key="a.id"
         class="receipt"
       >
-        <h3>
+        <h3 :title="joinText([tr('最近发现：'), when(a.last_seen_at)])">
           {{
             tr(
               {
@@ -1969,17 +2112,8 @@ function briefing() {
             )
           }}
         </h3>
-        <p>{{ tr(a.summary) }}</p>
-        <p>
-          {{
-            joinText([
-              tr('最近发现：'),
-              tr(when(a.last_seen_at)),
-              '·',
-              tr(a.status === 'ACKNOWLEDGED' ? '已知晓，尚未解除' : '待关注'),
-            ])
-          }}
-        </p>
+        <p v-if="alertSummary(a)">{{ alertSummary(a) }}</p>
+        <p>{{ tr(a.status === 'ACKNOWLEDGED' ? '已知晓，尚未解除' : '待关注') }}</p>
         <div class="alert-actions">
           <button
             v-if="a.status === 'OPEN'"

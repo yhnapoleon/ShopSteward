@@ -22,23 +22,28 @@ watch(
   { immediate: true },
 )
 // The element mounts on open. On close the modal ends at once, so the page is interactive and
-// focus returns immediately; the panel then fades out in place (reduced motion skips the fade)
-// and the leave always finishes on its own clock.
+// focus returns immediately. The closed modal has no backdrop, so a scrim that looks like it
+// takes its place in the same task, and the two leave together in one quick fade (reduced motion
+// skips it); the scrim passes the pointer through, and the leave finishes on its own clock.
 const show = (el: Element) => (el as HTMLDialogElement).showModal()
 function leave(el: Element, done: () => void) {
   const d = el as HTMLDialogElement
   d.close()
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return done()
+  const scrim = document.createElement('div')
+  scrim.className = 'dialog-scrim'
+  scrim.setAttribute('aria-hidden', 'true')
+  document.body.append(scrim)
   let finished = false
   const finish = () => {
     if (finished) return
     finished = true
+    scrim.remove()
     done()
   }
   d.classList.add('dialog-leave-active')
-  requestAnimationFrame(() => d.classList.add('dialog-leave-to'))
-  d.addEventListener('transitionend', (e) => e.target === d && finish())
-  setTimeout(finish, 220)
+  d.addEventListener('animationend', (e) => e.target === d && finish())
+  setTimeout(finish, 200)
 }
 const restore = () => origin?.isConnected && origin.focus({ preventScroll: true })
 function close() {
