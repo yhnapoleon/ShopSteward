@@ -1687,6 +1687,10 @@ export interface components {
              * Format: date-time
              */
             updated_at: string;
+            /** Submitted Business Time */
+            submitted_business_time?: string | null;
+            /** Receipt Business Time */
+            receipt_business_time?: string | null;
             purchase_snapshot: components["schemas"]["ProposedPurchase"];
         };
         /** ActionList */
@@ -4384,11 +4388,8 @@ export interface components {
              * @constant
              */
             time_basis: "simulation_time";
-            /**
-             * Timezone
-             * @constant
-             */
-            timezone: "UTC";
+            /** Timezone */
+            timezone: string;
             /**
              * Granularity
              * @constant
@@ -4760,6 +4761,8 @@ export interface components {
              * Format: date-time
              */
             created_at: string;
+            /** Business Time */
+            business_time?: string | null;
         };
         /** TimelineEntryList */
         TimelineEntryList: {
@@ -6955,6 +6958,7 @@ export interface operations {
                 sku_id?: string | null;
                 from: string;
                 to: string;
+                tz?: string | null;
             };
             header?: never;
             path?: never;

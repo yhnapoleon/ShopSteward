@@ -14345,8 +14345,6 @@
           "last_error",
           "created_at",
           "updated_at",
-          "submitted_business_time",
-          "receipt_business_time",
           "purchase_snapshot"
         ],
         "title": "Action"
@@ -23424,8 +23422,7 @@
           "actor_type",
           "actor_id",
           "references",
-          "created_at",
-          "business_time"
+          "created_at"
         ],
         "title": "TimelineEntry"
       },

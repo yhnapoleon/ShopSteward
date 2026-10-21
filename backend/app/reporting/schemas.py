@@ -31,7 +31,7 @@ class TimelineEntry(DTO):
     references: list[Reference]
     created_at: AwareDatetime
     # The store's simulation_time when the entry was written; null for older entries.
-    business_time: AwareDatetime | None
+    business_time: AwareDatetime | None = None
 
 
 class TimelineEntryList(DTO):
