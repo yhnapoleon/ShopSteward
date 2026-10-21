@@ -137,7 +137,19 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
     )
     if sum(a.ordered_qty - a.received_qty for a in inbound) != stock.in_transit:
         raise AppError(409, "INBOUND_STATE_MISMATCH", "Inbound orders do not reconcile to stock")
-    arrivals = [RecoveryArrival.model_validate(a) for a in inbound]
+    from app.execution.assisted import arriving_at, channels
+
+    # An order sent by hand still arrives on its delivery day after the hour it was expected:
+    # it counts from now. Any other elapsed ETA is overdue, not an arrival already included
+    # in today's inventory.
+    sent = await channels(session, [a.action_id for a in inbound])
+    arrivals = []
+    for a in inbound:
+        arrival = RecoveryArrival.model_validate(a)
+        due = arriving_at(sent.get(a.action_id), a.expected_arrival_at, state.simulation_time)
+        if due is not None:
+            arrival = arrival.model_copy(update={"expected_arrival_at": due})
+        arrivals.append(arrival)
     for arrival in arrivals:
         evidence.append(
             {
@@ -148,12 +160,6 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
                 "summary": f"未到货 {arrival.ordered_qty - arrival.received_qty} 件；原订单保留",
             }
         )
-    # A prior elapsed ETA is overdue, not an arrival already included in today's inventory.
-    limits = [
-        v
-        for v in (request.get("max_purchase_qty"), mission.task_constraints.get("max_purchase_qty"))
-        if v is not None
-    ]
     store = await session.get(Store, case.store_id)
     from app.operations_cases.lifecycle import short
 
@@ -169,7 +175,9 @@ async def capture_snapshot(session, case, revision, mission, settings, *, with_o
         available_cash_minor=state.available_cash_minor,
         cash_floor_minor=mission.policy["cash_floor_minor"],
         budget_minor=request["budget_minor"],
-        max_purchase_qty=min(limits) if limits else None,
+        # Only the emergency request's own cap: a cap the owner set on the daily plan
+        # ("limit it to 20") is not carried into an emergency restock.
+        max_purchase_qty=request.get("max_purchase_qty"),
         daily_demand=daily,
         demand_source=source,
         demand_source_id=source_id,

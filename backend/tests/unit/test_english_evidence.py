@@ -12,11 +12,10 @@ from app.agent_bridge.forecast_evidence import replenishment_requested
         "Should I restock?",
     ],
 )
-def test_english_restocking_still_requires_business_and_forecast_evidence(content):
+def test_english_restocking_requires_business_and_plan_evidence(content):
     result = evidence_policy(content, documents_enabled=True, forecasts_enabled=True)
-    assert result["required_tools"][:2] == ["get_dashboard", "get_forecast"]
-    if "plan" in content:
-        assert "get_plan" in result["required_tools"]
+    assert result["required_tools"][:2] == ["get_dashboard", "get_plan"]
+    assert "get_forecast" not in result["required_tools"]
 
 
 @pytest.mark.parametrize("content", ["Don't restock", "Do not replenish", "What is restocking?"])

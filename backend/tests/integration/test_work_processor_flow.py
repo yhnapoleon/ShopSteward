@@ -154,11 +154,74 @@ async def test_one_english_sentence_proposes_a_follow_up_after_the_forecast_hour
         result = await process_item(db, app.state.settings, model)
         assert result.item.status == "RESULT_READY", result
         assert result.item.mission_request.policy.cash_floor_minor == 30000
-        assert result.item.result.content == "The follow-up terms are ready for you to accept."
+        # The proposal opens with the days it plans for.
+        assert result.item.result.content.startswith("Planned for the next 7 days (")
+        assert result.item.result.content.endswith(
+            ").\n\nThe follow-up terms are ready for you to accept."
+        )
         forecast = json.loads(model.messages[2][-1]["content"])["data"]
         assert forecast["usable_for_requested_period"] is True
         assert forecast["forecast"]["remaining_demand"] == 60
         assert "horizon_end_local" in forecast["forecast"]
+
+
+async def test_one_english_sentence_for_next_week_is_planned_on_the_next_seven_days(db):
+    from datetime import datetime, timedelta
+
+    from sqlalchemy import delete
+
+    from app.agent_bridge.language import remember
+    from app.agent_bridge.models import Receipt
+
+    async def interface(language):
+        # The test database keeps rows between tests: the owner's language goes back after.
+        async with db.session() as session, session.begin():
+            if language:
+                await remember(session, "operator", language)
+            else:
+                await session.execute(
+                    delete(Receipt).where(Receipt.owner == "ui-language", Receipt.key == "operator")
+                )
+
+    async with env(db) as (seed, client, app):
+        await fresh(db, seed)
+        await interface("en")
+        try:
+            source = (
+                "Make sure Fresh milk 1L doesn't run out next week. Never let cash drop below "
+                "CNY 300, and I'll approve every purchase."
+            )
+            await create(client, seed, source)
+            # The model reads "next week" as the calendar week; the forecast's days are used.
+            monday = datetime.fromisoformat(seed["simulation_time"]).date()
+            monday += timedelta(days=7 - monday.weekday())
+            args = {
+                "sku_id": "sku_001",
+                "supplier_id": "supplier_001",
+                "expected_state_version": 1,
+                "cash_floor_minor": 30000,
+                "candidate_quantities": [20, 40],
+                "requested_start": f"{monday.isoformat()}T00:00:00+08:00",
+                "requested_end": f"{(monday + timedelta(days=7)).isoformat()}T00:00:00+08:00",
+                "source_quote": "Make sure Fresh milk 1L doesn't run out next week.",
+                "objective": "Keep Fresh milk 1L in stock, at least CNY 300 cash",
+            }
+            model = ScriptModel(
+                tool("get_work_context"),
+                tool("propose_mission", args),
+                {"content": "The follow-up terms are ready for you to accept."},
+            )
+            result = await process_item(db, app.state.settings, model)
+        finally:
+            await interface(None)
+        assert result.item.status == "RESULT_READY", result
+        assert result.item.mission_request.policy.cash_floor_minor == 30000
+        proposal = json.loads(model.messages[2][-1]["content"])
+        assert proposal["ok"] is True, proposal
+        assert result.item.result.content.startswith("Planned for the next 7 days (")
+        assert result.item.result.content.endswith(
+            ").\n\nThe follow-up terms are ready for you to accept."
+        )
 
 
 async def test_late_tool_cannot_pause_after_new_user_input(db):
@@ -222,16 +285,16 @@ async def test_failed_model_retains_completed_tool_and_retry_does_not_pause_twic
             headers=headers(),
         )
         args["expected_mission_version"] = 2
-        result = await process_item(
-            db,
-            app.state.settings,
-            ScriptModel(
-                tool("get_work_context"),
-                tool("control_mission", args),
-                {"content": "后续备货跟进已暂停，已发订单不受影响。"},
-            ),
+        retried = ScriptModel(
+            tool("get_work_context"),
+            tool("control_mission", args),
+            {"content": "后续备货跟进已暂停，已发订单不受影响。"},
         )
+        result = await process_item(db, app.state.settings, retried)
         assert result.item.status == "RESULT_READY", result
+        # The page's status notes ("等待重新处理…") are not the model's own turns.
+        sent = [m["content"] for m in retried.messages[0] if m["role"] != "system"]
+        assert source in sent and not any("等待重新处理" in m for m in sent)
         current = (await client.get(f"/api/v1/missions/{mission['id']}", headers=headers())).json()
         assert current["status"] == "PAUSED" and current["mission_version"] == 2
 
@@ -532,6 +595,126 @@ async def test_runtime_quotation_a_saves_rule_and_b_uses_own_rows(db):
         exported = await client.get(export_path, headers=headers())
         assert exported.status_code == 200 and exported.json()["stale_reasons"] == []
         assert exported.json()["result"]["provenance"]["reference_versions"] == versions
+
+
+def last_result(messages):
+    return json.loads(next(m["content"] for m in reversed(messages) if m["role"] == "tool"))["data"]
+
+
+async def quotation_state(client, work_id):
+    base = f"/api/v1/work-items/{work_id}"
+    rule = (await client.get(base + "/quotation-rule", headers=headers())).json()
+    results = (await client.get(base + "/quotation-results", headers=headers())).json()["items"]
+    return rule, results
+
+
+async def test_quote_request_without_a_file_gets_one_question_and_no_model_run(db):
+    async with env(db) as (seed, client, app):
+        await create(client, seed, "帮我整理供应商报价")
+        # An empty script fails the run if the model is asked anything.
+        result = await process_item(db, app.state.settings, ScriptModel())
+        assert result.item.status == "WAITING_INPUT"
+        assert result.item.question == "请先上传报价CSV，或使用示例报价。"
+        replies = [m.content for m in result.messages if m.role == "assistant"]
+        assert replies == [result.item.question]
+
+
+async def test_rule_asked_for_in_chat_is_saved_and_applied_like_the_form(db):
+    from test_quotations import HEADER, upload
+
+    async with env(db) as (seed, client, app):
+        work = (await create(client, seed, "整理报价"))["item"]
+        file = await upload(client, work, HEADER + "B,180,CNY,箱,15,3,箱,A\nA,120,CNY,箱,12,2,箱,Z")
+        first = await process_item(
+            db,
+            app.state.settings,
+            ScriptModel(
+                tool("get_work_context"),
+                tool("process_quotation", {"file_id": file["id"]}),
+                {"content": "已整理。"},
+            ),
+        )
+        assert first.item.status == "RESULT_READY", first
+        request = "Sort by unit price from now on."
+        await client.post(
+            f"/api/v1/work-items/{work['id']}/messages",
+            json={"content": request},
+            headers=headers(),
+        )
+
+        async def save_rule(messages):
+            return tool(
+                "save_quotation_rule",
+                {
+                    "result_id": last_result(messages)["id"],
+                    "sort_by": "unit_price",
+                    "confirmation": request,
+                },
+            )
+
+        result = await process_item(
+            db,
+            app.state.settings,
+            ScriptModel(
+                tool("get_work_context"),
+                tool("process_quotation", {"file_id": file["id"], "sort_by": "unit_price"}),
+                save_rule,
+                {"content": "Done."},
+            ),
+        )
+        assert result.item.status == "RESULT_READY", result
+        rule, results = await quotation_state(client, work["id"])
+        assert rule["version"] == 1 and rule["rule"]["sort_by"] == "unit_price"
+        assert results[-1]["rule"]["version"] == 1
+        assert [row["product"] for row in results[-1]["rows"]] == ["A", "B"]
+        assert result.item.result.title == "报价.csv · 报价整理"
+        assert any(ref.type == "quotation_rule" for ref in result.item.result.references)
+
+
+async def test_next_upload_after_a_saved_rule_is_compared_not_blocked(db):
+    from test_quotations import HEADER, detail, process, upload
+
+    async with env(db) as (seed, client, app):
+        work = (await create(client, seed, "整理报价"))["item"]
+        file_a = await upload(client, work, HEADER + "A,120,CNY,箱,12,2,箱,甲")
+        await process(
+            client,
+            await detail(client, work["id"]),
+            file_a,
+            sort_by="unit_price",
+            persist_rule=True,
+            expected_rule_version=0,
+            correction_content="按单件价排序",
+        )
+        file_b = await upload(
+            client, await detail(client, work["id"]), HEADER + "饮料,180,CNY,箱,15,3,箱,乙"
+        )
+
+        # The run for the new file reads the form's "from now on" line as the latest request.
+        async def save_again(messages):
+            return tool(
+                "save_quotation_rule",
+                {
+                    "result_id": last_result(messages)["id"],
+                    "sort_by": "unit_price",
+                    "confirmation": "以后沿用此报价排序规则。",
+                },
+            )
+
+        result = await process_item(
+            db,
+            app.state.settings,
+            ScriptModel(
+                tool("get_work_context"),
+                tool("process_quotation", {"file_id": file_b["id"]}),
+                save_again,
+                {"content": "已按已保存规则整理。"},
+            ),
+        )
+        assert result.item.status == "RESULT_READY", result
+        rule, results = await quotation_state(client, work["id"])
+        assert rule["version"] == 1
+        assert results[-1]["file_id"] == file_b["id"] and results[-1]["rule"]["version"] == 1
 
 
 @pytest.mark.parametrize(

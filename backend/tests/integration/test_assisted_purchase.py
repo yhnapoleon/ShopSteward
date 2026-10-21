@@ -104,6 +104,35 @@ async def test_a_confirming_reply_becomes_the_receipt_with_the_suppliers_date(db
         assert (await state(db, seed))["cash_minor"] == 60000
 
 
+async def test_submission_and_receipt_keep_the_business_time_each_happened_at(db):
+    from datetime import datetime
+
+    from test_operations import event, ingest
+
+    async with environment(db) as (seed, client):
+        action = await sent(db, seed, client)
+        submitted = datetime.fromisoformat(seed["simulation_time"])
+        assert datetime.fromisoformat(action["submitted_business_time"]) == submitted
+        assert action["receipt_business_time"] is None
+        # A sale recorded later in the business day moves the store clock on.
+        later = submitted + timedelta(hours=5)
+        sale = event(seed, quantity=1)
+        sale.update(simulation_time=later.isoformat())
+        await ingest(db, seed, [sale])
+        done = (await reply(client, action, "收到，确认40件")).json()
+        assert done["status"] == "SUCCEEDED"
+        assert datetime.fromisoformat(done["submitted_business_time"]) == submitted
+        assert datetime.fromisoformat(done["receipt_business_time"]) == later
+        ledger = await client.get(
+            "/api/v1/ledger-entries",
+            params={"store_id": seed["store_id"], "effect_type": "PURCHASE_ACCEPTED"},
+            headers=headers("viewer"),
+        )
+        assert ledger.status_code == 200, ledger.text
+        (entry,) = ledger.json()["items"]
+        assert datetime.fromisoformat(entry["simulation_time"]) == later
+
+
 async def test_a_reply_that_departs_from_the_order_leaves_it_waiting_and_a_refusal_closes_it(db):
     async with environment(db) as (seed, client):
         action = await sent(db, seed, client)
@@ -130,11 +159,19 @@ async def test_a_partial_confirmation_is_taken_at_the_suppliers_quantity(db):
         path = f"/api/v1/actions/{action['id']}/partial-acceptance"
         # Nothing was offered in part yet.
         assert (await client.post(path, headers=headers("approver"))).status_code == 409
+        short = (await reply(client, action, "Sure, but only 10 units")).json()["supplier_reply"]
+        assert (short["outcome"], short["quantity"]) == ("partial", 10)
         partial = (await reply(client, action, "可以，但只有30件")).json()
         assert (partial["status"], partial["supplier_reply"]["outcome"]) == ("EXECUTING", "partial")
         assert partial["supplier_reply"]["differences"] == [
             {"field": "quantity", "ordered": 40, "replied": 30}
         ]
+        # The reply names no price or day: the receipt keeps the order's.
+        wanted = action["order_message"]["requested_delivery_date"]
+        assert (
+            partial["supplier_reply"]["unit_price_minor"],
+            partial["supplier_reply"]["delivery_date"],
+        ) == (1000, wanted)
         assert (await state(db, seed))["reserved_cash_minor"] == 40000
         assert (await client.post(path, headers=headers("operator"))).status_code == 403
         key = headers("approver")
@@ -278,3 +315,38 @@ async def test_the_work_item_says_the_next_step_of_an_order_sent_by_hand_is_the_
         assert (await reply(client, action, "收到，确认40件，单价10.00元/件")).status_code == 200
         confirmed = await business()
         assert confirmed["code"] == "IN_TRANSIT" and "登记" in confirmed["detail"]
+
+
+async def test_a_confirmed_order_sent_by_hand_stays_in_transit_through_its_delivery_day(db):
+    from datetime import datetime, time
+    from zoneinfo import ZoneInfo
+
+    from test_missions import settings
+
+    from app.missions.models import InboundRow
+    from app.operations.models import Store
+    from app.planning.snapshot import prepare
+
+    zone = ZoneInfo("Asia/Shanghai")
+    async with environment(db) as (seed, client):
+        action = await sent(db, seed, client)
+        assert (await reply(client, action, "收到，确认40件，单价10.00元/件")).status_code == 200
+        # Delivery promised for tomorrow at 10:00; the business clock moves on to 16:21 that day,
+        # and the owner has not recorded the goods yet.
+        day = datetime.fromisoformat(seed["simulation_time"]).astimezone(zone).date()
+        day = day.fromordinal(day.toordinal() + 1)
+        async with db.session() as session, session.begin():
+            inbound = await session.get(InboundRow, (action["id"], "sku_001"))
+            inbound.expected_arrival_at = datetime.combine(day, time(10), zone)
+            store = await session.get(Store, seed["store_id"])
+            store.simulation_time = datetime.combine(day, time(16, 21), zone)
+        prepared = await prepare(db, action["mission_id"], settings(db, seed))
+        assert prepared.reason is None, prepared.reason
+        assert prepared.snapshot.eligible_inbound_qty == 40
+        # Once its delivery day is over, the order is late and no longer counted.
+        async with db.session() as session, session.begin():
+            store = await session.get(Store, seed["store_id"])
+            after = day.fromordinal(day.toordinal() + 1)
+            store.simulation_time = datetime.combine(after, time(9), zone)
+        prepared = await prepare(db, action["mission_id"], settings(db, seed))
+        assert prepared.snapshot.eligible_inbound_qty == 0

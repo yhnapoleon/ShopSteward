@@ -58,6 +58,7 @@ async def lock_mission(session, mission_id):
 
 async def timeline(session, mission, kind, summary, *, actor=None, references=None):
     event_id = str(uuid4())
+    store = await session.get(Store, mission.store_id)
     session.add(
         TimelineRow(
             id=event_id,
@@ -68,6 +69,7 @@ async def timeline(session, mission, kind, summary, *, actor=None, references=No
             actor_id=actor,
             references=references or [],
             created_at=await session.scalar(select(func.clock_timestamp())),
+            business_time=store.simulation_time,
         )
     )
     if kind in {

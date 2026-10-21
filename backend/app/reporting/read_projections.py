@@ -1,4 +1,4 @@
-from datetime import UTC, datetime, time, timedelta
+from datetime import UTC, datetime, time, timedelta, tzinfo
 
 from pydantic import TypeAdapter, ValidationError
 
@@ -68,17 +68,21 @@ def _checked_add(left: int, right: int) -> int:
     return result
 
 
-def day_buckets(start: datetime, end: datetime, records: list[SaleRecord]) -> list[SaleBucket]:
+def day_buckets(
+    start: datetime, end: datetime, records: list[SaleRecord], zone: tzinfo = UTC
+) -> list[SaleBucket]:
+    """Days end at midnight in `zone`; instants are compared in UTC, boundaries told in `zone`."""
     start = start.astimezone(UTC)
     end = end.astimezone(UTC)
     buckets = []
     bucket_start = start
     while bucket_start < end:
-        if bucket_start.date() == datetime.max.date():
+        day = bucket_start.astimezone(zone).date()
+        if day == datetime.max.date():
             bucket_end = end
         else:
-            next_midnight = datetime.combine(bucket_start.date() + timedelta(days=1), time.min, UTC)
-            bucket_end = min(next_midnight, end)
+            next_midnight = datetime.combine(day + timedelta(days=1), time.min, zone)
+            bucket_end = min(next_midnight.astimezone(UTC), end)
         count = quantity = amount = 0
         for record in records:
             instant = record.simulation_time.astimezone(UTC)
@@ -89,8 +93,8 @@ def day_buckets(start: datetime, end: datetime, records: list[SaleRecord]) -> li
         buckets.append(
             SaleBucket(
                 **{
-                    "from": bucket_start,
-                    "to": bucket_end,
+                    "from": bucket_start.astimezone(zone),
+                    "to": bucket_end.astimezone(zone),
                     "record_count": count,
                     "recorded_quantity": quantity,
                     "recorded_sales_amount_minor": amount,
@@ -213,7 +217,8 @@ def ledger_view(row, action_by_id: dict) -> LedgerEntryView:
                 sku_id=sku_id,
                 action_id=receipt.action_id,
                 occurred_at=receipt.recorded_at,
-                simulation_time=None,
+                # The receipt and this entry are written together (`apply_receipt`).
+                simulation_time=action.receipt_business_time,
                 changes=LedgerChanges(
                     cash_delta_minor=-receipt.total_minor,
                     receivables_delta_minor=0,

@@ -151,6 +151,7 @@ async def apply_receipt(
         return False
     if receipt.status == "REJECTED":
         action.receipt = receipt.model_dump(mode="json")
+        action.receipt_business_time = store.simulation_time
         await close_action(session, store, mission, action, "FAILED", reason="SUPPLIER_REJECTED")
         await action_alert(session, store, mission, action, "SUPPLIER_REJECTED")
         return False
@@ -171,6 +172,7 @@ async def apply_receipt(
     store.state_version += 1
     store.data_as_of = max(filter(None, [store.data_as_of, receipt.recorded_at]))
     action.receipt = receipt.model_dump(mode="json")
+    action.receipt_business_time = store.simulation_time
     action.external_order_id = receipt.external_order_id
     session.add(
         InboundRow(

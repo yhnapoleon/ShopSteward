@@ -158,6 +158,34 @@ async def test_timeline_pagination_filters_and_cross_store_permissions(db):
             ).status_code == 404
 
 
+async def test_timeline_entries_carry_the_store_clock_they_were_written_at(db):
+    from datetime import datetime, timedelta
+
+    from test_operations import event, ingest
+
+    async with environment(db) as (seed, client):
+        mission = await start(client, seed)
+        await run_check(db, seed)
+        alert = (await listing(client, seed))["items"][0]
+        clock = datetime.fromisoformat(seed["simulation_time"])
+        later = clock + timedelta(hours=6)
+        sale = event(seed, quantity=1)
+        sale.update(simulation_time=later.isoformat())
+        await ingest(db, seed, [sale])
+        await client.post(f"/api/v1/alerts/{alert['id']}/acknowledgement", headers=headers())
+        page = (
+            await client.get(
+                f"/api/v1/missions/{mission['id']}/timeline",
+                params={"limit": 100},
+                headers=headers("viewer"),
+            )
+        ).json()
+        design("TimelineEntryList", page)
+        written = {entry["type"]: entry for entry in page["items"]}
+        assert datetime.fromisoformat(written["MISSION_CREATED"]["business_time"]) == clock
+        assert datetime.fromisoformat(written["ALERT_ACKNOWLEDGED"]["business_time"]) == later
+
+
 async def test_dashboard_uses_one_snapshot_across_concurrent_check_commit(db, monkeypatch):
     import app.reporting.repository as repo
 

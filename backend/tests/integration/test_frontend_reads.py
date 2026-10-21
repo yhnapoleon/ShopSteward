@@ -142,6 +142,42 @@ async def test_sales_paging_dates_and_summary_use_distinct_recorded_facts(db):
         assert changed.status_code == 422
 
 
+async def test_sales_summary_buckets_by_the_local_day_of_the_requested_zone(db):
+    async with environment(db) as (seed, client):
+        early = event(seed, quantity=2)
+        later = event(seed, 2, quantity=3)
+        # 03:00 on 10/09 in Shanghai is still 09/09 in UTC.
+        early.update(simulation_time="2026-09-09T19:00:00Z")
+        later.update(simulation_time="2026-09-10T05:00:00Z")
+        await ingest(db, seed, [early, later])
+        window = {
+            "store_id": seed["store_id"],
+            "from": "2026-09-09T00:00:00+08:00",
+            "to": "2026-09-11T00:00:00+08:00",
+        }
+        utc = await get(client, "sales/summary", **window)
+        assert utc["timezone"] == "UTC"
+        assert [(b["from"], b["recorded_quantity"]) for b in utc["buckets"]] == [
+            ("2026-09-08T16:00:00Z", 0),
+            ("2026-09-09T00:00:00Z", 2),
+            ("2026-09-10T00:00:00Z", 3),
+        ]
+        local = await get(client, "sales/summary", **(window | {"tz": "Asia/Shanghai"}))
+        assert local["timezone"] == "Asia/Shanghai"
+        assert (local["from"], local["to"]) == (window["from"], window["to"])
+        assert [(b["from"], b["to"], b["recorded_quantity"]) for b in local["buckets"]] == [
+            ("2026-09-09T00:00:00+08:00", "2026-09-10T00:00:00+08:00", 0),
+            ("2026-09-10T00:00:00+08:00", "2026-09-11T00:00:00+08:00", 5),
+        ]
+        assert local["recorded_quantity"] == utc["recorded_quantity"] == 5
+        for tz in ["Mars/Olympus", "asia/shanghai", ""]:
+            rejected = await client.get(
+                "/api/v1/sales/summary", params=window | {"tz": tz}, headers=headers("viewer")
+            )
+            assert rejected.status_code == 422, rejected.text
+            assert rejected.json()["error"]["code"] == "VALIDATION_ERROR"
+
+
 async def test_purchase_reads_separate_acceptance_arrival_and_unique_ledger(db):
     async with environment(db) as (seed, client):
         mission, plan = await planned(db, seed, client)
@@ -184,7 +220,11 @@ async def test_purchase_reads_separate_acceptance_arrival_and_unique_ledger(db):
             "on_hand_delta": 0,
             "in_transit_delta": 40,
         }
-        assert purchase["simulation_time"] is None
+        # Approved and accepted at the seed's business clock, which nothing has moved since.
+        clock = datetime.fromisoformat(seed["simulation_time"])
+        assert datetime.fromisoformat(purchase["simulation_time"]) == clock
+        assert datetime.fromisoformat(detail["submitted_business_time"]) == clock
+        assert detail["receipt_business_time"] == purchase["simulation_time"]
         assert purchase["action_id"] == action_id
         assert ledger["items"][2]["opening_state"]["cash_minor"] == 100000
         goods_only = await get(

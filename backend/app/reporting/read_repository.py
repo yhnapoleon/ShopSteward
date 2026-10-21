@@ -1,7 +1,8 @@
 """Read views over accepted facts. Caller owns a read-only repeatable-read transaction."""
 
 import logging
-from datetime import datetime
+from datetime import UTC, datetime
+from zoneinfo import ZoneInfo
 
 from pydantic import ValidationError
 from sqlalchemy import func, select, tuple_
@@ -176,14 +177,15 @@ async def list_sales(session, principal, context, *, sku_id, start, end, limit, 
     )
 
 
-async def summarize_sales(session, context, *, sku_id, start, end):
+async def summarize_sales(session, context, *, sku_id, start, end, tz=None):
+    zone = ZoneInfo(tz) if tz else UTC
     records = [
         record
         async for record in sales_records(
             session, context.store_id, sku_id=sku_id, start=start, end=end
         )
     ]
-    buckets = day_buckets(start, end, records)
+    buckets = day_buckets(start, end, records, zone)
     totals = {
         key: sum(getattr(bucket, key) for bucket in buckets)
         for key in ("record_count", "recorded_quantity", "recorded_sales_amount_minor")
@@ -193,10 +195,10 @@ async def summarize_sales(session, context, *, sku_id, start, end):
     return SaleSummary(
         **{
             "context": context,
-            "from": start,
-            "to": end,
+            "from": start.astimezone(zone),
+            "to": end.astimezone(zone),
             "time_basis": "simulation_time",
-            "timezone": "UTC",
+            "timezone": tz or "UTC",
             "granularity": "day",
             "coverage": "RECORDED_EVENTS_ONLY",
             "buckets": buckets,

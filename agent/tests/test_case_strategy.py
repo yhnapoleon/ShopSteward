@@ -122,7 +122,6 @@ async def test_adaptive_serves_exactly_one_typed_followup_and_reports_the_rest()
     assert [item["question"] for item in followup["unserved"]] == ["recheck day 3", "and again"]
     assert result["budget"]["model_calls"] == 3
     assert dict(model.seen)["check MOQ wording"] == [
-        "clarify",
         "evaluate_recovery",
         "list_case_offers",
         "read_case_snapshot",
@@ -153,7 +152,6 @@ async def test_single_agent_keeps_every_expert_tool_and_the_root_budget_without_
     result = await run(model, "single", budget=CallBudget(max_model_calls=6))
     assert [item["role"] for item in result["subtasks"]] == ["single"]
     assert model.seen[0][1] == [
-        "clarify",
         "evaluate_recovery",
         "list_case_offers",
         "read_case_snapshot",
@@ -183,7 +181,7 @@ async def test_fixed_workflow_explains_supplied_results_without_business_tools()
         {"Q:fixed": ok(claims=[claim("Waiting loses 20", ["proposal"], kind="calculation")])}
     )
     result = await run(model, "fixed", calculation_ids=["proposal"])
-    assert model.seen == [("Q:fixed", ["clarify"])]
+    assert model.seen == [("Q:fixed", [])]
     assert result["status"] == "complete" and result["strategy_id"] == "R0"
     assert result["merged"]["claims"][0]["asserted_by"] == ["fixed"]
 
@@ -276,21 +274,23 @@ async def test_unsettled_conflict_stays_visible_and_is_not_published_as_a_claim(
 
 
 @pytest.mark.asyncio
-async def test_expert_questions_become_one_clarification_instead_of_more_model_work():
-    def ask(question):
-        arguments = json.dumps({"question": question})
-        return {
-            "tool_calls": [{"id": "q", "function": {"name": "clarify", "arguments": arguments}}]
+async def test_an_expert_cannot_stop_to_ask_so_an_analysis_never_waits_for_an_answer():
+    # Nobody answers during a Case analysis: no expert is offered clarify, and one that calls
+    # it anyway fails with a stable code instead of waiting with no claims.
+    arguments = json.dumps({"question": "Which order?"})
+    asking = {"tool_calls": [{"id": "q", "function": {"name": "clarify", "arguments": arguments}}]}
+    model = Scripted(
+        {
+            "Q:evidence": asking,
+            "Q:impact": ok(claims=[claim("Stock runs out on day 3", ["proposal"])]),
         }
-
-    model = Scripted({"Q:evidence": ask("Which order?"), "Q:impact": ask("Which day?")})
+    )
     result = await run(model, "adaptive_multi")
-    assert result["merged"]["clarification"] == {
-        "requested_by": "evidence",
-        "question": "Which order?",
-    }
-    assert result["followup"]["status"] == "none"
-    assert result["status"] == "partial" and result["budget"]["model_calls"] == 2
+    assert all("clarify" not in names for _, names in model.seen)
+    evidence, impact = result["subtasks"]
+    assert (evidence["status"], evidence["missing"]) == ("failed", ["AGENT_UNKNOWN_TOOL"])
+    assert impact["status"] == "complete" and result["merged"]["clarification"] is None
+    assert [c["statement"] for c in result["merged"]["claims"]] == ["Stock runs out on day 3"]
 
 
 @pytest.mark.asyncio

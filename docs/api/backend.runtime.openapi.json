@@ -2726,6 +2726,23 @@
               "format": "date-time",
               "title": "To"
             }
+          },
+          {
+            "name": "tz",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 64
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Tz"
+            }
           }
         ],
         "responses": {
@@ -14281,6 +14298,30 @@
             "format": "date-time",
             "title": "Updated At"
           },
+          "submitted_business_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Submitted Business Time"
+          },
+          "receipt_business_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receipt Business Time"
+          },
           "purchase_snapshot": {
             "$ref": "#/components/schemas/ProposedPurchase"
           }
@@ -22226,7 +22267,6 @@
           },
           "timezone": {
             "type": "string",
-            "const": "UTC",
             "title": "Timezone"
           },
           "granularity": {
@@ -23358,6 +23398,18 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "business_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Business Time"
           }
         },
         "additionalProperties": false,

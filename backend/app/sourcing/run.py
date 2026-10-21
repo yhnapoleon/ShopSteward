@@ -159,6 +159,7 @@ async def _update(db, principal, case_id, run_id, change):
 async def execute(db, settings, principal, case_id, work):
     """Read every supplier, register what passes the gate, solve, then explain."""
     from shopsteward_agent.cases import CallBudget, load_bundle, review_supplier
+    from shopsteward_agent.cases.sourcing import limits
 
     run_id = work["run_id"]
 
@@ -169,9 +170,11 @@ async def execute(db, settings, principal, case_id, work):
     try:
         client, profile, roles = reviewers(settings)
         bundle = load_bundle(settings.agent_sourcing_review_bundle, bundle_id="supplier-review")
+        # Room for both readings of every supplier at their full allowance, so one supplier's
+        # second reading never finds the ledger spent by the others.
         budget = CallBudget(
-            max_model_calls=8 * len(work["suppliers"]),
-            max_tool_calls=2 * sum(len(s["documents"]) + 2 for s in work["suppliers"]),
+            max_model_calls=sum(2 * limits(s["documents"])[0] for s in work["suppliers"]),
+            max_tool_calls=sum(2 * limits(s["documents"])[1] for s in work["suppliers"]),
             timeout_s=SECONDS - 60,
         )
         turns = asyncio.Semaphore(COMPARED)

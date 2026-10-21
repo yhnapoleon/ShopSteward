@@ -83,9 +83,11 @@ class Runtime:
         record_call=None,
         shared_budget=None,
         role="root",
+        clarify=True,
     ):
         self.model, self.call_tool, self.load_context = model, call_tool, load_context
-        self.tools = [*tools, CLARIFY]
+        # Only a run someone can answer is offered a question to ask.
+        self.tools = [*tools, CLARIFY] if clarify else list(tools)
         self.names = {t["function"]["name"] for t in self.tools}
         self.max_models, self.max_tools = max_model_calls, max_tool_calls
         self.run_timeout, self.model_timeout = run_timeout, model_timeout
@@ -171,9 +173,13 @@ class Runtime:
                         *messages,
                         {
                             "role": "user",
-                            "content": "Previous segment operations already attempted: "
+                            # completed_tools holds only calls that succeeded; saying so keeps
+                            # a model from repeating a saved memory or calling it failed.
+                            "content": "Already completed successfully in this run, and in "
+                            "effect now (a saved preference already appears in the current "
+                            "knowledge): "
                             + json.dumps(state["completed_tools"])
-                            + ". Do not repeat writes. Read current business state/receipts before deciding further work.",
+                            + ". Do not repeat these writes; report them as done. Read current business state/receipts before deciding further work.",
                         },
                     ]
                 state = {

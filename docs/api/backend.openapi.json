@@ -5596,6 +5596,18 @@
             "type": "string",
             "description": "RFC3339 UTC 时间",
             "format": "date-time"
+          },
+          "business_time": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "写入时店铺的经营时间（simulation_time）；早于 0020_business_time 的记录为 null"
           }
         },
         "required": [
@@ -5606,7 +5618,8 @@
           "actor_type",
           "actor_id",
           "references",
-          "created_at"
+          "created_at",
+          "business_time"
         ],
         "additionalProperties": false
       },

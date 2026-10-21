@@ -252,6 +252,95 @@ async def test_a_card_citing_unread_or_absent_text_gets_one_second_reading_by_th
     assert not any("was rejected" in text for text in weak.shown)
 
 
+FOUR = {
+    "supplier_id": "A",
+    "name": "安和商贸",
+    "documents": [
+        SUPPLIERS[0]["documents"][0],
+        {"doc_id": "A-notice-1", "kind": "notice", "text": "生效日期：2026-09-20"},
+        {"doc_id": "A-terms", "kind": "terms", "text": "通知函自其载明的生效日期起执行。"},
+        SUPPLIERS[0]["documents"][1],
+    ],
+}
+
+
+class Rereader:
+    """Opens every document, opens the first `again` of them once more, then answers; a reader
+    told its last reading ran out reads each document once. `again=None` never stops reading."""
+
+    def __init__(self, again):
+        self.again, self.prompts = again, []
+
+    async def complete(self, messages, tools, **kwargs):
+        text = "\n".join(str(message.get("content")) for message in messages)
+        self.prompts.append(text)
+        retry = "ran out of turns" in text
+        opened = sum(message["role"] == "tool" for message in messages)
+        docs = [doc["doc_id"] for doc in FOUR["documents"]]
+        if opened == 0:
+            wanted = docs
+        elif self.again is None and not retry:
+            wanted = docs
+        elif opened == len(docs) and not retry:
+            wanted = docs[: self.again]
+        else:
+            return {"content": json.dumps(CARD_A)}
+        return {
+            "content": "",
+            "tool_calls": [
+                {
+                    "id": f"{opened}-{index}",
+                    "function": {
+                        "name": "read_supplier_document",
+                        "arguments": json.dumps({"doc_id": doc_id}),
+                    },
+                }
+                for index, doc_id in enumerate(wanted)
+            ],
+        }
+
+
+async def review(model, budget=None):
+    from shopsteward_agent.cases import CallBudget, review_supplier
+    from shopsteward_agent.context import ModelProfile
+
+    return await review_supplier(
+        FOUR,
+        {"sku_id": "K1"},
+        case_id="c",
+        revision_id="1",
+        run_id="solo",
+        model=model,
+        profile=ModelProfile(model_id="main", max_input_tokens=64000),
+        budget=budget or CallBudget(max_model_calls=20, max_tool_calls=40, timeout_s=60),
+    )
+
+
+@pytest.mark.asyncio
+async def test_a_reviewer_may_open_its_documents_again_before_it_answers():
+    from shopsteward_agent.cases.sourcing import limits
+
+    # Four documents read, then three of them again: one tool call past the old allowance
+    # of the document count plus two, as deepseek-flash did once on 2026-10-09.
+    result = await review(Rereader(again=3))
+    assert (result["status"], len(result["attempts"])) == ("accepted", 1)
+    assert result["attempts"][0]["opened"] == ["A-history", "A-notice-1", "A-quote", "A-terms"]
+    # Every document twice; one document a turn still leaves a turn to answer.
+    assert limits(FOUR["documents"]) == (6, 10) and limits(["one"]) == (4, 4)
+
+
+@pytest.mark.asyncio
+async def test_a_reading_that_runs_out_is_done_again_afresh_not_as_a_rejection():
+    model = Rereader(again=None)
+    result = await review(model)
+    assert result["status"] == "accepted" and result["card"]["supplier_id"] == "A"
+    first, second = result["attempts"]
+    assert (first["problems"], second["problems"]) == (["AGENT_TOOL_BUDGET"], [])
+    # The second reading has its own allowance and is not told its documents were wrong.
+    retried = [text for text in model.prompts if "ran out of turns" in text]
+    assert retried and not any("was rejected" in text for text in model.prompts)
+
+
 @pytest.mark.asyncio
 async def test_one_supplier_can_be_reviewed_on_its_own_and_the_gate_says_what_was_wrong():
     from shopsteward_agent.cases import CallBudget, review_supplier

@@ -103,6 +103,8 @@ class TimelineRow(Base):
     actor_id: Mapped[str | None] = mapped_column(String(128))
     references: Mapped[list] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    # The store's simulation_time when the entry was written; null for entries before 0020.
+    business_time: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class InboundRow(Base):

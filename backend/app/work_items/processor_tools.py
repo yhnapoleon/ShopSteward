@@ -48,7 +48,10 @@ class CheckArgs(MissionArgs, SourceArgs):
     pass
 
 
-PERIOD = "用户说了日期或期间时按原话填写（业务时区Asia/Shanghai）；没说时省略，按预测实际期间。"
+PERIOD = (
+    "用户给出具体日期时按原话填写（业务时区Asia/Shanghai）；没说期间，或只说下周、next week、"
+    "未来7天、明天时省略，按预测实际期间（从当前经营时点起的接下来7天）。"
+)
 
 
 class ForecastArgs(Empty):
@@ -214,14 +217,19 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
         if target.id != work.id:
             return {"ok": True, "redirected_work_id": target.id, "references": []}
     if name == "get_work_context":
+        board = encoded(await dashboard(session, work.store_id, settings))
+        # Sync and check-job times are the server's clock; the owner reads the store's own time.
+        for field in ("last_check_at", "next_check_at"):
+            board.pop(field, None)
+        board["freshness"].pop("last_sync_at", None)
         value = {
             "catalog": encoded(await get_catalog(session, work.store_id)),
-            "dashboard": encoded(await dashboard(session, work.store_id, settings)),
+            "dashboard": board,
             "missions": encoded(
                 await missions.list_missions(session, work.store_id, None, args.mission_cursor, 30)
             ),
             "linked_mission_id": work.mission_id,
-            "current_time": (await session.scalar(select(func.clock_timestamp()))).isoformat(),
+            "business_time": board["state"]["simulation_time"] or board["state"]["data_as_of"],
         }
         references = [{"type": "store", "id": work.store_id, "label": "实际经营状态"}]
         from app.operations.models import SourceCursor
@@ -399,5 +407,10 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
         from app.quotations.processor_tools import execute as quotation_tool
 
         return await quotation_tool(session, settings, principal, work, name, args, invocation_id)
+    from app.agent_bridge.presentation import supplier_names_in
+    from app.agent_bridge.tools import supplier_names
+
+    value = supplier_names_in(value, await supplier_names(session, work.store_id, value))
     value["money_display"] = money_facts(value)
     return {"ok": True, "data": local_times(value), "references": references, **extra}
+

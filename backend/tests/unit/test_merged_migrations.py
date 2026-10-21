@@ -35,3 +35,17 @@ def test_existing_database_histories_upgrade_to_one_ready_head(
     else:
         assert "CREATE TABLE forecast_v6_inputs" in sql
         assert "CREATE TABLE agent_run_events" in sql
+
+
+def test_business_times_are_nullable_columns_added_after_sourcing(monkeypatch):
+    monkeypatch.setenv("DATABASE_URL", "postgresql+asyncpg://test:test@localhost/unused")
+    output = StringIO()
+    config = Config(str(Path(__file__).resolve().parents[2] / "alembic.ini"), output_buffer=output)
+    command.upgrade(config, "0019_sourcing:0020_business_time", sql=True)
+    sql = output.getvalue()
+    for table, column in [
+        ("mission_timeline", "business_time"),
+        ("actions", "submitted_business_time"),
+        ("actions", "receipt_business_time"),
+    ]:
+        assert f"ALTER TABLE {table} ADD COLUMN {column} TIMESTAMP WITH TIME ZONE;" in sql

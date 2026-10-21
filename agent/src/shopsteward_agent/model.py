@@ -87,7 +87,9 @@ class OpenAIModel:
         if self.responses_client is not None:
             return await self._responses(messages, tools, tool_choice=tool_choice)
         options = {"tool_choice": tool_choice} if tool_choice else {}
-        response = await self.client.bind_tools(tools, **options).ainvoke(messages)
+        # A run with no tools (a Case explainer) sends none: OpenAI refuses an empty list.
+        client = self.client.bind_tools(tools, **options) if tools else self.client
+        response = await client.ainvoke(messages)
         return {
             "content": response.text,
             "tool_calls": [
@@ -147,15 +149,16 @@ class OpenAIModel:
         options = {
             "model": self.profile.model_id,
             "input": items,
-            "tools": [{"type": "function", **tool["function"]} for tool in tools],
             "store": False,
             "max_output_tokens": self.profile.max_output_tokens,
             "include": ["reasoning.encrypted_content"],
         }
         if self.profile.reasoning_effort is not None:
             options["reasoning"] = {"effort": self.profile.reasoning_effort}
-        if tool_choice:
-            options["tool_choice"] = tool_choice
+        if tools:
+            options["tools"] = [{"type": "function", **tool["function"]} for tool in tools]
+            if tool_choice:
+                options["tool_choice"] = tool_choice
         response = await self.responses_client.responses.create(**options)
         # Output items are replayed as input, and the API refuses what it would not send:
         # the SDK's attribute name `async_` instead of `async`, and null fields such as a

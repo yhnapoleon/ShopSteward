@@ -160,6 +160,54 @@ async def test_a_model_reading_keeps_only_what_it_can_quote_from_the_reply():
         assert (read_by, reading["decision"], reading["quantity"]) == ("rules", "accepted", 40)
 
 
+@pytest.mark.asyncio
+async def test_agreeing_to_fewer_units_is_a_partial_acceptance_however_it_was_read():
+    from app.execution.assisted import as_ordered, differences, partly, read_reply
+
+    order = {**ORDER, "quantity": 30, "unit_price_minor": 950, "total_minor": 28500}
+    order["requested_delivery_date"] = "2026-10-14"
+    short = "Sure, but only 10 units"
+    # deepseek-v4-pro on 2026-10-21 read this reply, and the longer one, as unclear.
+    unclear = {"decision": "unclear", "quantity": 10, "quotes": {"quantity": "only 10 units"}}
+    refused = {
+        **unclear,
+        "decision": "rejected",
+        "quotes": {"decision": short, **unclear["quotes"]},
+    }
+    for model in (None, Model(unclear), Model(refused)):
+        reading, _ = await read_reply(short, order, TODAY, model=model)
+        assert (reading["decision"], reading["quotes"]["decision"]) == ("accepted", "Sure")
+        assert reading["quantity"] == 10 and partly(reading, order, differences(reading, order))
+        # The reply names no price or day: the receipt keeps the order's.
+        kept = as_ordered(reading, order)
+        assert (kept["unit_price_minor"], kept["delivery_date"]) == (950, date(2026, 10, 14))
+
+    full = "Sure, but only 10 units at 9.50, delivery tomorrow."
+    stated = {
+        **unclear,
+        "unit_price_minor": 950,
+        "delivery_date": "2026-10-13",
+        "quotes": {
+            "quantity": "only 10 units",
+            "unit_price_minor": "at 9.50",
+            "delivery_date": "delivery tomorrow",
+        },
+    }
+    reading, read_by = await read_reply(full, order, TODAY, model=Model(stated))
+    assert (read_by, reading["decision"]) == ("model", "accepted")
+    assert as_ordered(reading, order)["delivery_date"] == date(2026, 10, 13)
+
+    # A refusal word, the whole quantity or no quantity at all leaves the reading alone.
+    for text, quantity in (
+        ("Sorry, only 10 units left", 10),
+        ("Sure, 30 units, let me check the price", 30),
+        ("Sure, let me check", None),
+    ):
+        quotes = {"quantity": f"{quantity} units"} if quantity else {}
+        model = Model({"decision": "unclear", "quantity": quantity, "quotes": quotes})
+        assert (await read_reply(text, order, TODAY, model=model))[0]["decision"] == "unclear"
+
+
 def test_an_order_sent_by_hand_is_late_only_after_its_delivery_day():
     from datetime import UTC, datetime
 

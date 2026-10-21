@@ -4,9 +4,10 @@ The root states what it needs. Each reviewer reads only its own supplier's
 documents, through a tool, and returns an offer card. Code accepts a card only
 if it parses and every excerpt it cites is in a document that reviewer really
 opened; a rejected card gets one second reading, by a stronger model when one
-is configured, and that reading is told why the first was rejected. The
-caller's solver turns the accepted cards into a proposal and the usual
-explanation runs on that. Every call draws on one ledger.
+is configured, and that reading is told why the first was rejected; a reading
+that ran out of turns before answering is simply done again. The caller's
+solver turns the accepted cards into a proposal and the usual explanation runs
+on that. Every call draws on one ledger.
 """
 
 import asyncio
@@ -24,6 +25,8 @@ from .frozen import analyze_frozen_case
 
 ROLE, SECOND = "supplier", "supplier_escalation"
 ASKED = "the reviewer asked the user; everything it may use is in the listed documents"
+# A reading stopped by these never judged the documents: the next one starts afresh.
+RAN_OUT = {"AGENT_TOOL_BUDGET", "AGENT_MODEL_BUDGET"}
 READ = {
     "type": "function",
     "function": {
@@ -52,6 +55,13 @@ def supply_request(recovery, baseline, district):
         "shortfall_qty": wait["lost_qty"],
         "short_from": short and short["settlement_at"][:10],
     }
+
+
+def limits(documents):
+    """(model calls, tool calls) of one reading. Every document may be opened twice, as when a
+    quote is checked again against its notices, and a reviewer that opens one document a turn
+    still has a turn left to answer."""
+    return max(4, len(documents) + 2), 2 * len(documents) + 2
 
 
 def gate(raw, supplier, opened):
@@ -109,13 +119,19 @@ async def review_supplier(
     turns = turns or asyncio.Semaphore(1)
     sid = supplier["supplier_id"]
     by_id = {doc["doc_id"]: doc for doc in supplier["documents"]}
+    model_calls, tool_calls = limits(supplier["documents"])
 
     async def read(attempt, earlier):
         """One reading by one reviewer, in its own runtime and its own document scope."""
         client, client_profile = role_models.get(SECOND if attempt > 1 else ROLE, (model, profile))
         reading = f"{run_id}:{ROLE}:{sid}:{attempt}"
         question = review_bundle.question(ROLE)
-        if earlier:
+        if earlier and set(earlier["problems"]) <= RAN_OUT:
+            question += (
+                " An earlier reading of this supplier ran out of turns before it returned a card."
+                " Open each listed document once, then return the card."
+            )
+        elif earlier:
             question += (
                 " An earlier card for this supplier was rejected ("
                 + ", ".join(earlier["problems"])
@@ -178,8 +194,8 @@ async def review_supplier(
                         content=question,
                     )
                 ],
-                max_model_calls=4,
-                max_tool_calls=len(by_id) + 2,
+                max_model_calls=model_calls,
+                max_tool_calls=tool_calls,
                 run_timeout=max(0.001, min(120, budget.deadline - time.time())),
                 model_timeout=client_profile.timeout_s,
                 shared_budget=budget,
@@ -245,8 +261,8 @@ async def source_case(
     review_bundle = review_bundle or load_bundle(bundle_id="supplier-review")
     # Room for two readings of every supplier plus the explanation; a ceiling, not a target.
     budget = budget or CallBudget(
-        max_model_calls=8 * len(suppliers) + 2,
-        max_tool_calls=2 * sum(len(s["documents"]) + 2 for s in suppliers) + 2,
+        max_model_calls=sum(2 * limits(s["documents"])[0] for s in suppliers) + 2,
+        max_tool_calls=sum(2 * limits(s["documents"])[1] for s in suppliers) + 2,
         timeout_s=300,
     )
     records, turns = {}, asyncio.Semaphore(parallel)

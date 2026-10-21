@@ -207,3 +207,74 @@ async def test_whatif_is_readonly_and_explicit_revision_preserves_policy_and_old
             assert old.document == results["original"] and old.status == "SUPERSEDED"
             assert row.task_constraints == {"max_purchase_qty": 20}
     await app.state.db.dispose()
+
+
+async def test_tool_data_names_suppliers_states_validity_and_saves_a_memory_once(db):
+    from app.agent_bridge.jobs import make_handlers
+    from app.operations.models import OfferRow
+    from app.planning.jobs import make_handlers as planning
+    from app.scheduling.runner import Runner
+
+    app, client, mission = await setup_agent(db)
+    await Runner(db, app.state.settings, handlers=planning(app.state.settings)).run_once()
+    async with db.session() as session, session.begin():
+        offer = await session.get(OfferRow, (mission["store_id"], "sku_001", "supplier_001"))
+        offer.document = offer.document | {"supplier_name": "Huaxin Dairy"}
+    results = {}
+
+    async def execute(context):
+        auth = {"Authorization": "Bearer " + context["token"]}
+
+        async def call(name, invocation, arguments=None):
+            response = await client.post(
+                f"/internal/v1/agent-tools/{name}",
+                json={
+                    "run_id": context["run_id"],
+                    "invocation_id": invocation,
+                    "arguments": arguments or {},
+                },
+                headers=auth,
+            )
+            return response.json()
+
+        results["plan"] = await call("get_plan", "plan")
+        change = {
+            "kind": "USER",
+            "operation": "add",
+            "content": "I don't take deliveries on weekends.",
+            "expected_version": 0,
+        }
+        results["saved"] = await call("memory_edit", "first", change)
+        results["again"] = await call("memory_edit", "again", change | {"expected_version": 1})
+        return {"status": "SUCCEEDED", "content": "Saved.", "references": []}
+
+    async with client:
+        cid = (
+            await client.post(
+                f"/api/v1/missions/{mission['id']}/conversations", json={}, headers=headers()
+            )
+        ).json()["id"]
+        await client.post(
+            f"/api/v1/conversations/{cid}/messages",
+            json={"content": "Remember: I don’t take deliveries on weekends."},
+            headers=headers(),
+        )
+        await Runner(
+            db, app.state.settings, handlers=make_handlers(app.state.settings, executor=execute)
+        ).run_once()
+        plan = results["plan"]["data"]
+        assert plan["supplier_names"] == {"supplier_001": "Huaxin Dairy"}
+        assert plan["input_snapshot"]["offer"]["supplier_name"] == "Huaxin Dairy"
+        # The verdict the product applies, not a wall-clock deadline to compare.
+        assert (plan["status"], plan["expired"]) == ("PENDING_APPROVAL", False)
+        assert "expires_at" not in plan and "expires_at_local" not in plan
+        assert "valid_until" not in plan["input_snapshot"]["offer"]
+        assert results["saved"]["ok"] is True
+        assert results["again"]["ok"] is False
+        assert results["again"]["error"]["code"] == "MEMORY_ALREADY_SAVED"
+        knowledge = await client.get(
+            f"/api/v1/stores/{mission['store_id']}/agent-knowledge", headers=headers()
+        )
+        entries = [e for scope in knowledge.json()["items"] for e in scope["entries"]]
+        assert [e["content"] for e in entries] == ["I don't take deliveries on weekends."]
+    await app.state.db.dispose()

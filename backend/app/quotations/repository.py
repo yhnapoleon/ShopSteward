@@ -1,6 +1,7 @@
 """Immutable artifacts inside the caller's store -> work transaction lock."""
 
 import json
+import re
 from uuid import uuid4
 
 from sqlalchemy import func, or_, select
@@ -28,9 +29,9 @@ from app.work_items.models import WorkItem
 # What the system writes into a request about quotes, in the owner's interface language.
 TEXT = {
     "zh": {
-        "result_label": "报价整理第{version}版",
-        "rule_label": "报价排序规则第{version}版",
-        "title": "{filename} · 整理结果 v{version}",
+        "result_label": "报价整理结果",
+        "rule_label": "报价排序规则",
+        "title": "{filename} · 报价整理",
         "recalculated": "已按原件重新计算{count}条报价。",
         "issues": "部分字段需补充，未确定金额不参与比较。",
         "complete": "计算完成。",
@@ -53,11 +54,13 @@ TEXT = {
         "saved_next": "可下载结果或上传下一份报价。",
         "default_next": "以后整理报价将使用默认排序。",
         "rule_removed": "长期报价排序规则已取消；已生成结果保留原规则版本。",
+        "upload_first": "请先上传报价CSV，或使用示例报价。",
+        "upload_first_next": "上传报价CSV后会自动整理。",
     },
     "en": {
-        "result_label": "Quote comparison v{version}",
-        "rule_label": "Quote sorting rule v{version}",
-        "title": "{filename} · comparison v{version}",
+        "result_label": "Quote comparison",
+        "rule_label": "Quote sorting rule",
+        "title": "{filename} · Quote comparison",
         "recalculated": "Quote rows recalculated from the original file: {count}.",
         "issues": " Some fields are missing; prices not yet known are left out of the comparison.",
         "complete": " Calculation complete.",
@@ -87,6 +90,8 @@ TEXT = {
         "default_next": "Quotes will be sorted the default way from now on.",
         "rule_removed": "The standing quote sorting rule is cancelled; "
         "results already made keep the rule they used.",
+        "upload_first": "Upload a quote CSV, or try a sample quote, to start.",
+        "upload_first_next": "A quote CSV is compared as soon as it is uploaded.",
     },
 }
 
@@ -94,6 +99,30 @@ TEXT = {
 def text(language, key, **values):
     value = TEXT.get(language, TEXT["zh"])[key]
     return value.format(**values) if values else value
+
+
+# A request to organize quotes, as the quote entry and the intake examples word it.
+ORGANIZE = re.compile(
+    r"整理.{0,10}报价|报价.{0,6}整理|organi[sz]e.{0,30}quot|quot\w*.{0,30}organi[sz]", re.I
+)
+
+
+async def upload_prompt(session, work, content, language):
+    """The one question a request to organize quotes gets before any file is uploaded."""
+    if not ORGANIZE.search(content):
+        return None
+    members = select(WorkItem.id).where(
+        or_(WorkItem.id == work.id, WorkItem.canonical_id == work.id)
+    )
+    if await session.scalar(
+        select(QuotationFile.id).where(QuotationFile.work_id.in_(members)).limit(1)
+    ):
+        return None
+    return {
+        "status": "WAITING_INPUT",
+        "question": text(language, "upload_first"),
+        "next_step": text(language, "upload_first_next"),
+    }
 
 
 async def owner_language(session, principal):
@@ -310,7 +339,7 @@ def references(result, language="zh"):
         {
             "type": "quotation_result",
             "id": result.id,
-            "label": text(language, "result_label", version=result.version),
+            "label": text(language, "result_label"),
         },
     ]
     if result.rule:
@@ -318,7 +347,7 @@ def references(result, language="zh"):
             {
                 "type": "quotation_rule",
                 "id": f"{result.rule.scope_id}:{result.rule.version}",
-                "label": text(language, "rule_label", version=result.rule.version),
+                "label": text(language, "rule_label"),
             }
         )
     return refs
@@ -328,7 +357,7 @@ def work_result(result, language="zh"):
     unknown = text(language, "unknown")
     return {
         "kind": "quotation",
-        "title": text(language, "title", filename=result.filename, version=result.version)[:200],
+        "title": text(language, "title", filename=result.filename)[:200],
         "content": (
             text(language, "recalculated", count=len(result.rows))
             + text(language, "issues" if result.issues else "complete")
