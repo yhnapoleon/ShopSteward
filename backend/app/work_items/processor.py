@@ -35,7 +35,12 @@ POLICY = """你处理用户交给ShopSteward的一件事。
 先查已有Mission：用户说原来那件事时read_mission/link_mission；有多个候选必须澄清。已有Mission不能重复创建。
 咨询库存现金只读；只比较、假设、如果、先看看一律compare_quantities/evaluate_plan。仅当前原话明确修改才revise_plan；新方案仍须用户确认采购。
 用户明确要求持续跟进时propose_mission，只提出条件并请用户点击接受；不得声称已经建立委托。正式现金底线只来自用户明确条件。
-七日预测仅适用于工具实际起止日期。用户没说期间时省略requested_start/end，按预测实际期间；所问期间落在预测期间内时按预测实际期间计算，回答写明planning_period的实际日期。询问下周而数据属其他日期时说明不适用，绝不平移日期或按比例外推。独立人工需求假设只供比较，不能提出正式委托。
+七日预测仅适用于工具实际起止日期。用户没说期间时省略requested_start/end，按预测实际期间；
+所问期间落在预测期间内时按预测实际期间计算，回答写明planning_period的实际日期。
+“下周”“next week”“未来7天”“明天”一律指从当前经营时点起的接下来7天，即预测实际期间：
+省略requested_start/end，不追问日期。用户给出的具体日期不在预测期间内时说明不适用，绝不平移日期或按比例外推。
+商品和供应商名称照抄get_work_context里catalog的写法（如Fresh milk 1L），不翻译、不改写。
+独立人工需求假设只供比较，不能提出正式委托。
 暂停备货跟进用control_mission(pause)，停止这次分析用stop_analysis。含糊的“停一下”先澄清。已发订单撤回不支持，不能声称撤单成功。
 source_quote必须逐字引用当前用户明确授权；持续跟进提案可引用先前同事项用户要求。撤销/否定优先。
 工具失败不能声称成功。模型不能审批、购买、改库存现金、执行订单、取消订单。
@@ -243,10 +248,19 @@ class Processor:
                 {**entry["result"], "_tool": entry["tool"]}
                 for entry in snapshot.response["completed_tools"]
             )
+            from app.operations.models import Store
+            from app.work_items.authorization import local_day
+
+            # "Next week" counts from the store's business time, not the wall clock.
+            store = await session.get(Store, row.store_id)
+            business_day = (
+                local_day(store.simulation_time) if store and store.simulation_time else None
+            )
         user_messages = [m for m in detail.messages if m.role == "user"]
+        # Status notes ("等待重新处理…") are for the page, which translates them; given to the
+        # model as its own turns they pulled a retried answer into Chinese.
         messages = [
-            {"role": m.role if m.role != "system" else "assistant", "content": m.content}
-            for m in detail.messages
+            {"role": m.role, "content": m.content} for m in detail.messages if m.role != "system"
         ]
 
         async def load_context():
@@ -291,7 +305,7 @@ class Processor:
 
                 authorize_action(name, args, user_messages)
                 if isinstance(args, tools.ForecastArgs):
-                    grounded_period(args, user_messages)
+                    grounded_period(args, user_messages, business_day)
                 if isinstance(args, tools.ComparisonArgs):
                     grounded_cash_floor(args.cash_floor_minor, user_messages, required=True)
                 async with self.db.session() as session, session.begin():
@@ -408,13 +422,21 @@ class Processor:
             update = unfinished(outcome, failed, language)
             if update is None:
                 if not special_result(successful):
-                    from app.agent_bridge.presentation import rewrite_amounts
+                    from app.agent_bridge.presentation import rewrite_amounts, rewrite_language
 
                     outcome["content"] = await rewrite_amounts(
                         model,
                         specs,
                         outcome.get("content") or "",
                         [{"tool": r.get("_tool"), "data": r.get("data", {})} for r in successful],
+                        model_timeout=30,
+                    )
+                    outcome["content"] = await rewrite_language(
+                        model,
+                        specs,
+                        outcome["content"],
+                        language,
+                        catalog_names(successful),
                         model_timeout=30,
                     )
                 update = delivery(outcome, successful, language)
@@ -515,6 +537,47 @@ def unfinished(outcome, failed, language):
     return None
 
 
+def catalog_names(results):
+    """Product and supplier names as the store's catalog writes them."""
+    names = []
+    for result in results:
+        catalog = (result.get("data") or {}).get("catalog") or {}
+        names += [p.get("name") for p in catalog.get("products") or []]
+        names += [o.get("supplier_name") for o in catalog.get("offers") or []]
+    return sorted({name for name in names if isinstance(name, str) and name})
+
+
+def planned_period(results, language, text):
+    """The days a proposal plans for, with dates: "Planned for the next 7 days (Thu 22/10 –
+    Wed 28/10)."; "next week" is planned on these days."""
+    from app.agent_bridge.presentation import WEEKDAYS, mostly_chinese
+    from app.work_items.authorization import last_day, local_day
+
+    period = next(
+        (
+            (r.get("data") or {}).get("planning_period")
+            for r in reversed(results)
+            if r.get("_tool") == "propose_mission" and r.get("ok", True)
+        ),
+        None,
+    )
+    if not period:
+        return None
+    from datetime import datetime
+    from math import ceil
+
+    begins, ends = (datetime.fromisoformat(period[key]) for key in ("start", "end"))
+    # Days of the period itself: seven from 21/10 22:46 run to 28/10 22:46, not eight dates.
+    days = ceil((ends - begins).total_seconds() / 86400)
+    start, last = local_day(begins), last_day(ends)
+    if language == "en" or (language is None and not mostly_chinese(text)):
+        return (
+            f"Planned for the next {days} days ({WEEKDAYS[start.weekday()]} {start:%d/%m} – "
+            f"{WEEKDAYS[last.weekday()]} {last:%d/%m})."
+        )
+    return f"按接下来 {days} 天计划（{start.month}月{start.day}日–{last.month}月{last.day}日）。"
+
+
 def special_result(results):
     """A deterministic tool result is published as is, not the model's narration."""
     return next(
@@ -572,6 +635,9 @@ def delivery(outcome, results, language=None):
             "a manual assumption can be compared but cannot back a standing delegation."
         )
         text = caveat + "\n\n" + text
+    period = None if special else planned_period(results, language, text)
+    if period and period.rstrip("。.") not in text:
+        text = period + "\n\n" + text
     result = WorkResultInput.model_validate(
         special
         or {

@@ -154,11 +154,74 @@ async def test_one_english_sentence_proposes_a_follow_up_after_the_forecast_hour
         result = await process_item(db, app.state.settings, model)
         assert result.item.status == "RESULT_READY", result
         assert result.item.mission_request.policy.cash_floor_minor == 30000
-        assert result.item.result.content == "The follow-up terms are ready for you to accept."
+        # The proposal opens with the days it plans for.
+        assert result.item.result.content.startswith("Planned for the next 7 days (")
+        assert result.item.result.content.endswith(
+            ").\n\nThe follow-up terms are ready for you to accept."
+        )
         forecast = json.loads(model.messages[2][-1]["content"])["data"]
         assert forecast["usable_for_requested_period"] is True
         assert forecast["forecast"]["remaining_demand"] == 60
         assert "horizon_end_local" in forecast["forecast"]
+
+
+async def test_one_english_sentence_for_next_week_is_planned_on_the_next_seven_days(db):
+    from datetime import datetime, timedelta
+
+    from sqlalchemy import delete
+
+    from app.agent_bridge.language import remember
+    from app.agent_bridge.models import Receipt
+
+    async def interface(language):
+        # The test database keeps rows between tests: the owner's language goes back after.
+        async with db.session() as session, session.begin():
+            if language:
+                await remember(session, "operator", language)
+            else:
+                await session.execute(
+                    delete(Receipt).where(Receipt.owner == "ui-language", Receipt.key == "operator")
+                )
+
+    async with env(db) as (seed, client, app):
+        await fresh(db, seed)
+        await interface("en")
+        try:
+            source = (
+                "Make sure Fresh milk 1L doesn't run out next week. Never let cash drop below "
+                "CNY 300, and I'll approve every purchase."
+            )
+            await create(client, seed, source)
+            # The model reads "next week" as the calendar week; the forecast's days are used.
+            monday = datetime.fromisoformat(seed["simulation_time"]).date()
+            monday += timedelta(days=7 - monday.weekday())
+            args = {
+                "sku_id": "sku_001",
+                "supplier_id": "supplier_001",
+                "expected_state_version": 1,
+                "cash_floor_minor": 30000,
+                "candidate_quantities": [20, 40],
+                "requested_start": f"{monday.isoformat()}T00:00:00+08:00",
+                "requested_end": f"{(monday + timedelta(days=7)).isoformat()}T00:00:00+08:00",
+                "source_quote": "Make sure Fresh milk 1L doesn't run out next week.",
+                "objective": "Keep Fresh milk 1L in stock, at least CNY 300 cash",
+            }
+            model = ScriptModel(
+                tool("get_work_context"),
+                tool("propose_mission", args),
+                {"content": "The follow-up terms are ready for you to accept."},
+            )
+            result = await process_item(db, app.state.settings, model)
+        finally:
+            await interface(None)
+        assert result.item.status == "RESULT_READY", result
+        assert result.item.mission_request.policy.cash_floor_minor == 30000
+        proposal = json.loads(model.messages[2][-1]["content"])
+        assert proposal["ok"] is True, proposal
+        assert result.item.result.content.startswith("Planned for the next 7 days (")
+        assert result.item.result.content.endswith(
+            ").\n\nThe follow-up terms are ready for you to accept."
+        )
 
 
 async def test_late_tool_cannot_pause_after_new_user_input(db):
@@ -222,16 +285,16 @@ async def test_failed_model_retains_completed_tool_and_retry_does_not_pause_twic
             headers=headers(),
         )
         args["expected_mission_version"] = 2
-        result = await process_item(
-            db,
-            app.state.settings,
-            ScriptModel(
-                tool("get_work_context"),
-                tool("control_mission", args),
-                {"content": "后续备货跟进已暂停，已发订单不受影响。"},
-            ),
+        retried = ScriptModel(
+            tool("get_work_context"),
+            tool("control_mission", args),
+            {"content": "后续备货跟进已暂停，已发订单不受影响。"},
         )
+        result = await process_item(db, app.state.settings, retried)
         assert result.item.status == "RESULT_READY", result
+        # The page's status notes ("等待重新处理…") are not the model's own turns.
+        sent = [m["content"] for m in retried.messages[0] if m["role"] != "system"]
+        assert source in sent and not any("等待重新处理" in m for m in sent)
         current = (await client.get(f"/api/v1/missions/{mission['id']}", headers=headers())).json()
         assert current["status"] == "PAUSED" and current["mission_version"] == 2
 

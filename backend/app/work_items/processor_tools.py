@@ -48,7 +48,10 @@ class CheckArgs(MissionArgs, SourceArgs):
     pass
 
 
-PERIOD = "用户说了日期或期间时按原话填写（业务时区Asia/Shanghai）；没说时省略，按预测实际期间。"
+PERIOD = (
+    "用户给出具体日期时按原话填写（业务时区Asia/Shanghai）；没说期间，或只说下周、next week、"
+    "未来7天、明天时省略，按预测实际期间（从当前经营时点起的接下来7天）。"
+)
 
 
 class ForecastArgs(Empty):

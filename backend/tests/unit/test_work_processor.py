@@ -61,19 +61,41 @@ def test_explicit_revision_and_ambiguous_stop():
     authorize_action("control_mission", args, [message("暂停备货跟进")])
 
 
-def test_next_week_cannot_be_replaced_with_forecast_fixture_dates():
+@pytest.mark.parametrize(
+    "content",
+    [
+        "下周够卖吗？",
+        "Make sure Fresh milk 1L doesn't run out next week.",
+        "We have a promotion next week. Keep milk in stock",
+        "未来7天够不够？",
+        "Is there enough for tomorrow?",
+    ],
+)
+def test_next_week_is_the_next_seven_days_of_the_forecast_without_asking(content):
+    # Whatever calendar week the model reads into "next week", the forecast's own period is
+    # planned on: no dates are kept, so none can mismatch or need a question.
+    for start, end in [
+        ("2026-10-26T00:00:00+08:00", "2026-11-02T00:00:00+08:00"),
+        ("2016-03-01T00:00:00Z", "2016-03-08T00:00:00Z"),
+    ]:
+        args = ForecastArgs(sku_id="sku", requested_start=start, requested_end=end)
+        grounded_period(args, [message(content)], datetime(2026, 10, 22).date())
+        assert args.requested_start is None and args.requested_end is None
+        assert covers_period("2026-10-22T08:21:00Z", "2026-10-28T07:00:00Z", None, None)
+
+
+def test_named_days_still_count_from_the_business_day():
+    weekend = [message("下周末够卖吗？", datetime(2026, 10, 21, 3, tzinfo=UTC))]
+    # Business time is Thu 22/10, a day ahead of the wall clock: next weekend is 31/10–1/11.
     args = ForecastArgs(
-        sku_id="sku", requested_start="2016-03-01T00:00:00Z", requested_end="2016-03-08T00:00:00Z"
+        sku_id="sku",
+        requested_start="2026-10-31T00:00:00+08:00",
+        requested_end="2026-11-02T00:00:00+08:00",
     )
+    grounded_period(args, weekend, datetime(2026, 10, 22).date())
     with pytest.raises(AppError) as error:
-        grounded_period(args, [message("下周够卖吗？")])
+        grounded_period(args, weekend, datetime(2026, 10, 26).date())
     assert error.value.code == "USER_PERIOD_MISMATCH"
-    args.requested_start = datetime(2026, 10, 12, tzinfo=UTC)
-    args.requested_end = datetime(2026, 10, 19, tzinfo=UTC)
-    grounded_period(args, [message("下周够卖吗？")])
-    assert not covers_period(
-        "2026-10-05T00:00:00Z", "2026-10-12T00:00:00Z", args.requested_start, args.requested_end
-    )
 
 
 def test_a_named_period_must_be_passed_and_matched_in_business_days():
@@ -387,6 +409,17 @@ def test_natural_follow_up_requests_can_be_proposed(content):
         "以后牛奶别断货",
         "保证牛奶不断货",
         "Can you manage milk restocking for me?",
+        # The four one-sentence hand-overs of the recording; a cash floor said with "never".
+        "We have a promotion next week. Keep milk in stock, keep at least CNY 300 in cash, "
+        "and I confirm each purchase.",
+        "Make sure Fresh milk 1L doesn't run out next week. Never let cash drop below CNY 300, "
+        "and I'll approve every purchase.",
+        "Keep an eye on milk so it never runs out, keep at least CNY 300 in cash, and I approve "
+        "each purchase.",
+        "Please keep an eye on milk so it never runs out, keep at least 300 yuan, and I approve "
+        "each purchase.",
+        "Make sure milk doesn't run out; don't let the cash fall below CNY 300",
+        "帮我保证牛奶不断货，现金别低于300元",
     ],
 )
 def test_keeping_a_product_from_running_out_is_a_standing_request(content):
@@ -410,6 +443,7 @@ def test_keeping_a_product_from_running_out_is_a_standing_request(content):
         "Is milk in stock?",
         "牛奶会不会断货？",
         "How should I handle the milk shortage?",
+        "Don't keep an eye on milk; never let cash drop below CNY 300",
     ],
 )
 def test_one_off_or_declined_requests_cannot_propose_a_mission(content):
@@ -519,3 +553,61 @@ def test_long_titles_end_at_a_word_or_clause_break():
     assert len(chinese) == 85 and short_title(chinese) == chinese[:79] + "…"
     clauses = "帮我盯着鲜牛奶，" * 11
     assert short_title(clauses) == "帮我盯着鲜牛奶，" * 9 + "帮我盯着鲜牛奶…"
+
+
+def proposed(start="2026-10-22T08:21:00+00:00", end="2026-10-29T08:21:00+00:00"):
+    return {
+        "_tool": "propose_mission",
+        "ok": True,
+        "data": {"planning_period": {"start": start, "end": end}},
+        "mission_request": {"sku_id": "sku_001"},
+    }
+
+
+def test_a_proposal_states_the_days_it_plans_for():
+    english = delivery({"content": "The follow-up terms are ready."}, [proposed()], "en")
+    assert english["answer"] == (
+        "Planned for the next 7 days (Thu 22/10 – Thu 29/10).\n\n"
+        "The follow-up terms are ready."
+    )
+    assert english["mission_request"] == {"sku_id": "sku_001"}
+    chinese = delivery({"content": "委托条件已准备好。"}, [proposed()], "zh")
+    assert chinese["answer"].startswith("按接下来 7 天计划（10月22日–10月29日）。")
+    # After the clock moved on, what is left of the forecast's period, with its dates.
+    later = proposed("2026-10-23T08:21:00+00:00", "2026-10-28T07:00:00+00:00")
+    assert delivery({"content": "Ready."}, [later], "en")["answer"].startswith(
+        "Planned for the next 5 days (Fri 23/10 – Wed 28/10)."
+    )
+    # Said once, also when the model already wrote it; nothing for an answer without a proposal.
+    again = delivery({"content": english["answer"]}, [proposed()], "en")
+    assert again["answer"] == english["answer"]
+    assert delivery({"content": "Stock is fine."}, [], "en")["answer"] == "Stock is fine."
+
+
+class Rewriter:
+    def __init__(self, content):
+        self.content, self.requests = content, []
+
+    async def complete(self, messages, tools, **kwargs):
+        self.requests.append(messages)
+        return {"content": self.content}
+
+
+async def test_an_english_owner_gets_an_answer_in_chinese_rewritten_once():
+    from app.agent_bridge.presentation import rewrite_language
+
+    chinese = "已为牛奶奶粉准备好跟进条件，现金底线 CNY 300。"
+    model = Rewriter("Follow-up terms for Fresh milk 1L are ready; cash floor CNY 300.")
+    names = ["Fresh milk 1L", "Huaxin Dairy"]
+    rewritten = await rewrite_language(model, [], chinese, "en", names, model_timeout=5)
+    assert rewritten == "Follow-up terms for Fresh milk 1L are ready; cash floor CNY 300."
+    assert "Fresh milk 1L" in model.requests[0][0]["content"]
+    # English answers, Chinese owners and a rewrite that stays Chinese are left as they are.
+    for content, language in [("Terms for Fresh milk 1L are ready.", "en"), (chinese, "zh")]:
+        unused = Rewriter("x")
+        assert await rewrite_language(unused, [], content, language, names, model_timeout=5) == (
+            content
+        )
+        assert not unused.requests
+    stubborn = Rewriter("仍然是中文的回答。")
+    assert await rewrite_language(stubborn, [], chinese, "en", names, model_timeout=5) == chinese

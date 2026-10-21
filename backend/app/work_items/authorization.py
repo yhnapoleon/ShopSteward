@@ -51,6 +51,15 @@ STOCKOUT_GOAL = (
     rf"(?:[\w']+\s+){{0,4}}?{RUN_OUT}|"
     rf"(?:不要|不用|别|不能|不会|不再|不)(?:让)?.{{0,8}}?(?:{STOCKED_OUT})"
 )
+# A cash floor said as a negation ("never let cash drop below CNY 300", "现金别低于300元")
+# bounds the follow-up; it does not refuse it.
+CASH_BOUND = (
+    r"\b(?:never|don't|do not|not)\s+(?:let\s+)?(?:the\s+|my\s+|our\s+)?(?:available\s+)?cash\b"
+    r"[^.,;!?]{0,30}?\b(?:below|under|less than|lower than)\b|"
+    r"\bcash\b[^.,;!?]{0,25}?\b(?:never|not)\b[^.,;!?]{0,25}?\b(?:below|under|less than)\b|"
+    r"(?:别|不要|不能|不得|不会|不)(?:让)?现金.{0,6}?(?:低于|少于|跌破|不足)|"
+    r"现金.{0,4}?(?:别|不要|不能|不得|绝不|永远不|不)(?:能|要|会)?(?:低于|少于|跌破)"
+)
 CLAUSE = r"[，,。；;！？!?\n]|\.(?=\s|$)"
 
 
@@ -63,11 +72,13 @@ def refused(content, verb):
 
     "Keep an eye on milk, never below CNY 300" asks for the follow-up; "don't keep an eye
     on milk" and "以后不要盯着" refuse it. With no such action in the message, any negation
-    left refuses. The goal itself ("so it doesn't run out") and declining to order are not
-    refusals: a proposal or a paused follow-up never places an order.
+    left refuses. The goal itself ("so it doesn't run out"), a cash floor ("never let cash
+    drop below CNY 300") and declining to order are not refusals: a proposal or a paused
+    follow-up never places an order.
     """
     content = re.sub(STOCKOUT_GOAL, " ", plain(content), flags=re.I)
     content = re.sub(NO_PURCHASE, " ", content, flags=re.I)
+    content = re.sub(CASH_BOUND, " ", content, flags=re.I)
     marker = rf"(?:{NEGATED})|(?:{HYPOTHETICAL})"
     clauses = [c for c in re.split(CLAUSE, content) if re.search(verb, c, re.I)]
     if not clauses:
@@ -163,34 +174,37 @@ def mentioned_dates(content, today):
     return found
 
 
-def grounded_period(args, messages):
+# "Next week" and the like mean the next seven days from the business time: the period the
+# forecast plans on, which the result states with its dates.
+NEXT_DAYS = (
+    r"下周(?!末)|下星期|本周|这周|明天|未来[七7]天|接下来[七7]天|"
+    r"\b(?:next|this|coming) week\b(?!end)|\btomorrow\b|\bnext (?:seven|7) days\b"
+)
+
+
+def grounded_period(args, messages, today=None):
     """Known natural-calendar references must retain the user's actual dates.
 
-    This is a rejection guard, not an intent classifier. Unknown relative references
-    are left to clarification rather than being converted to the simulation calendar.
-    Days are compared in the business time zone; the end may be given as the last day
-    or as the midnight after it.
+    This is a rejection guard, not an intent classifier. A relative "next week" is planned
+    on the forecast's own period and the model's dates for it are dropped; other unknown
+    relative references are left to clarification. Days are compared in the business time
+    zone (`today` is the business day when known); the end may be given as the last day or
+    as the midnight after it.
     """
     for message in reversed(messages):
         content = message.content
-        today = local_day(message.created_at)
-        dates = mentioned_dates(content, today)
+        day = today or local_day(message.created_at)
+        dates = mentioned_dates(content, day)
         if len(dates) >= 2:
             start, last = dates[0], dates[1]
+        elif re.search(NEXT_DAYS, content, re.I):
+            args.requested_start = args.requested_end = None
+            return
         else:
-            monday = today - timedelta(days=today.weekday())
+            monday = day - timedelta(days=day.weekday())
             if re.search(r"下周末|next weekend", content, re.I):
                 start = monday + timedelta(days=12)
                 last = start + timedelta(days=1)
-            elif re.search(r"下周|下星期|next week", content, re.I):
-                start, last = monday + timedelta(days=7), monday + timedelta(days=13)
-            elif re.search(r"本周|这周|this week", content, re.I):
-                # What is left of this week, from today.
-                start, last = today, monday + timedelta(days=6)
-            elif re.search(r"明天|tomorrow", content, re.I):
-                start = last = today + timedelta(days=1)
-            elif re.search(r"未来[七7]天|接下来[七7]天|next (?:seven|7) days", content, re.I):
-                start, last = today, today + timedelta(days=6)
             # "以后" asks for a standing follow-up ("from now on"), not a period.
             elif re.search(
                 r"下月|下个月|几天后|过几天|next month|in a few days|a few days later",
