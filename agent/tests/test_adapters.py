@@ -200,3 +200,48 @@ async def test_other_provider_errors_are_not_retried():
     )
     with pytest.raises(Broken):
         await model.complete([], [], tool_choice="required")
+
+
+@pytest.mark.asyncio
+async def test_a_run_with_no_tools_sends_no_tool_list(monkeypatch):
+    import json
+
+    import httpx
+    from langchain_openai import ChatOpenAI
+
+    import shopsteward_agent.model as adapter
+
+    requests = []
+
+    def respond(request):
+        requests.append(json.loads(request.content))
+        return httpx.Response(
+            200,
+            json={
+                "id": "probe",
+                "object": "chat.completion",
+                "created": 0,
+                "model": "test",
+                "choices": [
+                    {
+                        "index": 0,
+                        "finish_reason": "stop",
+                        "message": {"role": "assistant", "content": "{}"},
+                    }
+                ],
+            },
+        )
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(respond)) as http_client:
+        monkeypatch.setattr(
+            adapter,
+            "ChatOpenAI",
+            lambda **kwargs: ChatOpenAI(http_async_client=http_client, **kwargs),
+        )
+        model = package.OpenAIModel(
+            base_url="https://example.invalid/v1", model="test", key="test-key"
+        )
+        result = await model.complete([{"role": "user", "content": "explain"}], [])
+    # A Case explainer has no tools; OpenAI refuses an empty tool list.
+    assert "tools" not in requests[0] and "tool_choice" not in requests[0]
+    assert result["content"] == "{}"
