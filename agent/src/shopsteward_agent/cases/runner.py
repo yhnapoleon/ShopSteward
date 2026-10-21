@@ -180,6 +180,9 @@ class BoundedCaseRunner:
                 shared_budget=self.budget,
                 role=spec.role,
                 record_call=self.record_call,
+                # Nobody answers a question during a Case analysis: an expert that could ask
+                # would stop with no claims. What it lacks goes under missing instead.
+                clarify=False,
             )
             base = {
                 "subtask_id": spec.subtask_id,
@@ -193,8 +196,6 @@ class BoundedCaseRunner:
             answer, unsupplied = None, None
             try:
                 result = await runtime.execute(run_id, [{"role": "user", "content": spec.question}])
-                if result["status"] == "WAITING_INPUT":
-                    return {**base, "status": "needs_input", "missing": [result["question"]]}
                 answer = result["content"]
                 parsed = _parse(answer)
                 if not isinstance(parsed, dict) or set(parsed) - {

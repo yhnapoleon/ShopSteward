@@ -83,9 +83,11 @@ class Runtime:
         record_call=None,
         shared_budget=None,
         role="root",
+        clarify=True,
     ):
         self.model, self.call_tool, self.load_context = model, call_tool, load_context
-        self.tools = [*tools, CLARIFY]
+        # Only a run someone can answer is offered a question to ask.
+        self.tools = [*tools, CLARIFY] if clarify else list(tools)
         self.names = {t["function"]["name"] for t in self.tools}
         self.max_models, self.max_tools = max_model_calls, max_tool_calls
         self.run_timeout, self.model_timeout = run_timeout, model_timeout
