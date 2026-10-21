@@ -61,6 +61,56 @@ def local_times(value):
     return value
 
 
+# Validity runs on the wall clock, while the owner reads business time, which the demo moves
+# ahead. The model gets the verdict the product applies, never a deadline to compare with
+# either clock.
+DEADLINES = {"expires_at": "expired", "valid_until": "expired", "source_fresh_until": "stale"}
+
+
+def deadline_verdicts(value, now):
+    """`now=None` inside a plan's input snapshot: what a plan was made from has no verdict."""
+    if isinstance(value, dict):
+        result = {}
+        for key, item in value.items():
+            if (key in DEADLINES or key == "valid_from") and isinstance(item, str):
+                try:
+                    moment = datetime.fromisoformat(item.replace("Z", "+00:00"))
+                except ValueError:
+                    moment = None
+                if moment is not None and moment.tzinfo is not None:
+                    if now is not None and key in DEADLINES and DEADLINES[key] not in value:
+                        result[DEADLINES[key]] = moment <= now
+                    continue
+            result[key] = deadline_verdicts(item, None if key == "input_snapshot" else now)
+        return result
+    if isinstance(value, list):
+        return [deadline_verdicts(item, now) for item in value]
+    return value
+
+
+# "supplier B" / "供应商 B": a code a stored text uses for a supplier the owner knows by name.
+SUPPLIER_CODE = re.compile(r"\b[Ss]upplier\s+(?P<a>[A-Z])\b|供应商\s*(?P<b>[A-Z])(?![A-Za-z0-9_])")
+
+
+def supplier_names_in(value, names):
+    """Every `supplier_id` gets a `supplier_name` neighbour, and stored text says the name."""
+    if not names:
+        return value
+    if isinstance(value, dict):
+        result = {key: supplier_names_in(item, names) for key, item in value.items()}
+        supplier = value.get("supplier_id")
+        if isinstance(supplier, str) and supplier in names and not value.get("supplier_name"):
+            result["supplier_name"] = names[supplier]
+        return result
+    if isinstance(value, list):
+        return [supplier_names_in(item, names) for item in value]
+    if isinstance(value, str):
+        return SUPPLIER_CODE.sub(
+            lambda m: names.get(m["a"] or m["b"], m.group(0)), value
+        )
+    return value
+
+
 def money_facts(value, path=""):
     result = []
     if isinstance(value, dict):
@@ -135,6 +185,45 @@ async def rewrite_amounts(model, tools, content, records, *, model_timeout):
     return rewritten.strip()
 
 
+LANGUAGE_REWRITE = (
+    "Rewrite the shop owner's answer below in English. Keep every number, amount, date and "
+    "conclusion as it is. Write product and supplier names exactly as in this list, never "
+    "translated: {names}. Do not call tools. Output only the rewritten answer."
+)
+HAN = re.compile(r"[㐀-鿿]")
+
+
+def mostly_chinese(text):
+    letters = len(re.findall(r"[A-Za-z]", text)) + len(HAN.findall(text))
+    return bool(letters) and len(HAN.findall(text)) * 3 > letters
+
+
+async def rewrite_language(model, tools, content, language, names, *, model_timeout):
+    """One rewrite into English when an English owner got an answer in Chinese; the original
+    when the call fails or still comes back in Chinese."""
+    if language != "en" or not mostly_chinese(content):
+        return content
+    request = [
+        {"role": "system", "content": LANGUAGE_REWRITE.format(names=json.dumps(names))},
+        {"role": "user", "content": content},
+    ]
+    try:
+        async with asyncio.timeout(model_timeout):
+            reply = await model.complete(request, tools, tool_choice="none")
+    except Exception:
+        return content
+    rewritten = reply.get("content")
+    if (
+        reply.get("status", "completed") != "completed"
+        or reply.get("tool_calls")
+        or not isinstance(rewritten, str)
+        or not rewritten.strip()
+        or mostly_chinese(rewritten)
+    ):
+        return content
+    return rewritten.strip()
+
+
 def without_unsupported_amounts(content, allowed_minor):
     """Drop only the sentences stating an amount the records lack; "" if none survive."""
     sentences = [s for s in SENTENCE.findall(content) if s]
@@ -152,11 +241,31 @@ def without_unsupported_amounts(content, allowed_minor):
     return kept + "\n\n" + note
 
 
+def memory_failure_claim(content):
+    """An answer saying nothing was saved: "I didn't save anything", "没有保存成功"."""
+    return bool(
+        re.search(
+            r"(?:没有|没|未|并未|尚未)(?:能|有)?(?:成功)?(?:保存|记住|记录|存)|保存(?:没有|未|失败)|"
+            r"\b(?:didn't|did not|wasn't|was not|couldn't|could not|haven't|have not|not)\s+"
+            r"(?:been\s+)?(?:save|saved|remember|remembered|store|stored)\b|"
+            r"\bsave\b.{0,30}\b(?:failed|didn't go through|did not go through)\b|"
+            r"\bnothing (?:was |got )?saved\b",
+            content.replace("’", "'"),
+            re.I,
+        )
+    )
+
+
 def memory_success_claim(content):
     return bool(
         re.search(
-            r"已.{0,8}(?:保存|记住|记录|纠正|删除|更新)|成功(?:保存|记住|删除)",
-            content,
+            r"已.{0,8}(?:保存|记住|记录|纠正|删除|更新)|成功(?:保存|记住|删除)|"
+            r"\b(?:I've|I have|I)\s+(?:now\s+)?(?:saved|remembered|noted|stored|updated|removed|"
+            r"deleted)\b|"
+            r"\b(?:is|are|has been|have been|it's|that's)\s+(?:now\s+)?"
+            r"(?:saved|remembered|stored)\b",
+            content.replace("’", "'"),
+            re.I,
         )
     )
 

@@ -40,12 +40,39 @@ def answer(mode="observed"):
 
 
 def test_forecast_and_replenishment_require_ordered_evidence():
-    for content in ["请预测下周销量", "根据预测制定补货计划", "现在应该补货吗", "看一下模型推演"]:
+    for content in [
+        "请预测下周销量",
+        "根据预测制定补货计划",
+        "看一下模型推演",
+        "Roughly how much will we sell next week?",
+    ]:
         policy = evidence_policy(content, documents_enabled=False, forecasts_enabled=True)
         assert policy["required_tools"][:2] == ["get_dashboard", "get_forecast"]
     assert evidence_policy("根据预测制定补货计划", documents_enabled=False, forecasts_enabled=True)[
         "required_tools"
     ] == ["get_dashboard", "get_forecast", "get_plan"]
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "现在应该补货吗",
+        "Why do we need to restock now?",
+        "Where are we with the emergency restock?",
+        "How much did we sell last week?",
+    ],
+)
+def test_restocking_is_answered_from_the_plan_and_stock_without_a_forecast(content):
+    policy = evidence_policy(content, documents_enabled=False, forecasts_enabled=True)
+    assert "get_forecast" not in policy["required_tools"]
+    if "sell" not in content:
+        assert policy["required_tools"] == ["get_dashboard", "get_plan"]
+
+
+def test_restocking_answer_stands_when_the_forecast_is_missing_or_stale():
+    plan_answer = dict(content="Stock covers two days; the plan orders 20.", references=[])
+    for state in [None, current() | dict(status="STALE")]:
+        assert forecast_answer_guard(plan_answer, required=False, current=state) == plan_answer
 
 
 @pytest.mark.parametrize(
@@ -101,10 +128,17 @@ def test_demo_guard_writes_in_the_interface_language_and_labels_once():
     assert guarded["content"] == (
         "Model projection, for reference only.\n\nAbout 12 units over seven days."
     )
-    for labelled in [guarded, answer("historical_demo") | dict(content="模型推演，仅供参考：12件")]:
-        assert forecast_answer_guard(labelled, required=True, current=demo, language="en") == (
-            labelled
+    assert forecast_answer_guard(guarded, required=True, current=demo, language="en") == guarded
+    for written in [
+        "**Model projection, for reference only**\n\nAbout 12 units over seven days.",
+        "model projection, for reference only: About 12 units over seven days.",
+        "*Model Projection, For Reference Only.*\nAbout 12 units over seven days.",
+        "模型推演，仅供参考：About 12 units over seven days.",
+    ]:
+        relabelled = forecast_answer_guard(
+            english | dict(content=written), required=True, current=demo, language="en"
         )
+        assert relabelled["content"] == guarded["content"]
     stale = forecast_answer_guard(
         english, required=True, current=demo | dict(status="STALE"), language="en"
     )

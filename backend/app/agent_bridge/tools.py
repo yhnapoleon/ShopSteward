@@ -14,10 +14,12 @@ from app.agent_bridge.document_evidence import call_document_tool
 from app.agent_bridge.jobs import assert_lease, current_principal
 from app.agent_bridge.models import AgentRun, Conversation, Message, ToolInvocation
 from app.agent_bridge.presentation import (
+    deadline_verdicts,
     explicit_memory_intent,
     local_times,
     memory_write_denied,
     money_facts,
+    supplier_names_in,
 )
 from app.agent_bridge.router import META, enabled
 from app.agent_bridge.schemas import KnowledgeChange, ToolCall, ToolResult
@@ -29,7 +31,7 @@ from app.execution.schemas import Action
 from app.missions import repository as missions
 from app.missions.models import PlanRow
 from app.missions.schemas import CheckRequest
-from app.operations.models import ProductRow
+from app.operations.models import OfferRow, ProductRow
 from app.planning.revisions import evaluate
 from app.reporting import read_repository as reads
 from app.reporting import repository as reporting
@@ -373,6 +375,14 @@ async def execute_tool(
                 "EXPLICIT_MEMORY_INTENT_REQUIRED",
                 "This message does not request a lasting preference change",
             )
+        if await saved_in_run(session, run, args):
+            # One request saves a preference once; a repeat changes nothing and must not
+            # count as a second memory.
+            raise AppError(
+                409,
+                "MEMORY_ALREADY_SAVED",
+                "这条偏好本轮已经保存成功，已在knowledge里；不要再次保存，直接告诉用户已保存。",
+            )
         value = await knowledge.change(
             session,
             principal.principal_id,
@@ -411,6 +421,10 @@ async def execute_tool(
     if name not in {"memory_edit", "read_experiences"}:
         value["money_display"] = money_facts(value)
         value["product_names"] = await product_names(session, store.id, value)
+        suppliers = await supplier_names(session, store.id, value)
+        value = deadline_verdicts(supplier_names_in(value, suppliers), datetime.now(UTC))
+        if suppliers:
+            value["supplier_names"] = suppliers
     return {"ok": True, "data": local_times(value), "references": references}
 
 
@@ -536,6 +550,27 @@ def case_summary(detail):
     return value
 
 
+async def saved_in_run(session, run, args):
+    """Whether this run already saved this preference: an add whose content an earlier
+    successful memory_edit of the run left in the same scope."""
+    if args.operation != "add":
+        return False
+    content = args.content.strip()
+    for call in await session.scalars(
+        select(ToolInvocation).where(
+            ToolInvocation.run_id == run.id, ToolInvocation.tool == "memory_edit"
+        )
+    ):
+        data = call.result.get("data") or {}
+        if (
+            call.result.get("ok")
+            and (data.get("kind"), data.get("task_type")) == (args.kind, args.task_type)
+            and any(entry.get("content") == content for entry in data.get("entries") or [])
+        ):
+            return True
+    return False
+
+
 def sku_ids(value):
     if isinstance(value, dict):
         found = {value["sku_id"]} if isinstance(value.get("sku_id"), str) else set()
@@ -556,6 +591,51 @@ async def product_names(session, store_id, value):
         )
     )
     return {sku: document["name"] for sku, document in rows if (document or {}).get("name")}
+
+
+def supplier_ids(value):
+    if isinstance(value, dict):
+        found = set()
+        for key, item in value.items():
+            if key in {"supplier_id", "supplier_override"} and isinstance(item, str):
+                found.add(item)
+            elif key in {"supplier_ids", "excluded_supplier_ids"} and isinstance(item, list):
+                found |= {entry for entry in item if isinstance(entry, str)}
+            else:
+                found |= supplier_ids(item)
+        return found
+    if isinstance(value, list):
+        return set().union(*(supplier_ids(item) for item in value))
+    return set()
+
+
+async def supplier_names(session, store_id, value):
+    """What the owner calls each supplier a tool result mentions: the name on its documents or
+    its offer, so the model never writes "supplier B"."""
+    ids = supplier_ids(value)
+    if not ids:
+        return {}
+    from app.sourcing.models import SupplierDocumentRow
+
+    names = {
+        supplier: document["supplier_name"]
+        for supplier, document in await session.execute(
+            select(OfferRow.supplier_id, OfferRow.document).where(
+                OfferRow.store_id == store_id, OfferRow.supplier_id.in_(sorted(ids))
+            )
+        )
+        if (document or {}).get("supplier_name")
+    }
+    for supplier, name in await session.execute(
+        select(SupplierDocumentRow.supplier_id, SupplierDocumentRow.supplier_name)
+        .where(
+            SupplierDocumentRow.store_id == store_id,
+            SupplierDocumentRow.supplier_id.in_(sorted(ids)),
+        )
+        .distinct()
+    ):
+        names.setdefault(supplier, name)
+    return dict(sorted(names.items()))
 
 
 @router.post(

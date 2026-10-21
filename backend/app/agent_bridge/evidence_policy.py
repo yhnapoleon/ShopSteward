@@ -41,16 +41,17 @@ def evidence_policy(content, *, documents_enabled, forecasts_enabled=False):
         # Retain separately stated requests after sentence/additional-request boundaries.
         clauses = re.split(r"[。！？!?；;\n]+|[，,]\s*(?=另外|此外|同时|并且|也请|然后)", content)
         content = "。".join(clause for clause in clauses if not explicit_memory_intent(clause))
-    forecast = forecast_requested(content) or (
-        forecasts_enabled and replenishment_requested(content)
-    )
-    if current_state_requested(content) or forecast:
+    # Only sales and demand questions need a forecast. A restocking question is answered
+    # from the plan, stock, in transit and cash, which stay current when a forecast expires.
+    forecast = forecast_requested(content)
+    restock = forecasts_enabled and replenishment_requested(content)
+    if current_state_requested(content) or forecast or restock:
         required.append("get_dashboard")
         reasons.append("current_business_state")
     if forecast:
         required.append("get_forecast")
         reasons.append("forecast_evidence")
-    if re.search(
+    if restock or re.search(
         r"方案|补货计划|采购计划|current plan|replenishment plan|restocking plan|purchase plan",
         content,
         re.I,

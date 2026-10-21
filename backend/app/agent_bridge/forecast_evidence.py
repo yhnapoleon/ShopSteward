@@ -7,19 +7,24 @@ GUARD_TEXTS = {
     "zh": {
         "label": "模型推演，仅供参考。",
         "stale": "预测依据已变化或失效，请刷新预测后再判断。",
-        "missing": "还没有可用的预测，暂不能据此判断销量或补货。"
+        "missing": "还没有可用的预测，暂不能据此判断销量。"
         "请先在七日需求预测里运行预测或导入销售历史，再来问我。",
     },
     "en": {
         "label": "Model projection, for reference only.",
         "stale": "The forecast evidence has changed or expired. Refresh the forecast before "
         "relying on it.",
-        "missing": "No forecast is available yet, so sales and restocking can't be judged "
-        "from one. Run a forecast or import sales history in the 7-day demand forecast, "
-        "then ask again.",
+        "missing": "No forecast is available yet, so sales can't be judged from one. Run a "
+        "forecast or import sales history in the 7-day demand forecast, then ask again.",
     },
 }
 LABELS = tuple(texts["label"].rstrip("。.") for texts in GUARD_TEXTS.values())
+# A label the model wrote itself at the start of a line: either language, Markdown emphasis,
+# any case, its own closing punctuation or a colon.
+WRITTEN_LABEL = re.compile(
+    r"^[ \t>#*_]*(?:" + "|".join(map(re.escape, LABELS)) + r")[*_]*[ \t。.：:]*[*_]*[ \t]*\n?",
+    re.I | re.M,
+)
 
 
 def forecast_requested(content):
@@ -35,7 +40,10 @@ def forecast_requested(content):
             continue
         if re.search(
             r"预测|模型推演|预计.{0,8}(?:卖|销量|销售|需求)|"
-            r"(?:下周|未来|明天).{0,12}(?:销量|卖多少|需求)|\bforecast\b",
+            r"(?:下周|未来|明天).{0,12}(?:销量|卖多少|需求)|"
+            r"\b(?:forecast|predict(?:ed|ion)?|projected)\b|\bwill\b.{0,20}\bsell\b|"
+            r"\bgoing to sell\b|\b(?:expected|future)\s+(?:sales|demand)\b|"
+            r"\b(?:sales|demand|sell)\b.{0,20}\b(?:next week|tomorrow|next \d+ days|coming)\b",
             clause,
             re.I,
         ):
@@ -88,10 +96,8 @@ def forecast_answer_guard(result, *, required, current, language=None):
             ],
         )
     content = result.get("content", "")
-    if (
-        forecasts
-        and current.get("mode") == "historical_demo"
-        and not content.lstrip().startswith(LABELS)
-    ):
-        return result | dict(content=texts["label"] + "\n\n" + content)
+    if forecasts and current.get("mode") == "historical_demo":
+        # One label, in the interface language, even when the model wrote its own.
+        labelled = texts["label"] + "\n\n" + WRITTEN_LABEL.sub("", content).strip()
+        return result if labelled == content else result | dict(content=labelled)
     return result

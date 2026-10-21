@@ -171,9 +171,13 @@ class Runtime:
                         *messages,
                         {
                             "role": "user",
-                            "content": "Previous segment operations already attempted: "
+                            # completed_tools holds only calls that succeeded; saying so keeps
+                            # a model from repeating a saved memory or calling it failed.
+                            "content": "Already completed successfully in this run, and in "
+                            "effect now (a saved preference already appears in the current "
+                            "knowledge): "
                             + json.dumps(state["completed_tools"])
-                            + ". Do not repeat writes. Read current business state/receipts before deciding further work.",
+                            + ". Do not repeat these writes; report them as done. Read current business state/receipts before deciding further work.",
                         },
                     ]
                 state = {

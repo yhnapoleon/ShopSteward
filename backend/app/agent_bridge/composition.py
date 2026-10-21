@@ -15,6 +15,7 @@ from app.agent_bridge.language import OWNER_TEXT
 from app.agent_bridge.language import directive as language_directive
 from app.agent_bridge.models import AgentRun, Conversation, Message, ToolInvocation
 from app.agent_bridge.presentation import (
+    memory_failure_claim,
     memory_success_claim,
     money_facts,
     rewrite_amounts,
@@ -175,7 +176,8 @@ async def execute(context):
             rendered_context = language_directive(context.get("ui_language")) + OWNER_TEXT + (
                 "使用当前用户消息的语言回答；用户明确指定语言时遵循其要求，没有用户语言线索时默认中文。历史消息的语言不覆盖当前请求。业务金额是整数分，显示元时直接复制工具money_display的yuan字符串，不自行换算。每次经营提问先读真实业务工具，不凭历史数值下结论。"
                 "当前Mission已绑定，get_plan不需要用户提供plan_id；用户询问当前方案时必须调用get_plan，不能要求用户重新提供方案。"
-                "get_forecast为空参数只读工具，返回当前任务同门店商品已保存的预测；预测和补货问题先读取库存、预测，再读取方案。"
+                "get_forecast为空参数只读工具，返回当前任务同门店商品已保存的预测；问销量、需求、预测时先读取库存、预测，再读取方案。"
+                "问为什么补货、补多少、补货进展时，依据方案、库存、在途和现金回答；预测可用时可以参考，预测缺失或过期不妨碍回答，也不要因此让用户先去跑预测。"
                 "预测数量直接复制工具值，并说明适用范围（哪件商品、哪几天）；预测销量不等于采购量，不是保证或概率。"
                 "mode=historical_demo时系统会在回答开头标注‘模型推演，仅供参考’"
                 "（英文‘Model projection, for reference only’），正文不再重复。"
@@ -186,7 +188,10 @@ async def execute(context):
                 "不得把历史误差当作当前门店准确率。"
                 "预测依据由系统附带的forecast references显示为界面上的预测依据链接，"
                 "正文不写预测ID。"
-                "缺少预测时请用户在七日需求预测里运行预测或导入销售历史后再问。"
+                "只有问销量或需求而缺少预测时，才请用户在七日需求预测里运行预测或导入销售历史后再问。"
+                "供应商一律用工具数据里的supplier_name（或supplier_names）称呼，不写A、B、C、supplier_001等代号；候选写成供应商名加数量。"
+                "工具数据不给截止时间：方案能否确认看status（PENDING_APPROVAL可确认，EXPIRED已过期），报价与比价看expired是否为true；"
+                "不推算或写出'在某时之前批准''某时已过期'这类时刻，状态有效就照常建议确认。"
                 "提供方案→等待用户反馈→只读试算或明确修订→展示新待确认版本。用户确认采购必须去已有审批接口，不能声称已采购。"
                 "如果用户请求长期记住/纠正/删除偏好，调用memory_edit并确认工具成功。仅一次的数量约束用方案工具。"
                 "只有本轮用户消息明确要求记住时才调用memory_edit；更早消息里没保存成的偏好不在本轮补存，提醒用户再说一次。"
@@ -342,15 +347,29 @@ async def execute(context):
         ]
         amounts = {fact["minor"] for record in records for fact in money_facts(record)}
         memory_calls = [call for call in calls if call.tool == "memory_edit"]
-        if (
-            memory_calls
-            and not any(call.result.get("ok") for call in memory_calls)
-            and memory_success_claim(result.get("content", ""))
-        ):
+        saved = any(call.result.get("ok") for call in memory_calls)
+        # The answer says what this run's memory_edit did, whichever way the model put it.
+        if memory_calls and not saved and memory_success_claim(result.get("content", "")):
             result["content"] = (
-                "本次偏好更新没有成功，原有记忆保持不变。请重新说明需要保存、修改或删除的偏好。"
+                "This preference update did not go through; your memories are unchanged. "
+                "Please say again what to save, change or remove."
+                if english
+                else "本次偏好更新没有成功，原有记忆保持不变。"
+                "请重新说明需要保存、修改或删除的偏好。"
             )
             result["validation_warnings"] = ["MEMORY_EDIT_NOT_COMMITTED"]
+        elif (
+            saved
+            and memory_failure_claim(result.get("content", ""))
+            and not memory_success_claim(result.get("content", ""))
+        ):
+            result["content"] = (
+                "Saved. I'll keep this preference in mind from now on; you can see it under "
+                "Memory."
+                if english
+                else "已为你保存这条偏好，之后会照此处理；可以在记忆里查看。"
+            )
+            result["validation_warnings"] = ["MEMORY_SAVE_UNDERSTATED"]
         for reference in result.get("references", []):
             if reference.get("type") == "plan":
                 plan = await session.get(PlanRow, reference["id"])
