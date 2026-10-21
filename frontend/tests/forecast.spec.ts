@@ -187,13 +187,41 @@ test('forecast unavailable is empty; model scenario keeps exact dates in expanda
   await expect(panel).toContainText('模型推演，仅供参考')
   await expect(panel).not.toContainText('HISTORICAL_DEMO_ONLY')
   await expect(panel.getByText('观察截至 2016-03-27', { exact: true })).not.toBeVisible()
-  await expect(panel.getByRole('table', { name: '七日逐日预测' })).toContainText('03-28')
+  await expect(panel.getByRole('table', { name: '七日逐日预测' })).toContainText('03/28')
   await expect(panel.getByRole('table', { name: '七日逐日预测' })).not.toContainText('2016')
   await panel.getByText('版本与可追溯依据', { exact: true }).click()
   await expect(panel.getByText('观察截至 2016-03-27', { exact: true })).toBeVisible()
   await expect(panel.getByText('预测范围 2016-03-28 至 2016-04-03', { exact: true })).toBeVisible()
   await expect(panel).toContainText('0.57%')
   expect(control.writes[0]).toMatchObject({ mode: 'historical_demo', activate_for_planning: false })
+})
+
+test('a projection on the reference data: folded, no total and no out-of-date warning; open, as it is', async ({
+  page,
+}) => {
+  const control = await setup(page, 'admin', 'READY')
+  const panel = page.getByRole('region', { name: '七日需求预测' })
+  const brief = panel.locator('.forecast-brief')
+  const tag = panel.locator('.forecast-header .tag')
+  await expect(panel.getByTestId('forecast-total')).toHaveText('22 件')
+  await expect(tag).toHaveText('已有预测')
+  await expect(brief).not.toContainText('七日需求合计')
+  await expand(page)
+  await expect(tag).toHaveText('模型推演，仅供参考')
+  await expect(brief).not.toContainText('七日需求合计')
+  // Out of date once the store's facts move: folded, still no warning; open, said as it is.
+  control.status = 'STALE'
+  await page.reload()
+  await expect(tag).toHaveText('模型推演，仅供参考')
+  await expect(brief).not.toContainText('七日需求合计')
+  await expand(page)
+  await expect(tag).toHaveText('预测已失效')
+  await expect(panel).toContainText('预测已失效，仅供追溯')
+  // A forecast on the store's own history says its total and its state, folded too.
+  control.mode = 'observed'
+  await page.reload()
+  await expect(tag).toHaveText('预测已失效')
+  await expect(brief).toContainText('七日需求合计 22 件')
 })
 
 test('viewer can read stale evidence but cannot refresh', async ({ page }) => {
@@ -275,10 +303,11 @@ test('Agent forecast reference opens the panel and identifies superseded evidenc
   control.reference = 'older-forecast-id'
   await page.reload()
   await page.getByRole('button', { name: '查看Agent工作区', exact: true }).click()
-  await page.getByRole('button', { name: '查看预测依据 · v6-test', exact: true }).click()
+  await page.getByRole('button', { name: '查看预测依据', exact: true }).click()
   const panel = page.getByRole('region', { name: '七日需求预测' })
-  await expect(panel).toContainText('正在核对引用：older-forecast-id')
   await expect(panel).toContainText('该引用已被更新或当前不可用')
+  // The reference is checked without showing its identifier.
+  await expect(panel).not.toContainText('older-forecast-id')
 })
 
 test('reusing observed input preserves explicit planning activation even when not currently usable', async ({

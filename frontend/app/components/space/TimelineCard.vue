@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { joinText, t as tr } from '~/i18n'
+import { t as tr } from '~/i18n'
 import type { Schema } from '~/types/models'
 import { api, query } from '~/utils/api'
 import { actionLabel, when } from '~/utils/presentation'
+import { shortfall } from '~/utils/recovery'
 import { groupTimeline } from '~/utils/timeline'
 
 // The mission's history in the owner's words (§7): six rows, routine checks folded, then the
-// earlier rows and every plan version with the decisions taken on it.
+// earlier rows and every plan version with the decisions taken on it. Rows carry only the
+// real-world time they were recorded (no business time yet): it shows on hover, so the page
+// keeps one clock.
 const emit = defineEmits<{ open: [name: string] }>()
 const shop = useShop()
 const { s } = shop
@@ -73,6 +76,24 @@ const planStatus: Record<string, string> = {
   SUPERSEDED: '已被后续方案取代',
   EXPIRED: '已过期',
 }
+// A plan is dated by the business time it was worked out for, the clock the rest of the page
+// shows; when it was saved in real time is not shown. Without that time the line has no date.
+function suggestion(p: Schema<'Plan'>) {
+  const at = p.input_snapshot?.state?.simulation_time
+  const quantity = p.proposed_purchase?.quantity
+  if (!at) return tr(quantity ? '建议补 {0} 件' : '建议本轮不补货', [quantity ?? 0])
+  return quantity
+    ? tr('建议补 {0} 件 · {1}', [quantity, when(at)])
+    : tr('建议本轮不补货 · {0}', [when(at)])
+}
+// How the order went, in the words of the purchase rows above: a supplier's "no" and a partly
+// filled order are named as such, not as a failed or a confirmed purchase.
+function outcome(a: Schema<'Action'>) {
+  if (a.supplier_reply?.outcome === 'declined') return tr('供应商拒单')
+  const short = shortfall(a)
+  if (short) return tr('只确认了一部分 · {0} 件', [short.accepted])
+  return tr(actionLabel(a.status, a.channel))
+}
 </script>
 <template>
   <section
@@ -97,9 +118,13 @@ const planStatus: Record<string, string> = {
             ><span class="timeline-dot"
           /></span>
           <details class="space-timeline-group">
-            <summary>{{ row.label }}</summary>
-            <p v-for="entry in row.items" :key="entry.entry.id">
-              {{ `${when(entry.entry.created_at)} · ${entry.event.title}` }}
+            <summary :title="tr(when(row.latest))">{{ row.label }}</summary>
+            <p
+              v-for="entry in row.items"
+              :key="entry.entry.id"
+              :title="tr(when(entry.entry.created_at))"
+            >
+              {{ entry.event.title }}
             </p>
           </details>
         </li>
@@ -115,16 +140,9 @@ const planStatus: Record<string, string> = {
           <div>
             <p>{{ row.event.title }}</p>
             <small v-if="row.event.detail">{{ row.event.detail }}</small>
-            <time>{{
-              joinText(
-                [
-                  tr(when(row.entry.created_at)),
-                  '·',
-                  tr(row.event.icon === 'user' ? '用户决定' : '系统记录'),
-                ],
-                ' ',
-              )
-            }}</time>
+            <small :title="tr(when(row.entry.created_at))">{{
+              tr(row.event.icon === 'user' ? '用户决定' : '系统记录')
+            }}</small>
           </div>
         </li></template
       >
@@ -133,13 +151,9 @@ const planStatus: Record<string, string> = {
     <details v-if="earlier.length || s.timelineCursor" class="task-earlier">
       <summary>{{ tr('查看更早记录') }}</summary>
       <template v-for="row in earlier" :key="row.key"
-        ><p v-if="row.kind === 'group'">{{ row.label }}</p>
-        <p v-else>
-          {{
-            [when(row.entry.created_at), row.event.title, row.event.detail]
-              .filter(Boolean)
-              .join(' · ')
-          }}
+        ><p v-if="row.kind === 'group'" :title="tr(when(row.latest))">{{ row.label }}</p>
+        <p v-else :title="tr(when(row.entry.created_at))">
+          {{ [row.event.title, row.event.detail].filter(Boolean).join(' · ') }}
         </p></template
       >
       <button v-if="s.timelineCursor" class="text-link" @click="more">
@@ -152,15 +166,9 @@ const planStatus: Record<string, string> = {
       <p v-if="plansError" role="alert">{{ tr(plansError) }}</p>
       <article v-for="p in plans" :key="p.id" class="task-plan-record">
         <b>{{ tr('第 {0} 版 · {1}', [p.plan_version, tr(planStatus[p.status] || p.status)]) }}</b>
-        <p>
-          {{
-            p.proposed_purchase?.quantity
-              ? tr('建议补 {0} 件 · {1}', [p.proposed_purchase.quantity, when(p.created_at)])
-              : tr('建议本轮不补货 · {0}', [when(p.created_at)])
-          }}
-        </p>
+        <p>{{ suggestion(p) }}</p>
         <p v-for="a in actions.filter((a) => a.plan_id === p.id)" :key="a.id">
-          {{ tr('采购单 {0} 件 · {1}', [a.quantity, tr(actionLabel(a.status, a.channel))]) }}
+          {{ tr('采购单 {0} 件 · {1}', [a.quantity, outcome(a)]) }}
         </p>
       </article>
       <p v-if="plansLoaded && !plans.length">{{ tr('暂无方案记录。') }}</p>

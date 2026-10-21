@@ -34,6 +34,15 @@ const asking = computed(() => item.value?.status === 'WAITING_INPUT' && !!item.v
 const stale = computed(() =>
   ['RECEIVED', 'PROCESSING', 'WAITING_INPUT'].includes(item.value?.status || ''),
 )
+// A result the assistant has just said word for word in the conversation is not printed twice:
+// this side leads with the decision and keeps the result one click away.
+const echoed = computed(() => {
+  const result = item.value?.result
+  if (!result || result.calculation || result.kind === 'quotation') return false
+  const last = (s.detail?.messages || []).findLast((m) => m.role === 'assistant')
+  const flat = (text: string) => text.replace(/\s+/g, ' ').trim()
+  return !!last && flat(last.content) === flat(result.content)
+})
 async function accept() {
   if (await work.acceptMission()) emit('changed')
 }
@@ -57,6 +66,40 @@ async function surfaceAnswer(text: string) {
 <template>
   <template v-if="item">
     <QuotationWorkspace @changed="emit('changed')" />
+    <!-- A proposed restocking task is the decision on this page, so it leads; a mission proposal
+         only comes with a ready result (backend work_items/schemas.py). -->
+    <section v-if="item.mission_request && !linked" class="glass work-status-panel space-request">
+      <h2>{{ tr('开始持续跟进这项备货') }}</h2>
+      <p>{{ tr(item.mission_request.objective) }}</p>
+      <p v-if="item.result?.calculation" class="source-note">
+        {{ tr('按这里的现金底线和候选数量建立委托，业务系统会用最新有效需求重新生成方案。') }}
+      </p>
+      <p>
+        {{
+          tr('现金至少保留 {0}；每 {1} 秒检查一次。', [
+            money(item.mission_request.policy.cash_floor_minor),
+            item.mission_request.check_interval_seconds,
+          ])
+        }}
+      </p>
+      <p>{{ tr('这一步只建立跟进委托，每笔采购仍需你单独确认。') }}</p>
+      <button
+        class="primary"
+        :disabled="
+          s.busy ||
+          !!s.pending ||
+          item.demonstration ||
+          simulationStale ||
+          !shop.hasRole('operator')
+        "
+        @click="accept"
+      >
+        {{ tr('按这些条件开始跟进') }}
+      </button>
+      <p v-if="item.demonstration" class="source-note">
+        {{ tr('模拟结果不能建立真实备货委托。') }}
+      </p>
+    </section>
     <SpaceClarificationCard
       v-if="asking"
       :question="item.question!"
@@ -71,7 +114,9 @@ async function surfaceAnswer(text: string) {
       "
       class="glass work-status-panel"
     >
-      <h2>
+      <!-- The last update is a clock time, so it is on hover: the business time in the sync strip
+           is the page's only visible time. -->
+      <h2 :title="joinText([tr('最近更新：'), tr(when(item.updated_at))])">
         {{
           tr(
             item.status === 'WAITING_INPUT'
@@ -84,13 +129,12 @@ async function surfaceAnswer(text: string) {
       </h2>
       <p>{{ tr(item.question || item.summary || '原始要求已保存，可以在右侧继续补充。') }}</p>
       <p>{{ tr(item.next_step) }}</p>
-      <small>{{ joinText([tr('最近更新：'), tr(when(item.updated_at))]) }}</small>
       <p v-if="expired" class="notice amber">
         {{ tr('本轮处理未按时返回，可以重试；已保存的内容仍保留。') }}
       </p>
     </section>
     <template v-if="item.result && item.result.kind !== 'quotation'">
-      <details v-if="linked" class="glass space-discussion">
+      <details v-if="linked || echoed" class="glass space-discussion">
         <summary>{{ tr('这次讨论的结果') }}</summary>
         <p v-if="stale" class="notice">{{ tr('这是之前的结果，尚未根据新要求更新。') }}</p>
         <WorkResult
@@ -124,37 +168,5 @@ async function surfaceAnswer(text: string) {
         </button>
       </section>
     </template>
-    <section v-if="item.mission_request && !linked" class="glass work-status-panel space-request">
-      <h2>{{ tr('开始持续跟进这项备货') }}</h2>
-      <p>{{ tr(item.mission_request.objective) }}</p>
-      <p v-if="item.result?.calculation" class="source-note">
-        {{ tr('按这里的现金底线和候选数量建立委托，业务系统会用最新有效需求重新生成方案。') }}
-      </p>
-      <p>
-        {{
-          tr('现金至少保留 {0}；每 {1} 秒检查一次。', [
-            money(item.mission_request.policy.cash_floor_minor),
-            item.mission_request.check_interval_seconds,
-          ])
-        }}
-      </p>
-      <p>{{ tr('这一步只建立跟进委托，每笔采购仍需你单独确认。') }}</p>
-      <button
-        class="primary"
-        :disabled="
-          s.busy ||
-          !!s.pending ||
-          item.demonstration ||
-          simulationStale ||
-          !shop.hasRole('operator')
-        "
-        @click="accept"
-      >
-        {{ tr('按这些条件开始跟进') }}
-      </button>
-      <p v-if="item.demonstration" class="source-note">
-        {{ tr('模拟结果不能建立真实备货委托。') }}
-      </p>
-    </section>
   </template>
 </template>

@@ -617,11 +617,6 @@
   overflow-wrap: anywhere;
   margin-top: 5px;
 }
-.agent-run-meta {
-  font-size: 11px;
-  color: var(--muted);
-  margin-top: 10px;
-}
 .agent-conversation {
   padding: 20px 22px 18px;
 }
@@ -632,24 +627,6 @@
   overscroll-behavior: contain;
   scrollbar-width: thin;
   padding-right: 5px;
-}
-.agent-chat-empty {
-  padding: 23px 4px 28px;
-  color: var(--muted);
-}
-.agent-chat-empty > .icon {
-  width: 27px;
-  height: 27px;
-  color: #7e9bbb;
-  margin-bottom: 9px;
-}
-.agent-chat-empty p {
-  font-size: 14px;
-}
-.agent-chat-empty span {
-  display: block;
-  font-size: 12px;
-  margin-top: 6px;
 }
 .agent-message {
   padding: 0 0 21px;
@@ -738,18 +715,25 @@
   align-items: center;
   gap: 8px;
 }
+/* A table fits the message's width: its sentences wrap, short cells stay on one line
+   (MarkdownMessage marks the sentences). Only a table that still cannot fit scrolls sideways. */
 .agent-markdown table {
   display: block;
   max-width: 100%;
   width: max-content;
   overflow-x: auto;
-  white-space: nowrap;
   font-size: 12px;
   margin: 12px 0;
 }
 .agent-markdown td,
 .agent-markdown th {
   padding: 8px 12px;
+  white-space: nowrap;
+}
+.agent-markdown .agent-cell-prose {
+  white-space: normal;
+  overflow-wrap: normal;
+  min-width: 12em;
 }
 .agent-markdown blockquote {
   margin: 10px 0;
@@ -1191,10 +1175,6 @@
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-}
-.agent-outcome header time {
-  color: #647581;
-  font-size: 12px;
 }
 .agent-outcome p {
   font-size: 13px;

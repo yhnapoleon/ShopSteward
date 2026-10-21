@@ -75,7 +75,7 @@ try {
   await panel.getByLabel('正确值', { exact: true }).fill('12')
   await panel.getByLabel('整理顺序', { exact: true }).selectOption('unit_price')
   await panel.getByRole('button', { name: '更新并记住整理顺序', exact: true }).click()
-  await expect(panel.getByRole('cell', { name: /10 CNY/ })).toBeVisible()
+  await expect(panel.getByRole('cell', { name: /¥10/ })).toBeVisible()
   await expect(panel).toContainText('折合 24 件')
   const versionsA = (await read('work-items/' + a + '/quotation-results')).items
   expect(versionsA).toHaveLength(2)
@@ -103,7 +103,7 @@ try {
   await newContext()
   await page.goto(base + '/?view=work&item=' + a + '&store=' + store)
   await expect(
-    page.locator('.quotation-workspace').getByRole('cell', { name: /10 CNY/ }),
+    page.locator('.quotation-workspace').getByRole('cell', { name: /¥10/ }),
   ).toBeVisible()
   expect(await page.evaluate(() => localStorage.getItem('ss.local-quotes.v1'))).toBeNull()
   await page
@@ -119,7 +119,7 @@ try {
   await expect(secondPanel).toContainText('报价乙.csv')
   await expect(secondPanel.getByLabel('整理顺序', { exact: true })).toHaveValue('unit_price')
   await secondPanel.getByRole('button', { name: '仅更新本次结果', exact: true }).click()
-  await expect(secondPanel.getByRole('cell', { name: /12 CNY/ })).toBeVisible()
+  await expect(secondPanel.getByRole('cell', { name: /¥12/ })).toBeVisible()
   await expect(secondPanel).toContainText('折合 45 件')
   const resultB = (await read('work-items/' + b + '/quotation-results')).items[0]
   expect(resultB.rows.map((row) => row.product)).toEqual(['饮料', '果汁'])

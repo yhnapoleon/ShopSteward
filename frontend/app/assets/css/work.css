@@ -121,6 +121,10 @@
 .work-status-panel small {
   color: var(--muted, #68777a);
 }
+/* The proposal's one action stands apart from its conditions. */
+.space-request > .primary {
+  margin-top: 18px;
+}
 .work-conversation {
   min-width: 0;
 }

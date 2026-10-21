@@ -111,6 +111,8 @@ const picked = computed(() =>
   pick.value && pick.value !== 'wait' ? optionOf(pick.value) || null : null,
 )
 const tiers = computed(() => (picked.value ? tiersOf(picked.value) : []))
+/** Some supplier has quantities to choose: their row keeps its place whatever is picked. */
+const tiersShown = computed(() => feasibleOptions.value.some((o) => tiersOf(o).length > 1))
 const tierIndex = computed(() =>
   Math.max(
     0,
@@ -621,6 +623,14 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseE
             }}</small>
           </button>
         </span>
+      </div>
+      <!-- A pick with one quantity (or none) holds the row's place: the card keeps its height. -->
+      <div v-else-if="tiersShown" class="rf-qty-row is-held" aria-hidden="true">
+        <span class="rf-seg rf-qty"
+          ><button type="button" class="rf-seg-item" tabindex="-1" disabled>
+            <b>&nbsp;</b><small>&nbsp;</small>
+          </button></span
+        >
       </div>
       <!-- Suppliers that cannot be chosen, and why; outside the choice itself. -->
       <ul

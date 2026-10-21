@@ -53,6 +53,16 @@ function addCopyButtons() {
     wrapper.append(toolbar, pre)
   })
 }
+// A table cell that holds a sentence may wrap, so the table fits the conversation's width and
+// reads whole; short cells (a quantity, an amount) keep their words on one line. A wide character
+// counts double, so a Chinese sentence wraps from about half the length.
+function markProse() {
+  root.value?.querySelectorAll('td, th').forEach((cell) => {
+    const text = cell.textContent?.trim() || ''
+    const width = [...text].reduce((n, c) => n + (c.codePointAt(0)! >= 0x2e80 ? 2 : 1), 0)
+    cell.classList.toggle('agent-cell-prose', width > 24)
+  })
+}
 watch(locale, () => {
   root.value
     ?.querySelectorAll<HTMLButtonElement>('.agent-code-toolbar button')
@@ -61,7 +71,10 @@ watch(locale, () => {
       button.setAttribute('aria-label', tr('复制第 {0} 段代码', [index + 1]))
     })
 })
-onMounted(addCopyButtons)
+onMounted(() => {
+  addCopyButtons()
+  markProse()
+})
 onUnmounted(invalidate)
 const markdown = new MarkdownIt({ html: false, linkify: false, breaks: true })
 markdown.renderer.rules.link_open = (tokens, index, options, _env, renderer) => {
@@ -107,6 +120,7 @@ watch(
     invalidate()
     await nextTick()
     addCopyButtons()
+    markProse()
   },
   { flush: 'post' },
 )

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { joinText, t as tr } from '~/i18n'
+import { t as tr } from '~/i18n'
 import { money, number, when } from '~/utils/presentation'
 
 // Current cash, stock, in-transit and receivables as the business API reports them.
@@ -20,7 +20,13 @@ const verified = computed(() => s.connected && s.dashboard?.freshness.status ===
       <button class="text-link" @click="emit('navigate', 'overview')">
         {{ tr('经营概览') }}<AppIcon name="arrow-up-right" />
       </button>
-      <button class="text-link" @click="emit('open', 'facts')">
+      <!-- The sync time is a real-world time: it stays behind the link, beside the business time
+           the page shows once. -->
+      <button
+        class="text-link"
+        :title="tr('数据同步 {0}', [when(s.dashboard?.freshness.last_sync_at)])"
+        @click="emit('open', 'facts')"
+      >
         {{ tr(verified ? '查看数据来源' : '数据待核实') }}<AppIcon name="database" />
       </button>
     </div>
@@ -48,16 +54,6 @@ const verified = computed(() => s.connected && s.dashboard?.freshness.status ===
         <dd data-testid="receivables">{{ tr(money(s.dashboard?.state.receivables_minor)) }}</dd>
       </div>
     </dl>
-    <p class="source-note">
-      {{
-        joinText(
-          [
-            tr('数据同步 {0}', [when(s.dashboard?.freshness.last_sync_at)]),
-            tr('· 待结算资金尚未到账'),
-          ],
-          ' ',
-        )
-      }}
-    </p>
+    <p class="source-note">{{ tr('待结算资金尚未到账') }}</p>
   </section>
 </template>

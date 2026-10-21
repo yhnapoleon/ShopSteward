@@ -127,21 +127,8 @@ export function useRecoveryPrompt() {
       clock,
     ).lost
   })
-  // The tag and the title say the same thing in the same words ("现金不够" in both). A declined
-  // order has none: its title already says who declined ("百川批发拒单了").
-  const tags: Partial<Record<RecoveryReason, string>> = {
-    manual: '应急补货',
-    late: '原订单晚到',
-    stockout: '缺货风险',
-    cash: '现金不够',
-    infeasible: '常规方案买不了',
-    failed: '采购没有成功',
-    partial: '只能供应一部分',
-  }
-  const tag = computed(() => {
-    const key = trigger.value && tags[trigger.value.reason]
-    return key ? t(key) : ''
-  })
+  // One line says it all: the title opens with the reason ("常规方案买不了", "百川批发拒单了"), so
+  // the card carries no tag repeating it.
   const title = computed(() => {
     const value = trigger.value
     if (!value) return ''
@@ -174,5 +161,5 @@ export function useRecoveryPrompt() {
     })
     return mission.value.id
   }
-  return { load, trigger, shown, tag, title, launch, underWay }
+  return { load, trigger, shown, title, launch, underWay }
 }

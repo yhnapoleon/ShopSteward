@@ -1,6 +1,6 @@
-import { t } from '~/i18n'
-import { actionLabel, when } from '~/utils/presentation'
+import { actionLabel } from '~/utils/presentation'
 import { workPresentation } from '~/utils/workPresentation'
+import { behindFacts } from '~/composables/useSpace'
 export function useTaskPresentation() {
   const { s, mission, stock, canDecide } = useShop()
   const work = useWorkItems()
@@ -11,9 +11,11 @@ export function useTaskPresentation() {
   const status = computed(() => {
     if (!mission.value)
       return { label: '尚未建立', tone: 'gray', group: '待处理', detail: '先交代这次备货目标。' }
+    // The item's own line, unless it was read before the facts the page now shows.
     if (
       work.s.detail?.item.mission_id === mission.value.id &&
       work.s.detail.item.business &&
+      !behindFacts(work.s.detail.item.business, s) &&
       !s.pending
     ) {
       const p = workPresentation(work.s.detail.item)
@@ -105,7 +107,8 @@ export function useTaskPresentation() {
       label: '持续跟进中',
       tone: 'blue',
       group: '进行中',
-      detail: t('下一次检查：{0}', [when(mission.value.schedule.next_run_at)]),
+      // When the next check runs is a real-world time, not the business time: not named here.
+      detail: '等待下一次业务检查；有新的可行方案时再请你确认。',
     }
   })
   return { status, actions, pending }

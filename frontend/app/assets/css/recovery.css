@@ -546,6 +546,10 @@
 .rf-qty-row::-webkit-scrollbar {
   display: none;
 }
+/* A pick without quantities to choose keeps the row's height, empty. */
+.rf-qty-row.is-held {
+  visibility: hidden;
+}
 .rf-qty-label {
   flex-shrink: 0;
   font-size: 13px;
@@ -1239,11 +1243,9 @@
   line-height: 1.45;
   letter-spacing: -0.4px;
 }
-.rf-prompt .tag + h2 {
-  margin-top: 6px;
-}
-.rf-prompt .primary {
-  grid-row: 1 / span 2;
+/* One line and its button, centred on each other. */
+.rf-prompt > button {
+  grid-row: 1;
   grid-column: 2;
 }
 .rf-prompt-copy {
@@ -1452,7 +1454,7 @@
   .rf-prompt h2 {
     font-size: 19px;
   }
-  .rf-prompt .primary {
+  .rf-prompt > button {
     grid-row: auto;
     grid-column: 1;
   }

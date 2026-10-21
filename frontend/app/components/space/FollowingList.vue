@@ -4,7 +4,8 @@ import type { Schema } from '~/types/models'
 import { workPresentation } from '~/utils/workPresentation'
 import { needsOwner } from '~/composables/useSpace'
 
-// Every work item of the current store: ongoing first (by priority), ended ones folded away.
+// Every work item of the current store: ongoing first (by priority), ended ones folded away. The
+// order itself says that what needs the owner comes first; no line repeats it.
 const props = defineProps<{ items: Schema<'WorkView'>[] }>()
 const emit = defineEmits<{ open: [id: string] }>()
 const isEnded = (item: Schema<'WorkView'>) =>
@@ -20,8 +21,7 @@ const ended = computed(() => props.items.filter(isEnded))
 <template>
   <section class="space-following" :aria-label="tr('全部事项')">
     <div class="section-label">
-      {{ tr('进行中的事项') }}<span class="small-count">{{ tr(ongoing.length) }}</span
-      ><span class="right">{{ tr('需要你的排在前面') }}</span>
+      {{ tr('进行中的事项') }}<span class="small-count">{{ tr(ongoing.length) }}</span>
     </div>
     <div class="space-watch">
       <SpaceWorkRow

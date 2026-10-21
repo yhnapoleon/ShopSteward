@@ -274,6 +274,23 @@ export function useWorkItems(owner = false) {
       () => shop.s.session?.workIntake,
       () => void list(),
     )
+    // An item's business line is worked out when it is read (work_items/business.py). The owner's
+    // own order writes refresh the shop at once, so the line read before them ("awaiting the
+    // supplier" after the reply is in) would stand until the next poll. Once the shop's state is
+    // newer than a line on the list (the rule of behindFacts), the list is read again: once per
+    // state, after any read already under way.
+    let caughtUp = ''
+    watch(
+      () => [shop.s.dashboard?.state.state_version, s.listing] as const,
+      ([version, listing]) => {
+        const key = `${s.scope}:${version}`
+        if (!version || listing || s.busy || key === caughtUp) return
+        if (!s.items.some((i) => i.business && i.business.state_version < version)) return
+        caughtUp = key
+        void list()
+        if (s.selected) void load()
+      },
+    )
     onMounted(() => {
       timer = setInterval(() => {
         if (scope.value && shop.s.session?.workIntake && !s.busy && !s.accessRevoked) {

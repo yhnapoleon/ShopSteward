@@ -230,6 +230,17 @@ test('只给一部分：先按对方数量成交，缺的在同一事项里找�
   const revision = m.writes.filter((w) => w.path.endsWith('/revise')).at(-1)!
   expect(revision.body.supplier_ids).not.toContain('B')
   expect(m.writes.filter((w) => w.path === 'operations-cases')).toHaveLength(1)
+  // The purchase records head the order as its row does: what the supplier took, then the
+  // quantity first ordered.
+  await page.locator('#space-receipt .task-section-heading .text-link').click()
+  const heading = page
+    .getByRole('dialog')
+    .locator('.receipt h3')
+    .filter({ hasText: '只确认了一部分' })
+  await expect(heading).toContainText('10件')
+  await expect(heading).toContainText('¥95')
+  await expect(heading).toContainText('只确认了一部分 · 订单 40 件')
+  await expect(heading).not.toContainText('¥380')
 })
 
 test('只给一部分时也可以撤回整单，在同一事项里排除这家重新比价', async ({ page }) => {
@@ -323,7 +334,8 @@ test('等原订单：进度换成等原订单到货，原订单到了给出结�
 test('今日页：常规方案补不上缺口时给出找别家补，打开事项页即是说明', async ({ page }) => {
   const m = await setupRecovery(page, { entry: 'today', documents: true })
   const prompt = page.locator('[data-recovery-prompt]')
-  await expect(prompt).toContainText('缺货风险')
+  // One line, no tag repeating it: the title opens with the reason.
+  await expect(prompt.locator('.tag')).toHaveCount(0)
   // The same gap the brief then names: seven days without a new purchase.
   await expect(prompt.locator('h2')).toHaveText('常规方案补不上缺口：不补的话 7 天缺 40 件')
   await prompt.getByRole('button', { name: '找别家补' }).click()

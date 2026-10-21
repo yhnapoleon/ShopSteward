@@ -34,6 +34,19 @@ const openByDefault = computed(
     !!inspected.value &&
     (active.value || historical.value || tools.value.length < 5 || watched.has(inspected.value.id)),
 )
+const runTimes = computed(() =>
+  inspected.value
+    ? joinText(
+        [
+          when(inspected.value.created_at),
+          ...(inspected.value.finished_at
+            ? [tr('· 结束于'), when(inspected.value.finished_at)]
+            : []),
+        ],
+        ' ',
+      )
+    : undefined,
+)
 function toggled(id: string, open: boolean) {
   if (open === openByDefault.value) delete s.expandedRuns[id]
   else s.expandedRuns[id] = open
@@ -107,7 +120,9 @@ function toggled(id: string, open: boolean) {
         @toggle="toggled(inspected.id, ($event.target as HTMLDetailsElement).open)"
         :key="inspected.id"
       >
-        <summary>
+        <!-- When the run started and finished are real-world times: like a message's time, they
+             show on hover, never beside the business time. -->
+        <summary :title="runTimes">
           <span>{{
             joinText([
               tr(historical ? '这一轮' : '工作记录'),
@@ -219,12 +234,6 @@ function toggled(id: string, open: boolean) {
             </details>
           </li>
         </ol>
-        <p class="agent-run-meta">
-          {{ tr(when(inspected.created_at))
-          }}<template v-if="inspected.finished_at">{{
-            joinText([tr('· 结束于'), tr(when(inspected.finished_at))])
-          }}</template>
-        </p>
       </details>
     </section>
     <section

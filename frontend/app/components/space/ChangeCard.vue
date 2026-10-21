@@ -26,6 +26,17 @@ async function load() {
     return
   }
   if (change.value?.to.mission_id !== id) change.value = null
+  // A version that replaced the one on the page: its predecessor is already here, so the card
+  // turns over together with the plan card instead of one request later.
+  const replaced = s.planChange
+  if (
+    replaced?.to.id === current.id &&
+    replaced.from.mission_id === id &&
+    replaced.from.plan_version === current.plan_version - 1
+  ) {
+    change.value = { from: replaced.from, to: current }
+    return
+  }
   try {
     const page = await api<Schema<'PlanList'>>(`/api/v1/missions/${id}/plans?limit=2`)
     if (n !== epoch || plan.value?.id !== current.id) return
@@ -87,6 +98,13 @@ const gap = computed(() => {
   const to = change.value?.to
   return to ? (to.candidates.find((c) => c.quantity === 0)?.shortage_qty ?? quantity(to)) : 0
 })
+// How much of that gap the suggested purchase covers. A plan held back (by the cash floor, say)
+// covers only part of it, and the row says "20/40", never that this round fills all 40.
+const covered = computed(() => {
+  const to = change.value?.to
+  const after = to?.candidates.find((c) => c.quantity === quantity(to))?.shortage_qty
+  return after == null ? gap.value : Math.max(0, gap.value - after)
+})
 </script>
 <template>
   <p v-if="error" class="notice amber" role="status">
@@ -111,7 +129,7 @@ const gap = computed(() => {
               }}
             </dd>
           </div>
-          <div>
+          <div v-if="demand(change.from) !== demand(change.to)">
             <dt>{{ tr('剩余需求') }}</dt>
             <dd>
               {{ joinText([tr(demand(change.from)), '→', tr(demand(change.to)), tr('件')], ' ') }}
@@ -121,9 +139,11 @@ const gap = computed(() => {
             <dt>{{ tr('已执行采购') }}</dt>
             <dd>{{ tr('{0} 件 · 保留', [executed]) }}</dd>
           </div>
-          <div>
+          <div v-if="gap">
             <dt>{{ tr('这次只补缺口') }}</dt>
-            <dd>{{ tr('{0} 件', [gap]) }}</dd>
+            <dd>
+              {{ covered < gap ? tr('{0}/{1} 件', [covered, gap]) : tr('{0} 件', [gap]) }}
+            </dd>
           </div>
         </dl>
       </div>

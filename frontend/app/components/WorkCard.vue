@@ -6,8 +6,15 @@ import { workPresentation, workTitle } from '~/utils/workPresentation'
 import { awaitsOwnerArrival, workBadge } from '~/composables/useSpace'
 // `quiet`: another card on the page (the emergency restock) holds the one primary action, so
 // this card's way in steps down to a secondary button. `inDecisions`: the card sits under the
-// "需要你拍板" heading, so a badge saying the same is left out.
-const props = defineProps<{ item: Schema<'WorkView'>; quiet?: boolean; inDecisions?: boolean }>()
+// "需要你拍板" heading, so a badge saying the same is left out. `held`: the item's plan is being
+// re-checked ("next day", or the owner's own order write): the card stays as it was and says so
+// in place of its description, as the work page's held plan card does.
+const props = defineProps<{
+  item: Schema<'WorkView'>
+  quiet?: boolean
+  inDecisions?: boolean
+  held?: boolean
+}>()
 defineEmits<{ open: [] }>()
 const presentation = computed(() => workPresentation(props.item))
 // The badge uses the shared status vocabulary; the backend's own wording stays in the text.
@@ -36,7 +43,10 @@ const work = useWorkItems()
       <span class="tag" :class="badge.tone">{{ badge.label }}</span>
     </div>
     <h2 :title="workTitle(item)">{{ workTitle(item) }}</h2>
-    <p>
+    <p v-if="held" class="space-recheck" role="status">
+      <span class="space-pulse" aria-hidden="true" />{{ tr('正在重新核对方案…') }}
+    </p>
+    <p v-else>
       <b v-if="state && state !== badge.label" class="work-card-state">{{ state }} · </b
       >{{ presentation.detailIsOriginal ? presentation.detail : tr(presentation.detail) }}
     </p>

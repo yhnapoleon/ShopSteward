@@ -2,8 +2,7 @@
 import { joinText, t as tr } from '~/i18n'
 import { useReducedMotion } from 'motion-v'
 import { money, number } from '~/utils/presentation'
-import { alertCount, supplierDisplayName } from '~/utils/glossary'
-import { named } from '~/utils/recovery'
+import { alertCount } from '~/utils/glossary'
 import type { Schema } from '~/types/models'
 
 // One workspace for every work item (workspace redesign §4). A restocking mission is a work
@@ -27,30 +26,69 @@ const reduce = useReducedMotion()
 const sentByHand = computed(
   () => !!mission.value && awaitingSupplier.value?.mission_id === mission.value.id,
 )
-// The supplier declined that order: its receipt keeps the slot until the page has synced once
-// more, then the slot moves on (the order row keeps saying the supplier declined).
-const declined = ref<Schema<'Action'> | null>(null)
-watch(
-  () => awaitingSupplier.value?.id,
-  (now, before) => {
-    const answered = before && !now ? s.actions.find((a) => a.id === before) : undefined
-    declined.value = answered?.supplier_reply?.outcome === 'declined' ? answered : null
-  },
-)
-let declinedSynced = false
-watch(
-  () => s.refreshing,
-  (refreshing) => {
-    if (refreshing) declinedSynced = !!declined.value
-    else if (declinedSynced && s.connected) declined.value = null
-  },
-)
-const { rechecking, blocking } = usePlanRecheck(() => props.issue)
+const { open: recheckOpen, rechecking, blocking, held } = usePlanRecheck(() => props.issue)
 // An emergency restock under way shows its own plan, order and arrival in its card (§18); the
 // slots below then stay out of the way instead of repeating them.
 const launcher = useRecoveryLaunch()
 const owned = computed(() => launcher.owned(mission.value?.id))
 const restocking = computed(() => launcher.inProgress(mission.value?.id))
+// The supplier declined that order: its receipt keeps the slot until the owner's next step (any
+// command, or opening the emergency restock). Background checks do not move it on; the order
+// row keeps saying the supplier declined. An order of a restock under way is answered in the
+// restock's own card instead.
+const declined = ref<Schema<'Action'> | null>(null)
+watch(
+  () => awaitingSupplier.value?.id,
+  (now, before) => {
+    const answered = before && !now ? s.actions.find((a) => a.id === before) : undefined
+    declined.value =
+      answered?.supplier_reply?.outcome === 'declined' &&
+      !restocking.value &&
+      !launcher.holds(answered.mission_id, answered.id)
+        ? answered
+        : null
+  },
+)
+watch(
+  () => s.busy,
+  (busy) => {
+    if (busy) declined.value = null
+  },
+)
+watch(restocking, (on) => {
+  if (on) declined.value = null
+})
+// A plan the owner can confirm, or one held while it is re-checked, takes the slot.
+const planShown = computed(() => !!mission.value && (canDecide.value || held.value) && !ended.value)
+// ...unless another card holds the page's one primary action: the plan then says itself in a line.
+const planLine = computed(
+  () =>
+    (restocking.value || !!declined.value) &&
+    !!mission.value &&
+    canDecide.value &&
+    !ended.value &&
+    !!shop.plan.value,
+)
+// Nothing to decide: the goods the owner records next take the slot, where the order card was,
+// so the step in front of the owner stays in place. With a plan to decide, or a restock leading
+// the page, they wait above it.
+const arrivalInSlot = computed(
+  () =>
+    !!mission.value &&
+    !ended.value &&
+    !restocking.value &&
+    !sentByHand.value &&
+    !declined.value &&
+    !planShown.value &&
+    shop.awaitingArrival.value.length > 0,
+)
+// Nothing else holds the slot: the outcome card says what the mission waits for, and while the
+// plan is re-checked it says that itself, in its description's place (OutcomeCard.vue).
+const outcomeInSlot = computed(
+  () =>
+    ended.value ||
+    (!sentByHand.value && !declined.value && !planShown.value && !arrivalInSlot.value),
+)
 const flowOwnsSlot = computed(() => {
   if (!owned.value) return false
   // The restock card already says what the mission waits for; only another decision (a regular
@@ -226,10 +264,11 @@ const canEnd = computed(() => !!mission.value && !ended.value && hasRole('approv
           <SpaceSyncStrip />
           <!-- The arrival card leaves out every purchase of a restock under way: its card records
                them and says when recording the last one ends the restock (useShop.awaitingArrival).
-               A plan to confirm keeps the one primary action; recording then steps back. -->
+               A plan in the slot, to confirm or held while it is re-checked, keeps the one primary
+               action; recording then steps back and stays compact. -->
           <ArrivalCard
-            v-if="mission"
-            :quiet="restocking || (!!mission && canDecide && !ended && !!shop.plan.value)"
+            v-if="mission && !(arrivalInSlot && (!blocking || ended) && !flowOwnsSlot)"
+            :quiet="restocking || planShown"
           />
           <!-- While a restock leads the page its card holds the one primary action. -->
           <SpaceIssueCard v-if="blocking && !ended" :issue="blocking" :quiet="restocking" />
@@ -269,25 +308,32 @@ const canEnd = computed(() => !!mission.value && !ended.value && hasRole('approv
             class="space-target space-slot"
             :class="{ 'target-active': space.isTarget('plan') }"
           >
-            <p v-if="rechecking && !ended" class="space-recheck" role="status">
+            <p v-if="rechecking && !outcomeInSlot" class="space-recheck" role="status">
               <span class="space-pulse" aria-hidden="true" />{{ tr('正在重新核对方案…') }}
             </p>
-            <!-- An order the owner sends by hand waits here for the supplier's reply. -->
+            <!-- An order the owner sends by hand waits here for the supplier's reply; a decline
+                 keeps its receipt here until the owner's next step. -->
             <AssistedOrderCard v-if="sentByHand && !ended" :quiet="restocking" />
-            <article v-else-if="declined && !ended" class="assisted-order glass">
-              <span class="tag amber">{{ tr('供应商拒单') }}</span>
-              <h2>
-                {{
-                  named('{0}拒单了', [supplierDisplayName(declined.purchase_snapshot.supplier_id)])
-                }}
-              </h2>
-              <SupplierReceipt v-if="declined.supplier_reply" :reply="declined.supplier_reply" />
-            </article>
+            <AssistedOrderCard v-else-if="declined && !ended" :declined="declined" />
+            <SpacePlanCard
+              v-else-if="planShown && !planLine"
+              :held="rechecking"
+              @confirm="emit('confirm')"
+              @open="emit('open', $event)"
+            />
+            <ArrivalCard v-else-if="arrivalInSlot" />
+            <SpaceOutcomeCard
+              v-else-if="!planLine"
+              :working="working"
+              :rechecking="rechecking"
+              :recheck-open="recheckOpen"
+            />
             <!-- One primary per screen: while an emergency restock leads the page (before a plan
-                 is adopted from it), a regular plan that can still be confirmed steps back to one
-                 line. Once the owner decides in the restock, routine checks leave the item alone. -->
+                 is adopted from it), or a decline's receipt is still here, a regular plan that can
+                 still be confirmed steps back to one line. Once the owner decides in the restock,
+                 routine checks leave the item alone. -->
             <p
-              v-else-if="restocking && mission && canDecide && !ended && shop.plan.value"
+              v-if="planLine && !sentByHand && shop.plan.value"
               class="rf-regular-plan"
               data-regular-plan-line
             >
@@ -302,13 +348,6 @@ const canEnd = computed(() => !!mission.value && !ended.value && hasRole('approv
                 }}<AppIcon name="chevron-right" />
               </button>
             </p>
-            <SpacePlanCard
-              v-else-if="mission && (canDecide || rechecking) && !ended"
-              :held="rechecking"
-              @confirm="emit('confirm')"
-              @open="emit('open', $event)"
-            />
-            <SpaceOutcomeCard v-else :working="working" />
           </section>
           <SpaceOrdersCard v-if="mission" @open="emit('open', $event)" />
           <SpaceFactsCard @open="emit('open', $event)" @navigate="emit('navigate', $event)" />

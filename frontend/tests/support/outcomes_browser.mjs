@@ -102,7 +102,9 @@ try {
   await expect(outcomes).toContainText('试算结果 · 未修改方案')
   await expect(outcomes).toContainText('方案修订回执')
   await page.reload()
-  await expect(outcomes).toContainText(/方案\s*v1\s*→\s*v2/)
+  // The receipt survives a reload and names no plan version.
+  await expect(outcomes).toContainText('方案修订回执')
+  await expect(outcomes).not.toContainText(/方案\s*v\d/)
   await expect(page.locator('.plan-change-receipt')).toContainText(/40\s*→\s*20/)
   await outcomes.locator('summary').first().click()
   await expect(outcomes.locator('table:visible')).toHaveCount(2)

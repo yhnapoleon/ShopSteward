@@ -4,9 +4,11 @@ import { locale, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
 import { supplierDisplayName } from '~/utils/glossary'
 import { dayOf, named, partialReply, priceOf, unbroken } from '~/utils/recovery'
+import type { Schema } from '~/types/models'
 // `quiet`: an emergency restock leads the page and holds its one primary action, so this order's
-// own steps step back to second buttons.
-defineProps<{ quiet?: boolean }>()
+// own steps step back to second buttons. `declined`: the order the supplier just declined; the
+// card keeps its receipt in the same place, with the one way on (another supplier).
+const props = defineProps<{ quiet?: boolean; declined?: Schema<'Action'> | null }>()
 const shop = useShop()
 const { s, awaitingSupplier, hasRole } = shop
 const action = awaitingSupplier
@@ -44,6 +46,25 @@ const canSwitch = computed(
     hasRole('operator') &&
     !launcher.inProgress(action.value?.mission_id),
 )
+// The way on from a declined order, as its row in the orders card offers it (§18).
+const canRestock = computed(
+  () =>
+    !!props.declined &&
+    !!s.session?.recoveryCases &&
+    hasRole('operator') &&
+    shop.mission.value?.id === props.declined.mission_id &&
+    shop.mission.value.status === 'ACTIVE' &&
+    !launcher.inProgress(props.declined.mission_id),
+)
+function restockElsewhere() {
+  const order = props.declined
+  if (!order) return
+  launcher.request({
+    missionId: order.mission_id,
+    reason: 'declined',
+    exclude: order.purchase_snapshot.supplier_id,
+  })
+}
 async function switchSupplier() {
   const order = action.value
   if (!order) return
@@ -101,7 +122,21 @@ async function withdraw() {
 }
 </script>
 <template>
-  <article v-if="action && order" class="assisted-order glass" data-assisted-order>
+  <article v-if="declined" class="assisted-order glass" data-declined-order>
+    <span class="tag amber">{{ tr('供应商拒单') }}</span>
+    <h2>
+      {{
+        unbroken(named('{0}拒单了', [supplierDisplayName(declined.purchase_snapshot.supplier_id)]))
+      }}
+    </h2>
+    <SupplierReceipt v-if="declined.supplier_reply" :reply="declined.supplier_reply" />
+    <div v-if="canRestock" class="action-row">
+      <button class="primary" type="button" data-declined-restock @click="restockElsewhere">
+        {{ tr('找别家补') }}<AppIcon name="arrow-right" />
+      </button>
+    </div>
+  </article>
+  <article v-else-if="action && order" class="assisted-order glass" data-assisted-order>
     <span class="tag amber">{{ tr('待供应商确认') }}</span>
     <h2>
       {{
@@ -197,7 +232,11 @@ async function withdraw() {
           data-accept-partial
           @click="acceptPartial"
         >
-          {{ tr('按对方数量成交（{0} 件）', [partial.offered]) }}
+          {{
+            s.busy === '正在按对方数量成交'
+              ? tr('正在成交…')
+              : tr('按对方数量成交（{0} 件）', [partial.offered])
+          }}
         </button>
       </div>
     </div>

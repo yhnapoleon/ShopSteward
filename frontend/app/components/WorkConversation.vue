@@ -5,6 +5,8 @@ const work = useWorkItems(),
   { s } = work
 const emit = defineEmits<{ changed: [] }>()
 const log = ref<HTMLElement>()
+// Only a log that scrolls in its own box gets room at its end in demo mode (space.css).
+const overflowing = useOverflowing(log)
 // An emergency restock under way on this item's mission leads the page with its own card.
 const { mission } = useSpace()
 const launcher = useRecoveryLaunch()
@@ -85,6 +87,7 @@ watch(
     <div
       ref="log"
       class="work-message-log"
+      :class="{ 'is-overflowing': overflowing }"
       role="log"
       aria-live="polite"
       :aria-label="tr('这件事的对话')"
@@ -96,7 +99,7 @@ watch(
         :class="{ 'is-user': message.role === 'user' }"
       >
         <div class="agent-message-byline">
-          {{
+          <time :datetime="message.created_at" :title="tr(when(message.created_at))">{{
             tr(
               message.role === 'user'
                 ? '你'
@@ -106,7 +109,7 @@ watch(
                     ? '试算结果'
                     : '助手',
             )
-          }}<time>{{ tr(when(message.created_at)) }}</time>
+          }}</time>
         </div>
         <small v-if="message.demonstration" class="tag amber">{{ tr('模拟接入') }}</small>
         <p v-if="message.role !== 'assistant'" class="agent-user-text">

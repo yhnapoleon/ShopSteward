@@ -27,6 +27,14 @@ const calculation = computed(() => props.result.calculation)
 const surface = computed(() => resultSurface(props.result))
 // Keyed by the stored result, so neither a refresh nor a language switch replays the entrance.
 const identity = computed(() => contentKey(props.result))
+// When the result was written (a clock time) and the business data it read sit behind the title;
+// the business time stays the page's only visible time. Saved files keep both.
+const madeAt = computed(() => {
+  const p = props.result.provenance
+  return p
+    ? joinText([tr('生成于'), tr(when(p.generated_at)), tr('· 业务截至'), tr(when(p.data_as_of))])
+    : undefined
+})
 const stale = computed(
   () =>
     calculation.value &&
@@ -60,7 +68,7 @@ async function download(format: ResultFileFormat = 'txt') {
 <template>
   <section class="work-result">
     <div class="work-card-top">
-      <h3>{{ resultTitle(result) }}</h3>
+      <h3 :title="madeAt">{{ resultTitle(result) }}</h3>
       <button class="text-link" :disabled="saving" @click="download('txt')">
         {{ tr(saving ? '正在读取结果…' : '保存结果') }}
       </button>
@@ -105,16 +113,6 @@ async function download(format: ResultFileFormat = 'txt') {
       @submit="emit('submit', $event)"
     />
     <MarkdownMessage v-else :content="result.content" />
-    <p v-if="result.provenance" class="source-note">
-      {{
-        joinText([
-          tr('生成于'),
-          tr(when(result.provenance.generated_at)),
-          tr('· 业务截至'),
-          tr(when(result.provenance.data_as_of)),
-        ])
-      }}
-    </p>
     <template v-if="!surface">
       <details
         v-if="
@@ -157,7 +155,7 @@ async function download(format: ResultFileFormat = 'txt') {
         {{ tr('左右滑动表格可查看全部数量、现金与判断。') }}
       </p>
     </template>
-    <div class="result-downloads">
+    <div v-if="result.columns?.length || calculation" class="result-downloads">
       <button
         v-if="result.columns?.length"
         class="text-link"
@@ -170,7 +168,6 @@ async function download(format: ResultFileFormat = 'txt') {
         {{ tr('下载原始计算数据') }}
       </button>
     </div>
-    <p class="source-note">{{ tr('以上为本次处理结果；采购及到货以关联业务记录为准。') }}</p>
   </section>
 </template>
 <style scoped>

@@ -105,7 +105,11 @@ export const agentDormant = (
   agent: { run: unknown; messages: unknown[] },
 ) => !session?.agentEnabled && !agent.run && !agent.messages.length
 
-/** One-line watch summary for a work item: what the system waits for next, and the latest change. */
+/**
+ * One-line watch summary for a work item: what the system waits for next, and the latest change.
+ * Only business times are named (an expected arrival); when a check runs, when the item was
+ * updated and when a change was recorded are real-world times and stay out of the line.
+ */
 export function watchSummary(item: Work, s: ShopState) {
   const mission = item.mission_id
     ? s.missions.find((m) => m.id === item.mission_id) || item.mission || null
@@ -127,13 +131,11 @@ export function watchSummary(item: Work, s: ShopState) {
           ])
         : t('{0} 件在途，到货时间待供应商确认', [arriving.remaining_quantity])
     else if (mission.status === 'PAUSED') timing = t('主动跟进已暂停')
-    else if (mission.status === 'ACTIVE' && mission.schedule?.next_run_at)
-      timing = t('下一次检查 {0}', [when(mission.schedule.next_run_at)])
-  } else timing = t('最近更新 {0}', [when(item.updated_at)])
+  }
   let change = ''
   if (mission && s.missionId === mission.id) {
     const latest = latestChange(mission.id, s)
-    change = latest ? `${latest.title} · ${when(latest.at)}` : t('暂无变化')
+    change = latest ? latest.title : t('暂无变化')
   } else if (!mission) {
     const p = workPresentation(item)
     change = p.detailIsOriginal ? p.detail : t(p.detail)
@@ -158,18 +160,31 @@ export function useAdvanceMarker() {
   return marker
 }
 
+/** The owner's own writes to an order: each moves the facts, and a new plan follows in seconds. */
+const OWNER_WRITES = ['正在登记到货', '正在登记供应商回复', '正在按对方数量成交', '正在撤回订单']
+
 /**
- * "Next day" outdates the plan on purpose: for 90 s after it, a plan whose facts changed, or a
- * pending plan whose facts are still syncing, is being re-checked as expected. The page keeps it, held, under one quiet line
- * (`rechecking`) instead of the "needs attention" card; `blocking` is the issue still worth that
- * card.
+ * "Next day" outdates the plan on purpose, and so does the owner recording a reply or an arrival:
+ * for 90 s after the one and 30 s after the other, a plan whose facts changed, or a pending plan
+ * whose facts are still syncing, is being re-checked as expected. The page keeps what it showed
+ * under one quiet line (`rechecking`) instead of the "needs attention" card: a plan with a
+ * purchase stays as a held card (`held`); a plan without one keeps the slot's quiet state, never
+ * a "restock 0 units" card. `blocking` is the issue still worth that card; past the window it is
+ * said again. `open`: the window itself, whatever the page has read so far.
  */
 export function usePlanRecheck(issue: () => string | null) {
   const { s } = useShop()
   const advance = useAdvanceMarker()
+  const written = useState('space-owner-write', () => 0)
+  watch(
+    () => s.busy,
+    (busy) => {
+      if (OWNER_WRITES.includes(busy)) written.value = Date.now() + 30000
+    },
+  )
   const open = ref(false)
   watch(
-    () => advance.value.until,
+    () => Math.max(advance.value.until, written.value),
     (until, _, onCleanup) => {
       const left = until - Date.now()
       open.value = left > 0
@@ -189,8 +204,19 @@ export function usePlanRecheck(issue: () => string | null) {
           !!s.plan.proposed_purchase)),
   )
   const blocking = computed(() => (rechecking.value ? null : issue()))
-  return { rechecking, blocking }
+  const held = computed(() => rechecking.value && !!s.plan?.proposed_purchase)
+  return { open, rechecking, blocking, held }
 }
+
+/**
+ * The work item's business line was read before the facts the page now shows (the owner's own
+ * write refreshed the shop at once; the item follows a moment later). It then says what was true
+ * before, such as "send the order" after the reply is in, and is left out until it catches up.
+ */
+export const behindFacts = (
+  business: { state_version: number } | null | undefined,
+  s: { dashboard: { state: { state_version: number } } | null },
+) => !!business && !!s.dashboard && business.state_version < s.dashboard.state.state_version
 
 export function useSpace() {
   const shop = useShop()
@@ -229,6 +255,7 @@ export function useSpace() {
     if (!current) return statusBadge({})
     if (!current.mission_id) return workBadge(current)
     const m = mission.value
+    const business = behindFacts(current.business, s) ? null : current.business
     const badge = m
       ? statusBadge({
           work: workForBadge(current),
@@ -242,7 +269,7 @@ export function useSpace() {
           awaitingSupplier: shop.awaitingSupplier.value?.mission_id === m.id,
           // Every order whose goods the owner records, wherever the page records them.
           ownerRecordsArrival: shop.arrivalsToRecord.value.length > 0,
-          business: current.business,
+          business,
         })
       : confirmationPending.value
         ? statusBadge({ confirmationPending: true })

@@ -88,9 +88,15 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
           </div>
         </div>
       </div>
+      <!-- What the figures assume sits behind the evidence link (hover), not as a standing line. -->
       <p class="assumption-note">
-        {{ tr('按当前需求、按时到货估算；不是销量或资金安全的保证。')
-        }}<button class="text-link" @click="$emit('evidence')">{{ tr('查看依据') }}</button>
+        <button
+          class="text-link"
+          :title="tr('按当前需求、按时到货估算；不是销量或资金安全的保证。')"
+          @click="$emit('evidence')"
+        >
+          {{ tr('查看依据') }}
+        </button>
       </p>
       <div class="option-title">
         <span>{{ tr('选择这次的安排') }}</span
@@ -156,3 +162,8 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
     </div>
   </article>
 </template>
+<style scoped>
+.assumption-note .text-link {
+  margin-left: 0;
+}
+</style>

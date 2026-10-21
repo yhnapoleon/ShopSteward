@@ -111,10 +111,14 @@ const cashScale = computed(() => {
           ><b data-testid="receivables">{{ tr(money(s.dashboard?.state.receivables_minor)) }}</b>
         </div>
       </div>
-      <button class="data-stamp" :aria-label="tr('查看账目来源')" @click="$emit('details')">
-        <AppIcon name="database" />{{
-          joinText([tr('业务数据 ·'), tr(when(s.dashboard?.freshness.last_sync_at))])
-        }}
+      <!-- The sync time is a real-world time: it stays behind the link, so the column shows one
+           clock, the business time below. -->
+      <button
+        class="data-stamp"
+        :title="tr('数据同步 {0}', [when(s.dashboard?.freshness.last_sync_at)])"
+        @click="$emit('details')"
+      >
+        <AppIcon name="database" />{{ tr('查看数据来源') }}
       </button>
       <button class="data-stamp service-summary" @click="showServices">
         <span class="service-dots" aria-hidden="true"
@@ -137,10 +141,5 @@ const cashScale = computed(() => {
     </section>
     <SpaceSyncStrip compact />
     <SpaceServiceStatus ref="serviceCard" />
-    <p class="autonomy">
-      <AppIcon name="shield-check" /><span
-        >{{ tr('每笔采购由你确认。') }}<br />{{ tr('当前连接的是合成经营环境。') }}</span
-      >
-    </p>
   </aside>
 </template>

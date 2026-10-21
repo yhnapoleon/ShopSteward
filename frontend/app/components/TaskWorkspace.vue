@@ -46,7 +46,7 @@ const change = computed(() =>
   previousPlan.value && plan.value ? { from: previousPlan.value, to: plan.value } : null,
 )
 const ended = computed(() => ['COMPLETED', 'CANCELLED'].includes(mission.value?.status || ''))
-const { rechecking, blocking } = usePlanRecheck(() => props.issue)
+const { rechecking, blocking, held } = usePlanRecheck(() => props.issue)
 const mobilePanel = ref(props.panel === 'agent' ? 'agent' : 'result')
 watch(
   () => props.panel,
@@ -281,7 +281,7 @@ async function recover() {
           </article>
           <AssistedOrderCard v-else-if="awaitingSupplier && !ended" />
           <DecisionCard
-            v-else-if="(canDecide || rechecking) && !ended"
+            v-else-if="(canDecide || held) && !ended"
             :held="rechecking"
             @confirm="emit('confirm')"
             @evidence="emit('open', 'evidence')"

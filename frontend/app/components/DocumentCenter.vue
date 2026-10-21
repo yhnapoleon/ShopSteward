@@ -195,11 +195,6 @@ async function submit() {
         <AppIcon name="plus" />{{ tr('上传资料') }}
       </button>
     </header>
-    <div class="dc-scope">
-      <AppIcon name="file-check-2" /><span>{{
-        tr('原件与版本在此管理；检索与引用由 Agent 工具使用。')
-      }}</span>
-    </div>
     <div v-if="notice" class="dc-notice" role="status">
       <AppIcon name="check" /><span>{{ tr(notice) }}</span
       ><button class="icon-btn" :aria-label="tr('关闭资料提示')" @click="notice = ''">
@@ -374,7 +369,7 @@ async function submit() {
         >
           <div v-if="!selected && !detailError" class="dc-detail-empty">
             <span class="dc-file-icon"><AppIcon name="file-text" /></span>
-            <h2>{{ tr(detailLoading ? '正在读取资料…' : '每一份原件，都有来处。') }}</h2>
+            <h2 v-if="detailLoading">{{ tr('正在读取资料…') }}</h2>
             <p>{{ tr('选择左侧资料，查看原件、版本和使用范围。') }}</p>
           </div>
           <template v-if="selected">
@@ -662,6 +657,7 @@ async function submit() {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+  margin-bottom: 40px;
 }
 .dc-header h1 {
   margin: 9px 0 14px;
@@ -673,18 +669,6 @@ async function submit() {
 }
 .dc-header > button {
   flex-shrink: 0;
-}
-.dc-scope {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 24px 0 32px;
-  color: var(--muted);
-  font-size: 13px;
-}
-.dc-scope .icon {
-  flex-shrink: 0;
-  color: #687f78;
 }
 .dc-notice {
   display: flex;
@@ -1116,16 +1100,13 @@ summary {
     align-items: flex-start;
     flex-direction: column;
     gap: 20px;
+    margin-bottom: 28px;
   }
   .dc-header h1 {
     font-size: 32px;
   }
   .dc-back {
     margin-bottom: 22px;
-  }
-  .dc-scope {
-    align-items: start;
-    margin: 22px 0;
   }
   .dc-library {
     padding: 6px 14px;

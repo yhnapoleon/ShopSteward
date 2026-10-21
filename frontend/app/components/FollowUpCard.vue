@@ -17,6 +17,18 @@ const waiting = computed(() =>
             ? '出现新事实后再评估，当前取舍保持'
             : '下一次经营变化，活动未自动结束',
 )
+const checks = computed(() =>
+  joinText(
+    [
+      tr('最近检查：{0}', [when(s.dashboard?.last_check_at)]),
+      '·',
+      mission.value?.status === 'ACTIVE'
+        ? tr('下一检查：{0}', [when(mission.value.schedule.next_run_at)])
+        : tr('已暂停或结束'),
+    ],
+    ' ',
+  ),
+)
 </script>
 <template>
   <article v-if="mission" class="follow-panel glass">
@@ -44,22 +56,12 @@ const waiting = computed(() =>
         {{ tr(mission.status === 'PAUSED' ? '恢复跟进' : '暂停跟进') }}
       </button>
     </div>
-    <dl class="follow-facts">
+    <!-- Checks run on the real-world clock, not the business time the page shows: when the last
+         one ran and the next one is due stay behind the facts (hover). -->
+    <dl class="follow-facts" :title="checks">
       <div>
         <dt>{{ tr('正在等') }}</dt>
         <dd>{{ tr(waiting) }}</dd>
-      </div>
-      <div>
-        <dt>{{ tr('最近检查') }}</dt>
-        <dd>{{ tr(when(s.dashboard?.last_check_at)) }}</dd>
-      </div>
-      <div>
-        <dt>{{ tr('下一次检查') }}</dt>
-        <dd>
-          {{
-            tr(mission.status === 'ACTIVE' ? when(mission.schedule.next_run_at) : '已暂停或结束')
-          }}
-        </dd>
       </div>
       <div v-if="s.inbounds.some((i) => i.remaining_quantity)">
         <dt>{{ tr('预计到货') }}</dt>

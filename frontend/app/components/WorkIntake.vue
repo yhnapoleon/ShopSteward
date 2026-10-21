@@ -21,7 +21,6 @@ function keydown(e: KeyboardEvent) {
 <template>
   <section class="work-intake">
     <h2>{{ tr('今天想解决什么事？') }}</h2>
-    <p>{{ tr('可以先问一问，也可以交代一件需要跟进的事情。') }}</p>
     <p v-if="!s.processorAvailable" class="source-note">
       {{ tr('现在没有助手回复，你交代的事会先保存下来。') }}
     </p>
@@ -32,7 +31,7 @@ function keydown(e: KeyboardEvent) {
       rows="3"
       maxlength="8000"
       :disabled="s.busy || !!s.pending"
-      :placeholder="tr('例如：下周有活动，帮我看看牛奶够不够卖，至少留500块钱。')"
+      :placeholder="tr('例如：帮我盯着牛奶别断货，现金至少留 300 元，每笔采购我来确认。')"
       @keydown="keydown"
     />
     <div class="work-examples">
@@ -52,12 +51,7 @@ function keydown(e: KeyboardEvent) {
     </div>
     <p v-if="s.error" class="notice amber" role="alert">{{ tr(s.error) }}</p>
     <div class="work-card-bottom">
-      <small>{{ tr('发送后保留在同一事项中；不会自动采购。') }}</small
-      ><button
-        class="secondary"
-        :disabled="s.busy || (!s.pending && !s.input.trim())"
-        @click="send"
-      >
+      <button class="secondary" :disabled="s.busy || (!s.pending && !s.input.trim())" @click="send">
         {{ tr(s.pending ? '恢复原提交' : s.processorAvailable ? '交给助手' : '保存这件事')
         }}<AppIcon name="arrow-right" />
       </button>
