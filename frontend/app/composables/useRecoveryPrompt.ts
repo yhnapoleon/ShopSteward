@@ -127,18 +127,21 @@ export function useRecoveryPrompt() {
       clock,
     ).lost
   })
-  // The tag and the title say the same thing in the same words ("现金不够" in both).
-  const tags: Record<RecoveryReason, string> = {
+  // The tag and the title say the same thing in the same words ("现金不够" in both). A declined
+  // order has none: its title already says who declined ("百川批发拒单了").
+  const tags: Partial<Record<RecoveryReason, string>> = {
     manual: '应急补货',
     late: '原订单晚到',
     stockout: '缺货风险',
     cash: '现金不够',
     infeasible: '常规方案买不了',
     failed: '采购没有成功',
-    declined: '供应商拒单',
     partial: '只能供应一部分',
   }
-  const tag = computed(() => (trigger.value ? t(tags[trigger.value.reason]) : ''))
+  const tag = computed(() => {
+    const key = trigger.value && tags[trigger.value.reason]
+    return key ? t(key) : ''
+  })
   const title = computed(() => {
     const value = trigger.value
     if (!value) return ''

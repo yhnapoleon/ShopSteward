@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { joinText, t as tr } from '~/i18n'
+import { joinText, listText, t as tr } from '~/i18n'
 import type { Schema, PlanDocument } from '~/types/models'
 import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
 import { api } from '~/utils/api'
@@ -305,6 +305,8 @@ async function act(fn: () => Promise<unknown>, close = false) {
     modalError.value = (e as Error).message
   }
 }
+// Reviewing a plan opens its dialog a moment later; the disabled review button says it is under way.
+const toast = computed(() => (s.busy === '正在核对方案' ? '' : s.busy) || s.notice)
 async function prepare() {
   await act(async () => {
     approval.value = await shop.prepareDecision()
@@ -786,19 +788,10 @@ function briefing() {
       />
       <div v-if="!['overview', 'documents', 'task', 'work'].includes(view)" class="page-head">
         <div>
-          <div class="eyebrow">{{ tr(s.connected ? '业务接口已连接' : '经营空间') }}</div>
+          <div v-if="!demoMode" class="eyebrow">
+            {{ tr(s.connected ? '业务接口已连接' : '经营空间') }}
+          </div>
           <h1>{{ tr(title) }}</h1>
-          <p>
-            {{
-              tr(
-                view === 'today'
-                  ? '需要拍板的事情固定放在这里；其余进度按需查看。'
-                  : view === 'following'
-                    ? '看到原委托、已完成的动作和下一步。'
-                    : '事实、决定与整理结果，都可以回来核对。',
-              )
-            }}
-          </p>
         </div>
         <div class="page-head-actions">
           <button
@@ -941,13 +934,13 @@ function briefing() {
             </p>
             <template v-if="todayStarted">
               <div class="section-label">
-                {{ tr('需要你拍板') }}<span class="small-count">{{ tr(decisionCount) }}</span
-                ><span class="right">{{ tr('每笔采购单独确认') }}</span>
+                {{ tr('需要你拍板') }}<span class="small-count">{{ tr(decisionCount) }}</span>
               </div>
               <WorkCard
                 v-for="item in leadingWorks"
                 :key="item.id"
                 :item="item"
+                in-decisions
                 @open="openWork(item.id)"
               />
               <RecoveryPrompt @open="openTask" />
@@ -956,6 +949,7 @@ function briefing() {
                 :key="item.id"
                 :item="item"
                 quiet
+                in-decisions
                 @open="openWork(item.id)"
               />
               <TaskCard v-if="taskCardShown" :quiet="restockLeads" @open="openTask()" />
@@ -1039,8 +1033,7 @@ function briefing() {
               </p>
               <template v-if="work.s.available">
                 <div class="section-label">
-                  {{ tr('系统在盯') }}<span class="small-count">{{ tr(watchWorks.length) }}</span
-                  ><span class="right">{{ tr('到货与检查会自动更新') }}</span>
+                  {{ tr('系统在盯') }}<span class="small-count">{{ tr(watchWorks.length) }}</span>
                 </div>
                 <SpaceWatchList :items="watchWorks" @open="openWork" />
                 <button v-if="work.s.cursor" class="text-link" @click="work.list(true)">
@@ -1325,20 +1318,11 @@ function briefing() {
           </details>
           <div v-if="s.alerts.some((a) => a.status === 'OPEN')" class="risk-link">
             <button class="text-link" @click="open('alerts')">
-              {{
-                joinText(
-                  [
-                    tr(s.alerts.filter((a) => a.status === 'OPEN').length),
-                    tr('项经营提醒，查看依据'),
-                  ],
-                  ' ',
-                )
+              {{ alertCount(s.alerts.filter((a) => a.status === 'OPEN').length)
               }}<AppIcon name="chevron-right" />
             </button>
           </div>
-          <div class="section-label">
-            {{ tr('资料与简报') }}<span class="right">{{ tr('按需查看') }}</span>
-          </div>
+          <div class="section-label">{{ tr('资料与简报') }}</div>
           <div class="materials-grid">
             <button class="follow-card glass" @click="navigate('documents')">
               <span class="mini-icon"><AppIcon name="file-check-2" /></span>
@@ -1394,8 +1378,8 @@ function briefing() {
   </nav>
   <LazyPresenterBar v-if="demoMode" @open="open" @navigate="navigate" />
   <MemoryPanel />
-  <div v-if="s.notice || s.busy" class="toast" role="status">
-    {{ tr(s.busy || s.notice)
+  <div v-if="toast" class="toast" role="status">
+    {{ tr(toast)
     }}<button v-if="!s.busy" :aria-label="tr('关闭提示')" @click="s.notice = ''">×</button>
   </div>
   <GoalDeck
@@ -1504,18 +1488,10 @@ function briefing() {
           ])
         }}
       </p>
-      <p class="notice">
-        {{
-          tr(
-            approval.quantity
-              ? '采购受理后先计入在途，到货后才增加在库。'
-              : '当前条件不变时，不会因为同一建议反复发起采购。',
-          )
-        }}
+      <p v-if="!approval.quantity" class="notice">
+        {{ tr('当前条件不变时，不会因为同一建议反复发起采购。') }}
       </p>
-      <p class="source-note">
-        {{ tr('确认绑定这一份方案及当前依据。新情况出现时，需要重新核对。') }}
-      </p>
+      <p>{{ tr('确认绑定这一份方案及当前依据。新情况出现时，需要重新核对。') }}</p>
       <div class="modal-actions">
         <button class="secondary" :disabled="Boolean(s.busy)" @click="dialog = ''">
           {{ tr('返回修改') }}</button
@@ -1531,36 +1507,46 @@ function briefing() {
       </div></template
     >
     <template v-else-if="dialog === 'compare' && plan"
-      ><p>{{ tr('先满足最低现金约束，再比较缺货和采购量。所有数值来自这份后端方案。') }}</p>
+      ><p>{{ tr('先满足最低现金约束，再比较缺货和采购量。') }}</p>
       <div class="table-scroll">
-        <table>
+        <table class="compare-table">
           <thead>
             <tr>
               <th v-if="isRecoveryPlan(plan)">{{ tr('供应商') }}</th>
-              <th>{{ tr('数量') }}</th>
-              <th>{{ tr('支出') }}</th>
-              <th>{{ tr('剩余现金') }}</th>
-              <th>{{ tr('预计缺货') }}</th>
+              <th class="num">{{ tr('数量') }}</th>
+              <th class="num">{{ tr('支出') }}</th>
+              <th class="num">{{ tr('剩余现金') }}</th>
+              <th class="num">{{ tr('预计缺货') }}</th>
               <th>{{ tr('约束') }}</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="c in plan.candidates" :key="c.id">
+            <tr
+              v-for="c in plan.candidates"
+              :key="c.id"
+              :class="{ 'is-rejected': c.rejection_reasons.length }"
+            >
               <td v-if="isRecoveryPlan(plan)">
-                {{ 'supplier_id' in c ? c.supplier_id || tr('等待') : '—' }}
-              </td>
-              <td>{{ joinText([tr(c.quantity), tr('件')]) }}</td>
-              <td>{{ tr(money(c.spend_minor)) }}</td>
-              <td>{{ tr(money(c.cash_after_minor)) }}</td>
-              <td>{{ joinText([tr(c.shortage_qty), tr('件')]) }}</td>
-              <td>
                 {{
-                  tr(
-                    c.rejection_reasons.length
-                      ? c.rejection_reasons.map(reasonLabel).join('、')
-                      : '可行',
-                  )
+                  'supplier_id' in c
+                    ? c.supplier_id
+                      ? supplierDisplayName(c.supplier_id)
+                      : tr('等待')
+                    : '—'
                 }}
+              </td>
+              <td class="num">{{ joinText([tr(c.quantity), tr('件')]) }}</td>
+              <td class="num">{{ tr(money(c.spend_minor)) }}</td>
+              <td class="num">{{ tr(money(c.cash_after_minor)) }}</td>
+              <td class="num">{{ joinText([tr(c.shortage_qty), tr('件')]) }}</td>
+              <td class="reason">
+                {{
+                  c.rejection_reasons.length
+                    ? listText(c.rejection_reasons.map((r) => tr(reasonLabel(r))))
+                    : tr('可行')
+                }}<span v-if="c.id === plan.recommended_candidate_id" class="recommended">{{
+                  tr('推荐')
+                }}</span>
               </td>
             </tr>
           </tbody>
@@ -1707,10 +1693,8 @@ function briefing() {
     <template v-else-if="dialog === 'complete' && mission"
       ><p>
         {{
-          joinText([
-            tr('结束「'),
+          tr('结束「{0}」的主动跟进。方案、决定和采购记录保留，可随时回看。', [
             tr(mission.objective),
-            tr('」的主动跟进。方案、决定和采购记录保留，可随时回看。'),
           ])
         }}
       </p>
@@ -2035,7 +2019,7 @@ function briefing() {
         <option v-for="st in s.stores" :key="st.store_id" :value="st.store_id">
           {{
             demoMode
-              ? storeLabel(st) + (st.store_id === s.activeStoreId ? tr('（当前环境）') : '')
+              ? storeLabel(st, true) + (st.store_id === s.activeStoreId ? tr('（当前环境）') : '')
               : joinText([
                   tr(st.store_id === s.activeStoreId ? '当前环境' : '历史场景'),
                   '·',

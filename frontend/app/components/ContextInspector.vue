@@ -177,9 +177,13 @@ onUnmounted(() => {
 
 <style scoped>
 .context-inspector {
-  margin: 12px 0;
-  border-top: 1px solid #dce6dd;
-  padding-top: 12px;
+  padding: 14px 24px;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 580px) {
+  .context-inspector {
+    padding-inline: 20px;
+  }
 }
 .context-body {
   font-size: 0.85rem;

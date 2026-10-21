@@ -17,6 +17,8 @@ const reply = ref(''),
   copied = ref(false),
   confirmingWithdrawal = ref(false)
 const approver = computed(() => hasRole('approver'))
+/** The reply is being read: said where the next step waits, as the emergency card says it. */
+const reading = computed(() => s.busy === '正在登记供应商回复')
 // The supplier can supply only part of it. The owner takes that part as it is (only it is paid
 // for); taking the whole order back and comparing other suppliers stays a second way (§18).
 const launcher = useRecoveryLaunch()
@@ -135,7 +137,12 @@ async function withdraw() {
         v-model="reply"
         maxlength="4000"
         :disabled="Boolean(s.busy) || !approver"
-        :placeholder="tr('例如：收到，{0}件没问题，周四送到。', [order.quantity])"
+        :placeholder="
+          tr('例如：好嘞，{0} 件没问题，{1} 一件，明天到。', [
+            order.quantity,
+            (order.unit_price_minor / 100).toFixed(2),
+          ])
+        "
         data-supplier-reply
       />
     </label>
@@ -195,7 +202,10 @@ async function withdraw() {
       </div>
     </div>
     <div v-else-if="approver" class="action-row">
-      <span class="assisted-links"
+      <span v-if="reading" class="rf-quiet rf-working" role="status"
+        ><AppIcon name="loader-circle" />{{ tr('正在读取回复…') }}</span
+      >
+      <span v-else class="assisted-links"
         ><button
           v-if="!confirmingWithdrawal"
           class="text-link"
@@ -218,7 +228,7 @@ async function withdraw() {
         :disabled="Boolean(s.busy) || !reply.trim()"
         @click="submit"
       >
-        {{ tr(s.busy === '正在登记供应商回复' ? '正在读取回复…' : '登记回复') }}
+        {{ tr('登记回复') }}
       </button>
     </div>
     <p v-else class="assisted-wait"><AppIcon name="user" />{{ tr('等有审批权限的人登记回复') }}</p>
@@ -319,6 +329,9 @@ async function withdraw() {
   flex-wrap: wrap;
   align-items: center;
   gap: 4px 18px;
+  margin-right: auto;
+}
+.action-row > .rf-quiet {
   margin-right: auto;
 }
 .assisted-withdraw {

@@ -29,6 +29,8 @@ UNITS = {
     "pieces": "件",
     "box": "箱",
     "boxes": "箱",
+    "case": "箱",
+    "cases": "箱",
     "pack": "包",
     "packs": "包",
 }

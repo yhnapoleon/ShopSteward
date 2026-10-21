@@ -38,15 +38,11 @@ const tables = computed(() => part('PlanComparison'))
       />
       <p>
         {{
-          joinText([
-            tr(
-              outcome.kind === 'evaluation'
-                ? `基于方案 v${outcome.before.plan_version} 的假设比较`
-                : `方案 v${outcome.before.plan_version} → v${outcome.after.plan_version}`,
-            ),
-            tr('· 经营状态 v'),
-            tr(outcome.after.state_version),
-          ])
+          tr(
+            outcome.kind === 'evaluation'
+              ? `基于方案 v${outcome.before.plan_version} 的假设比较`
+              : `方案 v${outcome.before.plan_version} → v${outcome.after.plan_version}`,
+          )
         }}
       </p>
       <p>
@@ -68,7 +64,6 @@ const tables = computed(() => part('PlanComparison'))
       </p>
       <details>
         <summary>{{ tr('比较数量、现金与缺货') }}</summary>
-        <p class="source-note">{{ tr('表格可横向滚动，查看全部约束。') }}</p>
         <SurfaceRenderer
           v-if="tables"
           :surface="tables"

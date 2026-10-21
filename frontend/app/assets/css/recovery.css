@@ -1,11 +1,11 @@
 /* Emergency restock flow (workspace §18) and the shared progress line.
    Materials follow style.md §2–5: the card is a plain `.glass` surface, choices use the plan
    card's light slot with a sliding frosted plate, titles sit on the decision tier and figures on
-   the impact tier. Motion follows §12 and Emil's rules: transform/opacity only, entering on
-   --space-ease within 240ms, leaving at once, presses at 0.97, nothing animated from the
-   keyboard or on a background refresh. Under reduced motion shop.css removes every transition
-   and animation globally; this file only takes the press scale away as well. Status is always
-   said in words; colour only repeats it. */
+   the impact tier. Motion follows §5 and Emil's rules: transform/opacity only, on the global
+   --ease within 180–240ms, leaving at once, presses at 0.98, nothing animated from the keyboard
+   or on a background refresh. Under reduced motion shop.css removes every transition and
+   animation globally; this file only takes the press scale away as well. Status is always said
+   in words; colour only repeats it. */
 
 /* ---------- Progress line (components/space/FlowProgress.vue) ---------- */
 .flow-progress {
@@ -33,7 +33,7 @@
   transform: scaleX(var(--flow-ratio));
 }
 .flow-progress.is-live .flow-fill {
-  transition: transform 240ms var(--space-ease);
+  transition: transform 240ms var(--ease);
 }
 .flow-steps {
   position: relative;
@@ -269,7 +269,6 @@
 .rf-unit {
   font-size: 14px;
   letter-spacing: 0;
-  margin-left: 3px;
 }
 .rf-fact small,
 .rf-figures small {
@@ -287,6 +286,20 @@
   align-items: center;
   gap: 8px 10px;
   margin-top: 2px;
+}
+/* What the demand is based on: two words, the one in use plain, the other a link to switch. */
+.rf-basis {
+  display: inline-flex;
+  align-items: center;
+}
+.rf-basis .text-link + .text-link::before {
+  content: '·';
+  margin: 0 8px;
+  color: #9aa9b7;
+}
+.rf-basis .text-link[aria-pressed='true'] {
+  color: #526477;
+  cursor: default;
 }
 /* The first settlement is the business clock's, not a choice: shown only while editing. */
 .rf-settle {
@@ -406,10 +419,8 @@
   border-radius: 17px;
 }
 .rf-options.is-live .rf-plate {
-  /* Rows differ in height (a long name wraps on a phone): the plate follows both. */
-  transition:
-    transform 240ms var(--space-ease),
-    height 240ms var(--space-ease);
+  /* Only the position moves; a row of another height is matched at once. */
+  transition: transform 240ms var(--ease);
 }
 .rf-option {
   position: relative;
@@ -425,7 +436,7 @@
   border-radius: 17px;
   color: #2b4256;
   text-align: left;
-  transition: transform 160ms var(--space-ease);
+  transition: transform 180ms var(--ease);
 }
 .rf-radio {
   width: 14px;
@@ -506,7 +517,7 @@
   border-radius: 10px;
 }
 .rf-seg.is-live::before {
-  transition: transform 240ms var(--space-ease);
+  transition: transform 240ms var(--ease);
 }
 .rf-seg-item {
   position: relative;
@@ -518,7 +529,7 @@
   font-size: 13px;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  transition: transform 160ms var(--space-ease);
+  transition: transform 180ms var(--ease);
 }
 .rf-seg-item[aria-pressed='true'] {
   color: #245fae;
@@ -559,15 +570,9 @@
   font-size: 12px;
   color: #5d7082;
 }
-/* The recommended quantity among the tiers. */
-.rf-tier-recommended {
-  font-size: 11px;
-  font-weight: 600;
-  color: #2f6fca;
-}
 .rf-option:active:not(:disabled),
 .rf-seg-item:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 /* A whole card line: the press only just shows. */
 .rf-summary:active {
@@ -670,13 +675,18 @@
   justify-items: center;
   gap: 4px;
 }
-.rf-day-arrive {
+/* Above a column: the truck on an arrival day, otherwise that day's shortage. */
+.rf-day-note {
   height: 14px;
-  color: var(--blue);
+  font-size: 11px;
+  line-height: 14px;
+  color: #8a5a17;
+  font-variant-numeric: tabular-nums;
 }
-.rf-day-arrive .icon {
+.rf-day-note .icon {
   width: 14px;
   height: 14px;
+  color: var(--blue);
 }
 .rf-day-bar {
   display: flex;
@@ -706,6 +716,9 @@
 }
 .rf-day.is-short .rf-day-date {
   color: #8a5a17;
+}
+.rf-day-date.is-first {
+  font-weight: 650;
 }
 
 /* Reviewers at work: a name per line, a blank bar until that supplier is read. */
@@ -740,7 +753,12 @@
   width: min(220px, 70%);
   height: 8px;
   border-radius: 4px;
-  background: rgb(67 80 100 / 8%);
+  background: rgb(67 80 100 / 10%);
+  animation: space-pulse 1.4s ease-in-out infinite;
+}
+/* A supplier's result takes the bar's place. */
+.rf-reader-verdict {
+  animation: rf-in 200ms var(--ease) backwards;
 }
 .rf-reader-mark {
   display: grid;
@@ -767,19 +785,54 @@
   color: #9a6a24;
 }
 
-/* Explanations stay folded: one line first, the long text on demand. */
+/* Explanations stay folded: one line first, the long text on demand. The chevron flips at once
+   (a disclosure state, as space.css's activity groups); the opened text fades in. */
 .rf-more {
   border-top: 1px solid var(--line);
-  padding-top: 10px;
 }
 .rf-more + .rf-more {
-  margin-top: -6px;
+  margin-top: -16px;
 }
 .rf-more > summary {
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
   font-size: 13px;
-  color: #3f6487;
-  list-style-position: inside;
+  color: #3d566b;
+  list-style: none;
+  cursor: pointer;
+}
+.rf-more > summary::-webkit-details-marker {
+  display: none;
+}
+.rf-more > summary > .icon {
+  flex-shrink: 0;
+  margin-left: auto;
+  width: 16px;
+  height: 16px;
+  color: #6b859b;
+}
+.rf-more[open] > summary > .icon {
+  transform: rotate(90deg);
+}
+.rf-more-link {
+  color: #345f8a;
+}
+.rf-more-link::before {
+  content: '·';
+  margin-right: 8px;
+  color: #9aa9b7;
+}
+@media (hover: hover) and (pointer: fine) {
+  .rf-more > summary:hover,
+  .rf-more > summary:hover .rf-more-link {
+    color: #1f3446;
+  }
+}
+.rf-more-body {
+  padding-bottom: 12px;
+  animation: rf-in 200ms var(--ease) backwards;
 }
 .rf-claims {
   margin: 10px 0 0;
@@ -813,22 +866,50 @@
   display: grid;
   gap: 8px;
 }
+/* One quoted sentence: what was read from it, then the sentence itself as the evidence. */
 .rf-citations li {
   display: grid;
-  gap: 2px;
-  font-size: 12px;
+  gap: 4px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
 }
-.rf-citations b {
+.rf-read {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+  color: #526477;
+}
+.rf-read > span {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0 6px;
+}
+.rf-read b {
   font-weight: 560;
-  color: #4a6075;
+  color: #28343e;
 }
-.rf-citations q {
-  quotes: none;
+.rf-per-case {
+  color: #3d5468;
+}
+.rf-evidence {
+  display: grid;
+  gap: 2px;
   padding-left: 10px;
   border-left: 2px solid #d8e2ec;
+  font-size: 12px;
+}
+.rf-evidence small {
+  color: #6c7e8e;
+}
+.rf-evidence q {
+  quotes: none;
   color: #3d5468;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+}
+/* The documents' own language beside an English page: evidence, read only on purpose. */
+.rf-evidence q.is-foreign {
+  color: #7d8d9b;
 }
 
 /* Key figures on the impact tier: what is bought, what it costs, what it changes. */
@@ -1051,6 +1132,29 @@
 .rf-next .primary .icon {
   margin-right: -2px;
 }
+/* A button at work says so in its own place, as wide as before: both labels share one cell, so
+   the wider one sets the width and the button never narrows while it waits. */
+.rf-hold {
+  display: inline-grid;
+}
+.rf-hold > span,
+.rf-hold::after {
+  grid-area: 1 / 1;
+}
+.rf-hold::after {
+  content: attr(data-busy);
+  visibility: hidden;
+}
+.rf-hold.is-busy > span {
+  visibility: hidden;
+}
+.rf-hold.is-busy::after {
+  visibility: visible;
+}
+.rf-hold.is-busy + .icon,
+.rf-working > .icon {
+  animation: rf-spin 1.1s linear infinite;
+}
 
 /* Over: one line, opened on demand. */
 .space-workspace .rf.glass.is-summary {
@@ -1061,7 +1165,7 @@
   display: grid;
   grid-template-columns: 26px auto minmax(0, 1fr) 16px;
   gap: 12px;
-  align-items: center;
+  align-items: start;
   width: 100%;
   min-height: 56px;
   padding: 12px 20px;
@@ -1069,18 +1173,17 @@
   text-align: left;
   color: #2b4256;
   font-size: 14px;
-  transition: transform 160ms var(--space-ease);
+  transition: transform 180ms var(--ease);
 }
 .rf-summary b {
   font-weight: 600;
+  line-height: 26px;
   white-space: nowrap;
 }
 .rf-summary-facts {
   min-width: 0;
+  padding-top: 3px;
   color: #4f6478;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
 .rf-summary-fact + .rf-summary-fact::before {
@@ -1089,6 +1192,7 @@
 .rf-summary > .icon {
   width: 16px;
   height: 16px;
+  margin-top: 5px;
   color: #7a8fa2;
 }
 .rf-summary-mark {
@@ -1130,10 +1234,13 @@
   border: 1px solid #f0dcb8;
 }
 .rf-prompt h2 {
-  margin: 6px 0 0;
+  margin: 0;
   font-size: 21px;
   line-height: 1.45;
   letter-spacing: -0.4px;
+}
+.rf-prompt .tag + h2 {
+  margin-top: 6px;
 }
 .rf-prompt .primary {
   grid-row: 1 / span 2;
@@ -1177,12 +1284,28 @@
   margin: -6px 0 12px;
 }
 
+/* The card folding to its result line, and opening again: the new content fades in place. The
+   fill mode is backwards only, so a press on the line still scales it once the fade is over. */
+.rf.is-moved.is-summary .rf-summary,
+.rf.is-moved:not(.is-summary) > * {
+  animation: rf-in 220ms var(--ease) backwards;
+}
+/* "收起" folds back up. */
+.rf-head .text-link .icon {
+  transform: rotate(180deg);
+}
+@keyframes rf-in {
+  from {
+    opacity: 0;
+  }
+}
+
 /* Stage swaps: the new stage settles in place; the old one is removed at once by the card
    (RecoveryFlow leaves without waiting), so the two never overlap. */
 .rf-swap-enter-active {
   transition:
-    opacity 220ms var(--space-ease),
-    transform 220ms var(--space-ease);
+    opacity 220ms var(--ease),
+    transform 220ms var(--ease);
 }
 .rf-swap-enter-from {
   opacity: 0;
@@ -1316,7 +1439,7 @@
   }
   .rf-summary-facts {
     grid-column: 2;
-    white-space: normal;
+    padding-top: 0;
   }
   .rf-summary > .icon {
     grid-column: 3;

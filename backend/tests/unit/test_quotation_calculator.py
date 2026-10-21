@@ -21,7 +21,7 @@ HEADER = ",".join(HEADERS) + "\n"
 
 def test_decimal_calculation_aliases_sorting_and_moq():
     rows, issues = calculate(
-        ",".join(ENGLISH) + "\nB,180,CNY,box,15,3,box,B\nA,120,CNY,box,12,2,box,Z",
+        ",".join(ENGLISH) + "\nB,180,CNY,case,15,3,cases,B\nA,120,CNY,box,12,2,box,Z",
         sort_by="unit_price",
     )
     assert [r.product for r in rows] == ["A", "B"]

@@ -30,10 +30,15 @@ def test_the_order_message_states_what_was_approved_in_both_languages():
     message = order_message(action, "矿泉水 550ml", datetime(2026, 10, 12, tzinfo=UTC))
     assert message["reference"] == "PO-1A2B3C4D"
     assert message["requested_delivery_date"] == "2026-10-15"
-    for part in ("PO-1A2B3C4D", "矿泉水 550ml", "40 件", "10.50 元/件", "420.00 元", "2026-10-15"):
+    for part in ("PO-1A2B3C4D", "矿泉水 550ml", "40 件", "10.50 元/件", "420.00 元", "10月15日"):
         assert part in message["text"]["zh"]
-    for part in ("PO-1A2B3C4D", "40 units", "CNY 10.50", "CNY 420.00", "2026-10-15"):
+    for part in ("PO-1A2B3C4D", "40 units", "CNY 10.50", "CNY 420.00", "15/10/2026"):
         assert part in message["text"]["en"]
+    # The supplier reads a name and a local date; the SKU id stays a structured field.
+    assert message["sku_id"] == "sku_001"
+    assert all(
+        "sku_001" not in text and "2026-10-15" not in text for text in message["text"].values()
+    )
     # 20:00 UTC is the next morning for the owner: the wanted-by day is the local one.
     action.purchase_snapshot["expected_arrival_at"] = "2026-10-15T20:00:00+00:00"
     late = order_message(action, "矿泉水 550ml", datetime(2026, 10, 12, tzinfo=UTC))
@@ -77,6 +82,14 @@ def test_rules_read_a_plain_reply_and_leave_mixed_wording_to_a_person():
         assert gated(read_by_rules(unsure, TODAY), unsure)["decision"] == "unclear"
     # A date without a year is taken in the business year, or the next one once it has passed.
     assert read_by_rules("1月5日送到", TODAY)["delivery_date"] == date(2027, 1, 5)
+    # The order writes DD/MM/YYYY; a reply may echo it, with or without the year.
+    assert read_by_rules("Confirmed, delivery 21/10/2026", TODAY)["delivery_date"] == date(
+        2026, 10, 21
+    )
+    assert read_by_rules("OK, arriving 21/10", TODAY)["delivery_date"] == date(2026, 10, 21)
+    assert read_by_rules("OK, 5/1", TODAY)["delivery_date"] == date(2027, 1, 5)
+    assert read_by_rules("2026/10/21 送到", TODAY)["delivery_date"] == date(2026, 10, 21)
+    assert "delivery_date" not in read_by_rules("40/40 units, 12/25 boxes", TODAY)
 
 
 class Model:

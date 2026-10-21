@@ -2,6 +2,9 @@
 import { joinText, t as tr } from '~/i18n'
 import { useReducedMotion } from 'motion-v'
 import { money, number } from '~/utils/presentation'
+import { alertCount, supplierDisplayName } from '~/utils/glossary'
+import { named } from '~/utils/recovery'
+import type { Schema } from '~/types/models'
 
 // One workspace for every work item (workspace redesign §4). A restocking mission is a work
 // item with a linked mission: its cards appear on the left, the conversations on the right.
@@ -24,6 +27,25 @@ const reduce = useReducedMotion()
 const sentByHand = computed(
   () => !!mission.value && awaitingSupplier.value?.mission_id === mission.value.id,
 )
+// The supplier declined that order: its receipt keeps the slot until the page has synced once
+// more, then the slot moves on (the order row keeps saying the supplier declined).
+const declined = ref<Schema<'Action'> | null>(null)
+watch(
+  () => awaitingSupplier.value?.id,
+  (now, before) => {
+    const answered = before && !now ? s.actions.find((a) => a.id === before) : undefined
+    declined.value = answered?.supplier_reply?.outcome === 'declined' ? answered : null
+  },
+)
+let declinedSynced = false
+watch(
+  () => s.refreshing,
+  (refreshing) => {
+    if (refreshing) declinedSynced = !!declined.value
+    else if (declinedSynced && s.connected) declined.value = null
+  },
+)
+const { rechecking, blocking } = usePlanRecheck(() => props.issue)
 // An emergency restock under way shows its own plan, order and arrival in its card (§18); the
 // slots below then stay out of the way instead of repeating them.
 const launcher = useRecoveryLaunch()
@@ -121,6 +143,7 @@ watch(
     target.value = ''
     localError.value = ''
     freshOutcome.value = null
+    declined.value = null
   },
 )
 onUnmounted(() => {
@@ -151,6 +174,13 @@ const expired = computed(
     Date.parse(item.value.processing_expires_at) <= Date.now(),
 )
 const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').length)
+const canStop = computed(() =>
+  ['RECEIVED', 'PROCESSING', 'WAITING_INPUT'].includes(item.value?.status || ''),
+)
+const canRetry = computed(
+  () => ['BLOCKED', 'CANCELLED'].includes(item.value?.status || '') || expired.value,
+)
+const canEnd = computed(() => !!mission.value && !ended.value && hasRole('approver'))
 </script>
 <template>
   <section
@@ -160,7 +190,7 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
     :data-task-id="item.mission_id || item.id"
     :data-mobile-panel="mobilePanel"
   >
-    <SpaceHeader :issue="issue" @back="emit('back')" @open="emit('open', $event)" />
+    <SpaceHeader :issue="blocking" @back="emit('back')" @open="emit('open', $event)" />
     <div class="task-mobile-tabs" :aria-label="tr('任务内容切换')">
       <button :aria-pressed="mobilePanel === 'result'" @click="mobilePanel = 'result'">
         {{ tr('方案与进展') }}</button
@@ -202,7 +232,7 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
             :quiet="restocking || (!!mission && canDecide && !ended && !!shop.plan.value)"
           />
           <!-- While a restock leads the page its card holds the one primary action. -->
-          <SpaceIssueCard v-if="issue && !ended" :issue="issue" :quiet="restocking" />
+          <SpaceIssueCard v-if="blocking && !ended" :issue="blocking" :quiet="restocking" />
           <SpaceChangeCard v-if="mission" />
           <div v-if="mission" class="space-agent-hint-slot" role="status">
             <Transition name="space-rise">
@@ -234,13 +264,25 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
             </Transition>
           </div>
           <section
-            v-if="(!issue || ended) && !flowOwnsSlot"
+            v-if="(!blocking || ended) && !flowOwnsSlot"
             id="space-plan"
             class="space-target space-slot"
             :class="{ 'target-active': space.isTarget('plan') }"
           >
+            <p v-if="rechecking && !ended" class="space-recheck" role="status">
+              <span class="space-pulse" aria-hidden="true" />{{ tr('正在重新核对方案…') }}
+            </p>
             <!-- An order the owner sends by hand waits here for the supplier's reply. -->
             <AssistedOrderCard v-if="sentByHand && !ended" :quiet="restocking" />
+            <article v-else-if="declined && !ended" class="assisted-order glass">
+              <span class="tag amber">{{ tr('供应商拒单') }}</span>
+              <h2>
+                {{
+                  named('{0}拒单了', [supplierDisplayName(declined.purchase_snapshot.supplier_id)])
+                }}
+              </h2>
+              <SupplierReceipt v-if="declined.supplier_reply" :reply="declined.supplier_reply" />
+            </article>
             <!-- One primary per screen: while an emergency restock leads the page (before a plan
                  is adopted from it), a regular plan that can still be confirmed steps back to one
                  line. Once the owner decides in the restock, routine checks leave the item alone. -->
@@ -261,7 +303,8 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
               </button>
             </p>
             <SpacePlanCard
-              v-else-if="mission && canDecide && !ended"
+              v-else-if="mission && (canDecide || rechecking) && !ended"
+              :held="rechecking"
               @confirm="emit('confirm')"
               @open="emit('open', $event)"
             />
@@ -288,36 +331,28 @@ const openAlerts = computed(() => s.alerts.filter((a) => a.status === 'OPEN').le
         <SpaceTimelineCard v-if="mission" @open="emit('open', $event)" />
         <div v-if="linked && openAlerts" class="risk-link">
           <button class="text-link" @click="emit('open', 'alerts')">
-            {{ joinText([tr(openAlerts), tr('项经营提醒，查看依据')], ' ')
-            }}<AppIcon name="chevron-right" />
+            {{ alertCount(openAlerts) }}<AppIcon name="chevron-right" />
           </button>
         </div>
         <p v-if="localError" class="notice amber" role="alert">{{ tr(localError) }}</p>
-        <footer class="task-footer space-footer">
-          <span>{{
-            tr(
-              linked && !['RECEIVED', 'PROCESSING', 'WAITING_INPUT'].includes(item.status)
-                ? '同一委托保留全部决定与执行结果。'
-                : '停止助手处理不等于停止备货跟进或取消采购。',
-            )
-          }}</span>
+        <footer v-if="canStop || canRetry || canEnd" class="task-footer space-footer">
           <span class="space-footer-actions"
             ><button
-              v-if="['RECEIVED', 'PROCESSING', 'WAITING_INPUT'].includes(item.status)"
+              v-if="canStop"
               class="text-link"
               :disabled="work.s.busy || !!work.s.pending"
               @click="workControl('cancel')"
             >
               {{ tr('停止本轮处理') }}</button
             ><button
-              v-if="['BLOCKED', 'CANCELLED'].includes(item.status) || expired"
+              v-if="canRetry"
               class="secondary"
               :disabled="work.s.busy || !!work.s.pending"
               @click="workControl('retry')"
             >
               {{ tr('重新处理这件事') }}</button
             ><button
-              v-if="mission && !ended && hasRole('approver')"
+              v-if="canEnd"
               class="text-link"
               :disabled="Boolean(s.busy) || openActions.length > 0 || agent.active.value"
               @click="emit('open', 'complete')"

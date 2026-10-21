@@ -10,7 +10,7 @@ import { firstSync } from '~/utils/glossary'
 // `compact` is the today page's side column.
 defineProps<{ compact?: boolean }>()
 const { s } = useShop()
-const advance = useState('space-sync-advance', () => ({ from: null as number | null, until: 0 }))
+const advance = useAdvanceMarker()
 const slow = ref(false)
 const now = ref(Date.now())
 let slowTimer: ReturnType<typeof setTimeout> | undefined
@@ -20,19 +20,9 @@ watch(
   (refreshing) => {
     clearTimeout(slowTimer)
     if (!refreshing) slow.value = false
-    else slowTimer = setTimeout(() => (slow.value = s.refreshing), 700)
+    else slowTimer = setTimeout(() => (slow.value = s.refreshing), 2000)
   },
   { immediate: true },
-)
-watch(
-  () => s.busy,
-  (busy) => {
-    if (busy === '正在推进经营事件')
-      advance.value = {
-        from: s.dashboard?.state.state_version ?? null,
-        until: Date.now() + 90000,
-      }
-  },
 )
 watch(
   () => s.dashboard?.state.state_version,

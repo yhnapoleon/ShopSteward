@@ -60,12 +60,8 @@ def order_message(action, product_name, now):
     """What was approved, as a message a person can send as it is."""
     purchase = action.purchase_snapshot
     reference = "PO-" + action.id.replace("-", "")[:8].upper()
-    wanted = (
-        datetime.fromisoformat(purchase["expected_arrival_at"])
-        .astimezone(BUSINESS_ZONE)
-        .date()
-        .isoformat()
-    )
+    arrival = datetime.fromisoformat(purchase["expected_arrival_at"])
+    wanted = arrival.astimezone(BUSINESS_ZONE).date()
     name = product_name or purchase["sku_id"]
     unit, total = _yuan(purchase["unit_price_minor"]), _yuan(purchase["total_minor"])
     return {
@@ -77,15 +73,16 @@ def order_message(action, product_name, now):
         "unit_price_minor": purchase["unit_price_minor"],
         "total_minor": purchase["total_minor"],
         "currency": purchase["currency"],
-        "requested_delivery_date": wanted,
+        "requested_delivery_date": wanted.isoformat(),
         "text": {
             "zh": f"【订货单 {reference}】\n您好，想向贵司订货：\n"
-            f"商品：{name}（货号 {purchase['sku_id']}）\n数量：{purchase['quantity']} 件\n"
-            f"单价：{unit} 元/件\n合计：{total} 元\n希望送达：{wanted}\n"
+            f"商品：{name}\n数量：{purchase['quantity']} 件\n"
+            f"单价：{unit} 元/件\n合计：{total} 元\n希望送达：{wanted.month}月{wanted.day}日\n"
             "请回复确认数量、单价和送达日期，谢谢。",
             "en": f"[Purchase order {reference}]\nHello, we would like to order:\n"
-            f"Item: {name} (SKU {purchase['sku_id']})\nQuantity: {purchase['quantity']} units\n"
-            f"Unit price: CNY {unit}\nTotal: CNY {total}\nDelivery wanted by: {wanted}\n"
+            f"Item: {name}\nQuantity: {purchase['quantity']} units\n"
+            f"Unit price: CNY {unit}\nTotal: CNY {total}\n"
+            f"Delivery wanted by: {wanted:%d/%m/%Y}\n"
             "Please reply to confirm the quantity, unit price and delivery date. Thank you.",
         },
         "generated_at": now.isoformat(),
@@ -125,8 +122,10 @@ PATTERNS = {
     ),
 }
 DATES = (
-    re.compile(r"(\d{4})\s*[-/年.]\s*(\d{1,2})\s*[-/月.]\s*(\d{1,2})"),
-    re.compile(r"()(\d{1,2})\s*月\s*(\d{1,2})\s*[日号]?"),
+    re.compile(r"(?P<y>\d{4})\s*[-/年.]\s*(?P<m>\d{1,2})\s*[-/月.]\s*(?P<d>\d{1,2})"),
+    re.compile(r"(?P<m>\d{1,2})\s*月\s*(?P<d>\d{1,2})\s*[日号]?"),
+    # The order's own form: 21/10/2026 or 21/10, day first.
+    re.compile(r"(?<![\d/.])(?P<d>\d{1,2})/(?P<m>\d{1,2})(?:/(?P<y>\d{4}))?(?![\d/])"),
 )
 
 
@@ -147,10 +146,11 @@ def read_by_rules(text, today):
         if not match:
             continue
         try:
-            day = date(int(match.group(1) or today.year), int(match.group(2)), int(match.group(3)))
+            year = match.groupdict().get("y")
+            day = date(int(year or today.year), int(match["m"]), int(match["d"]))
         except ValueError:
             continue
-        if not match.group(1) and day < today - timedelta(days=30):
+        if not year and day < today - timedelta(days=30):
             day = day.replace(year=day.year + 1)
         found["delivery_date"], found["quotes"]["delivery_date"] = day, match.group(0)
         break

@@ -164,8 +164,13 @@ async function setup(page: Page, role = 'admin', initial = 'UNAVAILABLE') {
   })
   await page.goto('/')
   await expect(page.getByRole('heading', { name: '七日需求预测' })).toBeVisible()
+  await expand(page)
   return control
 }
+
+// The panel starts as one line; its controls and evidence sit behind the title.
+const expand = (page: Page) =>
+  page.getByRole('button', { name: '七日需求预测', exact: true }).click()
 
 test('forecast unavailable is empty; model scenario keeps exact dates in expandable evidence', async ({
   page,
@@ -283,6 +288,7 @@ test('reusing observed input preserves explicit planning activation even when no
   control.activated = true
   control.mode = 'observed'
   await page.reload()
+  await expand(page)
   await page
     .getByRole('button', { name: '复用已保存输入运行（保持规划启用）', exact: true })
     .click()
@@ -299,6 +305,7 @@ test('switching SKU clears the old forecast and imported draft', async ({ page }
   const panel = page.getByRole('region', { name: '七日需求预测' })
   await expect(panel).toContainText('商品 sku_002')
   await expect(panel.getByTestId('forecast-total')).toHaveCount(0)
+  await expand(page)
   await page.getByLabel('输入来源', { exact: true }).selectOption('observed')
   await expect(page.getByLabel('完整销售历史 JSON')).toHaveValue('')
 })

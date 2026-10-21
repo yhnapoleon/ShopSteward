@@ -37,8 +37,12 @@ const sender = computed(() =>
       : '',
 )
 const ready = computed(() => flow.canConfirm.value && !s.busy)
+/** The plan is on its way to the page: the button says so; review opens by itself once it is in. */
+const preparing = computed(
+  () => !!purchase.value && !ready.value && (flow.preparing.value || !!s.busy),
+)
 /** Why it cannot be confirmed right now: said only while that holds, as its one cause. */
-const waiting = computed(() => flow.unavailableReason.value)
+const waiting = computed(() => (preparing.value ? '' : flow.unavailableReason.value))
 const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a0')
 </script>
 <template>
@@ -124,8 +128,19 @@ const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a
           data-recovery-next
           @click="flow.confirm()"
         >
-          {{ purchase ? tr('核对 {0} 件采购', [purchase.quantity]) : tr('正在读取…')
-          }}<AppIcon name="arrow-right" /></button
+          <RecoveryButtonLabel
+            :label="
+              purchase
+                ? named('核对：用{0}补 {1} 件 · {2}', [
+                    name,
+                    purchase.quantity,
+                    money(purchase.total_minor),
+                  ])
+                : tr('正在读取…')
+            "
+            :busy="tr('正在准备核对…')"
+            :working="preparing"
+          /></button
       ></template>
     </footer>
   </div>

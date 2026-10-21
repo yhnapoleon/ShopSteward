@@ -342,22 +342,18 @@ function onBackdrop(event: MouseEvent) {
           :aria-labelledby="uid + '-' + section.kind"
         >
           <div class="memory-section-head">
-            <h3 :id="uid + '-' + section.kind">{{ tr(section.title) }}</h3>
-            <span
-              v-if="section.version !== null"
-              class="memory-version"
-              :title="tr('版本 {0}', [section.version])"
-              >v{{ section.version }}</span
+            <h3
+              :id="uid + '-' + section.kind"
+              :title="section.version !== null ? tr('版本 {0}', [section.version]) : undefined"
             >
+              {{ tr(section.title) }}
+            </h3>
           </div>
           <p class="memory-hint">{{ tr(section.hint) }}</p>
           <p v-if="!section.count" class="memory-none">{{ tr(section.none) }}</p>
           <div v-for="group in section.groups" :key="group.key" class="memory-group">
             <div v-if="group.label" class="memory-group-head">
-              <h4>{{ group.label }}</h4>
-              <span class="memory-version" :title="tr('版本 {0}', [group.version])"
-                >v{{ group.version }}</span
-              >
+              <h4 :title="tr('版本 {0}', [group.version])">{{ group.label }}</h4>
             </div>
             <ul class="memory-list">
               <li v-for="entry in group.rows" :key="entry.item.id" class="memory-item">
@@ -476,9 +472,6 @@ function onBackdrop(event: MouseEvent) {
             </ul>
           </div>
         </section>
-        <p class="source-note memory-foot">
-          {{ tr('后端暂未记录每条记忆的时间与来源，这里只显示每类记忆的版本。') }}
-        </p>
       </template>
     </div>
   </dialog>

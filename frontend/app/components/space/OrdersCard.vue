@@ -37,7 +37,11 @@ const orders = computed(() =>
         ordered,
         received,
         ratio: ordered ? Math.min(1, received / ordered) : 0,
-        status: orderStatus(action, inbound),
+        // A supplier's "no" is named as such, not as a failed purchase.
+        status:
+          action.supplier_reply?.outcome === 'declined'
+            ? { label: '供应商拒单', tone: 'amber' }
+            : orderStatus(action, inbound),
         arrival: inbound?.expected_arrival_at || action.purchase_snapshot.expected_arrival_at,
         // A failed or cancelled order brings nothing; arrival is only tracked for live ones.
         tracked: ['QUEUED', 'EXECUTING', 'SUCCEEDED', 'UNKNOWN'].includes(action.status),

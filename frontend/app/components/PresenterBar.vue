@@ -4,10 +4,12 @@ import type { Schema } from '~/types/models'
 import { api, ApiFailure, query } from '~/utils/api'
 import { money, number, when } from '~/utils/presentation'
 
-// The presenter bar (workspace redesign §10): demo mode only, desktop widths only. "Next day" runs
-// the existing simulator advance, then waits until the business state version moves (at most
-// 90 s, with the same pulse as the sync strip) and says in one sentence what the newest ledger
-// entries changed. It sets no figure itself; the bar only asks the page to open or navigate.
+// The presenter bar (workspace redesign §10): demo mode only, desktop widths only. A small capsule
+// in the bottom-right corner: the business time, "Next event" and a menu for the rarer controls.
+// "Next event" runs the existing simulator advance, then waits until the business state version
+// moves (at most 90 s, with the same pulse as the sync strip) and says in one sentence what the
+// newest ledger entries changed. It sets no figure itself; the bar only asks the page to open or
+// navigate.
 const emit = defineEmits<{ open: [name: string]; navigate: [view: string] }>()
 const route = useRoute()
 const shop = useShop()
@@ -16,7 +18,11 @@ const demo = useDemoMode()
 // The marker the sync strips pulse on: the state version the page is waiting to move from.
 const marker = useState('space-sync-advance', () => ({ from: null as number | null, until: 0 }))
 // A note keeps its id across a language switch, so only a new message fades in.
-type Note = { id: string; tone: 'progress' | 'done' | 'wait' | 'error' | 'info'; text: () => string }
+type Note = {
+  id: string
+  tone: 'progress' | 'done' | 'wait' | 'error' | 'info'
+  text: () => string
+}
 const phase = ref<'idle' | 'advancing' | 'syncing' | 'creating'>('idle')
 const result = ref<Note | null>(null)
 let alive = true,
@@ -24,7 +30,7 @@ let alive = true,
   expiry: ReturnType<typeof setTimeout> | undefined
 
 const visible = computed(() => demo.enabled.value && !!s.session?.authenticated)
-// Why "next day" cannot run; nothing is claimed while the store is still being read.
+// Why "next event" cannot run; nothing is claimed while the store is still being read.
 const blocked = computed(() =>
   s.loading
     ? ''
@@ -39,9 +45,11 @@ const blocked = computed(() =>
 const busy = computed(() => phase.value !== 'idle' || !!s.busy || s.loading)
 const note = computed<Note | null>(() => {
   if (phase.value === 'advancing')
-    return { id: 'advancing', tone: 'progress', text: () => tr('模拟器正在推进一个经营事件') }
+    return { id: 'advancing', tone: 'progress', text: () => tr('正在推进下一个经营事件') }
   if (phase.value === 'syncing')
     return { id: 'syncing', tone: 'progress', text: () => tr('后台正在同步经营数据') }
+  if (phase.value === 'creating')
+    return { id: 'creating', tone: 'progress', text: () => tr('正在创建示例店铺') }
   if (result.value) return result.value
   if (blocked.value && phase.value === 'idle') {
     const reason = blocked.value
@@ -50,6 +58,27 @@ const note = computed<Note | null>(() => {
   return null
 })
 const clock = computed(() => s.dashboard?.state.simulation_time || '')
+
+// The menu closes on a choice or on Escape, with focus back on its button (so a dialog opened from
+// it returns focus there), and on a press outside it.
+const menu = ref<HTMLDetailsElement>()
+function close(refocus = false) {
+  if (!menu.value?.open) return
+  menu.value.open = false
+  if (refocus) menu.value.querySelector('summary')?.focus()
+}
+function escape(event: KeyboardEvent) {
+  if (!menu.value?.open) return
+  event.stopPropagation()
+  close(true)
+}
+function outside(event: PointerEvent) {
+  if (!menu.value?.contains(event.target as Node)) close()
+}
+function toggled() {
+  if (menu.value?.open) document.addEventListener('pointerdown', outside)
+  else document.removeEventListener('pointerdown', outside)
+}
 
 let shown = 0
 function show(tone: Note['tone'], text: () => string, hold = 20000) {
@@ -92,12 +121,15 @@ function describe(from: number | null, demandBefore: number | null): () => strin
 function failure(error: unknown) {
   const message = (error as Error)?.message || ''
   // A finished background job that could not advance reports only a generic worker message.
-  if (!(error instanceof ApiFailure) && /Worker handler did not complete|后台任务未完成/.test(message))
+  if (
+    !(error instanceof ApiFailure) &&
+    /Worker handler did not complete|后台任务未完成/.test(message)
+  )
     return '这一步没有推进。可能还没有在途采购可以到货，或这一轮示例已经走完。'
   return message || '这一步没有推进。可能还没有在途采购可以到货，或这一轮示例已经走完。'
 }
 
-async function nextDay() {
+async function nextEvent() {
   if (busy.value || blocked.value) return
   const id = ++attempt,
     storeId = s.storeId,
@@ -122,11 +154,17 @@ async function nextDay() {
   if (!current()) return
   phase.value = 'syncing'
   const deadline = Date.now() + 90000
-  while (current() && (s.dashboard?.state.state_version ?? null) === from && Date.now() < deadline) {
+  while (
+    current() &&
+    (s.dashboard?.state.state_version ?? null) === from &&
+    Date.now() < deadline
+  ) {
     await pause(1200)
     if (!current()) break
     try {
-      const board = await api<Schema<'Dashboard'>>('/api/v1/dashboard' + query({ store_id: storeId }))
+      const board = await api<Schema<'Dashboard'>>(
+        '/api/v1/dashboard' + query({ store_id: storeId }),
+      )
       if (current() && board.state.state_version !== from) await shop.refresh(true)
     } catch {
       // Keep waiting; the page reports a lost connection by itself.
@@ -177,6 +215,7 @@ watch(
   { immediate: true },
 )
 onUnmounted(() => {
+  document.removeEventListener('pointerdown', outside)
   alive = false
   attempt++
   clearTimeout(expiry)
@@ -199,41 +238,6 @@ onUnmounted(() => {
         </p>
       </Transition>
     </div>
-    <button
-      class="primary presenter-next"
-      :disabled="busy || !!blocked"
-      :title="blocked ? tr(blocked) : undefined"
-      @click="nextDay"
-    >
-      <template v-if="phase === 'advancing' || phase === 'syncing'"
-        ><AppIcon name="loader-circle" class="presenter-spin" />{{
-          tr(phase === 'advancing' ? '正在推进…' : '正在同步…')
-        }}</template
-      ><template v-else>{{ tr('过一天') }}<AppIcon name="play" /></template>
-    </button>
-    <span class="presenter-divider" aria-hidden="true" />
-    <button
-      class="presenter-action"
-      :disabled="busy || !s.session?.devTools"
-      @click="createStore"
-    >
-      <AppIcon
-        :name="phase === 'creating' ? 'loader-circle' : 'plus'"
-        :class="{ 'presenter-spin': phase === 'creating' }"
-      />{{ tr('新建示例店铺') }}
-    </button>
-    <button class="presenter-action" :disabled="busy" @click="emit('open', 'controls')">
-      <AppIcon name="layers-2" />{{ tr('切换店铺') }}
-    </button>
-    <button
-      class="presenter-action"
-      :class="{ active: route.query.view === 'overview' }"
-      :aria-current="route.query.view === 'overview' ? 'page' : undefined"
-      @click="emit('navigate', 'overview')"
-    >
-      <AppIcon name="chart-no-axes-combined" />{{ tr('经营概览') }}
-    </button>
-    <span class="presenter-divider" aria-hidden="true" />
     <div class="presenter-clock">
       <small>{{ tr('经营时点') }}</small>
       <span class="presenter-clock-value"
@@ -242,5 +246,46 @@ onUnmounted(() => {
         ></span
       >
     </div>
+    <button
+      class="secondary presenter-next"
+      :disabled="busy || !!blocked"
+      :title="blocked ? tr(blocked) : undefined"
+      @click="nextEvent"
+    >
+      <template v-if="phase === 'advancing' || phase === 'syncing'"
+        ><AppIcon name="loader-circle" class="presenter-spin" />{{
+          tr(phase === 'advancing' ? '正在推进…' : '正在同步…')
+        }}</template
+      ><template v-else>{{ tr('推进一个经营事件') }}<AppIcon name="play" /></template>
+    </button>
+    <details ref="menu" class="presenter-more" @toggle="toggled" @keydown.esc="escape">
+      <summary
+        class="presenter-action"
+        :aria-label="tr('更多演示操作')"
+        :title="tr('更多演示操作')"
+      >
+        <AppIcon name="ellipsis" />
+      </summary>
+      <div class="presenter-menu" @click="close(true)">
+        <button
+          class="presenter-action"
+          :disabled="busy || !s.session?.devTools"
+          @click="createStore"
+        >
+          <AppIcon name="plus" />{{ tr('新建示例店铺') }}
+        </button>
+        <button class="presenter-action" :disabled="busy" @click="emit('open', 'controls')">
+          <AppIcon name="layers-2" />{{ tr('切换店铺') }}
+        </button>
+        <button
+          class="presenter-action"
+          :class="{ active: route.query.view === 'overview' }"
+          :aria-current="route.query.view === 'overview' ? 'page' : undefined"
+          @click="emit('navigate', 'overview')"
+        >
+          <AppIcon name="chart-no-axes-combined" />{{ tr('经营概览') }}
+        </button>
+      </div>
+    </details>
   </div>
 </template>

@@ -106,6 +106,8 @@ const noGap = computed(() => !!projection.value && projection.value.lost === 0)
 const startLabel = computed(() =>
   tr(readable.value.length && sourcingOn.value ? '确认，开始找货' : '确认，开始比价'),
 )
+/** The Case is being set up: the brief stays in place until the suppliers are being read. */
+const starting = computed(() => flow.working.value === 'start')
 const error = ref('')
 const failure = computed(() =>
   flow.recovery.error.value
@@ -149,12 +151,7 @@ async function confirm() {
     demand: demand.value,
   })
 }
-// The demand switch slides its plate on a pointer; a key press switches it instantly.
-const keyed = ref(false)
-const demandLive = ref(false)
-onMounted(() => requestAnimationFrame(() => (demandLive.value = true)))
-function useFlat(on: boolean, event?: MouseEvent) {
-  keyed.value = event?.detail === 0
+function useFlat(on: boolean) {
   flat.value = on
   if (on && !perDayText.value) perDayText.value = String(perDayDefault.value)
 }
@@ -204,25 +201,21 @@ function useFlat(on: boolean, event?: MouseEvent) {
             >{{ sum(demand.values) }}<span class="rf-unit">{{ ' ' + tr('件') }}</span></b
           >
           <span class="rf-demand"
-            ><span
-              class="rf-seg"
-              :class="{ 'is-live': demandLive && !keyed }"
-              role="group"
-              :aria-label="tr('需求按什么填')"
-              :style="{ '--seg-count': 2, '--seg-index': flat ? 1 : 0 }"
-              @pointerdown="keyed = false"
+            ><span class="rf-basis" role="group" :aria-label="tr('需求按什么填')"
               ><button
                 type="button"
-                class="rf-seg-item"
+                class="text-link"
                 :aria-pressed="!flat"
-                @click="useFlat(false, $event)"
+                :disabled="starting"
+                @click="useFlat(false)"
               >
                 {{ tr(base.source === 'forecast' ? '按预测' : '按估算') }}</button
               ><button
                 type="button"
-                class="rf-seg-item"
+                class="text-link"
                 :aria-pressed="flat"
-                @click="useFlat(true, $event)"
+                :disabled="starting"
+                @click="useFlat(true)"
               >
                 {{ flat ? tr('每天') : tr('每天 {0} 件', [perDayDefault]) }}
               </button></span
@@ -257,12 +250,19 @@ function useFlat(on: boolean, event?: MouseEvent) {
     <p v-if="error || failure" class="notice amber" role="alert">{{ tr(error) || failure }}</p>
     <footer class="rf-next">
       <span class="rf-links"
-        ><button v-if="!noGap" type="button" class="text-link" @click="flow.close()">
+        ><button
+          v-if="!noGap"
+          type="button"
+          class="text-link"
+          :disabled="starting"
+          @click="flow.close()"
+        >
           {{ tr('关闭') }}</button
         ><button
           type="button"
           class="text-link"
           :aria-pressed="editing"
+          :disabled="starting"
           @click="editing = !editing"
         >
           {{ tr(editing ? '改好了' : '修改') }}</button
@@ -293,7 +293,7 @@ function useFlat(on: boolean, event?: MouseEvent) {
         data-recovery-next
         @click="confirm"
       >
-        {{ startLabel }}<AppIcon name="arrow-right" />
+        <RecoveryButtonLabel :label="startLabel" :busy="tr('正在建立…')" :working="starting" />
       </button>
     </footer>
   </div>

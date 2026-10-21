@@ -13,6 +13,17 @@ from app.core.hashing import digest
 
 OWNER = "ui-language"
 LANGUAGES = {"en": "en", "zh": "zh", "zh-cn": "zh"}
+# How text the owner reads is written, in either language; appended after the directive.
+OWNER_TEXT = (
+    "写给店主的文字：金额取money_display的yuan数值，英文写“CNY 9.50”，中文写“¥9.50”，"
+    "同一回答只用一种写法。数量、库存、现金只用工具结果里的数，用界面上的叫法："
+    "中文“件、在库、采购在途、可用现金、现金底线、待结算、剩余需求”，英文“units, on hand, "
+    "in transit, available cash, cash floor, receivables, remaining demand”。商品和供应商称名称。"
+    "不写版本号（方案、状态、模型、快照）、系统内部ID或哈希（方案、预测、店铺、SKU、证据）、"
+    "字段名（如available_cash_minor）、原始时间戳或实现细节（如v6、snapshot version、"
+    "前端绑定序列）；日期英文写DD/MM，中文写“10月21日”。依据由系统附带的引用链接展示，"
+    "正文不抄写引用标识。用店主读得懂的短句，不写日志体。\n"
+)
 
 
 def requested(request):

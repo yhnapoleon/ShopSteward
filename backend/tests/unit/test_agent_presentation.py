@@ -39,6 +39,9 @@ def test_money_conversion_uses_integer_minor_units_and_rejects_invented_yuan():
     ]
     assert unsupported_amounts("可用现金10,000元（100000分）", {100000, 40000}) == ["10,000元"]
     assert unsupported_amounts("可用现金1,000元，支出400.00元", {100000, 40000}) == []
+    # The interface's own forms are checked the same way.
+    assert unsupported_amounts("Cash CNY 1,000, spend CNY 400.00.", {100000, 40000}) == []
+    assert unsupported_amounts("现金¥1,000，合计 ¥450.00", {100000, 40000}) == ["¥450.00"]
 
 
 def test_read_questions_and_one_off_constraints_do_not_authorize_memory_mutation():

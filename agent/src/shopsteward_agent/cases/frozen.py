@@ -83,8 +83,12 @@ async def analyze_frozen_case(
     budget=None,
     record_call=None,
     forced=False,
+    language=None,
 ):
-    """One advisory strategy run. Nothing here can write business state."""
+    """One advisory strategy run. Nothing here can write business state.
+
+    `language` is the owner's interface language ("en" or "zh") the statements are written in.
+    """
     bundle = bundle or load_bundle()
     records, tool_log = {}, []
 
@@ -117,7 +121,12 @@ async def analyze_frozen_case(
                 "snapshot": digest(snapshot),
                 "case_revision": str(revision_id),
             },
-            "context": {"snapshot": snapshot, "proposal": proposal, "advisory_only": True},
+            "context": {
+                "snapshot": snapshot,
+                "proposal": proposal,
+                "advisory_only": True,
+                "language": language,
+            },
         },
         questions=bundle.questions(),
         signals=signals(snapshot, proposal),

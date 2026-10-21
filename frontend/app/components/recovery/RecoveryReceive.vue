@@ -78,6 +78,10 @@ const failure = computed(() =>
 <template>
   <div class="rf-stage rf-receive">
     <h3 class="rf-title" aria-live="polite">{{ unbroken(headline) }}</h3>
+    <SupplierReceipt
+      v-if="variant === 'buy' && action?.supplier_reply"
+      :reply="action.supplier_reply"
+    />
     <p v-if="noRestock" class="rf-sub">
       {{
         tr(
@@ -141,8 +145,11 @@ const failure = computed(() =>
         data-recovery-end
         @click="flow.stop()"
       >
-        {{ tr(flow.working.value === 'stop' ? '正在结束…' : '结束这次应急补货')
-        }}<AppIcon name="arrow-right" />
+        <RecoveryButtonLabel
+          :label="tr('结束这次应急补货')"
+          :busy="tr('正在结束…')"
+          :working="flow.working.value === 'stop'"
+        />
       </button>
       <span
         v-else-if="variant === 'buy' && !settling && !currentIn && !flow.operator.value"
@@ -169,8 +176,11 @@ const failure = computed(() =>
           data-record-arrival
           @click="record"
         >
-          {{ tr(flow.working.value === 'arrive' ? '正在登记…' : '登记到货')
-          }}<AppIcon name="arrow-right" />
+          <RecoveryButtonLabel
+            :label="tr('登记到货')"
+            :busy="tr('正在登记…')"
+            :working="flow.working.value === 'arrive'"
+          />
         </button>
       </template>
       <span v-else-if="!(currentIn && othersOut) && !boughtOut" class="rf-quiet"

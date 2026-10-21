@@ -327,12 +327,6 @@ p {
   letter-spacing: 0.08em;
   margin-bottom: 10px;
 }
-.page-head p {
-  font-size: 15px;
-  line-height: 1.7;
-  margin-top: 8px;
-  max-width: 650px;
-}
 
 .page-head-actions {
   display: flex;
@@ -482,6 +476,13 @@ p {
   width: 13px;
   height: 13px;
 }
+.service-summary {
+  margin-top: 6px;
+}
+.service-dots {
+  display: inline-flex;
+  gap: 3px;
+}
 .micro {
   font-size: 12px;
   color: #536778;
@@ -563,11 +564,6 @@ p {
 .task-context-line b {
   color: #273541;
 }
-.task-context-line .text-link {
-  font-size: 12px;
-  min-height: 20px;
-  margin-left: auto;
-}
 .timing-note {
   font-size: 12px;
   margin: 4px 0 14px;
@@ -578,14 +574,6 @@ p {
   line-height: 1.75;
   margin: 10px 0 12px;
   max-width: 680px;
-}
-.selection-note {
-  padding: 10px 12px;
-  border-left: 3px solid #6694cb;
-  background: #ecf3fb;
-  font-size: 14px;
-  color: #385774;
-  border-radius: 3px 10px 10px 3px;
 }
 .impact-grid {
   display: grid;
@@ -1166,8 +1154,11 @@ dialog::backdrop {
   content: '/ ';
   color: #8aa0b2;
 }
-/* The onboarding invite steps back while a decision card holds the page's primary action. */
-.onboarding-invite.is-quiet .onboarding-invite-actions .primary {
+/* The onboarding invite steps back while a decision card or the new store's start card holds the
+   page's primary action. */
+:is(.onboarding-invite.is-quiet, body:has(.start-card .primary) .onboarding-invite)
+  .onboarding-invite-actions
+  .primary {
   background: linear-gradient(145deg, #ffffffe0, #ffffff80);
   border: 1px solid #fffffff0;
   box-shadow:
@@ -1175,7 +1166,9 @@ dialog::backdrop {
     0 3px 10px rgb(69 88 108 / 7%);
   color: #486078;
 }
-.onboarding-invite.is-quiet .onboarding-invite-actions .primary:hover {
+:is(.onboarding-invite.is-quiet, body:has(.start-card .primary) .onboarding-invite)
+  .onboarding-invite-actions
+  .primary:hover {
   filter: none;
   background: #ffffffc9;
 }
@@ -1251,6 +1244,22 @@ th {
 th {
   font-size: 12px;
   color: #526778;
+}
+/* Candidates: figures line up by digit; a ruled-out row recedes while its reason stays legible. */
+.compare-table .num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.compare-table .recommended {
+  margin-left: 8px;
+  white-space: nowrap;
+}
+.compare-table .is-rejected td:not(.reason) {
+  opacity: 0.5;
+}
+.compare-table .is-rejected .reason {
+  color: #805316;
 }
 .long-id {
   overflow-wrap: anywhere;
@@ -1493,6 +1502,13 @@ th {
   font-size: 22px;
   line-height: 1;
 }
+/* Desktop: 12px under the sticky header (its bottom edge sits at about 101px), so it never
+   covers the navigation. */
+@media (min-width: 821px) {
+  .toast {
+    top: 113px;
+  }
+}
 .mobile-nav {
   display: none;
 }
@@ -1642,8 +1658,10 @@ summary {
 .options:not(:has(.selected))::before {
   display: none;
 }
-.option:hover:not(.selected) {
-  background: #ffffff4d;
+@media (hover: hover) and (pointer: fine) {
+  .option:hover:not(.selected, :disabled) {
+    border-color: #94b6e55c;
+  }
 }
 button {
   transition:
@@ -1654,7 +1672,7 @@ button {
 }
 .primary:active:not(:disabled),
 .quiet-button:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .quiet-button:hover:not(:disabled) {
   background: #ffffffc9;
@@ -1738,6 +1756,23 @@ dialog[open] {
     opacity: 1;
     transform: none;
   }
+}
+/* AppDialog leaves the way it came, a little quicker. The modal is already closed while it
+   fades, so the closed panel is kept in place, inert to the pointer; the backdrop goes at once. */
+dialog.dialog-leave-active {
+  display: block;
+  height: fit-content;
+  margin: auto;
+  z-index: 60;
+  pointer-events: none;
+  animation: none;
+  transition:
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+.dialog-leave-to {
+  opacity: 0;
+  transform: translateY(8px) scale(0.98);
 }
 @media (prefers-reduced-transparency: reduce) {
   .app-header,
@@ -1945,9 +1980,6 @@ dialog[open] {
   .page-head h1 {
     font-size: 28px;
   }
-  .page-head p {
-    font-size: 14px;
-  }
   .deck-echoes {
     display: none;
   }
@@ -1987,10 +2019,6 @@ dialog[open] {
     font-size: 26px;
     letter-spacing: -0.6px;
   }
-  .page-head p {
-    font-size: 13px;
-    line-height: 1.7;
-  }
   .section-label {
     font-size: 14px;
     margin-top: 17px;
@@ -2020,9 +2048,6 @@ dialog[open] {
   .decision-lead {
     font-size: 14px;
     line-height: 1.75;
-  }
-  .selection-note {
-    font-size: 13px;
   }
   .impact-grid {
     margin: 18px 0 13px;

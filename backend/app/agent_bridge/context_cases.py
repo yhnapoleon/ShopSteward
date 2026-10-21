@@ -42,6 +42,7 @@ async def analyze_case_experts(
     model=None,
     strategy=None,
     text_bundle=None,
+    language=None,
 ):
     from shopsteward_agent import OpenAIModel
     from shopsteward_agent.cases import CallBudget, analyze_frozen_case, load_bundle
@@ -97,6 +98,7 @@ async def analyze_case_experts(
         budget=CallBudget(persist=persist),
         record_call=record_call,
         forced=strategy is not None,
+        language=language,
     )
     result.update(root_run_id=run_id, profile=profile.model_dump(mode="json"))
     return result
@@ -104,6 +106,7 @@ async def analyze_case_experts(
 
 async def attach_case_experts(db, settings, principal, case_id, revision, proposal_id):
     """Persist before send; concurrent/replayed analyze requests cannot double-spend."""
+    from app.agent_bridge.language import recall
     from app.agent_bridge.models import Receipt
     from app.agent_bridge.tools import product_names
     from app.operations_cases import repository as repo
@@ -153,6 +156,8 @@ async def attach_case_experts(db, settings, principal, case_id, revision, propos
             **snapshot,
             "product_names": await product_names(session, case.store_id, snapshot["recovery"]),
         }
+        # Statements are written in the language the owner's last command came from.
+        language = await recall(session, principal.principal_id)
         case.expert_analysis = {
             "status": "running",
             "revision": revision,
@@ -227,6 +232,7 @@ async def attach_case_experts(db, settings, principal, case_id, revision, propos
             persist=persist_budget,
             record_call=persist_call,
             text_bundle=settings.agent_sourcing_text_bundle if sourced else None,
+            language=language,
         )
         await update(result)
     except Exception:

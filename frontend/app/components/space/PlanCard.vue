@@ -2,29 +2,19 @@
 import { t as tr } from '~/i18n'
 import { money, when } from '~/utils/presentation'
 import { supplierDisplayName } from '~/utils/glossary'
-import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
+import { isRecoveryPlan, planOptions, selectedPlanCandidate } from '~/utils/plans'
 
 // The plan awaiting the owner's decision. Same data and behaviour as DecisionCard (selection in
 // shop state, recommendation marked separately, confirmation through the page's review step);
 // only the wording and spacing follow the workspace vocabulary.
 const { s, plan, product, mission, hasRole } = useShop()
+// `held`: the facts moved on and the plan is being re-checked; it stays readable but not actionable.
+const props = defineProps<{ held?: boolean }>()
 const emit = defineEmits<{ confirm: []; open: [name: string] }>()
+const locked = computed(() => Boolean(s.busy) || props.held)
 const selected = computed(() => selectedPlanCandidate(plan.value, s.selected))
 const recommended = computed(() => plan.value?.proposed_purchase?.quantity || 0)
-const options = computed(() => {
-  // A recovery plan stands for one adopted quote: confirm it or buy nothing this round.
-  if (isRecoveryPlan(plan.value)) {
-    const adopted = plan.value.selected_candidate_id
-    return plan.value.candidates.filter((c) => c.id === adopted || c.quantity === 0)
-  }
-  const order = [...new Set([recommended.value, 20, 40, 0])]
-  return (plan.value?.candidates || [])
-    .filter(
-      (c) =>
-        order.includes(c.quantity) && c.rejection_reasons.every((r) => r === 'TASK_QUANTITY_LIMIT'),
-    )
-    .sort((a, b) => order.indexOf(a.quantity) - order.indexOf(b.quantity))
-})
+const options = computed(() => planOptions(plan.value))
 const changed = computed(() => s.selected !== recommended.value)
 const canConfirm = computed(
   () =>
@@ -64,23 +54,12 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
       <div class="task-context-line">
         <b>{{ product?.name }}</b
         ><span>{{ supplierDisplayName(plan.input_snapshot.offer.supplier_id) }}</span>
-        <button class="text-link" @click="emit('open', 'mission')">
-          {{ tr('查看这项委托') }}<AppIcon name="chevron-right" />
-        </button>
       </div>
       <p class="timing-note">
         {{
           tr('预计到货 {0} · 需求周期截至 {1}', [
             when(plan.proposed_purchase?.expected_arrival_at),
             when(plan.input_snapshot.forecast.horizon_end),
-          ])
-        }}
-      </p>
-      <p v-if="changed" class="selection-note">
-        {{
-          tr('系统当前推荐 {0} 件；下面的影响与确认对象对应你选择的 {1} 件。', [
-            recommended,
-            s.selected,
           ])
         }}
       </p>
@@ -135,7 +114,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
             class="option"
             :class="{ selected: s.selected === c.quantity }"
             :aria-pressed="s.selected === c.quantity"
-            :disabled="Boolean(s.busy)"
+            :disabled="locked"
             @click="s.selected = c.quantity"
           >
             <span class="option-top"
@@ -163,11 +142,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
       <div class="action-row">
         <span class="action-note"
           ><AppIcon name="lock-keyhole" />{{ tr('下一步核对，尚未采购') }}</span
-        ><button
-          class="primary"
-          :disabled="Boolean(s.busy) || !canConfirm"
-          @click="emit('confirm')"
-        >
+        ><button class="primary" :disabled="locked || !canConfirm" @click="emit('confirm')">
           {{ s.selected ? tr('核对 {0} 件采购', [s.selected]) : tr('记录本轮取舍')
           }}<AppIcon name="arrow-right" />
         </button>

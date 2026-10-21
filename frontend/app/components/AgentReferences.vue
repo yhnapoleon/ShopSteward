@@ -5,6 +5,7 @@ import type { Schema } from '~/types/models'
 import { sourceIdentity, sourceLabel } from '~/utils/agent'
 const props = defineProps<{ references: unknown[]; runId?: string }>()
 const agent = useAgentConversation()
+const demo = useDemoMode()
 const dialog = ref<HTMLDialogElement | null>(null)
 const excerpt = ref<Schema<'HistoricalEvidence'> | null>(null)
 const loading = ref(false),
@@ -224,12 +225,12 @@ const value = (v: unknown) => (typeof v === 'object' ? JSON.stringify(v) : Strin
     <details v-for="r in items" :key="sourceIdentity(r)" class="agent-source">
       <summary>
         <AppIcon name="file-text" />{{ tr(sourceLabel(r))
-        }}<span v-if="r.version_id">{{ tr('· 有版本记录') }}</span
+        }}<span v-if="r.version_id && !demo.enabled.value">{{ tr('· 有版本记录') }}</span
         ><AppIcon name="chevron-down" />
       </summary>
       <div class="agent-source-body">
         <p>{{ tr('本轮获取的来源，供核对使用。') }}</p>
-        <details class="tool-technical">
+        <details v-if="!demo.enabled.value" class="tool-technical">
           <summary>{{ tr('版本定位记录') }}</summary>
           <dl>
             <template v-for="(label, field) in fields" :key="field"

@@ -39,17 +39,17 @@ export function localizedSamples() {
   return [
     {
       name: 'sample-quote-A.csv',
-      text: head + 'Sample A,120,CNY,box,12,2,box,Sample supplier quote 1',
+      text: head + 'Sample A,120,CNY,case,12,2,case,Sample supplier quote 1',
     },
     {
       name: 'sample-quote-B.csv',
-      text: head + 'Sample B,180,CNY,box,15,3,box,Sample supplier quote 1',
+      text: head + 'Sample B,180,CNY,case,15,3,case,Sample supplier quote 1',
     },
     {
       name: 'sample-quote-incomplete.csv',
       text:
         head +
-        'Pack sample,120,CNY,box,,2,box,Sample record 1\nUnit sample,12,CNY,unit,,,unit,Sample record 2',
+        'Pack sample,120,CNY,case,,2,case,Sample record 1\nUnit sample,12,CNY,unit,,,unit,Sample record 2',
     },
   ]
 }

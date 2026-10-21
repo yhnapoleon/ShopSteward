@@ -5,7 +5,7 @@ import type { ForecastReference } from '~/types/forecast'
 import { when } from '~/utils/presentation'
 const agent = useAgentConversation()
 const { s, enabled, active } = agent
-const { hasRole, mission, s: shopState } = useShop()
+const { mission, s: shopState } = useShop()
 const router = useRouter()
 const requestedForecast = useState<ForecastReference | null>('forecast-reference', () => null)
 function forecastReferences(message: Schema<'MessageView'>) {
@@ -48,6 +48,20 @@ async function bottom() {
   s.chatFollowing = true
   newContent.value = false
 }
+/**
+ * Follow the thread; a new answer is read from its first line, not its last. A question being
+ * sent is not in `messages` yet (it shows as the pending message), so the thread goes to the end.
+ */
+async function follow() {
+  const last = s.messages.at(-1)
+  if (s.pending || last?.role !== 'assistant') return bottom()
+  await nextTick()
+  const view = thread.value
+  const answer = view?.querySelector<HTMLElement>(`[data-message="${CSS.escape(last.id)}"]`)
+  if (!view || !answer) return bottom()
+  view.scrollTop += answer.getBoundingClientRect().top - view.getBoundingClientRect().top
+  newContent.value = false
+}
 function resize() {
   if (composer.value) {
     composer.value.style.height = 'auto'
@@ -79,7 +93,7 @@ function suggestion(text: string) {
 watch(
   () => s.messages.length + ':' + s.pending?.state,
   () => {
-    if (s.chatFollowing) void bottom()
+    if (s.chatFollowing || s.pending?.state === 'sending') void follow()
     else newContent.value = true
   },
 )
@@ -96,10 +110,6 @@ onUnmounted(() => clearTimeout(copyTimer))
 </script>
 <template>
   <section class="agent-conversation" :aria-label="tr('与Agent协作')">
-    <div class="agent-section-title">
-      <h3>{{ tr('任务对话') }}</h3>
-      <span>{{ tr('围绕这项委托') }}</span>
-    </div>
     <div
       ref="thread"
       class="agent-thread"
@@ -117,12 +127,14 @@ onUnmounted(() => clearTimeout(copyTimer))
       <article
         v-for="m in s.messages"
         :key="m.id"
+        :data-message="m.id"
         class="agent-message"
         :class="{ 'is-user': m.role === 'user' }"
       >
         <div class="agent-message-byline">
-          {{ tr(m.role === 'user' ? '你' : 'ShopSteward')
-          }}<time>{{ tr(when(m.created_at)) }}</time>
+          <time :datetime="m.created_at" :title="tr(when(m.created_at))">{{
+            tr(m.role === 'user' ? '你' : 'ShopSteward')
+          }}</time>
         </div>
         <p v-if="m.role === 'user'" class="agent-user-text">{{ m.content }}</p>
         <MarkdownMessage v-else :content="m.content" />
@@ -225,15 +237,5 @@ onUnmounted(() => clearTimeout(copyTimer))
         {{ tr('只试算 20 件') }}
       </button>
     </div>
-    <button
-      v-if="s.conversation && hasRole('operator')"
-      class="text-link agent-follow"
-      :disabled="s.controlling"
-      @click="agent.toggleFollowup"
-    >
-      {{
-        joinText([tr('Agent主动解读：'), tr(s.conversation.followup_enabled ? '已开启' : '未开启')])
-      }}
-    </button>
   </section>
 </template>

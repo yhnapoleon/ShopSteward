@@ -5,22 +5,42 @@ import { when } from '~/utils/presentation'
 import ContextInspector from '~/components/ContextInspector.vue'
 const agent = useAgentConversation()
 const { s, status, running, active, inspected, tools } = agent
+const { hasRole } = useShop()
+const demo = useDemoMode()
 const emit = defineEmits<{ target: [name: string] }>()
 const historical = computed(() => !!s.inspectedRunId && s.inspectedRunId !== s.run?.id)
+type Tool = (typeof tools.value)[number]
+// The tool ran but the data it reads does not exist yet (no forecast has been run): said in
+// grey, not counted as a failure.
+const noData = new Set(['FORECAST_UNAVAILABLE', 'FORECAST_NOT_FOUND', 'EVIDENCE_UNAVAILABLE'])
+const empty = (t: Tool) => t.ok === false && noData.has(t.error_code || '')
 const failedTools = computed(
-  () => tools.value.filter((t) => t.ok === false || t.status === 'INTERRUPTED').length,
+  () =>
+    tools.value.filter((t) => (t.ok === false && !empty(t)) || t.status === 'INTERRUPTED').length,
 )
-const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed(1)}s`)
+const duration = (ms: number) => (ms < 100 ? '<0.1s' : `${(ms / 1000).toFixed(1)}s`)
+// The activity log opens while the run works, for short lists and for history. A list this view
+// saw working stays as it was when the answer arrives; only the owner's own choice is kept.
+const watched = reactive(new Set<string>())
+watch(
+  () => [inspected.value?.id, active.value] as const,
+  ([id, on]) => {
+    if (id && on) watched.add(id)
+  },
+  { immediate: true },
+)
+const openByDefault = computed(
+  () =>
+    !!inspected.value &&
+    (active.value || historical.value || tools.value.length < 5 || watched.has(inspected.value.id)),
+)
+function toggled(id: string, open: boolean) {
+  if (open === openByDefault.value) delete s.expandedRuns[id]
+  else s.expandedRuns[id] = open
+}
 </script>
 <template>
   <aside class="agent-workspace glass" :aria-label="tr('Agent工作区')">
-    <header class="agent-workspace-head">
-      <div class="agent-monogram"><AppIcon name="sparkles" /></div>
-      <div>
-        <h2>{{ tr('Agent 工作区') }}</h2>
-        <p>{{ tr('过程、依据与任务对话') }}</p>
-      </div>
-    </header>
     <section class="agent-run-section" :aria-label="tr('Agent执行过程')">
       <div
         class="agent-run-status"
@@ -36,22 +56,8 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
         {{ tr(s.syncError)
         }}<button class="text-link" @click="agent.load(true)">{{ tr('重新同步') }}</button>
       </p>
-      <p v-else-if="s.run?.status === 'RUNNING'" class="agent-run-note">
-        {{
-          tr(
-            Array.isArray(s.run.activity)
-              ? '工具过程持续更新；采购状态以左侧回执为准。'
-              : '以下为已经返回的工具记录；本轮可能仍有后续工作。',
-          )
-        }}
-      </p>
       <p v-else-if="s.run?.status === 'FAILED'" class="agent-run-note">
-        {{
-          joinText([tr(s.run.error_code || '未取得完整结果'), tr('。已发生的业务变更以回执为准。')])
-        }}
-      </p>
-      <p v-else-if="s.run?.status === 'SUCCEEDED'" class="agent-run-note">
-        {{ tr('回答完成不代表采购完成，实际结果见左侧任务记录。') }}
+        {{ tr('{0}。已发生的业务变更以回执为准。', [tr(s.run.error_code || '未取得完整结果')]) }}
       </p>
       <p v-else-if="s.run?.status === 'CANCELLED'" class="agent-run-note">
         {{ tr('后续工作已停止；已提交的变更仍保留。') }}
@@ -74,7 +80,20 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
           {{ tr('停止本轮回答') }}</button
         ><span v-if="s.run?.trigger === 'FOLLOWUP'" class="agent-trigger">{{
           tr('经营变化更新')
-        }}</span>
+        }}</span
+        ><button
+          v-if="s.conversation && hasRole('operator')"
+          class="text-link agent-follow"
+          :disabled="s.controlling"
+          @click="agent.toggleFollowup"
+        >
+          {{
+            joinText([
+              tr('Agent主动解读：'),
+              tr(s.conversation.followup_enabled ? '已开启' : '未开启'),
+            ])
+          }}
+        </button>
       </div>
       <div v-if="historical" class="agent-history-banner">
         {{ tr('正在回看历史过程')
@@ -84,8 +103,8 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
       <details
         v-if="inspected"
         class="tool-timeline"
-        :open="s.expandedRuns[inspected.id] ?? (active || historical || tools.length < 5)"
-        @toggle="s.expandedRuns[inspected.id] = ($event.target as HTMLDetailsElement).open"
+        :open="s.expandedRuns[inspected.id] ?? openByDefault"
+        @toggle="toggled(inspected.id, ($event.target as HTMLDetailsElement).open)"
         :key="inspected.id"
       >
         <summary>
@@ -93,12 +112,11 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
             joinText([
               tr(historical ? '这一轮' : '工作记录'),
               '·',
-              tr(tools.length),
-              tr('条工具记录'),
+              tools.length === 1 ? tr('1条工具记录') : tr('{0}条工具记录', [tools.length]),
             ])
           }}</span
           ><span v-if="failedTools" class="tool-error-count">{{
-            joinText([tr(failedTools), tr('步未成功')], ' ')
+            failedTools === 1 ? tr('1 步未成功') : tr('{0} 步未成功', [failedTools])
           }}</span
           ><AppIcon name="chevron-down" />
         </summary>
@@ -117,7 +135,8 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
             :key="inspected.id + ':' + tool.invocation_id"
             :data-invocation="tool.invocation_id"
             :class="{
-              failed: tool.ok === false,
+              failed: tool.ok === false && !empty(tool),
+              'tool-empty': empty(tool),
               'tool-interrupted': tool.status === 'INTERRUPTED',
               'tool-running':
                 tool.status === 'RUNNING' &&
@@ -137,9 +156,11 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
                           ? 'pause'
                           : tool.ok === true
                             ? 'check'
-                            : tool.ok === false
-                              ? 'circle-alert'
-                              : 'clock'
+                            : empty(tool)
+                              ? 'info'
+                              : tool.ok === false
+                                ? 'circle-alert'
+                                : 'clock'
                     " /></span
                 ><span class="tool-step-name"
                   >{{ tr(describeTool(tool.tool).title)
@@ -152,23 +173,23 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
                         ? '已中断'
                         : tool.ok === true
                           ? '已完成'
-                          : tool.ok === false
-                            ? '未成功'
-                            : '已返回',
+                          : empty(tool)
+                            ? '暂无数据'
+                            : tool.ok === false
+                              ? '未成功'
+                              : '已返回',
                   )
-                }}</span>
+                }}</span
+                ><span v-if="tool.duration_ms != null" class="tool-duration"
+                  >· {{ duration(tool.duration_ms) }}</span
+                >
               </summary>
               <div class="tool-step-content">
-                <p v-if="tool.duration_ms != null">
-                  {{ joinText([tr('本次耗时'), tr(duration(tool.duration_ms))])
-                  }}<span v-if="(tool.attempt || 1) > 1">{{
-                    joinText([tr('· 第'), tr(tool.attempt), tr('次尝试')])
-                  }}</span>
-                </p>
+                <p v-if="(tool.attempt || 1) > 1">{{ tr('第 {0} 次尝试', [tool.attempt!]) }}</p>
                 <p v-if="tool.status === 'INTERRUPTED'">
                   {{ tr('此步已中断；已发生的变更以业务记录为准。') }}
                 </p>
-                <p v-if="tool.error_code">{{ tr(tool.error_code) }}</p>
+                <p v-if="tool.error_code && !empty(tool)">{{ tr(tool.error_code) }}</p>
                 <p v-if="tool.tool === 'evaluate_plan'">
                   {{ tr('只试算，不等于方案已修改或采购已提交。') }}
                 </p>
@@ -190,8 +211,8 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
                     ])
                   }}<AppIcon name="arrow-up-right" /></button
                 ><AgentReferences :references="tool.references" :run-id="inspected.id" />
-                <details class="tool-technical">
-                  <summary>{{ joinText([tr('调用标识 · 第'), tr(index + 1), tr('步')]) }}</summary>
+                <details v-if="!demo.enabled.value" class="tool-technical">
+                  <summary>{{ tr('调用标识 · 第 {0} 步', [index + 1]) }}</summary>
                   <code>{{ tr(tool.tool) }}<br />{{ tr(tool.invocation_id) }}</code>
                 </details>
               </div>
@@ -219,7 +240,7 @@ const duration = (ms: number) => (ms < 1000 ? `${ms}ms` : `${(ms / 1000).toFixed
       />
     </section>
     <ContextInspector
-      v-if="inspected?.graph_version === 'agent-context-v1'"
+      v-if="inspected?.graph_version === 'agent-context-v1' && !demo.enabled.value"
       :key="inspected.id"
       :run-id="inspected.id"
     />

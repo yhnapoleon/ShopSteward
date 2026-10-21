@@ -67,13 +67,6 @@ watch(
 </script>
 <template>
   <aside class="agent-workspace glass work-conversation" :aria-label="tr('事项对话')">
-    <header class="agent-workspace-head">
-      <div class="agent-monogram"><AppIcon name="sparkles" /></div>
-      <div>
-        <h2>{{ tr('一起处理这件事') }}</h2>
-        <p>{{ tr('补充、追问与结果保留在这里') }}</p>
-      </div>
-    </header>
     <!-- While an emergency restock leads the page its card says everything; the conversation
          keeps quiet about what it cannot do. -->
     <p v-if="!s.detail?.item.processor_available && !restocking" class="notice">

@@ -23,6 +23,16 @@ export function matchesState(context: ReadContext, dashboard: Schema<'Dashboard'
 export function utcDay(value: string) {
   return value.slice(0, 10)
 }
+/** A UTC calendar day without the year, in the interface's order ("21/10" in English). */
+export function utcDate(value: string) {
+  const d = new Date(value)
+  if (!Number.isFinite(d.getTime())) return value.slice(5, 10)
+  return new Intl.DateTimeFormat(intlLocale(), {
+    timeZone: 'UTC',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(d)
+}
 export function utcTime(value: string | null | undefined) {
   if (!value) return '时点未知'
   const d = new Date(value)

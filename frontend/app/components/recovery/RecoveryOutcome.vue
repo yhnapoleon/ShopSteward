@@ -63,10 +63,13 @@ const title = computed(() =>
 )
 /** Numbers stay with their units and "40 → 0 件" stays whole wherever the line wraps. */
 const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a0')
+// What changed first, then what it cost, then what came in: the order the result is read in.
 const facts = computed(() => {
   const o = outcome.value
   if (bought.value)
     return [
+      change.value,
+      tr('花了 {0}', [money(o.spend)]),
       o.parts.length > 1
         ? tr('补到 {0} 件（{1}）', [o.received, parts.value])
         : partial.value
@@ -75,9 +78,7 @@ const facts = computed(() => {
               o.received,
               o.planned ?? 0,
             ])
-          : named('{0} {1} 件已到货', [names.value, o.received]),
-      change.value,
-      tr('花了 {0}', [money(o.spend)]),
+          : tr('{0} 件已到货', [o.received]),
     ].filter(Boolean)
   if (waited.value)
     return [
@@ -135,7 +136,7 @@ const facts = computed(() => {
         <small>{{ names }}</small>
       </div>
       <div>
-        <dt>{{ tr('到货') }}</dt>
+        <dt>{{ tr('已到货') }}</dt>
         <dd>{{ tight(tr('{0}/{1} 件', [outcome.received, outcome.ordered])) }}</dd>
         <small>{{
           partial

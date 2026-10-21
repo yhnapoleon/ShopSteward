@@ -46,6 +46,7 @@ const change = computed(() =>
   previousPlan.value && plan.value ? { from: previousPlan.value, to: plan.value } : null,
 )
 const ended = computed(() => ['COMPLETED', 'CANCELLED'].includes(mission.value?.status || ''))
+const { rechecking, blocking } = usePlanRecheck(() => props.issue)
 const mobilePanel = ref(props.panel === 'agent' ? 'agent' : 'result')
 watch(
   () => props.panel,
@@ -236,7 +237,10 @@ async function recover() {
             </div></Transition
           >
           <ArrivalCard />
-          <article v-if="issue && !ended" class="attention-card glass">
+          <p v-if="rechecking && !ended" class="space-recheck" role="status">
+            <span class="space-pulse" aria-hidden="true" />{{ tr('正在重新核对方案…') }}
+          </p>
+          <article v-if="blocking && !ended" class="attention-card glass">
             <span class="tag amber">{{ tr('需要处理') }}</span>
             <h2>
               {{
@@ -277,11 +281,11 @@ async function recover() {
           </article>
           <AssistedOrderCard v-else-if="awaitingSupplier && !ended" />
           <DecisionCard
-            v-else-if="canDecide && !ended"
+            v-else-if="(canDecide || rechecking) && !ended"
+            :held="rechecking"
             @confirm="emit('confirm')"
             @evidence="emit('open', 'evidence')"
             @compare="emit('open', 'compare')"
-            @mission="emit('open', 'mission')"
           />
           <article v-else class="task-outcome glass">
             <span class="task-outcome-icon"
@@ -447,7 +451,14 @@ async function recover() {
                 }}
               </p>
               <p v-for="a in actions.filter((a) => a.plan_id === p.id)" :key="a.id">
-                {{ joinText([tr('采购'), tr(a.quantity), tr('件 ·'), tr(actionLabel(a.status, a.channel))]) }}
+                {{
+                  joinText([
+                    tr('采购'),
+                    tr(a.quantity),
+                    tr('件 ·'),
+                    tr(actionLabel(a.status, a.channel)),
+                  ])
+                }}
               </p>
             </article>
             <p v-if="historyLoaded && !historicalPlans.length">{{ tr('暂无方案记录。') }}</p>
@@ -463,11 +474,7 @@ async function recover() {
         </section>
         <div v-if="s.alerts.some((a) => a.status === 'OPEN')" class="risk-link">
           <button class="text-link" @click="emit('open', 'alerts')">
-            {{
-              joinText([
-                tr(s.alerts.filter((a) => a.status === 'OPEN').length),
-                tr('项经营提醒，查看依据'),
-              ])
+            {{ alertCount(s.alerts.filter((a) => a.status === 'OPEN').length)
             }}<AppIcon name="chevron-right" />
           </button>
         </div>

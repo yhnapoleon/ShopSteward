@@ -31,13 +31,22 @@ def money_facts(value, path=""):
     return result
 
 
+# "400元" / "40000分", and the interface's own "CNY 400.00" / "¥400.00".
+AMOUNT = re.compile(
+    r"(?:\b(?:CNY|RMB)|[¥￥])\s*(?P<yuan>\d[\d,]*(?:\.\d+)?)"
+    r"|(?<![0-9A-Za-z_.,])(?P<number>-?\d[\d,]*(?:\.\d+)?)\s*(?P<scale>万|千)?(?P<unit>元|分)(?!钟)"
+)
+
+
 def unsupported_amounts(content, allowed_minor):
     invalid = []
-    for match in re.finditer(
-        r"(?<![0-9A-Za-z_.,])(-?\d[\d,]*(?:\.\d+)?)\s*(万|千)?(元|分)(?!钟)", content
-    ):
-        multiplier = {None: 1, "万": 10000, "千": 1000}[match[2]]
-        amount = Decimal(match[1].replace(",", "")) * multiplier * (100 if match[3] == "元" else 1)
+    for match in AMOUNT.finditer(content):
+        if match["yuan"]:
+            amount = Decimal(match["yuan"].replace(",", "")) * 100
+        else:
+            multiplier = {None: 1, "万": 10000, "千": 1000}[match["scale"]]
+            amount = Decimal(match["number"].replace(",", "")) * multiplier
+            amount *= 100 if match["unit"] == "元" else 1
         if amount not in allowed_minor:
             invalid.append(match[0])
     return invalid

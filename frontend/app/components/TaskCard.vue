@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { joinText, t as tr } from '~/i18n'
+import { t as tr } from '~/i18n'
 import { motion, useReducedMotion } from 'motion-v'
 import { money, when } from '~/utils/presentation'
 import { selectedPlanCandidate } from '~/utils/plans'
@@ -22,7 +22,7 @@ defineProps<{ quiet?: boolean }>()
     <div class="task-card-top">
       <span class="task-identity"
         ><AppIcon name="layers-2" />{{
-          joinText([tr('活动备货 ·'), tr(mission.id.slice(-8))])
+          product?.name ? tr('备货委托 · {0}', [product.name]) : tr('备货委托')
         }}</span
       ><span class="tag" :class="status.tone">{{ tr(status.label) }}</span>
     </div>
@@ -33,7 +33,6 @@ defineProps<{ quiet?: boolean }>()
           : tr(mission.objective)
       }}
     </h2>
-    <p class="task-card-context">{{ product?.name }}<span>·</span>{{ tr(status.detail) }}</p>
     <div v-if="canDecide && plan?.proposed_purchase" class="task-card-impact">
       <div>
         <span>{{ tr('本次支出') }}</span
@@ -42,11 +41,7 @@ defineProps<{ quiet?: boolean }>()
       <div>
         <span>{{ tr('采购后预计现金') }}</span
         ><b>{{
-          tr(
-            money(
-              selectedPlanCandidate(plan, plan.proposed_purchase.quantity)?.cash_after_minor,
-            ),
-          )
+          tr(money(selectedPlanCandidate(plan, plan.proposed_purchase.quantity)?.cash_after_minor))
         }}</b>
       </div>
       <div>
@@ -55,13 +50,9 @@ defineProps<{ quiet?: boolean }>()
       </div>
     </div>
     <div class="task-card-bottom">
-      <div class="task-card-progress">
+      <div v-if="agent.active.value || agent.s.syncError" class="task-card-progress">
         <span class="agent-live-dot" :class="{ 'is-running': agent.running.value }" /><span>{{
-          tr(
-            agent.active.value || agent.s.syncError
-              ? agent.status.value
-              : '决定、执行与对话保留在同一任务',
-          )
+          tr(agent.status.value)
         }}</span>
       </div>
       <button :class="quiet ? 'secondary' : 'primary'" @click="$emit('open')">

@@ -35,12 +35,13 @@ watch(
 )
 const summary = computed(() => state.value.ended && !expanded.value && !flow.brief.value)
 const root = ref<HTMLElement | null>(null)
+const reveal = async (block: ScrollLogicalPosition) => {
+  await nextTick()
+  root.value?.scrollIntoView({ behavior: reduce.value ? 'auto' : 'smooth', block })
+}
 watch(
   () => flow.focus.value,
-  async () => {
-    await nextTick()
-    root.value?.scrollIntoView({ behavior: reduce.value ? 'auto' : 'smooth', block: 'start' })
-  },
+  () => reveal('start'),
 )
 /** The stage that leaves goes at once (removed now, never kept beside the next one). */
 const leaveNow = (_el: Element, done: () => void) => done()
@@ -56,13 +57,20 @@ watch(
   },
   { immediate: true },
 )
+// The card folds to its result line (or opens again) while the page is open: the new content
+// fades in, and a result line left above the screen is brought back into view.
+const moved = ref(false)
+watch(summary, (value) => {
+  moved.value = live.value
+  if (value && live.value) void reveal('nearest')
+})
 </script>
 <template>
   <section
     v-if="visible"
     ref="root"
     class="rf glass"
-    :class="{ 'is-summary': summary }"
+    :class="{ 'is-summary': summary, 'is-moved': moved }"
     :aria-label="tr('应急补货')"
     data-recovery-flow
     :data-stage="summary ? 'summary' : stage"

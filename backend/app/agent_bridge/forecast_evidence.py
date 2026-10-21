@@ -7,16 +7,16 @@ GUARD_TEXTS = {
     "zh": {
         "label": "模型推演，仅供参考。",
         "stale": "预测依据已变化或失效，请刷新预测后再判断。",
-        "missing": "尚未取得有效的 v6 预测依据，请在预测面板绑定序列并提供完整历史后刷新，"
-        "暂不能据此判断销量或补货。",
+        "missing": "还没有可用的预测，暂不能据此判断销量或补货。"
+        "请先在七日需求预测里运行预测或导入销售历史，再来问我。",
     },
     "en": {
         "label": "Model projection, for reference only.",
         "stale": "The forecast evidence has changed or expired. Refresh the forecast before "
         "relying on it.",
-        "missing": "No valid v6 forecast evidence is available yet. Bind the series in the "
-        "forecast panel, provide the complete history and refresh; until then sales or "
-        "replenishment cannot be judged from it.",
+        "missing": "No forecast is available yet, so sales and restocking can't be judged "
+        "from one. Run a forecast or import sales history in the 7-day demand forecast, "
+        "then ask again.",
     },
 }
 LABELS = tuple(texts["label"].rstrip("。.") for texts in GUARD_TEXTS.values())

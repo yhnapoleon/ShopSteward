@@ -31,7 +31,7 @@ async function resume() {
 }
 </script>
 <template>
-  <button class="task-back text-link" @click="emit('back')">
+  <button class="task-back space-back text-link" @click="emit('back')">
     <AppIcon name="arrow-right" />{{ tr('返回今日') }}
   </button>
   <header

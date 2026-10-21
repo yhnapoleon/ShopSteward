@@ -96,13 +96,6 @@
   letter-spacing: -0.7px;
   overflow-wrap: anywhere;
 }
-.task-card-context {
-  color: var(--muted);
-  font-size: 14px;
-}
-.task-card-context > span {
-  margin: 0 9px;
-}
 .task-card-impact {
   display: grid;
   grid-template-columns: 1fr 1fr 1.2fr;
@@ -134,8 +127,9 @@
   margin-top: 24px;
   flex-wrap: wrap;
 }
-.task-card-bottom .primary {
+.task-card-bottom > button {
   flex-shrink: 0;
+  margin-left: auto;
 }
 .completed-tasks {
   margin: 22px 0;
@@ -240,14 +234,9 @@
   min-width: 0;
 }
 .task-target {
+  position: relative;
   border-radius: 26px;
-  transition: box-shadow 240ms var(--ease);
   scroll-margin-top: 24px;
-}
-.task-target.target-active {
-  box-shadow:
-    0 0 0 2px rgb(40 105 196 / 45%),
-    0 0 0 7px rgb(40 105 196 / 7%);
 }
 .task-outcome {
   display: flex;
@@ -308,8 +297,8 @@
 .change-receipt-enter-active,
 .change-receipt-leave-active {
   transition:
-    opacity 0.22s,
-    transform 0.22s var(--ease);
+    opacity 220ms var(--ease),
+    transform 220ms var(--ease);
 }
 .change-receipt-enter-from,
 .change-receipt-leave-to {
@@ -438,34 +427,8 @@
   overflow: hidden;
   background: rgba(253, 254, 255, 0.91);
 }
-.agent-workspace-head {
-  display: flex;
-  gap: 12px;
-  padding: 22px 24px;
-  border-bottom: 1px solid var(--line);
-  align-items: center;
-}
-.agent-monogram {
-  width: 38px;
-  height: 38px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #d9e5f3;
-  border-radius: 13px;
-  background: linear-gradient(145deg, #fff, #e3edfa);
-  color: var(--blue);
-  box-shadow: 0 3px 8px rgb(40 105 196 / 6%);
-}
-.agent-workspace-head h2 {
-  font-size: 17px;
-  font-weight: 600;
-}
-.agent-workspace-head p {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 2px;
-}
 .agent-run-section {
+  position: relative;
   padding: 20px 24px;
   border-bottom: 1px solid var(--line);
   background: linear-gradient(120deg, #f4f8fe, #fbfcfd);
@@ -505,6 +468,31 @@
 }
 .agent-run-controls .text-link {
   font-size: 12px;
+}
+/* A setting, not a status: it sits at the end of the status line and shows when the run section
+   is pointed at or the link has focus. */
+.agent-run-controls .agent-follow {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  margin: 0;
+  font-size: 11px;
+}
+.agent-run-controls:has(> .agent-follow:only-child) {
+  margin-top: 0;
+}
+.agent-run-section:has(.agent-follow) .agent-run-status {
+  padding-right: 140px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .agent-run-controls .agent-follow {
+    opacity: 0;
+    transition: opacity 180ms var(--ease);
+  }
+  .agent-run-section:hover .agent-follow,
+  .agent-run-controls .agent-follow:focus-visible {
+    opacity: 1;
+  }
 }
 .agent-trigger {
   font-size: 11px;
@@ -546,6 +534,10 @@
   list-style: none;
   padding: 0;
   margin: 12px 0 0;
+  max-height: 240px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 .tool-timeline li {
   border-top: 1px solid rgb(67 80 100 / 8%);
@@ -576,6 +568,10 @@
   color: #9d5a38;
   background: #fbede7;
 }
+.tool-empty .tool-step-icon {
+  color: var(--muted);
+  background: #eef1f4;
+}
 .tool-step-name {
   flex: 1;
   min-width: 0;
@@ -587,10 +583,15 @@
   color: var(--muted);
   margin-top: 2px;
 }
-.tool-state {
+.tool-state,
+.tool-duration {
   flex-shrink: 0;
   font-size: 11px;
   color: var(--muted);
+}
+.tool-duration {
+  margin-left: -6px;
+  font-variant-numeric: tabular-nums;
 }
 .tool-step-content {
   padding: 0 0 12px 33px;
@@ -624,23 +625,8 @@
 .agent-conversation {
   padding: 20px 22px 18px;
 }
-.agent-section-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.agent-section-title h3 {
-  font-size: 14px;
-  font-weight: 550;
-}
-.agent-section-title > span {
-  font-size: 11px;
-  color: var(--muted);
-}
 .agent-thread {
-  max-height: 500px;
+  max-height: min(500px, 42dvh);
   overflow-y: auto;
   overflow-x: hidden;
   overscroll-behavior: contain;
@@ -779,9 +765,18 @@
 .agent-message-actions .text-link {
   font-size: 11px;
 }
-.agent-source {
+.agent-references {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 6px 8px;
   margin-top: 8px;
+}
+.agent-source {
   font-size: 12px;
+}
+.agent-source[open] {
+  flex-basis: 100%;
 }
 .agent-source > summary {
   display: flex;
@@ -833,9 +828,6 @@
   padding: 11px 13px 9px;
   margin-top: 16px;
   box-shadow: 0 3px 12px rgb(47 75 107 / 4%);
-  transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
 }
 .agent-composer:focus-within {
   border-color: #78a2d3;
@@ -916,10 +908,6 @@
 .agent-conversation .prompt-chips button {
   font-size: 11px;
   padding: 6px 9px;
-}
-.agent-conversation .agent-follow {
-  font-size: 11px;
-  margin-top: 14px;
 }
 .agent-retry {
   margin: 10px 0;
@@ -1050,9 +1038,6 @@
   .task-workspace[data-mobile-panel='agent'] .task-result-column {
     display: none;
   }
-  .agent-workspace-head {
-    padding: 18px 20px;
-  }
   .agent-thread {
     max-height: 340px;
   }
@@ -1106,6 +1091,10 @@
   .agent-run-section {
     padding: 18px 20px;
   }
+  .agent-run-controls .agent-follow {
+    top: 18px;
+    right: 20px;
+  }
   .agent-conversation {
     padding: 18px;
   }
@@ -1133,7 +1122,6 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .agent-live-dot,
-  .task-target,
   .change-receipt-enter-active,
   .change-receipt-leave-active {
     animation: none !important;
