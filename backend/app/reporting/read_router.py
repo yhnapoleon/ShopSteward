@@ -1,7 +1,9 @@
 import re
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime, timedelta
+from functools import cache
 from typing import Annotated, Literal
+from zoneinfo import ZoneInfo, available_timezones
 
 from fastapi import Query, Request
 from pydantic import (
@@ -11,6 +13,7 @@ from pydantic import (
     ConfigDict,
     Field,
     ValidationError,
+    field_validator,
     model_validator,
 )
 from sqlalchemy import text
@@ -74,16 +77,35 @@ class SaleQuery(StoreQuery, PageQuery):
         return self
 
 
+zones = cache(available_timezones)
+
+
 class SummaryQuery(StoreQuery):
     sku_id: Identifier | None = None
     start: QueryDate = Field(alias="from")
     end: QueryDate = Field(alias="to")
+    # IANA name whose local days the buckets follow; omitted: UTC days.
+    tz: str | None = Field(default=None, max_length=64)
+
+    @field_validator("tz")
+    @classmethod
+    def known_zone(cls, value):
+        if value is not None and value not in zones():
+            raise ValueError("Expected an IANA time zone name")
+        return value
 
     @model_validator(mode="after")
     def date_range(self):
         self.start, self.end = self.start.astimezone(UTC), self.end.astimezone(UTC)
         if not self.start < self.end or self.end - self.start > timedelta(days=90):
             raise ValueError("Expected a positive interval of at most 90 days")
+        if self.tz:
+            zone = ZoneInfo(self.tz)
+            try:
+                for moment in (self.start, self.end):
+                    moment.astimezone(zone)
+            except OverflowError as exc:
+                raise ValueError("Date-time is outside the supported range") from exc
         return self
 
 
@@ -168,7 +190,7 @@ async def sales_summary(request: Request, principal: User, query: Annotated[Summ
     async with read_transaction(request) as session:
         ctx = await context(session, request, principal, query)
         return await repo.summarize_sales(
-            session, ctx, sku_id=query.sku_id, start=query.start, end=query.end
+            session, ctx, sku_id=query.sku_id, start=query.start, end=query.end, tz=query.tz
         )
 
 

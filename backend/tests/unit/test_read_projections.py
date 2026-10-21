@@ -1,5 +1,6 @@
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
+from zoneinfo import ZoneInfo
 
 import pytest
 
@@ -107,6 +108,45 @@ def test_day_buckets_intersects_utc_days_and_keeps_empty_buckets():
         (1, 2, 250),
         (0, 0, 0),
     ]
+
+
+def test_day_buckets_follow_local_midnights_of_the_given_zone():
+    zone = ZoneInfo("Asia/Shanghai")
+    start = datetime(2026, 10, 19, tzinfo=zone)
+    end = datetime(2026, 10, 21, tzinfo=zone)
+    # Local 03:00 on 20/10 is still 19/10 in UTC; it belongs to the local day 20/10.
+    early = sale_view(
+        SimpleNamespace(
+            event_id="sale-1",
+            sequence=3,
+            document=sale_document(simulation_time="2026-10-19T19:00:00Z"),
+        )
+    )
+
+    result = day_buckets(start, end, [early], zone)
+
+    assert [(b.from_, b.to) for b in result] == [
+        (start, datetime(2026, 10, 20, tzinfo=zone)),
+        (datetime(2026, 10, 20, tzinfo=zone), end),
+    ]
+    assert [b.record_count for b in result] == [0, 1]
+    assert result[1].model_dump(mode="json", by_alias=True)["from"] == "2026-10-20T00:00:00+08:00"
+    utc_days = day_buckets(start, end, [early])
+    assert [(b.from_, b.record_count) for b in utc_days if b.record_count] == [
+        (datetime(2026, 10, 19, tzinfo=UTC), 1)
+    ]
+
+
+def test_day_buckets_keep_whole_local_days_across_a_daylight_saving_change():
+    zone = ZoneInfo("America/New_York")
+    start = datetime(2026, 10, 31, tzinfo=zone)
+    end = datetime(2026, 11, 2, tzinfo=zone)
+
+    result = day_buckets(start, end, [], zone)
+
+    lengths = [b.to.astimezone(UTC) - b.from_.astimezone(UTC) for b in result]
+    assert lengths == [timedelta(hours=24), timedelta(hours=25)]
+    assert result[1].from_ == datetime(2026, 11, 1, tzinfo=zone)
 
 
 def test_day_buckets_rejects_aggregate_int64_overflow():
@@ -280,7 +320,8 @@ def test_ledger_view_maps_init_state_without_changes():
     assert result.simulation_time == datetime(2026, 9, 7, tzinfo=UTC)
 
 
-def test_ledger_view_maps_receipt_and_uses_no_simulation_time():
+@pytest.mark.parametrize("business_time", [T0, None])
+def test_ledger_view_maps_receipt_at_the_business_time_it_was_recorded(business_time):
     receipt = {
         "action_id": "action-1",
         "status": "ACCEPTED",
@@ -308,11 +349,17 @@ def test_ledger_view_maps_receipt_and_uses_no_simulation_time():
             "total_minor": 300,
             "currency": "CNY",
         },
+        receipt_business_time=business_time,
     )
 
     result = ledger_view(row, {"action-1": action})
 
-    assert (result.sku_id, result.action_id, result.simulation_time) == ("sku-1", "action-1", None)
+    assert (result.sku_id, result.action_id, result.simulation_time) == (
+        "sku-1",
+        "action-1",
+        business_time,
+    )
+    assert result.occurred_at == datetime(2026, 9, 7, 3, tzinfo=UTC)
     assert result.changes.model_dump() == {
         "cash_delta_minor": -300,
         "receivables_delta_minor": 0,
@@ -353,6 +400,7 @@ def test_ledger_view_accepts_a_receipt_taken_in_part_at_the_ordered_price(quanti
             "total_minor": 300,
             "currency": "CNY",
         },
+        receipt_business_time=None,
     )
 
     if valid:

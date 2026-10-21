@@ -45,6 +45,9 @@ class ActionRow(Base):
     supplier_reply: Mapped[dict | None] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    # The store's simulation_time at approval and when the receipt was applied.
+    submitted_business_time: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    receipt_business_time: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     __table_args__ = (
         CheckConstraint(
             "status IN ('QUEUED','EXECUTING','SUCCEEDED','FAILED','UNKNOWN','STALE','CANCELLED')",

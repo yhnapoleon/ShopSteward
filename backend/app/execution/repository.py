@@ -215,6 +215,7 @@ async def decide(session, plan_id, body, principal, key, settings):
             request_snapshot=request.model_dump(mode="json"),
             created_at=now,
             updated_at=now,
+            submitted_business_time=store.simulation_time,
         )
         session.add(action)
         row.status = "APPROVED"

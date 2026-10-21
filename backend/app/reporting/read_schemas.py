@@ -76,7 +76,8 @@ class SaleSummary(DTO):
     from_: AwareDatetime = Field(alias="from")
     to: AwareDatetime
     time_basis: Literal["simulation_time"]
-    timezone: Literal["UTC"]
+    # The IANA zone whose midnights end the buckets: the request's `tz`, or UTC.
+    timezone: str
     granularity: Literal["day"]
     coverage: Literal["RECORDED_EVENTS_ONLY"]
     record_count: Nonnegative

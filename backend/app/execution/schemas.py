@@ -139,6 +139,10 @@ class Action(DTO):
     last_error: str | None
     created_at: AwareDatetime
     updated_at: AwareDatetime
+    # The store's simulation_time at created_at and when the receipt was recorded; null when
+    # not known (no receipt yet, or recorded before business times were kept).
+    submitted_business_time: AwareDatetime | None
+    receipt_business_time: AwareDatetime | None
     purchase_snapshot: ProposedPurchase
 
 

@@ -104,6 +104,35 @@ async def test_a_confirming_reply_becomes_the_receipt_with_the_suppliers_date(db
         assert (await state(db, seed))["cash_minor"] == 60000
 
 
+async def test_submission_and_receipt_keep_the_business_time_each_happened_at(db):
+    from datetime import datetime
+
+    from test_operations import event, ingest
+
+    async with environment(db) as (seed, client):
+        action = await sent(db, seed, client)
+        submitted = datetime.fromisoformat(seed["simulation_time"])
+        assert datetime.fromisoformat(action["submitted_business_time"]) == submitted
+        assert action["receipt_business_time"] is None
+        # A sale recorded later in the business day moves the store clock on.
+        later = submitted + timedelta(hours=5)
+        sale = event(seed, quantity=1)
+        sale.update(simulation_time=later.isoformat())
+        await ingest(db, seed, [sale])
+        done = (await reply(client, action, "收到，确认40件")).json()
+        assert done["status"] == "SUCCEEDED"
+        assert datetime.fromisoformat(done["submitted_business_time"]) == submitted
+        assert datetime.fromisoformat(done["receipt_business_time"]) == later
+        ledger = await client.get(
+            "/api/v1/ledger-entries",
+            params={"store_id": seed["store_id"], "effect_type": "PURCHASE_ACCEPTED"},
+            headers=headers("viewer"),
+        )
+        assert ledger.status_code == 200, ledger.text
+        (entry,) = ledger.json()["items"]
+        assert datetime.fromisoformat(entry["simulation_time"]) == later
+
+
 async def test_a_reply_that_departs_from_the_order_leaves_it_waiting_and_a_refusal_closes_it(db):
     async with environment(db) as (seed, client):
         action = await sent(db, seed, client)

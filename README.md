@@ -2,7 +2,7 @@
 
 ShopSteward 围绕门店备货，把经营数据、七日需求预测、方案比较、人工采购确认、执行回执和 Agent 对话放在同一工作区。后端负责库存、现金与采购规则；Agent 查询证据、解释方案并协助试算；模拟器提供可重复的经营事件与外部执行结果。
 
-**当前实现（2026-10-11）：** 在原 v6 预测与任务工作区基础上，本分支同时包含两条线。其一，新事项处理者与服务端报价整理、版本化纠正和跨事项规则复用，启用步骤与验证边界见[事项与报价接入](docs/work-intake-and-quotations.md)。其二，恢复 Case、Context Engineering、可选受限专家协作及独立评测口径，实现范围见[交付说明](docs/reports/2026-10-02-next-phase-delivery.md)，启用步骤见[下一阶段运行手册](docs/runbooks/next-phase-agent-recovery.md)。2026-10-12 起又加了两项：在恢复 Case 上从供应商资料寻源，以及由店主自己把订单发给供应商、再粘贴回复生成回执的“辅助发送”，见[寻源与辅助发送](docs/sourcing-and-assisted-purchase.md)。业务代码要求迁移头 **`0019_sourcing`**。
+**当前实现（2026-10-11）：** 在原 v6 预测与任务工作区基础上，本分支同时包含两条线。其一，新事项处理者与服务端报价整理、版本化纠正和跨事项规则复用，启用步骤与验证边界见[事项与报价接入](docs/work-intake-and-quotations.md)。其二，恢复 Case、Context Engineering、可选受限专家协作及独立评测口径，实现范围见[交付说明](docs/reports/2026-10-02-next-phase-delivery.md)，启用步骤见[下一阶段运行手册](docs/runbooks/next-phase-agent-recovery.md)。2026-10-12 起又加了两项：在恢复 Case 上从供应商资料寻源，以及由店主自己把订单发给供应商、再粘贴回复生成回执的“辅助发送”，见[寻源与辅助发送](docs/sourcing-and-assisted-purchase.md)。业务代码要求迁移头 **`0020_business_time`**。
 
 [当前能力](#当前能力与边界) · [项目架构](#项目架构) · [首次安装](#首次安装) · [启动服务](#启动服务) · [可选能力](#启用可选能力) · [更新与验证](#更新与验证) · [文档导航](#文档导航)
 
@@ -149,7 +149,7 @@ Set-Location ../simulation
 Set-Location ..
 ```
 
-预期业务库为 `0019_sourcing`（`0018_assisted_purchase` 与 `0019_sourcing` 接在 `0017_cases_quotations_merge` 之后），模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，经 `0014_forecast_work_merge` 合流；之后的报价分支 `0015_quotations` 与恢复 Case、学习分支（`0015_operations_cases`、`0016_learning_foundation`）经 `0017_cases_quotations_merge` 合流。已有任一版本均通过 `upgrade head` 升级。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
+预期业务库为 `0020_business_time`（`0018_assisted_purchase`、`0019_sourcing` 与 `0020_business_time` 依次接在 `0017_cases_quotations_merge` 之后），模拟器为 `sim_0003_controls`。业务迁移保留预测分支 `0012_forecast_v6` 和事项分支 `0013_work_intake`，经 `0014_forecast_work_merge` 合流；之后的报价分支 `0015_quotations` 与恢复 Case、学习分支（`0015_operations_cases`、`0016_learning_foundation`）经 `0017_cases_quotations_merge` 合流。已有任一版本均通过 `upgrade head` 升级。Knowledge 使用独立迁移 `knowledge_0002`，不能替代业务迁移。
 
 ## 启动服务
 
