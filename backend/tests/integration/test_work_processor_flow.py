@@ -123,6 +123,44 @@ async def test_model_proposes_500_floor_but_only_user_acceptance_creates_mission
         assert response.json()["item"]["mission"]["policy"]["cash_floor_minor"] == 50000
 
 
+async def test_one_english_sentence_proposes_a_follow_up_after_the_forecast_hour(db):
+    from app.operations.models import ForecastRow
+
+    async with env(db) as (seed, client, app):
+        await fresh(db, seed)
+        # Past its hour the fixed projection is renewed by planning, and read the same way here.
+        async with db.session() as session, session.begin():
+            row = await session.scalar(
+                select(ForecastRow).where(ForecastRow.store_id == seed["store_id"])
+            )
+            row.document = {**row.document, "valid_until": "2026-01-01T00:00:00+00:00"}
+        # Typed on a Mac: a curly apostrophe; the model quotes it with a straight one.
+        await create(client, seed, "Make sure milk doesn’t run out, keep at least CNY 300 in cash")
+        args = {
+            "sku_id": "sku_001",
+            "supplier_id": "supplier_001",
+            "expected_state_version": 1,
+            "cash_floor_minor": 30000,
+            "candidate_quantities": [20, 40],
+            "source_quote": "make sure milk doesn't run out",
+            "objective": "Keep milk in stock, at least CNY 300 cash",
+        }
+        model = ScriptModel(
+            tool("get_work_context"),
+            tool("read_forecast", {"sku_id": "sku_001"}),
+            tool("propose_mission", args),
+            {"content": "The follow-up terms are ready for you to accept."},
+        )
+        result = await process_item(db, app.state.settings, model)
+        assert result.item.status == "RESULT_READY", result
+        assert result.item.mission_request.policy.cash_floor_minor == 30000
+        assert result.item.result.content == "The follow-up terms are ready for you to accept."
+        forecast = json.loads(model.messages[2][-1]["content"])["data"]
+        assert forecast["usable_for_requested_period"] is True
+        assert forecast["forecast"]["remaining_demand"] == 60
+        assert "horizon_end_local" in forecast["forecast"]
+
+
 async def test_late_tool_cannot_pause_after_new_user_input(db):
     async with env(db) as (seed, client, app):
         mission = (

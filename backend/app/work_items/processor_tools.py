@@ -1,6 +1,5 @@
 """Owner-scoped business tools for the intake processor; never purchase authority."""
 
-from datetime import datetime
 from typing import Literal
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator, model_validator
@@ -49,10 +48,21 @@ class CheckArgs(MissionArgs, SourceArgs):
     pass
 
 
+PERIOD = "用户说了日期或期间时按原话填写（业务时区Asia/Shanghai）；没说时省略，按预测实际期间。"
+
+
 class ForecastArgs(Empty):
     sku_id: str = Field(min_length=1, max_length=128)
-    requested_start: AwareDatetime
-    requested_end: AwareDatetime
+    requested_start: AwareDatetime | None = Field(default=None, description=PERIOD)
+    requested_end: AwareDatetime | None = Field(default=None, description=PERIOD)
+
+    @model_validator(mode="after")
+    def window(self):
+        if (self.requested_start is None) != (self.requested_end is None):
+            raise ValueError("Give both requested_start and requested_end, or neither")
+        if self.requested_start is not None and self.requested_end <= self.requested_start:
+            raise ValueError("Requested period must be ordered")
+        return self
 
 
 class ComparisonArgs(ForecastArgs):
@@ -73,12 +83,6 @@ class ComparisonArgs(ForecastArgs):
         # Every comparison and proposed policy keeps "buy nothing" as its baseline.
         # Adding it only widens the options, so a model that omits it is not refused.
         return sorted({0, *quantities})
-
-    @model_validator(mode="after")
-    def window(self):
-        if self.requested_end <= self.requested_start:
-            raise ValueError("Requested period must be ordered")
-        return self
 
     def request(self):
         return QuantitySimulationRequest.model_validate(
@@ -104,18 +108,18 @@ DEFINITIONS = {
     ),
     "read_forecast": (
         ForecastArgs,
-        "读取指定商品预测，核对请求日期与预测实际期间；范围不匹配不得说能预测该期间。",
+        "读取指定商品当前规划所用的需求预测及其实际期间；所问期间不在其内时不得说能预测该期间。",
     ),
     "compare_quantities": (
         ComparisonArgs,
-        "只读数量比较，不修改业务或建立委托。必须明确实际起止日期；人工需求假设只用于比较。金额为分。"
-        "候选件数总含0件（不买），未给出时系统自动加入。",
+        "只读数量比较，不修改业务或建立委托。所问期间须落在预测实际期间内，按预测实际期间计算；"
+        "人工需求假设只用于比较。金额为分。候选件数总含0件（不买），未给出时系统自动加入。",
     ),
     "propose_mission": (
         ProposalArgs,
-        "用户明确要求持续跟进（如帮我盯着、以后都看着、keep an eye on it）时"
-        "提出待用户接受的委托条件；不会建立Mission或采购。"
-        "source_quote逐字引用用户要求，金额为分。禁止人工需求假设。"
+        "用户明确要求持续跟进或保证不断货（如帮我盯着、以后都看着、keep an eye on it、"
+        "keep milk in stock、make sure it doesn't run out）时提出待用户接受的委托条件；"
+        "不会建立Mission或采购。source_quote逐字引用用户要求，金额为分。禁止人工需求假设。"
         "候选件数总含0件（不买），未给出时系统自动加入。",
     ),
     "evaluate_plan": (
@@ -148,18 +152,36 @@ def encoded(value):
     return value.model_dump(mode="json") if isinstance(value, BaseModel) else value
 
 
-def exact_period(start, end, requested_start, requested_end):
-    """Do not silently scale a seven-day forecast into another business period."""
-    if isinstance(start, str):
-        start = datetime.fromisoformat(start.replace("Z", "+00:00"))
-    if isinstance(end, str):
-        end = datetime.fromisoformat(end.replace("Z", "+00:00"))
-    return start == requested_start and end == requested_end
+def covers_period(start, end, requested_start, requested_end):
+    """The forecast's own days must include every business day asked about.
+
+    A seven-day forecast is never scaled or shifted into another period. A request inside
+    it is compared on the whole forecast period, which the result states.
+    """
+    from app.work_items.authorization import last_day, local_day
+
+    if start is None or end is None:
+        return False
+    if requested_start is None:
+        return True
+    return local_day(start) <= local_day(requested_start) and last_day(requested_end) <= last_day(
+        end
+    )
+
+
+def quoted(quote, content):
+    """A verbatim quote, allowing for the apostrophes, spacing and case a model normalizes."""
+    from app.work_items.authorization import plain
+
+    def flat(text):
+        return " ".join(plain(text).replace("“", '"').replace("”", '"').split()).casefold()
+
+    return bool(quote.strip()) and flat(quote) in flat(content)
 
 
 def authorize_quote(args, user_messages):
     if isinstance(args, SourceArgs):
-        if not user_messages or args.source_quote.strip() not in user_messages[-1].content:
+        if not user_messages or not quoted(args.source_quote, user_messages[-1].content):
             raise AppError(
                 422,
                 "USER_SOURCE_REQUIRED",
@@ -175,7 +197,7 @@ async def scoped_mission(session, principal, work, identifier):
 
 
 async def execute(session, settings, principal, work, name, args, invocation_id):
-    from app.agent_bridge.presentation import money_facts
+    from app.agent_bridge.presentation import local_times, money_facts
     from app.operations.repository import get_catalog
     from app.reporting.repository import dashboard
 
@@ -213,12 +235,12 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
             "source_type": cursor.source if cursor else None,
         }
     elif name == "read_forecast":
-        from app.forecast_v6.repository import read_current
+        from app.planning.simulations import forecast_reading
 
-        value = await read_current(session, work.store_id, args.sku_id, settings)
+        # The demand a comparison or proposal would plan on, not only a v6 model reading.
+        value = await forecast_reading(session, work.store_id, args.sku_id, settings)
         forecast = value.get("forecast") or {}
-        value = {k: v for k, v in value.items() if k not in {"history", "model"}}
-        value["requested_period_matches"] = exact_period(
+        value["requested_period_matches"] = covers_period(
             forecast.get("horizon_start"),
             forecast.get("horizon_end"),
             args.requested_start,
@@ -228,7 +250,7 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
             value.get("usable_for_planning") and value["requested_period_matches"]
         )
         value["limitation"] = (
-            "仅原始预测日期内有效；无法据七日结果承诺其他期间，人工假设不能作为正式需求。"
+            "仅预测实际期间内有效；无法据七日结果承诺其他期间，人工假设不能作为正式需求。"
         )
         references = [{"type": "store", "id": work.store_id, "label": "预测所属经营数据"}]
     elif name in {"compare_quantities", "propose_mission"}:
@@ -236,7 +258,7 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
         from app.planning.simulations import capture
 
         value_input = await capture(session, work.store_id, args.request(), settings)
-        if not exact_period(
+        if not covers_period(
             value_input.horizon_start,
             value_input.horizon_end,
             args.requested_start,
@@ -261,6 +283,11 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
             "candidates": [encoded(c) for c in candidates],
             "recommended_candidate_id": recommended.id if recommended else None,
             "expected_arrival_at": arrival.isoformat() if arrival else None,
+            # The period the figures are for; a shorter question inside it gets these figures.
+            "planning_period": {
+                "start": value_input.horizon_start.isoformat(),
+                "end": value_input.horizon_end.isoformat(),
+            },
             "hypothetical": True,
         }
         extra["evidence_snapshot"] = {
@@ -373,4 +400,4 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
 
         return await quotation_tool(session, settings, principal, work, name, args, invocation_id)
     value["money_display"] = money_facts(value)
-    return {"ok": True, "data": value, "references": references, **extra}
+    return {"ok": True, "data": local_times(value), "references": references, **extra}
