@@ -114,6 +114,11 @@ def test_rule_is_closed_and_validates_both_sample_outcomes():
         "以后这个词出现在报价文件里",
         "don't remember this sorting rule",
         "only this time sort by price",
+        "Sort by unit price this time only",
+        # What the form writes for a one-off comparison describes a saved rule; it saves none.
+        "Compare this quote, sorted by the saved rule.",
+        "整理此报价，按已保存规则重新计算。",
+        "Sort by unit price, keeping original sources and missing fields.",
     ],
 )
 def test_negative_or_descriptive_text_does_not_authorize_rule(content):
@@ -121,10 +126,46 @@ def test_negative_or_descriptive_text_does_not_authorize_rule(content):
 
 
 @pytest.mark.parametrize(
-    "content", ["以后都按单件价排序", "记住这个排序规则", "Please remember this sorting rule"]
+    "content",
+    [
+        "以后都按单件价排序",
+        "记住这个排序规则",
+        "Please remember this sorting rule",
+        # The demo's chat request and the form's own "remember" line, either word order.
+        "Sort by unit price from now on.",
+        "Use this quote sorting rule from now on.",
+        "以后沿用此报价排序规则。",
+        "按单件价排序，以后都这样",
+        "Going forward, sort quotes by source",
+    ],
 )
 def test_explicit_long_term_sort_is_recognized(content):
     assert long_term_intent(content)
+
+
+def test_precision_note_is_an_assumption_not_part_of_the_basis():
+    rows, _ = calculate(HEADER + "A,180,CNY,箱,15,3,箱,A")
+    assert rows[0].basis == "180元 ÷ 15件" and rows[0].unit_price == "12"
+    legacy = rows[0].model_copy(update={"basis": "180元 ÷ 15件（单件价保留最多8位小数）"})
+    result = QuoteResult(
+        id="result",
+        work_id="work",
+        file_id="file",
+        filename="b.csv",
+        version=1,
+        input_sha256="f" * 64,
+        sort_by="source",
+        rows=[legacy],
+        issues=[],
+        rule=None,
+        corrections=[],
+        correction_content="",
+        created_at=datetime.now(UTC),
+    )
+    exported = csv_export(result)
+    row = next(csv.DictReader(io.StringIO(exported.lstrip("﻿"))))
+    assert row["计算依据"] == "180元 ÷ 15件" and "保留" not in exported
+    assert "单件价最多8位小数" in row["限制"]
 
 
 def test_csv_export_has_fixed_evidence_and_neutralizes_formulas():

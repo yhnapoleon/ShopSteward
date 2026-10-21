@@ -37,9 +37,12 @@ def long_term_intent(content):
         return False
     return bool(
         re.search(
-            r"(?:以后|每次|长期).{0,50}(?:按|排序|沿用|优先)|"
-            r"(?:记住|保存|remember|save).{0,80}(?:排序|规则|sort|rule|preference)|"
-            r"(?:always|from now|future).{0,50}(?:sort|use|order)",
+            r"(?:以后|今后|往后|每次|长期).{0,50}(?:按|排序|沿用|优先)|"
+            r"(?:按|排序|规则).{0,50}(?:以后|今后|往后|每次|长期)|"
+            r"(?:记住|(?<!已)保存|\bremember\b|\bsave\b).{0,80}(?:排序|规则|sort|rule|preference)|"
+            r"(?:always|from now|future|going forward|every time).{0,50}(?:sort|use|order)|"
+            r"(?:sort|order|rule).{0,60}(?:from now on|going forward|in (?:the )?future|"
+            r"every time|each time|always)",
             content,
             re.I,
         )
@@ -58,8 +61,9 @@ DEFINITIONS = {
     ),
     "save_quotation_rule": (
         SaveRule,
-        "仅用户明确要求以后沿用时保存报价排序规则。confirmation必须是最新用户消息中的原话。"
-        "expected_rule_version从list_quotation_files读取。先整理得到result_id；不保存逐行字段纠正。",
+        "仅最新用户消息明确要求以后沿用某种排序时调用：保存报价排序规则，并按该规则重新整理"
+        "result_id所属原件（与表单“更新并记住排序”相同）。confirmation逐字引用最新用户消息中的"
+        "这项要求。先process_quotation得到result_id；不保存逐行字段纠正。",
     ),
 }
 
@@ -111,11 +115,19 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
         .limit(1)
     )
     if consumed is not None:
-        raise AppError(
-            409,
-            "QUOTATION_RULE_REQUEST_HANDLED",
-            "这条长期规则要求已处理；上传新文件会沿用规则，修改规则需新的明确要求。",
-        )
+        state = await repo.rule_state(session, principal, work)
+        if state.rule is None or state.rule.sort_by != args.sort_by:
+            raise AppError(
+                409,
+                "QUOTATION_RULE_REQUEST_HANDLED",
+                "这条长期规则要求已处理；上传新文件会沿用规则，修改规则需新的明确要求。",
+            )
+        # A later run (a new upload) rereads the same request; the rule it asked for is in force.
+        return {
+            "ok": True,
+            "data": {**state.model_dump(mode="json"), "already_saved": True},
+            "references": rule_references(state, language),
+        }
     state = await repo.save_rule(
         session,
         principal,
@@ -130,11 +142,29 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
         },
         key=invocation_id,
     )
-    refs = [
+    # As the form's "update and remember": the file is compared again under the saved rule.
+    updated = await repo.process(
+        session,
+        principal,
+        work,
+        QuoteProcessArgs(file_id=result.file_id, base_result_id=result.id),
+        rule=state.rule,
+        rule_loaded=True,
+        correction_content=args.confirmation,
+    )
+    return {
+        "ok": True,
+        "data": {**state.model_dump(mode="json"), "result": updated.model_dump(mode="json")},
+        "references": repo.references(updated, language),
+        "work_result": repo.work_result(updated, language),
+    }
+
+
+def rule_references(state, language):
+    return [
         {
             "type": "quotation_rule",
             "id": f"{state.rule.scope_id}:{state.rule.version}",
-            "label": repo.text(language, "rule_label", version=state.rule.version),
+            "label": repo.text(language, "rule_label"),
         }
     ]
-    return {"ok": True, "data": state.model_dump(mode="json"), "references": refs}

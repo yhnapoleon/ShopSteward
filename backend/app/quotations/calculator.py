@@ -22,6 +22,8 @@ ENGLISH = [
     "Source",
 ]
 ALIASES = {en.lower(): cn for en, cn in zip(ENGLISH, HEADERS, strict=True)}
+# Results saved before the precision note moved to the assumptions still carry it in the basis.
+PRECISION = "（单件价保留最多8位小数）"
 UNITS = {
     "unit": "件",
     "units": "件",
@@ -156,7 +158,7 @@ def calculate(content, corrections=(), sort_by="source"):
                     unit_price = (price / pack).quantize(
                         Decimal("0.00000001"), rounding=ROUND_HALF_UP
                     )
-                basis = f"{dec(price)}元 ÷ {dec(pack)}件（单件价保留最多8位小数）"
+                basis = f"{dec(price)}元 ÷ {dec(pack)}件"
             else:
                 problem("计价单位或包装数缺失，不能确定单件价。")
         if not pack:
@@ -277,7 +279,7 @@ def csv_export(result):
                     row.moq_pieces,
                     row.source,
                     row.record,
-                    row.basis,
+                    row.basis.replace(PRECISION, ""),
                     issues,
                     result.filename,
                     result.input_sha256,
