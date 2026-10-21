@@ -184,17 +184,24 @@ async def prepare(db, mission_id, settings):
             if sum(row.ordered_qty - row.received_qty for row in rows) != stock.in_transit:
                 prepared.reason = "INBOUND_STATE_MISMATCH"
                 return prepared
-            inbound = [
-                InboundSnapshot(
-                    action_id=row.action_id,
-                    sku_id=row.sku_id,
-                    remaining_quantity=row.ordered_qty - row.received_qty,
-                    expected_arrival_at=row.expected_arrival_at,
-                    eligible=row.expected_arrival_at is not None
-                    and state.simulation_time <= row.expected_arrival_at < forecast.horizon_end,
+            from app.execution.assisted import arriving_at, channels
+
+            # An order sent by hand counts in transit until its delivery day is over.
+            sent = await channels(session, [row.action_id for row in rows])
+            inbound = []
+            for row in rows:
+                due = arriving_at(
+                    sent.get(row.action_id), row.expected_arrival_at, state.simulation_time
                 )
-                for row in rows
-            ]
+                inbound.append(
+                    InboundSnapshot(
+                        action_id=row.action_id,
+                        sku_id=row.sku_id,
+                        remaining_quantity=row.ordered_qty - row.received_qty,
+                        expected_arrival_at=row.expected_arrival_at,
+                        eligible=due is not None and due < forecast.horizon_end,
+                    )
+                )
             if renewal:
                 state.state_version += 1
                 stock.forecast_version = forecast.forecast_version

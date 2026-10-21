@@ -305,6 +305,32 @@ def past_due(action, expected, now):
     return now > expected
 
 
+def arriving_at(channel, expected, now):
+    """When goods not in yet still count as arriving, as of `now`; None once they are late.
+
+    Same rule as past_due: an order sent by hand keeps its whole delivery day, so goods due
+    today count as arriving now even after the hour the plan expected.
+    """
+    if expected is None:
+        return None
+    if channel == "assisted":
+        late = now.astimezone(BUSINESS_ZONE).date() > expected.astimezone(BUSINESS_ZONE).date()
+        return None if late else max(expected, now)
+    return expected if now <= expected else None
+
+
+async def channels(session, action_ids):
+    """How each purchase was sent; an inbound row without a purchase has none."""
+    from app.execution.models import ActionRow
+
+    if not action_ids:
+        return {}
+    rows = await session.execute(
+        select(ActionRow.id, ActionRow.channel).where(ActionRow.id.in_(sorted(set(action_ids))))
+    )
+    return dict(rows.all())
+
+
 def waiting(action):
     return action.channel == "assisted" and action.status == "EXECUTING"
 

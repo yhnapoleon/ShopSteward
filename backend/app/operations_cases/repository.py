@@ -169,8 +169,8 @@ async def detail(session, row):
         sourcing=sourcing,
         followup_enabled=row.followup_enabled,
         purchases=bought,
-        routine_paused=row.status not in TERMINAL
-        and (row.plan_id is not None or row.status == "MONITORING"),
+        # The case holds the item from its start until it ends (operations_cases/lifecycle.py).
+        routine_paused=row.status not in TERMINAL,
         recheck_reason=note.payload.get("reason")
         if row.status == "RECHECK_REQUIRED" and noted == "RECOVERY_RECHECK_REQUIRED"
         else None,
@@ -242,6 +242,11 @@ async def create(session, body, principal, key):
         )
     )
     await event(session, row, "CASE_CREATED")
+    from app.operations_cases.lifecycle import retire_routine
+
+    # The case holds the item from now on: a routine order waiting for approval would buy
+    # beside the emergency restock, often from the supplier that just declined.
+    await retire_routine(session, mission)
     await session.flush()
     result = await detail(session, row)
     receipt.response = result.model_dump(mode="json")
@@ -565,17 +570,11 @@ async def control(session, row, body, principal, key):
                     "An existing purchase must be reconciled before adopting waiting",
                 )
             await invalidate_pending(session, row, mission)
+            from app.operations_cases.lifecycle import retire_routine, settle
+
             # Waiting is a decision not to buy now: a routine order waiting for approval goes too.
-            routine = (
-                await session.get(PlanRow, mission.current_plan_id, with_for_update=True)
-                if mission.current_plan_id
-                else None
-            )
-            if routine and routine.status == "PENDING_APPROVAL":
-                routine.status = "SUPERSEDED"
-                mission.current_plan_id = None
+            await retire_routine(session, mission)
             row.status = "MONITORING"
-            from app.operations_cases.lifecycle import settle
 
             # Recorded before settling: it is also the owner's answer to a part-filled order.
             await event(session, row, "CASE_ADOPT_WAITING")

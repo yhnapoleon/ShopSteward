@@ -278,3 +278,38 @@ async def test_the_work_item_says_the_next_step_of_an_order_sent_by_hand_is_the_
         assert (await reply(client, action, "收到，确认40件，单价10.00元/件")).status_code == 200
         confirmed = await business()
         assert confirmed["code"] == "IN_TRANSIT" and "登记" in confirmed["detail"]
+
+
+async def test_a_confirmed_order_sent_by_hand_stays_in_transit_through_its_delivery_day(db):
+    from datetime import datetime, time
+    from zoneinfo import ZoneInfo
+
+    from test_missions import settings
+
+    from app.missions.models import InboundRow
+    from app.operations.models import Store
+    from app.planning.snapshot import prepare
+
+    zone = ZoneInfo("Asia/Shanghai")
+    async with environment(db) as (seed, client):
+        action = await sent(db, seed, client)
+        assert (await reply(client, action, "收到，确认40件，单价10.00元/件")).status_code == 200
+        # Delivery promised for tomorrow at 10:00; the business clock moves on to 16:21 that day,
+        # and the owner has not recorded the goods yet.
+        day = datetime.fromisoformat(seed["simulation_time"]).astimezone(zone).date()
+        day = day.fromordinal(day.toordinal() + 1)
+        async with db.session() as session, session.begin():
+            inbound = await session.get(InboundRow, (action["id"], "sku_001"))
+            inbound.expected_arrival_at = datetime.combine(day, time(10), zone)
+            store = await session.get(Store, seed["store_id"])
+            store.simulation_time = datetime.combine(day, time(16, 21), zone)
+        prepared = await prepare(db, action["mission_id"], settings(db, seed))
+        assert prepared.reason is None, prepared.reason
+        assert prepared.snapshot.eligible_inbound_qty == 40
+        # Once its delivery day is over, the order is late and no longer counted.
+        async with db.session() as session, session.begin():
+            store = await session.get(Store, seed["store_id"])
+            after = day.fromordinal(day.toordinal() + 1)
+            store.simulation_time = datetime.combine(after, time(9), zone)
+        prepared = await prepare(db, action["mission_id"], settings(db, seed))
+        assert prepared.snapshot.eligible_inbound_qty == 0

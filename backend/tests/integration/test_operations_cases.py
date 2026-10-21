@@ -280,17 +280,19 @@ async def test_partial_actual_receipt_displays_remaining_quantity_without_claimi
         assert current["status"] == "MONITORING"
 
 
-async def test_recovery_preserves_mission_quantity_limit_in_addition_to_case_budget(db):
+async def test_a_cap_on_the_daily_plan_is_not_carried_into_an_emergency_restock(db):
     from app.missions.models import MissionRow
 
     async with environment(db) as (seed, client):
         case = await recovery_case(db, seed, client)
+        # "Limit it to N" on the daily plan is written to the Mission's task constraints.
         async with db.session() as session, session.begin():
             mission = await session.get(MissionRow, case["mission_id"])
             mission.task_constraints = {"max_purchase_qty": 0}
         case = await analyze(client, case)
-        assert case["proposal"]["recommended_candidate_id"] == "wait"
-        assert all(not c["executable"] for c in case["proposal"]["candidates"])
+        assert case["max_purchase_qty"] is None
+        assert case["proposal"]["recommended_candidate_id"] != "wait"
+        assert any(c["executable"] and c["quantity"] > 0 for c in case["proposal"]["candidates"])
 
 
 async def test_adopting_waiting_supersedes_unapproved_recovery_but_not_mission(db):
@@ -639,11 +641,46 @@ async def test_routine_check_keeps_an_outdated_emergency_plan_out_and_says_why(d
         assert await current_plan(client, case) is None
 
 
+async def test_an_emergency_case_holds_routine_advice_from_its_start_until_it_ends(db):
+    async with environment(db) as (seed, client):
+        mission = await start(client, seed)
+        await run_check(db, seed)
+        routine = await current_plan(client, {"mission_id": mission["id"]})
+        assert routine is not None
+        response = await client.post(
+            "/api/v1/operations-cases",
+            json={
+                "mission_id": mission["id"],
+                "objective": "缺的找别家补上",
+                "budget_minor": 30000,
+            },
+            headers=headers(),
+        )
+        assert response.status_code == 201, response.text
+        case = response.json()
+        # From its start, before any option is chosen, the case holds the item.
+        assert (case["routine_paused"], case["current_plan_id"]) == (True, None)
+        plan = await client.get(f"/api/v1/plans/{routine}", headers=headers())
+        assert plan.json()["status"] == "SUPERSEDED"
+        await check_again(db, seed, client, case)
+        assert await current_plan(client, case) is None
+        ended = await client.post(
+            f"/api/v1/operations-cases/{case['id']}/control",
+            json={"expected_revision": 1, "operation": "cancel"},
+            headers=headers(),
+        )
+        assert ended.status_code == 200, ended.text
+        assert ended.json()["routine_paused"] is False
+        await check_again(db, seed, client, case)
+        assert await current_plan(client, case) is not None
+
+
 async def test_waiting_holds_routine_orders_until_the_case_ends(db):
     async with environment(db) as (seed, client):
         case = await analyze(client, await recovery_case(db, seed, client))
+        # The open case already holds the item: the Mission's first check gives no advice.
         await run_check(db, seed)
-        assert await current_plan(client, case) is not None
+        assert await current_plan(client, case) is None
         path = f"/api/v1/operations-cases/{case['id']}/control"
         waited = await client.post(
             path, json={"expected_revision": 1, "operation": "adopt_waiting"}, headers=headers()

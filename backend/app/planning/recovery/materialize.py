@@ -29,6 +29,18 @@ def recovery_hash(document):
     )
 
 
+def explanation(chosen, recovery):
+    """The emergency plan's one line; the frontend reads its numbers (utils/timeline.ts)."""
+    said = (
+        f"应急补购 {chosen.quantity} 件，支出 {chosen.spend_minor} 分；"
+        f"七日预测缺货 {chosen.lost_qty} 件。"
+    )
+    # Only while an earlier order is still on the way: a declined or withdrawn one is gone.
+    if any(a.ordered_qty > a.received_qty for a in recovery.arrivals):
+        said += "原订单保留。"
+    return said
+
+
 def build_recovery_plan(mission, snapshot, proposal, selected_id, actor, expires_at):
     result = solve(snapshot.recovery)
     chosen = next(c for c in result.candidates if c.id == selected_id)
@@ -59,10 +71,7 @@ def build_recovery_plan(mission, snapshot, proposal, selected_id, actor, expires
             supplier_override=chosen.supplier_id,
         ),
         proposal_hash="sha256:" + "0" * 64,
-        explanation=(
-            f"应急补购 {chosen.quantity} 件，支出 {chosen.spend_minor} 分；"
-            f"七日预测缺货 {chosen.lost_qty} 件。原订单保留。"
-        ),
+        explanation=explanation(chosen, snapshot.recovery),
         created_at=snapshot.evaluated_at,
         expires_at=min(expires_at, offer.valid_until),
         proposed_purchase=ProposedPurchase(

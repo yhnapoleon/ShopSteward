@@ -168,17 +168,21 @@ async def capture(session, store_id, body, settings):
     )
     if sum(r.ordered_qty - r.received_qty for r in rows) != stock.in_transit:
         raise AppError(409, "INBOUND_STATE_MISMATCH", "在途明细与库存尚未一致，请先完成回执核实。")
-    inbound = [
-        InboundSnapshot(
-            action_id=r.action_id,
-            sku_id=r.sku_id,
-            remaining_quantity=r.ordered_qty - r.received_qty,
-            expected_arrival_at=r.expected_arrival_at,
-            eligible=r.expected_arrival_at is not None
-            and state.simulation_time <= r.expected_arrival_at < end,
+    from app.execution.assisted import arriving_at, channels
+
+    sent = await channels(session, [r.action_id for r in rows])
+    inbound = []
+    for r in rows:
+        due = arriving_at(sent.get(r.action_id), r.expected_arrival_at, state.simulation_time)
+        inbound.append(
+            InboundSnapshot(
+                action_id=r.action_id,
+                sku_id=r.sku_id,
+                remaining_quantity=r.ordered_qty - r.received_qty,
+                expected_arrival_at=r.expected_arrival_at,
+                eligible=due is not None and due < end,
+            )
         )
-        for r in rows
-    ]
     # Browser numbers must remain exact. Never round money to fit a JSON/JS number.
     values = [
         state.cash_minor,

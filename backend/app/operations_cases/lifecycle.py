@@ -5,7 +5,7 @@ system's own purchase changes the state as well; that is the decision being carr
 not a reason to analyze again. A decision stands until the case is resolved or ended.
 """
 
-from sqlalchemy import func, or_, select
+from sqlalchemy import func, select
 
 from app.execution.models import ActionRow
 from app.missions.models import InboundRow, PlanRow
@@ -70,22 +70,36 @@ async def gap_open(session, case, actions):
 
 
 async def owning_case(session, mission):
-    """The open case whose decision routine checks leave alone, if any.
+    """The open case that holds this item, if any: routine checks give no purchase advice.
 
-    The owner has decided once a plan was adopted from the case (approved, rejected or
-    still waiting) or waiting was chosen; that holds until the case ends.
+    From the moment an emergency restock starts until it ends (its goods are in, it is ended,
+    or waiting is over), a routine order would buy beside it, often from the supplier that
+    just declined. A plan adopted from the case, approved, rejected or still waiting, is the
+    owner's decision; routine checks neither replace nor repeat it.
     """
     return await session.scalar(
         select(CaseRow)
-        .where(
-            CaseRow.mission_id == mission.id,
-            CaseRow.status.not_in(TERMINAL),
-            or_(CaseRow.plan_id.is_not(None), CaseRow.status == "MONITORING"),
-        )
+        .where(CaseRow.mission_id == mission.id, CaseRow.status.not_in(TERMINAL))
         .order_by(CaseRow.updated_at.desc(), CaseRow.id)
         .limit(1)
         .with_for_update()
     )
+
+
+async def retire_routine(session, mission):
+    """A routine order waiting for approval goes while a case holds the item."""
+    plan = (
+        await session.get(PlanRow, mission.current_plan_id, with_for_update=True)
+        if mission.current_plan_id
+        else None
+    )
+    if (
+        plan is not None
+        and plan.status == "PENDING_APPROVAL"
+        and plan.document.get("plan_kind") != "recovery_v1"
+    ):
+        plan.status = "SUPERSEDED"
+        mission.current_plan_id = None
 
 
 async def recheck(session, case, mission, reason, said=None):

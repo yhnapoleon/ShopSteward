@@ -87,14 +87,16 @@ def make_handlers(settings):
             if mission.current_plan_id
             else None
         )
-        from app.operations_cases.lifecycle import owning_case, recheck, settle
+        from app.operations_cases.lifecycle import owning_case, recheck, retire_routine, settle
 
         case = await owning_case(session, mission)
         if case and await settle(session, case, mission):
             # Everything it waited for had arrived (perhaps before cases settled themselves).
             case = None
         if case:
-            # The owner decided in the case; a routine check neither replaces nor repeats it.
+            # An emergency restock is under way: no routine purchase advice beside it, and the
+            # owner's decision in the case is neither replaced nor repeated.
+            await retire_routine(session, mission)
             pending = (
                 old if old and old.status == "PENDING_APPROVAL" and old.id == case.plan_id else None
             )
