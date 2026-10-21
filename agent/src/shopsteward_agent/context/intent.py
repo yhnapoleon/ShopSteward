@@ -8,6 +8,14 @@ import re
 
 MUTATIONS = {"revise_plan", "memory_edit", "request_check", "analyze_recovery_case"}
 PLAN_WRITES = {"revise_plan", "request_check"}
+# Mac and phone keyboards type ’ for an apostrophe.
+APOSTROPHES = str.maketrans({"’": "'", "‘": "'", "ʼ": "'", "＇": "'"})
+# A message that opens by asking to remember something states the preference after it:
+# "Remember: I don't take deliveries on weekends" restricts deliveries, not this write.
+REMEMBER = re.compile(
+    r"\s*(?:please\s+|请|帮我)?(?:remember|keep in mind|note that|记住|记下|记一下)", re.I
+)
+MEMORY_VERB = re.compile(r"记住|记下|保存|删除|忘记|save|remember|delete|forget", re.I)
 
 
 def classify_intent(messages):
@@ -18,7 +26,9 @@ def classify_intent(messages):
         # A positive clause can replace an earlier message's restriction, but
         # cannot undo an explicit prohibition in its own source message.
         message_denied = set()
-        for clause_match in re.finditer(r"[^，,。；;！？!?\n]+", message["content"]):
+        content = message["content"].translate(APOSTROPHES)
+        remembering = REMEMBER.match(content)
+        for clause_match in re.finditer(r"[^，,。；;！？!?\n]+", content):
             clause = clause_match.group()
             broad = re.search(
                 r"只(?:读|看|查询|试算|模拟|分析)|仅(?:试算|分析)|read.only|(?:only|just)\s+(?:simulate|evaluate|read|analy[sz]e)",
@@ -33,6 +43,8 @@ def classify_intent(messages):
                 clause,
                 re.I,
             )
+            if remembering and negative and not MEMORY_VERB.search(negative.group()):
+                negative = None
             affected = set()
             match = broad or negative
             if broad:

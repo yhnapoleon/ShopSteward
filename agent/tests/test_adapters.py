@@ -146,3 +146,57 @@ def test_memory_atomic_budget_duplicate_and_ambiguity():
         [{"action": "add", "content": "two"}, {"action": "remove", "old_text": "x"}],
         "USER",
     ) == ["two"]
+
+
+@pytest.mark.asyncio
+async def test_a_refused_forced_tool_choice_is_retried_unforced_with_an_instruction():
+    class Refused(Exception):
+        status_code = 400
+
+    class Client:
+        def __init__(self):
+            self.calls = []
+
+        def bind_tools(self, tools, **options):
+            self.options = options
+            return self
+
+        async def ainvoke(self, messages):
+            self.calls.append((self.options, messages))
+            if self.options.get("tool_choice") == "required":
+                raise Refused("Thinking mode does not support this tool_choice")
+            return AIMessage(
+                content="", tool_calls=[{"name": "memory_edit", "args": {}, "id": "x"}]
+            )
+
+    client = Client()
+    model = package.OpenAIModel(base_url="https://example.invalid/v1", model="test", client=client)
+    tools = [{"type": "function", "function": {"name": "memory_edit", "parameters": {}}}]
+    result = await model.complete(
+        [{"role": "user", "content": "Remember"}], tools, tool_choice="required"
+    )
+    assert result["tool_calls"][0]["function"]["name"] == "memory_edit"
+    assert [options for options, _ in client.calls] == [{"tool_choice": "required"}, {}]
+    assert "memory_edit" in client.calls[1][1][-1]["content"]
+    # The refusal is remembered for this model: the next forced turn is not refused again.
+    await model.complete([], tools, tool_choice="required")
+    assert client.calls[-1][0] == {}
+
+
+@pytest.mark.asyncio
+async def test_other_provider_errors_are_not_retried():
+    class Broken(Exception):
+        status_code = 400
+
+    class Client:
+        def bind_tools(self, tools, **options):
+            return self
+
+        async def ainvoke(self, messages):
+            raise Broken("context length exceeded")
+
+    model = package.OpenAIModel(
+        base_url="https://example.invalid/v1", model="test", client=Client()
+    )
+    with pytest.raises(Broken):
+        await model.complete([], [], tool_choice="required")

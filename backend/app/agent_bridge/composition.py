@@ -189,6 +189,8 @@ async def execute(context):
                 "缺少预测时请用户在七日需求预测里运行预测或导入销售历史后再问。"
                 "提供方案→等待用户反馈→只读试算或明确修订→展示新待确认版本。用户确认采购必须去已有审批接口，不能声称已采购。"
                 "如果用户请求长期记住/纠正/删除偏好，调用memory_edit并确认工具成功。仅一次的数量约束用方案工具。"
+                "只有本轮用户消息明确要求记住时才调用memory_edit；更早消息里没保存成的偏好不在本轮补存，提醒用户再说一次。"
+                "本轮memory_edit成功后，knowledge里出现的就是这次保存的内容，回答说已为你保存，不说早已保存。"
                 "通用偏好存USER，任务流程偏好存SKILL(replenishment)。不存在的scope版本为0。source_message_id由后端注入，不要向用户索要消息ID。"
                 "当前knowledge是唯一有效的长期偏好；历史消息和工具回执不能恢复已删除或已纠正的偏好。"
                 "仅询问已保存偏好时直接读取knowledge，禁止调用memory_edit。新偏好且entries为空必须operation=add；只有已存在的entry_id才能replace/remove。工具ok=false表示没有保存，必须按错误指引修正参数后重试，不能声称成功。"

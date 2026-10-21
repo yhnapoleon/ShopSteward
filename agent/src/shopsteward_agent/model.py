@@ -58,8 +58,32 @@ class OpenAIModel:
                     base_url=base_url, api_key=key, timeout=self.profile.timeout_s, max_retries=0
                 )
         self.client = client
+        self.forced_choice = True
 
     async def complete(self, messages, tools, *, tool_choice=None):
+        """One model turn. A provider that refuses a forced tool choice (DeepSeek in thinking
+        mode answers 400 "does not support this tool_choice") gets the same narrowed tools
+        unforced, with an instruction to call one; the runtime still checks that it did."""
+        if tool_choice == "required" and self.forced_choice:
+            try:
+                return await self._complete(messages, tools, tool_choice=tool_choice)
+            except Exception as exc:
+                if getattr(exc, "status_code", None) != 400 or "tool_choice" not in str(exc):
+                    raise
+                self.forced_choice = False
+        if tool_choice == "required":
+            names = ", ".join(tool["function"]["name"] for tool in tools)
+            messages = [
+                *messages,
+                {
+                    "role": "system",
+                    "content": f"Call one of these tools now: {names}. Do not answer in text.",
+                },
+            ]
+            tool_choice = None
+        return await self._complete(messages, tools, tool_choice=tool_choice)
+
+    async def _complete(self, messages, tools, *, tool_choice=None):
         if self.responses_client is not None:
             return await self._responses(messages, tools, tool_choice=tool_choice)
         options = {"tool_choice": tool_choice} if tool_choice else {}

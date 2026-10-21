@@ -13,7 +13,12 @@ from app.agent_bridge.document_evidence import DEFINITIONS as DOCUMENT_TOOLS
 from app.agent_bridge.document_evidence import call_document_tool
 from app.agent_bridge.jobs import assert_lease, current_principal
 from app.agent_bridge.models import AgentRun, Conversation, Message, ToolInvocation
-from app.agent_bridge.presentation import explicit_memory_intent, memory_write_denied, money_facts
+from app.agent_bridge.presentation import (
+    explicit_memory_intent,
+    local_times,
+    memory_write_denied,
+    money_facts,
+)
 from app.agent_bridge.router import META, enabled
 from app.agent_bridge.schemas import KnowledgeChange, ToolCall, ToolResult
 from app.api.routing import B0Router, errors
@@ -211,7 +216,11 @@ async def execute_tool(
                     .limit(10)
                 )
             ).all()
-            value = {"items": [encoded(await cases.detail(session, row)) for row in rows]}
+            value = {
+                "items": [case_summary(encoded(await cases.detail(session, row))) for row in rows],
+                "note": "Read one case with get_recovery_case for its options, supplier offers "
+                "and analysis.",
+            }
             references = [
                 {"type": "case", "id": row.id, "version": str(row.current_revision)} for row in rows
             ]
@@ -222,18 +231,20 @@ async def execute_tool(
             if name == "analyze_recovery_case":
                 # Gateway already holds store/Mission locks. Lock Case last.
                 await session.refresh(row, with_for_update=True)
-                value = encoded(
-                    await cases.analyze(
-                        session,
-                        row,
-                        CaseAnalyze(expected_revision=args.expected_revision),
-                        principal,
-                        digest([run.id, invocation_id]),
-                        settings,
+                value = case_for_agent(
+                    encoded(
+                        await cases.analyze(
+                            session,
+                            row,
+                            CaseAnalyze(expected_revision=args.expected_revision),
+                            principal,
+                            digest([run.id, invocation_id]),
+                            settings,
+                        )
                     )
                 )
             else:
-                value = encoded(await cases.detail(session, row))
+                value = case_for_agent(encoded(await cases.detail(session, row)))
             references = [{"type": "case", "id": row.id, "version": str(row.current_revision)}]
     elif name == "get_mission":
         value = encoded(await missions.read_mission(session, mission.id))
@@ -400,7 +411,129 @@ async def execute_tool(
     if name not in {"memory_edit", "read_experiences"}:
         value["money_display"] = money_facts(value)
         value["product_names"] = await product_names(session, store.id, value)
-    return {"ok": True, "data": value, "references": references}
+    return {"ok": True, "data": local_times(value), "references": references}
+
+
+# What an answer about an emergency case needs. The case page keeps the full record (each
+# expert call, every citation, daily rows); in the Agent's context, a case read whole is
+# about 36 KB, so two reads filled its 64 KB budget before it could answer.
+CASE_FIELDS = (
+    "id",
+    "sku_id",
+    "status",
+    "current_revision",
+    "objective",
+    "budget_minor",
+    "max_purchase_qty",
+    "daily_demand",
+    "supplier_ids",
+    "excluded_supplier_ids",
+    "plan_id",
+    "plan_status",
+    "action_id",
+    "execution_status",
+    "missing_inputs",
+    "stale",
+    "purchases",
+    "routine_paused",
+    "recheck_reason",
+    "outcome",
+    "followup_enabled",
+    "created_at",
+    "updated_at",
+)
+SUMMARY_FIELDS = (
+    "id",
+    "sku_id",
+    "status",
+    "objective",
+    "plan_status",
+    "execution_status",
+    "purchases",
+    "recheck_reason",
+    "outcome",
+    "created_at",
+    "updated_at",
+)
+
+
+def first_short_day(candidate):
+    """When this option first leaves demand unserved, from its daily rows."""
+    return next(
+        (day["settlement_at"] for day in candidate.get("daily") or [] if day.get("lost_qty")),
+        None,
+    )
+
+
+def case_for_agent(detail):
+    value = {key: detail[key] for key in CASE_FIELDS if key in detail}
+    value["evidence"] = [
+        {key: item.get(key) for key in ("kind", "id", "status", "summary")}
+        for item in detail.get("evidence") or []
+    ]
+    proposal = detail.get("proposal")
+    if proposal:
+        value["proposal"] = {
+            **{
+                key: proposal.get(key)
+                for key in (
+                    "id",
+                    "revision",
+                    "recommended_candidate_id",
+                    "created_at",
+                    "expires_at",
+                )
+            },
+            "candidates": [
+                {
+                    **{key: item for key, item in candidate.items() if key != "daily"},
+                    "first_short_at": first_short_day(candidate),
+                }
+                for candidate in proposal.get("candidates") or []
+            ],
+        }
+    sourcing = detail.get("sourcing")
+    if sourcing:
+        value["sourcing"] = {
+            "status": sourcing.get("status"),
+            "suppliers": [
+                {
+                    "supplier_id": review.get("supplier_id"),
+                    "name": review.get("name"),
+                    "read": review.get("status"),
+                    **{
+                        key: (review.get("card") or {}).get(key)
+                        for key in ("status", "offer", "history", "reason")
+                    },
+                }
+                for review in sourcing.get("reviews") or []
+            ],
+            "left_out": sourcing.get("left_out"),
+            "unreviewed": sourcing.get("unreviewed"),
+        }
+    analysis = detail.get("expert_analysis")
+    if analysis:
+        merged = analysis.get("merged") or {}
+        value["expert_analysis"] = {
+            "status": analysis.get("status"),
+            "revision": analysis.get("revision"),
+            # The reading of the options; the restated figures are in proposal above.
+            "findings": [
+                claim["statement"][:500]
+                for claim in merged.get("claims") or []
+                if claim.get("kind") in {"interpretation", "assumption"} and claim.get("statement")
+            ][:8],
+            "conflicts": (merged.get("conflicts") or [])[:3],
+            "missing": [item.get("item") for item in merged.get("missing") or []][:3],
+        }
+    return value
+
+
+def case_summary(detail):
+    value = {key: detail[key] for key in SUMMARY_FIELDS if key in detail}
+    proposal = detail.get("proposal") or {}
+    value["recommended_candidate_id"] = proposal.get("recommended_candidate_id")
+    return value
 
 
 def sku_ids(value):

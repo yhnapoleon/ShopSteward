@@ -389,3 +389,35 @@ def test_same_message_targeted_denial_does_not_block_different_target():
         ]
     )
     assert set(result["denied_tools"]) == {"revise_plan", "request_check", "analyze_recovery_case"}
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "Remember: I don’t take deliveries on weekends.",
+        "Remember: I don't take deliveries on weekends.",
+        "Please remember that I never change suppliers on Sundays",
+        "记住：周末不收货，不要改我的现金底线",
+    ],
+)
+def test_a_negation_inside_the_remembered_preference_does_not_refuse_saving_it(content):
+    from shopsteward_agent.context.intent import classify_intent
+
+    result = classify_intent([{"message_id": "m", "content": content}])
+    assert "memory_edit" not in result["denied_tools"]
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "Remember this. Actually, don’t save it.",
+        "记住这个，算了，不要保存",
+        "Don't remember that I take deliveries on weekends",
+        "Don’t change my saved preference",
+    ],
+)
+def test_refusing_the_save_itself_still_refuses_it(content):
+    from shopsteward_agent.context.intent import classify_intent
+
+    result = classify_intent([{"message_id": "m", "content": content}])
+    assert "memory_edit" in result["denied_tools"]

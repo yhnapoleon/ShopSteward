@@ -47,15 +47,24 @@ async def assert_lease(session, job):
 
 
 def scheduler_references(references):
-    """JobResult has generic pointers; full evidence remains in AgentRun/Message."""
-    return [
-        {"type": "artifact", "id": ref["id"], "version": ref["version_id"]}
-        if ref.get("type") == "document"
-        else {"type": "artifact", "id": ref["id"], "version": ref["version"]}
-        if ref.get("type") == "forecast"
-        else ref
-        for ref in references
-    ]
+    """JobResult has generic pointers; full evidence remains in AgentRun/Message.
+
+    Any kind the scheduler does not name (a document, a forecast, an emergency case) becomes
+    an artifact pointer; an answer citing a case once failed the whole run here.
+    """
+    from typing import get_args
+
+    from app.api.schemas import Reference
+
+    known = set(get_args(Reference.model_fields["type"].annotation)) - {"forecast"}
+
+    def pointer(ref):
+        if ref.get("type") in known:
+            return ref
+        version = ref.get("version_id" if ref.get("type") == "document" else "version")
+        return {"type": "artifact", "id": ref["id"]} | ({"version": version} if version else {})
+
+    return [pointer(ref) for ref in references]
 
 
 def make_handlers(settings, *, executor=None):

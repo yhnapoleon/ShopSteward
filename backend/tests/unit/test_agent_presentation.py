@@ -75,3 +75,30 @@ def test_unsupported_amount_removes_its_sentence_and_keeps_the_rest():
     assert "not found in the business records" in english
     assert without_unsupported_amounts("可用现金1,000元。", allowed) == "可用现金1,000元。"
     assert without_unsupported_amounts("现金余600元。", allowed) == ""
+
+
+def test_each_timestamp_gets_its_business_time_neighbour():
+    from app.agent_bridge.presentation import local_times
+
+    value = local_times(
+        {
+            "expected_arrival_at": "2026-10-22T16:30:00Z",
+            "delivery_date": "2026-10-23",
+            "items": [
+                {"created_at": "2026-10-21T02:59:20.123456+00:00", "note": "2026-10-21 noon"}
+            ],
+            "quantity": 20,
+        }
+    )
+    # 16:30 UTC on Thursday is 00:30 on Friday in Shanghai.
+    assert value["expected_arrival_at_local"] == "Fri 23/10 00:30"
+    assert value["delivery_date_local"] == "Fri 23/10"
+    assert value["items"][0]["created_at_local"] == "Wed 21/10 10:59"
+    # Counterexamples: text that only contains a date, numbers and invalid dates stay as they are.
+    assert "note_local" not in value["items"][0] and "quantity_local" not in value
+    assert "x_local" not in local_times({"x": "2026-13-40"})
+
+
+def test_remember_with_a_negated_preference_is_an_explicit_memory_command():
+    assert explicit_memory_intent("Remember: I don’t take deliveries on weekends.")
+    assert not explicit_memory_intent("Just place the order")
