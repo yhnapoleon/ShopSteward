@@ -25,6 +25,83 @@ from app.quotations.schemas import (
 from app.work_items import repository as works
 from app.work_items.models import WorkItem
 
+# What the system writes into a request about quotes, in the owner's interface language.
+TEXT = {
+    "zh": {
+        "result_label": "报价整理第{version}版",
+        "rule_label": "报价排序规则第{version}版",
+        "title": "{filename} · 整理结果 v{version}",
+        "recalculated": "已按原件重新计算{count}条报价。",
+        "issues": "部分字段需补充，未确定金额不参与比较。",
+        "complete": "计算完成。",
+        "scope": "字段纠正仅作用于本原件；未修改经营账本。",
+        "columns": ["商品", "单件价(CNY)", "包装件数", "最低订购件数", "来源"],
+        "unknown": "未确定",
+        "row": "原件第{record}行",
+        "assumptions": [
+            "仅支持CNY；单件价最多保留8位小数。",
+            "缺失字段保留待补状态，不猜测包装数量。",
+        ],
+        "uploaded": "已保存一份报价CSV原件，可用于当前事项的处理。",
+        "uploaded_next": "报价原件已保存，可以整理或补充要求。",
+        "process": "整理此报价，按已保存规则重新计算。",
+        "process_corrected": "按本次字段纠正重新整理报价。",
+        "keep_rule": "以后沿用此报价排序规则。",
+        "missing_question": "请补充报价结果中标出的缺失字段。",
+        "saved": "报价整理结果已保存，历史版本可下载。",
+        "missing_next": "补充缺失字段后重新计算。",
+        "saved_next": "可下载结果或上传下一份报价。",
+        "default_next": "以后整理报价将使用默认排序。",
+        "rule_removed": "长期报价排序规则已取消；已生成结果保留原规则版本。",
+    },
+    "en": {
+        "result_label": "Quote comparison v{version}",
+        "rule_label": "Quote sorting rule v{version}",
+        "title": "{filename} · comparison v{version}",
+        "recalculated": "Quote rows recalculated from the original file: {count}.",
+        "issues": " Some fields are missing; prices not yet known are left out of the comparison.",
+        "complete": " Calculation complete.",
+        "scope": " Field corrections apply to this file only; the store's books are unchanged.",
+        "columns": [
+            "Product",
+            "Unit price (CNY)",
+            "Units per pack",
+            "Minimum order (units)",
+            "Source",
+        ],
+        "unknown": "Not given",
+        "row": "Row {record} of the file",
+        "assumptions": [
+            "CNY only; unit prices keep up to 8 decimal places.",
+            "Missing fields stay open to fill in; pack sizes are never guessed.",
+        ],
+        "uploaded": "The original quote CSV was saved for this request.",
+        "uploaded_next": "The quote file is saved. You can compare it or add instructions.",
+        "process": "Compare this quote, sorted by the saved rule.",
+        "process_corrected": "Compare the quote again with these field corrections.",
+        "keep_rule": "Use this quote sorting rule from now on.",
+        "missing_question": "Please fill in the missing fields marked in the quote result.",
+        "saved": "The quote comparison is saved; earlier versions can be downloaded.",
+        "missing_next": "Fill in the missing fields, then recalculate.",
+        "saved_next": "Download the result or upload the next quote.",
+        "default_next": "Quotes will be sorted the default way from now on.",
+        "rule_removed": "The standing quote sorting rule is cancelled; "
+        "results already made keep the rule they used.",
+    },
+}
+
+
+def text(language, key, **values):
+    value = TEXT.get(language, TEXT["zh"])[key]
+    return value.format(**values) if values else value
+
+
+async def owner_language(session, principal):
+    """The interface language the owner last sent, remembered with every command."""
+    from app.agent_bridge.language import recall
+
+    return await recall(session, principal.principal_id) or "zh"
+
 
 async def file_for_work(session, principal, work, file_id):
     file = await session.get(QuotationFile, file_id)
@@ -227,47 +304,49 @@ async def process(
     return result
 
 
-def references(result):
+def references(result, language="zh"):
     refs = [
         {"type": "quotation_file", "id": result.file_id, "label": result.filename},
-        {"type": "quotation_result", "id": result.id, "label": f"报价整理第{result.version}版"},
+        {
+            "type": "quotation_result",
+            "id": result.id,
+            "label": text(language, "result_label", version=result.version),
+        },
     ]
     if result.rule:
         refs.append(
             {
                 "type": "quotation_rule",
                 "id": f"{result.rule.scope_id}:{result.rule.version}",
-                "label": f"报价排序规则第{result.rule.version}版",
+                "label": text(language, "rule_label", version=result.rule.version),
             }
         )
     return refs
 
 
-def work_result(result):
+def work_result(result, language="zh"):
+    unknown = text(language, "unknown")
     return {
         "kind": "quotation",
-        "title": f"{result.filename} · 整理结果 v{result.version}"[:200],
+        "title": text(language, "title", filename=result.filename, version=result.version)[:200],
         "content": (
-            f"已按原件重新计算{len(result.rows)}条报价。"
-            + ("部分字段需补充，未确定金额不参与比较。" if result.issues else "计算完成。")
-            + "字段纠正仅作用于本原件；未修改经营账本。"
+            text(language, "recalculated", count=len(result.rows))
+            + text(language, "issues" if result.issues else "complete")
+            + text(language, "scope")
         ),
-        "columns": ["商品", "单件价(CNY)", "包装件数", "最低订购件数", "来源"],
+        "columns": text(language, "columns"),
         "rows": [
             [
                 r.product,
-                r.unit_price or "未确定",
-                r.pack or "未确定",
-                r.moq_pieces or "未确定",
-                r.source or f"原件第{r.record}行",
+                r.unit_price or unknown,
+                r.pack or unknown,
+                r.moq_pieces or unknown,
+                r.source or text(language, "row", record=r.record),
             ]
             for r in result.rows
         ],
-        "assumptions": [
-            "仅支持CNY；单件价最多保留8位小数。",
-            "缺失字段保留待补状态，不猜测包装数量。",
-        ],
-        "references": references(result),
+        "assumptions": text(language, "assumptions"),
+        "references": references(result, language),
     }
 
 
@@ -296,12 +375,13 @@ async def upload(session, principal, item_id, body, key):
     )
     session.add(file)
     await session.flush()
-    await works.append(session, work, "system", "已保存一份报价CSV原件，可用于当前事项的处理。")
+    language = await owner_language(session, principal)
+    await works.append(session, work, "system", text(language, "uploaded"))
     works.release(work)
     work.status, work.question = "RECEIVED", None
     work.mission_request = None
     work.demonstration = False
-    work.next_step = "报价原件已保存，可以整理或补充要求。"
+    work.next_step = text(language, "uploaded_next")
     await works.changed(session, work)
     receipt.response = {"id": file.id}
     return QuoteFile.model_validate(file)
@@ -322,20 +402,18 @@ async def direct_process(session, principal, item_id, body, key):
         )
     works.check_version(work, body.expected_work_version)
     await file_for_work(session, principal, work, body.file_id)
+    language = await owner_language(session, principal)
     source_message = await works.append(
         session,
         work,
         "user",
         body.correction_content
-        or (
-            "整理此报价，按已保存规则重新计算。"
-            if not body.corrections
-            else "按本次字段纠正重新整理报价。"
-        ),
+        or text(language, "process_corrected" if body.corrections else "process"),
     )
     state = await rule_state(session, principal, work)
     if body.persist_rule:
-        source_message = await works.append(session, work, "user", "以后沿用此报价排序规则。")
+        keep = text(language, "keep_rule")
+        source_message = await works.append(session, work, "user", keep)
         state = await save_rule(
             session,
             principal,
@@ -344,7 +422,7 @@ async def direct_process(session, principal, item_id, body, key):
             expected_version=body.expected_rule_version,
             source={
                 "source_message_id": source_message.id,
-                "confirmation": "以后沿用此报价排序规则。",
+                "confirmation": keep,
                 "correction_content": body.correction_content,
                 "file_id": body.file_id,
             },
@@ -366,11 +444,11 @@ async def direct_process(session, principal, item_id, body, key):
     work.status = "WAITING_INPUT" if result.issues else "RESULT_READY"
     work.mission_request = None
     work.demonstration = False
-    work.question = "请补充报价结果中标出的缺失字段。" if result.issues else None
-    work.summary = "报价整理结果已保存，历史版本可下载。"
-    work.next_step = "补充缺失字段后重新计算。" if result.issues else "可下载结果或上传下一份报价。"
+    work.question = text(language, "missing_question") if result.issues else None
+    work.summary = text(language, "saved")
+    work.next_step = text(language, "missing_next" if result.issues else "saved_next")
     message = await works.append(
-        session, work, "assistant", work.summary, result=work_result(result)
+        session, work, "assistant", work.summary, result=work_result(result, language)
     )
     work.result = message.result
     receipt.response = {"id": result.id}
@@ -409,13 +487,10 @@ async def direct_remove_rule(session, principal, item_id, body, key):
     work.status = (
         "WAITING_INPUT" if pending_fields else ("RESULT_READY" if work.result else "COMPLETED")
     )
-    work.question = "请补充报价结果中标出的缺失字段。" if pending_fields else None
-    work.next_step = (
-        "补充缺失字段后重新计算。" if pending_fields else "以后整理报价将使用默认排序。"
-    )
-    await works.append(
-        session, work, "assistant", "长期报价排序规则已取消；已生成结果保留原规则版本。"
-    )
+    language = await owner_language(session, principal)
+    work.question = text(language, "missing_question") if pending_fields else None
+    work.next_step = text(language, "missing_next" if pending_fields else "default_next")
+    await works.append(session, work, "assistant", text(language, "rule_removed"))
     receipt.response = result.model_dump(mode="json")
     return result
 

@@ -104,7 +104,8 @@ async def test_an_emergency_plan_awaiting_confirmation_reads_like_any_pending_pl
 
 
 async def test_an_order_sent_by_hand_with_no_reply_past_its_date_is_overdue(db):
-    from datetime import datetime
+    from datetime import datetime, timedelta
+    from zoneinfo import ZoneInfo
 
     from test_execution import decision
 
@@ -123,9 +124,16 @@ async def test_an_order_sent_by_hand_with_no_reply_past_its_date_is_overdue(db):
         assert (await read(client, item))["code"] == "AWAITING_SUPPLIER"
         async with db.session() as session, session.begin():
             action = await session.get(ActionRow, response.json()["action_id"])
-            store = await session.get(Store, mission["store_id"])
-            store.simulation_time = datetime.fromisoformat(
-                action.purchase_snapshot["expected_arrival_at"]
-            )
+            wanted = datetime.fromisoformat(action.purchase_snapshot["expected_arrival_at"])
+        # A delivery day is promised, not an hour: past the time on that day it still waits.
+        local = wanted.astimezone(ZoneInfo("Asia/Shanghai"))
+        for moment, code in (
+            (local.replace(hour=23, minute=59), "AWAITING_SUPPLIER"),
+            (local.replace(hour=0, minute=0) + timedelta(days=1), "SUPPLIER_OVERDUE"),
+        ):
+            async with db.session() as session, session.begin():
+                store = await session.get(Store, mission["store_id"])
+                store.simulation_time = moment
+            assert (await read(client, item))["code"] == code
         state = await read(client, item)
         assert (state["code"], state["needs_attention"]) == ("SUPPLIER_OVERDUE", True)

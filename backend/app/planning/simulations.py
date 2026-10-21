@@ -39,6 +39,86 @@ def yuan(value):
     return ("-" if value < 0 else "") + f"{abs(value) // 100}.{abs(value) % 100:02d}"
 
 
+async def current_forecast(session, store_id, stock, state, cursor, now, settings):
+    """The demand planning would use now: an active v6 forecast, else the store's projection.
+
+    A fixed projection past its hour is read as the planner renews it (same demand, same
+    period, new validity), without writing the renewal: a trial changes nothing.
+    """
+    row = (
+        await session.get(ForecastRow, (store_id, stock.sku_id, stock.forecast_version))
+        if stock.forecast_version
+        else None
+    )
+    if row is None or stock.remaining_demand is None:
+        raise AppError(
+            422, "FORECAST_UNAVAILABLE", "缺少当前需求依据，请填写明确的需求假设及期间。"
+        )
+    try:
+        binding = (
+            await session.get(ForecastV6Binding, (store_id, stock.sku_id))
+            if settings.forecast_v6_enabled
+            else None
+        )
+        if binding is not None and binding.activate_for_planning:
+            current = await read_current(session, store_id, stock.sku_id, settings, now)
+            if current["status"] != "READY" or not current["usable_for_planning"]:
+                raise ValueError("active v6 forecast is not usable")
+            return v6_snapshot(current["forecast"], stock, cursor), "v6"
+        forecast, renewal = FixedForecastProvider().read(
+            row, stock, state, cursor, now, settings.fixed_forecast_ttl_seconds
+        )
+        if renewal:
+            # Keep the stored identity, so a later staleness check sees the same demand basis.
+            forecast = forecast.model_copy(
+                update={
+                    "forecast_version": stock.forecast_version,
+                    "forecast_id": row.document.get("forecast_id", forecast.forecast_id),
+                }
+            )
+        return forecast, "projection"
+    except (ValueError, TypeError, KeyError):
+        raise AppError(
+            409,
+            "FORECAST_UNAVAILABLE",
+            "当前需求依据已过期或不覆盖本期；请更新需求，或填写独立的需求假设。",
+        ) from None
+
+
+async def forecast_reading(session, store_id, sku_id, settings):
+    """The demand a comparison would plan on now, so a model can check its period first."""
+    state = await get_state(session, store_id)
+    stock = next((s for s in state.stocks if s.sku_id == sku_id), None)
+    result = {"status": "UNAVAILABLE", "sku_id": sku_id, "usable_for_planning": False}
+    if stock is None:
+        return {**result, "reason": "PRODUCT_NOT_IN_STORE", "forecast": None}
+    cursor = await session.scalar(select(SourceCursor).where(SourceCursor.store_id == store_id))
+    if cursor is None or cursor.last_success_at is None:
+        return {**result, "reason": "DATA_STALE", "forecast": None}
+    now = await session.scalar(select(func.clock_timestamp()))
+    try:
+        forecast, provider = await current_forecast(
+            session, store_id, stock, state, cursor, now, settings
+        )
+    except AppError as exc:
+        return {**result, "reason": exc.code, "message": exc.message, "forecast": None}
+    return {
+        **result,
+        "status": "READY",
+        "usable_for_planning": True,
+        "provider": provider,
+        "forecast": {
+            "sku_id": sku_id,
+            "remaining_demand": forecast.remaining_demand,
+            "unit": forecast.unit,
+            "horizon_start": forecast.horizon_start.isoformat(),
+            "horizon_end": forecast.horizon_end.isoformat(),
+            "valid_until": forecast.valid_until.isoformat(),
+            "source": forecast.source,
+        },
+    }
+
+
 async def capture(session, store_id, body, settings):
     state = await get_state(session, store_id)
     if state.state_version != body.expected_state_version:
@@ -60,39 +140,9 @@ async def capture(session, store_id, body, settings):
     forecast = None
     forecast_provider = "projection"
     if body.remaining_demand is None:
-        row = (
-            await session.get(ForecastRow, (store_id, stock.sku_id, stock.forecast_version))
-            if stock.forecast_version
-            else None
+        forecast, forecast_provider = await current_forecast(
+            session, store_id, stock, state, cursor, now, settings
         )
-        if row is None or stock.remaining_demand is None:
-            raise AppError(
-                422, "FORECAST_UNAVAILABLE", "缺少当前需求依据，请填写明确的需求假设及期间。"
-            )
-        try:
-            binding = (
-                await session.get(ForecastV6Binding, (store_id, stock.sku_id))
-                if settings.forecast_v6_enabled
-                else None
-            )
-            if binding is not None and binding.activate_for_planning:
-                current = await read_current(session, store_id, stock.sku_id, settings, now)
-                if current["status"] != "READY" or not current["usable_for_planning"]:
-                    raise ValueError("active v6 forecast is not usable")
-                forecast = v6_snapshot(current["forecast"], stock, cursor)
-                forecast_provider, renewal = "v6", None
-            else:
-                forecast, renewal = FixedForecastProvider().read(
-                    row, stock, state, cursor, now, settings.fixed_forecast_ttl_seconds
-                )
-            if renewal:
-                raise ValueError("expired forecast")
-        except (ValueError, TypeError, KeyError):
-            raise AppError(
-                409,
-                "FORECAST_UNAVAILABLE",
-                "当前需求依据已过期或不覆盖本期；请更新需求，或填写独立的需求假设。",
-            ) from None
         demand, start, end, source = (
             forecast.remaining_demand,
             forecast.horizon_start,

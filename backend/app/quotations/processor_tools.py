@@ -12,6 +12,7 @@ from app.core.errors import AppError
 from app.quotations import repository as repo
 from app.quotations.schemas import QuoteProcessArgs, QuoteResult, SortBy
 from app.work_items.models import WorkMessageRow
+from app.work_items.processor_tools import quoted
 
 
 class ListFiles(DTO):
@@ -73,13 +74,14 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
             "data": {**files.model_dump(mode="json"), "rule_state": state.model_dump(mode="json")},
             "references": [],
         }
+    language = await repo.owner_language(session, principal)
     if name == "process_quotation":
         result = await repo.process(session, principal, work, args)
         return {
             "ok": True,
             "data": result.model_dump(mode="json"),
-            "references": repo.references(result),
-            "work_result": repo.work_result(result),
+            "references": repo.references(result, language),
+            "work_result": repo.work_result(result, language),
         }
     row = await repo.result_for_work(session, principal, work, args.result_id)
     result = QuoteResult.model_validate(row.payload)
@@ -91,7 +93,7 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
     )
     if (
         latest is None
-        or args.confirmation not in latest.content
+        or not quoted(args.confirmation, latest.content)
         or not long_term_intent(latest.content)
         or not long_term_intent(args.confirmation)
     ):
@@ -132,7 +134,7 @@ async def execute(session, settings, principal, work, name, args, invocation_id)
         {
             "type": "quotation_rule",
             "id": f"{state.rule.scope_id}:{state.rule.version}",
-            "label": f"报价排序规则第{state.rule.version}版",
+            "label": repo.text(language, "rule_label", version=state.rule.version),
         }
     ]
     return {"ok": True, "data": state.model_dump(mode="json"), "references": refs}

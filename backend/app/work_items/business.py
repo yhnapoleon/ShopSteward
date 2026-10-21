@@ -85,8 +85,10 @@ def classify(
         # The owner carries this order to the supplier: until the reply is pasted back, the
         # next step is theirs, not the system's.
         if action.channel == "assisted" and action.status == "EXECUTING":
+            from app.execution.assisted import past_due
+
             wanted = datetime.fromisoformat(action.purchase_snapshot["expected_arrival_at"])
-            if store.simulation_time and store.simulation_time >= wanted:
+            if store.simulation_time and past_due(action, wanted, store.simulation_time):
                 return status(
                     "SUPPLIER_OVERDUE",
                     "供应商逾期未回复",

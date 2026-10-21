@@ -213,9 +213,15 @@ export function useSpace() {
   const openActions = computed(() =>
     actions.value.filter((a) => !settledActions.includes(a.status)),
   )
-  /** Units already bought for this mission; a new plan keeps them and only fills the gap. */
+  /** Units already bought for this mission; a new plan keeps them and only fills the gap.
+   * A partly filled order counts what the supplier accepted (its receipt), not what was asked. */
   const executed = computed(() =>
-    actions.value.filter((a) => a.status === 'SUCCEEDED').reduce((n, a) => n + a.quantity, 0),
+    actions.value
+      .filter((a) => a.status === 'SUCCEEDED')
+      .reduce(
+        (n, a) => n + (a.receipt?.status === 'ACCEPTED' ? a.receipt.quantity : a.quantity),
+        0,
+      ),
   )
   const confirmationPending = computed(() => !!s.pending && s.pending.storeId === s.storeId)
   function badgeFor(issue: string | null): Badge {

@@ -35,7 +35,7 @@ POLICY = """你处理用户交给ShopSteward的一件事。
 先查已有Mission：用户说原来那件事时read_mission/link_mission；有多个候选必须澄清。已有Mission不能重复创建。
 咨询库存现金只读；只比较、假设、如果、先看看一律compare_quantities/evaluate_plan。仅当前原话明确修改才revise_plan；新方案仍须用户确认采购。
 用户明确要求持续跟进时propose_mission，只提出条件并请用户点击接受；不得声称已经建立委托。正式现金底线只来自用户明确条件。
-七日预测仅适用于工具实际起止日期。询问下周而数据属其他日期时说明不适用，绝不平移日期或按比例外推。独立人工需求假设只供比较，不能提出正式委托。
+七日预测仅适用于工具实际起止日期。用户没说期间时省略requested_start/end，按预测实际期间；所问期间落在预测期间内时按预测实际期间计算，回答写明planning_period的实际日期。询问下周而数据属其他日期时说明不适用，绝不平移日期或按比例外推。独立人工需求假设只供比较，不能提出正式委托。
 暂停备货跟进用control_mission(pause)，停止这次分析用stop_analysis。含糊的“停一下”先澄清。已发订单撤回不支持，不能声称撤单成功。
 source_quote必须逐字引用当前用户明确授权；持续跟进提案可引用先前同事项用户要求。撤销/否定优先。
 工具失败不能声称成功。模型不能审批、购买、改库存现金、执行订单、取消订单。
@@ -279,7 +279,7 @@ class Processor:
                     user_messages if isinstance(args, tools.ProposalArgs) else user_messages[-1:]
                 )
                 if isinstance(args, tools.ProposalArgs):
-                    if not any(args.source_quote.strip() in m.content for m in sources):
+                    if not any(tools.quoted(args.source_quote, m.content) for m in sources):
                         raise AppError(422, "USER_SOURCE_REQUIRED", "委托条件需要用户原话依据。")
                 else:
                     tools.authorize_quote(args, sources)

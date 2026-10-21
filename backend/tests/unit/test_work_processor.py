@@ -22,7 +22,8 @@ from app.work_items.processor_tools import (
     ControlArgs,
     ForecastArgs,
     RevisionArgs,
-    exact_period,
+    covers_period,
+    quoted,
 )
 
 
@@ -70,9 +71,70 @@ def test_next_week_cannot_be_replaced_with_forecast_fixture_dates():
     args.requested_start = datetime(2026, 10, 12, tzinfo=UTC)
     args.requested_end = datetime(2026, 10, 19, tzinfo=UTC)
     grounded_period(args, [message("下周够卖吗？")])
-    assert not exact_period(
+    assert not covers_period(
         "2026-10-05T00:00:00Z", "2026-10-12T00:00:00Z", args.requested_start, args.requested_end
     )
+
+
+def test_a_named_period_must_be_passed_and_matched_in_business_days():
+    def args(start=None, end=None):
+        return ForecastArgs(sku_id="sku", requested_start=start, requested_end=end)
+
+    # 22/10 to 28/10 as the interface writes dates, read in Asia/Shanghai.
+    asked = [
+        message("Keep milk in stock from 22/10 to 28/10", datetime(2026, 10, 21, 3, tzinfo=UTC))
+    ]
+    grounded_period(args("2026-10-21T16:00:00Z", "2026-10-28T16:00:00Z"), asked)
+    grounded_period(args("2026-10-22T00:00:00+08:00", "2026-10-28T23:59:00+08:00"), asked)
+    # Counterexamples: other days, or no period when the owner named one.
+    with pytest.raises(AppError, match="原话"):
+        grounded_period(args("2026-10-24T00:00:00+08:00", "2026-10-31T00:00:00+08:00"), asked)
+    with pytest.raises(AppError) as error:
+        grounded_period(args(), asked)
+    assert error.value.code == "USER_PERIOD_REQUIRED"
+    # Nothing named, nothing to check; "以后" is a standing request, not a vague period.
+    grounded_period(args(), [message("以后帮我盯着牛奶，现金至少留300元")])
+    with pytest.raises(AppError) as error:
+        grounded_period(args(), [message("过几天够卖吗？")])
+    assert error.value.code == "PERIOD_CLARIFICATION_REQUIRED"
+
+
+def test_a_period_inside_the_forecast_is_covered_and_one_past_it_is_not():
+    start, end = "2026-10-21T02:00:00Z", "2026-10-28T02:00:00Z"  # 21/10 10:00 to 28/10 10:00
+    assert covers_period(start, end, None, None)
+    assert covers_period(
+        start,
+        end,
+        datetime.fromisoformat("2026-10-21T00:00:00+08:00"),
+        datetime.fromisoformat("2026-10-29T00:00:00+08:00"),
+    )
+    assert covers_period(
+        start,
+        end,
+        datetime.fromisoformat("2026-10-23T00:00:00+08:00"),
+        datetime.fromisoformat("2026-10-24T00:00:00+08:00"),
+    )
+    # Counterexamples: starting before the forecast, or running a day past it.
+    assert not covers_period(
+        start,
+        end,
+        datetime.fromisoformat("2026-10-20T00:00:00+08:00"),
+        datetime.fromisoformat("2026-10-27T00:00:00+08:00"),
+    )
+    assert not covers_period(
+        start,
+        end,
+        datetime.fromisoformat("2026-10-26T00:00:00+08:00"),
+        datetime.fromisoformat("2026-11-02T00:00:00+08:00"),
+    )
+    assert not covers_period(None, None, None, None)
+
+
+def test_quotes_survive_typed_apostrophes_but_not_other_words():
+    assert quoted("Make sure milk doesn't run out", "Please make sure milk doesn’t run out.")
+    assert quoted("keep  an eye", "Keep an eye — keep an eye on it")
+    assert not quoted("keep an eye on cola", "Keep an eye on milk")
+    assert not quoted("   ", "anything")
 
 
 def test_stable_receipt_uses_same_input_and_semantic_change_across_reclaims():
@@ -143,6 +205,29 @@ def test_a_later_forecast_read_for_the_right_dates_replaces_the_wrong_one():
     assert result["result"].content == "Stock covers next week."
     wrong = delivery({"content": "Stock covers next week."}, [read(True), read(False)])
     assert wrong["result"].content.startswith("Note: the current forecast does not cover")
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "Keep an eye on milk, never let cash drop below CNY 300",
+        "Make sure milk doesn't run out; cash must stay above CNY 300",
+        "Keep milk in stock with a minimum cash of CNY 300",
+    ],
+)
+def test_english_cash_bounds_that_name_cash_are_a_floor(content):
+    from app.work_items.authorization import grounded_cash_floor
+
+    grounded_cash_floor(30000, [message(content)], required=True)
+
+
+def test_a_price_or_budget_bound_is_not_a_cash_floor():
+    from app.work_items.authorization import grounded_cash_floor
+
+    for content in ["Keep milk in stock, price below CNY 10", "Buy milk for under CNY 500"]:
+        with pytest.raises(AppError) as error:
+            grounded_cash_floor(30000, [message(content)], required=True)
+        assert error.value.code == "CASH_FLOOR_CLARIFICATION_REQUIRED"
 
 
 def test_user_cash_floor_cannot_be_silently_rescaled():
@@ -289,7 +374,43 @@ def test_natural_follow_up_requests_can_be_proposed(content):
 
 
 @pytest.mark.parametrize(
-    "content", ["可乐40件够卖吗？", "看着办吧", "What is the cash balance?", "不要盯着可乐了"]
+    "content",
+    [
+        "Keep milk in stock next week and keep at least CNY 300 in cash",
+        "Make sure we don’t run out of milk; keep at least CNY 300",
+        "Make sure milk never runs out, cash floor CNY 300",
+        "Avoid running out of milk, keep at least 300 yuan",
+        "Don't let milk run out. Keep CNY 300 in cash.",
+        "Keep an eye on milk from now on, never below CNY 300 cash",
+        "Don't order anything yet, but keep an eye on milk",
+        "帮我盯着牛奶，别断货，现金至少留300元",
+        "以后牛奶别断货",
+        "保证牛奶不断货",
+        "Can you manage milk restocking for me?",
+    ],
+)
+def test_keeping_a_product_from_running_out_is_a_standing_request(content):
+    authorize_action("propose_mission", proposal(content), [message(content)])
+
+
+@pytest.mark.parametrize(
+    "content",
+    [
+        "可乐40件够卖吗？",
+        "看着办吧",
+        "What is the cash balance?",
+        "不要盯着可乐了",
+        # Counterexamples to the wider wording: refusals and questions stay refusals.
+        "Don’t keep an eye on milk any more",
+        "以后不要盯着可乐了",
+        "Never mind, don't follow up on milk",
+        "What if you keep an eye on milk?",
+        "如果帮我盯着牛奶会怎样？",
+        "Did milk run out yesterday?",
+        "Is milk in stock?",
+        "牛奶会不会断货？",
+        "How should I handle the milk shortage?",
+    ],
 )
 def test_one_off_or_declined_requests_cannot_propose_a_mission(content):
     with pytest.raises(AppError):

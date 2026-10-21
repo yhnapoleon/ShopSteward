@@ -136,7 +136,9 @@ def inbound_view(inbound, action, simulation_time: datetime | None) -> InboundIt
         elif inbound.expected_arrival_at is None or simulation_time is None:
             overdue = None
         else:
-            overdue = simulation_time > inbound.expected_arrival_at
+            from app.execution.assisted import past_due
+
+            overdue = past_due(action, inbound.expected_arrival_at, simulation_time)
         return InboundItem(
             action_id=inbound.action_id,
             mission_id=action.mission_id,

@@ -158,3 +158,17 @@ async def test_a_model_reading_keeps_only_what_it_can_quote_from_the_reply():
     for broken in (Model(RuntimeError("down")), Model({"decision": "maybe"})):
         reading, read_by = await read_reply(plain, ORDER, TODAY, model=broken)
         assert (read_by, reading["decision"], reading["quantity"]) == ("rules", "accepted", 40)
+
+
+def test_an_order_sent_by_hand_is_late_only_after_its_delivery_day():
+    from datetime import UTC, datetime
+
+    from app.execution.assisted import past_due
+
+    due = datetime(2026, 10, 22, 2, 0, tzinfo=UTC)  # 10:00 on 22/10 in Shanghai
+    by_hand, simulated = SimpleNamespace(channel="assisted"), SimpleNamespace(channel="simulator")
+    later_that_day = datetime(2026, 10, 22, 13, 0, tzinfo=UTC)  # 21:00 on 22/10
+    assert not past_due(by_hand, due, later_that_day)
+    assert past_due(by_hand, due, datetime(2026, 10, 22, 16, 0, tzinfo=UTC))  # 00:00 on 23/10
+    # The simulator delivers at its ETA, so its orders keep the exact time.
+    assert past_due(simulated, due, later_that_day)
