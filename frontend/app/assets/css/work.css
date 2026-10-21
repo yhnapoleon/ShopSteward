@@ -40,6 +40,7 @@
   margin: 12px 0 22px;
 }
 .work-examples button {
+  min-height: 38px;
   font-size: 12px;
   padding: 8px 12px;
 }
@@ -77,8 +78,10 @@
   color: var(--muted, #68777a);
   line-height: 1.5;
 }
-.work-card-bottom .primary {
+/* The row's action keeps its size and sits at the right end, with or without text beside it. */
+.work-card-bottom > button:last-child {
   flex-shrink: 0;
+  margin-left: auto;
 }
 .work-heading {
   display: flex;

@@ -188,13 +188,9 @@
 
 /* ---------------------------------------------------------------------------------------------
    C2 · Unified work-item workspace, today page and following page (redesign §4, §5, §11).
-   Motion: only transform/opacity, entering with --space-ease, nothing over 300ms; background
+   Motion: only transform/opacity on the global --ease, 180–300ms; background
    refreshes never replay an entrance. Reduced motion keeps opacity changes only.
    ------------------------------------------------------------------------------------------- */
-:root {
-  --space-ease: cubic-bezier(0.23, 1, 0.32, 1);
-}
-
 /* The desktop dock is gone; the page no longer needs room for it at the bottom. */
 @media (min-width: 821px) {
   .workspace {
@@ -239,7 +235,7 @@
   position: relative;
   scroll-margin-top: 24px;
 }
-.space-target::after {
+:is(.space-target, .task-target)::after {
   content: '';
   position: absolute;
   inset: 0;
@@ -249,9 +245,9 @@
     0 0 0 2px rgb(40 105 196 / 45%),
     0 0 0 7px rgb(40 105 196 / 7%);
   opacity: 0;
-  transition: opacity 240ms var(--space-ease);
+  transition: opacity 240ms var(--ease);
 }
-.space-target.target-active::after {
+:is(.space-target, .task-target).target-active::after {
   opacity: 1;
 }
 
@@ -260,7 +256,7 @@
 @media (min-width: 821px) {
   .space-workspace .task-result-column,
   .space-workspace .task-agent-column {
-    animation: space-arrive 260ms var(--space-ease) both;
+    animation: space-arrive 260ms var(--ease) both;
   }
   .space-workspace .task-agent-column {
     animation-delay: 40ms;
@@ -292,16 +288,27 @@
   min-width: 0;
   flex: 1 1 420px;
 }
+/* One line on desktop so the plan's primary action stays on the first screen; the full title is
+   on hover. Phones keep two lines. */
+.space-workspace .space-back {
+  margin-bottom: 8px;
+}
+.space-workspace .space-heading {
+  margin-bottom: 10px;
+}
+/* The sync strip belongs to the card below it. */
+.space-workspace .task-result-column > .space-sync {
+  margin-bottom: -8px;
+}
 .space-workspace .space-heading h1 {
-  font-size: clamp(26px, 2.3vw, 32px);
+  font-size: clamp(22px, 1.7vw, 24px);
   line-height: 1.3;
-  letter-spacing: -0.6px;
-  text-wrap: balance;
+  letter-spacing: -0.4px;
+  margin: 4px 0 0;
   max-width: 860px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 .space-workspace .space-heading .task-heading-actions {
   gap: 6px 16px;
@@ -353,9 +360,19 @@
 .space-sync-state.is-syncing {
   color: var(--blue);
 }
-.space-sync-state.is-syncing .space-pulse {
+.space-sync-state.is-syncing .space-pulse,
+.space-recheck .space-pulse {
   background: var(--blue);
   animation: space-pulse 1.4s ease-in-out infinite;
+}
+/* "Next day" outdated the plan: one line above it while the new version is worked out. */
+.space-recheck {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 4px 12px;
+  font-size: 13px;
+  color: var(--blue);
 }
 .space-sync-state.is-off {
   color: #805316;
@@ -425,11 +442,11 @@
 /* Entrances for content that is new while the page is open (a plan version, an order). */
 .space-rise-enter-active {
   transition:
-    opacity 240ms var(--space-ease),
-    transform 240ms var(--space-ease);
+    opacity 240ms var(--ease),
+    transform 240ms var(--ease);
 }
 .space-rise-leave-active {
-  transition: opacity 150ms var(--space-ease);
+  transition: opacity 180ms var(--ease);
 }
 .space-rise-enter-from {
   opacity: 0;
@@ -444,7 +461,7 @@
   border-radius: 26px;
 }
 .space-workspace .option:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .space-workspace .space-outcome h2 {
   font-size: 23px;
@@ -532,7 +549,7 @@
   border-radius: inherit;
   background: linear-gradient(90deg, #a6c1b4, #6e9f8b);
   transform-origin: left center;
-  transition: transform 300ms var(--space-ease);
+  transition: transform 300ms var(--ease);
 }
 .space-order-detail {
   display: grid;
@@ -809,7 +826,7 @@
   height: 14px;
 }
 .space-row .space-row-open:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .space-ended > .space-watch {
   padding-bottom: 8px;
@@ -866,6 +883,12 @@
   .space-workspace .space-heading {
     align-items: flex-start;
   }
+  .space-workspace .space-heading h1 {
+    white-space: normal;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
   .space-workspace .space-heading .task-heading-actions {
     flex-basis: 100%;
   }
@@ -902,7 +925,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   /* Keep opacity changes only (the global rule removes every transition and animation). */
-  .space-target::after,
+  :is(.space-target, .task-target)::after,
   .space-rise-enter-active,
   .space-rise-leave-active {
     transition: opacity 200ms ease !important;
@@ -939,7 +962,7 @@
   position: relative;
 }
 .memory-entry:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .memory-dot {
   position: absolute;
@@ -950,7 +973,7 @@
   border-radius: 50%;
   background: var(--blue);
   box-shadow: 0 0 0 2px #fff;
-  animation: memory-dot-in 200ms var(--space-ease) both;
+  animation: memory-dot-in 200ms var(--ease) both;
 }
 @keyframes memory-dot-in {
   from {
@@ -1110,15 +1133,6 @@ dialog.memory-drawer[data-state='closing']::backdrop {
   font-size: 13px;
   color: #42617a;
 }
-.memory-version {
-  padding: 0 7px;
-  border-radius: 6px;
-  background: #edf1f5;
-  color: #5d6f80;
-  font-size: 11px;
-  line-height: 1.7;
-  font-variant-numeric: tabular-nums;
-}
 .memory-hint {
   margin-top: 2px;
   font-size: 12.5px;
@@ -1208,7 +1222,7 @@ dialog.memory-drawer[data-state='closing']::backdrop {
 }
 .memory-actions .memory-save:active:not(:disabled),
 .memory-actions .memory-danger:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .memory-danger.secondary {
   color: #8a4a12;
@@ -1283,9 +1297,6 @@ dialog.memory-drawer[data-state='closing']::backdrop {
   line-height: 1.6;
   color: var(--muted);
 }
-.memory-foot {
-  margin-top: 18px !important;
-}
 
 /* Formation receipt at the top of the Agent conversation. */
 .memory-receipt {
@@ -1327,12 +1338,10 @@ dialog.memory-drawer[data-state='closing']::backdrop {
   text-decoration: none;
 }
 a.quotation-rule-badge {
-  transition:
-    background-color 160ms ease,
-    transform 160ms var(--space-ease);
+  transition: transform 180ms var(--ease);
 }
 a.quotation-rule-badge:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 a.quotation-rule-badge:focus-visible {
   outline: 3px solid #3177cb;
@@ -1371,7 +1380,7 @@ a.quotation-rule-badge:focus-visible {
     opacity: 1;
   }
   dialog.memory-drawer[data-state='closing'] {
-    transition-duration: 150ms !important;
+    transition-duration: 180ms !important;
   }
   .memory-entry:active,
   .memory-actions .memory-save:active:not(:disabled),
@@ -1393,7 +1402,7 @@ a.quotation-rule-badge:focus-visible {
   min-width: 0;
 }
 .surface.is-entering > .surface-block {
-  animation: surface-in 240ms var(--space-ease) both;
+  animation: surface-in 240ms var(--ease) both;
   animation-delay: calc(var(--surface-i, 0) * 50ms);
 }
 @keyframes surface-in {
@@ -1520,7 +1529,7 @@ a.quotation-rule-badge:focus-visible {
   height: 14px;
 }
 .surface-next-action:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 /* Inside an Agent outcome the figures are smaller; the fold already says the tables scroll. */
@@ -1556,9 +1565,12 @@ a.quotation-rule-badge:focus-visible {
 }
 
 /* A business outcome the Agent recorded while the page was open: one line above the plan card.
-   The empty live region cancels the column gap it would otherwise add. */
+   While empty, the live region stays in the page but out of the column grid, so it adds no gap. */
 .space-workspace .space-agent-hint-slot {
   margin-top: -24px;
+}
+.space-workspace .space-agent-hint-slot:empty {
+  position: absolute;
 }
 .space-agent-hint-slot > .space-agent-hint {
   margin-top: 24px;
@@ -1620,7 +1632,7 @@ a.quotation-rule-badge:focus-visible {
   border-radius: 50%;
   background: #fff;
   box-shadow: 0 1px 3px rgb(30 50 70 / 28%);
-  transition: transform 200ms var(--space-ease);
+  transition: transform 200ms var(--ease);
 }
 .settings-switch:checked {
   background: var(--blue);
@@ -1633,18 +1645,18 @@ a.quotation-rule-badge:focus-visible {
   outline-offset: 3px;
 }
 
-/* The presenter bar (demo mode, desktop widths): the old dock's material and place. */
+/* The presenter bar (demo mode, desktop widths): a 48px capsule in the bottom-right corner, clear
+   of the page's primary buttons. The business time, "Next event", and a menu for the rest. */
 .presenter-bar {
   position: fixed;
   z-index: 36;
+  right: 24px;
   bottom: 22px;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   align-items: center;
   gap: 4px;
-  max-width: calc(100vw - 36px);
-  padding: 8px;
+  height: 48px;
+  padding: 3px;
   border: 1px solid #ffffffe6;
   border-radius: 24px;
   background: linear-gradient(155deg, #ffffffc4, #f5f7fa94 50%, #ffffffb8);
@@ -1660,16 +1672,18 @@ a.quotation-rule-badge:focus-visible {
   body:has(.presenter-bar) .workspace {
     padding-bottom: 136px;
   }
-  /* Demo mode names the store "示例店铺 · 10/14 15:26"; it stays on one line in the header. */
-  body:has(.presenter-bar) .header-store .store-switch strong {
-    white-space: nowrap;
+  /* The bar shows the business time; the page does not repeat it as a second clock. */
+  body:has(.presenter-bar) :is(.top-clock, .overview-clock) {
+    display: none;
   }
 }
+/* The bar's action is secondary: the page's own primary button keeps the one blue. */
 .presenter-bar .presenter-next {
-  min-height: 44px;
+  gap: 8px;
   min-width: 9.75em;
-  padding: 9px 18px;
-  border-radius: 17px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 20px;
   white-space: nowrap;
 }
 .presenter-next .icon {
@@ -1677,13 +1691,13 @@ a.quotation-rule-badge:focus-visible {
   height: 15px;
 }
 .presenter-action {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 7px;
-  min-height: 44px;
-  padding: 9px 13px;
+  gap: 9px;
+  min-height: 40px;
+  padding: 0 12px;
   border: 1px solid transparent;
-  border-radius: 16px;
+  border-radius: 14px;
   color: #5c6d80;
   font-size: 13px;
   white-space: nowrap;
@@ -1700,14 +1714,29 @@ a.quotation-rule-badge:focus-visible {
     inset 0 1px 0 #fff,
     0 3px 10px #6781a01a;
 }
+.presenter-more > summary {
+  justify-content: center;
+  width: 40px;
+  padding: 0;
+  border-radius: 20px;
+  list-style: none;
+  cursor: pointer;
+}
+.presenter-more > summary::-webkit-details-marker {
+  display: none;
+}
+.presenter-more[open] > summary {
+  background-color: #edf4fc;
+  color: #326dbe;
+}
 @media (hover: hover) and (pointer: fine) {
   .presenter-action:hover:not(:disabled) {
-    background-color: #ffffff8c;
+    background-color: #edf4fc;
   }
 }
 .presenter-bar .presenter-next:active:not(:disabled),
 .presenter-action:active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 .presenter-spin {
   animation: presenter-spin 900ms linear infinite;
@@ -1717,18 +1746,11 @@ a.quotation-rule-badge:focus-visible {
     transform: rotate(360deg);
   }
 }
-.presenter-divider {
-  flex-shrink: 0;
-  width: 1px;
-  height: 24px;
-  margin: 0 6px;
-  background: var(--line);
-}
 .presenter-clock {
   display: grid;
   min-width: 7.8em;
-  padding: 0 12px 0 4px;
-  line-height: 1.3;
+  padding: 0 10px 0 15px;
+  line-height: 1.25;
 }
 .presenter-clock small {
   font-size: 11px;
@@ -1745,31 +1767,55 @@ a.quotation-rule-badge:focus-visible {
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
-/* Progress, results and reasons sit just above the bar, so the bar itself never changes size. */
-.presenter-note-slot {
+/* Progress, results, reasons and the menu open just above the capsule, aligned to its right edge,
+   so the capsule itself never moves or changes size. The note steps aside while the menu is open. */
+.presenter-note-slot,
+.presenter-menu {
   position: absolute;
-  left: 50%;
-  bottom: calc(100% + 10px);
-  transform: translateX(-50%);
-  width: max-content;
-  max-width: min(560px, calc(100vw - 48px));
+  right: 0;
+  bottom: calc(100% + 8px);
+}
+.presenter-note-slot {
+  left: 0;
   pointer-events: none;
+}
+.presenter-bar:has(.presenter-more[open]) .presenter-note-slot {
+  visibility: hidden;
+}
+.presenter-note,
+.presenter-menu {
+  border: 1px solid #d9e5f1;
+  background: #fbfdfff5;
+  box-shadow: 0 6px 20px -8px #3b506b40;
 }
 .presenter-note {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin: 0 auto;
   padding: 7px 14px;
-  border: 1px solid #d9e5f1;
   border-radius: 13px;
-  background: #fbfdfff5;
-  box-shadow: 0 6px 20px -8px #3b506b40;
   color: #2f4a63;
   font-size: 13px;
   line-height: 1.45;
   font-variant-numeric: tabular-nums;
   pointer-events: auto;
+}
+.presenter-menu {
+  display: grid;
+  gap: 2px;
+  min-width: 200px;
+  padding: 5px;
+  border-radius: 18px;
+  transform-origin: bottom right;
+  transition:
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease);
+}
+@starting-style {
+  .presenter-more[open] .presenter-menu {
+    opacity: 0;
+    transform: translateY(4px) scale(0.97);
+  }
 }
 .presenter-note.done {
   border-color: #cfe5d8;
@@ -1794,16 +1840,12 @@ a.quotation-rule-badge:focus-visible {
   animation: space-pulse 1.4s ease-in-out infinite;
 }
 .presenter-note-enter-active,
-.presenter-tick-enter-active {
-  transition:
-    opacity 180ms var(--space-ease),
-    transform 180ms var(--space-ease);
-}
 .presenter-note-leave-active,
+.presenter-tick-enter-active,
 .presenter-tick-leave-active {
   transition:
-    opacity 120ms var(--space-ease),
-    transform 120ms var(--space-ease);
+    opacity 180ms var(--ease),
+    transform 180ms var(--ease);
 }
 .presenter-note-enter-from,
 .presenter-tick-enter-from {
@@ -1844,13 +1886,16 @@ a.quotation-rule-badge:focus-visible {
   .surface.is-entering > .surface-block {
     animation: space-fade 200ms ease calc(var(--surface-i, 0) * 50ms) both !important;
   }
+  /* The presenter's note and menu appear at once; the clock still crossfades without moving. */
   .presenter-note-enter-active,
   .presenter-note-leave-active,
+  .presenter-menu {
+    transition: none !important;
+  }
   .presenter-tick-enter-active,
   .presenter-tick-leave-active {
-    transition: opacity 150ms ease !important;
+    transition: opacity 180ms ease !important;
   }
-  .presenter-note-enter-from,
   .presenter-tick-enter-from,
   .presenter-tick-leave-to {
     transform: none !important;
@@ -1871,27 +1916,8 @@ a.quotation-rule-badge:focus-visible {
    focus rings for the few focusable elements the global rule does not cover.
    ------------------------------------------------------------------------------------------- */
 
-/* Press feedback: pressable surfaces in the redesigned areas scale to 0.97 within 160ms on the
-   ease-out curve; colour and shadow keep the shop.css timing. Text links and switches stay put. */
-:is(
-    .space-workspace,
-    .space-watch,
-    .space-following,
-    .attention-card,
-    .work-card,
-    .goal-deck,
-    .memory-drawer,
-    .presenter-bar,
-    .surface
-  )
-  :is(.primary, .secondary, .icon-btn),
-.memory-entry,
-.presenter-action,
-.space-workspace .option {
-  transition-property: background-color, box-shadow, color, transform;
-  transition-duration: 200ms, 250ms, 200ms, 160ms;
-  transition-timing-function: ease, var(--ease), ease, var(--space-ease);
-}
+/* Press feedback: pressable surfaces in the redesigned areas scale to 0.98 on the button timing
+   of shop.css. Text links and switches stay put. */
 :is(
     .space-workspace,
     .space-watch,
@@ -1904,7 +1930,7 @@ a.quotation-rule-badge:focus-visible {
     .surface
   )
   :is(.primary, .secondary, .icon-btn):active:not(:disabled) {
-  transform: scale(0.97);
+  transform: scale(0.98);
 }
 
 /* A new store's first sync is information, not a warning: the workspace card turns blue and its
@@ -1933,7 +1959,7 @@ a.quotation-rule-badge:focus-visible {
     background: rgb(255 255 255 / 42%);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 150ms ease;
+    transition: opacity 180ms var(--ease);
   }
   .space-row.work-card::before {
     inset: 3px -12px;
@@ -1954,10 +1980,10 @@ dialog.goal-deck[open] {
   animation: none;
 }
 
-/* While the presenter bar reports "next day" in progress, the page's busy toast would say the same
+/* While the presenter bar reports its own progress, the page's busy toast would say the same
    thing at the top. The bar is only on screen from 821px, so the toast stays below that. */
 @media (min-width: 821px) {
-  body:has(.presenter-bar[data-phase='advancing']) .toast {
+  body:has(.presenter-bar:not([data-phase='idle'])) .toast {
     display: none;
   }
 }
@@ -2129,10 +2155,10 @@ a:focus-visible,
   margin-top: 3px;
 }
 .space-appear-enter-active {
-  transition: opacity 240ms var(--space-ease);
+  transition: opacity 240ms var(--ease);
 }
 .space-appear-leave-active {
-  transition: opacity 150ms var(--space-ease);
+  transition: opacity 180ms var(--ease);
 }
 .space-appear-enter-from,
 .space-appear-leave-to {

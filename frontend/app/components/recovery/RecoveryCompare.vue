@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { joinText, locale, t as tr } from '~/i18n'
-import { money } from '~/utils/presentation'
+import { listText, locale, t as tr } from '~/i18n'
+import { money, number } from '~/utils/presentation'
 import { supplierDisplayName } from '~/utils/glossary'
 import {
   arrivalOf,
@@ -27,11 +27,26 @@ const { s } = shop
 const state = computed(() => flow.flow.value)
 const sourcing = computed(() => flow.sourcing.value)
 const cmp = computed(() => flow.cmp.value)
-const reading = computed(() => sourcing.value?.status === 'running')
+// The last supplier's result arrives with the comparison itself: the reading list holds a moment
+// longer, so that result is seen before the comparison takes its place.
+const HOLD_MS = 600
+const holding = ref(false)
+let holdTimer: ReturnType<typeof setTimeout> | undefined
+watch(
+  () => sourcing.value?.status,
+  (status, before) => {
+    if (before !== 'running' || !status || status === 'running') return
+    holding.value = true
+    clearTimeout(holdTimer)
+    holdTimer = setTimeout(() => (holding.value = false), HOLD_MS)
+  },
+)
+onUnmounted(() => clearTimeout(holdTimer))
+const reading = computed(() => sourcing.value?.status === 'running' || holding.value)
 // Comparing is under way (suppliers being read, the analysis running, or a comparison of ours
 // that has become slow): the choice steps aside. Adopting, waiting, ending or recording keep the
 // choice in place; only the button waits, saying what it is doing.
-const ANALYSING = ['again', 'exclude', 'start', 'source']
+const ANALYSING = ['again', 'exclude', 'source']
 const busy = computed(
   () =>
     state.value.actor === 'system' ||
@@ -126,15 +141,12 @@ function verdict(review: SupplierReview) {
   const offer = review.card.offer
   return {
     tone: 'ok',
-    text: joinText(
-      [
-        tr('{0}/件', [priceOf(offer.unit_price_minor)]),
-        tr('起订 {0} 件', [offer.minimum_order_quantity]),
-        tr('每箱 {0} 件', [offer.pack_size]),
-        offer.lead_time_days ? tr('{0} 天到', [offer.lead_time_days]) : tr('当日送达'),
-      ],
-      ' · ',
-    ),
+    text: [
+      tr('{0}/件', [priceOf(offer.unit_price_minor)]),
+      tr('起订 {0} 件', [offer.minimum_order_quantity]),
+      tr('每箱 {0} 件', [offer.pack_size]),
+      offer.lead_time_days ? tr('{0} 天到', [offer.lead_time_days]) : tr('当日送达'),
+    ].join(' · '),
   }
 }
 const gap = computed(() => sourcing.value?.request)
@@ -164,6 +176,11 @@ const offersExpired = computed(
 const canSource = computed(
   () => !!s.session?.sourcing && flow.directory.readable.value.length > 0 && flow.operator.value,
 )
+/** Reading the documents did not finish (or never ran): finding suppliers again is offered. */
+const readFailed = computed(
+  () =>
+    !sourcing.value || sourcing.value.status === 'failed' || sourcing.value.status === 'partial',
+)
 /** Every supplier that could still be compared was left out of this restock. */
 const noOthers = computed(
   () =>
@@ -188,8 +205,6 @@ const head = computed<{ title: string; sub: string }>(() => {
     : ''
   if (busy.value && (flow.working.value === 'again' || flow.working.value === 'exclude'))
     return { title: tr('正在重新比价'), sub: '' }
-  if (busy.value && flow.working.value === 'start')
-    return { title: tr('正在建立这次应急补货'), sub: '' }
   if (reading.value)
     return {
       title: tr('正在读 {0} 家供应商的资料', [sourcing.value?.suppliers.length || 0]),
@@ -281,14 +296,17 @@ const sourcingMissing = computed(() =>
   (sourcing.value?.missing || []).map((code) => caseProblem(code, code)),
 )
 
-// The model's explanation, folded. A Chinese page shows only Chinese statements, and supplier
-// codes inside them ("B 的单价最低") read as the suppliers' names.
+// The model's explanation, folded. A page shows only statements in its own language, without the
+// internal identifiers a model may copy from its input (store and item ids, hashes, ISO times,
+// field names, candidate codes); supplier codes inside them ("B 的单价最低") read as names.
 type Analysis = {
   status?: string
   subtasks?: { subtask_id: string; status: string; claims?: { statement: string }[] }[]
 }
 const analysis = computed(() => flow.detail.value?.expert_analysis as Analysis | null)
 const han = /[㐀-鿿]/
+const internal =
+  /\b(?:store|sku|supplier)_\w+|sha256:|\d{4}-\d{2}-\d{2}T\d|\w+_minor\b|\b[A-Z]_\d+\b|\b[a-z]+_[a-z_]+\b|\b[0-9a-f]{12,}\b/
 const codes = computed(() => [
   ...new Set([
     ...cmp.value.options.map((o) => o.supplierId),
@@ -305,27 +323,96 @@ const withNames = (text: string) =>
 const claims = computed(() =>
   (analysis.value?.subtasks || [])
     .flatMap((t) => (t.claims || []).map((c) => c.statement))
-    .filter((text) => locale.value === 'en' || han.test(text))
-    .map(withNames),
+    .filter((text) => (locale.value === 'en' ? !han.test(text) : han.test(text)))
+    .map(withNames)
+    .filter((text) => !internal.test(text)),
 )
-const analysisStatus: Record<string, string> = {
-  running: '正在写',
-  partial: '只写了一部分',
-  failed: '没写成',
-}
-const explained = computed(() => claims.value.length > 0 || analysis.value?.status === 'running')
+
+// How each supplier was read: one line per sentence quoted from its documents, the fields read
+// from it and their values first, the sentence after as the evidence, with the document it is in.
 const fields: Record<string, string> = {
   unit_price_minor: '单价',
   minimum_order_quantity: '起订量',
   lead_time_days: '交期',
-  valid_until: '有效期',
   status: '不供货的依据',
   pack_size: '装箱',
 }
-/** A quote that already names its field ("单价 10.20 元") is not labelled again. */
-const labelOf = (field: string, quote: string) => {
-  const label = fields[field]
-  return label && quote.includes(label) ? '' : tr(label || field)
+const kinds: Record<string, string> = {
+  quote: '报价单',
+  notice: '通知函',
+  terms: '合作条款',
+  history: '履约记录',
+}
+function valueOf(review: SupplierReview, field: string) {
+  const offer = review.card?.offer
+  if (!offer) return ''
+  if (field === 'unit_price_minor') return tr('{0}/件', [priceOf(offer.unit_price_minor)])
+  if (field === 'minimum_order_quantity')
+    return tr('{0} 件', [number(offer.minimum_order_quantity)])
+  if (field === 'pack_size') return tr('每箱 {0} 件', [number(offer.pack_size)])
+  if (field === 'lead_time_days')
+    return offer.lead_time_days ? tr('{0} 天到', [offer.lead_time_days]) : tr('当日送达')
+  if (field === 'valid_until') return tr('{0} 前有效', [dayOf(offer.valid_until)])
+  return ''
+}
+const two = (minor: number) => (minor / 100).toFixed(2)
+const figure = (text: string, value: string) =>
+  new RegExp(`(?<![\\d.])${escapeRe(value)}(?![\\d.])`).test(text)
+/** A price quoted by the case ("95.00" for 10 a case) is divided out to the unit price. */
+function perCase(review: SupplierReview, quote: string) {
+  const offer = review.card?.offer
+  if (!offer || offer.pack_size < 2) return ''
+  const unit = offer.unit_price_minor,
+    whole = unit * offer.pack_size
+  if (!figure(quote, two(whole)) || figure(quote, two(unit))) return ''
+  return tr('{0}/箱 ÷ {1} 件 = {2}/件', [priceOf(whole), offer.pack_size, priceOf(unit)])
+}
+/**
+ * A table row quoted from a price list ("| sku_001 | 日用百货 | 10件/箱 | 2 | 10.20 | … |") reads
+ * as its cells: empty cells and the item code go, the rest is joined. Other quotes stay as written.
+ */
+const readable = (quote: string) =>
+  quote
+    .split('\n')
+    .map((row) =>
+      row.includes('|')
+        ? row
+            .split('|')
+            .map((cell) => cell.trim())
+            .filter((cell) => cell && !/^sku_\w+$/i.test(cell))
+            .join(' · ')
+        : row,
+    )
+    .join('\n')
+function citationsOf(review: SupplierReview) {
+  const documents = sourcing.value?.suppliers.find(
+    (x) => x.supplier_id === review.supplier_id,
+  )?.documents
+  const lines = new Map<
+    string,
+    { quote: string; reads: { label: string; value: string }[]; from: string; fields: string[] }
+  >()
+  for (const citation of review.card?.citations || []) {
+    const quote = citation.quote.trim()
+    const line = lines.get(quote) || { quote, reads: [], from: '', fields: [] }
+    if (!line.fields.includes(citation.field)) {
+      line.fields.push(citation.field)
+      // "有效期" is said by its value ("11/19 前有效"); a reason not to supply is the verdict above.
+      line.reads.push({
+        label: citation.field === 'valid_until' ? '' : tr(fields[citation.field] || citation.field),
+        value: valueOf(review, citation.field),
+      })
+    }
+    const kind = documents?.find((d) => d.doc_id === citation.doc_id)?.kind
+    if (!line.from && kind && kinds[kind]) line.from = tr('来自{0}', [tr(kinds[kind])])
+    lines.set(quote, line)
+  }
+  return [...lines.values()].map((line) => ({
+    ...line,
+    shown: readable(line.quote),
+    perCase: line.fields.includes('unit_price_minor') ? perCase(review, line.quote) : '',
+    foreign: locale.value === 'en' && han.test(line.quote),
+  }))
 }
 
 // The options form one radio group: Tab enters at the chosen row, arrow keys move the choice.
@@ -428,7 +515,7 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseE
             "
         /></span>
         <b>{{ name(supplier.supplier_id) }}</b>
-        <span v-if="reviewOf(supplier.supplier_id)">{{
+        <span v-if="reviewOf(supplier.supplier_id)" class="rf-reader-verdict">{{
           verdict(reviewOf(supplier.supplier_id)!).text
         }}</span>
         <span v-else class="rf-skeleton" />
@@ -531,10 +618,7 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseE
             <b>{{ unbroken(tr('{0} 件', [candidate.quantity])) }}</b
             ><small>{{
               unbroken(tr('{0} · 缺 {1}', [money(candidate.spend_minor), candidate.lost_qty]))
-            }}</small
-            ><span v-if="candidate.id === recommendedId" class="rf-tier-recommended">{{
-              tr('推荐')
-            }}</span>
+            }}</small>
           </button>
         </span>
       </div>
@@ -549,7 +633,7 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseE
           :data-recovery-option="option.supplierId"
         >
           <span>{{ name(option.supplierId) }}</span
-          ><span>{{ option.blocked.map(blockedReason).join(tr('；')) }}</span>
+          ><span>{{ listText(option.blocked.map(blockedReason), '；') }}</span>
         </li>
         <li
           v-for="review in unread"
@@ -567,58 +651,67 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseE
     </p>
     <p v-if="failure" class="notice" :class="{ amber: !quiet }" role="status">{{ failure }}</p>
 
-    <details v-if="analysis && explained && !busy && !again" class="rf-more">
-      <summary>
-        {{
-          joinText(
-            [
-              tr('为什么这样比'),
-              analysisStatus[analysis.status || '']
-                ? tr(analysisStatus[analysis.status || ''])
-                : '',
-              claims.length ? tr('{0} 条', [claims.length]) : '',
-            ].filter(Boolean),
-            ' · ',
-          )
-        }}
-      </summary>
-      <p class="source-note">{{ tr('解释由模型写，金额和数量以上面的比较为准。') }}</p>
-      <ul class="rf-claims">
-        <li v-for="(claim, index) in claims" :key="index">{{ claim }}</li>
-      </ul>
+    <details v-if="claims.length && !reading && !busy && !again" class="rf-more">
+      <summary>{{ tr('为什么这样比') }}<AppIcon name="chevron-right" /></summary>
+      <div class="rf-more-body">
+        <p class="source-note">{{ tr('解释由模型写，金额和数量以上面的比较为准。') }}</p>
+        <ul class="rf-claims">
+          <li v-for="(claim, index) in claims" :key="index">{{ claim }}</li>
+        </ul>
+      </div>
     </details>
     <details v-if="sourcing?.reviews.length && !reading && !again" class="rf-more">
-      <summary>{{ tr('每家资料怎么读的') }}</summary>
-      <article
-        v-for="review in sourcing.reviews"
-        :key="review.supplier_id"
-        class="rf-reading"
-        :data-sourcing-review="review.supplier_id"
-      >
-        <h4>{{ name(review.supplier_id) }}</h4>
-        <p>{{ verdict(review).text }}</p>
-        <ul v-if="review.card?.citations.length" class="rf-citations">
-          <li v-for="(citation, index) in review.card.citations" :key="index">
-            <b v-if="labelOf(citation.field, citation.quote)">{{
-              labelOf(citation.field, citation.quote)
-            }}</b
-            ><q>{{ citation.quote }}</q>
-          </li>
-        </ul>
-      </article>
+      <summary>
+        {{ tr('已读 {0} 家资料', [sourcing.reviews.length])
+        }}<span class="rf-more-link">{{ tr('每家资料怎么读的') }}</span
+        ><AppIcon name="chevron-right" />
+      </summary>
+      <div class="rf-more-body">
+        <article
+          v-for="review in sourcing.reviews"
+          :key="review.supplier_id"
+          class="rf-reading"
+          :data-sourcing-review="review.supplier_id"
+        >
+          <h4>{{ name(review.supplier_id) }}</h4>
+          <!-- A readable offer is all figures, and the lines below give each one with its source;
+               only a conclusion (no offer, not understood) is said here. -->
+          <p v-if="verdict(review).tone !== 'ok' || !review.card?.citations.length">
+            {{ verdict(review).text }}
+          </p>
+          <ul v-if="review.card?.citations.length" class="rf-citations">
+            <li v-for="line in citationsOf(review)" :key="line.quote">
+              <span class="rf-read"
+                ><span v-for="read in line.reads" :key="read.label"
+                  >{{ read.label }}<b v-if="read.value">{{ read.value }}</b></span
+                ></span
+              >
+              <span v-if="line.perCase" class="rf-per-case">{{ line.perCase }}</span>
+              <span class="rf-evidence"
+                ><small v-if="line.from">{{ line.from }}</small
+                ><q
+                  :class="{ 'is-foreign': line.foreign }"
+                  :title="line.shown === line.quote ? undefined : line.quote"
+                  >{{ line.shown }}</q
+                ></span
+              >
+            </li>
+          </ul>
+        </article>
+      </div>
     </details>
 
     <footer class="rf-next">
       <span class="rf-links"
         ><button
-          v-if="canSource && !reading && !busy && !offersExpired && !again"
+          v-if="canSource && readFailed && !reading && !busy && !offersExpired && !again"
           type="button"
           class="text-link"
           @click="flow.resource()"
         >
           {{ tr('重新找货') }}</button
         ><button
-          v-if="flow.operator.value && !busy"
+          v-if="flow.operator.value && !busy && !reading"
           type="button"
           class="text-link"
           @click="flow.stop()"
@@ -632,7 +725,7 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseE
         >
           {{ tr('不换了，回去确认') }}
         </button></span
-      ><span v-if="!primary && (reading || busy)" class="rf-quiet"
+      ><span v-if="reading || (!primary && busy)" class="rf-quiet"
         ><AppIcon name="orbit" />{{
           tr(reading ? '正在读资料，不需要你操作' : '正在比价，不需要你操作')
         }}</span
@@ -644,8 +737,11 @@ function chooseQuantity(id: string, candidate: RecoveryCandidate, event?: MouseE
         data-recovery-next
         @click="primary?.run()"
       >
-        {{ waiting && waitingLabel ? tr(waitingLabel) : primary?.label || tr('先选一个补货选项')
-        }}<AppIcon v-if="primary && !waiting" name="arrow-right" />
+        <RecoveryButtonLabel
+          :label="primary?.label || tr('先选一个补货选项')"
+          :busy="waitingLabel && tr(waitingLabel)"
+          :working="!!waitingLabel"
+        />
       </button>
     </footer>
   </div>

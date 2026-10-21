@@ -53,7 +53,11 @@ function keydown(e: KeyboardEvent) {
     <p v-if="s.error" class="notice amber" role="alert">{{ tr(s.error) }}</p>
     <div class="work-card-bottom">
       <small>{{ tr('发送后保留在同一事项中；不会自动采购。') }}</small
-      ><button class="primary" :disabled="s.busy || (!s.pending && !s.input.trim())" @click="send">
+      ><button
+        class="secondary"
+        :disabled="s.busy || (!s.pending && !s.input.trim())"
+        @click="send"
+      >
         {{ tr(s.pending ? '恢复原提交' : s.processorAvailable ? '交给助手' : '保存这件事')
         }}<AppIcon name="arrow-right" />
       </button>

@@ -24,11 +24,11 @@ test('language switches immediately without writes, survives reload and syncs ac
   await expect(dialog.getByRole('heading', { name: 'Settings', exact: true })).toBeVisible()
   await expect(page.locator('html')).toHaveAttribute('lang', 'en')
   await expect(dialog.getByRole('button', { name: /save/i })).toHaveCount(0)
-  await expect(page.getByRole('heading', { name: "Today's business, in view." })).toBeVisible()
+  await expect(page.getByRole('heading', { name: "Today's business" })).toBeVisible()
   expect(await page.evaluate((key) => localStorage.getItem(key), storageKey)).toBe('en')
   await page.screenshot({ path: '../var/i18n/settings-desktop.png', fullPage: false })
   await page.reload()
-  await expect(page.getByRole('heading', { name: "Today's business, in view." })).toBeVisible()
+  await expect(page.getByRole('heading', { name: "Today's business" })).toBeVisible()
   const other = await context.newPage()
   await setup(other)
   await other.goto('/')
@@ -107,7 +107,7 @@ test('English navigation, charts, mobile settings and server quote entry remain 
   await expect(page.locator('dialog[open]')).toContainText('CNY only')
   // This fixture deliberately has no Work intake capability: no local fake result.
   await expect(
-    page.getByRole('button', { name: 'Start a quote work item', exact: true }),
+    page.getByRole('button', { name: 'Start a quote request', exact: true }),
   ).toBeDisabled()
   await page.getByRole('button', { name: 'Close dialog' }).click()
   await page.setViewportSize({ width: 390, height: 844 })
@@ -137,9 +137,9 @@ test('English quote templates, source preservation, system messages and raw JSON
   try {
     const sample = localizedSamples()[0]!
     expect(sample.text).toContain('Product,Quote amount,Currency,Pricing unit,Units per pack')
-    expect(sample.text).toContain('Sample A,120,CNY,box,12,2,box')
+    expect(sample.text).toContain('Sample A,120,CNY,case,12,2,case')
     expect(t('本委托还有20件在途，到货后更新。')).toBe(
-      '20 units remain in transit for this task. Updated after arrival.',
+      '20 units of this restocking task are in transit; this updates when they arrive.',
     )
     const value: any = {
       result: {

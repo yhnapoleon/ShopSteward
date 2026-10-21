@@ -104,7 +104,6 @@
   line-height: 1.25;
   padding-top: 5px;
   font-variant-numeric: tabular-nums;
-  overflow-wrap: anywhere;
 }
 .overview-money-context {
   display: flex;
@@ -1022,19 +1021,20 @@
 }
 
 @media (min-width: 821px) {
+  /* The figure and receivables share a row when they fit; a long amount pushes receivables
+     below it rather than breaking its digits. */
   .overview-cash {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
+    display: flex;
+    flex-wrap: wrap;
     column-gap: 20px;
   }
   .overview-cash > :not(.overview-cash-value):not(.overview-money-context) {
-    grid-column: 1 / -1;
+    flex-basis: 100%;
   }
   .overview-cash-value {
-    grid-column: 1;
+    flex: 1 0 auto;
   }
   .overview-money-context {
-    grid-column: 2;
     display: block;
     margin: 15px 0 0;
     align-self: center;

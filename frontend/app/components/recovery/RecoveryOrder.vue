@@ -104,6 +104,8 @@ const failure = computed(() =>
   flow.problem.value ? caseProblem(flow.problem.value.code, flow.problem.value.message) : '',
 )
 const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a0')
+/** A price as people write it in a reply: "9.50", no currency. */
+const decimal = (minor: number) => (minor / 100).toFixed(2)
 </script>
 <template>
   <div class="rf-stage rf-order">
@@ -155,7 +157,12 @@ const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a
               rows="3"
               maxlength="4000"
               :disabled="busy"
-              :placeholder="tr('例如：收到，{0}件没问题，周四送到。', [order.quantity])"
+              :placeholder="
+                tr('例如：好嘞，{0} 件没问题，{1} 一件，明天到。', [
+                  order.quantity,
+                  decimal(order.unit_price_minor),
+                ])
+              "
               data-supplier-reply
             />
           </label>
@@ -229,11 +236,11 @@ const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a
             data-accept-partial
             @click="flow.acceptPartial()"
           >
-            {{
-              tr(flow.working.value === 'accept' ? '正在成交…' : '按对方数量成交（{0} 件）', [
-                partial.offered,
-              ])
-            }}<AppIcon name="arrow-right" />
+            <RecoveryButtonLabel
+              :label="tr('按对方数量成交（{0} 件）', [partial.offered])"
+              :busy="tr('正在成交…')"
+              :working="flow.working.value === 'accept'"
+            />
           </button>
         </template>
         <button
@@ -244,8 +251,11 @@ const tight = (text: string) => unbroken(text).replace(/ → /g, '\u00a0→\u00a
           data-recovery-next
           @click="submit"
         >
-          {{ tr(flow.working.value === 'reply' ? '正在读取回复…' : '登记回复')
-          }}<AppIcon name="arrow-right" />
+          <RecoveryButtonLabel
+            :label="tr('登记回复')"
+            :busy="tr('正在读取回复…')"
+            :working="flow.working.value === 'reply'"
+          />
         </button>
       </template>
     </footer>

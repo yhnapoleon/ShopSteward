@@ -1,8 +1,22 @@
 <script setup lang="ts">
 import { joinText, t as tr } from '~/i18n'
 import { money, number, when } from '~/utils/presentation'
+import type { ComponentPublicInstance } from 'vue'
 const { s, stock, mission, product, unresolved } = useShop()
 defineEmits<{ details: []; mission: []; overview: [] }>()
+// One line of service dots under the store's figures; the full list sits lower in the rail.
+const { services } = useServiceStatus()
+const ready = computed(() => services.value.filter((x) => x.tone === 'ok').length)
+// Said only once every service has answered, so the line does not change its mind on load.
+const checking = computed(() => services.value.some((x) => x.checking))
+const serviceCard = ref<ComponentPublicInstance>()
+function showServices() {
+  const still = matchMedia('(prefers-reduced-motion: reduce)').matches
+  ;(serviceCard.value?.$el as HTMLElement | undefined)?.scrollIntoView({
+    behavior: still ? 'auto' : 'smooth',
+    block: 'center',
+  })
+}
 // Visual scale only; all amounts and business decisions remain backend-owned.
 const cashScale = computed(() => {
   const cash = s.dashboard?.state.available_cash_minor
@@ -102,17 +116,27 @@ const cashScale = computed(() => {
           joinText([tr('业务数据 ·'), tr(when(s.dashboard?.freshness.last_sync_at))])
         }}
       </button>
+      <button class="data-stamp service-summary" @click="showServices">
+        <span class="service-dots" aria-hidden="true"
+          ><span v-for="x in services" :key="x.id" class="space-dot" :class="x.tone" /></span
+        >{{
+          checking
+            ? tr('正在检测服务…')
+            : ready === services.length
+              ? tr('服务均已连接')
+              : tr('{0}/{1} 项服务可用', [ready, services.length])
+        }}
+      </button>
     </section>
     <section class="rail-card glass">
       <span class="micro">{{ tr('本次经营范围') }}</span>
       <h3>{{ product?.name || tr('请先选择店铺') }}</h3>
-      <p>{{ tr('一项活动、一家供应商。') }}<br />{{ tr('采购前核对当前事实。') }}</p>
       <button class="text-link" @click="$emit('mission')">
         {{ tr(mission ? '查看委托与检查安排' : '了解备货跟进') }}<AppIcon name="arrow-up-right" />
       </button>
     </section>
     <SpaceSyncStrip compact />
-    <SpaceServiceStatus />
+    <SpaceServiceStatus ref="serviceCard" />
     <p class="autonomy">
       <AppIcon name="shield-check" /><span
         >{{ tr('每笔采购由你确认。') }}<br />{{ tr('当前连接的是合成经营环境。') }}</span

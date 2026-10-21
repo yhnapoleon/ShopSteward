@@ -235,7 +235,7 @@ class Processor:
                 snapshot.response = {"rule_version": state.version, "completed_tools": []}
             snapshot_id = snapshot.id
             rule_version = snapshot.response["rule_version"]
-            from app.agent_bridge.language import directive, recall
+            from app.agent_bridge.language import OWNER_TEXT, directive, recall
 
             # Answers follow the owner's interface language, not the Chinese policy text.
             language = await recall(session, principal.principal_id)
@@ -255,6 +255,7 @@ class Processor:
                 snapshot = await session.get(Command, snapshot_id)
                 return (
                     directive(language)
+                    + OWNER_TEXT
                     + POLICY
                     + "\n"
                     + json.dumps(

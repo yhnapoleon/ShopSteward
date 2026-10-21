@@ -1,24 +1,16 @@
 <script setup lang="ts">
 import { joinText, t as tr } from '~/i18n'
 import { money, when } from '~/utils/presentation'
-import { isRecoveryPlan, selectedPlanCandidate } from '~/utils/plans'
+import { supplierDisplayName } from '~/utils/glossary'
+import { isRecoveryPlan, planOptions, selectedPlanCandidate } from '~/utils/plans'
 const { s, plan, product, mission, hasRole } = useShop()
-defineEmits<{ confirm: []; evidence: []; compare: []; mission: [] }>()
+// `held`: the facts moved on and the plan is being re-checked; it stays readable but not actionable.
+const props = defineProps<{ held?: boolean }>()
+defineEmits<{ confirm: []; evidence: []; compare: [] }>()
+const locked = computed(() => Boolean(s.busy) || props.held)
 const selected = computed(() => selectedPlanCandidate(plan.value, s.selected))
 const recommended = computed(() => plan.value?.proposed_purchase?.quantity || 0)
-const options = computed(() => {
-  if (isRecoveryPlan(plan.value)) {
-    const adopted = plan.value.selected_candidate_id
-    return plan.value.candidates.filter((c) => c.id === adopted || c.quantity === 0)
-  }
-  const order = [...new Set([recommended.value, 20, 40, 0])]
-  return (plan.value?.candidates || [])
-    .filter(
-      (c) =>
-        order.includes(c.quantity) && c.rejection_reasons.every((r) => r === 'TASK_QUANTITY_LIMIT'),
-    )
-    .sort((a, b) => order.indexOf(a.quantity) - order.indexOf(b.quantity))
-})
+const options = computed(() => planOptions(plan.value))
 const changed = computed(() => s.selected !== recommended.value)
 const canConfirm = computed(
   () =>
@@ -55,10 +47,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
       </p>
       <div class="task-context-line">
         <b>{{ product?.name }}</b
-        ><span>{{ joinText([tr('活动备货 ·'), plan.input_snapshot.offer.supplier_id]) }}</span>
-        <button class="text-link" @click="$emit('mission')">
-          {{ tr('查看这项委托') }}<AppIcon name="chevron-right" />
-        </button>
+        ><span>{{ supplierDisplayName(plan.input_snapshot.offer.supplier_id) }}</span>
       </div>
       <p class="timing-note">
         {{
@@ -69,12 +58,6 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
             tr(when(plan.input_snapshot.forecast.horizon_end)),
           ])
         }}
-      </p>
-      <p v-if="changed" class="selection-note">
-        {{
-          joinText([tr('系统当前推荐'), tr(recommended), tr('件；下面影响与确认对象对应你选择的')])
-        }}<b>{{ joinText([tr(s.selected), tr('件')]) }}</b
-        >。
       </p>
       <div class="impact-grid" aria-live="polite">
         <div class="impact">
@@ -131,7 +114,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
             class="option"
             :class="{ selected: s.selected === c.quantity }"
             :aria-pressed="s.selected === c.quantity"
-            :disabled="Boolean(s.busy)"
+            :disabled="locked"
             @click="s.selected = c.quantity"
           >
             <span class="option-top"
@@ -165,11 +148,7 @@ onMounted(() => (expanded.value = window.innerWidth > 580))
       <div class="action-row">
         <span class="action-note"
           ><AppIcon name="lock-keyhole" />{{ tr('下一步核对，尚未采购') }}</span
-        ><button
-          class="primary"
-          :disabled="Boolean(s.busy) || !canConfirm"
-          @click="$emit('confirm')"
-        >
+        ><button class="primary" :disabled="locked || !canConfirm" @click="$emit('confirm')">
           {{ tr(s.selected ? `核对 ${s.selected} 件采购` : '记录本轮取舍')
           }}<AppIcon name="arrow-right" />
         </button>

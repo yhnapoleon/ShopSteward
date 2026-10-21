@@ -73,13 +73,17 @@ export function useDemoMode() {
       localStorage.setItem(CREATED_KEY, JSON.stringify(next))
     } catch {}
   }
-  /** "示例店铺 · 10/14 15:26" by creation time; without one known, by the store's business time. */
-  function storeLabel(store: StoreLike) {
+  /**
+   * "示例店铺"; `dated` names it by creation time, "示例店铺 · 14/10 15:26" (without one known, by
+   * the store's business time), for the store list.
+   */
+  function storeLabel(store: StoreLike, dated = false) {
     const created =
       (store.store_id === s.storeId && opening()) || state.value.created[store.store_id]
     return storeDisplayName(
       { store_id: store.store_id, simulation_time: store.simulation_time, created_at: created },
       true,
+      dated,
     )
   }
   return { enabled, saveFailed, set, toggle, remember, storeLabel }

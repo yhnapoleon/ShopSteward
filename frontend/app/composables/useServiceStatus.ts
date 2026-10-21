@@ -5,7 +5,14 @@ import { api } from '~/utils/api'
 
 type Probe = 'checking' | 'ready' | 'down'
 export type ServiceTone = 'ok' | 'warn' | 'off'
-export type ServiceEntry = { id: string; name: string; state: string; tone: ServiceTone }
+// `checking`: its state is not known yet (still connecting or being probed).
+export type ServiceEntry = {
+  id: string
+  name: string
+  state: string
+  tone: ServiceTone
+  checking?: boolean
+}
 
 export function useServiceStatus() {
   const shop = useShop()
@@ -43,6 +50,7 @@ export function useServiceStatus() {
         name: '业务接口',
         state: s.connected ? '已连接' : s.loading ? '正在连接' : '暂时无法连接',
         tone: s.connected ? 'ok' : s.loading ? 'off' : 'warn',
+        checking: !s.connected && s.loading,
       },
       {
         id: 'work',
@@ -65,6 +73,7 @@ export function useServiceStatus() {
         name: '预测服务',
         state: probed === 'ready' ? '运行中' : probed === 'checking' ? '正在检测' : '未启动',
         tone: probed === 'ready' ? 'ok' : 'off',
+        checking: probed === 'checking',
       },
     ]
   })

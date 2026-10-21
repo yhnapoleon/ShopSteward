@@ -9,7 +9,9 @@ const shop = useShop()
 const { s, plan } = shop
 const space = useSpace()
 const { mission, executed } = space
-const previous = ref<Schema<'Plan'> | null>(null)
+// The two plans compared. A new version replaces the pair once its predecessor is read, so the
+// card never empties in between; another mission or a first version clears it.
+const change = ref<{ from: Schema<'Plan'>; to: Schema<'Plan'> } | null>(null)
 const error = ref('')
 // Only a version that arrives while the page is open slides in; opening the page does not.
 const live = ref(false)
@@ -18,18 +20,23 @@ async function load() {
   const n = ++epoch,
     id = mission.value?.id,
     current = plan.value
-  previous.value = null
   error.value = ''
-  if (!id || !current || current.mission_id !== id || current.plan_version <= 1) return
+  if (!id || !current || current.mission_id !== id || current.plan_version <= 1) {
+    change.value = null
+    return
+  }
+  if (change.value?.to.mission_id !== id) change.value = null
   try {
     const page = await api<Schema<'PlanList'>>(`/api/v1/missions/${id}/plans?limit=2`)
     if (n !== epoch || plan.value?.id !== current.id) return
-    if (!page.items.some((p) => p.id === current.id)) return
-    previous.value =
-      page.items.find((p) => p.mission_id === id && p.plan_version === current.plan_version - 1) ||
-      null
+    const previous = page.items.some((p) => p.id === current.id)
+      ? page.items.find((p) => p.mission_id === id && p.plan_version === current.plan_version - 1)
+      : undefined
+    change.value = previous ? { from: previous, to: current } : null
   } catch {
-    if (n === epoch) error.value = '暂未取得前一版方案，可重试核对版本变化。'
+    if (n !== epoch) return
+    change.value = null
+    error.value = '暂未取得前一版方案，可重试核对版本变化。'
   }
 }
 watch(
@@ -41,11 +48,6 @@ watch(
   { immediate: true },
 )
 onUnmounted(() => epoch++)
-const change = computed(() =>
-  previous.value && plan.value && previous.value.mission_id === plan.value.mission_id
-    ? { from: previous.value, to: plan.value }
-    : null,
-)
 // Ledger entries between the two plans' inputs (by state version) say what triggered it.
 const reason = computed(() => {
   const c = change.value
@@ -60,7 +62,7 @@ const reason = computed(() => {
   const triggers: [string, string][] = [
     ['DEMAND_REVISED', '需求修订'],
     ['GOODS_RECEIVED', '到货'],
-    ['SALE_RECORDED', '销售'],
+    ['SALE_RECORDED', '销售入账'],
     ['PURCHASE_ACCEPTED', '采购受理'],
   ]
   const words = triggers
@@ -101,7 +103,7 @@ const gap = computed(() => {
       <div class="space-change-body">
         <b>{{ tr('方案更新了 · {0}', [reason]) }}</b>
         <dl class="space-change-grid">
-          <div>
+          <div v-if="quantity(change.from) !== quantity(change.to)">
             <dt>{{ tr('建议补货') }}</dt>
             <dd>
               {{
@@ -124,7 +126,6 @@ const gap = computed(() => {
             <dd>{{ tr('{0} 件', [gap]) }}</dd>
           </div>
         </dl>
-        <small>{{ tr('方案变化不代表已采购，实际执行以回执为准。') }}</small>
       </div>
     </section>
     <p v-else-if="change" :key="'same-' + change.to.id" class="source-note space-change-quiet">

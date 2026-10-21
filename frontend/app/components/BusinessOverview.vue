@@ -8,6 +8,7 @@ import {
   cashHistory,
   matchesState,
   sameContext,
+  utcDate,
   utcDay,
   utcTime,
   salesRange,
@@ -34,7 +35,7 @@ const metric = ref<'quantity' | 'amount'>('quantity')
 const salePoints = computed(() =>
   (summary.value?.buckets || []).map((b) => ({
     id: b.from,
-    label: utcDay(b.from).slice(5).replace('-', '/'),
+    label: utcDate(b.from),
     detail: `${utcDay(b.from)} · 已记录销售`,
     value: metric.value === 'quantity' ? b.recorded_quantity : b.recorded_sales_amount_minor,
   })),
@@ -71,8 +72,8 @@ function sectionStatus(context?: ReadContext, failure = '') {
 }
 const salesStamp = computed(() => {
   if (!summary.value) return ''
-  const last = new Date(Date.parse(summary.value.to) - 1).toISOString().slice(0, 10)
-  return `${utcDay(summary.value.from).slice(5).replace('-', '/')} — ${last.slice(5).replace('-', '/')}`
+  const last = new Date(Date.parse(summary.value.to) - 1).toISOString()
+  return `${utcDate(summary.value.from)} — ${utcDate(last)}`
 })
 const modal = ref('')
 const details = ref<HTMLDialogElement>()

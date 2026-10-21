@@ -19,7 +19,7 @@ function go() {
 <template>
   <article v-if="prompt.shown.value" class="rf-prompt attention-card glass" data-recovery-prompt>
     <div class="rf-prompt-copy">
-      <span class="tag amber">{{ prompt.tag.value }}</span>
+      <span v-if="prompt.tag.value" class="tag amber">{{ prompt.tag.value }}</span>
       <h2>{{ prompt.title.value }}</h2>
     </div>
     <button type="button" class="primary" @click="go">

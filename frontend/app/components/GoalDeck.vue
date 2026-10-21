@@ -25,7 +25,7 @@ let origin: HTMLElement | null = null,
   animations: Animation[] = []
 let serial = 0
 // Motion (§12): the card settles in from 96% toward the button that opened it in 240ms on the
-// ease-out curve and leaves in 160ms; the scrim and the anchor only fade. Opened or closed from
+// ease-out curve and leaves in 180ms; the scrim and the anchor only fade. Opened or closed from
 // the keyboard it appears and disappears at once; reduced motion keeps the fades only.
 const ease = 'cubic-bezier(0.23, 1, 0.32, 1)'
 let keyboard = false
@@ -53,7 +53,7 @@ async function close() {
   animations = []
   if (main.value && !keyboard) {
     const moving = !still(),
-      duration = moving ? 160 : 120
+      duration = moving ? 180 : 120
     const leaving = [
       main.value.animate(
         moving
@@ -168,14 +168,10 @@ async function quote() {
           <div class="start-scope">
             <b>{{ product?.name || tr('请先选择示例店铺') }}</b
             ><span>{{
-              joinText([
-                tr('现金'),
+              tr('现金{0}、库存{1}件、预计需求{2}件', [
                 tr(money(s.dashboard?.state.available_cash_minor)),
-                tr('、库存'),
-                tr(stock?.on_hand),
-                tr('件、预计需求'),
-                tr(stock?.remaining_demand),
-                tr('件'),
+                stock?.on_hand ?? '',
+                stock?.remaining_demand ?? '',
               ])
             }}</span
             ><span>{{
@@ -223,14 +219,10 @@ async function quote() {
           <div class="detail-row">
             <span>{{ tr('当前条件') }}</span
             ><b>{{
-              joinText([
-                tr('现金'),
+              tr('现金{0}、库存{1}件、预计需求{2}件', [
                 tr(money(s.dashboard?.state.available_cash_minor)),
-                tr('、库存'),
-                tr(stock?.on_hand),
-                tr('件、预计需求'),
-                tr(stock?.remaining_demand),
-                tr('件'),
+                stock?.on_hand ?? '',
+                stock?.remaining_demand ?? '',
               ])
             }}</b>
           </div>

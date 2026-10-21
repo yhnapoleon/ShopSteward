@@ -40,10 +40,10 @@ test("the backend's own result title follows the language", () => {
     result: { kind: 'answer', title: '事项处理结果', content: '现金', provenance: {} },
     is_latest_result: true,
   }
-  expect(resultTitle(input.result)).toBe('Work item result')
+  expect(resultTitle(input.result)).toBe('Request result')
   const output = resultFile(input, 'txt').text
-  expect(output.split('\n')[0]).toBe('Work item result')
-  expect(output).toContain('Title：Work item result')
+  expect(output.split('\n')[0]).toBe('Request result')
+  expect(output).toContain('Title：Request result')
 })
 test('Agent tool records and their sources read in English', () => {
   locale.value = 'en'

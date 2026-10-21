@@ -141,6 +141,57 @@ export function watchSummary(item: Work, s: ShopState) {
   return { timing, change }
 }
 
+/**
+ * The "next day" marker: the state version the page waits to move from, and until when (90 s).
+ * The page's own advance starts it here; the presenter bar sets it for its own.
+ */
+export function useAdvanceMarker() {
+  const { s } = useShop()
+  const marker = useState('space-sync-advance', () => ({ from: null as number | null, until: 0 }))
+  watch(
+    () => s.busy,
+    (busy) => {
+      if (busy === '正在推进经营事件')
+        marker.value = { from: s.dashboard?.state.state_version ?? null, until: Date.now() + 90000 }
+    },
+  )
+  return marker
+}
+
+/**
+ * "Next day" outdates the plan on purpose: for 90 s after it, a plan whose facts changed, or a
+ * pending plan whose facts are still syncing, is being re-checked as expected. The page keeps it, held, under one quiet line
+ * (`rechecking`) instead of the "needs attention" card; `blocking` is the issue still worth that
+ * card.
+ */
+export function usePlanRecheck(issue: () => string | null) {
+  const { s } = useShop()
+  const advance = useAdvanceMarker()
+  const open = ref(false)
+  watch(
+    () => advance.value.until,
+    (until, _, onCleanup) => {
+      const left = until - Date.now()
+      open.value = left > 0
+      if (left <= 0) return
+      const timer = setTimeout(() => (open.value = false), left)
+      onCleanup(() => clearTimeout(timer))
+    },
+    { immediate: true },
+  )
+  // Syncing facts only hold a plan that still waits for the owner.
+  const rechecking = computed(
+    () =>
+      open.value &&
+      (issue() === 'changed' ||
+        (issue() === 'stale' &&
+          s.plan?.status === 'PENDING_APPROVAL' &&
+          !!s.plan.proposed_purchase)),
+  )
+  const blocking = computed(() => (rechecking.value ? null : issue()))
+  return { rechecking, blocking }
+}
+
 export function useSpace() {
   const shop = useShop()
   const work = useWorkItems()

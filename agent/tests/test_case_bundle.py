@@ -99,3 +99,30 @@ async def test_frozen_run_is_bound_to_its_bundle_and_logs_each_evidence_read():
     ]
     assert {record["role"] for record in result["call_records"]} == {"evidence", "impact"}
     assert result["advisory_only"] is True
+
+
+@pytest.mark.asyncio
+async def test_experts_write_statements_for_the_owner_in_the_interface_language():
+    from shopsteward_agent.cases import analyze_frozen_case
+    from shopsteward_agent.context import ModelProfile
+
+    seen = []
+
+    class Model:
+        async def complete(self, messages, tools, **kwargs):
+            seen.append(json.dumps(messages, ensure_ascii=False))
+            return {"content": '{"claims": [], "missing": [], "followup_requests": []}'}
+
+    await analyze_frozen_case(
+        SNAPSHOT,
+        PROPOSAL,
+        case_id="c",
+        revision_id=1,
+        run_id="run",
+        strategy="static_multi",
+        model=Model(),
+        profile=ModelProfile(model_id="main", max_input_tokens=48000),
+        language="en",
+    )
+    assert seen and all('\\"language\\": \\"en\\"' in text for text in seen)
+    assert all("a statement never contains an ID, hash, timestamp" in text for text in seen)

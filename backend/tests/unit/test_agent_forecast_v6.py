@@ -112,7 +112,7 @@ def test_demo_guard_writes_in_the_interface_language_and_labels_once():
     missing = forecast_answer_guard(
         dict(content="12", references=[]), required=True, current=demo, language="en"
     )
-    assert missing["content"].startswith("No valid v6 forecast evidence")
+    assert missing["content"].startswith("No forecast is available yet")
 
 
 async def test_forecast_tool_is_read_only_mission_scoped_and_no_reference_on_failure(monkeypatch):

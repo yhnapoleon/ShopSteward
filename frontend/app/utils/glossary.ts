@@ -105,17 +105,24 @@ const alertNames: Record<string, string> = {
 }
 /** Reminder (alert) type in plain words; unknown types are shown as sent. */
 export const alertName = (type: string) => (alertNames[type] ? t(alertNames[type]) : type)
+/** Link to the open reminders, singular or plural. */
+export const alertCount = (count: number) =>
+  count === 1 ? t('1 项经营提醒，查看依据') : t('{0} 项经营提醒，查看依据', [count])
 
 /**
- * Store label (§6.3). Demo mode names the sample store by its creation time; the backend does
- * not expose that yet, so callers pass the best available time. Otherwise the id's tail is shown.
+ * Store label (§6.3). Demo mode calls it the sample store; `dated` adds its creation time, which
+ * tells sample stores apart in the store list. The backend does not expose that time yet, so
+ * callers pass the best available one. Otherwise the id's tail is shown.
  */
 export function storeDisplayName(
   store: { store_id: string; created_at?: string | null; simulation_time?: string | null },
   demo = false,
+  dated = false,
 ) {
-  if (demo) return t('示例店铺 · {0}', [when(store.created_at || store.simulation_time)])
-  return t('店铺尾号 {0}', [store.store_id.slice(-8)])
+  if (!demo) return t('店铺尾号 {0}', [store.store_id.slice(-8)])
+  return dated
+    ? t('示例店铺 · {0}', [when(store.created_at || store.simulation_time)])
+    : t('示例店铺')
 }
 
 /**

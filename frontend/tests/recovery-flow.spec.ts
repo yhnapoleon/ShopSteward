@@ -160,9 +160,12 @@ test('采用与确认合并；之后发单、登记回复、登记到货，最�
   await expect(flow).toHaveAttribute('data-stage', 'summary')
   const summary = flow.locator('[data-recovery-summary]')
   await expect(summary).toContainText('应急补货完成')
-  await expect(summary).toContainText('Baichuan Wholesale 40 件已到货')
-  await expect(summary).toContainText('预计缺货 40 → 0 件')
-  await expect(summary).toContainText('花了 ¥380')
+  // What changed, what it cost, what came in: in that order, each whole.
+  await expect(summary.locator('.rf-summary-fact')).toHaveText([
+    '预计缺货 40 → 0 件',
+    '花了 ¥380',
+    '40 件已到货',
+  ])
   await expect(page.locator('[data-recovery-entry]')).toBeVisible()
   // The summary opens on demand and shows the full result.
   await summary.click()
@@ -531,7 +534,7 @@ test('英文界面：入口、进度与按钮都有英文', async ({ page }) => 
   await expect(page.locator('[data-recovery-entry]')).toHaveCount(0)
   await expect(flow.locator('.rf-eyebrow')).toHaveText('Emergency restock')
   await expect(flow.locator('.flow-step[aria-current="step"] .flow-label')).toContainText(
-    'Describe',
+    'Situation',
   )
   await expect(flow.locator('.flow-steps .flow-actor')).toHaveText('Your turn')
   await expect(flow.locator('[data-fact="demand"] b')).toHaveText('60 units')

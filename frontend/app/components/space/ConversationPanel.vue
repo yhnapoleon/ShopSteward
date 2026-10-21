@@ -55,7 +55,9 @@ const remembered = computed(() =>
         <Transition name="space-rise">
           <p v-if="remembered" class="memory-receipt">
             <AppIcon name="sparkles" /><span>{{
-              remembered === 1 ? tr('Agent 更新了一条记忆') : tr('Agent 更新了 {0} 条记忆', [remembered])
+              remembered === 1
+                ? tr('Agent 更新了一条记忆')
+                : tr('Agent 更新了 {0} 条记忆', [remembered])
             }}</span
             ><span aria-hidden="true">·</span
             ><button
@@ -73,7 +75,9 @@ const remembered = computed(() =>
            waits on it. The note above already lists what the owner can do meanwhile. -->
       <p v-if="!s.session?.agentEnabled && !ended" class="space-agent-off">
         <AppIcon name="info" /><span>{{
-          tr('Agent 需要在服务端配置模型后才会启用。在此之前，工作区的卡片已能完成全部操作，没有步骤在等它。')
+          tr(
+            'Agent 需要在服务端配置模型后才会启用。在此之前，工作区的卡片已能完成全部操作，没有步骤在等它。',
+          )
         }}</span>
       </p>
     </div>

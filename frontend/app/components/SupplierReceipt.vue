@@ -3,7 +3,7 @@
 // quote that only repeats the value ("10件" beside "10 件") is not shown again.
 import { joinText, t as tr } from '~/i18n'
 import { money } from '~/utils/presentation'
-import { priceOf } from '~/utils/recovery'
+import { dayOf, priceOf } from '~/utils/recovery'
 import type { Schema } from '~/types/models'
 const props = defineProps<{ reply: Schema<'SupplierReply'> }>()
 const outcomes: Record<string, string> = {
@@ -49,7 +49,11 @@ const rows = computed(() =>
       label: '确认金额',
       value: amount('total_minor', props.reply.total_minor),
     },
-    { field: 'delivery_date', label: '确认交期', value: props.reply.delivery_date || '' },
+    {
+      field: 'delivery_date',
+      label: '确认交期',
+      value: props.reply.delivery_date ? dayOf(props.reply.delivery_date) : '',
+    },
     {
       field: 'supplier_order_ref',
       label: '供应商单号',

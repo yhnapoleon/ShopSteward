@@ -35,6 +35,7 @@ const POLL_FAST_MS = 2000
 const POLL_SLOW_MS = 6000
 /** A call of ours shows as "系统在做" only once it takes longer than this. */
 const SLOW_CALL_MS = 300
+const READING_PLAN = '正在读取这份应急方案。'
 
 export function useRecoveryFlow(missionId: () => string) {
   const shop = useShop()
@@ -208,23 +209,28 @@ export function useRecoveryFlow(missionId: () => string) {
       shop.canDecide.value,
   )
   /** Why the adopted plan cannot be confirmed right now: the one cause that holds, or nothing. */
-  const unavailableReason = computed(() => {
+  const unavailableCause = computed(() => {
     const plan = casePlan.value
     if (flow.value.stage !== 'confirm' || !plan || canConfirm.value) return ''
-    if (!approver.value) return t('确认采购需要审批权限；有权限的人打开这件事就能确认。')
-    if (s.pending) return t('上一笔采购确认的结果还没取得，先核实它。')
-    if (!s.connected) return t('连接中断了，恢复后才能确认。')
-    if (s.dashboard?.freshness.status !== 'FRESH') return t('经营数据还在同步，同步后就能确认。')
-    if (shop.unresolved.value) return t('另一笔采购还没处理完，处理完再确认这一笔。')
+    if (!approver.value) return '确认采购需要审批权限；有权限的人打开这件事就能确认。'
+    if (s.pending) return '上一笔采购确认的结果还没取得，先核实它。'
+    if (!s.connected) return '连接中断了，恢复后才能确认。'
+    if (s.dashboard?.freshness.status !== 'FRESH') return '经营数据还在同步，同步后就能确认。'
+    if (shop.unresolved.value) return '另一笔采购还没处理完，处理完再确认这一笔。'
     if (detail.value?.plan_status === 'EXPIRED' || Date.parse(plan.expires_at) <= Date.now())
-      return t('这份应急方案已过期，需要重新比价。')
-    if (shop.mission.value?.status === 'PAUSED') return t('备货委托已暂停，恢复后才能确认。')
-    if (shop.mission.value?.status !== 'ACTIVE') return t('备货委托已结束，不能确认采购。')
-    if (shop.plan.value?.id !== plan.id) return t('正在读取这份应急方案。')
+      return '这份应急方案已过期，需要重新比价。'
+    if (shop.mission.value?.status === 'PAUSED') return '备货委托已暂停，恢复后才能确认。'
+    if (shop.mission.value?.status !== 'ACTIVE') return '备货委托已结束，不能确认采购。'
+    if (shop.plan.value?.id !== plan.id) return READING_PLAN
     if (s.dashboard && plan.state_version !== s.dashboard.state.state_version)
-      return t('经营数据刚变了，这份方案要重新比价。')
+      return '经营数据刚变了，这份方案要重新比价。'
     return ''
   })
+  const unavailableReason = computed(() =>
+    unavailableCause.value ? t(unavailableCause.value) : '',
+  )
+  /** The adopted plan is still on its way to the page: confirming opens once it is there. */
+  const preparing = computed(() => unavailableCause.value === READING_PLAN)
   /** "换一家" was opened while the adopted plan still waits: it can be confirmed after all. */
   const canReturnToConfirm = computed(
     () =>
@@ -351,7 +357,11 @@ export function useRecoveryFlow(missionId: () => string) {
     if (previousCase) void recovery.load(previousCase)
   }
 
-  /** Confirm the brief: create and analyze the Case, then let reviewers read the suppliers. */
+  /**
+   * Confirm the brief: create and analyze the Case, then let reviewers read the suppliers. The
+   * brief stays on screen until the reading has started, so the first comparison (of the offers
+   * already in the catalog) never shows on its way to the reviewers.
+   */
   async function begin(input: { objective: string; budgetMinor: number; demand: DemandPlan }) {
     const request = brief.value
     if (!request) return
@@ -370,12 +380,16 @@ export function useRecoveryFlow(missionId: () => string) {
         body.daily_demand = daily
       }
       await recovery.start(body)
-      const created = detail.value
-      if (!created || created.mission_id !== missionId()) return
-      brief.value = null
-      if (exclude) remember(created.id, exclude)
-      if (s.session?.sourcing && directory.readable.value.length) await source()
+      await opened(exclude)
     })
+  }
+  /** The Case of the brief exists: read the suppliers, then show the Case in the brief's place. */
+  async function opened(exclude: string) {
+    const created = detail.value
+    if (!created || created.mission_id !== missionId()) return
+    if (exclude) remember(created.id, exclude)
+    if (s.session?.sourcing && directory.readable.value.length) await source()
+    brief.value = null
   }
   /** Reviewers read every supplier on file; the Case shows their cards as they finish. */
   async function source() {
@@ -537,13 +551,8 @@ export function useRecoveryFlow(missionId: () => string) {
     const exclude = brief.value?.exclude || ''
     await run('retry', async () => {
       const value = await recovery.retry()
-      if (request.phase === 'create') {
-        const created = detail.value
-        if (!created || created.mission_id !== missionId()) return
-        brief.value = null
-        if (exclude) remember(created.id, exclude)
-        if (s.session?.sourcing && directory.readable.value.length) await source()
-      } else if (request.phase === 'materialize' && value?.plan_id) {
+      if (request.phase === 'create') await opened(exclude)
+      else if (request.phase === 'materialize' && value?.plan_id) {
         revisiting.value = false
         await shop.refresh(true)
         if (shop.plan.value?.id === value.plan_id && shop.canDecide.value) confirm()
@@ -769,6 +778,7 @@ export function useRecoveryFlow(missionId: () => string) {
     againDetail,
     canConfirm,
     unavailableReason,
+    preparing,
     canReturnToConfirm,
     open,
     close,

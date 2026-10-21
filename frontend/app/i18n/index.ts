@@ -74,6 +74,10 @@ export function readLocale() {
   }
 }
 
+/** List separate labels: each English label keeps its capital, so a middle dot instead of a comma. */
+export const listText = (parts: string[], chineseSeparator = '、') =>
+  parts.join(locale.value === 'en' ? ' · ' : chineseSeparator)
+
 /** Separate English words around live values without changing Chinese spacing. */
 export function joinText(parts: unknown[], chineseSeparator = '') {
   return parts

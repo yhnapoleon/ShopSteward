@@ -89,6 +89,7 @@ async function setup(page: Page, running = true, initialQuantity?: number, graph
     paginateConversations: false,
     context: null as any,
     denyContext: false,
+    devTools: false,
   }
   const conversation = () => ({
     id: 'conv-one',
@@ -112,7 +113,7 @@ async function setup(page: Page, running = true, initialQuantity?: number, graph
           principal_id: 'test-owner',
           roles: ['admin'],
           agentEnabled: true,
-          devTools: false,
+          devTools: control.devTools,
           planRevision: true,
         },
       })
@@ -120,6 +121,11 @@ async function setup(page: Page, running = true, initialQuantity?: number, graph
       const body = request.postDataJSON(),
         key = request.headers()['idempotency-key']
       control.writes.push({ path, key, body })
+      // The simulator's "next event": the business state moves on, the plan does not yet.
+      if (path.endsWith('/dev/v1/scenarios/run-one/advance')) {
+        f.dashboard.state.state_version++
+        return route.fulfill({ status: 202, json: { job_run_id: 'advance-job' } })
+      }
       if (path === 'conversations/conv-one/messages') {
         control.messageCount++
         if (control.loseMessage && control.messageCount === 1) return route.abort('connectionreset')
@@ -155,6 +161,8 @@ async function setup(page: Page, running = true, initialQuantity?: number, graph
         },
       })
     }
+    if (path === 'job-runs/advance-job')
+      return route.fulfill({ json: { id: 'advance-job', status: 'SUCCEEDED' } })
     if (path.endsWith('/context'))
       return route.fulfill(
         control.denyContext
@@ -488,6 +496,29 @@ test('手机任务工作区、长表格不溢出，减少动效生效', async ({
     fullPage: false,
   })
   expect(c.writes).toHaveLength(0)
+})
+
+test('推进经营事件后的等待期保留方案卡并暂停操作，新方案到达后恢复', async ({ page }) => {
+  const c = await setup(page, false, 40)
+  c.devTools = true
+  await page.evaluate(() =>
+    localStorage.setItem('ss.scenarios', JSON.stringify({ 'overview-fixture-a': 'run-one' })),
+  )
+  await page.reload()
+  const review = page.getByRole('button', { name: '核对 40 件采购', exact: true })
+  await expect(review).toBeEnabled()
+  await page.getByRole('button', { name: '联调控制 · 合成数据', exact: true }).click()
+  await page.getByRole('dialog').getByRole('button', { name: '推进下一个经营事件' }).click()
+  await expect(page.getByRole('status').filter({ hasText: '正在重新核对方案…' })).toBeVisible()
+  await expect(review).toBeVisible()
+  await expect(review).toBeDisabled()
+  await expect(
+    page.getByRole('heading', { name: '经营情况已变化，方案待更新', exact: true }),
+  ).toHaveCount(0)
+  c.f.plan.state_version = c.f.dashboard.state.state_version
+  c.f.plan.input_snapshot.state.state_version = c.f.plan.state_version
+  await expect(page.getByText('正在重新核对方案…', { exact: true })).toHaveCount(0)
+  await expect(review).toBeEnabled()
 })
 
 test('事实更新先等待新方案；修订回执来自真实版本，现金不因方案调整改变', async ({ page }, info) => {
