@@ -294,6 +294,17 @@ def supplier_arrival(action, day):
     return datetime.combine(day, wanted.astimezone(BUSINESS_ZONE).timetz())
 
 
+def past_due(action, expected, now):
+    """Whether goods expected at `expected` are late at `now`.
+
+    A supplier replying to an order sent by hand promises a day, not an hour, so such an
+    order is late only once that business day is over; the simulator delivers at its ETA.
+    """
+    if getattr(action, "channel", None) == "assisted":
+        return now.astimezone(BUSINESS_ZONE).date() > expected.astimezone(BUSINESS_ZONE).date()
+    return now > expected
+
+
 def waiting(action):
     return action.channel == "assisted" and action.status == "EXECUTING"
 
