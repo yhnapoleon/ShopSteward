@@ -63,8 +63,12 @@ def test_runtime_contract_names_the_business_times_and_the_summary_zone():
         ("Action", "receipt_business_time"),
         ("LedgerEntryView", "simulation_time"),
     ]:
-        assert field in schemas[schema]["required"]
         assert schemas[schema]["properties"][field]["anyOf"] == nullable_time
+    # The new fields may be left out, so hand-written frontend fixtures stay valid; the
+    # ledger's simulation_time was already required.
+    assert "simulation_time" in schemas["LedgerEntryView"]["required"]
+    assert "business_time" not in schemas["TimelineEntry"]["required"]
+    assert "receipt_business_time" not in schemas["Action"]["required"]
     assert schemas["SaleSummary"]["properties"]["timezone"]["type"] == "string"
     summary = spec["paths"]["/api/v1/sales/summary"]["get"]["parameters"]
     assert any(p["name"] == "tz" and p["in"] == "query" and not p["required"] for p in summary)
