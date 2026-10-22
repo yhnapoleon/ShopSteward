@@ -2,7 +2,7 @@
 import { joinText, t as tr } from '~/i18n'
 import { api, query, ApiFailure } from '~/utils/api'
 import type { Schema } from '~/types/models'
-import { sourceIdentity, sourceLabel } from '~/utils/agent'
+import { sourceGroups, sourceIdentity, sourceLabel, type SourceGroup } from '~/utils/agent'
 const props = defineProps<{ references: unknown[]; runId?: string }>()
 const agent = useAgentConversation()
 const demo = useDemoMode()
@@ -175,11 +175,28 @@ function closed() {
   excerpt.value = null
   returnFocus?.focus()
 }
-const items = computed(() =>
-  [...new Map(props.references.map((r) => [sourceIdentity(r), r])).values()].filter(
-    (r): r is Record<string, unknown> => !!r && typeof r === 'object',
-  ),
+const items = computed(() => sourceGroups(props.references))
+// A document reference carries no title; it is read once per document and shared by every
+// answer. An empty title (still loading, or not readable) leaves the plain label; a read that
+// failed for a passing reason is tried again with the next answer.
+const titles = useState<Record<string, string>>('agent-document-titles', () => ({}))
+watch(
+  items,
+  (groups) => {
+    if (!import.meta.client) return
+    for (const id of new Set(groups.map((g) => g.documentId))) {
+      if (!id || id in titles.value) continue
+      titles.value[id] = ''
+      api<Schema<'Document'>>(`/api/v1/documents/${encodeURIComponent(id)}`)
+        .then((d) => (titles.value[id] = d.title))
+        .catch((e) => {
+          if (!(e instanceof ApiFailure) || !e.status || e.status >= 500) delete titles.value[id]
+        })
+    }
+  },
+  { immediate: true },
 )
+const titleOf = (g: SourceGroup) => (g.documentId && titles.value[g.documentId]) || ''
 const fields: Record<string, string> = {
   id: '来源编号',
   version_id: '文档版本',
@@ -194,57 +211,88 @@ const fields: Record<string, string> = {
   content_sha256: '片段校验',
   original_sha256: '原件校验',
 }
-const location = (v: unknown) => {
-  if (typeof v === 'string') return v
-  if (!v || typeof v !== 'object') return '未提供可读位置'
-  const labels: Record<string, string> = {
-    page: '页码',
-    section: '章节',
-    paragraph: '段落',
-    line_start: '起始行',
-    line_end: '结束行',
-    sheet: '工作表',
-    row: '行',
-    paragraph_range: '段落范围',
-    cell_range: '单元格',
-    section_path: '章节',
-    table: '表格',
-  }
-  const parts = Object.entries(v)
-    .filter(([k, x]) => labels[k] && x != null && (!Array.isArray(x) || x.length))
+const labels: Record<string, string> = {
+  page: '页码',
+  section: '章节',
+  paragraph: '段落',
+  line_start: '起始行',
+  line_end: '结束行',
+  sheet: '工作表',
+  row: '行',
+  paragraph_range: '段落范围',
+  cell_range: '单元格',
+  section_path: '章节',
+  table: '表格',
+}
+const places = (v: object, keys?: readonly string[]) =>
+  Object.entries(v)
+    .filter(
+      ([k, x]) =>
+        labels[k] && (!keys || keys.includes(k)) && x != null && (!Array.isArray(x) || x.length),
+    )
     .map(
       ([k, x]) =>
         `${tr(labels[k])} ${Array.isArray(x) ? x.join(k === 'section_path' ? ' / ' : '–') : String(x)}`,
     )
-  return parts.join(' · ') || '详见下方版本定位记录'
+    .join(' · ')
+const location = (v: unknown) => {
+  if (typeof v === 'string') return v
+  if (!v || typeof v !== 'object') return '未提供可读位置'
+  return places(v) || '详见下方版本定位记录'
 }
+// Excerpts of one document are told apart by number only; section and sheet names, often in
+// the document's own language, stay in the excerpt's full location.
+const numbered = [
+  'page',
+  'paragraph',
+  'paragraph_range',
+  'line_start',
+  'line_end',
+  'row',
+  'cell_range',
+]
+const spot = (v: unknown, i: number) =>
+  (v && typeof v === 'object' && places(v, numbered)) || tr('片段 {0}', [i + 1])
 const value = (v: unknown) => (typeof v === 'object' ? JSON.stringify(v) : String(v))
 </script>
 <template>
   <div v-if="items.length" class="agent-references" :aria-label="tr('本轮获取的来源')">
-    <details v-for="r in items" :key="sourceIdentity(r)" class="agent-source">
-      <summary>
-        <AppIcon name="file-text" />{{ tr(sourceLabel(r))
-        }}<span v-if="r.version_id && !demo.enabled.value">{{ tr('· 有版本记录') }}</span
+    <details v-for="g in items" :key="g.key" class="agent-source">
+      <summary :title="titleOf(g) || undefined">
+        <AppIcon name="file-text" />{{ tr(sourceLabel(g.parts[0]))
+        }}<span v-if="titleOf(g)" class="agent-source-name">· {{ titleOf(g) }}</span
+        ><span v-if="g.parts[0]!.version_id && !demo.enabled.value">{{ tr('· 有版本记录') }}</span
         ><AppIcon name="chevron-down" />
       </summary>
       <div class="agent-source-body">
         <p>{{ tr('本轮获取的来源，供核对使用。') }}</p>
-        <details v-if="!demo.enabled.value" class="tool-technical">
-          <summary>{{ tr('版本定位记录') }}</summary>
-          <dl>
-            <template v-for="(label, field) in fields" :key="field"
-              ><div v-if="r[field] != null">
-                <dt>{{ tr(label) }}</dt>
-                <dd>{{ value(r[field]) }}</dd>
-              </div></template
-            >
-          </dl>
-        </details>
-        <button v-if="r.chunk_id && runId" class="text-link" @click="open(r, $event)">
-          {{ tr('打开当时原文片段') }}
-        </button>
-        <p v-else-if="r.chunk_id">{{ tr('缺少运行关联，无法核对历史原文。') }}</p>
+        <template v-for="(r, i) in g.parts" :key="sourceIdentity(r)">
+          <details v-if="!demo.enabled.value" class="tool-technical">
+            <summary>
+              {{
+                g.parts.length > 1
+                  ? joinText([tr('版本定位记录'), '·', spot(r.locator, i)])
+                  : tr('版本定位记录')
+              }}
+            </summary>
+            <dl>
+              <template v-for="(label, field) in fields" :key="field"
+                ><div v-if="r[field] != null">
+                  <dt>{{ tr(label) }}</dt>
+                  <dd>{{ value(r[field]) }}</dd>
+                </div></template
+              >
+            </dl>
+          </details>
+          <button v-if="r.chunk_id && runId" class="text-link" @click="open(r, $event)">
+            {{
+              g.parts.length > 1
+                ? joinText([tr('打开当时原文片段'), '·', spot(r.locator, i)])
+                : tr('打开当时原文片段')
+            }}
+          </button>
+          <p v-else-if="r.chunk_id">{{ tr('缺少运行关联，无法核对历史原文。') }}</p>
+        </template>
       </div>
     </details>
     <dialog
@@ -266,8 +314,7 @@ const value = (v: unknown) => (typeof v === 'object' ? JSON.stringify(v) : Strin
           <p>
             {{
               joinText([
-                tr('原件 v'),
-                tr(excerpt.version_no),
+                tr('原件 v{0}', [excerpt.version_no]),
                 tr('· 本轮获取的来源，不代表逐句引用或当前有效条款。'),
               ])
             }}

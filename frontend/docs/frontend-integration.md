@@ -311,6 +311,7 @@
 | `GET /api/v1/agent-runs/{run_id}/evidence` | `AgentReferences.vue` | 2.5 |
 | `GET /api/v1/agent-runs/{run_id}/context` | `ContextInspector.vue` | 2.13 |
 | `GET/POST /api/v1/stores/{store_id}/documents`、`GET/PATCH /api/v1/documents/{document_id}`、`GET/POST …/versions`、`POST …/control`、`GET …/versions/{version_id}/content` | `useDocuments`、`DocumentCenter.vue` | 2.11 |
+| `GET /api/v1/documents/{document_id}` | `AgentReferences.vue`（文档来源的标题） | 2.5 |
 | `GET /api/v1/documents/{document_id}/versions/{version_id}`（及 `/content`） | `AgentReferences.vue`（核对后下载历史原件） | 2.5 |
 | `GET /api/v1/stores/{store_id}/learning`、`PATCH …/policy`、`POST …/assets/{asset_id}/evaluations`、`/transitions`、`POST …/forget` | `useLearning` | 2.13 |
 | `GET /api/v1/text-bundles` | `TextBundleLineage.vue` | 2.13 |
@@ -523,6 +524,7 @@
 | POST | `/api/v1/agent-runs/{run_id}/cancel` | 停止本轮回答 | `{}` → `RunView` |
 | PATCH | `/api/v1/conversations/{conversation_id}/followup` | Agent 主动解读开关（`operator`） | `{ enabled, interval_seconds: 300, expected_version }` |
 | GET | `/api/v1/agent-runs/{run_id}/evidence?id&version_id&generation_id&chunk_id&metadata_revision&content_sha256` | 打开当时原文片段 | `HistoricalEvidence`：`title`、`version_no`、`text`、`truncated`、`reference` |
+| GET | `/api/v1/documents/{document_id}` | 文档来源的标题 | 只取 `title`；同一文档只读一次，整页共享；超时、连接中断、5xx 等暂时性失败在下一次回答出现时再读，403/404 不再读，标签只写"文档来源" |
 | GET | `/api/v1/documents/{document_id}/versions/{version_id}`，再 `…/content` | 下载历史原件 | 核对 `id`、`document_id`、`content_sha256 === reference.original_sha256`、`size_bytes` 与下载内容的 SHA-256；下载后再读一次版本 |
 | GET | `/api/v1/agent-runs/{run_id}/context` | 上下文记录 | §2.13 |
 
@@ -612,7 +614,7 @@
 - 分析 `{ expected_revision }`；修订 `{ expected_revision, daily_demand?, supplier_ids? }`；寻源 `{ expected_revision, district: '滨江区' }`（`useSupplierDirectory.ts SAMPLE_DISTRICT`）；控制 `{ expected_revision, operation }`。
 - 采用：`{ expected_revision, proposal_id, candidate_id, expected_mission_version: current_mission_version, expected_state_version: current_state_version, expected_current_plan_id: current_plan_id, proposal_hash }`。
 
-**发起与预填**：问题句 `objectiveFor(reason, projection, supplier)`，在"修改"里可改写，提交为 `objective`。预算 = 可用现金 − 现金底线（不小于 0；在"修改"里可改，最多两位小数，不超过 1,000,000,000 分）。需求 `demandFrom()`：预测 `usable_for_planning` 且有 7 天 `daily_predictions` 与 `predicted_quantity` 时，按后端的取整规则（`allocateDaily()`）分到 7 天（分段控件第一项写"按预测"）；否则把方案的 `remaining_demand` 按 `horizon_start`–`horizon_end` 折成 7 天均摊，再否则用 `stock.remaining_demand` 均摊（写"按估算"）；分段的另一项是"每天 N 件"。七天推演 `projectWithout()` 用求解器的日结规则：原订单按 `expected_arrival_at` 计入当天，已逾期的不计；七天条只在推演仍有缺口时显示。首日结算 = 经营时钟 + 24 h − 1 s，只在"修改"里显示。推演七天不缺货时主按钮是"关闭"（`data-recovery-close`），比价降为文字链接"仍要比价"（`data-recovery-start`）；有缺口时左下的"关闭"关掉说明，回到原来的 Case。
+**发起与预填**：问题句 `objectiveFor(reason, projection, supplier)`，在"修改"里可改写，提交为 `objective`。预算 = 可用现金 − 现金底线（不小于 0；在"修改"里可改，最多两位小数，不超过 1,000,000,000 分）。需求 `demandFrom()`：预测 `usable_for_planning` 且有 7 天 `daily_predictions` 与 `predicted_quantity` 时，按后端的取整规则（`allocateDaily()`）分到 7 天（分段控件第一项写"按预测"）；否则把方案的 `remaining_demand` 均摊到方案期间还剩下的那几天（起点取 `horizon_start` 与 `input_snapshot.state.simulation_time` 中较晚者，期末所在的那一天计入），期后的天数为 0，七天合计等于方案的剩余需求，与日常方案同一口径；期间长于 7 天时只取 7 天的份额；再否则用 `stock.remaining_demand` 均摊（写"按估算"）；分段的另一项是"每天 N 件"。七天推演 `projectWithout()` 用求解器的日结规则：原订单按 `expected_arrival_at` 计入当天，已逾期的不计；七天条只在推演仍有缺口时显示。首日结算 = 经营时钟 + 24 h − 1 s，只在"修改"里显示。推演七天不缺货时主按钮是"关闭"（`data-recovery-close`），比价降为文字链接"仍要比价"（`data-recovery-start`）；有缺口时左下的"关闭"关掉说明，回到原来的 Case。
 
 **寻源与示例资料**：资料来自 `GET /api/v1/stores/{store_id}/supplier-documents`（`useShop.refresh` 读店铺数据时就读一次），`connected === true` 的供应商不读；名称登记到 `utils/glossary.ts rememberSupplierNames()`，寻源结果的 `sourcing.suppliers[].name` 也登记。没有资料时，只在演示模式下自动调用 `POST …/supplier-documents/sample { sku_id, district: '滨江区' }`，失败后才出现"载入示例资料"链接；非演示模式不载入。寻源中标题"正在读 N 家供应商的资料"，逐家显示（读完前是灰色占位条）：`sourcing.reviews[]` 的 `card.status`（`offer`/`no_offer`）、`card.reason`（`SKU_NOT_COVERED`、`STORE_NOT_SERVED`、`SUPPLY_WITHDRAWN`）、`card.offer.{unit_price_minor, minimum_order_quantity, pack_size, lead_time_days}`、`card.citations[].{field, quote}`；缺口取 `sourcing.request.shortfall_qty/short_from`；`sourcing.missing[]` 的码经 `caseProblem()` 显示。寻源从 `running` 变为其他状态后刷新经营数据（新报价进 `catalog`）。
 

@@ -779,6 +779,13 @@
   height: 13px;
   flex-shrink: 0;
 }
+.agent-source-name {
+  min-width: 0;
+  max-width: 36ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .agent-source-body {
   background: #f6f8fa;
   border-radius: 8px;

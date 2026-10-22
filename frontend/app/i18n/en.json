@@ -1,4 +1,7 @@
 {
+  "片段 {0}": "Excerpt {0}",
+  "原件 v{0}": "Original v{0}",
+  "应急补购 {0} 件，支出 {1}；七日预测缺货 {2} 件。": "Emergency restock: buy {0} units for {1}; projected 7-day shortage of {2} units.",
   "已接回原备货事项。原方案、采购及到货记录保持关联。": "Back on the original restocking request. Its plan, purchases and arrivals stay linked.",
   "从新入口提出的要求已接回本事项，原对话保留。": "Your new message was added to this request; the earlier conversation is kept.",
   "已保存一份报价CSV原件，可用于当前事项的处理。": "The original quote CSV was saved for this request.",
@@ -1024,7 +1027,6 @@
   "历史原文片段": "Historical source excerpt",
   "关闭原文": "Close source",
   "正在核对历史版本与当前访问权限…": "Checking the historical version and current access…",
-  "原件 v": "Original v",
   "· 本轮获取的来源，不代表逐句引用或当前有效条款。": "· Retrieved in this run; does not establish sentence-level citations or current validity.",
   "原文位置：": "Original location:",
   "正在核对并下载…": "Checking and downloading…",

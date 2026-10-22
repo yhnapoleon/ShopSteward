@@ -633,6 +633,88 @@ test('会话分页使用后端after游标，第二页默认会话不会被第一
   expect(c.writes).toHaveLength(0)
 })
 
+test('文档来源按文档合并、写出标题；一份文档的几段各自打开原文，版本写作 v1', async ({ page }) => {
+  const c = await setup(page, false)
+  const titles: Record<string, string> = {
+    'doc-anhe': '安和商贸供货合作条款',
+    'doc-chengda': '诚达供应供货合作条款',
+  }
+  await page.route('**/api/backend/api/v1/documents/doc-*', (route) => {
+    const id = new URL(route.request().url()).pathname.split('/').pop()!
+    return route.fulfill({ json: { id, title: titles[id] } })
+  })
+  const opened: string[] = []
+  await page.route('**/api/backend/api/v1/agent-runs/run-old/evidence?*', (route) => {
+    opened.push(new URL(route.request().url()).searchParams.get('chunk_id')!)
+    return route.fulfill({
+      json: {
+        run_id: 'run-old',
+        reference: { locator: { paragraph_range: [2, 2] } },
+        title: titles['doc-anhe'],
+        version_no: 1,
+        text: '第七条 结算\n货款按月结算，账期30天。',
+        truncated: false,
+        recorded_at: '2026-09-08T08:00:00Z',
+        historical: true,
+      },
+    })
+  })
+  const chunk = (id: string, chunk_id: string, paragraph: number) => ({
+    type: 'document',
+    id,
+    version_id: `${id}-v1`,
+    generation_id: 'generation-1',
+    chunk_id,
+    metadata_revision: 1,
+    // A section name in the document's own language stays out of the button.
+    locator: { section_path: ['第七条 结算'], paragraph_range: [paragraph, paragraph] },
+    content_sha256: `${chunk_id}-hash`,
+  })
+  c.messages.push({
+    id: 'document-answer',
+    seq: 4,
+    role: 'assistant',
+    run_id: 'run-old',
+    content: '安和商贸按月结算，账期 30 天。',
+    references: [
+      chunk('doc-anhe', 'anhe-2', 2),
+      chunk('doc-chengda', 'chengda-2', 2),
+      chunk('doc-anhe', 'anhe-1', 1),
+      chunk('doc-chengda', 'chengda-1', 1),
+    ],
+    created_at: '2026-09-08T08:00:02Z',
+  })
+  const article = page.locator('.agent-message').filter({ hasText: '账期 30 天' })
+  const sources = article.locator('.agent-source')
+  await expect(sources).toHaveCount(2)
+  const label = (i: number) => sources.nth(i).locator(':scope > summary')
+  await expect(label(0)).toContainText('文档来源')
+  await expect(label(0).locator('.agent-source-name')).toHaveText('· 安和商贸供货合作条款')
+  await expect(label(0)).toHaveAttribute('title', '安和商贸供货合作条款')
+  await expect(label(1).locator('.agent-source-name')).toHaveText('· 诚达供应供货合作条款')
+  await label(0).click()
+  const excerpts = sources.first().getByRole('button', { name: /^打开当时原文片段/ })
+  await expect(excerpts).toHaveText([
+    '打开当时原文片段·段落范围 2–2',
+    '打开当时原文片段·段落范围 1–1',
+  ])
+  await excerpts.first().click()
+  await expect(page.getByRole('dialog', { name: '历史原文片段' })).toContainText('货款按月结算')
+  expect(opened).toEqual(['anhe-2'])
+  await page.keyboard.press('Escape')
+  // The version reads as one word in English.
+  await page.evaluate(() => localStorage.setItem('shopsteward.locale.v1', 'en'))
+  await page.reload()
+  const english = page.locator('.agent-message').filter({ hasText: '账期 30 天' })
+  await english.locator('.agent-source').first().locator(':scope > summary').click()
+  await english
+    .getByRole('button', { name: 'Open the original excerpt from this run · Paragraph range 2–2' })
+    .click()
+  const dialog = page.getByRole('dialog', { name: 'Historical source excerpt' })
+  await expect(dialog).toContainText('Original v1 ·')
+  await expect(dialog).not.toContainText('Original v 1')
+})
+
 test('历史原文关闭后迟到响应不恢复内容；轮询鉴权失败清除会话', async ({ page }) => {
   await setup(page, false)
   let release!: () => void

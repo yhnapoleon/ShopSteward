@@ -1,10 +1,51 @@
 import { test, expect } from '@playwright/test'
 import { locale, t } from '../app/i18n'
 import { resultFile, resultTitle } from '../app/utils/workResultExport'
-import { describeTool, sourceLabel } from '../app/utils/agent'
+import { describeTool, sourceGroups, sourceLabel } from '../app/utils/agent'
+import { describeEvent } from '../app/utils/timeline'
 
 test.afterEach(() => {
   locale.value = 'zh-CN'
+})
+test('emergency plan summary: "the original order stays" only when the backend says so', () => {
+  const entry = (summary: string) =>
+    ({ type: 'PLAN_CREATED', summary, actor_type: 'SYSTEM', references: [] }) as any
+  const kept = '应急补购 20 件，支出 19000 分；七日预测缺货 0 件。原订单保留。'
+  const declined = '应急补购 20 件，支出 19000 分；七日预测缺货 0 件。'
+  locale.value = 'en'
+  expect(describeEvent(entry(kept)).title).toMatch(
+    /^Emergency restock: buy 20 units for .*190.*\. The original order stays\.$/,
+  )
+  expect(describeEvent(entry(declined)).title).toMatch(
+    /^Emergency restock: buy 20 units for .*190.*units\.$/,
+  )
+  expect(describeEvent(entry(declined)).title).not.toMatch(/[一-鿿]|original order/)
+  locale.value = 'zh-CN'
+  expect(describeEvent(entry(declined)).title).not.toContain('原订单保留')
+})
+test('one source per document version, its excerpts kept in order', () => {
+  const chunk = (id: string, chunk_id: string) => ({
+    type: 'document',
+    id,
+    version_id: 'v1',
+    chunk_id,
+  })
+  const plan = { type: 'plan', id: 'p1' }
+  const groups = sourceGroups([
+    chunk('a', 'a2'),
+    chunk('b', 'b2'),
+    plan,
+    chunk('a', 'a1'),
+    chunk('a', 'a2'),
+  ])
+  expect(groups.map((g) => [g.documentId, g.parts.map((p) => p.chunk_id ?? p.id)])).toEqual([
+    ['a', ['a2', 'a1']],
+    ['b', ['b2']],
+    [null, ['p1']],
+  ])
+  locale.value = 'en'
+  expect(t('原件 v{0}', [1])).toBe('Original v1')
+  expect(t('片段 {0}', [2])).toBe('Excerpt 2')
 })
 test('translated templates preserve original product names, identifiers and spaces', () => {
   locale.value = 'en'
