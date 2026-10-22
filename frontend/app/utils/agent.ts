@@ -62,10 +62,41 @@ export function describeTool(name: string): ToolDescription {
 export function sourceIdentity(value: unknown) {
   return JSON.stringify(value)
 }
+export const isDocumentSource = (r: Record<string, unknown>) =>
+  r.type === 'document' || r.kind === 'document' || !!r.chunk_id
+export type SourceGroup = {
+  key: string
+  /** The document a group of excerpts came from; null for any other source. */
+  documentId: string | null
+  parts: Record<string, unknown>[]
+}
+/** Sources as they are listed: one per document version, with the excerpts read from it. */
+export function sourceGroups(references: unknown[]): SourceGroup[] {
+  const groups: SourceGroup[] = []
+  const documents = new Map<string, SourceGroup>()
+  const seen = new Set<string>()
+  for (const value of references) {
+    if (!value || typeof value !== 'object') continue
+    const identity = sourceIdentity(value)
+    if (seen.has(identity)) continue
+    seen.add(identity)
+    const r = value as Record<string, unknown>
+    const document = isDocumentSource(r) && typeof r.id === 'string' ? r.id : null
+    const key = document ? `document:${document}:${String(r.version_id ?? '')}` : identity
+    const group = documents.get(key)
+    if (group) group.parts.push(r)
+    else {
+      const next = { key, documentId: document, parts: [r] }
+      if (document) documents.set(key, next)
+      groups.push(next)
+    }
+  }
+  return groups
+}
 export function sourceLabel(value: unknown) {
   if (!value || typeof value !== 'object') return '来源记录'
   const r = value as Record<string, unknown>
-  if (r.type === 'document' || r.kind === 'document' || r.chunk_id) return '文档来源'
+  if (isDocumentSource(r)) return '文档来源'
   const kind = String(r.type || r.kind || '')
   return (
     (

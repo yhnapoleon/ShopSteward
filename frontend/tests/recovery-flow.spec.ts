@@ -1,5 +1,7 @@
 import { test, expect, type Page } from '@playwright/test'
 import { dayLabel, setupRecovery, type Mock } from './support/recovery-mock'
+import { demandFrom } from '../app/utils/recovery'
+import type { PlanDocument } from '../app/types/models'
 
 // Emergency restock as one flow on the work page (workspace §18), against a stateful mock of the
 // business API. No purchase reaches a supplier; every write is recorded and checked.
@@ -34,6 +36,38 @@ async function toOrder(page: Page) {
   await expect(flowCard(page)).toHaveAttribute('data-stage', 'order')
 }
 const writes = (m: Mock) => m.writes.map((w) => w.path)
+
+test('需求与日常方案同一口径：剩余需求只摊在方案期间里，期后为 0', () => {
+  const plan = (start: string, end: string, asOf: string, remaining: number) =>
+    ({
+      input_snapshot: {
+        forecast: { horizon_start: start, horizon_end: end, remaining_demand: remaining },
+        state: { simulation_time: asOf },
+      },
+    }) as unknown as PlanDocument
+  const sum = (v: number[]) => v.reduce((n, x) => n + x, 0)
+  // A new mission: the whole week.
+  const fresh = demandFrom({
+    plan: plan('2026-10-21T06:21:28Z', '2026-10-28T06:21:28Z', '2026-10-21T06:21:28Z', 60),
+  })
+  expect(fresh.values).toEqual([9, 9, 9, 9, 8, 8, 8])
+  // Demand revised the next day: the plan's 70 units are what is left of the 5.9 days ahead.
+  const revised = demandFrom({
+    plan: plan('2026-10-22T08:21:28Z', '2026-10-28T06:21:28Z', '2026-10-22T08:21:28Z', 70),
+  })
+  expect(revised.values).toEqual([12, 12, 12, 12, 11, 11, 0])
+  // After a sale the period still starts when the store opened; the 50 units start now.
+  const sold = demandFrom({
+    plan: plan('2026-10-21T06:21:28Z', '2026-10-28T06:21:28Z', '2026-10-22T07:21:28Z', 50),
+  })
+  expect(sum(sold.values)).toBe(50)
+  expect(sold.values[6]).toBe(0)
+  // A period longer than the week gives only the week's share.
+  const long = demandFrom({
+    plan: plan('2026-10-21T00:00:00Z', '2026-11-04T00:00:00Z', '2026-10-21T00:00:00Z', 140),
+  })
+  expect(long.values).toEqual([10, 10, 10, 10, 10, 10, 10])
+})
 
 test('入口与预填：问题、预算、需求和首日结算都已填好，演示模式自动备好资料', async ({ page }) => {
   const m = await setupRecovery(page, { demo: true })

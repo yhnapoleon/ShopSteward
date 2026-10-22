@@ -580,7 +580,8 @@ export type DemandPlan = { values: number[]; source: DemandSource }
 
 /**
  * The seven days of demand the brief starts from: the enabled daily forecast when there is one,
- * otherwise the mission's current demand assumption spread evenly over the same seven days.
+ * otherwise the plan's remaining demand spread evenly over the days of its period still ahead,
+ * so the brief counts the same units as the daily plan. Days after the period ends carry none.
  */
 export function demandFrom(input: {
   forecast?: { usable_for_planning: boolean; forecast: object | null } | null
@@ -601,12 +602,18 @@ export function demandFrom(input: {
   }
   const forecast = input.plan?.input_snapshot.forecast
   if (forecast) {
-    const days = Math.max(
-      1,
-      Math.round((Date.parse(forecast.horizon_end) - Date.parse(forecast.horizon_start)) / DAY),
+    // The remaining demand is what is left of the period from the plan's business time on.
+    const asOf = Date.parse(input.plan?.input_snapshot.state.simulation_time ?? '')
+    const start = Math.max(
+      Date.parse(forecast.horizon_start),
+      Number.isNaN(asOf) ? -Infinity : asOf,
     )
+    const span = (Date.parse(forecast.horizon_end) - start) / DAY
+    // A day the period ends in still counts; a period longer than the week gives only its share.
+    const days = Math.min(7, Math.max(1, Math.ceil(span - 1e-6)))
+    const total = span > 7 ? (forecast.remaining_demand * 7) / span : forecast.remaining_demand
     return {
-      values: evenDays((forecast.remaining_demand * 7) / days),
+      values: [...evenDays(total, days), ...Array<number>(7 - days).fill(0)],
       source: 'assumption',
     }
   }
