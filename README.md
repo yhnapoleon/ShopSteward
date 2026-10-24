@@ -24,7 +24,7 @@ Every experiment is scored by code; Table 4-16 and Figure 5-1 of the report coll
 | Ying Hao | A0326313N | Team leader; overall system design and the design of every part outside the other members' roles: architecture and backend, demand forecasting, planning search and recovery, multi-agent sourcing, agent runtime, context engineering and memory, learning loops and evaluation, experiments, report and system design video |
 | Liu Kairui | A0353368W | Product lead: product definition (business loop, features and user experience) and how the agent works with the owner (when it appears, how it carries delegated work and how it hands back decisions for approval); technique analysis, scope, module requirements and milestones; frontend design and most of the owner-facing application; full-stack features (natural-language requests, reusable quotation rules); system testing before the demo recordings |
 | Feng Tangyu | A0356670X | Model post-training (SFT and GRPO); cloud hosting of the RAG service, including the embedding models |
-| Zhang Junming | A0355479L | Frontend design; testing |
+| Zhang Junming | A0355479L | Frontend architecture design and implementation for ShopSteward’s AI-assisted merchant workspace; integration of Agent conversations, tool execution progress, and human approval flows; end-to-end testing with real LLMs across restocking, supplier rejection, emergency sourcing, and delivery confirmation, validating consistency between AI responses and business records and identifying usability and reliability issues|
 
 ---
 
