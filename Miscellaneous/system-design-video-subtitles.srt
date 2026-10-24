@@ -1,0 +1,259 @@
+1
+00:00:01,600 --> 00:00:05,227
+ShopSteward is an AI purchasing assistant for small shops,
+
+2
+00:00:05,267 --> 00:00:08,761
+combining machine-learning forecasting, optimisation search,
+
+3
+00:00:08,850 --> 00:00:13,972
+and a multi-agent LLM layer with retrieval, memory and self-improvement.
+
+4
+00:00:15,325 --> 00:00:18,946
+Purchasing unfolds over days, so the system is event-driven.
+
+5
+00:00:19,991 --> 00:00:22,696
+A FastAPI service is the system of record,
+
+6
+00:00:23,295 --> 00:00:28,551
+work flows through a PostgreSQL job queue served by four worker pools,
+
+7
+00:00:29,462 --> 00:00:35,549
+and a simulator streams sales, deliveries and supplier replies as a digital twin of the market.
+
+8
+00:00:36,549 --> 00:00:42,335
+Algorithms compute quantities and money; language models read, retrieve and explain.
+
+9
+00:00:43,581 --> 00:00:45,492
+Routine restocking is a closed loop.
+
+10
+00:00:46,100 --> 00:00:50,241
+A forecasting ensemble of gradient-boosted trees and a neural network,
+
+11
+00:00:50,281 --> 00:00:54,669
+trained on Walmart's M5 data, predicts seven days of demand.
+
+12
+00:00:55,250 --> 00:00:56,901
+The planner computes the inventory position,
+
+13
+00:00:57,834 --> 00:01:02,252
+filters candidate quantities by cash floor, minimum order and pack size,
+
+14
+00:01:02,905 --> 00:01:05,842
+and selects the smallest one that closes the gap.
+
+15
+00:01:06,407 --> 00:01:10,487
+Every sale, demand change or delivery triggers re-planning,
+
+16
+00:01:10,882 --> 00:01:13,693
+and each plan goes to the owner for approval.
+
+17
+00:01:14,903 --> 00:01:19,071
+When a supplier fails, a recovery solver runs simulation-based optimisation:
+
+18
+00:01:20,008 --> 00:01:23,240
+it simulates stock and sales for every candidate order
+
+19
+00:01:23,472 --> 00:01:27,637
+and ranks them by lost sales, cost and leftover stock.
+
+20
+00:01:28,378 --> 00:01:31,039
+Offers come from an orchestrator–worker pipeline.
+
+21
+00:01:31,744 --> 00:01:34,422
+The orchestrator turns the shortfall into a brief
+
+22
+00:01:34,462 --> 00:01:37,182
+and fans out one ReAct agent per supplier,
+
+23
+00:01:37,397 --> 00:01:43,589
+which reads that supplier's documents and returns a structured quote card citing its sources.
+
+24
+00:01:44,482 --> 00:01:49,033
+A verifier checks every citation and escalates failures to a stronger model.
+
+25
+00:01:49,212 --> 00:01:56,888
+With a small model, per-supplier isolation raised card accuracy from 21 to 33 of 42.
+
+26
+00:01:58,250 --> 00:02:01,357
+Explanations come from a configurable expert team.
+
+27
+00:02:01,890 --> 00:02:08,019
+Evidence, impact and options agents emit typed claims linked to solver evidence,
+
+28
+00:02:08,757 --> 00:02:12,008
+and code merges them, under four orchestration modes,
+
+29
+00:02:12,705 --> 00:02:16,513
+from a fixed pipeline to an adaptive team with an arbiter.
+
+30
+00:02:17,173 --> 00:02:21,017
+The fixed pipeline scored 23 of 24 and is the default.
+
+31
+00:02:22,228 --> 00:02:26,887
+The agent runtime is a LangGraph state machine built for human-in-the-loop work,
+
+32
+00:02:27,387 --> 00:02:28,495
+checkpointing every step.
+
+33
+00:02:29,419 --> 00:02:32,903
+When the agent needs the owner's input, the graph raises an interrupt,
+
+34
+00:02:33,552 --> 00:02:37,009
+and the owner's answer resumes the run from the same state.
+
+35
+00:02:37,049 --> 00:02:41,201
+Plan changes the agent proposes enter the owner's approval queue,
+
+36
+00:02:41,415 --> 00:02:47,793
+and with follow-up on, the agent starts a new run whenever the business state changes.
+
+37
+00:02:49,030 --> 00:02:52,322
+Each model call assembles its context in four layers:
+
+38
+00:02:53,085 --> 00:02:53,625
+system instructions;
+
+39
+00:02:53,925 --> 00:02:58,773
+a separate data block with memory, learned skills and required evidence;
+
+40
+00:02:59,403 --> 00:03:04,603
+a task frame that parses the owner's constraints into typed fields with their source quote;
+
+41
+00:03:05,343 --> 00:03:09,870
+and the conversation, keeping every user message and recent answers within budget.
+
+42
+00:03:09,910 --> 00:03:13,320
+Live business data arrives through tool calls,
+
+43
+00:03:13,520 --> 00:03:17,745
+and every call logs a manifest of what was included or dropped.
+
+44
+00:03:19,300 --> 00:03:22,497
+For documents, we built a hybrid, agentic RAG.
+
+45
+00:03:23,627 --> 00:03:27,445
+Files are parsed by structure into chunks that remember their parent section.
+
+46
+00:03:28,565 --> 00:03:30,965
+Each query searches three ways at once:
+
+47
+00:03:31,655 --> 00:03:35,224
+keywords with BM25, meaning with Qwen3 embeddings,
+
+48
+00:03:35,364 --> 00:03:37,791
+and a knowledge graph of business relations.
+
+49
+00:03:38,661 --> 00:03:41,651
+Reciprocal Rank Fusion merges the three rankings,
+
+50
+00:03:41,691 --> 00:03:45,959
+and small-to-big expansion adds the surrounding text of each hit.
+
+51
+00:03:46,519 --> 00:03:52,529
+The agent calls retrieval as a tool, chooses its own query, and cites every passage it uses.
+
+52
+00:03:53,809 --> 00:03:56,719
+The ordering decision is a restricted policy:
+
+53
+00:03:57,648 --> 00:04:02,631
+from the request and the current plan, choose one of five actions with exact arguments.
+
+54
+00:04:03,351 --> 00:04:05,411
+We post-trained Qwen3-8B for it:
+
+55
+00:04:05,911 --> 00:04:10,908
+LoRA fine-tuning on verified demonstrations, then GRPO with verifiable rewards.
+
+56
+00:04:11,678 --> 00:04:13,988
+For each task the model samples four answers,
+
+57
+00:04:14,268 --> 00:04:17,895
+each executed in its own sandboxed copy of the backend.
+
+58
+00:04:18,585 --> 00:04:23,561
+Reaching the correct end state scores plus one, a forbidden action minus one,
+
+59
+00:04:24,031 --> 00:04:26,231
+and each answer learns relative to its group.
+
+60
+00:04:27,371 --> 00:04:31,388
+Without retraining, GEPA evolves our versioned prompt bundles:
+
+61
+00:04:31,508 --> 00:04:35,350
+a reflection model reads failed runs, rewrites the prompt,
+
+62
+00:04:35,690 --> 00:04:38,552
+and keeps a Pareto frontier of the best versions,
+
+63
+00:04:39,184 --> 00:04:44,284
+lifting expert accuracy from 18 to 22 of 24 on unseen cases.
+
+64
+00:04:45,031 --> 00:04:49,371
+A learning worker distils the owner's repeated operations into reusable skills,
+
+65
+00:04:50,057 --> 00:04:51,797
+retrieved when their preconditions match.
