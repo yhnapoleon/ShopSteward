@@ -21,10 +21,10 @@ Every experiment is scored by code; Table 4-16 and Figure 5-1 of the report coll
 
 | Official Full Name | Student ID (MTech Applicable) | Work Items (Who Did What) |
 | :--- | :---: | :--- |
-| Ying Hao | A0326313N | System architecture and backend; planning search, recovery solver and event-driven re-planning; multi-agent sourcing, agent runtime, context engineering, memory and document retrieval; learning loops and rubric evaluation; experiments; report Chapters 2–5 and appendices; system design video |
-| Liu Kairui | A0353368W | Web frontend and its redesign (work-item workspace, memory drawer, demo mode, emergency restock flow); work-request processing and quotation workflow; bilingual interface |
-| Feng Tangyu | A0356670X | Model configuration |
-| Zhang Junming | A0355479L | Guided onboarding and frontend usage review; configurable reasoning effort for agent tool calls |
+| Ying Hao | A0326313N | Team leader; overall system design and the design of every part outside the other members' roles: architecture and backend, demand forecasting, planning search and recovery, multi-agent sourcing, agent runtime, context engineering and memory, learning loops and evaluation, experiments, report and system design video |
+| Liu Kairui | A0353368W | Product design; frontend design |
+| Feng Tangyu | A0356670X | Model post-training (SFT and GRPO); cloud hosting of the RAG service, including the embedding models |
+| Zhang Junming | A0355479L | Frontend design; testing |
 
 ---
 
